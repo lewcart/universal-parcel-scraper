@@ -5,9 +5,10 @@ import { parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { DEFAULT_USER_AGENT } from '../../core/transport/userAgent.js';
 import { createTracker } from '../../facade/index.js';
+import { carrierScan } from '../../providers/shared/scans.js';
 import { adapter, CDEK_ENDPOINT, CdekTracker } from './adapter.js';
 import { parseCdek } from './parser.js';
-import { cdekStage, statusMap } from './status.js';
+import { cdekScan, cdekStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const PICKUP = '99000000017';
@@ -257,6 +258,7 @@ describe('CDEK tracking adapter', () => {
 describe('CDEK status vocabulary', () => {
   it('records every code the map knows with the stage it gives', () => {
     for (const entry of statuses.entries) {
+      if (!entry.code) continue;
       expect(cdekStage(entry.code), entry.code).toBe(entry.stage);
       expect(statusMap.stage(entry.code, (entry.wording ?? 'synthetic wording').toLowerCase()), entry.code).toBe(entry.stage);
     }
@@ -266,5 +268,15 @@ describe('CDEK status vocabulary', () => {
       .toEqual({ kind: 'mapped', stage: 'ready_for_pickup' });
     expect(statusMapAnswer({ carrier: 'cdek', providerCode: 'UNKNOWN', description: 'Неизвестно' }))
       .toEqual({ kind: 'intentional_gap', note: expect.any(String) });
+  });
+
+  it('stages the leg labels ParcelsApp relays, which carry no code', () => {
+    for (const entry of statuses.entries) {
+      if (entry.code) continue;
+      expect(cdekScan(entry.wording!), entry.wording).toEqual({ stage: entry.stage, wording: entry.wording });
+      expect(carrierScan('cdek', `${entry.wording!.toUpperCase()}.`), entry.wording).toMatchObject({ stage: entry.stage });
+      expect(statusMap.stage(null, entry.wording!.toLowerCase()), entry.wording).toBe(entry.stage);
+    }
+    expect(cdekScan('Вручён')).toBeUndefined();
   });
 });

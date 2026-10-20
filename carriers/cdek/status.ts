@@ -44,9 +44,29 @@ export function cdekStage(code: string): Stage | undefined {
   return Object.hasOwn(CODES, code) ? CODES[code] : undefined;
 }
 
-/** Every milestone and scan carries its code, which alone gives the stage. */
+// ParcelsApp relays CDEK's scans as labels that name the leg of the trip
+// rather than a code. Each keeps its relayed wording.
+const RELAYED: ReadonlyArray<readonly [label: string, stage: Stage]> = [
+  ['Принят в городе отправителя', 'accepted'],
+  ['Отправлен в город получателя', 'in_transit'],
+  ['В транзитном городе', 'in_transit'],
+  ['Принят в городе получателя', 'in_transit'],
+  ['На доставке у курьера', 'out_for_delivery'],
+  ['Вручено', 'delivered'],
+];
+
+const key = (label: string) => label.trim().replace(/\.+$/, '').toLocaleLowerCase('ru');
+const BY_LABEL = new Map(RELAYED.map(([label, stage]) => [key(label), stage]));
+
+/** The stage of one CDEK scan label a provider relays, with its wording unchanged. */
+export function cdekScan(label: string): { stage: Stage; wording: string } | undefined {
+  const stage = BY_LABEL.get(key(label));
+  return stage && { stage, wording: label };
+}
+
+/** A code alone gives the stage; a relayed label without one gives it by its wording. */
 export const statusMap: CarrierStatusMap = {
-  stage: (code) => (code ? cdekStage(code) : undefined),
+  stage: (code, wording) => (code ? cdekStage(code) : cdekScan(wording)?.stage),
   gaps: [
     { code: 'UNKNOWN', note: "The app's milestone for a state it cannot name; it says nothing about where the order is." },
   ],

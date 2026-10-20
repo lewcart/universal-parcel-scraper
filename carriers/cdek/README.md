@@ -37,6 +37,10 @@ yet are marked as future, as the app reads them; they are not scans and are left
 UTC instants. "Не вручён", the end of an order that did not reach its recipient, is
 an exception.
 
+ParcelsApp relays CDEK's scans as labels naming the leg of the trip, such as "Принят в городе
+отправителя" and "Вручено", without a code. A scan filed under CDEK's name takes its stage from
+these labels and keeps the relayed wording.
+
 The recipient's initials, the addresses, the offices with their phones, hours and coordinates,
 the courier's agreed slot, the storage deadline, payments and pickup codes are not read.
 

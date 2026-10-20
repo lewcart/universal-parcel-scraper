@@ -113,6 +113,22 @@ describe('ParcelsApp YTO scans', () => {
     expect(unknown.events?.[0]).toMatchObject({ description: '问题件扫描', stage: 'pending', stage_source: 'none' });
   });
 
+  it("reads CDEK's relayed leg labels by CDEK's vocabulary and keeps their wording", () => {
+    const labels = ['Принят в городе отправителя', 'Отправлен в город получателя', 'В транзитном городе', 'Принят в городе получателя', 'На доставке у курьера', 'Вручено'];
+    const states = (count: number) => labels.slice(0, count).map((status, index) => ({ date: `2026-05-01T07:00:0${index}Z`, status, carrier: 0 })).reverse();
+    const delivered = parseParcelsAppResponse({ carriers: ['CDEK'], states: states(6) }, number, identity());
+    expect(delivered).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Вручено' });
+    expect(delivered.events?.map((event) => [event.description, event.stage, event.stage_source])).toEqual([
+      ['Вручено', 'delivered', 'carrier_map'],
+      ['На доставке у курьера', 'out_for_delivery', 'carrier_map'],
+      ['Принят в городе получателя', 'in_transit', 'carrier_map'],
+      ['В транзитном городе', 'in_transit', 'carrier_map'],
+      ['Отправлен в город получателя', 'in_transit', 'carrier_map'],
+      ['Принят в городе отправителя', 'accepted', 'carrier_map'],
+    ]);
+    expect(parseParcelsAppResponse({ carriers: ['CDEK'], states: states(1) }, number, identity())).toMatchObject({ current_stage: 'accepted' });
+  });
+
   it("reads Mayi Yinfu's relayed airport hand-over as transit, and its delivery abroad as a delivery", () => {
     const parcel = (states: Record<string, unknown>[]) => parseParcelsAppResponse({ carriers: ['DHL Parcel Spain', 'Mayiyinfu'],
       originCode: 'CN', destinationCode: 'ES', states }, number, identity());

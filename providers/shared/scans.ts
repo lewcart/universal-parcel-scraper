@@ -10,6 +10,7 @@
  */
 import type { CarrierEvent } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import { cdekScan } from '../../carriers/cdek/status.js';
 import { emileScan } from '../../carriers/emile/status.js';
 import { paackScan } from '../../carriers/paack/status.js';
 import { ytoScan } from '../../carriers/yto/status.js';
@@ -21,6 +22,7 @@ export interface CarrierScan {
 }
 
 const VOCABULARIES: Readonly<Record<string, (label: string) => CarrierScan | undefined>> = {
+  cdek: cdekScan,
   emile: emileScan,
   paack: paackScan,
   yto: ytoScan,

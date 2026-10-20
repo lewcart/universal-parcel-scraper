@@ -114,8 +114,9 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
 - [shared/hints.ts](shared/hints.ts): reported carrier names to catalog ids, and whether
   a name is new to the catalog.
 - [shared/scans.ts](shared/scans.ts): scan vocabularies of carriers whose labels providers
-  relay (YTO, Paack's page labels and Emile's status texts): stage and stored wording of the
-  carrier's own labels, original or translated, and the return leg that follows a return scan.
+  relay (YTO, Paack's page labels, Emile's status texts and CDEK's leg labels): stage and
+  stored wording of the carrier's own labels, original or translated, and the return leg that
+  follows a return scan.
 - [shared/capture.ts](shared/capture.ts): TRAWL response decoding and capture errors.
 - [core/runner](../core/runner/index.ts) runs steps and records telemetry.
   [core/errors](../core/errors/index.ts) holds the shared failure categories.

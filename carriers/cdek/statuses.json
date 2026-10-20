@@ -22,6 +22,12 @@
     { "code": "PARTIALLY_DELIVERED", "language": "ru", "stage": "delivered", "confirmedBy": "bundle", "note": "A final milestone in the app: the recipient took part of the order." },
     { "code": "NOT_DELIVERED", "wording": "Не вручён", "language": "ru", "stage": "exception", "confirmedBy": "live", "note": "A final milestone: the order ended without reaching its recipient. The page says the recipient did not collect it." },
     { "code": "CANCELLED", "language": "ru", "stage": "exception", "confirmedBy": "bundle", "note": "A final milestone in the app." },
-    { "code": "UNKNOWN", "language": "ru", "confirmedBy": "bundle", "note": "The app's milestone for a state it cannot name; left without a stage." }
+    { "code": "UNKNOWN", "language": "ru", "confirmedBy": "bundle", "note": "The app's milestone for a state it cannot name; left without a stage." },
+    { "wording": "Принят в городе отправителя", "language": "ru", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "Relayed by ParcelsApp." },
+    { "wording": "Отправлен в город получателя", "language": "ru", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "Relayed by ParcelsApp." },
+    { "wording": "В транзитном городе", "language": "ru", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "Relayed by ParcelsApp." },
+    { "wording": "Принят в городе получателя", "language": "ru", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "Relayed by ParcelsApp." },
+    { "wording": "На доставке у курьера", "language": "ru", "stage": "out_for_delivery", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "Relayed by ParcelsApp." },
+    { "wording": "Вручено", "language": "ru", "stage": "delivered", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "Relayed by ParcelsApp." }
   ]
 }

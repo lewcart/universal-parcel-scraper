@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { ChallengeError, IndeterminateError, InputRequiredError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InputRequiredError, NoHistoryError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { TrawlScrapeResponse } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
@@ -34,7 +34,7 @@ export function parseChinaPostWebPreview(page: TrawlScrapeResponse, number: stri
   if (!payload.success) {
     if (payload.reason === 'rate_limit') throw new RateLimitedError(PROVIDER);
     if (payload.reason === 'phone') throw new InputRequiredError(PROVIDER, 'recipient verification', 'China Post asks for contact phone verification');
-    if (payload.reason === 'empty') throw new IndeterminateError(PROVIDER, 'China Post has no guest tracking information for this number');
+    if (payload.reason === 'empty') throw new NoHistoryError(PROVIDER, 'China Post has no guest tracking information for this number');
     if (payload.reason === 'verification') throw new ChallengeError(PROVIDER, 'China Post refused the character verification');
     throw new IndeterminateError(PROVIDER, 'China Post did not open the guest preview');
   }
@@ -42,7 +42,7 @@ export function parseChinaPostWebPreview(page: TrawlScrapeResponse, number: stri
   if (payload.match !== true || !Array.isArray(payload.scans) || payload.scans.length > 100) {
     throw new SchemaError(PROVIDER, 'China Post guest preview did not match the shipment');
   }
-  if (!payload.scans.length) throw new IndeterminateError(PROVIDER, 'China Post returned no guest scans');
+  if (!payload.scans.length) throw new NoHistoryError(PROVIDER, 'China Post returned no guest scans');
   const scans: readonly unknown[] = payload.scans;
   const events: CarrierEvent[] = [];
   for (const scan of [...scans].reverse()) {

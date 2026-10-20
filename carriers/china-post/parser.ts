@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
-import { ChallengeError, IndeterminateError, InputRequiredError, InvalidInputError, SchemaError, type CarrierError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InputRequiredError, InvalidInputError, NoHistoryError, SchemaError, type CarrierError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { countryCode } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
@@ -56,7 +56,7 @@ export function chinaPostRefusal(reply: ChinaPostReply): CarrierError {
   if (reply.code === '600001') return new IndeterminateError(PROVIDER, 'China Post did not open the trace for this lookup');
   // The app shows the same "no logistics information" toast for unknown,
   // not-yet-scanned and out-of-scope numbers.
-  if (/暂无物流信息/.test(reply.msg)) return new IndeterminateError(PROVIDER, 'China Post has no tracking information for this number yet');
+  if (/暂无物流信息/.test(reply.msg)) return new NoHistoryError(PROVIDER, 'China Post has no tracking information for this number yet');
   if (/繁忙|稍后/.test(reply.msg)) return new IndeterminateError(PROVIDER, 'China Post tracking is busy');
   return new IndeterminateError(PROVIDER, 'China Post returned an unexpected tracking answer');
 }
@@ -74,7 +74,7 @@ export function checkChinaPostGate(payload: unknown): void {
   if (reply.info === 2) {
     throw new InputRequiredError(PROVIDER, 'recipient verification', 'China Post asks for the last four digits of a contact phone number');
   }
-  if (reply.info === 3) throw new IndeterminateError(PROVIDER, 'China Post has no tracking information for this number yet');
+  if (reply.info === 3) throw new NoHistoryError(PROVIDER, 'China Post has no tracking information for this number yet');
 }
 
 const CHINESE_REGIONS = new Intl.DisplayNames(['zh-Hans'], { type: 'region' });
@@ -224,13 +224,13 @@ export function parseChinaPostTraces(payload: unknown, raw: string): CarrierResu
   // logistics information. The service writes null fields out, so a missing
   // key stays a malformed reply.
   if (reply.info === null || mail === null || mail === '' || (isRecord(mail) && !Object.keys(mail).length)) {
-    throw new IndeterminateError(PROVIDER, 'China Post has no tracking information for this number yet');
+    throw new NoHistoryError(PROVIDER, 'China Post has no tracking information for this number yet');
   }
   if (!isRecord(mail)) throw new SchemaError(PROVIDER, 'China Post returned no mail record');
   if (clean(mail.mailNo, 40).toUpperCase() !== number) throw new SchemaError(PROVIDER, 'China Post returned a different shipment');
   if (!Array.isArray(mail.mailInfos) || mail.mailInfos.length > MAX_SCANS) throw new SchemaError(PROVIDER, 'China Post returned an invalid scan list');
   const scans: readonly unknown[] = mail.mailInfos;
-  if (!scans.length) throw new IndeterminateError(PROVIDER, 'China Post returned no scans for this number');
+  if (!scans.length) throw new NoHistoryError(PROVIDER, 'China Post returned no scans for this number');
 
   const country = clean(mail.receiverCountryName, 80);
   const destination = country ? chinaPostCountry(country) : undefined;

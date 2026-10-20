@@ -82,11 +82,11 @@ describe('China Post trace projection', () => {
   });
 
   it('keeps an empty record inconclusive and rejects malformed ones', () => {
-    expect(() => parseChinaPostTraces(edit('delivered', (mail) => { mail.mailInfos = []; }), NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseChinaPostTraces(edit('delivered', (mail) => { mail.mailInfos = []; }), NUMBER)).toThrow(expect.objectContaining({ name: 'NoHistoryError', kind: 'indeterminate' }));
     // The app shows "no logistics information" for these shapes.
     for (const info of [null, { mail: null }, { mail: '' }, { mail: {} }]) {
       expect(() => parseChinaPostTraces({ code: '000000', msg: 'SUCCESS', info }, NUMBER))
-        .toThrow(expect.objectContaining({ kind: 'indeterminate', message: expect.stringContaining('no tracking information') }));
+        .toThrow(expect.objectContaining({ name: 'NoHistoryError', kind: 'indeterminate', message: expect.stringContaining('no tracking information') }));
     }
     for (const info of [{}, 'mail', 3, { mail: 'record' }, { mail: 3 }, { mail: [] }, { mail: { mailNo: '' } }]) {
       expect(() => parseChinaPostTraces({ code: '000000', msg: 'SUCCESS', info }, NUMBER), JSON.stringify(info)).toThrow(expect.objectContaining({ kind: 'schema' }));
@@ -345,7 +345,7 @@ describe('China Post check step', () => {
     expect(() => checkChinaPostGate(fixture('check-open'))).not.toThrow();
     expect(() => checkChinaPostGate({ code: '000000', info: 1, msg: 'SUCCESS' })).not.toThrow();
     expect(() => checkChinaPostGate({ code: '000000', info: 2, msg: 'SUCCESS' })).toThrow(expect.objectContaining({ kind: 'input_required' }));
-    expect(() => checkChinaPostGate({ code: '000000', info: 3, msg: 'SUCCESS' })).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => checkChinaPostGate({ code: '000000', info: 3, msg: 'SUCCESS' })).toThrow(expect.objectContaining({ name: 'NoHistoryError', kind: 'indeterminate' }));
     expect(() => checkChinaPostGate({ code: '000000', info: '5', msg: 'SUCCESS' })).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => checkChinaPostGate(fixture('signature-refused'))).toThrow(expect.objectContaining({ kind: 'challenge' }));
   });

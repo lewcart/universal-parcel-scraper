@@ -58,7 +58,8 @@ challenges.
 
 The record must name the requested number in `info.mail.mailNo`; any other
 record is a schema error. A null `info` or a null, blank or empty mail record
-is what the app shows as "no logistics information", so it is inconclusive.
+is what the app shows as "no logistics information". It is reported as no
+history: inconclusive, but an answer about the number rather than a failed lookup.
 Scans arrive oldest first and are returned newest first in the service's order,
 not re-sorted. Each scan keeps its office, airport or country (`orgName`), its
 scan code (`operationCode`) and a short text. An airline handover can name the
@@ -121,8 +122,8 @@ sender (711) reads "已退回".
 
 - "暂无物流信息" (no logistics information) answers unknown, unscanned and
   expired numbers alike, and also real registered (`R…CN`) and `U…CN`
-  letter-post items this backend does not serve. It is inconclusive, never not
-  found, in tracking and recognition alike.
+  letter-post items this backend does not serve. It is no history, inconclusive
+  and never not found, in tracking and recognition alike.
 - Without TRAWL, a request for the phone digits ends as `input_required`.
 - Full history needs a signed-in account: `subjection/v2` answers guests with
   "请登录后再查询" (sign in first). Accounts are not used.

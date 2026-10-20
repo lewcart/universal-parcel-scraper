@@ -46,7 +46,7 @@ describe('China Post public web preview', () => {
       expect(() => parseChinaPostWebPreview(page(entry(value)), number)).toThrow(expect.objectContaining({ kind: 'schema' }));
     }
     expect(() => parseChinaPostWebPreview(page(entry({ success: true, match: true, scans: [] })), number))
-      .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+      .toThrow(expect.objectContaining({ name: 'NoHistoryError', kind: 'indeterminate' }));
     expect(() => parseChinaPostWebPreview(page(entry({ success: true, checked: true }, { url: CHINA_POST_WEB_FLAG })), number))
       .toThrow(expect.objectContaining({ kind: 'challenge' }));
   });

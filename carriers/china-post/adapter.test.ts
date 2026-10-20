@@ -129,11 +129,11 @@ describe('China Post adapter', () => {
   });
 
   it.each([
-    ['no-information', 'indeterminate'],
-    ['trace-not-opened', 'indeterminate'],
-    ['signature-refused', 'challenge'],
-  ])('keeps the %s trace reply %s instead of not found', async (name, kind) => {
-    await expect(instance(transport(open, () => json(text(name)))).track({ number: NUMBER })).rejects.toMatchObject({ kind });
+    ['no-information', 'indeterminate', 'NoHistoryError'],
+    ['trace-not-opened', 'indeterminate', 'IndeterminateError'],
+    ['signature-refused', 'challenge', 'ChallengeError'],
+  ])('keeps the %s trace reply %s instead of not found', async (name, kind, type) => {
+    await expect(instance(transport(open, () => json(text(name)))).track({ number: NUMBER })).rejects.toMatchObject({ kind, name: type });
   });
 
   it('rejects another shipment and malformed replies', async () => {

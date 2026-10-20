@@ -215,6 +215,14 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^the shipment has been posted by the sender at the retail outlet[.!]?$/i.test(value)) return 'accepted';
   // Canada Post's new label at a processing plant (0198), between two processing scans.
   if (/^label correction applied[.!]?$/i.test(value)) return 'in_transit';
+  // SEUR's receipt at its origin facility (SX001) and Vinted Go's parcel dropped off by its sender, as their own maps read them.
+  if (/^the shipment has been received at the seur facilities of origin[.!]?$|^parcel was dropped off at the (?:locker|parcel shop)[.!]?$/i.test(value)) return 'accepted';
+  // FedEx's customs release, which its own map reads as a completed clearance.
+  if (/^international shipment release - (?:import|export)[.!]?$/i.test(value)) return 'in_transit';
+  // Straightship's shipper data, then its first scan in Canada and its stations, the town and province in brackets.
+  if (/^package information is created in the system[.!]?$/i.test(value)) return 'registered';
+  if (/^package received with origin scan warehouse(?: \([^()\d@]+\))?$/i.test(value)) return 'accepted';
+  if (/^package is received at a straightship station(?: \([^()\d@]+\))?$/i.test(value)) return 'in_transit';
   // JS Express's steps at its Chinese warehouse between sorting and departure, and its hand-over to the
   // destination's last-mile carrier, as its own map reads them.
   if (/^domestic allocation has begun[.!]?$|^under domestic allocation[.!]?$/i.test(value)) return 'in_transit';

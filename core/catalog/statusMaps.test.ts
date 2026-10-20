@@ -496,6 +496,12 @@ describe("universal providers' answers", () => {
       ['The parcel has been delivered to the pick-up point. A courier will pick it up soon and take it to storage', 'accepted'],
       ['The parcel has been delivered to the pick-up point', 'ready_for_pickup'],
       ['SF Express has received your package, we sincerely protect your expectations, and will not let you down. If you have any questions, please contact courier Example at 10000000000.', 'accepted'],
+      ['The shipment has been received at the SEUR facilities of origin', 'accepted'],
+      ['Parcel was dropped off at the locker', 'accepted'], ['Parcel was dropped off at the parcel shop', 'accepted'],
+      ['International shipment release - Import', 'in_transit'], ['International shipment release - Export', 'in_transit'],
+      ['Package information is created in the system', 'registered'],
+      ['Package Received with Origin Scan warehouse (Exampleton, ON)', 'accepted'],
+      ['Package is received at a Straightship station (Exampleton, ON)', 'in_transit'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
     for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
@@ -511,6 +517,7 @@ describe("universal providers' answers", () => {
       'Order registered by the recipient', 'We will come back with details about the delivery', 'The package is in the local warehouse for collection',
       'Courier collection complete', 'Collection complete from sender',
       'Export scan pending', 'Awaiting export scan', 'Received in warehouse Example', 'Item deposited',
+      'Parcel was dropped off at the locker by the courier', 'International shipment release pending', 'Package is received at a station',
       // A forecast sent to the last-mile carrier, detail lines, a store hand-over that is a drop-off or a
       // collection, and headings with no step of their own.
       'Last-mile delivery forecast', 'Keine weiteren Details erforderlich', 'Filiale / Agentur', 'Parcel to be taken to a Yodel Store',

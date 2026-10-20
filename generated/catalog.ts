@@ -8493,7 +8493,12 @@ export const CARRIER_CATALOG = {
         "path": "^/lkfl/order/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^10\\d{9}$",
+        "confidence": "low"
+      }
+    ]
   },
   "cdl": {
     "displayName": "CDL Last Mile",
@@ -32179,7 +32184,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "castores": [],
   "cbl-logistica": [],
   "ccfs": [],
-  "cdek": [],
+  "cdek": ["cdek-1"],
   "cdl": ["cdl-1","cdl-2"],
   "celeritas": [],
   "central-transport": [],

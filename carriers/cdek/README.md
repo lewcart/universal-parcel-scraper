@@ -24,8 +24,10 @@ The adapter takes 5 to 40 letters and digits, as the app checks them. CDEK's own
 are ten or eleven digits, and the reply must name the whole requested one. CDEK also finds an
 order by another number it links to it, such as the international postal number of a parcel from
 abroad, and answers with the order's own number, which becomes `canonical_tracking_number`.
-Eleven-digit numbers are shared with several carriers, so detection claims none of them, and the
-adapter answers when a parcel is filed under CDEK.
+Eleven-digit numbers are shared with several carriers. CDEK's own count up from `10`, as its
+public numbers do, so detection offers CDEK beside the others for an eleven-digit number starting
+`10` and claims none of them. A ten-digit number is offered to nobody, and the adapter answers when
+a parcel is filed under CDEK.
 
 ## Notes
 

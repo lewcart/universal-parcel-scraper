@@ -89,5 +89,11 @@
       "path": "^/lkfl/order/([^/?#]+)/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "cdek-1",
+      "pattern": "^10\\d{9}$",
+      "confidence": "low"
+    }
+  ]
 }

@@ -8491,7 +8491,12 @@
         "path": "^/lkfl/order/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^10\\d{9}$",
+        "confidence": "low"
+      }
+    ]
   },
   "cdl": {
     "displayName": "CDL Last Mile",

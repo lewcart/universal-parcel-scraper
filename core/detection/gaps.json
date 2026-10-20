@@ -580,12 +580,6 @@
   },
   {
     "carrier": "cdek",
-    "pattern": "^\\d{11}$",
-    "kind": "by_design",
-    "reason": "Eleven digits are shared by several carriers and nothing in the number points to CDEK."
-  },
-  {
-    "carrier": "cdek",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "CDEK's older ten-digit numbers share their shape with DHL and several other carriers, and nothing in the number points to CDEK."

@@ -20,6 +20,9 @@ const NUMBER = /^1\d{15}$/;
 // `VGS` and fourteen digits, the other number the service answers. They hold
 // no timestamp and no Luhn check digit.
 const VGS_NUMBER = /^VGS\d{14}$/;
+// Sixteen capital letters and digits, letters among them, which the service
+// answers like the others. A VGS number with a digit missing is not one.
+const CODE = /^(?!VGS?\d+$)(?=\d*[A-Z])[A-Z\d]{16}$/;
 // A sorting centre's town and country, the only place a scan's wording names
 // as the parcel's own. "In transit to" names where it is going.
 const SORTING_CENTER = /^(?:Return: )?At sorting center in ([^,]{2,80}), ([A-Z]{2})$/;
@@ -35,8 +38,8 @@ const MAX_EVENTS = 100;
 /** A Vinted Go parcel number; anything else is a number Vinted Go does not issue. */
 export function normalizeVintedGoNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (!VGS_NUMBER.test(number) && !(NUMBER.test(number) && hasLuhnCheckDigit(number))) {
-    throw new InvalidInputError(PROVIDER, 'Vinted Go numbers are sixteen digits starting 1 whose last digit passes the Luhn check, or VGS and fourteen digits');
+  if (!VGS_NUMBER.test(number) && !CODE.test(number) && !(NUMBER.test(number) && hasLuhnCheckDigit(number))) {
+    throw new InvalidInputError(PROVIDER, 'Vinted Go numbers are sixteen digits starting 1 whose last digit passes the Luhn check, VGS and fourteen digits, or sixteen capital letters and digits');
   }
   return number;
 }

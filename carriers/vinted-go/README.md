@@ -56,6 +56,10 @@ Vinted Go also issues `VGS` and fourteen digits, with no timestamp or check digi
 service answers them like the others. The adapter takes them, and `vinted-go-vgs` claims them at
 high confidence: the prefix is Vinted Go's own.
 
+The service also answers codes of sixteen capital letters and digits, mostly letters. The adapter
+takes them when an aggregator names Vinted Go for one or the user picks it. No public sample shows
+the form, so detection does not suggest Vinted Go for it.
+
 ## Links
 
 Vinted Go's tracker at `vintedgo.com/{language}/tracking` moves to

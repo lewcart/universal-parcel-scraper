@@ -25,9 +25,20 @@ delivers them. Tracked through the form on its home page.
 - The tracking page's own query button posts to `index.php?c=test` and asks for an image
   captcha first, then lets the browser skip it for four hours. The home page's form reaches the
   same scans without it, so the adapter uses the form.
-- A row is a clock, a place in `【…】` and a wording. Clocks are the scanning site's wall clock
-  to the second, with no zone: one history mixes China's clocks with the airports' and the
-  destination courier's, so the clocks stay `local_time` and the page's order stands.
+- A row is a clock, a place in `【…】` and a wording. Clocks are wall clocks to the second, with
+  no zone, and one history mixes China's with the airports' and the destination courier's, so
+  the page's order stands.
+- A row at a place in mainland China, named for the country, a region such as South China, a
+  province or a city, is on Beijing time. A flight's departure filed there keeps its wall clock:
+  one has come hours after its flight could have left, given the landing that followed.
+- In a history that names Straightship, its rows, those that name it and those whose wording
+  ends with a town and a Canadian province, are on UTC, the clock of Straightship's own page.
+  Straightship's record of the parcel's data comes within a minute of the Chinese warehouse's
+  inbound scan only when the one is read on UTC and the other on Beijing time, and its
+  deliveries then come before the 9 pm its round promises.
+- Rows at an airport's code or without a place keep `local_time`, as do other couriers' rows:
+  iMile's name no country. The newest row's instant, when it has one, is the last update, and a
+  dated delivery's is the delivery time.
 - JS Express's own rows and its partners' share the history in their partners' words. A
   destination courier's wording repeats the place with its province, as "Delivered (Sample Town,
   ON)": the adapter moves it into the location, so the wording stays the same from town to town.

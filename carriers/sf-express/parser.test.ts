@@ -95,6 +95,32 @@ describe('SF Express public route parsing', () => {
     }
   });
 
+  it('classifies the codes whose remarks settle their stage, and only those', () => {
+    for (const [code, reason, stage, status] of [
+      ['208', '', 'in_transit', 'in_transit'], // In transit
+      ['98', '', 'in_transit', 'in_transit'], // In transit
+      ['649', '', 'in_transit', 'in_transit'], // Shipment in transit at a country or town
+      ['310', '', 'in_transit', 'in_transit'], // A truck on a long-distance run near a city
+      ['115', '', 'in_transit', 'in_transit'], // On the flight between two places
+      ['116', '', 'in_transit', 'in_transit'], // A flight's stopover
+      ['302', '', 'in_transit', 'in_transit'], // Departed for the next centre
+      ['305', '', 'in_transit', 'in_transit'], // Arrived at a centre
+      ['605', '', 'customs', 'in_transit'], // Under customs clearance
+      ['70', '4', 'failed_attempt', 'exception'], // The receiver's address could not be reached
+      ['70', '222', 'ready_for_pickup', 'out_for_delivery'], // Left at a post office or pickup point
+    ] as const) {
+      expect(sfExpressEventStatus(code, reason)).toEqual({ stage, status });
+    }
+    // Code 99 reads both "being returned" and "being forwarded"; 70 needs a known reason.
+    for (const [code, reason] of [['99', ''], ['70', ''], ['70', '5'], ['70', '999']] as const) expect(sfExpressEventStatus(code, reason)).toBeUndefined();
+    const value = copy(); value.result[0]!.signed = false; value.result[0]!.routes.pop();
+    value.result[0]!.routes.push({ ...value.result[0]!.routes[0]!, scanDateTime: '2026-01-08 18:00:00', opCode: '70', stayWhyCode: '222',
+      remark: 'The shipment has been placed at the self-pickup location, waiting for the customer to pick it up' });
+    expect(parse(value, NUMBER)).toMatchObject({ status: 'out_for_delivery', current_stage: 'ready_for_pickup' });
+    value.result[0]!.routes.at(-1)!.opCode = '208';
+    expect(parse(value, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+  });
+
   it('does not turn warehouse dispatch, redirects, returns or ambiguous codes into delivery', () => {
     expect(sfExpressEventStatus('202', '')).toMatchObject({ status: 'in_transit' });
     expect(sfExpressEventStatus('626', '')).toMatchObject({ status: 'in_transit' });
@@ -127,7 +153,13 @@ describe('SF Express public route parsing', () => {
   it('bounds retained and inspected scans, deduplicates exact repeats and sorts like the portal', () => {
     const value = copy(); value.result[0]!.routes.reverse(); value.result[0]!.routes.push(value.result[0]!.routes[0]!);
     expect(parse(value, NUMBER).events).toHaveLength(6);
-    value.result[0]!.routes = Array.from({ length: 110 }, (_, i) => ({ ...value.result[0]!.routes[0]!, remark: `Movement ${i}`, opCode: '31' }));
+    expect(parse(value, NUMBER).history_truncated).toBeUndefined();
+    const full = Array.from({ length: 100 }, (_, i) => ({ ...value.result[0]!.routes[0]!, remark: `Movement ${i}`, opCode: '31' }));
+    value.result[0]!.routes = full;
+    expect(parse(value, NUMBER).events).toHaveLength(100);
+    expect(parse(value, NUMBER).history_truncated).toBeUndefined();
+    value.result[0]!.routes = Array.from({ length: 110 }, (_, i) => ({ ...full[0]!, remark: `Movement ${i}` }));
+    expect(parse(value, NUMBER)).toMatchObject({ history_truncated: true });
     expect(parse(value, NUMBER).events).toHaveLength(100);
     value.result[0]!.routes = Array.from({ length: 501 }, () => value.result[0]!.routes[0]!);
     expect(() => parse(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));

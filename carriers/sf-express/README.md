@@ -38,8 +38,9 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
 - Exactly one `result` entry must have `id` equal to the number. Sibling references and
   shipment-wide personal detail objects are ignored.
 - Each scan is classified by its own `opCode`. Code `202` (已出库) sits in the frontend's warehouse
-  "delivered" group but means warehouse dispatch, not delivery. Code `8000` depends on its
-  `stayWhyCode`; unknown combinations stay unclassified.
+  "delivered" group but means warehouse dispatch, not delivery. Codes `8000` and `70` (a delivery
+  that did not happen) depend on their `stayWhyCode`; unknown combinations stay unclassified. Code
+  `99` reads both "being returned" and "being forwarded", so it stays unclassified too.
 - Summary `expressState` `99` is broad transit, so a mapped latest scan wins over it. Other summary
   states win over the scan.
 - `scanDateTime` has no offset. Every scan's clock reads UTC+08:00, the time of mainland China,
@@ -67,7 +68,7 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
 
 - Anonymous access may not cover every shipment class; restricted numbers get `60000`.
 - Weights, facility IDs, estimates and personal detail blocks are not read. At most 100 of 500 scans
-  are kept.
+  are kept, and a longer history is marked truncated.
 
 ## Testing
 

@@ -124,6 +124,82 @@
       "note": "Customer explicitly supplies shipment identifier on the carrier review page."
     },
     {
+      "number": "SF6047826456714",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sf-express/",
+        "date": "2026-10-20",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "sf-express",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's SF Express page offered it to try. SF Express's tracker answers it as a parcel from mainland China for the United Kingdom."
+    },
+    {
+      "number": "SF6047933110963",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sfb2c/",
+        "date": "2026-10-20",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "sf-express",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's SF B2C page offered it to try. SF Express's tracker answers it as a parcel from mainland China for France, through Belgium."
+    },
+    {
+      "number": "SF6047918078324",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6ace8c1b29e4d6978d4313be",
+        "date": "2026-10-13",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "sf-express",
+        "confidence": "high"
+      },
+      "note": "A Trustpilot review of SF Express gives it as the reviewer's tracking number. SF Express's tracker answers it."
+    },
+    {
+      "number": "SF6047696957042",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.complaintsboard.com/sf-express-delayed-delivery-c2018230",
+        "date": "2026-07-31",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "sf-express",
+        "confidence": "high"
+      },
+      "note": "A ComplaintsBoard complaint about a delayed order gives it as the package ID. SF Express's tracker answers it as a parcel from mainland China delivered in the United States."
+    },
+    {
       "number": "SF8888888888888",
       "role": "negative",
       "evidence": "official_documentation_example",

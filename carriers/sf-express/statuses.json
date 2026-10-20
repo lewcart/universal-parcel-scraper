@@ -247,6 +247,69 @@
       "note": "Official Taiwan public route event / baseBillItem operation-code group."
     },
     {
+      "code": "98",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark reads \"In transit\"."
+    },
+    {
+      "code": "208",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark reads \"In transit\"."
+    },
+    {
+      "code": "649",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment is in transit in a named country or town."
+    },
+    {
+      "code": "310",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the truck is on a long-distance run near a named city, with the distance to the next station."
+    },
+    {
+      "code": "115",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment is on the flight between two named places."
+    },
+    {
+      "code": "116",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the flight stopped over at a named place and will soon leave for its destination."
+    },
+    {
+      "code": "302",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment left one operation centre for the next."
+    },
+    {
+      "code": "305",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment arrived at an operation centre."
+    },
+    {
+      "code": "605",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment is under customs clearance."
+    },
+    {
       "code": "8000 / stayWhyCode 1",
       "stage": "delivered",
       "confirmedBy": "bundle",
@@ -280,6 +343,20 @@
       "confirmedBy": "bundle",
       "firstSeen": "2026-09-26",
       "note": "The reason disambiguates opCode 8000. An absent or unknown reason remains unclassified."
+    },
+    {
+      "code": "70 / stayWhyCode 4",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says limited access to the receiver's address kept the shipment from being delivered, pending further handling. Other reasons stay unclassified."
+    },
+    {
+      "code": "70 / stayWhyCode 222",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment was placed at a post office or self-pickup point, waiting for the customer to collect it. Other reasons stay unclassified."
     },
     {
       "code": "expressState 2",

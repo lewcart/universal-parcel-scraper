@@ -10,6 +10,7 @@ import { isRecord } from '../../core/types.js';
 import { sfExpressEventStatus, sfExpressSummaryStatus } from './status.js';
 
 const PROVIDER = 'SF Express';
+const MAX_EVENTS = 100;
 
 export function normalizeSfExpressNumber(raw: string): string {
   const number = raw.toUpperCase().replace(/[\s.-]/g, '');
@@ -100,6 +101,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   return { status: status?.status ?? 'unknown', ...(status ? { current_stage: status.stage } : {}),
     last_status_text: status?.status === 'delivered' ? 'Delivered' : summaryText ?? latest.event.description,
     last_update: latest.time, ...(delivery ? { delivered_at: delivery.time } : {}), expected_delivery: null,
-    events: scans.slice(0, 100).map((scan) => scan.event),
+    events: scans.slice(0, MAX_EVENTS).map((scan) => scan.event),
+    ...(scans.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };
 }

@@ -181,6 +181,11 @@ function providerWordingStage(description: string): Stage | undefined {
   // and the network's receipt of the sender's confirmation that the shipment is being prepared.
   if (/^in viaggio[.!]?$|^item has passed a checkpoint[.!]?$/i.test(value)) return 'in_transit';
   if (/^confirmation of preparation of the shipment received[.!]?$/i.test(value)) return 'registered';
+  // Correios Brazil's scans in an aggregator's English for an item posted abroad. Correios' receipt follows
+  // the posting and the export, so it is transit here; the recipient still owes customs their tax number.
+  if (/^item posted[.!]?$/i.test(value)) return 'accepted';
+  if (/^item in transfer - please wait[.!]?$|^item received at the export unit in the country of origin[.!]?$|^item received by the brazilian post[.!]?$/i.test(value)) return 'in_transit';
+  if (/^need to inform (?:the )?recipient['’]?s cpf\/cnpj[.!]?$/i.test(value)) return 'customs';
   if (/^(?:received\.|(?:\d\) )?[a-z ]{1,40} cent(?:er|re)) your order has been received[.!]?$|^(?:\S+ )?cent(?:er|re) (?:received|parcel shipped to \S+)[.!]?$|^origin port warehouse receive\b|^the flight has taken off[.!]?$|^(?:\S+ )?dispatch task assigned to da[.!]?$/i.test(value)) return 'in_transit';
   if (/^<bad address>$/i.test(value)) return 'failed_attempt';
   // Speedaf's issue scan ending a delivery round the recipient had moved to another day, as its own map reads it.

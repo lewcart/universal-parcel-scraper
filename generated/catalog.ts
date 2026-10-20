@@ -30172,7 +30172,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vozovoz",
+      "recognitionRank": 569,
+      "localClocks": true
     },
     "canaryUrl": "https://vozovoz.ru/order/manage/",
     "trackingUrlTemplate": "https://vozovoz.ru/order/manage/?id={trackingNumber}",

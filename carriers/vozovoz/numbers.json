@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the order (заказ) number of a shipment from Ivanovo to Saint Petersburg."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the order (заказ) number of a shipment from Ivanovo to Saint Petersburg. Vozovoz's tracker knows the order."
     },
     {
       "number": "210376776",
@@ -31,13 +31,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the order (заказ) number."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the order (заказ) number. Vozovoz's tracker knows the order."
     },
     {
       "number": "200643613",
@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the waybill (накладная) of a shipment to Saint Petersburg."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the waybill (накладная) of a shipment to Saint Petersburg. Vozovoz's tracker knows the order."
     },
     {
       "number": "240853931",
@@ -69,13 +69,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the number of a shipment to a marketplace in Kazakhstan."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the number of a shipment to a marketplace in Kazakhstan. Vozovoz's tracker knows the order."
     },
     {
       "number": "240127163",
@@ -88,13 +88,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the number of a delivery booked with Vozovoz."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the number of a delivery booked with Vozovoz. Vozovoz's tracker knows the order."
     },
     {
       "number": "260129735",
@@ -107,13 +107,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the order (заказ) number."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the order (заказ) number. Vozovoz's tracker knows the order."
     },
     {
       "number": "251116736",
@@ -126,7 +126,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -136,7 +136,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the order (заказ) number of a collected shipment."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the order (заказ) number of a collected shipment. Vozovoz's tracker knows it as a finished group pickup."
     },
     {
       "number": "220817558",
@@ -149,13 +149,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the number of a recent order."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the number of a recent order. Vozovoz's tracker knows the order."
     },
     {
       "number": "230087671",
@@ -168,13 +168,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the order number of a shipment to Novosibirsk."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the order number of a shipment to Novosibirsk. Vozovoz's tracker knows the order."
     },
     {
       "number": "240978964",
@@ -187,7 +187,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -197,7 +197,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the cargo (груз) number."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the cargo (груз) number. Vozovoz's tracker knows the order."
     },
     {
       "number": "260697314",
@@ -210,13 +210,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the order (заказ) number."
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the order (заказ) number. Vozovoz's tracker knows the order."
     }
   ]
 }

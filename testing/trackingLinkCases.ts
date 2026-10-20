@@ -1848,6 +1848,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'flippost', number: '00-0000009',
     route: /^https:\/\/flippost\.com\/instruments\/online\/\?number=00-0000009$/,
     marker: /Отследить отправление|Введите код для отслеживания/ },
+  // The page looks up the number in its address on load and answers an unknown one with "Проверьте корректность номера заказа.".
+  { carrier: 'vozovoz', number: '100000000',
+    route: /^https:\/\/vozovoz\.ru\/order\/manage\/\?id=100000000$/,
+    marker: /Управление заказом|Проверьте корректность номера заказа/ },
 ];
 
 /**

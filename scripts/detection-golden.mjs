@@ -8,7 +8,7 @@
  * resolve, so this script drives the sweep test in update mode. The writing
  * happens in core/testing/golden.ts.
  *
- *   node scripts/detection-golden.mjs
+ *   npm run generate:golden
  */
 
 import { spawnSync } from 'node:child_process';

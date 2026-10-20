@@ -12,7 +12,7 @@
  *
  * The corpus is a characterization of today's engine. A failure here means
  * detection changed: decide whether that change was intended, then update the
- * records and the golden file (`node scripts/detection-golden.mjs`).
+ * records and the golden file (`npm run generate:golden`).
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -358,7 +358,7 @@ describe('swift golden file', () => {
       expect(writeDetectionGolden().length).toBe(buildDetectionGolden().length);
       return;
     }
-    expect(readDetectionGolden()).toEqual(buildDetectionGolden());
+    expect(readDetectionGolden(), 'Rewrite it with npm run generate:golden once the change is deliberate').toEqual(buildDetectionGolden());
   });
 
   it('records the carriers the app asks: the first recognition candidates', () => {

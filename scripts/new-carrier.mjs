@@ -144,7 +144,7 @@ function checklist(options) {
     `  3. Add evidence-tagged sample numbers to ${folder}/numbers.json, drop its "gap" line, and run the detection sweep.`,
     `  4. Record observed status wordings in ${folder}/statuses.json.`,
     `  5. Describe how it works, gotchas and limitations in ${folder}/README.md.`,
-    '  6. Run npm run generate.',
+    '  6. Run npm run generate, and npm run generate:golden once the detection sweep shows only the changes you meant.',
     '  7. Run npm run test:generated and the carrier tests.',
     '',
   ].join('\n');

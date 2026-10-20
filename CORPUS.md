@@ -57,7 +57,8 @@ npm test -- core/testing/detectionSweep
 ```
 
 That run checks the corpus against its golden replay. After a deliberate change,
-`node scripts/detection-golden.mjs` rewrites [detection-golden.json](data/detection-golden.json).
+`npm run generate:golden` rewrites [detection-golden.json](data/detection-golden.json); `npm run generate`
+does not, so the sweep keeps catching changes nobody meant.
 The app replays that file and also [checksum-vectors.json](data/checksum-vectors.json), synthetic
 inputs for every checksum validator that `node scripts/checksum-vectors.mjs` rewrites.
 

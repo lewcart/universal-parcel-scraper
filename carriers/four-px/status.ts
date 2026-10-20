@@ -31,9 +31,10 @@ const CODES = new Map<string, ClassifiedStatus>([
 // arrival in the destination country, so the wording decides the stage.
 const WORDED = new Set(['FPX_O_IR', 'FPX_O_IRI']);
 // By `normalizeStatusWording` wording. A partner's label can name its own
-// waybill: "Waybill generated for …", as Emile words it.
+// waybill: "Waybill generated for …", as Emile words it, and its order data
+// the partner it went to: "Order information has been transmitted to DPD."
 const WORDING: ReadonlyMap<string, Stage> = new Map([['waybill generated', 'registered'], ['order data transmitted', 'registered']]);
-const LABEL_FOR = /^waybill generated for [a-z0-9]+$/;
+const LABEL_FOR = /^waybill generated for [a-z0-9]+$|^order information has been transmitted to [a-z][a-z .-]{0,30}$/;
 // Scans a partner relays without a code, by `normalizeStatusWording` wording.
 const UNCODED: ReadonlyMap<string, Stage> = new Map([
   ['your shipment has departed from the transit origin', 'in_transit'],

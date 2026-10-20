@@ -310,6 +310,41 @@
       "note": "Official Taiwan routes opCode; the remark says the shipment is under customs clearance."
     },
     {
+      "code": "16",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment is under customs clearance and asks the recipient to wait."
+    },
+    {
+      "code": "10",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment departed from a transit place it names, on a flight."
+    },
+    {
+      "code": "11",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment arrived at a transit place it names, off a flight."
+    },
+    {
+      "code": "1105",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode; the remark says the shipment is in transit at a place it names, such as an airport, and asks the recipient to wait."
+    },
+    {
+      "code": "1106",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode, worded like 1105 at the same places."
+    },
+    {
       "code": "8000 / stayWhyCode 1",
       "stage": "delivered",
       "confirmedBy": "bundle",

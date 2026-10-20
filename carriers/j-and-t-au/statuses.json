@@ -8,6 +8,8 @@
     {"wording": "The parcel arrives at the distribution center and is prepared for transport to the next destination.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "快件到达转运中心，做发往下一站的运输准备", "stage": "in_transit", "language": "zh", "confirmedBy": "live"},
     {"wording": "The parcel is dispatched from the transit center to the next destination", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
-    {"wording": "快件从转运中心发往下一站", "stage": "in_transit", "language": "zh", "confirmedBy": "live"}
+    {"wording": "快件从转运中心发往下一站", "stage": "in_transit", "language": "zh", "confirmedBy": "live"},
+    {"wording": "Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "The tracker gives its customer service number after \"please call\", which the adapter drops."},
+    {"wording": "Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Spaced as the tracker writes it. The customer service number after \"please call\" is dropped."}
   ]
 }

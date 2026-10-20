@@ -204,6 +204,14 @@
       "note": "Relayed from DPD, placed at the delivering depot while the parcel was still in China: a data record, not a scan."
     },
     {
+      "wording": "Shipping Label Created",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The first line of a parcel for the United States, placed at a US facility: a data record, not a scan."
+    },
+    {
       "wording": "POD available",
       "stage": "delivered",
       "language": "en",

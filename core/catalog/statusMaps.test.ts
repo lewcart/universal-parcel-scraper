@@ -94,6 +94,11 @@ describe('status map answers', () => {
     expect(answer('ups', 'ZZ', 'Delivered')).toEqual(unknown);
     expect(answer('yunexpress', null, 'Arrived at GOFO Regional Destination Facility')).toEqual(mapped('in_transit'));
     expect(answer('yunexpress', null, 'REMINDER EMAIL SENT FAILED')).toEqual(gap);
+    expect(answer('yunexpress', null, 'Shipping Label Created')).toEqual(mapped('registered'));
+    expect(answer('four-px', 'FPX_O_IR', 'Order information has been transmitted to DPD.')).toEqual(mapped('registered'));
+    expect(answer('four-px', 'FPX_O_IR', 'Order information has been transmitted to Example Post.')).toEqual(mapped('registered'));
+    expect(answer('j-and-t-au', null, 'Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.')).toEqual(mapped('out_for_delivery'));
+    expect(answer('j-and-t-au', null, 'Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.')).toEqual(mapped('delivered'));
     expect(answer('dhl-express', 'PL', 'Processed at EXAMPLE CITY - FRANCE')).toEqual(mapped('in_transit'));
     expect(answer('dhl-express', null, 'Synthetic checkpoint')).toEqual(unknown);
     expect(answer('dhl-express', 'IC', 'Synthetic checkpoint')).toEqual(mapped('customs'));

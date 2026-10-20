@@ -36,6 +36,7 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   // delivery scan. The DHL Parcel Netherlands lines follow that carrier's codes.
   // A partner's order pre-advice is a data record too.
   ['Sender goods issue', { status: 'pending', stage: 'registered' }],
+  ['Shipping Label Created', { status: 'pending', stage: 'registered' }],
   ['POD available', { status: 'delivered', stage: 'delivered' }],
   ['Shipment not yet received or processed', { status: 'pending', stage: 'registered' }],
   ['Order information received. We\'re expecting your parcel to arrive with us.', { status: 'pending', stage: 'registered' }],

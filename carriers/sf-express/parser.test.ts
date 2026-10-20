@@ -106,6 +106,11 @@ describe('SF Express public route parsing', () => {
       ['302', '', 'in_transit', 'in_transit'], // Departed for the next centre
       ['305', '', 'in_transit', 'in_transit'], // Arrived at a centre
       ['605', '', 'customs', 'in_transit'], // Under customs clearance
+      ['16', '', 'customs', 'in_transit'], // Under customs clearance, please wait
+      ['10', '', 'in_transit', 'in_transit'], // Departed from a transit place on a flight
+      ['11', '', 'in_transit', 'in_transit'], // Arrived at a transit place off a flight
+      ['1105', '', 'in_transit', 'in_transit'], // In transit at an airport or town, please wait
+      ['1106', '', 'in_transit', 'in_transit'],
       ['70', '4', 'failed_attempt', 'exception'], // The receiver's address could not be reached
       ['70', '222', 'ready_for_pickup', 'out_for_delivery'], // Left at a post office or pickup point
       ['70', '5', 'out_for_delivery', 'out_for_delivery'], // The frontend's delivery-round group

@@ -19,6 +19,8 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map(([
   ['快件到达转运中心，做发往下一站的运输准备', 'in_transit'],
   ['The parcel is dispatched from the transit center to the next destination', 'in_transit'],
   ['快件从转运中心发往下一站', 'in_transit'],
+  ['Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.', 'out_for_delivery'],
+  ['Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.', 'delivered'],
 ] as const).map(([wording, stage]) => [key(wording), stage]));
 
 /** The stage the map gives a scan's wording. */

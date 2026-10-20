@@ -14,10 +14,13 @@ The returned search identifier must exactly match and have nonempty history.
 
 Current status follows the first native scan. Only observed code, group and
 wording combinations are mapped, so planned delivery or unfamiliar codes do
-not inherit an older terminal state. Scan clocks marked as UTC are Spanish wall
-clocks, as DPD's offsets for the same scans show, so they remain local time;
-only a numeric offset makes an instant. Unreadable clocks remain provider text.
-A delivery instant needs the current delivered scan's own offset.
+not inherit an older terminal state. SEUR marks its scan clocks as UTC, but they
+are Spanish wall clocks: DPD gives the same scans the same digits with Madrid's
+offset. A scan names no place, and the lookup names no destination, while SEUR
+also scans in the Canary Islands, an hour behind Madrid. No scan's zone is
+known, so clocks remain local time; only a numeric offset makes an instant.
+Unreadable clocks remain provider text. A delivery instant needs the current
+delivered scan's own offset.
 
 Scan comments, names, contact details, QR codes, delivery PINs and driver
 coordinates are excluded. Shipment weight uses the portal's kilogram label.

@@ -38,8 +38,10 @@ skipped when summer time starts stays a wall clock, and one repeated when it
 ends reads as its first occurrence. The Canary Islands' offices (049 and 050)
 and Portugal's (070 to 089) keep clocks of their own, and nothing shows whether
 their rows follow the office's clock or Madrid's, so they keep wall clocks. So
-do MRW Points, whose codes name no province, rows without an office label and
-the summary, which names no office. The newest row's instant is the last
+do MRW Points, whose codes name no province: a code shown with a PointCorner
+map link marks a point in every row of that history, including later rows that
+show it without the link. Rows without an office label and the summary, which
+names no office, keep wall clocks too. The newest row's instant is the last
 update, and the delivery's when it delivered. Only visible office labels are
 retained from history rows; PointCorner map addresses and coordinates are
 excluded.

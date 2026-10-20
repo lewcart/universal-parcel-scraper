@@ -197,6 +197,16 @@ describe('MRW anonymous tracking', () => {
     }
   });
 
+  it('keeps the wall clocks of a pickup point whose code reads as a province, with or without its map link', () => {
+    const atPoint = parseMrwHistory(fixture('history')
+      .replace('>40000 Ejemplo</a>', '>02650 Ejemplo</a>').replace(newest, newest.replace('02600 Ejemplo', '02650 Ejemplo')),
+    NUMBER, summary());
+    expect(atPoint).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-09-10T19:29:00' });
+    expect(atPoint.events?.slice(0, 3).map(event => [event.location, event.time, event.local_time])).toEqual([
+      ['02650 Ejemplo', undefined, '2026-09-10T19:29:00'], ['02650 Ejemplo', undefined, '2026-09-10T13:40:00'],
+      ['02600 Ejemplo', '2026-09-09T16:47:00+02:00', undefined]]);
+  });
+
   it('keeps a clock the change to summer time skips and reads a repeated one as its first occurrence', () => {
     expect(latestAt('02600 Ejemplo', '29/03/2026', '02:30')).toMatchObject({ last_update: null, last_update_local: '2026-03-29T02:30:00' });
     expect(latestAt('02600 Ejemplo', '29/03/2026', '03:30').last_update).toBe('2026-03-29T03:30:00+02:00');

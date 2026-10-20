@@ -76,8 +76,7 @@ jobs:
     needs: checks
     if: ${{ github.event_name == 'push' && github.repository == 'plhery/universal-parcel-scraper' }}
     runs-on: ubuntu-latest
-    # Long enough to build, publish and wait for npm to list the version.
-    timeout-minutes: 120
+    timeout-minutes: 30
     # One job at a time plans and publishes to npm, whichever channel it serves.
     concurrency:
       group: release-npm
@@ -85,6 +84,9 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    outputs:
+      version: ${{ steps.plan.outputs.version }}
+      notify: ${{ steps.plan.outputs.notify }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -107,16 +109,30 @@ jobs:
         run: |
           npm version "$PRERELEASE_VERSION" --no-git-tag-version
           npm publish --tag next --access public --provenance --ignore-scripts
-      # npm accepts a publish before it serves the version. The job holds its
-      # place until then, so the next plan finds the version.
+  # npm accepts a publish before it serves the version, sometimes an hour later.
+  # The run holds its place until then, so the next plan finds the version. The
+  # wait is a job of its own: a run cancelled while it waits still shows that
+  # the publish passed.
+  listed:
+    name: npm lists the prerelease
+    needs: prerelease
+    if: ${{ needs.prerelease.outputs.notify == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 26
+          package-manager-cache: false
       - name: Wait until npm lists the version
-        id: listed
-        if: ${{ steps.plan.outputs.notify == 'true' }}
         env:
-          PUBLISHED_VERSION: ${{ steps.plan.outputs.version }}
-        run: |
-          node scripts/prerelease.mjs --await "$PUBLISHED_VERSION"
-          echo "version=$PUBLISHED_VERSION" >> "$GITHUB_OUTPUT"
+          PUBLISHED_VERSION: ${{ needs.prerelease.outputs.version }}
+        run: node scripts/prerelease.mjs --await "$PUBLISHED_VERSION"
   publish:
     needs: checks
     if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -181,11 +197,8 @@ jobs:
         run: npm publish --provenance --access public --ignore-scripts
       # Before the tag, so that a rerun after a failure here still passes the identity check.
       - name: Wait until npm lists the version
-        id: listed
         if: ${{ steps.npm.outputs.notify == 'true' }}
-        run: |
-          node scripts/prerelease.mjs --await "$RELEASE_VERSION"
-          echo "version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+        run: node scripts/prerelease.mjs --await "$RELEASE_VERSION"
       - name: Tag and publish GitHub release
         run: |
           git tag "v$RELEASE_VERSION"

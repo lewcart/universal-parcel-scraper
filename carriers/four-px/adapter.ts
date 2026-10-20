@@ -54,16 +54,17 @@ const QUALIFIER = /(?<=[a-z.])_[a-z]{2,8}$/i;
 
 /**
  * A partner's pickup-shop record relayed as a scan's wording: the shop's
- * fields, then `_` and their names (`store_type;pudo_id;pudo_name;…`). It is
- * no scan; the shop's name and town are the pickup point.
+ * fields, then `_` and their names (`store_type;pudo_id;pudo_name;…`), in any
+ * case. It is no scan; the shop's name and town are the pickup point, and
+ * without a name there is none.
  */
 function shopRecord(description: string): { point?: string } | undefined {
-  const [values, names] = description.split(/_(?=store_type;)/);
-  if (!names || !/\bpudo_name\b/i.test(names)) return undefined;
+  const [values, names] = description.split(/_(?=store_type;)/i);
+  if (!names || !/(?:^|;)pudo_[a-z]+(?:;|$)/i.test(names)) return undefined;
   const fields = values!.split(';');
   const field = (name: string) => clean(fields[names.toLowerCase().split(';').indexOf(name)], 120);
-  const point = [field('pudo_name'), field('city')].filter(Boolean).join(', ');
-  return point ? { point } : {};
+  const shop = field('pudo_name');
+  return shop ? { point: [shop, field('city')].filter(Boolean).join(', ') } : {};
 }
 
 export function parse(payload: unknown, trackingNumber: string): CarrierResult {

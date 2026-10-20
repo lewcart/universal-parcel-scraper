@@ -185,6 +185,28 @@ describe('4PX result projection', () => {
     expect(result.events?.some((event) => event.description?.includes(';'))).toBe(false);
   });
 
+  it('never shows a pickup-shop record as a scan, even as the newest uncoded one', () => {
+    const newest = (tkDesc: string) => {
+      const payload = fixture();
+      const tracks = payload.data[0].tracks;
+      payload.data[0].tracks = [{ ...tracks[0], tkCode: '', tkDesc, tkLocation: '', tkDateStr: '2026-03-29 09:00:00' }, ...tracks];
+      return parse(payload, NUMBER);
+    };
+    const latest = parse(fixture(), NUMBER);
+    for (const [record, point] of [
+      [SHOP_RECORD.replace(/^Shop;/, 'shop;'), 'example shop, exampletown'],
+      // The field names in capitals; and a record without a shop name, which names no pickup point either.
+      ['shop;xx00001;example shop;xx;;exampletown;;;;;;0000_STORE_TYPE;PUDO_ID;PUDO_NAME;COUNTRY_CODE;PROVINCE;CITY', 'example shop, exampletown'],
+      ['shop;xx00001;xx;;exampletown_store_type;pudo_id;country_code;province;city', undefined],
+    ] as const) {
+      const result = newest(record);
+      expect(result.events, record).toEqual(latest.events);
+      expect(result.last_status_text, record).toBe(latest.last_status_text);
+      expect(result.pickup_point, record).toBe(point);
+      expect(JSON.stringify(result), record).not.toMatch(/store_type|pudo_|xx00001/i);
+    }
+  });
+
   it('leaves a relayed step unstaged when its wording says nothing', () => {
     const payload = fixture(); Object.assign(payload.data[0].tracks[0], { tkCode: 'FPX_O_IR', tkDesc: 'Task assigned' });
     const result = parse(payload, NUMBER);

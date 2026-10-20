@@ -23,6 +23,9 @@ function guest(...replies: Response[]) {
 }
 const dpdBe = (fetcher: typeof fetch) => adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
 const placed = (countryCode: string | undefined, reply = fixture('delivered.json')) => Response.json({ ...reply, status: { ...reply.status, countryCode } });
+/** A reply naming the business unit that sent the parcel, as DPD's own codes. */
+const sent = (shipmentBUCode: string | undefined, countryCode = 'BE') => Response.json({ ...fixture('delivered.json'), shipmentBUCode,
+  status: { ...fixture('delivered.json').status, countryCode } });
 const CHALLENGE = '<!DOCTYPE html><html><head><title>Just a moment...</title></head><body>Enable JavaScript and cookies to continue</body></html>';
 
 describe('DPD Belgium guest tracking', () => {
@@ -158,18 +161,19 @@ describe('DPD Belgium guest tracking', () => {
 describe('DPD Belgium recognition', () => {
   const recognize = (fetcher: typeof fetch) => dpdBe(fetcher).recognize!(NUMBER);
 
-  it('knows a parcel the guest API places in Belgium', async () => {
-    const fetcher = guest(placed('BE'));
+  it.each(['BE', 'NL', 'DE'])('knows a parcel DPD Belux sent, which DPD places in %s', async (countryCode) => {
+    const fetcher = guest(sent('034', countryCode));
     await expect(recognize(fetcher)).resolves.toEqual({ known: true });
     expect(new URL(String(fetcher.mock.calls[3]![0])).searchParams.get('businessUnit')).toBe('DPD-BE');
   });
 
-  it.each(['CH', 'DE', 'NL'])('does not take %s activity for DPD Belgium', async (countryCode) => {
-    await expect(recognize(guest(placed(countryCode)))).resolves.toEqual({ known: false });
+  it.each(['001', '010', '036'])('does not take a parcel business unit %s sent for DPD Belgium, though DPD places it in Belgium', async (unit) => {
+    await expect(recognize(guest(sent(unit)))).resolves.toEqual({ known: false });
   });
 
-  it('leaves a reply without a country inconclusive and does not know a missing parcel', async () => {
-    await expect(recognize(guest(placed(undefined)))).rejects.toMatchObject({ kind: 'indeterminate' });
+  it('leaves a reply without a business unit inconclusive and does not know a missing parcel', async () => {
+    await expect(recognize(guest(sent(undefined)))).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(recognize(guest(sent('000')))).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(recognize(guest(new Response('', { status: 404 })))).resolves.toEqual({ known: false });
   });
 

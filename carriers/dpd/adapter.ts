@@ -62,10 +62,15 @@ export type DPDCountry = 'CH' | 'DE' | 'BE' | 'NL';
  * in when DPD names none. German replies keep the Swiss reading they have
  * always had: both countries share the same civil-clock rules.
  */
-const UNITS: Readonly<Record<DPDCountry, { carrier: string; name: string; adjective: string; zone: string }>> = {
+/**
+ * `sender`, for a unit whose recognition reads where a parcel was sent from, is the business
+ * unit DPD names as the shipment's. DPD Belux's GeoData guide sets `034` before every Belgian
+ * customer's depot, where GeoRouting puts the business unit.
+ */
+const UNITS: Readonly<Record<DPDCountry, { carrier: string; name: string; adjective: string; zone: string; sender?: string }>> = {
   CH: { carrier: 'dpd', name: 'DPD Switzerland', adjective: 'Swiss', zone: TIMEZONE },
   DE: { carrier: 'dpd-de', name: 'DPD Germany', adjective: 'German', zone: TIMEZONE },
-  BE: { carrier: 'dpd-be', name: 'DPD Belgium', adjective: 'Belgian', zone: 'Europe/Brussels' },
+  BE: { carrier: 'dpd-be', name: 'DPD Belgium', adjective: 'Belgian', zone: 'Europe/Brussels', sender: '034' },
   NL: { carrier: 'dpd-nl', name: 'DPD Netherlands', adjective: 'Dutch', zone: 'Europe/Amsterdam' },
 };
 /** Units read through the guest API alone, with no page or app tier after it. */
@@ -836,9 +841,9 @@ export class DPDTracker {
 
   /**
    * Whether the guest reply establishes activity in this tracker's country for
-   * a 14-digit number. The group-wide identity match alone must not promote
-   * another country's parcel to this carrier id. Missing country evidence is
-   * inconclusive.
+   * a 14-digit number, or for Belgium that its business unit sent the parcel.
+   * The group-wide identity match alone must not promote another country's
+   * parcel to this carrier id. Missing evidence is inconclusive.
    * Guest API only, never the page tier. A positive not-found (a details 404,
    * or a 400 typed `PARCEL_NOT_FOUND`) is false; any other failure, another
    * 400 included, stays a failure.
@@ -851,11 +856,19 @@ export class DPDTracker {
     try {
       const payload = await this.detailsWithFreshToken(trackingNumber, undefined, lookup);
       if (clean(payload.parcelNumber ?? payload.shipmentId) !== trackingNumber) return false;
-      const current = isRecord(payload.status) ? payload.status : {};
-      const country = known(current.countryCode).toUpperCase();
-      if (/^[A-Z]{2}$/.test(country) && country !== this.country) return false;
-      if (country !== this.country) {
-        throw new IndeterminateError(unit.name, `DPD returned no ${unit.adjective} country evidence`);
+      if (unit.sender) {
+        // A parcel sent from elsewhere is placed in Belgium on its way to a Belgian recipient.
+        const sender = known(payload.shipmentBUCode);
+        const named = /^\d{3}$/.test(sender) && sender !== '000';
+        if (named && sender !== unit.sender) return false;
+        if (!named) throw new IndeterminateError(unit.name, 'DPD named no business unit for the parcel');
+      } else {
+        const current = isRecord(payload.status) ? payload.status : {};
+        const country = known(current.countryCode).toUpperCase();
+        if (/^[A-Z]{2}$/.test(country) && country !== this.country) return false;
+        if (country !== this.country) {
+          throw new IndeterminateError(unit.name, `DPD returned no ${unit.adjective} country evidence`);
+        }
       }
       requireGuestActivity(payload, parseDPDTrackingApi(payload, trackingNumber, undefined, unit.zone));
       return true;

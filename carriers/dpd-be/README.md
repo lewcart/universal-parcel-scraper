@@ -15,16 +15,19 @@ through the myDPD guest service with Belgium's business unit.
   inconclusive, and malformed milestones are a schema error.
 - Cloudflare's challenge page, whatever its HTTP status, is a challenge, and HTTP 429 a rate
   limit. No tier follows: the Swiss consignee page is not read.
-- Recognition makes the same request and knows a number only when DPD's current country for
-  the parcel is Belgium. Another country is unknown, and a reply without one is inconclusive.
+- Recognition makes the same request and knows a number only when the reply's
+  `shipmentBUCode` names DPD Belux, `034`, as the business unit that sent the parcel. Another
+  unit's code is unknown, and a reply without one, or with `000`, is inconclusive.
 
 ## Notes
 
 - The guest service is group-wide: every business unit answers for any DPD network's parcel
   with the same history, and the unit changes only the zone named for the current status. A
-  matching number does not make a parcel Belgian, so recognition needs the Belgian current
-  country. A parcel filed under DPD Belgium is read wherever DPD places it, since a parcel
-  sent to Belgium from abroad starts there.
+  matching number does not make a parcel Belgian, nor does a current country of Belgium: a
+  parcel sent from abroad is placed there on its way to a Belgian recipient. Recognition reads
+  who sent it instead. DPD Belux's GeoData guide puts `034` before every Belgian customer's
+  depot, where DPD's GeoRouting specification puts the business unit. A parcel filed under DPD
+  Belgium is read wherever DPD places it.
 - Without a postcode DPD gives each milestone once, with its newest date and DPD's offset but
   no place. Earlier rounds of a milestone and the scans between are missing, so the answer is
   marked `history_truncated` for enabled providers to complete. The milestones can come out of
@@ -44,10 +47,10 @@ through the myDPD guest service with Belgium's business unit.
 
 DPD Belgium parcels carry DPD's fourteen-digit parcel number, which every DPD network shares.
 DPD Belux's label specification calls the first four digits a range code naming the sending
-entity, and its values are not published. Belgian parcels start with different ranges, so the
-number only suggests DPD Belgium, like the other DPD networks, and recognition asks it: DPD
-Switzerland's and DPD Germany's recognition do not know a parcel DPD places in Belgium. The
-samples and their sources are in [`numbers.json`](numbers.json).
+entity, and its values are not published. Belgian parcels start with different ranges, and
+GeoRouting numbers depots within each business unit, so another unit's parcels can start with
+the same digits. The number only suggests DPD Belgium, like the other DPD networks, and
+recognition asks it. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

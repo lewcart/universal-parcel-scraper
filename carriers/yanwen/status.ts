@@ -33,6 +33,7 @@ const WORDING = new Map<string, ClassifiedStatus>([
   ['Pre-Shipment, USPS Awaiting Item', { status: 'pending', stage: 'registered' }],
   ['Registered parcel data, parcel not dispatched yet', { status: 'pending', stage: 'registered' }],
   ['Shipping information received. Your parcel is on its way to UniUni for delivery to you', { status: 'pending', stage: 'registered' }],
+  ['Votre Colissimo va bientôt nous être confié ! Il est en cours de préparation chez votre expéditeur.', { status: 'pending', stage: 'registered' }],
   ['Accepted at USPS Origin Facility', { status: 'in_transit', stage: 'in_transit' }],
   ['Your shipment has been accepted by delivery carrier', { status: 'in_transit', stage: 'in_transit' }],
   ['Parcel dispatched to be delivered', { status: 'out_for_delivery', stage: 'out_for_delivery' }],

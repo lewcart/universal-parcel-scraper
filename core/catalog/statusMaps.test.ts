@@ -378,6 +378,7 @@ describe('status map answers', () => {
   it('answers Yanwen by its wording, and a delivery by its milestone icon', () => {
     expect(answer('yanwen', null, 'Yanwen Pickup Scan')).toEqual(mapped('accepted'));
     expect(answer('yanwen', null, 'Order Submited.')).toEqual(mapped('registered'));
+    expect(answer('yanwen', null, 'Votre colissimo va bientôt nous être confié ! il est en cours de préparation chez votre expéditeur.')).toEqual(mapped('registered'));
     expect(answer('yanwen', null, '【EXAMPLE】Arrived.')).toEqual(mapped('in_transit'));
     expect(answer('yanwen', 'LM40', 'Synthetic last-mile wording')).toEqual(mapped('delivered'));
     expect(answer('yanwen', 'XX10', 'Delivered.')).toEqual(mapped('delivered'));

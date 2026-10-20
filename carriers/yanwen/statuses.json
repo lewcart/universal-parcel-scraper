@@ -182,6 +182,14 @@
       "note": "Relayed from UniUni before the parcel leaves China, despite its wording."
     },
     {
+      "wording": "Votre Colissimo va bientôt nous être confié ! Il est en cours de préparation chez votre expéditeur.",
+      "language": "fr",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-15",
+      "note": "Colissimo's announcement, relayed before Yanwen's pickup scan."
+    },
+    {
       "wording": "Accepted at USPS Origin Facility",
       "language": "en",
       "stage": "in_transit",

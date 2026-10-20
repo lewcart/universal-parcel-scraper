@@ -1,6 +1,7 @@
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
+import { dpdParcelNumber } from '../../core/detection/dpd.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
@@ -15,13 +16,15 @@ export const DPD_IE_ZONE = 'Europe/Dublin';
 // The consignment numbers DPD Ireland's tracker shows have nine digits;
 // lookups archived from it also use ten.
 const NUMBER = /^\d{9,10}$/;
+// The fourteen-digit parcel number DPD networks print, which the tracker also finds.
+const PARCEL = /^\d{14}$/;
 const HEADERS = ['Status', 'Location', 'Date & Time'];
 // "07/9/2026 at 1:41": day, month without its zero, year, then the hour without its zero.
 const CLOCK = /^(\d{1,2})\/(\d{1,2})\/(\d{4}) at (\d{1,2}):(\d{2})$/;
 // DPD Ireland's own depots, in the Republic and in Northern Ireland, and its
 // head office and website. Their clocks are Irish wall time. Another
 // network's scan names its town and country, as "<town> - <country>".
-const IRISH_PLACE = /^(?:Dpd [A-Za-z][A-Za-z .'-]{0,60}|Head Office|Web)$/i;
+const IRISH_PLACE = /^(?:Dpd [A-Za-z][A-Za-z .&'-]{0,60}|Head Office|Web)$/i;
 // Labels of DPD Ireland's systems rather than places.
 const NOT_PLACES = new Set(['head office', 'web']);
 const VAN = 'Your parcel is on a van and due for delivery';
@@ -33,11 +36,21 @@ const MAX_ROWS = 500;
 const same = (left: string, right: string) => normalizeStatusWording(left) === normalizeStatusWording(right);
 const MAX_EVENTS = 100;
 
-/** A DPD Ireland consignment number: nine or ten digits. */
+/**
+ * A DPD Ireland consignment number, nine or ten digits, or a DPD parcel
+ * number, fourteen digits without the check character labels print after them.
+ */
 export function normalizeDpdIeNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'DPD Ireland tracks nine- or ten-digit consignment numbers');
-  return number;
+  if (NUMBER.test(number)) return number;
+  const parcel = dpdParcelNumber(number);
+  if (!parcel) throw new InvalidInputError(PROVIDER, 'DPD Ireland tracks nine- or ten-digit consignment numbers and fourteen-digit parcel numbers');
+  return parcel;
+}
+
+/** Whether a normalized number is a DPD parcel number rather than a consignment number. */
+export function isDpdIeParcelNumber(number: string): boolean {
+  return PARCEL.test(number);
 }
 
 /** Cloudflare's challenge page in place of the tracker. Its passive script on ordinary pages is not one. */
@@ -105,7 +118,9 @@ export function parseDpdIe(html: string, raw: string): CarrierResult {
     throw new IndeterminateError(PROVIDER, 'DPD Ireland did not return a consignment');
   }
   const info = root.find('.tracking-status-info p').filter((_, node) => /^Consignment\b/.test(clean($(node).text(), 80)));
-  if (info.length !== 1 || info.find('strong').length !== 1 || clean(info.find('strong').text(), 40) !== number) {
+  // A parcel number finds its consignment, which the page names instead.
+  const consignment = clean(info.find('strong').text(), 40);
+  if (info.length !== 1 || info.find('strong').length !== 1 || (isDpdIeParcelNumber(number) ? !NUMBER.test(consignment) : consignment !== number)) {
     throw new SchemaError(PROVIDER, 'DPD Ireland returned a different consignment');
   }
   const lists = root.find('ul.history-list');

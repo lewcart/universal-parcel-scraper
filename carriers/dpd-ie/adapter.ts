@@ -1,11 +1,13 @@
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { BudgetExceededError, ChallengeError, IndeterminateError, SchemaError } from '../../core/errors/index.js';
+import { BudgetExceededError, ChallengeError, IndeterminateError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
+import { fillPartialAnswer } from '../../core/result/partial.js';
 import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
-import { isDpdIeChallenge, normalizeDpdIeNumber, parseDpdIe, parseDpdIeAbsence, PROVIDER } from './parser.js';
+import { DPDTracker } from '../dpd/adapter.js';
+import { isDpdIeChallenge, isDpdIeParcelNumber, normalizeDpdIeNumber, parseDpdIe, parseDpdIeAbsence, PROVIDER } from './parser.js';
 
 // The tracker www.dpd.ie/tracking/ shows in a frame, with the frame's device type.
 const ORIGIN = 'https://tracking.dpd.ie';
@@ -39,8 +41,30 @@ function redirectPath(response: Response): string | null {
   }
 }
 
+/** A lookup of a DPD parcel number in DPD's group-wide guest service. */
+export type DpdGroupLookup = (number: string, context: TrackingContext) => Promise<CarrierResult>;
+
 export class DpdIeTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; group?: DpdGroupLookup } = {}) {}
+
+  /**
+   * A parcel number's answer from DPD Ireland's tracker and DPD's group-wide
+   * guest service, asked together: the tracker's history when it holds more
+   * scans and is not behind the guest service's milestones, else those. Either
+   * answers when the other fails; not found needs both.
+   */
+  async track(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
+    const number = normalizeDpdIeNumber(raw);
+    if (!isDpdIeParcelNumber(number) || !this.options.group) return this.fetch(number, context);
+    const shared = { ...context, budgetMs: context.budgetMs ?? 15_000 };
+    const [ireland, group] = await Promise.allSettled([this.fetch(number, shared), this.options.group(number, shared)]);
+    if (ireland.status === 'fulfilled' && group.status === 'fulfilled') {
+      return fillPartialAnswer('dpd-ie', number, group.value, ireland.value) ?? group.value;
+    }
+    if (ireland.status === 'fulfilled') return ireland.value;
+    if (group.status === 'fulfilled') return group.value;
+    throw [group.reason, ireland.reason].find((error: unknown) => !(error instanceof NotFoundError)) ?? ireland.reason;
+  }
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeDpdIeNumber(raw);
@@ -90,10 +114,14 @@ export class DpdIeTracker {
 }
 
 export const adapter: AdapterFactory = environment => {
-  const tracker = new DpdIeTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  // DPD's guest service answers for the whole group; Belgium's unit asks it alone.
+  const group = new DPDTracker({ country: 'BE', fetcher: environment.fetcher, userAgent: environment.userAgent });
+  const tracker = new DpdIeTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent,
+    group: (number, context) => group.fetch(number, '', context) });
   return {
     id: 'dpd-ie', recordsSteps: true, steps: ['direct', 'retry'],
-    track: (input, context) => tracker.fetch(input.number, context),
+    track: (input, context) => tracker.track(input.number, context),
+    // DPD's group-wide match does not make a parcel Irish: recognition reads DPD Ireland's tracker alone.
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
       () => accepted(() => normalizeDpdIeNumber(number))),
   };

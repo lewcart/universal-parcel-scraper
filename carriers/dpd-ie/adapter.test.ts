@@ -3,15 +3,19 @@ import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../app.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
-import { InvalidInputError } from '../../core/errors/index.js';
-import { normalizeCarrierResult } from '../../core/result/index.js';
-import { DpdIeTracker, adapter } from './adapter.js';
+import { dpdParcelNumber } from '../../core/detection/dpd.js';
+import { IndeterminateError, InvalidInputError, NotFoundError } from '../../core/errors/index.js';
+import { normalizeCarrierResult, type CarrierResult } from '../../core/result/index.js';
+import { DpdIeTracker, adapter, type DpdGroupLookup } from './adapter.js';
 import { normalizeDpdIeNumber, parseDpdIe, parseDpdIeAbsence } from './parser.js';
 import { DPD_IE_DRIVER_COLLECTION, DPD_IE_POINT_COLLECTION, dpdIeScanStage, isDpdIeNotice } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const NUMBER = '999000001';
 const VAN_NUMBER = '999000002';
+// Synthetic: a fourteen-digit DPD parcel number that was never issued, and its label's check character.
+const PARCEL = '09990000000001';
+const CHECK = [...'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'].find(character => dpdParcelNumber(PARCEL + character))!;
 const html = readFileSync(new URL('./fixtures/delivered.html', import.meta.url), 'utf8');
 const van = readFileSync(new URL('./fixtures/on-van.html', import.meta.url), 'utf8');
 const absent = readFileSync(new URL('./fixtures/not-found.html', import.meta.url), 'utf8');
@@ -98,6 +102,16 @@ describe('DPD Ireland direct tracking', () => {
     expect(parseDpdIe(foreign, VAN_NUMBER).expected_delivery).toBeNull();
   });
 
+  it('reads the consignment a parcel number finds, and a depot named with an ampersand on Irish time', () => {
+    expect(parseDpdIe(html, PARCEL)).toMatchObject({ status: 'delivered', last_update: '2026-03-05T10:48:00+00:00' });
+    for (const consignment of ['', `${NUMBER}00`, PARCEL, 'SAMPLE']) {
+      expect(() => parseDpdIe(edit($ => $('.tracking-status-info strong').first().text(consignment)), PARCEL), consignment)
+        .toThrowError(expect.objectContaining({ kind: 'schema' }));
+    }
+    expect(parseDpdIe(history([DPD_IE_DRIVER_COLLECTION, 'Dpd Sample & Town', '01/3/2026 at 15:00']), NUMBER).events?.[0])
+      .toMatchObject({ time: '2026-03-01T15:00:00+00:00', location: 'Dpd Sample & Town' });
+  });
+
   it('binds the reply to the whole consignment number', () => {
     expect(parseDpdIe(html, ` ${NUMBER.slice(0, 3)} ${NUMBER.slice(3)} `).status).toBe('delivered');
     for (const body of [edit($ => $('.tracking-status-info strong').first().text('999000009')), edit($ => $('.tracking-status-info p').first().remove()),
@@ -107,10 +121,13 @@ describe('DPD Ireland direct tracking', () => {
     }
   });
 
-  it('takes nine- or ten-digit consignment numbers only', () => {
+  it('takes nine- or ten-digit consignment numbers and fourteen-digit parcel numbers', () => {
     expect(normalizeDpdIeNumber(' 999 000 001 ')).toBe(NUMBER);
     expect(normalizeDpdIeNumber('9990000010')).toBe('9990000010');
-    for (const number of ['', '99900000', '99900000101', '09999000000001', 'ABC000001', '999-00a-001']) {
+    expect(normalizeDpdIeNumber(PARCEL)).toBe(PARCEL);
+    expect(normalizeDpdIeNumber(`${PARCEL} ${CHECK}`)).toBe(PARCEL);
+    const wrong = [...'0123456789'].find(character => character !== CHECK)!;
+    for (const number of ['', '99900000', '99900000101', '999000000000', '0999000000000', PARCEL + wrong, `${PARCEL}00`, 'ABC000001', '999-00a-001']) {
       expect(() => normalizeDpdIeNumber(number), number).toThrow(InvalidInputError);
     }
   });
@@ -193,6 +210,7 @@ describe('DPD Ireland direct tracking', () => {
 
   it('leaves detection to the user', () => {
     expect(detectCarrierMatch(NUMBER).carrier).not.toBe('dpd-ie');
+    expect(detectCarrierMatch(PARCEL).carrier).not.toBe('dpd-ie');
   });
 
   it('opens a session with the search and reads the result page with its cookie', async () => {
@@ -283,5 +301,57 @@ describe('DPD Ireland direct tracking', () => {
     await expect(new DpdIeTracker({ fetcher: slow }).fetch(NUMBER, { budgetMs: 20.5 }))
       .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) });
     expect(slow.mock.calls.length).toBeLessThanOrEqual(2);
+  });
+});
+
+describe('DPD Ireland parcel numbers', () => {
+  const PARCEL_SEARCH = `https://tracking.dpd.ie/?deviceType=5&consignmentNumber=${PARCEL}`;
+  // DPD's guest service: each milestone once, without places.
+  const milestones = (stage: string, ...events: [string, string][]): CarrierResult => ({ status: stage === 'delivered' ? 'delivered' : 'in_transit',
+    current_stage: stage, last_status_text: events[0]![0], last_update: events[0]![1], history_truncated: true,
+    events: events.map(([description, time]) => ({ description, time, location: '' })) });
+  const handed = milestones('in_transit', ['Your parcel is on its way', '2026-03-04T22:17:00+00:00'], ['Parcel handed to DPD', '2026-03-04T11:59:00+00:00']);
+  const ireland = (body = html) => tracker(() => reply(body));
+
+  it('asks DPD Ireland and the group service together, and keeps DPD Ireland\'s fuller history', async () => {
+    const fetcher = ireland();
+    const group = vi.fn<DpdGroupLookup>(async () => handed);
+    const result = await new DpdIeTracker({ fetcher, group }).track(`${PARCEL}${CHECK}`, { budgetMs: 10_000 });
+    expect(result).toMatchObject({ status: 'delivered', last_update: '2026-03-05T10:48:00+00:00' });
+    expect(result.events).toHaveLength(7);
+    expect(result.history_truncated).toBeUndefined();
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([PARCEL_SEARCH, RESULT]);
+    expect(group).toHaveBeenCalledTimes(1);
+    expect(group.mock.calls[0]![0]).toBe(PARCEL);
+    expect(group.mock.calls[0]![1]).toMatchObject({ budgetMs: 10_000 });
+    // A consignment number is DPD Ireland's alone.
+    expect(await new DpdIeTracker({ fetcher: ireland(), group }).track(NUMBER)).toMatchObject({ status: 'delivered' });
+    expect(group).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the group service\'s milestones when DPD Ireland\'s history is behind them or missing', async () => {
+    // DPD Ireland's history ends at the hub abroad; the group service has the delivery.
+    const abroad = history([ORDER, 'Head Office', '01/3/2026 at 10:00'], [DPD_IE_DRIVER_COLLECTION, 'Dpd Sample & Town', '01/3/2026 at 15:00'],
+      [NETWORK, 'Head Office', '02/3/2026 at 02:00'], ['International Hub - In Transit', 'Sampleville - Belgium', '03/3/2026 at 00:50']);
+    const delivered = milestones('delivered', ['Delivered', '2026-03-06T11:00:00+01:00'], ['Parcel handed to DPD', '2026-03-01T15:00:06+00:00']);
+    expect(await new DpdIeTracker({ fetcher: ireland(abroad), group: async () => delivered }).track(PARCEL)).toBe(delivered);
+    const absentHere = tracker(() => redirect('/Custom500.html?aspxerrorpath=/Home/SearchResult'));
+    expect(await new DpdIeTracker({ fetcher: absentHere, group: async () => handed }).track(PARCEL)).toBe(handed);
+    const outage = async () => { throw new IndeterminateError('DPD', 'Sample outage'); };
+    expect(await new DpdIeTracker({ fetcher: ireland(), group: outage }).track(PARCEL)).toMatchObject({ status: 'delivered' });
+  });
+
+  it('reports not found only when neither knows the parcel', async () => {
+    const absentHere = () => tracker(() => redirect('/Custom500.html?aspxerrorpath=/Home/SearchResult'));
+    await expect(new DpdIeTracker({ fetcher: absentHere(), group: async () => { throw new NotFoundError('DPD'); } }).track(PARCEL))
+      .rejects.toMatchObject({ kind: 'not_found' });
+    await expect(new DpdIeTracker({ fetcher: absentHere(), group: async () => { throw new IndeterminateError('DPD', 'Sample outage'); } }).track(PARCEL))
+      .rejects.toMatchObject({ kind: 'indeterminate' });
+  });
+
+  it('recognizes a parcel number from DPD Ireland\'s tracker alone', async () => {
+    const fetcher = ireland();
+    expect(await adapter(environment(fetcher)).recognize!(PARCEL)).toMatchObject({ known: true });
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([PARCEL_SEARCH, RESULT]);
   });
 });

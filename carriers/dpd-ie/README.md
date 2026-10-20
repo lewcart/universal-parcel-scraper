@@ -1,8 +1,7 @@
 # DPD Ireland
 
-DPD Ireland's consignments, through its public tracker on `tracking.dpd.ie`. The group adapter
-[dpd](../dpd/README.md) reads DPD Switzerland's tracker and fourteen-digit parcel numbers;
-DPD Ireland's tracker answers for its own consignment numbers.
+DPD Ireland's consignments, through its public tracker on `tracking.dpd.ie`, and its parcels'
+fourteen-digit DPD numbers, through that tracker and DPD's group-wide guest service.
 
 ## How it works
 
@@ -21,6 +20,16 @@ DPD Ireland's tracker answers for its own consignment numbers.
   an error page without that notice, a 404 or a page without a consignment is inconclusive, and
   Cloudflare's challenge page is `ChallengeError`.
 - Recognition makes the same lookup; the not-found notice is the only unknown answer.
+
+A fourteen-digit parcel number, with or without the check character its label prints, is asked
+of the tracker and of DPD's guest service at once, as [DPD Belgium](../dpd-be/README.md) reads
+it. The tracker finds a consignment by the whole parcel number, and only by it, and its result
+page then names the consignment instead; the guest service gives the same consignment as the
+parcel's original code. The guest service gives each milestone once, without places, so the
+tracker's history answers when it holds more scans and is not behind the milestones, under the
+rule the tracker applies to fallbacks. Otherwise the milestones answer, as either does when the
+other fails. Not found needs both. Recognition asks the tracker alone: every DPD network's
+parcel is in the guest service.
 - DPD Ireland's mobile app shows the same tracker in a web view; its own API needs an account.
 
 ## Notes
@@ -46,8 +55,10 @@ DPD Ireland's tracker answers for its own consignment numbers.
 DPD Ireland's tracker takes a consignment number. Lookups archived from it show nine digits in
 nearly every case, and ten digits twice, once on the former QuickTrack page; the adapter takes
 both. DPD Ireland publishes no check digit, and nine and ten digits are shared with TNT, DHL
-and several other carriers, so no rule claims them and the user picks DPD Ireland. None of the
-archived lookups uses the fourteen-digit parcel number of the other DPD networks.
+and several other carriers, so no rule claims them and the user picks DPD Ireland. A parcel
+DPD Ireland collects for another network also carries DPD's fourteen-digit parcel number, which
+the networks abroad show. Every DPD network's parcels have that shape, so it does not point to
+DPD Ireland either.
 
 ## Links
 
@@ -62,6 +73,7 @@ such as `tracking.dpd.ie` or the `track-my-parcel` page, gives its number and DP
 - The error page that answers an unknown consignment is the tracker's general error page. A
   failure behind the result page that ends there with the same notice reads as not found.
 - The tracker keeps about six months of consignments.
+- A parcel number gives its whole consignment's history.
 - Cloudflare guards the tracker. It has answered Node's HTTP/1.1 client with its challenge page
   for hours from some networks, while HTTP/2 and curl passed. Cheerio's `undici` makes itself
   Node's fetch dispatcher, which uses HTTP/1.1, when it loads before the process's first fetch.

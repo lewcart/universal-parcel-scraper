@@ -74,38 +74,45 @@ describe('UI tracking links (rendered public pages)', () => {
       const attempts = Math.ceil((testCase.renderTimeoutMs ?? 10_000) / 1000);
       for (let attempt = 0; attempt < attempts; attempt++) {
         await page.waitForTimeout(1000);
-        // A body still being replaced is read again on the next pass. The first
-        // body is the document's: some pages nest a second one in their markup.
-        const bodyText = await page.locator('body').first().innerText({ timeout: 3000 }).catch(() => '');
-        // Some trackers label their form with a placeholder and a graphical
-        // heading. Include visible placeholders without counting hidden forms.
-        const placeholders = await page.locator('input[placeholder], textarea[placeholder]').evaluateAll(elements =>
-          elements.filter(element => element.getClientRects().length > 0 && getComputedStyle(element).visibility !== 'hidden')
-            .map(element => element.getAttribute('placeholder')?.slice(0, 500) ?? '').join('\n'));
-        // Native body text omits open shadow trees, including PostNord's
-        // rendered result. Read visible contents from the known tracker host.
-        const shadowText = testCase.shadowHost ? await page.locator(testCase.shadowHost).evaluateAll(hosts => hosts.flatMap(host =>
-          Array.from(host.shadowRoot?.children ?? [])
-            .filter((element): element is HTMLElement => element instanceof HTMLElement && element.getClientRects().length > 0
-              && getComputedStyle(element).visibility !== 'hidden')
-            .map(element => element.innerText.slice(0, 10_000)),
-        ).join('\n')) : '';
-        const text = `${bodyText}\n${placeholders}\n${shadowText}`;
-        const { forwarding } = testCase;
-        inputBound = forwarding === 'none' || lookupObserved || text.includes(testCase.number)
-          || (typeof forwarding === 'object' && forwarding.notFound.test(text))
-          || await page.locator('input, textarea').evaluateAll(
-            (elements, number) => elements.some((element) => (element as HTMLInputElement).value === number),
-            testCase.number,
-          );
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- goto() can answer null; the expectation above rules it out
-        const status = documentStatus ?? response!.status();
-        verdict = trackingPageVerdict({ status, url: page.url(), title: await page.title(), text },
-          testCase.route, testCase.marker, testCase.shipmentNotFound);
-        // A tracker that serves its route with its not-found status can show the
-        // notice only after its lookup answers, so keep reading until it does.
-        const noticePending = testCase.shipmentNotFound?.status === status && testCase.route.test(page.url());
-        if ((verdict === 'broken' && !noticePending) || (attempt >= 2 && verdict === 'tracking-page' && inputBound)) break;
+        try {
+          // A body still being replaced is read again on the next pass. The first
+          // body is the document's: some pages nest a second one in their markup.
+          const bodyText = await page.locator('body').first().innerText({ timeout: 3000 }).catch(() => '');
+          // Some trackers label their form with a placeholder and a graphical
+          // heading. Include visible placeholders without counting hidden forms.
+          const placeholders = await page.locator('input[placeholder], textarea[placeholder]').evaluateAll(elements =>
+            elements.filter(element => element.getClientRects().length > 0 && getComputedStyle(element).visibility !== 'hidden')
+              .map(element => element.getAttribute('placeholder')?.slice(0, 500) ?? '').join('\n'));
+          // Native body text omits open shadow trees, including PostNord's
+          // rendered result. Read visible contents from the known tracker host.
+          const shadowText = testCase.shadowHost ? await page.locator(testCase.shadowHost).evaluateAll(hosts => hosts.flatMap(host =>
+            Array.from(host.shadowRoot?.children ?? [])
+              .filter((element): element is HTMLElement => element instanceof HTMLElement && element.getClientRects().length > 0
+                && getComputedStyle(element).visibility !== 'hidden')
+              .map(element => element.innerText.slice(0, 10_000)),
+          ).join('\n')) : '';
+          const text = `${bodyText}\n${placeholders}\n${shadowText}`;
+          const { forwarding } = testCase;
+          inputBound = forwarding === 'none' || lookupObserved || text.includes(testCase.number)
+            || (typeof forwarding === 'object' && forwarding.notFound.test(text))
+            || await page.locator('input, textarea').evaluateAll(
+              (elements, number) => elements.some((element) => (element as HTMLInputElement).value === number),
+              testCase.number,
+            );
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- goto() can answer null; the expectation above rules it out
+          const status = documentStatus ?? response!.status();
+          verdict = trackingPageVerdict({ status, url: page.url(), title: await page.title(), text },
+            testCase.route, testCase.marker, testCase.shipmentNotFound);
+          // A tracker that serves its route with its not-found status can show the
+          // notice only after its lookup answers, so keep reading until it does.
+          const noticePending = testCase.shipmentNotFound?.status === status && testCase.route.test(page.url());
+          if ((verdict === 'broken' && !noticePending) || (attempt >= 2 && verdict === 'tracking-page' && inputBound)) break;
+        } catch (error) {
+          // A tracker that submits its own search on load replaces the document
+          // mid-read: the next pass reads the new one.
+          if (error instanceof Error && /Execution context was destroyed/.test(error.message)) continue;
+          throw error;
+        }
       }
       // Skipped is deliberately not a pass: bot protection cannot prove the
       // deep link works. Strict mode turns those gaps into failures in CI.

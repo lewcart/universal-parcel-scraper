@@ -710,10 +710,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'saia', number: '99999999990',
     route: /^https:\/\/www\.saia\.com\/track\/details;pro=99999999990$/,
     marker: /The Shipment was not found for PRO Number: 99999999990/ },
-  // The page fills its search with the PROs in its address and posts it on load; an unknown one gets a card naming it.
+  // The page fills its search with the PROs in its address and posts it once loaded, several seconds in; an unknown one gets a card naming it.
   { carrier: 'tforce-freight', number: '999999991',
     route: /^https:\/\/www\.tforcefreight\.com\/ltl\/apps\/Tracking(?:\?|$)/,
-    marker: /Please check ProNumber 999999991|PRO\(S\) RELATED TO/ },
+    marker: /Please check ProNumber 999999991|PRO\(S\) RELATED TO/, renderTimeoutMs: 20_000 },
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,
     marker: /Track & Trace Shipments|Enter up to 25 Tracking Numbers/i },

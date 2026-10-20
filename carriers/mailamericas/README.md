@@ -74,9 +74,10 @@ tracking page uses one of each as its examples, and no other carrier's numbers h
 shapes, so `mailamericas-ml` and `mailamericas-mmxqp` claim them.
 
 The tracker also answers parcels under UPU S10 numbers with the Mexican, Marshall Islands and
-Mauritius codes. Those stay with postal detection. The catalog has no Marshall Islands post, so
-a valid S10 number with its code also suggests MailAmericas (`mailamericas-s10`), and
-recognition asks it; Mexican and Mauritius numbers have their own posts. The samples and
+Mauritius codes. Mexican and Mauritius numbers stay with their own posts. The catalog has no
+Marshall Islands post, and the MH numbers found on MailAmericas' and Cainiao's trackers are
+MailAmericas parcels to Latin America, so a valid S10 number with that code is not international
+mail: `mailamericas-s10` suggests MailAmericas first, and recognition asks it. The samples and
 their sources are in [`numbers.json`](numbers.json).
 
 ## Testing

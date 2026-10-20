@@ -4,7 +4,7 @@ import { isCttExpressTrackingNumber } from './cttExpress.js';
 import { checksumRejections, detectCarrierMatch } from './index.js';
 
 describe('S10-shaped numbers', () => {
-  it.each(['RR123456785TY', 'RR123456785MI', 'RR123456785YW', 'RR123456785CS', 'RR123456785EN'])(
+  it.each(['RR123456785TY', 'RR123456785MI', 'RR123456785XX', 'RR123456785YW', 'RR123456785CS', 'RR123456785EN'])(
     'leaves %s out of international mail: its suffix names no issuing country',
     (number) => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
@@ -36,6 +36,30 @@ describe('S10-shaped numbers', () => {
     ]);
     expect(detectCarrierMatch('RR123456789MI').candidates).toEqual(['chronopost']);
     expect(checksumRejections('RR123456789MI')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-mi', checksum: 's10' }]);
+  });
+
+  it('suggests AliExpress first for an XX number, a suffix Cainiao gives an AliExpress parcel', () => {
+    expect(detectCarrierMatch('rr 123 456 785 xx')).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'chronopost'], preferred: ['aliexpress'],
+    });
+    expect(recognitionCandidates('RR123456785XX')[0]).toEqual({ carrier: 'aliexpress', needsInput: null, preferred: true });
+    expect(detectCarrierMatch('RR123456789XX').candidates).toEqual(['chronopost']);
+    expect(checksumRejections('RR123456789XX')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-xx', checksum: 's10' }]);
+    for (const number of ['RR12345678XX', 'RR1234567850XX', 'R1234567850XX']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('aliexpress');
+    }
+  });
+
+  it('suggests MailAmericas first for a Marshall Islands number, under which MailAmericas issues its S10 numbers', () => {
+    for (const number of ['ML123456785MH', 'EE123456785MH']) {
+      expect(detectCarrierMatch(number), number).toEqual({
+        carrier: 'unknown', confidence: 'low', candidates: ['mailamericas', 'chronopost'], preferred: ['mailamericas'],
+      });
+      expect(recognitionCandidates(number)[0], number).toEqual({ carrier: 'mailamericas', needsInput: null, preferred: true });
+    }
+    expect(detectCarrierMatch('ML123456789MH').candidates).not.toContain('mailamericas');
+    expect(checksumRejections('ML123456789MH')).toEqual([{ carrier: 'mailamericas', rule: 'mailamericas-s10', checksum: 's10' }]);
+    expect(detectCarrierMatch('ML12345678MH').candidates).not.toContain('mailamericas');
   });
 
   it('keeps a country suffix with no dedicated post in international mail', () => {

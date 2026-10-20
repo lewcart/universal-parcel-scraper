@@ -156,6 +156,13 @@
       "confidence": "low",
       "preferred": true,
       "checksum": "s10"
+    },
+    {
+      "id": "aliexpress-xx",
+      "pattern": "^[A-Z]{2}\\d{9}XX$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
     }
   ]
 }

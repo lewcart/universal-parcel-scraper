@@ -656,21 +656,20 @@
     "reason": "The Peruvian issuer suffix suggests Serpost but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
-    "shape": "AA9{9}TY or AA9{9}MI with a valid S10 check digit",
+    "shape": "AA9{9}TY, AA9{9}MI or AA9{9}XX with a valid S10 check digit",
     "carriers": [
       "aliexpress",
       "chronopost"
     ],
-    "reason": "TY and MI name no country, but Cainiao numbers AliExpress parcels with them, and Chronopost's low-confidence rule accepts any S10 shape. The AliExpress rules are preferred, so AliExpress is asked first; the number stays a suggestion."
+    "reason": "TY, MI and XX name no country, but Cainiao numbers AliExpress parcels with them, and Chronopost's low-confidence rule accepts any S10 shape. The AliExpress rules are preferred, so AliExpress is asked first; the number stays a suggestion."
   },
   {
     "shape": "AA9{9}MH with a valid S10 check digit",
     "carriers": [
       "chronopost",
-      "intl-post",
       "mailamericas"
     ],
-    "reason": "MailAmericas tracks parcels under S10 numbers with the Marshall Islands code, and the catalog has no Marshall Islands post. The code suggests MailAmericas but do not establish it; the postal fallback remains selected until recognition confirms a direct carrier."
+    "reason": "MailAmericas numbers its parcels to Latin America with S10 numbers under the Marshall Islands code, which its tracker and its partner ProShips' answer, and the catalog has no Marshall Islands post, so the number is not international mail. Chronopost's low-confidence rule accepts any S10 shape. The MailAmericas rule is preferred, so MailAmericas is asked first; the number stays a suggestion."
   },
   {
     "shape": "AA9{9}US with a valid S10 check digit",

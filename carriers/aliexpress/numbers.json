@@ -970,6 +970,22 @@
         ]
       },
       "note": "Synthetic waybill in a thirteen-character shape SDA uses in Italy. AliExpress shows the buyer such a number while the parcel is still on Cainiao's leg, and Cainiao's tracker returns its history before Poste Italiane knows the number."
+    },
+    {
+      "number": "RR123456785XX",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-20",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress",
+          "chronopost"
+        ]
+      },
+      "note": "Made-up number in the shape of a parcel Cainiao's tracker answered with its own scans. Its S10 check digit passes, but its XX suffix names no country, so it is not international mail."
     }
   ]
 }

@@ -153,10 +153,14 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mailamericas",
+          "chronopost"
+        ]
       },
-      "note": "A lookup on Cainiao's global tracker archived by the Wayback Machine. The MH suffix names the postal operator of the Marshall Islands, which has no adapter here."
+      "note": "A lookup on Cainiao's global tracker archived by the Wayback Machine. The MH suffix is the Marshall Islands' code, under which MailAmericas issues S10 numbers its own tracker answers; the catalog has no Marshall Islands post, so it is not international mail."
     },
     {
       "number": "UB024113792HU",

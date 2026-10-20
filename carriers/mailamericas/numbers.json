@@ -288,8 +288,12 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mailamericas",
+          "chronopost"
+        ]
       },
       "note": "An S10 number under the Marshall Islands code, looked up on MailAmericas' own tracker. The tracker returns a delivered history in Colombia."
     },
@@ -326,8 +330,12 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mailamericas",
+          "chronopost"
+        ]
       },
       "note": "An S10 number looked up on MailAmericas' own tracker. The tracker returns the parcel as returned in Mexico."
     },

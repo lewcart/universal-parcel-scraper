@@ -26,19 +26,25 @@ describe('MRW anonymous tracking', () => {
 
   it('binds both summary and full history to the requested reference and projects only actual scans', () => {
     const parsed = normalizeCarrierResult(parseMrwHistory(fixture('history'), NUMBER, summary()));
-    expect(parsed).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: null,
-      last_update_local: '2026-09-10T19:29:00', last_status_text: 'Envío entregado' });
+    expect(parsed).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: '2026-09-10T19:29:00+02:00',
+      delivered_at: '2026-09-10T19:29:00+02:00', last_status_text: 'Envío entregado' });
+    expect(parsed.last_update_local).toBeUndefined();
     expect(parsed.events).toHaveLength(5);
     expect(parsed.events?.map(event => event.stage)).toEqual(['delivered', 'ready_for_pickup', 'failed_attempt', 'in_transit', 'registered']);
-    expect(parsed.events?.[0]).toMatchObject({ local_time: '2026-09-10T19:29:00', location: '28000 Madrid' });
-    // The host and aggregators relaying these wall clocks read them in Spanish time.
+    expect(parsed.events?.[0]).toEqual({ description: 'Envío entregado', provider_status: 'Envío entregado', stage: 'delivered',
+      time: '2026-09-10T19:29:00+02:00', location: '02600 Ejemplo' });
+    // A pickup point's code names no province, so its scan keeps its wall clock.
+    expect(parsed.events?.map(event => event.time ?? event.local_time)).toEqual(['2026-09-10T19:29:00+02:00', '2026-09-10T13:40:00',
+      '2026-09-09T16:47:00+02:00', '2026-09-07T14:03:00+02:00', '2026-09-04T17:10:00+02:00']);
+    expect(parsed.events?.[1]).toMatchObject({ local_time: '2026-09-10T13:40:00', location: '40000 Ejemplo' });
+    // The host and aggregators relaying the wall clocks left read them in Spanish time.
     expect(resultTimezone('mrw', parsed)).toBe('Europe/Madrid');
-    expect(parsed.delivered_at).toBeUndefined();
     expect(JSON.stringify(parsed)).not.toContain('PRIVATE_SYNTHETIC_ADDRESS');
     for (const entry of statuses.entries) expect(classifyMrwStatus(entry.wording)?.stage).toBe(entry.stage);
   });
 
   it('accepts a bound current status when the official history page is blank, without a synthetic scan', () => {
+    // The summary names no office, so its clock stays local.
     expect(parseMrwHistory(fixture('blank-history'), NUMBER, summary())).toEqual({ status: 'delivered',
       current_stage: 'delivered', last_status_text: 'Envío entregado', last_update: null,
       last_update_local: '2026-09-10T19:29:00', expected_delivery: null, summary_only: true, events: [] });
@@ -83,11 +89,13 @@ describe('MRW anonymous tracking', () => {
     const breakdown = '<tr id="infoBultos2" class="table-bultos"><td class="hidden-xs"></td><td colspan="2"><div class="table-responsive">'
       + '<table class="zebra alt" title="Desglose de bultos"><thead><tr><th>Bulto</th><th>Fecha</th><th>Hora</th></tr></thead>'
       + '<tbody><tr><td>001</td><td>07/09/2026</td><td>14:03</td></tr><tr><td>002</td><td>07/09/2026</td><td>13:58</td></tr></tbody></table></div></td></tr>';
-    const html = fixture('history').replace('<td>07/09/2026</td><td>14:03</td><td>En tránsito</td><td>28000 Madrid</td></tr>',
+    const html = fixture('history').replace('<td>07/09/2026</td><td>14:03</td><td>En tránsito</td><td>02699 Ejemplo (Plataforma)</td></tr>',
       `<td>07/09/2026</td><td>14:03</td><td>En tránsito</td><td>00000 Example (Plataforma)</td></tr>${breakdown}`);
     const result = parseMrwHistory(html, NUMBER, summary());
     expect(result.events?.map(event => event.stage)).toEqual(['delivered', 'ready_for_pickup', 'failed_attempt', 'in_transit', 'registered']);
     expect(result.events?.[3]).toMatchObject({ local_time: '2026-09-07T14:03:00', location: '00000 Example (Plataforma)' });
+    expect(parseMrwHistory(fixture('history'), NUMBER, summary()).events?.[3])
+      .toMatchObject({ time: '2026-09-07T14:03:00+02:00', location: '02699 Ejemplo (Plataforma)' });
     const loose = html.replace('title="Desglose de bultos"', 'title="Otro"');
     expect(() => parseMrwHistory(loose, NUMBER, summary())).toThrowError(expect.objectContaining({ kind: 'schema' }));
   });
@@ -129,26 +137,82 @@ describe('MRW anonymous tracking', () => {
     expect(early.hour).toBe('09:29');
     const history = fixture('history').replace('<tr class="past"><td>10/09/2026</td><td>19:29</td>', '<tr class="past"><td>10/09/2026</td><td>09:29</td>');
     expect(parseMrwHistory(history, NUMBER, early)).toMatchObject({ status: 'delivered', current_stage: 'delivered',
-      last_update_local: '2026-09-10T09:29:00' });
+      last_update: '2026-09-10T09:29:00+02:00' });
     expect(parseMrwHistory(fixture('blank-history'), NUMBER, early).last_update_local).toBe('2026-09-10T09:29:00');
   });
 
   it('follows a history that runs ahead of the summary once the summary’s own row is in it', () => {
     const reopened = fixture('history').replace('<tr class="past"><td>10/09/2026</td><td>19:29</td>',
-      '<tr class="past"><td>10/09/2026</td><td>19:41</td><td>Dirección entrega incorrecta</td><td>28000 Madrid</td></tr>'
-      + '<tr class="past"><td>10/09/2026</td><td>19:35</td><td>Envío en reparto</td><td>28000 Madrid</td></tr>'
-      + '<tr class="past"><td>10/09/2026</td><td>19:35</td><td>Envío reabierto para entregar</td><td>28000 Madrid</td></tr>'
+      '<tr class="past"><td>10/09/2026</td><td>19:41</td><td>Dirección entrega incorrecta</td><td>02600 Ejemplo</td></tr>'
+      + '<tr class="past"><td>10/09/2026</td><td>19:35</td><td>Envío en reparto</td><td>02600 Ejemplo</td></tr>'
+      + '<tr class="past"><td>10/09/2026</td><td>19:35</td><td>Envío reabierto para entregar</td><td>02600 Ejemplo</td></tr>'
       + '<tr class="past"><td>10/09/2026</td><td>19:29</td>');
     const result = parseMrwHistory(reopened, NUMBER, summary());
     expect(result).toMatchObject({ status: 'exception', current_stage: 'failed_attempt', last_status_text: 'Dirección entrega incorrecta',
-      last_update_local: '2026-09-10T19:41:00' });
+      last_update: '2026-09-10T19:41:00+02:00' });
+    expect(result.delivered_at).toBeUndefined();
     expect(result.events?.slice(0, 4).map(event => [event.description, event.stage])).toEqual([
       ['Dirección entrega incorrecta', 'failed_attempt'], ['Envío en reparto', 'out_for_delivery'],
       ['Envío reabierto para entregar', 'in_transit'], ['Envío entregado', 'delivered']]);
     // A row above the summary's own that is older is not a history running ahead.
     const older = fixture('history').replace('<tr class="past"><td>10/09/2026</td><td>19:29</td>',
-      '<tr class="past"><td>10/09/2026</td><td>19:00</td><td>Envío en reparto</td><td>28000 Madrid</td></tr><tr class="past"><td>10/09/2026</td><td>19:29</td>');
+      '<tr class="past"><td>10/09/2026</td><td>19:00</td><td>Envío en reparto</td><td>02600 Ejemplo</td></tr><tr class="past"><td>10/09/2026</td><td>19:29</td>');
     expect(() => parseMrwHistory(older, NUMBER, summary())).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+
+  // The fixture's newest row, at a Madrid office, given another office or clock.
+  const newest = '<td>10/09/2026</td><td>19:29</td><td>Envío entregado</td><td>02600 Ejemplo</td>';
+  const latestAt = (location: string, date = '10/09/2026', hour = '19:29', status = 'Envío entregado') => parseMrwHistory(
+    fixture('history').replace(newest, `<td>${date}</td><td>${hour}</td><td>${status}</td><td>${location}</td>`),
+    NUMBER, { ...summary(), date, hour, status });
+
+  it('dates the scans of offices whose code settles Madrid\'s clock', () => {
+    for (const [location, time] of [
+      ['02600 Ejemplo', '2026-09-10T19:29:00+02:00'], ['04800 Ejemplo', '2026-09-10T19:29:00+02:00'],
+      ['01002 Ejemplo', '2026-09-10T19:29:00+02:00'], ['02710 Ejemplo', '2026-09-10T19:29:00+02:00'],
+      ['00699 Ejemplo De Ejemplo (Plataforma)', '2026-09-10T19:29:00+02:00'],
+      ['05200 Gibraltar', '2026-09-10T19:29:00+02:00'], ['06000 Andorra', '2026-09-10T19:29:00+02:00'],
+    ] as const) {
+      const result = latestAt(location);
+      expect(result, location).toMatchObject({ status: 'delivered', last_update: time, delivered_at: time });
+      expect(result.last_update_local, location).toBeUndefined();
+      expect(result.events?.[0], location).toMatchObject({ time, location });
+      expect(result.events?.[0]?.local_time, location).toBeUndefined();
+    }
+    expect(latestAt('02600 Ejemplo', '15/01/2026').last_update).toBe('2026-01-15T19:29:00+01:00');
+    expect(latestAt('06000 Andorra', '15/01/2026').last_update).toBe('2026-01-15T19:29:00+01:00');
+  });
+
+  it('keeps the wall clocks of offices whose code does not settle their clock', () => {
+    // The Canary Islands, Portugal, an MRW Point, an office named for a Canary Islands town, a postcode and a bare code.
+    for (const location of ['04900 Ejemplo', '05000 Ejemplo', '08000 Exemplo', '08099 Exemplo (Plataforma)', '07700 Exemplo',
+      '40000 Ejemplo', '10000 Exemplo', '02600 Telde', '4000-001 Exemplo', '02699', '']) {
+      const result = latestAt(location);
+      expect(result, location).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-09-10T19:29:00' });
+      expect(result.delivered_at, location).toBeUndefined();
+      expect(result.events?.[0], location).toMatchObject({ local_time: '2026-09-10T19:29:00' });
+      expect(result.events?.[0]?.time, location).toBeUndefined();
+      // The older rows keep their own offices' instants.
+      expect(result.events?.[2]?.time, location).toBe('2026-09-09T16:47:00+02:00');
+    }
+  });
+
+  it('keeps a clock the change to summer time skips and reads a repeated one as its first occurrence', () => {
+    expect(latestAt('02600 Ejemplo', '29/03/2026', '02:30')).toMatchObject({ last_update: null, last_update_local: '2026-03-29T02:30:00' });
+    expect(latestAt('02600 Ejemplo', '29/03/2026', '03:30').last_update).toBe('2026-03-29T03:30:00+02:00');
+    expect(latestAt('02600 Ejemplo', '25/10/2026', '02:30').last_update).toBe('2026-10-25T02:30:00+02:00');
+    expect(latestAt('02600 Ejemplo', '25/10/2026', '03:30').last_update).toBe('2026-10-25T03:30:00+01:00');
+  });
+
+  it('takes the last update from the newest row only, and the delivery instant only from a delivery', () => {
+    const moving = latestAt('02600 Ejemplo', '10/09/2026', '19:29', 'Envío en reparto');
+    expect(moving).toMatchObject({ status: 'out_for_delivery', last_update: '2026-09-10T19:29:00+02:00' });
+    expect(moving.delivered_at).toBeUndefined();
+    expect(moving.last_update_local).toBeUndefined();
+    // A delivery at a pickup point keeps its wall clock; the older rows' instants are not promoted.
+    const atPoint = latestAt('40000 Ejemplo');
+    expect(atPoint).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-09-10T19:29:00' });
+    expect(atPoint.delivered_at).toBeUndefined();
   });
 
   it('calls the exact anonymous five-step sequence with one cookie jar through the full factory', async () => {

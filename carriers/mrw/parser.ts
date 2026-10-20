@@ -1,7 +1,8 @@
 import { load } from 'cheerio';
+import { DateTime } from 'luxon';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { calendarDay } from '../../core/time/index.js';
+import { calendarDay, firstOccurrence, regionHasTown } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { classifyMrwStatus } from './status.js';
 
@@ -98,10 +99,43 @@ function officeLabel(value: string): string {
   return /^(?:\d{5}|\d{4}-\d{3})\s+[\p{L} .'-]{2,70}(?: \([\p{L} ]{2,30}\))?$/u.test(text) ? text : '';
 }
 
+/**
+ * The zone of an office's clock, read from its code, which opens with its
+ * province's number: 001 to 048 for mainland Spain and the Balearic Islands,
+ * Ceuta's and Melilla's offices among them, 052 for Gibraltar and 060 for
+ * Andorra, all on Madrid's clock. The Canary Islands' 049 and 050 and
+ * Portugal's 070 to 089 keep clocks of their own, and nothing shows whether
+ * their rows are written on the office's clock or on Madrid's; MRW Points'
+ * codes name no province. Those, and an office named for a town of the Canary
+ * Islands, have none.
+ */
+function officeZone(location: string): string | null {
+  const office = /^(\d{3})\d{2}\s+(.+?)(?: \([\p{L} ]+\))?$/u.exec(location);
+  if (!office || regionHasTown('ES-CN', office[2]!)) return null;
+  const province = Number(office[1]);
+  if (province >= 1 && province <= 48) return 'Europe/Madrid';
+  return province === 52 ? 'Europe/Gibraltar' : province === 60 ? 'Europe/Andorra' : null;
+}
+
+/** A wall clock's instant in the zone; none for a clock the zone skips when its clocks go forward. */
+function instant(wall: string, zone: string): string | null {
+  const placed = firstOccurrence(DateTime.fromISO(wall, { zone }));
+  return placed.isValid && placed.toFormat("yyyy-MM-dd'T'HH:mm:ss") === wall ? placed.toISO({ suppressMilliseconds: true }) : null;
+}
+
+/** A row's clock: an instant when its office settles the zone, else the wall clock or the text as shown. */
+function rowClock(rawDate: string, rawHour: string, location: string): { time?: string; local_time?: string; provider_time_text?: string } {
+  const clock = buildLocalDate(rawDate, rawHour);
+  const zone = location ? officeZone(location) : null;
+  const time = zone && clock.local_time ? instant(clock.local_time, zone) : null;
+  return time ? { time } : clock;
+}
+
 function summaryOnly(summary: MrwSummary): CarrierResult {
   const mapped = classifyMrwStatus(summary.status);
   if (!mapped) throw new IndeterminateError('MRW', 'MRW returned only an unrecognized summary');
-  // The summary's date and hour are those of its current status, as the history's first row shows.
+  // The summary's date and hour are those of its current status, as the
+  // history's first row shows. It names no office, so its clock stays local.
   const clock = buildLocalDate(summary.date, summary.hour).local_time;
   return { status: mapped.status, current_stage: mapped.stage, last_status_text: clean(summary.status, 160),
     last_update: null, ...(clock ? { last_update_local: clock } : {}), expected_delivery: null, summary_only: true, events: [] };
@@ -138,10 +172,10 @@ export function parseMrwHistory(html: string, raw: string, summary: MrwSummary):
     const hour = paddedHour(clean(cells.eq(1).text(), 16));
     const rawStatus = clean(cells.eq(2).text(), 500);
     if (!rawStatus || rawStatus.length > 160) throw new SchemaError('MRW', 'History row lacks a bounded status');
-    const clock = buildLocalDate(date, hour);
     // Read visible text only. The PointCorner link embeds a full store address
     // and map arguments in onclick; they must never enter the result.
     const location = officeLabel(cells.eq(3).text());
+    const clock = rowClock(date, hour, location);
     const key = JSON.stringify([date, hour, rawStatus, location]);
     if (seen.has(key)) continue;
     seen.add(key);
@@ -164,7 +198,10 @@ export function parseMrwHistory(html: string, raw: string, summary: MrwSummary):
     throw new IndeterminateError('MRW', 'Current summary and history disagree');
   }
   const mapped = classifyMrwStatus(listed[0]!.status);
+  // The newest row's instant is the last update, and the delivery's when it delivered.
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
-    last_status_text: latest.description, last_update: null, last_update_local: latest.local_time ?? null,
+    last_status_text: latest.description, last_update: latest.time ?? null,
+    ...(latest.time ? {} : { last_update_local: latest.local_time ?? null }),
+    ...(mapped?.status === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),
     expected_delivery: null, events: events.slice(0, 100) };
 }

@@ -27,11 +27,22 @@ Some history rows are followed by a breakdown of each parcel's own scans. Only
 the shipment's rows are read. Hub offices keep their bracketed kind, such as
 "(Plataforma)".
 
-Scan clocks are shown without offsets, so they remain local wall times. The catalog
-zone is `Europe/Madrid`, so aggregators relaying the same clocks read them as Spanish
-time. Only
-visible office labels are retained from history rows; PointCorner map addresses
-and coordinates are excluded.
+History rows name their office by a code and a town. The code opens with the
+office's province number: 001 to 048 for mainland Spain and the Balearic
+Islands, Ceuta and Melilla included, 052 for Gibraltar and 060 for Andorra, all
+on Madrid's clock. Their rows are written on it: a hand-over to a pickup point,
+scanned by the courier's office and the point a minute apart, falls within the
+point's opening hours on that clock, and not on UTC or Lisbon's. These rows are
+dated in `Europe/Madrid`, `Europe/Gibraltar` or `Europe/Andorra`. A clock
+skipped when summer time starts stays a wall clock, and one repeated when it
+ends reads as its first occurrence. The Canary Islands' offices (049 and 050)
+and Portugal's (070 to 089) keep clocks of their own, and nothing shows whether
+their rows follow the office's clock or Madrid's, so they keep wall clocks. So
+do MRW Points, whose codes name no province, rows without an office label and
+the summary, which names no office. The newest row's instant is the last
+update, and the delivery's when it delivered. Only visible office labels are
+retained from history rows; PointCorner map addresses and coordinates are
+excluded.
 
 The adapter queries www.mrw.es, which words statuses in Spanish. www.mrw.pt renders
 the same history in Portuguese; the status map reads both, so relayed Portuguese

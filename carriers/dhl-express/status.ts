@@ -18,6 +18,8 @@ const EXACT: ReadonlyMap<string, Stage> = new Map([
   // The recipient's duties or fees are paid; the clearance they held up completes next.
   ['payment is received and recorded for shipment related fees', 'customs'],
   ['shipment is in transit to destination', 'in_transit'],
+  // Waiting at a facility for the next linehaul or flight: on its way, not held.
+  ['scheduled to depart on the next planned movement', 'in_transit'],
   ['shipment is out with courier for delivery', 'out_for_delivery'],
   ['shipment is on hold', 'exception'],
   ['delivered', 'delivered'],
@@ -47,12 +49,13 @@ const PREFIXES: ReadonlyArray<readonly [string, Stage]> = [
  * DHL's event codes on the unified feed, each seen with the wording above: SA
  * the shipment's acceptance, IC its processing for clearance, CD a clearance
  * step without its outcome, PY the payment of fees during clearance, MS a
- * missort, CC the wait for the consignee's collection, ND a delivery attempt
- * that could not be completed, RT the return to the shipper. They stage a scan
+ * missort, SM the wait for the next planned movement, CC the wait for the
+ * consignee's collection, ND a delivery attempt that could not be completed,
+ * RT the return to the shipper. They stage a scan
  * whose wording the map does not know, as in another language.
  */
 const CODES: ReadonlyMap<string, Stage> = new Map([
-  ['SA', 'accepted'], ['IC', 'customs'], ['CD', 'customs'], ['PY', 'customs'], ['MS', 'exception'],
+  ['SA', 'accepted'], ['IC', 'customs'], ['CD', 'customs'], ['PY', 'customs'], ['MS', 'exception'], ['SM', 'in_transit'],
   ['CC', 'ready_for_pickup'], ['ND', 'failed_attempt'], ['RT', 'returned'],
 ]);
 

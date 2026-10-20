@@ -84,6 +84,15 @@
       "note": "Followed by the facility; matched on its start."
     },
     {
+      "code": "SM",
+      "wording": "Scheduled to depart on the next planned movement",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Waiting at a facility for its next linehaul or flight. The unified feed codes it SM; the mobile API sends the wording alone."
+    },
+    {
       "wording": "Shipment has departed from a DHL facility",
       "language": "en",
       "stage": "in_transit",

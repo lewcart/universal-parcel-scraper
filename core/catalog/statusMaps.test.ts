@@ -257,6 +257,8 @@ describe('status map answers', () => {
     expect(answer('dhl-express', 'CC', 'Awaiting collection by the consignee')).toEqual(mapped('ready_for_pickup'));
     expect(answer('dhl-express', 'ND', 'Delivery attempt could not be completed')).toEqual(mapped('failed_attempt'));
     expect(answer('dhl-express', 'RT', 'Returned to shipper')).toEqual(mapped('returned'));
+    expect(answer('dhl-express', 'SM', 'Scheduled to depart on the next planned movement')).toEqual(mapped('in_transit'));
+    expect(answer('dhl-express', null, 'Scheduled to depart on the next planned movement')).toEqual(mapped('in_transit'));
     // The web feed sends the same wording without a code.
     expect(answer('dhl-express', null, 'Awaiting collection by the consignee')).toEqual(mapped('ready_for_pickup'));
     expect(answer('dhl-express', 'RT', 'Synthetic checkpoint')).toEqual(mapped('returned'));

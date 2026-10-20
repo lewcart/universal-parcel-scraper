@@ -28,6 +28,19 @@ const SEALED = /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*\.[A-Za-z0-9_-]+$
 
 const derive = promisify(pbkdf2);
 
+/** `work`, for as long as the lookup is live: key derivation runs off the event loop and cannot be stopped, so an ended lookup stops waiting for it. */
+async function whileLive<T>(work: Promise<T>, signal: AbortSignal): Promise<T> {
+  signal.throwIfAborted();
+  let leave!: () => void;
+  const left = new Promise<never>((_resolve, reject) => { leave = () => reject(signal.reason); });
+  signal.addEventListener('abort', leave, { once: true });
+  try {
+    return await Promise.race([work, left]);
+  } finally {
+    signal.removeEventListener('abort', leave);
+  }
+}
+
 interface SealingKey { readonly salt: Buffer; readonly key: Buffer }
 
 async function sealingKey(passphrase: string): Promise<SealingKey> {
@@ -82,7 +95,7 @@ export class SkypostalTracker {
 
   /** One sealed action through the gateway, and its opened reply. */
   private async ask(action: string, search: string | readonly string[], signal: AbortSignal, timeoutMs: number): Promise<unknown> {
-    const { headers, body } = await skypostalRequest(action, search);
+    const { headers, body } = await whileLive(skypostalRequest(action, search), signal);
     const { response, bytes } = await fetchBounded(SKYPOSTAL_API, { method: 'POST', signal, headers: {
       Accept: 'application/json, text/plain, */*', 'Content-Type': 'application/json', 'User-Agent': userAgentOf(this.options.userAgent), ...headers,
     }, body }, { provider: PROVIDER, timeoutMs, maxBytes: SKYPOSTAL_MAX_BYTES, redirect: 'manual', fetcher: this.options.fetcher,
@@ -106,12 +119,9 @@ export class SkypostalTracker {
     }
     const sealed = isRecord(envelope) ? envelope.payload : undefined;
     if (typeof sealed !== 'string') throw new SchemaError(PROVIDER, 'SkyPostal returned a reply without its sealed payload');
-    let opened: string;
-    try {
-      opened = await openSkypostalText(sealed);
-    } catch (cause) {
+    const opened = await whileLive(openSkypostalText(sealed).catch((cause: unknown) => {
       throw new SchemaError(PROVIDER, 'SkyPostal returned a payload it did not seal as expected', { cause });
-    }
+    }), signal);
     try {
       return JSON.parse(opened);
     } catch (cause) {

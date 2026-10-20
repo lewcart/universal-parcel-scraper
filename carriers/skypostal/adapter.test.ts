@@ -4,11 +4,22 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, openSkypostalText, SKYPOSTAL_API, SkypostalTracker, sealSkypostalText, skypostalRequest } from './adapter.js';
 import { normalizeSkypostalNumber, readSkypostal, skypostalSummaryNames } from './parser.js';
 import { skypostalStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+
+// Key derivation a test can hold, as a busy host's thread pool does: the next `allowed` keys, then none.
+const derivation = vi.hoisted(() => ({ allowed: Infinity, held: () => {} }));
+vi.mock('node:crypto', async (importOriginal) => {
+  const crypto = await importOriginal<typeof import('node:crypto')>();
+  return { ...crypto, pbkdf2: (...args: Parameters<typeof crypto.pbkdf2>) => {
+    if (derivation.allowed-- > 0) crypto.pbkdf2(...args); else derivation.held();
+  } };
+});
+const held = () => new Promise<void>((resolve) => { derivation.held = resolve; });
 
 const DELIVERED = 'SKAMZUS0000000001';
 const IN_TRANSIT = 'SKAMZUS0000000002';
@@ -245,16 +256,51 @@ describe('SkyPostal sealed lookup', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
-    let signal: AbortSignal | undefined;
-    const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      signal = init?.signal ?? undefined;
-      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
-    }));
-    const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 200 })).rejects.toThrow();
-    expect(signal?.aborted).toBe(true);
-    expect(Date.now() - started).toBeGreaterThanOrEqual(150);
-    expect(fetcher).toHaveBeenCalledTimes(1);
+    useRequestClock();
+    try {
+      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }]);
+      let requested!: () => void;
+      const sent = new Promise<void>((resolve) => { requested = resolve; });
+      const lookup = expect(carrier((input, init) => { requested(); return fetcher(input, init); })
+        .track({ number: IN_TRANSIT }, { budgetMs: 200 })).rejects.toThrow();
+      // Sealing takes real time but none on the faked clock.
+      await sent;
+      await vi.advanceTimersByTimeAsync(200);
+      await lookup;
+      expect(fetcher).toHaveBeenCalledOnce();
+      expect(ended).toEqual([200]);
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    }
+  });
+
+  it('stops waiting for a key it derives once the lookup ends', async () => {
+    const reply = await sealed(fixture('delivered'));
+    useRequestClock();
+    try {
+      const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply);
+      derivation.allowed = 0;
+      let holding = held();
+      const sealing = expect(carrier(fetcher).track({ number: DELIVERED }, { budgetMs: 200 })).rejects.toMatchObject({ name: 'TimeoutError' });
+      await holding;
+      await vi.advanceTimersByTimeAsync(200);
+      await sealing;
+      expect(fetcher).not.toHaveBeenCalled();
+      // The request's two keys, then the reply's.
+      derivation.allowed = 2;
+      holding = held();
+      const controller = new AbortController();
+      const opening = expect(carrier(fetcher).track({ number: DELIVERED }, { signal: controller.signal })).rejects.toThrow('cancelled');
+      await holding;
+      controller.abort(new Error('cancelled'));
+      await opening;
+      expect(fetcher).toHaveBeenCalledOnce();
+    } finally {
+      derivation.allowed = Infinity;
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    }
   });
 
   it('routes a number filed under SkyPostal to the adapter', async () => {

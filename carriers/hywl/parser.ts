@@ -3,8 +3,10 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { HYWL_CHINA_ZONE, hywlInChina } from './clock.js';
 import { hywlStage } from './status.js';
 
 export const PROVIDER = 'Huiyi Logistics';
@@ -85,7 +87,7 @@ function wallClock(stamp: string): string {
   return local;
 }
 
-function projectRow(row: unknown, readAt: number): { key: string; event: CarrierEvent } | null {
+function projectRow(row: unknown, readAt: number): { key: string; clock: string; event: CarrierEvent } | null {
   if (!isRecord(row)) throw new SchemaError(PROVIDER, 'Huiyi Logistics returned an invalid scan');
   const stamp = text(row, 'time', 64);
   const code = text(row, 'status_code', 64);
@@ -94,17 +96,19 @@ function projectRow(row: unknown, readAt: number): { key: string; event: Carrier
   const description = hywlWording(text(row, 'description'), location, place) || code;
   if (!stamp || !description) throw new SchemaError(PROVIDER, 'Huiyi Logistics returned a scan without a time or wording');
   const local = wallClock(stamp);
-  // A row dated after the read, as the reply labels it, is not a scan yet.
-  if (DateTime.fromISO(local, { zone: 'UTC' }).toMillis() > readAt) return null;
+  // A row in China is on Beijing's clock; any other keeps its wall clock.
+  const instant = hywlInChina(place) ? firstOccurrence(DateTime.fromISO(local, { zone: HYWL_CHINA_ZONE })) : null;
+  // A row dated after the read is not a scan yet: one in China by its instant, any other as the reply labels it.
+  if ((instant ?? DateTime.fromISO(local, { zone: 'UTC' })).toMillis() > readAt) return null;
   const staged = hywlStage(code, description);
   const event: CarrierEvent = {
-    local_time: local,
+    ...(instant ? { time: instant.toISO({ suppressMilliseconds: true })! } : { local_time: local }),
     description,
     ...(place ? { location: place } : {}),
     ...(code ? { provider_code: code } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };
-  return { key: JSON.stringify([local, code, description, place]), event };
+  return { key: JSON.stringify([local, code, description, place]), clock: local, event };
 }
 
 /**
@@ -128,17 +132,17 @@ export function parseHywl(payload: unknown, raw: string, readAt = Date.now()): C
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'Huiyi Logistics returned an oversized history');
 
   const seen = new Set<string>();
-  const events: CarrierEvent[] = [];
+  const events: { clock: string; event: CarrierEvent }[] = [];
   for (const row of rows) {
     const scan = projectRow(row, readAt);
     if (!scan || seen.has(scan.key)) continue;
     seen.add(scan.key);
-    events.push(scan.event);
+    events.push(scan);
   }
   // The page reads an empty list as "found, no scans yet".
   if (!events.length) throw new IndeterminateError(PROVIDER, 'Huiyi Logistics has no scans for the shipment yet');
   // Oldest first in the reply; a stable sort keeps the order of rows on one clock.
-  const newestFirst = events.map((event, index) => ({ clock: event.local_time as string, event, index }))
+  const newestFirst = events.map(({ clock, event }, index) => ({ clock, event, index }))
     .sort((a, b) => (a.clock === b.clock ? b.index - a.index : a.clock < b.clock ? 1 : -1))
     .map(({ event }) => event);
 
@@ -150,8 +154,8 @@ export function parseHywl(payload: unknown, raw: string, readAt = Date.now()): C
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time,
+    last_update: newest.time ?? null,
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
     expected_delivery: null,
     ...(/^[A-Z]{2}$/.test(destination) ? { destination_country: destination } : {}),
     events: newestFirst.slice(0, MAX_EVENTS),

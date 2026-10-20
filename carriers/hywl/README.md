@@ -23,13 +23,18 @@ sellers. Tracked through the lookup its tracking page makes.
 ## Notes
 
 - Rows carry `+00:00` and `UTC`, but the page prints their digits without converting them, and
-  read as UTC most Shenzhen rows fall between 01:00 and 06:00 in Beijing. The adapter keeps the
-  wall clocks without an offset.
+  read as UTC most Shenzhen rows fall between 01:00 and 06:00 in Beijing; on Beijing's clock
+  they all fall in the day. A row placed in China or Hong Kong, written in Chinese or naming a
+  city of the line's Chinese leg, is dated on Beijing's clock. Any other keeps its wall clock
+  without an offset: the destination's rows fit either UTC or local time.
+  [17TRACK](../../providers/seventeentrack/README.md) keeps the `+00:00` and reads its copies of
+  the Chinese rows the same way.
 - The page says the company's back office creates the orders and maintains their tracks. The
   rows follow fixed milestone templates, in English or in English and Chinese; one history's rows
   all end at the same minute and second, at uneven hour steps. Repeated lookups hours apart
-  return the same rows. A row dated after the read, as the reply labels it, is held back, so the
-  status comes from the rows returned, never from the summary.
+  return the same rows. A row dated after the read is held back, a row in China by its Beijing
+  instant and any other as the reply labels it, so the status comes from the rows returned,
+  never from the summary.
 - The status code stages each row. `Customs` rows reporting the export clearance completed put
   the parcel back in transit.
 - Destination rows name the recipient's town and postcode, and the first row a town and an
@@ -41,7 +46,7 @@ sellers. Tracked through the lookup its tracking page makes.
 ## Limitations
 
 - No delivery estimate, delivery time, weight, service, partner, sender or recipient.
-- Clocks have no established zone; consumers read them in the catalog zone.
+- Rows outside China have no established zone; consumers read them in the catalog zone.
 
 ## Numbers
 

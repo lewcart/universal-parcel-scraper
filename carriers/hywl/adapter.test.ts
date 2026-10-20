@@ -45,26 +45,26 @@ describe('Huiyi Logistics HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('keeps the rows’ wall clocks newest first, stages them by code and drops the office code', () => {
+  it('dates the rows in China on Beijing’s clock, keeps the others’ wall clocks, newest first, and drops the office code', () => {
     const result = parseHywl(fixture('in-transit'), IN_TRANSIT, LATER);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
       last_status_text: 'Arrival at Transit Hub [Sample Transit Hub]', last_update: null, last_update_local: '2026-03-11T08:21:00',
       expected_delivery: null, destination_country: 'ES' });
-    expect(result.events!.map((event) => [event.local_time, event.provider_code, event.stage, event.location ?? null])).toEqual([
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.provider_code, event.stage, event.location ?? null])).toEqual([
       ['2026-03-11T08:21:00', 'In Transit', 'in_transit', 'Sample Transit Hub'],
       ['2026-03-09T22:09:00', 'In Transit', 'in_transit', 'Example International Hub'],
       // Export clearance is done: the parcel carries on.
-      ['2026-03-07T16:46:00', 'Customs', 'in_transit', 'Dongguan'],
-      ['2026-03-06T13:14:00', 'In Transit', 'in_transit', 'Dongguan'],
-      ['2026-03-05T18:27:00', 'In Transit', 'in_transit', 'Dongguan'],
-      ['2026-03-04T11:58:00', 'In Transit', 'in_transit', 'Dongguan'],
-      ['2026-03-02T20:33:00', 'In Transit', 'in_transit', 'Dongguan'],
-      ['2026-02-28T09:05:00', 'In Transit', 'in_transit', 'Dongguan'],
-      ['2026-02-26T15:40:00', 'In Transit', 'in_transit', 'Dongguan'],
-      ['2026-02-24T10:12:00', 'Picked Up', 'accepted', 'Dongguan'],
+      ['2026-03-07T16:46:00+08:00', 'Customs', 'in_transit', 'Dongguan'],
+      ['2026-03-06T13:14:00+08:00', 'In Transit', 'in_transit', 'Dongguan'],
+      ['2026-03-05T18:27:00+08:00', 'In Transit', 'in_transit', 'Dongguan'],
+      ['2026-03-04T11:58:00+08:00', 'In Transit', 'in_transit', 'Dongguan'],
+      ['2026-03-02T20:33:00+08:00', 'In Transit', 'in_transit', 'Dongguan'],
+      ['2026-02-28T09:05:00+08:00', 'In Transit', 'in_transit', 'Dongguan'],
+      ['2026-02-26T15:40:00+08:00', 'In Transit', 'in_transit', 'Dongguan'],
+      ['2026-02-24T10:12:00+08:00', 'Picked Up', 'accepted', 'Dongguan'],
     ]);
     expect(result.events!.at(-1)!.description).toBe('Shipment accepted [Dongguan], received by SZHYWL');
-    expect(result.events!.every((event) => event.time === undefined)).toBe(true);
+    expect(result.events!.every((event) => !(event.time && event.local_time))).toBe(true);
     expect(JSON.stringify(result)).not.toMatch(/\d{4,}(?![-:T\d])|UTC|\+00:00/);
   });
 
@@ -96,6 +96,10 @@ describe('Huiyi Logistics HTTP adapter', () => {
     const result = parseHywl(fixture('delivered'), DELIVERED, Date.parse('2026-01-27T00:00:00Z'));
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update_local: '2026-01-26T21:17:09' });
     expect(result.events!.map((event) => event.stage)).not.toContain('delivered');
+    // A row in China is ahead of the read by its Beijing instant, not by its label.
+    const china = parseHywl(fixture('delivered'), DELIVERED, Date.parse('2026-01-14T12:00:00Z'));
+    expect(china).toMatchObject({ last_update: '2026-01-14T17:17:09+08:00', events: expect.any(Array) });
+    expect(china.last_update_local).toBeUndefined();
     // Every row ahead of the read: found, without scans yet.
     expect(() => parseHywl(fixture('delivered'), DELIVERED, Date.parse('2026-01-01T00:00:00Z'))).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });

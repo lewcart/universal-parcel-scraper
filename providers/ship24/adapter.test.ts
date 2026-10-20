@@ -2,9 +2,9 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { IndeterminateError, NoHistoryError, UpstreamHttpError } from '../../core/errors/index.js';
-import type { LookupRecord, StepRecord, StepRecorder } from '../../core/telemetry/index.js';
+import { NOOP_RECORDER, type LookupRecord, type StepRecord, type StepRecorder } from '../../core/telemetry/index.js';
 import { scrapeUniversalPage } from '../../core/transport/browser.js';
-import { parseShip24Response, Ship24Tracker } from './adapter.js';
+import { adapter, parseShip24Response, Ship24Tracker } from './adapter.js';
 import { ship24Checksum, Ship24HttpClient } from './http.js';
 
 vi.mock('../../core/transport/browser', () => ({ scrapeUniversalPage: vi.fn() }));
@@ -16,6 +16,10 @@ const history = { data: { tracking_number: number,
 const reply = (data: unknown) => new Response(JSON.stringify(data), { status: 201 });
 const parcelId = '00000000-0000-4000-8000-000000000000';
 const stale = (events: unknown[] = history.data.events) => ({ data: { _id: parcelId, tracking_number: number, to_updated: true, events } });
+/** Ship24's 404, whose message names the number or a courier it keeps for subscribers. */
+const missing = (message = `${number} Not Found`) => new Response(JSON.stringify({ message, error: 'Not Found', statusCode: 404 }),
+  { status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
+const body = (call: Parameters<typeof fetch> | undefined) => JSON.parse(String(call![1]!.body)) as Record<string, unknown>;
 
 /** The instant of one offset-less noon scan at `location`, or undefined when it stays a wall time. */
 function noonAt(location: string | undefined, data: Record<string, unknown> = {}, tracking = number, timezone: string | null = null) {
@@ -350,6 +354,61 @@ describe('Ship24 anonymous HTTP tracking', () => {
     expect(steps[0]).toMatchObject({ step: 'direct', outcome: 'not_found' });
   });
 
+  it('asks once more naming the courier of the carrier the parcel is filed under after a 404, as the page\'s details dialog does', async () => {
+    const { tracker, fetcher, steps } = fixture();
+    fetcher.mockResolvedValueOnce(missing());
+    await expect(tracker.fetch(number, undefined, null, undefined, 'dpd-pl'))
+      .resolves.toMatchObject({ current_stage: 'delivered', tracking_source: 'structured-web-response' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(body(fetcher.mock.calls[0])).not.toHaveProperty('to_check');
+    expect(String(fetcher.mock.calls[1]![0])).toBe(`https://api.ship24.com/api/parcels/${number}?lang=en`);
+    expect(body(fetcher.mock.calls[1])).toMatchObject({ postCode: '', destinationCountryCode: '', to_check: ['dpd-pl'], uL: 'en-US' });
+    expect(scrapeUniversalPage).not.toHaveBeenCalled();
+    expect(steps.map(({ step, outcome }) => [step, outcome])).toEqual([['direct', 'ok']]);
+  });
+
+  it('keeps the first 404 when the courier named is not found either, and reports any other failure of that request', async () => {
+    const { tracker, fetcher } = fixture();
+    fetcher.mockResolvedValueOnce(missing()).mockResolvedValueOnce(new Response('', { status: 404 }));
+    const first = await tracker.fetch(number, undefined, null, undefined, 'dpd-pl').catch((error: unknown) => error);
+    expect(first).toMatchObject({ status: 404, kind: 'not_found', diagnostics: { body_read: 'complete' } });
+    fetcher.mockResolvedValueOnce(missing()).mockResolvedValueOnce(new Response('', { status: 429, headers: { 'Retry-After': '120' } }));
+    await expect(tracker.fetch(number, undefined, null, undefined, 'dpd-pl')).rejects.toMatchObject({ status: 429, retryAfterMs: 120_000 });
+    expect(fetcher).toHaveBeenCalledTimes(4);
+    expect(scrapeUniversalPage).not.toHaveBeenCalled();
+  });
+
+  it('asks once for a carrier without a Ship24 code, or with too little time left', async () => {
+    let clock = 1000;
+    vi.spyOn(performance, 'now').mockImplementation(() => clock);
+    const { client, tracker, fetcher } = fixture(null);
+    fetcher.mockResolvedValueOnce(missing());
+    await expect(tracker.fetch(number, undefined, null, undefined, 'usps')).rejects.toMatchObject({ status: 404 });
+    expect(fetcher).toHaveBeenCalledOnce();
+    vi.spyOn(client, 'fetch').mockImplementationOnce(async () => { clock += 44_000; throw new UpstreamHttpError('Ship24 HTTP', 404); });
+    await expect(tracker.fetch(number, 45_000, null, undefined, 'dpd-pl')).rejects.toMatchObject({ status: 404 });
+    expect(client.fetch).toHaveBeenCalledOnce();
+  });
+
+  it('reports a courier Ship24 shows its subscribers only as not found, without its name or the browser', async () => {
+    const { tracker, fetcher, steps } = fixture();
+    fetcher.mockResolvedValueOnce(missing('Example Courier (Example) is not available for website.'));
+    const error = await tracker.fetch(number, undefined, null, undefined, 'dpd-pl').catch((caught: unknown) => caught);
+    expect(error).toMatchObject({ name: 'NotFoundError', kind: 'not_found', status: 404, reason: 'subscriber_only' });
+    expect(String((error as Error).message)).not.toContain('Example');
+    expect((error as Error).cause).toBeInstanceOf(UpstreamHttpError);
+    expect(fetcher).toHaveBeenCalledOnce();
+    expect(scrapeUniversalPage).not.toHaveBeenCalled();
+    expect(steps).toMatchObject([{ step: 'direct', outcome: 'not_found', errorType: 'NotFoundError' }]);
+  });
+
+  it('passes the carrier the parcel is filed under from the adapter', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(missing()).mockResolvedValueOnce(reply(history));
+    const provider = adapter({ fetcher, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null, env: {} });
+    await expect(provider.track({ number, carrier: 'four-px' })).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(body(fetcher.mock.calls[1])).toMatchObject({ to_check: ['4px'] });
+  });
+
   it('reports a history without usable scans as inconclusive when no Chromium is configured', async () => {
     const { tracker, fetcher, steps } = fixture(null);
     fetcher.mockResolvedValueOnce(reply({ data: { tracking_number: number,
@@ -431,6 +490,7 @@ describe('Ship24 anonymous HTTP tracking', () => {
     const { client, fetcher } = fixture();
     await expect(client.fetch('https://private.test', 1000)).rejects.toThrow('tracking number');
     await expect(client.fetch(number, Infinity)).rejects.toThrow('timeout');
+    await expect(client.fetch(number, 1000, undefined, 'Example Courier')).rejects.toThrow('courier code');
     expect(fetcher).not.toHaveBeenCalled();
   });
 

@@ -17,6 +17,13 @@ Both steps share one budget: 45 s standalone, 30 s inside the chain.
    does. A stored history stands if that refresh fails, takes over 15 s or returns no
    scans. Result
    labelled `tracking_source: structured-web-response`.
+
+   Ship24 answers HTTP 404 for many couriers' parcels until the visitor names the
+   courier, as the page's "Add details" dialog does. When the parcel is filed under a
+   carrier listed in [couriers.ts](couriers.ts) (`TrackingInput.carrier`) and 2 s remain,
+   a 404 is asked once more with that courier's code in `to_check`. A 404 to that keeps
+   the first; any other failure, a rate limit included, is reported. A host lookup
+   without a carrier, such as a preflight, is not asked again.
 2. `browser`: the public tracking page in a fresh local Chromium
    (`TRACKING_CHROMIUM_PATH`), reading the stored-parcel response from the page. Result
    labelled `browser-session-response`.
@@ -31,6 +38,10 @@ The browser step runs only when a browser could fix the direct failure:
 - HTTP 429 and 5xx are reported with their `Retry-After`, so the router backs off once
   instead of asking twice.
 - HTTP 404 and 410 are final: the page calls the same API and only waits out the budget.
+- So is a courier Ship24 keeps for its subscribers (UPS, Royal Mail, SF Express): a 404
+  saying "{courier} is not available for website.", for some only once the courier is
+  named. It is a `NotFoundError` with reason `subscriber_only`; the courier's name stays
+  out of it.
 - So is a parcel Ship24 knows but has no scans for after the refresh (`NoHistoryError`).
 
 Built without an HTTP client (as in browser tests), the adapter runs the browser step
@@ -49,6 +60,9 @@ No account, cookie, fingerprint or issued token is used.
 
 - A GET on the parcel API returns 404 and an unsigned POST returns 403. A signed POST
   returns 201 with the shipment.
+- Courier codes come from the public list the dialog loads,
+  `api.ship24.com/backoffice/api/v1/master-couriers`. Some carriers' parcels stay 404 with
+  their code named; those are not listed.
 - The constants are hard-coded, not fetched at startup. Fetching the page or its asset
   CDN at runtime was blocked by CloudFront from inside the production container.
 

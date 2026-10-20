@@ -16,7 +16,7 @@ import { DateTime } from 'luxon';
 import type { AdapterFactory } from '../../core/adapter/index.js';
 import { carrierIdFromName } from '../../core/catalog/hints.js';
 import { carrierDefinition } from '../../core/catalog/index.js';
-import { IndeterminateError, NoHistoryError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
+import { IndeterminateError, NoHistoryError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
@@ -32,6 +32,7 @@ import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
 import { courierZone, universalCarrierHints } from '../shared/hints.js';
 import { localEvent, numberOf, place, result, type UniversalSource } from '../shared/result.js';
+import { ship24CourierCode } from './couriers.js';
 import { Ship24HttpClient } from './http.js';
 
 const SOURCE: UniversalSource = 'Ship24';
@@ -45,6 +46,8 @@ const MAX_COURIERS = 20;
 const BROWSER_RESERVE_MS = 10_000;
 /** How long a refresh may keep a stored history waiting; most take a few seconds, a stuck carrier query 30. */
 const REFRESH_MS = 15_000;
+/** The least time left worth asking again with the courier named; most such answers take a second or two. */
+const NAMED_COURIER_MIN_MS = 2_000;
 
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
 
@@ -393,11 +396,12 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
 /**
  * A browser cannot repair a rate limit or a server outage: keep the original
  * status and Retry-After for the router's backoff instead of asking twice.
- * Nor can it find a parcel the API answered 404 for, or scans Ship24 said it
- * has none of: the page asks the same API and shows the same answer.
+ * Nor can it find a parcel the API answered 404 for, show a courier Ship24
+ * keeps for subscribers, or find scans Ship24 said it has none of: the page
+ * asks the same API and shows the same answer.
  */
 function browserCanRecover(error: unknown): boolean {
-  return !(error instanceof NoHistoryError) && !(error instanceof UpstreamHttpError
+  return !(error instanceof NoHistoryError) && !(error instanceof NotFoundError) && !(error instanceof UpstreamHttpError
     && (error.status === 404 || error.status === 410 || error.status === 429 || error.status >= 500));
 }
 
@@ -406,11 +410,22 @@ function browserCanRecover(error: unknown): boolean {
  * says `to_updated`. The refresh is Ship24 querying the carriers again. If it
  * fails or is slow, a stored history stands, as on the website; a record with
  * no scans yet is no answer, so the refresh's failure is.
+ *
+ * Ship24 answers 404 for some couriers' parcels until the visitor names the
+ * courier, as the page's "Add details" dialog does. With the code of the
+ * carrier the parcel is filed under, a 404 is asked once more naming it. A
+ * 404 to that keeps the first; any other failure, a rate limit included, is
+ * the answer.
  */
-async function currentParcel(http: Ship24HttpClient, number: string, budgetMs: number, signal?: AbortSignal): Promise<unknown> {
+async function currentParcel(http: Ship24HttpClient, number: string, budgetMs: number, signal?: AbortSignal, courier?: string): Promise<unknown> {
   const deadline = performance.now() + budgetMs;
   const left = () => Math.max(1, Math.floor(deadline - performance.now()));
-  const stored = await http.fetch(number, left(), signal);
+  const stored = await http.fetch(number, left(), signal).catch((error: unknown) => {
+    if (!courier || !(error instanceof UpstreamHttpError) || error.status !== 404 || signal?.aborted || left() < NAMED_COURIER_MIN_MS) throw error;
+    return http.fetch(number, left(), signal, courier).catch((named: unknown) => {
+      throw named instanceof UpstreamHttpError && named.status === 404 ? error : named;
+    });
+  });
   const data = isRecord(stored) && isRecord(stored.data) && stored.data.tracking_number === number ? stored.data : null;
   if (data?.to_updated !== true || typeof data._id !== 'string') return stored;
   const scanned = Array.isArray(data.events) && data.events.length > 0;
@@ -435,19 +450,22 @@ export interface Ship24Options extends Omit<UniversalBrowserOptions, 'signal'> {
 export class Ship24Tracker {
   constructor(readonly options: Ship24Options = {}) {}
 
-  async fetch(trackingNumber: string, budgetMs?: number, timezone: string | null = null, signal?: AbortSignal): Promise<CarrierResult> {
+  /** `carrier` is the catalog id the parcel is filed under, a hint for the lookup. */
+  async fetch(trackingNumber: string, budgetMs?: number, timezone: string | null = null, signal?: AbortSignal,
+    carrier: string | null = null): Promise<CarrierResult> {
     const number = numberOf(trackingNumber);
     const timeoutMs = budgetMs ?? this.options.timeoutMs ?? 45_000;
     if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 60_000) throw new TypeError('Ship24 timeout must be between 1 and 60000 ms');
     const http = this.options.httpClient ?? null;
     const browser = http === null || Boolean(this.options.executablePath);
+    const courier = ship24CourierCode(carrier);
     return runSteps({ carrier: SOURCE, budgetMs: timeoutMs, signal, recorder: this.options.recorder }, [
       {
         id: 'direct',
         enabled: http !== null,
         run: async ({ remainingMs, signal }) => ({
           ...parseShip24Response(await currentParcel(http!, number, browser
-            ? Math.max(remainingMs / 2, remainingMs - BROWSER_RESERVE_MS) : remainingMs, signal), number, timezone),
+            ? Math.max(remainingMs / 2, remainingMs - BROWSER_RESERVE_MS) : remainingMs, signal, courier), number, timezone),
           tracking_source: 'structured-web-response',
         }),
       },
@@ -478,6 +496,6 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: SOURCE,
     steps: ['direct', 'browser'],
-    track: (input, context) => tracker.fetch(input.number, context?.budgetMs, input.timezone ?? null, context?.signal),
+    track: (input, context) => tracker.fetch(input.number, context?.budgetMs, input.timezone ?? null, context?.signal, input.carrier ?? null),
   };
 };

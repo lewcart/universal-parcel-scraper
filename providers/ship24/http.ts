@@ -12,7 +12,8 @@
  */
 import { createHash, createHmac } from 'node:crypto';
 import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
-import { InvalidInputError } from '../../core/errors/index.js';
+import { InvalidInputError, NotFoundError, UpstreamHttpError } from '../../core/errors/index.js';
+import { isRecord } from '../../core/types.js';
 
 const PAGE = 'https://www.ship24.com/tracking';
 const API = 'https://api.ship24.com/api/parcels';
@@ -75,6 +76,26 @@ export function refreshToken(number: string, timestamp = Date.now()): string {
 
 // Ship24's parcel id, a UUID.
 const PARCEL_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+// A code of Ship24's public courier list ("dpd-pl", "4px").
+const COURIER_CODE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+// The 404 message for a courier whose parcels Ship24 shows its subscribers only: "UPS is not available for website."
+const SUBSCRIBER_ONLY = /^[^\n]{1,100} is not available for website\.?$/;
+
+/**
+ * A 404 for a courier Ship24 shows its subscribers only, read from the reply's
+ * diagnostics. The courier's name is provider prose and stays out of the error.
+ */
+function subscriberOnly(error: unknown): NotFoundError | null {
+  if (!(error instanceof UpstreamHttpError) || error.status !== 404 || error.diagnostics?.body_read !== 'complete') return null;
+  try {
+    const reply: unknown = JSON.parse(error.diagnostics.body_excerpt ?? '');
+    const message = isRecord(reply) ? reply.message : null;
+    return typeof message === 'string' && SUBSCRIBER_ONLY.test(message.trim())
+      ? new NotFoundError('Ship24', 'Ship24 shows this courier to subscribers only', { cause: error, reason: 'subscriber_only' }) : null;
+  } catch {
+    return null;
+  }
+}
 
 export class Ship24HttpClient {
   readonly #userAgent: string;
@@ -83,10 +104,16 @@ export class Ship24HttpClient {
     this.#userAgent = userAgentOf(userAgent);
   }
 
-  /** The parcel as Ship24 has it stored; `to_updated` asks for a refresh. */
-  async fetch(number: string, timeoutMs: number, signal?: AbortSignal): Promise<unknown> {
+  /**
+   * The parcel as Ship24 has it stored; `to_updated` asks for a refresh. A
+   * courier code asks for the parcel with that courier, as the tracking page's
+   * "Add details" dialog does.
+   */
+  async fetch(number: string, timeoutMs: number, signal?: AbortSignal, courier?: string): Promise<unknown> {
     if (!/^(?=.*\d)[A-Z0-9]{4,40}$/.test(number)) throw new InvalidInputError('Ship24', 'Invalid Ship24 tracking number');
-    return this.#post(`${API}/${number}?lang=en`, token(number), timeoutMs, signal);
+    if (courier !== undefined && (courier.length > 60 || !COURIER_CODE.test(courier))) throw new TypeError('Invalid Ship24 courier code');
+    return this.#post(`${API}/${number}?lang=en`, token(number), timeoutMs, signal,
+      courier === undefined ? {} : { postCode: '', destinationCountryCode: '', to_check: [courier] });
   }
 
   /**
@@ -99,7 +126,7 @@ export class Ship24HttpClient {
     return this.#post(`${API}/update/${parcelId}/mainTN/${number}?lang=en`, refreshToken(number), timeoutMs, signal);
   }
 
-  async #post(url: string, signature: string, timeoutMs: number, signal?: AbortSignal): Promise<unknown> {
+  async #post(url: string, signature: string, timeoutMs: number, signal?: AbortSignal, details: Record<string, unknown> = {}): Promise<unknown> {
     if (!Number.isFinite(timeoutMs) || timeoutMs < 1) throw new TypeError('Ship24 HTTP timeout must be positive');
     const { bytes } = await fetchBounded(url, {
       method: 'POST', signal,
@@ -107,8 +134,10 @@ export class Ship24HttpClient {
         Referer: PAGE, 'User-Agent': this.#userAgent, 'x-ship24-token': signature },
       body: JSON.stringify({ userAgent: '', os: 'Linux', browser: 'Unknown', device: 'Unknown',
         os_version: 'unknown', browser_version: 'unknown', deviceType: 'desktop',
-        orientation: 'landscape', uL: 'en-US' }),
-    }, { provider: 'Ship24 HTTP', fetcher: this.fetcher, timeoutMs: Math.floor(timeoutMs), maxBytes: 2_000_000 });
+        orientation: 'landscape', uL: 'en-US', ...details }),
+    }, { provider: 'Ship24 HTTP', fetcher: this.fetcher, timeoutMs: Math.floor(timeoutMs), maxBytes: 2_000_000 }).catch((error: unknown) => {
+      throw subscriberOnly(error) ?? error;
+    });
     return parseJsonBytes(bytes, 'Ship24');
   }
 }

@@ -215,6 +215,22 @@ describe('MRW anonymous tracking', () => {
     expect(atPoint.delivered_at).toBeUndefined();
   });
 
+  it('keeps the wording and stage of the franchise, hold and return rows', () => {
+    for (const [status, overall, stage] of [
+      ['Pendiente de recibir en destino', 'in_transit', 'in_transit'], ['Recibido en Franquicia de destino', 'in_transit', 'in_transit'],
+      ['Concertada próxima entrega', 'in_transit', 'in_transit'],
+      ['Entrega aplazada pendiente de cobro o cita previa', 'exception', 'exception'],
+      ['Pendiente de recibir datos de entrega', 'exception', 'exception'], ['Dirección entrega incompleta', 'exception', 'exception'],
+      ['Devuelto al remitente', 'exception', 'returned'],
+    ] as const) {
+      const result = latestAt('02600 Ejemplo', '10/09/2026', '19:29', status);
+      expect(result, status).toMatchObject({ status: overall, current_stage: stage, last_status_text: status,
+        last_update: '2026-09-10T19:29:00+02:00' });
+      expect(result.events?.[0], status).toMatchObject({ description: status, provider_status: status, stage });
+      expect(result.delivered_at, status).toBeUndefined();
+    }
+  });
+
   it('calls the exact anonymous five-step sequence with one cookie jar through the full factory', async () => {
     const fetcher = vi.fn<typeof fetch>(async (url, init) => {
       const step = fetcher.mock.calls.length;

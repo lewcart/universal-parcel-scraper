@@ -164,13 +164,21 @@ function eventDescription(
 ): string {
   const eventCode = text(event.eventCode, 100);
   const segments = [...eventCode.split('.'), internationalType];
-  let description = translationMatch(translations, segments);
+  // The tracker's page fills a wording's {{valueParameter}} with the scan's
+  // `subEventAdditionalInfo`, a collection deadline. A wording it would leave
+  // unfilled, or fill with anything but a date, is dropped.
+  const parameter = text(event.subEventAdditionalInfo, 40);
+  const filled = (wording: string | null): string | null => {
+    if (!wording?.includes('{{valueParameter}}')) return wording;
+    return /^\d[\d./: T+-]{5,}$/.test(parameter) ? wording.replaceAll('{{valueParameter}}', parameter) : null;
+  };
+  let description = filled(translationMatch(translations, segments));
   const subEventId = text(event.subEventId, 50);
   if (subEventId) {
     const subSegments = [...segments, subEventId];
     const detailCode = text(event.subEventDetailCode, 50);
     if (detailCode) subSegments.push(detailCode);
-    const detail = translationMatch(translations, subSegments);
+    const detail = filled(translationMatch(translations, subSegments));
     if (detail && detail !== description) description = description ? `${description} — ${detail}` : detail;
   }
   const metadata = isRecord(event.externalMetadata) ? event.externalMetadata : {};

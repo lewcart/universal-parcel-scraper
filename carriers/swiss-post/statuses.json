@@ -450,6 +450,15 @@
       "firstSeen": "2026-09-10"
     },
     {
+      "code": "2100",
+      "wording": "Registered for collection",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "A pickup notice like 910. Its sub-event names the collection deadline."
+    },
+    {
       "code": "2101",
       "wording": "Ready for pick-up at PickPost / My Post 24 point",
       "language": "en",

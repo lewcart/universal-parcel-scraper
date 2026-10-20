@@ -59,8 +59,11 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
   Swiss Post's own wording table gives each mapped code the same meaning for
   both. Several English wordings mislead: "Completion of customs clearance" and
   "Arrival at the collection/delivery point" are neither active customs nor a
-  delivery, and `910` "Registered for collection" is a pickup notice. Unmapped
-  codes get no stage and are left to the sync.
+  delivery, and `910` and `2100` "Registered for collection" are pickup notices.
+  Unmapped codes get no stage and are left to the sync.
+- A wording's `{{valueParameter}}` is filled, as the tracker's page fills it,
+  with the scan's `subEventAdditionalInfo`, a collection deadline. A wording
+  left unfilled or filled with anything but a date is dropped.
 - A shipment sent back reads "Delivered" once it reaches its sender again;
   `globalStatus` `RETURNED` or the `returned` flag turns that into returned. A
   sub-event starting `CAN` ("Revocation") withdraws its scan, which then takes

@@ -115,6 +115,20 @@ describe('Swiss Post historical event codes', () => {
     expect(result).not.toHaveProperty('delivered_at');
   });
 
+  it('reads a pickup notice\'s deadline as the tracker\'s page fills it', () => {
+    const wording = { 'LETTER.*.*.2100.*': 'Registered for collection', 'LETTER.*.*.2100.*.MEZ1': 'Deadline to {{valueParameter}}' };
+    const notice = (extra: Record<string, unknown>) => parseSwissPostShipment({ globalStatus: 'MISSED_DELIVERY' }, [
+      { eventCode: 'LETTER.*.92.1001', timestamp: '2026-10-20T08:05:06+02:00' },
+      { eventCode: 'LETTER.*.92.2100', subEventId: 'MEZ1', timestamp: '2026-10-20T08:46:31+02:00', ...extra },
+    ], wording);
+    expect(notice({ subEventAdditionalInfo: '27.10.2026' })).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup',
+      last_status_text: 'Registered for collection — Deadline to 27.10.2026' });
+    // Without a date the deadline is left out, never shown as its placeholder.
+    for (const extra of [{}, { subEventAdditionalInfo: 'see notice' }]) {
+      expect(notice(extra).events?.[0]).toMatchObject({ description: 'Registered for collection', stage: 'ready_for_pickup' });
+    }
+  });
+
   it('reads the destination post\'s unlocated events on its clock, not on the Swiss offset they carry', () => {
     const history = [
       { eventCode: 'LETTER.*.82.909', timestamp: '2026-10-08T12:26:00+02:00' },

@@ -79,6 +79,11 @@ describe('DHL Express projection', () => {
         .toEqual({ stage: 'customs', source: 'carrier_map' });
     }
     expect(dhlExpressStage('Synthetic payment wording', 'PY')).toEqual({ stage: 'customs', source: 'carrier_map' });
+    // The shipper's further data registers the shipment, coded or not.
+    for (const code of ['EM', null]) {
+      expect(dhlExpressStage('Supplementary information has been received and merged with applicable shipment data', code))
+        .toEqual({ stage: 'registered', source: 'carrier_map' });
+    }
     // A missort delays the parcel, coded or not.
     for (const code of ['MS', null]) {
       expect(dhlExpressStage('Shipment arrived at incorrect facility. It will be sent to the correct destination', code))

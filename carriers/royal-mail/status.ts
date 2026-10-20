@@ -8,6 +8,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const RETURNED_TERMS = ['return to sender', 'returned to sender', 'returning to sender'];
 const FAILED_ATTEMPT_TERMS = [
@@ -45,6 +46,7 @@ const EVENT_STAGES = new Map<string, Stage>([
   ['EVJDU', 'in_transit'],
   ['EVCAD', 'accepted'],
   ['EVPPA', 'accepted'],
+  ['LOPPA', 'accepted'],
   ['EVAIP', 'registered'],
   ['EVAIE', 'registered'],
   ['ECCSB', 'registered'],
@@ -110,3 +112,9 @@ export function royalMailStatus(text: string): CarrierStatus {
   if (stage) return statusForStage(stage);
   return 'unknown';
 }
+
+/** What the map says about one scan: its event code, else its wording, as the parser reads them. */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? royalMailEventStage(code) : null) ?? royalMailStage(wording) ?? undefined,
+  gaps: [],
+};

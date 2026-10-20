@@ -323,6 +323,7 @@ import { statusMap as morningGlobal } from '../../carriers/morning-global/status
 import { statusMap as mrlGlobal } from '../../carriers/mrl-global/status.js';
 import { statusMap as mtscn } from '../../carriers/mtscn/status.js';
 import { statusMap as mylerz } from '../../carriers/mylerz/status.js';
+import { statusMap as nacex } from '../../carriers/nacex/status.js';
 import { statusMap as naqel } from '../../carriers/naqel/status.js';
 import { statusMap as nationex } from '../../carriers/nationex/status.js';
 import { statusMap as nextLevelDelivery } from '../../carriers/next-level-delivery/status.js';
@@ -403,6 +404,7 @@ import { statusMap as rivigo } from '../../carriers/rivigo/status.js';
 import { statusMap as rlCarriers } from '../../carriers/rl-carriers/status.js';
 import { statusMap as roadrunner } from '../../carriers/roadrunner/status.js';
 import { statusMap as royalExpressMm } from '../../carriers/royal-express-mm/status.js';
+import { statusMap as royalMail } from '../../carriers/royal-mail/status.js';
 import { statusMap as rpxIndonesia } from '../../carriers/rpx-indonesia/status.js';
 import { statusMap as saia } from '../../carriers/saia/status.js';
 import { statusMap as sagawa } from '../../carriers/sagawa/status.js';
@@ -579,7 +581,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
   'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, 'maruti-air': marutiAir, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,
   'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
-  'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mtscn, mylerz, naqel, nationex,
+  'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mtscn, mylerz, nacex, naqel, nationex,
   'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,
   northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
@@ -594,7 +596,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   posturinn, ppl, 'precision-deliveries': precisionDeliveries,
   'pro-carrier': proCarrier, 'prompt-xpress': promptXpress, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'pullman-cargo': pullmanCargo, 'quantium-solutions': quantiumSolutions,
   'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech,
-  rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm,
+  rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
   'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sending, serpost, servientrega, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket,
   'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'skroutz-last-mile': skroutzLastMile,

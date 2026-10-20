@@ -9,6 +9,8 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const EXACT: ReadonlyMap<string, Stage> = new Map([
   ['shipment information received', 'registered'],
+  // The shipper's further data, such as customs paperwork, joined to the shipment's record.
+  ['supplementary information has been received and merged with applicable shipment data', 'registered'],
   ['shipment picked up', 'accepted'],
   ['shipment accepted', 'accepted'],
   // A clearance step without its outcome: the parcel is still in customs.

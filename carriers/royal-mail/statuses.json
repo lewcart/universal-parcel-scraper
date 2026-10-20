@@ -180,6 +180,15 @@
       "note": "Dropped off at a Post Office or parcel shop."
     },
     {
+      "code": "LOPPA",
+      "wording": "Sender advised item dropped off at parcel locker",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The sender handed the item in at a Royal Mail parcel locker."
+    },
+    {
       "code": "EVIPP",
       "wording": "Received at Delivery Depot",
       "language": "en",

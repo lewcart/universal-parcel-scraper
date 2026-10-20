@@ -69,8 +69,9 @@ const ACTIVITY_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   // Facility scans, export and import scans.
   ['AR', 'in_transit'], ['DP', 'in_transit'], ['DS', 'in_transit'], ['YP', 'in_transit'], ['HL', 'in_transit'],
   ['EP', 'in_transit'], ['IP', 'in_transit'],
-  // A notice that the package is on its way, without a facility.
-  ['DA', 'in_transit'],
+  // A notice that the package is on its way, without a facility, and one that
+  // it is on its way to a UPS facility.
+  ['DA', 'in_transit'], ['AG', 'in_transit'],
   // Delays and new delivery plans: a late flight, a possible delay, a new
   // plan, a delivery a day early.
   ['18', 'in_transit'], ['Q5', 'in_transit'], ['E3', 'in_transit'], ['2U', 'in_transit'],

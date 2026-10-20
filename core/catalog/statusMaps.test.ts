@@ -205,6 +205,29 @@ describe('status map answers', () => {
     expect(answer('thailand-post', 'toString', 'Synthetic scan')).toEqual(unknown);
   });
 
+  it("answers NACEX's labels, and leaves its notices to the scans around them", () => {
+    expect(answer('nacex', null, 'Aceptada')).toEqual(mapped('accepted'));
+    expect(answer('nacex', null, 'En tránsito')).toEqual(mapped('in_transit'));
+    expect(answer('nacex', null, 'Disponible en punto NACEX')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('nacex', null, 'Notificado')).toEqual(gap);
+    expect(answer('nacex', null, 'Sin estado')).toEqual(gap);
+    expect(answer('nacex', null, 'Synthetic label')).toEqual(unknown);
+  });
+
+  it("answers Royal Mail's event codes, else its wording", () => {
+    expect(answer('royal-mail', 'LOPPA', 'Sender advised item dropped off at parcel locker')).toEqual(mapped('accepted'));
+    expect(answer('royal-mail', 'EVPPA', 'Accepted at Parcelshop')).toEqual(mapped('accepted'));
+    expect(answer('royal-mail', 'EVKOP', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('royal-mail', 'ZZZZZ', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('royal-mail', 'ZZZZZ', 'Synthetic scan')).toEqual(unknown);
+  });
+
+  it("answers UPS's in-transit notice and DHL Express's supplementary data", () => {
+    expect(answer('ups', 'AG', 'Package is in transit to a UPS facility')).toEqual(mapped('in_transit'));
+    expect(answer('dhl-express', 'EM', 'Supplementary information has been received and merged with applicable shipment data'))
+      .toEqual(mapped('registered'));
+  });
+
   it("answers STO's scan types by the wording stored for them, on the way out and back", () => {
     expect(answer('sto', '派件', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
     expect(answer('sto', '发件', 'Departed for Example hub')).toEqual(mapped('in_transit'));

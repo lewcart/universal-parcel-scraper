@@ -51,6 +51,15 @@
       "firstSeen": "2026-10-05"
     },
     {
+      "code": "EM",
+      "wording": "Supplementary information has been received and merged with applicable shipment data",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The shipper's further data joined to the shipment's record, seen before the shipment information itself. Read by its wording; the unified feed codes it EM."
+    },
+    {
       "wording": "Processed at",
       "language": "en",
       "stage": "in_transit",

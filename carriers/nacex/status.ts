@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const labels: Record<string, ClassifiedStatus> = {
   NOTIFICADO: { status: 'pending', stage: 'registered' },
@@ -32,6 +33,15 @@ export function classifyNacexStatus(label: string): ClassifiedStatus | undefined
 export function isNacexNotice(label: string): boolean {
   return notices.has(key(label));
 }
+
+/** What the map says about one scan by its label. A notice takes its stage from the scans around it, so it has none of its own. */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code || isNacexNotice(wording) ? undefined : classifyNacexStatus(wording)?.stage),
+  gaps: [
+    { wording: 'notificado', note: 'A notice recorded around collection: it keeps the stage of the scan before it, and registers only a shipment that has no scan yet.' },
+    { wording: 'sin estado', note: 'An administrative note: it keeps the stage of the scan before it, and registers only a shipment that has no scan yet.' },
+  ],
+};
 
 const movements = new Set(['ACEPTADA', 'EN TRANSITO', 'EN REPARTO', 'DISPONIBLE EN PUNTO NACEX']);
 

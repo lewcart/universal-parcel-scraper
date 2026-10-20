@@ -237,6 +237,28 @@ describe('same-instant identity policies', () => {
     ]) expect(policy?.matches?.(incoming, different)).toBe(false);
   });
 
+  it('lets a DHL Express record take over the row the other feed stored, by wall clock, place and wording', () => {
+    expect(sameInstantIdentityPolicy('dhl-express')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('dhl-express', { supportsScanMatching: true });
+    expect(policy).toMatchObject({
+      sourceCarrierId: 'dhl-express', storedSources: ['dhl-express'], requireProviderCode: false, matchEachScan: true, matchWallClock: true,
+    });
+    expect(policy?.relabelledFrom).toBeUndefined();
+    // The global portal's record carries DHL's code; the mobile API's has none, and its stage may differ.
+    const stored = { stage: 'customs', description: 'Customs clearance status updated', location: 'EXAMPLE CITY - ITALY', providerCode: 'RR' };
+    const incoming = { ...stored, stage: 'in_transit', description: ' customs clearance  status updated ', location: 'EXAMPLE CITY - ITALY ', providerCode: '' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(stored, incoming)).toBe(true);
+    expect(policy?.matches?.(stored, stored)).toBe(true);
+    for (const different of [
+      { ...stored, description: 'Clearance processing complete at EXAMPLE CITY - ITALY' },
+      { ...stored, location: 'ANOTHER CITY - ITALY' },
+      { ...stored, location: '' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...stored, providerCode: 'SD' }, stored)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+
   it('lets an MRW hub scan gain its bracketed label', () => {
     expect(sameInstantIdentityPolicy('mrw')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('mrw', { supportsScanMatching: true });

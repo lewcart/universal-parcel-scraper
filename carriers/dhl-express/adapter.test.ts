@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { sameInstantIdentityPolicy } from '../../core/catalog/eventIdentity.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
@@ -437,6 +438,25 @@ describe('DHL public browser API', () => {
       expect(parseUnified(data, number).events?.[0]).toMatchObject({ description: 'Delivered' });
       expect(parseUnified(data, number).events?.[0]?.time).toBeUndefined();
     }
+  });
+  it('gives a record the feeds date on different clocks one wall clock, place and wording, which its identity policy matches', () => {
+    const description = 'Customs clearance status updated. Note - The Customs clearance process is under way.';
+    const location = 'EXAMPLE CITY - ITALY';
+    const mobile = mobilePayload();
+    mobile[0]!.checkpoints = [{ description, date: 'localized date', date_en: 'Monday, October 05, 2026', time: '11:00', location, counter: 1, pIds: [] }];
+    const unified = unifiedPayload();
+    unified.shipments[0]!.events = [{ description, statusCode: 'transit', status: 'RR', timestamp: '2026-10-05T11:00:00+01:00',
+      location: { address: { addressLocality: location, streetAddress: 'PRIVATE' } } }];
+    const [fromMobile] = parseMobile(mobile, number).events!;
+    const [fromPortal] = parseUnified(unified, number).events!;
+    expect(fromMobile).toMatchObject({ time: '2026-10-05T11:00:00+02:00', location, description });
+    expect(fromPortal).toMatchObject({ time: '2026-10-05T11:00:00+01:00', location, description, provider_code: 'RR' });
+    const evidence = (event: typeof fromMobile) => ({ stage: event!.stage ?? '', description: event!.description ?? '',
+      location: event!.location ?? '', providerCode: event!.provider_code ?? '' });
+    const policy = sameInstantIdentityPolicy('dhl-express', { supportsScanMatching: true });
+    expect(policy?.matchWallClock).toBe(true);
+    expect(policy?.matches?.(evidence(fromMobile), evidence(fromPortal))).toBe(true);
+    expect(policy?.matches?.(evidence(fromPortal), evidence(fromMobile))).toBe(true);
   });
   function browser(responses: ReturnType<typeof captured>[]) {
     const trawl = new TrawlClient('https://browser.example');

@@ -116,8 +116,10 @@ samples.
 Some records are not on the facility's clock: customs status updates (also written in UTC,
 or an hour off in Switzerland) and the shipment's data (on the clock of the system that
 entered it). The global portal gives them their own offsets; the mobile API gives only the
-wall clock, read on the facility's zone, so they can be off by the difference, and a
-parcel answered both ways can hold such a record twice.
+wall clock, read on the facility's zone, so they can be off by the difference. The app
+identity policy in [identity.ts](identity.ts) (`matchWallClock`) lets a record from one feed
+take over the row the other stored, by wall clock, location and wording, so the parcel keeps
+one row.
 
 A scan whose location settles no zone keeps its clock as `local_time`: a country with
 several clocks and no region, or a country DHL writes in a form the rule does not know.

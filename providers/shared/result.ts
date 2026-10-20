@@ -177,6 +177,10 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^we have received the shipment from the sender[.!]?$/i.test(value)) return 'accepted';
   // An export warehouse receiving the parcel after the origin's sorting centre has sent it on.
   if (/^received at (?:the )?origin warehouse[.!]?$/i.test(value)) return 'in_transit';
+  // Scans aggregators relay in the network's words: Italian "in viaggio" (on its way), a checkpoint passed,
+  // and the network's receipt of the sender's confirmation that the shipment is being prepared.
+  if (/^in viaggio[.!]?$|^item has passed a checkpoint[.!]?$/i.test(value)) return 'in_transit';
+  if (/^confirmation of preparation of the shipment received[.!]?$/i.test(value)) return 'registered';
   if (/^(?:received\.|(?:\d\) )?[a-z ]{1,40} cent(?:er|re)) your order has been received[.!]?$|^(?:\S+ )?cent(?:er|re) (?:received|parcel shipped to \S+)[.!]?$|^origin port warehouse receive\b|^the flight has taken off[.!]?$|^(?:\S+ )?dispatch task assigned to da[.!]?$/i.test(value)) return 'in_transit';
   if (/^<bad address>$/i.test(value)) return 'failed_attempt';
   // Speedaf's issue scan ending a delivery round the recipient had moved to another day, as its own map reads it.

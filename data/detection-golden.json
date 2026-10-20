@@ -66714,14 +66714,9 @@
   },
   {
     "input": "CNG00798678939847",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "aliexpress",
+    "confidence": "high",
     "candidates": [
-      "aliexpress",
-      "colis-prive"
-    ],
-    "asked": [
-      "colis-prive",
       "aliexpress"
     ]
   },

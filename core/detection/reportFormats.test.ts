@@ -130,7 +130,6 @@ describe('evidence-backed tracking formats', () => {
     expect(detectCarrierMatch('3a5v 123456789')).toMatchObject({ carrier: 'cne', confidence: 'high' });
     expect(detectCarrierMatch('3A5V12345678').carrier).toBe('unknown');
     expect(detectCarrierMatch('CRIN26010112345678')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['intelcom'] });
-    expect(detectCarrierMatch('CNG00123456789012')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'colis-prive'] });
   });
 
   it('keeps the 000010 account ambiguous between TIPSA and CTT Express', () => {

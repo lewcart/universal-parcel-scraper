@@ -44,14 +44,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "aliexpress",
-          "colis-prive"
-        ]
+        "carrier": "aliexpress",
+        "confidence": "high"
       },
-      "note": "Public report on the German consumer forum. Cainiao's tracking returns its history. Detection suggests AliExpress beside Colis Privé's generic rule."
+      "note": "Public report on the German consumer forum. Cainiao's tracking returns its history."
     },
     {
       "number": "UB209300714LV",

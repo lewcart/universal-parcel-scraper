@@ -76,7 +76,7 @@
     {
       "id": "aliexpress-2",
       "pattern": "^CNG\\d{14}$",
-      "confidence": "low"
+      "confidence": "high"
     },
     {
       "id": "aliexpress-lp-reference",

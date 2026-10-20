@@ -49,6 +49,15 @@ describe('Cainiao DOFR detection', () => {
     expect(parseTrackingInput('cnfr 0000000000001 hd')).toMatchObject({ carrier: 'aliexpress', confidence: 'high' });
   });
 
+  it('routes CNG numbers to Cainiao, not to a postcode-ending Colis Privé number', () => {
+    for (const value of ['CNG00123456789012', 'cng 99000000000001']) {
+      expect(detectCarrierMatch(value)).toMatchObject({ carrier: 'aliexpress', confidence: 'high', candidates: ['aliexpress'] });
+    }
+    for (const value of ['CNG0012345678901', 'CNG001234567890123', 'CNH00123456789012', 'CNGA0123456789012']) {
+      expect(detectCarrierMatch(value).confidence, value).not.toBe('high');
+    }
+  });
+
   it.each(['DOFR000000000001HD', 'DOFR00000000000001HD', 'DOFR0000000000001HU', 'DOGB0000000000001HD',
     'CNFR000000000001HD', 'CNFR0000000000001HU'])(
     'leaves unsupported format %s unresolved', (value) => {

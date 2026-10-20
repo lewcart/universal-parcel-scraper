@@ -113,6 +113,12 @@ the islands' clock, unless the mainland has a town of that name. Ship24 relays t
 scans with DHL's own offsets, and the rule agrees with them on every scan of the public
 samples.
 
+Some records are not on the facility's clock: customs status updates (also written in UTC,
+or an hour off in Switzerland) and the shipment's data (on the clock of the system that
+entered it). The global portal gives them their own offsets; the mobile API gives only the
+wall clock, read on the facility's zone, so they can be off by the difference, and a
+parcel answered both ways can hold such a record twice.
+
 A scan whose location settles no zone keeps its clock as `local_time`: a country with
 several clocks and no region, or a country DHL writes in a form the rule does not know.
 The rule knows English country names, the forms on DHL's scans (`UK`, `USA`, `NETHERLANDS,

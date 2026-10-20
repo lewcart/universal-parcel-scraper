@@ -33,10 +33,10 @@ describe('MRW anonymous tracking', () => {
     expect(parsed.events?.map(event => event.stage)).toEqual(['delivered', 'ready_for_pickup', 'failed_attempt', 'in_transit', 'registered']);
     expect(parsed.events?.[0]).toEqual({ description: 'Envío entregado', provider_status: 'Envío entregado', stage: 'delivered',
       time: '2026-09-10T19:29:00+02:00', location: '02600 Ejemplo' });
-    // A pickup point's code names no province, so its scan keeps its wall clock.
+    // A pickup point's code names no province, and no office of the history is in its town, so its scan keeps its wall clock.
     expect(parsed.events?.map(event => event.time ?? event.local_time)).toEqual(['2026-09-10T19:29:00+02:00', '2026-09-10T13:40:00',
       '2026-09-09T16:47:00+02:00', '2026-09-07T14:03:00+02:00', '2026-09-04T17:10:00+02:00']);
-    expect(parsed.events?.[1]).toMatchObject({ local_time: '2026-09-10T13:40:00', location: '40000 Ejemplo' });
+    expect(parsed.events?.[1]).toMatchObject({ local_time: '2026-09-10T13:40:00', location: '40000 Muestra' });
     // The host and aggregators relaying the wall clocks left read them in Spanish time.
     expect(resultTimezone('mrw', parsed)).toBe('Europe/Madrid');
     expect(JSON.stringify(parsed)).not.toContain('PRIVATE_SYNTHETIC_ADDRESS');
@@ -186,7 +186,7 @@ describe('MRW anonymous tracking', () => {
   it('keeps the wall clocks of offices whose code does not settle their clock', () => {
     // The Canary Islands, Portugal, an MRW Point, an office named for a Canary Islands town, a postcode and a bare code.
     for (const location of ['04900 Ejemplo', '05000 Ejemplo', '08000 Exemplo', '08099 Exemplo (Plataforma)', '07700 Exemplo',
-      '40000 Ejemplo', '10000 Exemplo', '02600 Telde', '4000-001 Exemplo', '02699', '']) {
+      '40000 Muestra', '10000 Exemplo', '02600 Telde', '4000-001 Exemplo', '02699', '']) {
       const result = latestAt(location);
       expect(result, location).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-09-10T19:29:00' });
       expect(result.delivered_at, location).toBeUndefined();
@@ -199,12 +199,28 @@ describe('MRW anonymous tracking', () => {
 
   it('keeps the wall clocks of a pickup point whose code reads as a province, with or without its map link', () => {
     const atPoint = parseMrwHistory(fixture('history')
-      .replace('>40000 Ejemplo</a>', '>02650 Ejemplo</a>').replace(newest, newest.replace('02600 Ejemplo', '02650 Ejemplo')),
+      .replace('>40000 Muestra</a>', '>02650 Muestra</a>').replace(newest, newest.replace('02600 Ejemplo', '02650 Muestra')),
     NUMBER, summary());
     expect(atPoint).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-09-10T19:29:00' });
     expect(atPoint.events?.slice(0, 3).map(event => [event.location, event.time, event.local_time])).toEqual([
-      ['02650 Ejemplo', undefined, '2026-09-10T19:29:00'], ['02650 Ejemplo', undefined, '2026-09-10T13:40:00'],
+      ['02650 Muestra', undefined, '2026-09-10T19:29:00'], ['02650 Muestra', undefined, '2026-09-10T13:40:00'],
       ['02600 Ejemplo', '2026-09-09T16:47:00+02:00', undefined]]);
+  });
+
+  it('dates a pickup point on the clock of an office of its town in the same history', () => {
+    // The point's delivery and drop-off, in the town of the office that brought the parcel.
+    const atPoint = parseMrwHistory(fixture('history').replace('>40000 Muestra</a>', '>40000 Ejemplo</a>')
+      .replace(newest, newest.replace('02600 Ejemplo', '40000 Ejemplo')), NUMBER, summary());
+    expect(atPoint).toMatchObject({ status: 'delivered', last_update: '2026-09-10T19:29:00+02:00', delivered_at: '2026-09-10T19:29:00+02:00' });
+    expect(atPoint.events?.slice(0, 2).map(event => [event.location, event.time])).toEqual([
+      ['40000 Ejemplo', '2026-09-10T19:29:00+02:00'], ['40000 Ejemplo', '2026-09-10T13:40:00+02:00']]);
+    // An office of that town whose code does not settle its clock leaves the point on its wall clock.
+    for (const office of ['04900 Ejemplo', '08000 Ejemplo']) {
+      const unsettled = parseMrwHistory(fixture('history').replace('>40000 Muestra</a>', '>40000 Ejemplo</a>')
+        .replace(newest, newest.replace('02600 Ejemplo', office)), NUMBER, summary());
+      expect(unsettled.events?.[1], office).toMatchObject({ location: '40000 Ejemplo', local_time: '2026-09-10T13:40:00' });
+      expect(unsettled.events?.[1]?.time, office).toBeUndefined();
+    }
   });
 
   it('keeps a clock the change to summer time skips and reads a repeated one as its first occurrence', () => {
@@ -220,7 +236,7 @@ describe('MRW anonymous tracking', () => {
     expect(moving.delivered_at).toBeUndefined();
     expect(moving.last_update_local).toBeUndefined();
     // A delivery at a pickup point keeps its wall clock; the older rows' instants are not promoted.
-    const atPoint = latestAt('40000 Ejemplo');
+    const atPoint = latestAt('40000 Muestra');
     expect(atPoint).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-09-10T19:29:00' });
     expect(atPoint.delivered_at).toBeUndefined();
   });

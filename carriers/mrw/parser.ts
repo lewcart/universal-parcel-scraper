@@ -2,7 +2,7 @@ import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { calendarDay, firstOccurrence, regionHasTown } from '../../core/time/index.js';
+import { calendarDay, firstOccurrence, regionHasTown, townKey } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { classifyMrwStatus } from './status.js';
 
@@ -105,13 +105,15 @@ function officeLabel(value: string): string {
  * Ceuta's and Melilla's offices among them, 052 for Gibraltar and 060 for
  * Andorra, all on Madrid's clock. The Canary Islands' 049 and 050 and
  * Portugal's 070 to 089 keep clocks of their own, and nothing shows whether
- * their rows are written on the office's clock or on Madrid's; pickup points'
- * codes name no province. Those, and an office named for a town of the Canary
- * Islands, have none.
+ * their rows are written on the office's clock or on Madrid's. Those, and an
+ * office named for a town of the Canary Islands, have none. A pickup point's
+ * code names no province, but an office of its town hands it the parcel: a
+ * point in the town of an office of the same history keeps that office's zone.
  */
-function officeZone(location: string, points: ReadonlySet<string>): string | null {
+function officeZone(location: string, points: ReadonlySet<string>, townZones: ReadonlyMap<string, string | null> = new Map()): string | null {
   const office = /^((\d{3})\d{2})\s+(.+?)(?: \([\p{L} ]+\))?$/u.exec(location);
-  if (!office || points.has(office[1]!) || regionHasTown('ES-CN', office[3]!)) return null;
+  if (!office || regionHasTown('ES-CN', office[3]!)) return null;
+  if (points.has(office[1]!)) return townZones.get(townKey(office[3]!)) ?? null;
   const province = Number(office[2]);
   if (province >= 1 && province <= 48) return 'Europe/Madrid';
   return province === 52 ? 'Europe/Gibraltar' : province === 60 ? 'Europe/Andorra' : null;
@@ -124,9 +126,9 @@ function instant(wall: string, zone: string): string | null {
 }
 
 /** A row's clock: an instant when its office settles the zone, else the wall clock or the text as shown. */
-function rowClock(rawDate: string, rawHour: string, location: string, points: ReadonlySet<string>): { time?: string; local_time?: string; provider_time_text?: string } {
+function rowClock(rawDate: string, rawHour: string, location: string, points: ReadonlySet<string>, townZones: ReadonlyMap<string, string | null>): { time?: string; local_time?: string; provider_time_text?: string } {
   const clock = buildLocalDate(rawDate, rawHour);
-  const zone = location ? officeZone(location, points) : null;
+  const zone = location ? officeZone(location, points, townZones) : null;
   const time = zone && clock.local_time ? instant(clock.local_time, zone) : null;
   return time ? { time } : clock;
 }
@@ -168,6 +170,16 @@ export function parseMrwHistory(html: string, raw: string, summary: MrwSummary):
     const code = /^\d{5}(?=\s)/.exec(officeLabel(place.text()))?.[0];
     return code && place.find('a[onclick*="openMap"]').length ? [code] : [];
   }));
+  // The zones of the offices' towns, for the points among them; none for a town whose offices disagree.
+  const townZones = new Map<string, string | null>();
+  for (const row of rows.toArray()) {
+    const location = officeLabel($(row).children('td').eq(3).text());
+    const town = /^\d{5}\s+(.+?)(?: \([\p{L} ]+\))?$/u.exec(location)?.[1];
+    if (!town || points.has(location.slice(0, 5))) continue;
+    const zone = officeZone(location, points);
+    const key = townKey(town);
+    townZones.set(key, townZones.has(key) && townZones.get(key) !== zone ? null : zone);
+  }
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
   // MRW renders the current row first. Do not promote an older dated row when
@@ -182,7 +194,7 @@ export function parseMrwHistory(html: string, raw: string, summary: MrwSummary):
     // Read visible text only. The PointCorner link embeds a full store address
     // and map arguments in onclick; they must never enter the result.
     const location = officeLabel(cells.eq(3).text());
-    const clock = rowClock(date, hour, location, points);
+    const clock = rowClock(date, hour, location, points, townZones);
     const key = JSON.stringify([date, hour, rawStatus, location]);
     if (seen.has(key)) continue;
     seen.add(key);

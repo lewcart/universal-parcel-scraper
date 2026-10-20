@@ -40,8 +40,10 @@ and Portugal's (070 to 089) keep clocks of their own, and nothing shows whether
 their rows follow the office's clock or Madrid's, so they keep wall clocks. So
 do MRW Points, whose codes name no province: a code shown with a PointCorner
 map link marks a point in every row of that history, including later rows that
-show it without the link. Rows without an office label and the summary, which
-names no office, keep wall clocks too. The newest row's instant is the last
+show it without the link. An office of its town hands a point its parcels, so a
+point in the town of an office of the same history takes that office's zone,
+unless the town's offices disagree. Rows without an office label and the
+summary, which names no office, keep wall clocks too. The newest row's instant is the last
 update, and the delivery's when it delivered. Only visible office labels are
 retained from history rows; PointCorner map addresses and coordinates are
 excluded.

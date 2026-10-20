@@ -42,7 +42,8 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
   their `stayWhyCode`: the frontend groups `70` with reasons 5, 7 and 65 with the delivery round,
   and its other reasons are a failed attempt or a parcel left at a pickup point. Unknown
   combinations stay unclassified. Code
-  `99` reads both "being returned" and "being forwarded", so it stays unclassified too.
+  `99` is read by its remark: "being returned" is a return and "being forwarded" a parcel sent on,
+  and its other remarks stay unclassified.
 - Summary `expressState` `99` is broad transit, so a mapped latest scan wins over it. Other summary
   states win over the scan.
 - `scanDateTime` has no offset. Every scan's clock reads UTC+08:00, the time of mainland China,

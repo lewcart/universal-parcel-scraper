@@ -406,6 +406,24 @@
       "confirmedBy": "bundle",
       "firstSeen": "2026-09-26",
       "note": "Shipment summary vocabulary from official abroad/billDetailItem/mixins. State 99 yields to a more specific latest scan."
+    },
+    {
+      "code": "99",
+      "wording": "The shipment is being returned",
+      "stage": "returned",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode 99, which carries several notices; this remark says the parcel is on its way back to the sender."
+    },
+    {
+      "code": "99",
+      "wording": "The shipment is being forwarded",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Official Taiwan routes opCode 99 with this remark: the parcel is sent on to another address."
     }
   ]
 }

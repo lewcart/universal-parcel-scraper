@@ -18,8 +18,7 @@ const SUMMARY = new Map<string, ClassifiedStatus>([['2', EXCEPTION], ['3', TRANS
 
 // The official Taiwan frontend's operation-code groups, plus codes observed in
 // its public route response whose remarks settle them. The warehouse
-// "delivered" group means dispatched. Code 99 reads both "being returned" and
-// "being forwarded", so it stays unclassified.
+// "delivered" group means dispatched. Code 99 is read by its remark.
 const CODES = new Map<string, ClassifiedStatus>([
   ...['80', '980'].map((code) => [code, DELIVERED] as const),
   ...['50', '54', '950'].map((code) => [code, { stage: 'accepted', status: 'in_transit' } as const] as const),
@@ -32,12 +31,20 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['605', { stage: 'customs', status: 'in_transit' }],
 ]);
 
-/** Codes 8000 and 70 are ambiguous without their reason; do not default them to signed. */
-export function sfExpressEventStatus(code: string, reason: string): ClassifiedStatus | undefined {
+// Code 99 carries several notices: one on its way back to the sender, or one
+// sent on to another address. Other remarks stay unclassified.
+const NOTICES: readonly (readonly [RegExp, ClassifiedStatus])[] = [
+  [/^The shipment is being returned\.?$/i, RETURNED],
+  [/^The shipment is being forwarded\.?$/i, TRANSIT],
+];
+
+/** Codes 8000 and 70 are ambiguous without their reason, and 99 without its remark; do not default them to signed. */
+export function sfExpressEventStatus(code: string, reason: string, remark = ''): ClassifiedStatus | undefined {
   if (code === '8000') {
     return REASONS.get(reason);
   }
   if (code === '70') return UNDELIVERED.get(reason);
+  if (code === '99') return NOTICES.find(([wording]) => wording.test(remark.trim()))?.[1];
   return CODES.get(code);
 }
 

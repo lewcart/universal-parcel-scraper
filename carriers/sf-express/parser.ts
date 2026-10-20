@@ -79,7 +79,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     const code = clean(raw.opCode, 64);
     const reason = clean(raw.stayWhyCode, 64);
     if (!/^[A-Z0-9_-]{1,64}$/.test(code)) throw new SchemaError(PROVIDER, 'SF Express returned an invalid operation code');
-    const status = sfExpressEventStatus(code, reason);
+    const status = sfExpressEventStatus(code, reason, text);
     const event: CarrierEvent = { time, provider_code: code,
       description: status?.status === 'delivered' ? 'Delivered' : text,
       ...(status ? { stage: status.stage } : {}),

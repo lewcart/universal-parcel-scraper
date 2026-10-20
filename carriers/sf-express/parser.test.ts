@@ -113,7 +113,11 @@ describe('SF Express public route parsing', () => {
     ] as const) {
       expect(sfExpressEventStatus(code, reason)).toEqual({ stage, status });
     }
-    // Code 99 reads both "being returned" and "being forwarded"; 70 needs a known reason.
+    // Code 99 is read by its remark.
+    expect(sfExpressEventStatus('99', '', 'The shipment is being returned')).toEqual({ stage: 'returned', status: 'exception' });
+    expect(sfExpressEventStatus('99', '', 'The shipment is being forwarded')).toEqual({ stage: 'in_transit', status: 'in_transit' });
+    for (const remark of ['', 'The shipment is being returned to the hub for sorting', 'Status updated']) expect(sfExpressEventStatus('99', '', remark)).toBeUndefined();
+    // Code 99 needs a known remark, 70 a known reason.
     for (const [code, reason] of [['99', ''], ['70', ''], ['70', '999'], ['70_5', '']] as const) expect(sfExpressEventStatus(code, reason)).toBeUndefined();
     const value = copy(); value.result[0]!.signed = false; value.result[0]!.routes.pop();
     value.result[0]!.routes.push({ ...value.result[0]!.routes[0]!, scanDateTime: '2026-01-08 18:00:00', opCode: '70', stayWhyCode: '222',

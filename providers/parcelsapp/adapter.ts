@@ -213,7 +213,10 @@ const CAINIAO_LAST_MILE = [
  * Cainiao's own feed (checked 2026-10-11 on parcels to the UK, Belgium,
  * Spain, Italy, Japan, Brazil and the US) dates its origin leg on China time,
  * from the warehouse to the departing linehaul, and the return warehouse
- * too. The seller's step before the warehouse is on China time as well:
+ * too, the warehouse's own steps and the origin sorting center's among them:
+ * AliExpress's feed dates those +08:00, at sorting centers in mainland China
+ * and Hong Kong. "Carrier update" is not listed: besides its own notices, on
+ * China time, Cainiao words its transit sorting centers' scans that way. The seller's step before the warehouse is on China time as well:
  * read as labeled, it comes after ParcelsApp first returns it. It dates
  * import customs on the destination's clock, and the last mile as well,
  * except the UK's, on GMT in July. Its transit hub, on GMT+2 for a
@@ -256,8 +259,10 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
   ['cainiao', [
     { wording: wordings([
       'pending shipping by the seller', 'order received successfully', 'package finished', 'leave the warehouse',
-      'departed from warehouse', 'accepted by carrier',
-      '(?:inbound|outbound) in sorting center', 'package (?:received by|left) sorting center of transit', 'last-mile delivery forecast',
+      'departed from warehouse', 'accepted by carrier', 'shipment information received by warehouse electronically',
+      'package ready for shipping from warehouse', 'package shipped out from warehouse',
+      '(?:inbound|outbound) in sorting center', 'processing at sorting center', 'departed from sorting center',
+      'package not accepted by sorting center', 'package (?:received by|left) sorting center of transit', 'last-mile delivery forecast',
       'arrived at departure transport hub', 'export customs clearance started', 'export clearance success',
       '(?:leaving|left) from departure country/region', 'cross-solution reroute', '质检真假鉴定',
       'return warehouse inbound success\\.?', 'parcel has been destroyed in return warehouse\\.?',

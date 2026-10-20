@@ -1211,6 +1211,24 @@ describe('ParcelsApp result parsing', () => {
     expect(result.destination_country).toBe('US');
   });
 
+  it('reads Cainiao\'s warehouse and origin sorting center on China time', () => {
+    // AliExpress's feed dates the same scans +08:00; ParcelsApp labels the digits UTC.
+    const result = parseParcelsAppResponse({ carriers: ['Cainiao'], destinationCode: 'FR', states: [
+      { date: '2026-10-16T13:52:01Z', status: 'Departed from sorting center', carrier: 0, location: 'Example Town' },
+      { date: '2026-10-16T11:54:16Z', status: 'Processing at sorting center', carrier: 0, location: 'Example Town' },
+      { date: '2026-10-16T08:01:25Z', status: 'Package shipped out from warehouse', carrier: 0 },
+      { date: '2026-10-16T06:30:00Z', status: 'Package ready for shipping from warehouse', carrier: 0 },
+      { date: '2026-10-16T03:07:09Z', status: 'Shipment information received by warehouse electronically', carrier: 0 },
+    ] }, number, identity());
+    expect(result.events?.map((scan) => scan.time)).toEqual([
+      '2026-10-16T05:52:01.000Z',
+      '2026-10-16T03:54:16.000Z',
+      '2026-10-16T00:01:25.000Z',
+      '2026-10-15T22:30:00.000Z',
+      '2026-10-15T19:07:09.000Z',
+    ]);
+  });
+
   it('reads Cainiao\'s import customs and last mile on the destination\'s clock, the UK\'s last mile as labeled', () => {
     // Cainiao's own feed (2026-10-11): its origin leg on China time, import
     // customs and the last mile on the destination's clock, the UK's last mile

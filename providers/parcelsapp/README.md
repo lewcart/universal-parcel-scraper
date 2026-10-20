@@ -227,7 +227,12 @@ step exists for future protocol changes.
   -07:00; 2026-10-10). Cainiao's own feed (2026-10-11, parcels to the UK, Belgium, Spain,
   Italy, Japan, Brazil and the US) dates its origin leg on China time, from "Order
   received successfully" to "Left from departure country/region", and its return
-  warehouse too. The seller's step before them ("Pending shipping by the seller") is on
+  warehouse too. That leg includes the warehouse's own steps ("Shipment information
+  received by warehouse electronically" to "Package shipped out from warehouse") and the
+  origin sorting center's ("Processing at sorting center", "Departed from sorting
+  center"), which AliExpress's feed dates +08:00 in mainland China and Hong Kong.
+  "Carrier update" is not listed: besides its own notices, on China time, Cainiao words its
+  transit sorting centers' scans that way. The seller's step before them ("Pending shipping by the seller") is on
   China time as well: read as labeled, it comes after ParcelsApp first returns it. It
   dates import customs ("Import clearance start" to "Leaving customs") and the last mile
   ("Received by local delivery company", "Out for delivery", "Delivered", and bpost's and

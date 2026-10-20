@@ -203,6 +203,12 @@ describe('Cainiao Express home-delivery numbers', () => {
 });
 
 describe('Cainiao projection', () => {
+  it('names the shape of a reply without shipment entries, not its contents', () => {
+    expect(() => parseCainiaoTrackingResponse({ success: false, errorCode: 'SYSTEM_BUSY', errorMsg: 'Query LP00000000000001 later', extra: { mailNo: 'LP00000000000001' } }, 'LP00000000000001'))
+      .toThrow('Cainiao returned an invalid tracking response: {success:boolean "false", errorCode:string "SYSTEM_BUSY", errorMsg:string "Query # later", extra:object}');
+    expect(() => parseCainiaoTrackingResponse('<html></html>', 'LP00000000000001')).toThrow('invalid tracking response: string');
+  });
+
   const delivered = parseCainiaoTrackingResponse(fixture('delivered.json'), 'LP00000000000001');
   const inTransit = parseCainiaoTrackingResponse(fixture('in-transit.json'), 'LP00000000000002');
 

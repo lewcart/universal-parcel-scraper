@@ -54,6 +54,22 @@ function record(value: unknown): JsonObject {
   return isRecord(value) ? value : {};
 }
 
+/**
+ * A reply's shape for a schema error: its top-level keys with their types, and
+ * the short status texts it carries. Runs of digits, which could be a number,
+ * are masked.
+ */
+function replyShape(value: unknown): string {
+  if (!isRecord(value)) return Array.isArray(value) ? 'array' : value === null ? 'null' : typeof value;
+  const fields = Object.entries(value).slice(0, 12).map(([key, field]) => {
+    const type = Array.isArray(field) ? 'array' : field === null ? 'null' : typeof field;
+    const text = /^(?:success|ret|code|status|error\w*|msg|message)$/i.test(key)
+      ? [field].flat().filter((item) => typeof item !== 'object').map(String).join(' ').slice(0, 60) : '';
+    return `${key}:${type}${text ? ` ${JSON.stringify(text.replace(/\w*\d{5,}\w*/g, '#'))}` : ''}`;
+  });
+  return `{${fields.join(', ')}}`;
+}
+
 function recordArray(value: unknown): JsonObject[] {
   return Array.isArray(value) ? value.filter(isRecord) : [];
 }
@@ -175,7 +191,7 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
   const rawModules = Array.isArray(payload.module)
     ? payload.module
     : Array.isArray(payload.data) ? payload.data : null;
-  if (!rawModules) throw new SchemaError(PROVIDER, 'Cainiao returned an invalid tracking response');
+  if (!rawModules) throw new SchemaError(PROVIDER, `Cainiao returned an invalid tracking response: ${replyShape(value)}`);
   const modules = recordArray(rawModules);
   if (modules.length !== rawModules.length) {
     throw new SchemaError(PROVIDER, 'Cainiao returned an invalid shipment entry');

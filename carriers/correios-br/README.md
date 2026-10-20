@@ -22,6 +22,11 @@ shows it: for an object in transit that it does not mark as late. The service is
 product category the portal names, such as SEDEX. Addresses, recipients, proof images
 and tokens are excluded.
 
+Mail from abroad keeps the S10 number of the post that sent it, and the portal tracks it
+from its arrival in Brazil, with each row's zone. It reaches Correios Brazil when a caller
+names it, a provider names it (some write "Brazil Post"), or a result gives Brazil as the
+destination of an S10 item.
+
 ## Testing
 
 Set `CORREIOS_BR_TRACKING_NUMBER` to an authorized real reference and run

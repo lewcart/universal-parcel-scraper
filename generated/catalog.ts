@@ -3549,6 +3549,9 @@ export const CARRIER_CATALOG = {
   "correios-br": {
     "displayName": "Correios Brazil",
     "color": "#ffd500",
+    "aliases": [
+      "Brazil Post"
+    ],
     "countries": [
       "BR"
     ],

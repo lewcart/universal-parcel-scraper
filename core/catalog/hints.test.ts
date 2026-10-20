@@ -22,6 +22,8 @@ describe('brand networks', () => {
     expect(carrierIdFromName('Nova Poshta')).toBe('nova-poshta');
     // Providers name the line provider whose numbers DHLink tracks.
     expect(carrierIdFromName('XZG')).toBe('dhlink');
+    // Providers also name Correios by the English name of the country's post.
+    expect(carrierIdFromName('Brazil Post')).toBe('correios-br');
     expect(brandCarrierIds('DPD UK')).toEqual([]);
     expect(brandCarrierIds('Swiss Post')).toEqual([]);
   });
@@ -52,6 +54,7 @@ describe('national postal lookup candidates', () => {
     ['UY', 'correo-uruguayo'], ['Uruguay', 'correo-uruguayo'],
     ['FO', 'posta-faroe'], ['Faroe Islands', 'posta-faroe'],
     ['SV', 'correos-el-salvador'], ['El Salvador', 'correos-el-salvador'],
+    ['BR', 'correios-br'], ['Brazil', 'correios-br'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);
   });
@@ -188,7 +191,7 @@ describe('carrier names reported by universal providers', () => {
     'La Poste', 'La Poste (Colissimo)', 'Chronopost France', 'FedEx', 'India Post', 'Posti', 'UPS',
     'Chronopost Portugal', 'Correos Chile', 'Royal Mail (UK)', 'DHL', 'DHL Express', 'GLS Italy', 'DPD UK',
     'Finland Post', 'Spain Post', 'Portugal CTT', 'Portugal Post - Portugal CTT', 'Italy Post', 'Deutsche Post - DHL Paket', 'Correos de España', 'Correos Spain',
-    'Austria Post',
+    'Austria Post', 'Brazil Post',
   ])('knows %s from the catalog', (name) => {
     expect(isKnownCarrierName(name)).toBe(true);
   });

@@ -37,9 +37,11 @@ carriers only when the digits before the last, divided by seven, leave the last 
   fold). Other countries, such as `UNITED STATES OF AMERICA`, `CANADA`, `KAZAKHSTAN` or `GEORGIA`,
   stay local. So do Spain, Portugal and France, whose posts also deliver on other clocks under the
   same name: the Canaries, Madeira, the Azores and the overseas departments Japan Post's France
-  covers. A delivery scan names no office, only the country. A delivered item's final scan with
-  such a time also sets `delivered_at`. Another scan's zone, the office or the destination never
-  fills the gap: a guessed zone produces wrong instants that look authoritative.
+  covers. A delivery scan names no office, only the country. The one exception is a Spanish row
+  at Correos' Madrid office of exchange, `MADRID AP` in the UPU code list: that office is on the
+  mainland, so the row is dated on `Europe/Madrid`. A delivered item's final scan with such a time also sets `delivered_at`.
+  Another scan's zone, any other office or the destination never fills the gap: a guessed zone
+  produces wrong instants that look authoritative.
 - `last_update` is set only when the latest row itself resolved; otherwise it is null and
   `last_update_local` carries the wall clock. Routing then also tries universal providers for a dated
   timeline, keeps the direct history as fallback, and never lets an unresolved result overwrite a
@@ -55,6 +57,9 @@ carriers only when the digits before the last, divided by seven, leave the last 
 ## Limitations
 
 - No estimate for international items.
+- Rows in countries with several clocks, and rows in Spain, Portugal and France other than
+  Madrid's office of exchange, keep wall clocks, so such an item's last update can have no
+  instant.
 - The portal keeps an item's history for 100 days after handling; older numbers read as not found.
 
 ## Testing

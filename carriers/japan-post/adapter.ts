@@ -29,16 +29,25 @@ const COUNTRY_NAMES: Readonly<Record<string, string>> = {
 // and Portugal on their islands, France in the overseas departments Japan
 // Post's France covers. A delivery scan names no office, only the country.
 const OVERSEAS_CLOCKS = new Set(['ES', 'FR', 'PT']);
+// Offices of exchange on the mainland of those countries, by the name the UPU
+// code list gives them: Correos' Madrid airport office is `MADRID AP`.
+const MAINLAND_OFFICES: Readonly<Record<string, { office: RegExp; zone: string }>> = {
+  ES: { office: /^MADRID(?: |$)/, zone: 'Europe/Madrid' },
+};
 
 // The history header states that overseas scans are in local time, the clock
 // of the post that scanned. A row's own Prefecture / Country cell settles its
-// zone when it names a prefecture or a single-zone country. The office,
-// another scan's zone or the parcel's destination never does.
-function rowZone(region: string): string | null {
+// zone when it names a prefecture or a single-zone country, and its own office
+// when that is a mainland office of exchange of a country with other clocks.
+// Another scan's zone or the parcel's destination never does.
+function rowZone(region: string, office: string): string | null {
   const name = region.toUpperCase();
   if (PREFECTURES.has(name)) return 'Asia/Tokyo';
   const code = Object.hasOwn(COUNTRY_NAMES, name) ? COUNTRY_NAMES[name]! : countryCode(name);
-  return code && !OVERSEAS_CLOCKS.has(code) ? countryTimeZone(code) : null;
+  if (!code) return null;
+  if (!OVERSEAS_CLOCKS.has(code)) return countryTimeZone(code);
+  const mainland = Object.hasOwn(MAINLAND_OFFICES, code) ? MAINLAND_OFFICES[code]! : null;
+  return mainland?.office.test(office.toUpperCase()) ? mainland.zone : null;
 }
 
 export function normalizeJapanPostNumber(raw: string): string {
@@ -61,8 +70,8 @@ function wallTime(raw: string): string {
   return date.toFormat(format === 'MM/dd/yyyy' ? 'yyyy-MM-dd' : "yyyy-MM-dd'T'HH:mm:ss");
 }
 
-function eventInstant(localTime: string, region: string): string | null {
-  const zone = rowZone(region);
+function eventInstant(localTime: string, region: string, office: string): string | null {
+  const zone = rowZone(region, office);
   if (!zone || !localTime.includes('T')) return null;
   const date = firstOccurrence(DateTime.fromISO(localTime, { zone }));
   // Luxon can shift a nonexistent spring clock forward or pick one side of
@@ -145,8 +154,9 @@ export function parse(html: string, trackingNumber: string): CarrierResult {
     const description = clean(cells.eq(1).text(), 500);
     if (!description) throw new SchemaError(PROVIDER, 'Japan Post returned an empty event');
     const region = clean(cells.eq(4).text(), 100);
-    const location = [clean(cells.eq(3).text(), 150), region].filter(Boolean).join(', ');
-    const time = eventInstant(localTime, region);
+    const office = clean(cells.eq(3).text(), 150);
+    const location = [office, region].filter(Boolean).join(', ');
+    const time = eventInstant(localTime, region, office);
     const status = japanPostStatus(description);
     // The host treats `time` as an instant and applies the catalog's timezone
     // when no offset is present. Keep unresolved wall clocks in local_time.

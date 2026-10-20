@@ -145,6 +145,27 @@ describe('Japan Post result projection', () => {
     },
   );
 
+  it('dates a Spanish row at the Madrid office of exchange on the mainland clock and keeps other Spanish rows local', () => {
+    const $ = load(fixture());
+    const rows = $('table[summary="履歴情報"] tr');
+    const [customs, out, delivery] = [-6, -4, -2].map((index) => rows.eq(index).children('td'));
+    customs!.eq(3).text('MADRID AP');
+    customs!.eq(4).text('SPAIN');
+    out!.eq(3).text('LAS PALMAS');
+    out!.eq(4).text('SPAIN');
+    delivery!.eq(4).text('SPAIN');
+    const result = parse($.html(), NUMBER);
+    expect(result.events?.slice(0, 3).map((event) => [event.time, event.location])).toEqual([
+      [undefined, 'SPAIN'],
+      [undefined, 'LAS PALMAS, SPAIN'],
+      ['2026-09-03T10:55:00Z', 'MADRID AP, SPAIN'],
+    ]);
+    expect(result.last_update).toBeNull();
+    // Only Spain's own office settles the zone: the name under another country does not.
+    customs!.eq(4).text('PORTUGAL');
+    expect(parse($.html(), NUMBER).events?.[2]!.time).toBeUndefined();
+  });
+
   it('dates each overseas row by its own country and never by the office, the next row or the destination', () => {
     const $ = load(fixture());
     const rows = $('table[summary="履歴情報"] tr');

@@ -2143,21 +2143,21 @@
           "description": "DEPARTED",
           "provider_status": "DEPARTED",
           "stage": "in_transit",
-          "location": "TEST FRANCE (991)",
+          "location": "TEST IRLANDA (991)",
           "local_time": "2026-01-13T21:00:00"
         },
         {
           "description": "COLLECTED",
           "provider_status": "COLLECTED",
           "stage": "accepted",
-          "location": "TEST FRANCE (991)",
+          "location": "TEST IRLANDA (991)",
           "local_time": "2026-01-13T18:00:00"
         },
         {
           "description": "SHIPPING INFO SENT TO BRT",
           "provider_status": "SHIPPING INFO SENT TO BRT",
           "stage": "registered",
-          "location": "TEST FRANCE (991)",
+          "location": "TEST IRLANDA (991)",
           "local_time": "2026-01-10T14:57:00"
         }
       ]

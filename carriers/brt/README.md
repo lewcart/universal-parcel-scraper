@@ -31,13 +31,16 @@ a single shipment.
 
 BRT's depots in Italy keep Italian civil time, which San Marino and the
 Vatican share, so their scans become instants. A scan counts as one of them
-when its place has BRT's depot form and names neither DPD nor a foreign
-country, and either the page names the depot delivering the shipment in Italy
-or the scan is at the depot where the shipment started. The DPD network's
-depots abroad come in the same form, and a shipment BRT hands to a partner
-abroad names no delivering depot, so its other places are not known to be in
-Italy. Their clocks stay local times, as do places without a depot code and a
-clock that the change to or from summer time repeats or skips. Dates without a
+when its place has BRT's depot form and names neither DPD nor a country, and
+either the page names the depot delivering the shipment in Italy or the scan
+is at the depot where the shipment started. The DPD network's depots abroad
+come in the same form, and a shipment BRT hands to a partner abroad names no
+delivering depot, so its other places are not known to be in Italy. A depot
+named after a country, such as `DPD-ROV-AUSTRIA`, shows either that country's
+clock or BRT's own; where both read the same, as for Austria, Germany or
+France, its scans become instants too. Other clocks stay local times, as do
+places without a depot code and a clock that the change to or from summer time
+repeats or skips. Dates without a
 clock remain provider text. The newest scan, when dated, gives the last update
 and, for a delivery, the delivery instant. Source order determines current
 status even when the newest clock is unresolved.

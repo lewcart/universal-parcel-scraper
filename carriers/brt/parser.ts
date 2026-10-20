@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import { isBrtCustomerParcelId, isBrtTrackingNumber } from '../../core/detection/brt.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { calendarDay, countryCode, isoTime } from '../../core/time/index.js';
+import { calendarDay, countryCode, countryTimeZone, isoTime, sharedClockZone } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { classifyBrtStatus } from './status.js';
 
@@ -107,45 +107,59 @@ export function brtParcelListNames(html: string, number: string): boolean {
 // BRT's depots in Italy keep Italian civil time: DPD's tracking of the same
 // parcels gives their scans the same clocks with Italy's offset.
 const HOME_ZONE = 'Europe/Rome';
-// Countries on Italy's clock.
-const HOME_COUNTRIES = new Set(['IT', 'SM', 'VA']);
 // A depot as the scan table names it, with BRT's three-digit code: "SAMPLETOWN (999)".
 const DEPOT = /^(.+) \(\d{3}\)$/;
 
 /**
- * Whether a scan's place is one of BRT's depots in Italy. The DPD network's
- * depots abroad, through which BRT sends and receives parcels, come in the
- * same form, named DPD and their region ("DPD FR NORD") or after their
- * country ("BELGIO/LUSSEMBURGO").
+ * The zones of the countries a depot's name gives. The DPD network's depots
+ * abroad, through which BRT sends and receives parcels, come in the same form
+ * as BRT's, named after their country ("DPD-ROV-GERMANIA", "BELGIO/LUSSEMBURGO")
+ * or DPD and their region ("DPD FR NORD"). Null for a place that is not a
+ * depot or names a country of several zones; empty when it names none.
  */
-function homeDepot(place: string): boolean {
+function depotZones(place: string): string[] | null {
   const name = DEPOT.exec(place)?.[1];
-  if (!name || /^DPD\b/i.test(name)) return false;
+  if (!name) return null;
   const words = name.split(/[^\p{L}]+/u).filter(Boolean);
+  const zones = new Set<string>();
   // Every run of words, so that "REGNO UNITO" counts. Two letters would read as a country code.
   for (let start = 0; start < words.length; start += 1) {
     for (let end = start + 1; end <= words.length; end += 1) {
       const run = words.slice(start, end).join(' ');
       const country = run.length > 2 ? countryCode(run) : null;
-      if (country && !HOME_COUNTRIES.has(country)) return false;
+      if (!country) continue;
+      const zone = countryTimeZone(country);
+      if (!zone) return null;
+      zones.add(zone);
     }
   }
-  return true;
+  return [...zones];
 }
 
 /**
- * A scan's date and clock. A clock at one of BRT's depots in Italy is an
- * instant on Italy's time, unless the change to or from summer time makes it
- * ambiguous; other clocks stay local times. A date without a clock stays
- * provider text.
+ * The clocks a scan's place may keep. A depot named after a country keeps
+ * that country's clock or BRT's own, Italy's. A depot naming none is one of
+ * BRT's in Italy only where the caller knows it to be.
  */
-function scanClock(date: string, clock: string, home: boolean): { time?: string; local_time?: string; provider_time_text?: string } {
+function clockZones(place: string, inItaly: boolean): string[] | null {
+  const zones = depotZones(place);
+  if (!zones) return null;
+  if (zones.length) return [HOME_ZONE, ...zones];
+  return inItaly && !/^DPD\b/i.test(place) ? [HOME_ZONE] : null;
+}
+
+/**
+ * A scan's date and clock. A clock that reads as the same instant on each of
+ * its place's zones, and only once on Italy's, is that instant; other clocks
+ * stay local times. A date without a clock stays provider text.
+ */
+function scanClock(date: string, clock: string, zones: readonly string[] | null): { time?: string; local_time?: string; provider_time_text?: string } {
   const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(date);
   const day = match && calendarDay(Number(match[3]), Number(match[2]), Number(match[1]));
   const time = /^(\d{2})\.(\d{2})$/.exec(clock);
   if (day && time && Number(time[1]) < 24 && Number(time[2]) < 60) {
     const wall = `${day}T${time[1]}:${time[2]}:00`;
-    if (home && DateTime.fromISO(wall, { zone: HOME_ZONE }).getPossibleOffsets().length === 1) {
+    if (zones && DateTime.fromISO(wall, { zone: HOME_ZONE }).getPossibleOffsets().length === 1 && sharedClockZone(zones, wall)) {
       const placed = isoTime(wall, HOME_ZONE);
       if (placed?.iso.startsWith(wall)) return { time: placed.iso };
     }
@@ -189,16 +203,16 @@ export function parseBrt(html: string, raw: string, parcelList?: string): Carrie
   });
   if (!scans.length) throw new NoHistoryError('BRT', 'BRT lists the shipment without scans');
   // BRT names the depot that delivers a shipment in Italy. A shipment it hands
-  // to a partner abroad names none, and of its depots only the first, where
-  // the shipment started, is surely in Italy.
+  // to a partner abroad names none, and of its depots naming no country only
+  // the first, where the shipment started, is surely in Italy.
   const arrival = metadata.find('tr').filter((_, node) => rowLabel($, node) === 'Filiale di arrivo').children('td');
   const deliveredHome = arrival.length === 2 && clean(arrival.last().text(), 80) !== '';
   const origin = scans.at(-1)!.location;
   const events = scans.map(({ date, clock, location, label }): CarrierEvent => {
     const mapped = classifyBrtStatus(label);
-    const home = homeDepot(location) && (deliveredHome || location === origin);
+    const zones = clockZones(location, deliveredHome || location === origin);
     return { description: mapped?.status === 'delivered' ? 'Delivered' : label, provider_status: label,
-      ...(mapped ? { stage: mapped.stage } : {}), ...(location ? { location } : {}), ...scanClock(date, clock, home) };
+      ...(mapped ? { stage: mapped.stage } : {}), ...(location ? { location } : {}), ...scanClock(date, clock, zones) };
   });
   // Source order also carries undated scans and clocks of several zones, so scans are never sorted.
   const latest = events[0]!;

@@ -3,6 +3,8 @@ import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { ChallengeError, IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import type { ClassifiedStatus } from '../../core/status/index.js';
+import { isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { sfExpressEventStatus, sfExpressSummaryStatus } from './status.js';
@@ -17,15 +19,25 @@ export function normalizeSfExpressNumber(raw: string): string {
   return number;
 }
 
-function scanTime(raw: unknown): string {
+// The clock of every scan this route query returns, wherever its site is:
+// UTC+08:00, the time of mainland China, Hong Kong, Macau and Taiwan, none of
+// which keeps daylight saving. SF's international history, which gives each
+// scan its offset, places the scans of its sites abroad at the instants these
+// clocks give on UTC+08:00, not on the sites' own clocks, and flights only take
+// a plausible time on that reading.
+const CLOCK_ZONE = 'UTC+8';
+
+/** A scan's wall clock, as an offset-less ISO string, and its instant on the query's clock. */
+function scanTime(raw: unknown): { local: string; time: string } {
   if (typeof raw !== 'string' || !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(raw)) {
     throw new SchemaError(PROVIDER, 'SF Express returned an invalid scan date');
   }
-  // This API supplies wall clocks without offsets. UTC here only validates
-  // calendar components; the returned local_time deliberately claims no zone.
+  // UTC here only validates calendar components.
   const parsed = DateTime.fromFormat(raw, 'yyyy-MM-dd HH:mm:ss', { zone: 'UTC' });
-  if (!parsed.isValid) throw new SchemaError(PROVIDER, 'SF Express returned an invalid scan date');
-  return parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss");
+  const local = parsed.isValid ? parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") : '';
+  const time = local ? isoTime(local, CLOCK_ZONE)?.iso : undefined;
+  if (!time) throw new SchemaError(PROVIDER, 'SF Express returned an invalid scan date');
+  return { local, time };
 }
 
 function remarkText(raw: unknown): string {
@@ -53,7 +65,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   if (!Array.isArray(shipment.routes) || !shipment.routes.length || shipment.routes.length > 500) {
     throw new SchemaError(PROVIDER, 'SF Express returned incomplete tracking history');
   }
-  const events: CarrierEvent[] = [];
+  const scans: { local: string; time: string; status: ClassifiedStatus | undefined; event: CarrierEvent }[] = [];
   const seen = new Set<string>();
   for (const raw of shipment.routes) {
     if (!isRecord(raw)) throw new SchemaError(PROVIDER, 'SF Express returned an invalid scan');
@@ -62,34 +74,32 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     // and the mere existence of a proof link does not establish delivery.
     if (/(?:AWB Info & POD|运单资料&签收图|運單資料&簽收圖)/.test(text)) continue;
     if (!text) throw new SchemaError(PROVIDER, 'SF Express returned an empty scan');
-    const localTime = scanTime(raw.scanDateTime);
+    const { local, time } = scanTime(raw.scanDateTime);
     const code = clean(raw.opCode, 64);
     const reason = clean(raw.stayWhyCode, 64);
     if (!/^[A-Z0-9_-]{1,64}$/.test(code)) throw new SchemaError(PROVIDER, 'SF Express returned an invalid operation code');
     const status = sfExpressEventStatus(code, reason);
-    const event: CarrierEvent = { local_time: localTime, provider_code: code,
+    const event: CarrierEvent = { time, provider_code: code,
       description: status?.status === 'delivered' ? 'Delivered' : text,
       ...(status ? { stage: status.stage } : {}),
     };
-    const key = JSON.stringify([localTime, event.description, code, reason]);
-    if (!seen.has(key)) { events.push(event); seen.add(key); }
+    const key = JSON.stringify([local, event.description, code, reason]);
+    if (!seen.has(key)) { scans.push({ local, time, status, event }); seen.add(key); }
   }
-  if (!events.length) throw new SchemaError(PROVIDER, 'SF Express returned no historical scans');
-  // The official frontend orders by these same wall-clock strings. Preserve
-  // that display order without claiming absolute instants across countries.
-  events.sort((a, b) => String(b.local_time).localeCompare(String(a.local_time)));
-  const latest = events[0]!;
-  const latestRaw = shipment.routes.filter(isRecord).find((raw) => raw.scanDateTime === String(latest.local_time).replace('T', ' ')
-    && clean(raw.opCode, 64) === latest.provider_code);
+  if (!scans.length) throw new SchemaError(PROVIDER, 'SF Express returned no historical scans');
+  // The official frontend orders by these same wall clocks, which share one zone.
+  scans.sort((a, b) => b.local.localeCompare(a.local));
+  const latest = scans[0]!;
   const state = clean(shipment.expressState, 64);
   const summaryStatus = sfExpressSummaryStatus(state, shipment.signed === true);
-  const latestStatus = sfExpressEventStatus(String(latest.provider_code), clean(latestRaw?.stayWhyCode, 64));
   // State 99 is broad transit: a mapped delivery-round scan is more precise.
-  const status = state === '99' ? latestStatus ?? summaryStatus : summaryStatus ?? latestStatus;
+  const status = state === '99' ? latest.status ?? summaryStatus : summaryStatus ?? latest.status;
   const summaryText = new Map([['2', 'Cancelled'], ['3', 'Forwarded'], ['4', 'Returned to sender'], ['5', 'Held'], ['6', 'Lost']]).get(state);
+  // A delivered parcel's newest delivery scan dates its delivery.
+  const delivery = status?.status === 'delivered' ? scans.find((scan) => scan.status?.status === 'delivered') : undefined;
   return { status: status?.status ?? 'unknown', ...(status ? { current_stage: status.stage } : {}),
-    last_status_text: status?.status === 'delivered' ? 'Delivered' : summaryText ?? latest.description,
-    last_update: null, last_update_local: latest.local_time, expected_delivery: null,
-    events: events.slice(0, 100),
+    last_status_text: status?.status === 'delivered' ? 'Delivered' : summaryText ?? latest.event.description,
+    last_update: latest.time, ...(delivery ? { delivered_at: delivery.time } : {}), expected_delivery: null,
+    events: scans.slice(0, 100).map((scan) => scan.event),
   };
 }

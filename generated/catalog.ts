@@ -3873,7 +3873,6 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sf-express",
-      "localClocks": true,
       "browser": true
     },
     "canaryUrl": "https://htm.sf-express.com/tw/en/dynamic_function/waybill/",

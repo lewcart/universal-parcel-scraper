@@ -21,12 +21,12 @@
       "promiseTime": "2026-01-10 20:00:00"
     },
     "routes": [
-      { "scanDateTime": "2026-01-04 12:00:00", "remark": "The shipment has been collected by SF Express", "zoneCode": "SYNTHETIC_ORIGIN", "opCode": "950", "stayWhyCode": "" },
-      { "scanDateTime": "2026-01-05 14:00:00", "remark": "Shipment loaded at the origin hub", "zoneCode": "SYNTHETIC_ORIGIN", "opCode": "30", "stayWhyCode": "" },
-      { "scanDateTime": "2026-01-06 15:00:00", "remark": "The shipment has arrived at the destination hub", "zoneCode": "SYNTHETIC_DESTINATION", "opCode": "106", "stayWhyCode": "" },
-      { "scanDateTime": "2026-01-07 10:00:00", "remark": "Customs clearance completed", "zoneCode": "SYNTHETIC_DESTINATION", "opCode": "14", "stayWhyCode": "" },
-      { "scanDateTime": "2026-01-08 07:50:00", "remark": "Out for delivery", "zoneCode": "SYNTHETIC_DESTINATION", "opCode": "204", "stayWhyCode": "" },
-      { "scanDateTime": "2026-01-08 11:20:00", "remark": "Your express has been delivered", "zoneCode": "SYNTHETIC_DESTINATION", "opCode": "80", "stayWhyCode": "" }
+      { "scanDateTime": "2026-01-04 12:00:00", "remark": "The shipment has been collected by SF Express", "zoneCode": "755XA", "opCode": "950", "stayWhyCode": "" },
+      { "scanDateTime": "2026-01-05 14:00:00", "remark": "Shipment loaded at the origin hub", "zoneCode": "755XA", "opCode": "30", "stayWhyCode": "" },
+      { "scanDateTime": "2026-01-06 15:00:00", "remark": "The shipment has arrived at the destination hub", "zoneCode": "SYD01A", "opCode": "106", "stayWhyCode": "" },
+      { "scanDateTime": "2026-01-07 10:00:00", "remark": "Customs clearance completed", "zoneCode": "SYD01A", "opCode": "14", "stayWhyCode": "" },
+      { "scanDateTime": "2026-01-08 07:50:00", "remark": "Out for delivery", "zoneCode": "SYD01A", "opCode": "204", "stayWhyCode": "" },
+      { "scanDateTime": "2026-01-08 11:20:00", "remark": "Your express has been delivered", "zoneCode": "SYD01A", "opCode": "80", "stayWhyCode": "" }
     ]
   }]
 }

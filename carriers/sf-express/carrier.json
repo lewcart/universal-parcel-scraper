@@ -19,7 +19,6 @@
     "steps": [
       "trawl"
     ],
-    "localClocks": true,
     "browser": true
   },
   "capabilities": [
@@ -47,7 +46,7 @@
       "unverified_estimates"
     ],
     "unavailable": [
-      "verified_scan_timezone"
+      "offset_timestamps"
     ]
   },
   "links": [

@@ -7,16 +7,50 @@ const NUMBER = 'SF0000000000001';
 const copy = () => structuredClone(fixture);
 
 describe('SF Express public route parsing', () => {
-  it('retains matched historical wall times without inventing a timezone', () => {
+  it('dates every scan on UTC+08:00, the newest as the last update and the delivery as delivered', () => {
     const result = parse(copy(), NUMBER);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered',
-      last_update: null, last_update_local: '2026-01-08T11:20:00', expected_delivery: null });
+      last_update: '2026-01-08T11:20:00+08:00', delivered_at: '2026-01-08T11:20:00+08:00', expected_delivery: null });
     expect(result.events).toHaveLength(6);
-    expect(result.events?.[0]).toEqual({ local_time: '2026-01-08T11:20:00', description: 'Delivered', provider_code: '80', stage: 'delivered' });
+    expect(result.events?.[0]).toEqual({ time: '2026-01-08T11:20:00+08:00', description: 'Delivered', provider_code: '80', stage: 'delivered' });
     expect(result.events?.[1]?.stage).toBe('out_for_delivery');
-    expect(result.events?.every((event) => event.time === undefined)).toBe(true);
-    expect(result.delivered_at).toBeUndefined();
+    expect(result.events?.at(-1)?.time).toBe('2026-01-04T12:00:00+08:00');
+    expect(result.events?.every((event) => event.local_time === undefined && event.time?.endsWith('+08:00'))).toBe(true);
+    expect(result.last_update_local).toBeUndefined();
     expect(result.timezone).toBeUndefined();
+  });
+
+  it('reads a scan abroad, in Hong Kong or without a site on the same clock as a mainland one, in every season', () => {
+    const value = copy(); const routes = value.result[0]!.routes;
+    // A mainland site, Hong Kong, a site abroad on summer time, and a scan without a site.
+    routes[0]!.zoneCode = '755XA'; routes[1]!.zoneCode = '852XA'; routes[2]!.zoneCode = 'LHR01R';
+    routes[2]!.scanDateTime = '2026-07-06 15:00:00'; routes[3]!.scanDateTime = '2026-07-07 10:00:00';
+    routes[4]!.scanDateTime = '2026-07-08 07:50:00'; routes[5]!.scanDateTime = '2026-07-08 11:20:00';
+    delete (routes[3] as { zoneCode?: string }).zoneCode;
+    const times = parse(value, NUMBER).events!.map((event) => event.time);
+    expect(times).toEqual(['2026-07-08T11:20:00+08:00', '2026-07-08T07:50:00+08:00', '2026-07-07T10:00:00+08:00',
+      '2026-07-06T15:00:00+08:00', '2026-01-05T14:00:00+08:00', '2026-01-04T12:00:00+08:00']);
+  });
+
+  it('gives a scan the same instant on every check, whatever the rest of the reply says', () => {
+    const first = parse(copy(), NUMBER).events!;
+    expect(parse(copy(), NUMBER).events).toEqual(first);
+    const value = copy(); const shipment = value.result[0]!;
+    shipment.mainlandToMainland = true; shipment.origin = 'Synthetic origin'; shipment.routes.reverse();
+    shipment.routes.forEach((route) => { route.zoneCode = 'ZZZ99Z'; });
+    shipment.routes.push({ ...shipment.routes[0]!, scanDateTime: '2026-01-09 08:00:00', opCode: '31', remark: 'Later movement' });
+    const later = parse(value, NUMBER);
+    expect(later.events!.slice(1)).toEqual(first);
+    expect(later).toMatchObject({ last_update: '2026-01-09T08:00:00+08:00', delivered_at: '2026-01-08T11:20:00+08:00' });
+  });
+
+  it('dates no delivery before the parcel is delivered', () => {
+    const value = copy(); value.result[0]!.signed = false; value.result[0]!.routes.pop();
+    expect(parse(value, NUMBER)).toMatchObject({ status: 'out_for_delivery', last_update: '2026-01-08T07:50:00+08:00' });
+    expect(parse(value, NUMBER).delivered_at).toBeUndefined();
+    value.result[0]!.signed = true;
+    expect(parse(value, NUMBER)).toMatchObject({ status: 'delivered', last_update: '2026-01-08T07:50:00+08:00' });
+    expect(parse(value, NUMBER).delivered_at).toBeUndefined();
   });
 
   it('normalizes only supported public number formats', () => {

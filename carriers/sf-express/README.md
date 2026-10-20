@@ -42,10 +42,17 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
   `stayWhyCode`; unknown combinations stay unclassified.
 - Summary `expressState` `99` is broad transit, so a mapped latest scan wins over it. Other summary
   states win over the scan.
-- `scanDateTime` has no offset. Events get `local_time` and the result `last_update_local`; there is
-  no UTC `time`, `delivered_at` or ETA. The Taiwan frontend just prints the string, and SF
-  International's timezone fields belong to a different API. Events sort by wall-clock string, like
-  the portal. The host keeps this history and still asks universal providers for real instants.
+- `scanDateTime` has no offset. Every scan's clock reads UTC+08:00, the time of mainland China,
+  Hong Kong, Macau and Taiwan, none of which keeps daylight saving, wherever the scan was made.
+  SF's international history, which 17TRACK relays with each scan's offset, places scans at sites
+  in Australia, the United Kingdom, Belgium, France and the United States at the instants these
+  clocks give on UTC+08:00, hours from the sites' own clocks, and flights between China and those
+  countries only take a plausible time on that reading. A scan's instant comes from its own clock
+  alone. The newest scan is the last update, and a delivered parcel's newest delivery scan the
+  delivery time. Events sort by their clocks, like the portal. There is no ETA.
+- A scan's `zoneCode` names its site, a three-digit mainland area code (`755` is Shenzhen) with
+  letters for the site, `852` or `853` for Hong Kong or Macau, or abroad an airport's code with a
+  number and a letter. Its clock does not follow the site, so the adapter does not read it.
 - "AWB Info & POD" rows are proof-access links, not scans, and are dropped. Phone controls are
   stripped from remarks, and delivered scans read `Delivered`.
 - Not used: [SF International](https://www.sf-international.com/us/en/support/querySupport/waybill)

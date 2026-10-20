@@ -12,7 +12,7 @@ import type { StepRecorder } from '../../core/telemetry/index.js';
 import { calendarDay, isoTime, explicitOffsetTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
 import { decodeText, fetchBounded, parseJsonBytes, userAgentOf, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { DPD_DE_SESSION_OPENING, sharedDpdAppService, type DpdParcelShop } from '../dpd-de/service.js';
+import { DPD_DE_SESSION_OPENING, DpdOtherCountryError, sharedDpdAppService, type DpdParcelShop } from '../dpd-de/service.js';
 import {
   API_LABELS, PROOF_OF_DELIVERY_SCAN, apiStage, apiStatus, scanStage, wordingStatus,
 } from './status.js';
@@ -661,7 +661,11 @@ export interface DPDTrackerOptions {
   app?: DPDAppTier;
   /** Finds the address of the Pickup shop a parcel waits at, by its PUDO id. */
   shops?: DPDParcelShops;
+  /** Tracks a parcel the German tiers place in another country, from that country's code. */
+  abroad?: DPDAbroad;
 }
+
+export type DPDAbroad = (number: string, country: string, context: TrackingContext) => Promise<CarrierResult>;
 
 export interface DPDParcelShops {
   /** The shop, or nothing when it is not found in time; only the signal ends it with an error. */
@@ -691,6 +695,7 @@ export class DPDTracker {
   private readonly userAgent: string;
   private readonly app?: DPDAppTier;
   private readonly shops?: DPDParcelShops;
+  private readonly abroad?: DPDAbroad;
   #accessToken = '';
   #accessTokenExpiresAt = 0;
   #basicToken = '';
@@ -710,6 +715,7 @@ export class DPDTracker {
     this.userAgent = userAgentOf(options.userAgent);
     this.app = options.app;
     this.shops = options.shops;
+    this.abroad = options.abroad;
   }
 
   async fetch(raw: string, postcode = '', context: TrackingContext = {}): Promise<CarrierResult> {
@@ -735,7 +741,8 @@ export class DPDTracker {
       const kind = carrierErrorKind(error);
       return !context.signal?.aborted && kind !== null && PAGE_RECOVERS.has(kind);
     };
-    const app = this.app;
+    const { app, abroad } = this;
+    let answeredAbroad = false;
     const appRecovers = (error: unknown): boolean => !context.signal?.aborted && app!.recovers(error);
     // Without a postcode the app's scans are the richer history; with one, the
     // guest tier's verified reply comes first.
@@ -804,7 +811,19 @@ export class DPDTracker {
         recovers: pageRecovers,
         run: ({ previousError }: { previousError?: unknown }) => this.pageFetch(trackingNumber, previousError !== undefined, lookup),
       }] : app && !appLeads ? [appStep(false)] : []),
+      // After either tier places the parcel in another country.
+      ...(abroad ? [{
+        id: 'abroad',
+        recovers: (error: unknown) => error instanceof DpdOtherCountryError,
+        run: async ({ signal, remainingMs, previousError }: { signal: AbortSignal; remainingMs: number; previousError?: unknown }) => {
+          const answer = await abroad(trackingNumber, (previousError as DpdOtherCountryError).country, { signal, budgetMs: remainingMs });
+          answeredAbroad = true;
+          return answer;
+        },
+      }] : []),
     ]);
+    // An answer from abroad keeps the link of the source that gave it.
+    if (answeredAbroad) return result;
     result.tracking_url = this.country === 'DE'
       ? `https://tracking.dpd.de/status/en_US/parcel/${trackingNumber}`
       : this.country === 'BE'
@@ -886,7 +905,7 @@ export class DPDTracker {
     if (this.country === 'DE' && isRecord(payload.status)) {
       const country = known(payload.status.countryCode).toUpperCase();
       if (/^[A-Z]{2}$/.test(country) && country !== 'DE') {
-        throw new IndeterminateError('DPD Germany', 'DPD returned activity in another country', { reason: 'other_country' });
+        throw new DpdOtherCountryError(country);
       }
     }
     if (this.country !== 'CH') requireGuestActivity(payload, result);

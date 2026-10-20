@@ -3,9 +3,12 @@ import { describe, expect, it, vi } from 'vitest';
 import type { TrackingContext } from '../../core/adapter/index.js';
 import { dpdParcelNumber } from '../../core/detection/dpd.js';
 import { parseTrackingInput } from '../../core/detection/index.js';
+import { IndeterminateError, NotFoundError } from '../../core/errors/index.js';
+import type { CarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { DPDTracker } from '../dpd/adapter.js';
-import { adapter } from './adapter.js';
+import type { DpdGroupLookup } from '../dpd-ie/adapter.js';
+import { adapter, trackAbroad } from './adapter.js';
 import { DPD_DE_APP_API } from './service.js';
 
 const NUMBER = '01000000000001';
@@ -36,11 +39,11 @@ describe('DPD Germany guest tracking', () => {
     expect(result.events?.[0]?.time).toBe('2026-07-16T10:12:00+02:00');
   });
 
-  it('rejects another country rather than letting a group-wide match establish Germany', async () => {
+  it('names another country rather than letting a group-wide match establish Germany', async () => {
     const payload = structuredClone(fixture);
     (payload.status as Record<string, unknown>).countryCode = 'CH';
     const fetcher = guest(Response.json(payload));
-    await expect(tracking(fetcher).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(tracking(fetcher).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'other_country', country: 'CH' });
     expect(fetcher).toHaveBeenCalledTimes(4);
   });
 
@@ -143,5 +146,44 @@ describe('DPD Germany tracking links', () => {
     expect(parseTrackingInput(`https://tracking.dpd.de/status/en_US/parcel/${NUMBER}${check}/`))
       .toMatchObject({ trackingNumber: `${NUMBER}${check}`, carrier: 'dpd-de', source: 'link' });
     expect(parseTrackingInput(`https://tracking.dpd.de/status/de_DE/parcel/${NUMBER}${check}${check}`).source).not.toBe('link');
+  });
+});
+
+describe('DPD Germany abroad', () => {
+  const milestones = (stage: string, ...events: [string, string][]): CarrierResult => ({ status: stage === 'delivered' ? 'delivered' : 'in_transit',
+    current_stage: stage, last_status_text: events[0]![0], last_update: events[0]![1], history_truncated: true,
+    events: events.map(([description, time]) => ({ description, time, location: '' })) });
+  // The group service's milestones, and a unit's scans of the same parcel.
+  const group = milestones('delivered', ['Delivered', '2026-03-06T11:00:00+01:00'], ['Parcel handed to DPD', '2026-03-04T11:59:00+01:00']);
+  const scans = milestones('delivered', ['Delivered', '2026-03-06T11:00:00+01:00'], ['Out for delivery', '2026-03-06T07:40:00+01:00'],
+    ['At the delivery depot', '2026-03-06T05:10:00+01:00'], ['Parcel handed to DPD', '2026-03-04T11:59:00+01:00']);
+  const outage = async (): Promise<never> => { throw new IndeterminateError('DPD', 'Sample outage'); };
+  const missing = async (): Promise<never> => { throw new NotFoundError('DPD'); };
+
+  it('asks the country\'s unit and the group service together, and keeps the unit\'s fuller history', async () => {
+    const unit = vi.fn<DpdGroupLookup>(async () => scans);
+    const other = vi.fn<DpdGroupLookup>(async () => scans);
+    const shared = vi.fn<DpdGroupLookup>(async () => group);
+    expect((await trackAbroad(shared, { AT: unit, PL: other })(NUMBER, 'AT', { budgetMs: 10_000 })).events).toEqual(scans.events);
+    expect(unit).toHaveBeenCalledWith(NUMBER, { budgetMs: 10_000 });
+    expect(shared).toHaveBeenCalledWith(NUMBER, { budgetMs: 10_000 });
+    expect(other).not.toHaveBeenCalled();
+  });
+
+  it('keeps the group service\'s milestones when the unit has fewer, is behind, fails or there is none', async () => {
+    const behind = milestones('in_transit', ['At the hub', '2026-03-05T20:00:00+01:00'], ['In transit', '2026-03-05T08:00:00+01:00'],
+      ['Parcel handed to DPD', '2026-03-04T11:59:00+01:00']);
+    const shared = async () => group;
+    expect(await trackAbroad(shared, { AT: async () => group })(NUMBER, 'AT', {})).toBe(group);
+    expect(await trackAbroad(shared, { AT: async () => behind })(NUMBER, 'AT', {})).toBe(group);
+    expect(await trackAbroad(shared, { AT: outage })(NUMBER, 'AT', {})).toBe(group);
+    expect(await trackAbroad(shared, { AT: async () => scans })(NUMBER, 'CZ', {})).toBe(group);
+    expect(await trackAbroad(outage, { AT: async () => scans })(NUMBER, 'AT', {})).toBe(scans);
+  });
+
+  it('stays inconclusive when neither finds the parcel the German tiers place abroad', async () => {
+    await expect(trackAbroad(missing, { AT: missing })(NUMBER, 'AT', {})).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(trackAbroad(missing, {})(NUMBER, 'CZ', {})).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(trackAbroad(missing, { AT: outage })(NUMBER, 'AT', {})).rejects.toMatchObject({ message: 'Sample outage' });
   });
 });

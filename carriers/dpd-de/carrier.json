@@ -19,7 +19,8 @@
     "adapter": "dpd-de",
     "steps": [
       "app",
-      "direct"
+      "direct",
+      "abroad"
     ],
     "recognition": {
       "rank": 970

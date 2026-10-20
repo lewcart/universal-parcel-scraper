@@ -5,12 +5,9 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 import { calendarDay, isoTime, zonedTime } from '../../core/time/index.js';
 import type { XmlNode } from '../../core/transport/xml.js';
 import {
-  children, DpdAppService, invalid, one, optional, PostcodeRejected, scalar, SessionExpired, type DpdDePartner,
+  children, DpdAppService, DpdOtherCountryError, invalid, one, optional, PostcodeRejected, scalar, SessionExpired, type DpdDePartner,
 } from './service.js';
 import { DPD_DE_APP_SCANS, dpdDeScanKey } from './status.js';
-
-/** Activity the service places outside Germany; the app tier would read the same parcel. */
-export const DPD_DE_OTHER_COUNTRY = 'other_country';
 
 /** The app's progress rail: one coarse state for the whole parcel. */
 export const DPD_DE_APP_RAIL: Readonly<Record<string, ClassifiedStatus>> = {
@@ -159,7 +156,7 @@ export function parseDpdDeApp(data: XmlNode, scans: XmlNode, number: string): { 
   const depot = children(tracking, 'LastStatusInfo').flatMap(info => children(info, 'DepotData')).flatMap(data => children(data, 'Address'))[0];
   const country = placed || countryOf(depot);
   if (country && country !== 'DE') {
-    throw new IndeterminateError('DPD Germany', 'DPD returned activity in another country', { reason: DPD_DE_OTHER_COUNTRY });
+    throw new DpdOtherCountryError(country);
   }
   events.reverse();
   const current = events[0]!;
@@ -253,7 +250,9 @@ export class DpdDeAppClient {
     } catch (error) {
       options.signal.throwIfAborted();
       // Transport diagnostics include the credentials, the session and recipient XML.
-      // Preserve the failure contract without forwarding request or body data.
+      // Preserve the failure contract without forwarding request or body data. The
+      // country a parcel is in holds neither.
+      if (error instanceof DpdOtherCountryError) throw error;
       if (error instanceof CarrierError) throw new CarrierError(error.kind, 'DPD Germany', `DPD Germany app tracking failed (${error.kind})`, {
         status: error.status, retryAfterMs: error.retryAfterMs, reason: error.reason,
       });

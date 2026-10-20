@@ -13,6 +13,15 @@ import { isRecord } from '../../core/types.js';
 export const DPD_DE_APP_API = 'https://api.paketnavigator.de/services/v1/Navigator3Service.asmx';
 /** The lookup stopped waiting for the session, which keeps opening for the next one. */
 export const DPD_DE_SESSION_OPENING = 'session_opening';
+/** Activity either German tier places outside Germany. */
+export const DPD_DE_OTHER_COUNTRY = 'other_country';
+
+/** A parcel DPD's group places in another country: `country` is the code the tier gave for where it is now. */
+export class DpdOtherCountryError extends IndeterminateError {
+  constructor(readonly country: string) {
+    super('DPD Germany', 'DPD returned activity in another country', { reason: DPD_DE_OTHER_COUNTRY });
+  }
+}
 const SOAP = 'http://schemas.xmlsoap.org/soap/envelope/';
 const SERVICE = 'https://cloud.dpd.com/';
 const MAX_BYTES = 2_000_000;

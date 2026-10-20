@@ -18,10 +18,20 @@ DPD parcels tracked through the German business unit. DPD Switzerland remains
    and cancellation signal. With a postcode it runs first, because DPD then
    verifies the reply and adds places and the delivery window; the app service
    follows it, with the same postcode.
+3. `abroad`: a parcel either service places in another country, which the other
+   service is not asked about. DPD's group-wide guest service, asked through
+   Belgium's unit as for [DPD Ireland](../dpd-ie/README.md), and that country's
+   DPD unit when it has a source of its own, asked together: Belgium's, the
+   Netherlands' and Switzerland's read the group's service. The unit's history
+   answers when it holds more scans and is not behind the group's milestones,
+   else the group's milestones, as a truncated history. Either answers when the
+   other fails, and the answer keeps the link of the source that gave it. No
+   unit opens a browser: DPD France's page is read by a direct request.
 
-Either service answers when the other fails, except for a parcel the guest API
-does not know (a 404, or a 400 typed `PARCEL_NOT_FOUND` without a postcode, as
-for [Switzerland](../dpd/README.md)) or a delivery placed in another country.
+Either German service answers when the other fails, except for a parcel the
+guest API does not know (a 404, or a 400 typed `PARCEL_NOT_FOUND` without a
+postcode, as for [Switzerland](../dpd/README.md)) or one placed in another
+country.
 
 ## Notes
 
@@ -31,9 +41,10 @@ for [Switzerland](../dpd/README.md)) or a delivery placed in another country.
   recipient's. A rejected postcode gets one unverified lookup, and
   `dpd_postcode_verified` says which. Unverified guest replies omit places and
   the delivery window.
-- The group API knows parcels across countries. A matching number does not
-  prove a German parcel: a current country outside Germany is inconclusive for
-  this service, and the other service is not asked about that parcel.
+- The group API knows parcels across countries, and a parcel registered with
+  DPD Germany can be delivered by another unit. Its current country decides
+  where it is read: Germany through the German services, another country in
+  the `abroad` step.
 - Recognition asks the guest API without a postcode, as DPD Switzerland does,
   and knows a number only when the parcel's current country is Germany. Another
   country is unknown, and a reply without a country is inconclusive. The app
@@ -156,8 +167,8 @@ with [DPD Switzerland](../dpd/README.md), whose Pickup shops
 - The order's measured length, width and height are in millimetres. A side of
   zero means no measurement, and the shipper's declared size is not read.
 - The service reports "no tracking data" for parcels its scan list still
-  knows, so that answer is inconclusive. A delivery address outside Germany is
-  inconclusive too.
+  knows, so that answer is inconclusive. A parcel placed outside Germany goes
+  to the `abroad` step.
 
 ## Limitations
 

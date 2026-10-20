@@ -464,7 +464,7 @@ describe('DPD Germany tiers', () => {
   }
 
   it('declares the app service before the guest protocol', () => {
-    expect(tiers([]).tracking.steps).toEqual(['app', 'direct']);
+    expect(tiers([]).tracking.steps).toEqual(['app', 'direct', 'abroad']);
   });
 
   it('reads with the session the host warmed for its transport', async () => {
@@ -565,13 +565,16 @@ describe('DPD Germany tiers', () => {
     expect(guestCalls).toHaveLength(5);
   });
 
-  it('ends at once on a parcel the guest protocol places in another country while the session opens', async () => {
-    const { app, guestCalls, steps, tracking } = tiers(guest(Response.json({ parcelNumber: NUMBER, status: { description: 'DELIVERED', countryCode: 'CH' },
-      parcelHistory: [{ description: 'DELIVERED', eventDateAndTime: '2026-01-03T10:00:00+01:00' }] })));
+  it('stops waiting on a parcel the guest protocol places in another country while the session opens, and asks DPD\'s group', async () => {
+    // A country without a unit of its own: the group service answers alone.
+    const elsewhere = { parcelNumber: NUMBER, status: { description: 'DELIVERED', countryCode: 'CZ' },
+      parcelHistory: [{ description: 'DELIVERED', eventDateAndTime: '2026-01-03T10:00:00+01:00' }] };
+    const { app, guestCalls, steps, tracking } = tiers([...guest(Response.json(elsewhere)), ...guest(Response.json(elsewhere))]);
     app.replies.getSessionFullState = [() => new Promise<Response>(() => undefined)];
-    await expect(tracking.track({ number: NUMBER })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'other_country' });
-    expect(steps).toEqual([['app', 'indeterminate'], ['direct', 'indeterminate']]);
-    expect(guestCalls).toHaveLength(4);
+    expect(await tracking.track({ number: NUMBER })).toMatchObject({ status: 'delivered', history_truncated: true,
+      tracking_url: `https://www.dpdgroup.com/be/mydpd/my-parcels/track?parcelNumber=${NUMBER}` });
+    expect(steps).toEqual([['app', 'indeterminate'], ['direct', 'indeterminate'], ['abroad', 'ok']]);
+    expect(guestCalls.map(url => new URL(url).searchParams.get('businessUnit')).filter(Boolean)).toEqual(['DPD-DE', 'DPD-BE']);
   });
 
   it('asks the guest protocol beside the next session when the service refuses the open one', async () => {
@@ -743,14 +746,13 @@ describe('DPD Germany tiers', () => {
     expect(steps).toEqual([['app', 'indeterminate'], ['direct', 'not_found']]);
   });
 
-  it('does not ask the guest protocol about a delivery the app service places in another country', async () => {
-    const replies = guest(Response.json(delivered));
-    const { app, guestCalls, opened, steps, tracking } = tiers(replies);
+  it('asks DPD\'s group rather than the German guest protocol about a delivery the app service places in another country', async () => {
+    const { app, guestCalls, opened, steps, tracking } = tiers(guest(Response.json(delivered)));
     await opened();
-    app.replies.getTrackingScanList = [() => xml(fixture('scans').replaceAll('Musterstadt (DE)', 'Musterville (GB)'))];
-    await expect(tracking.track({ number: NUMBER })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'other_country' });
-    expect(steps).toEqual([['app', 'indeterminate']]);
-    expect(guestCalls).toHaveLength(0);
+    app.replies.getTrackingScanList = [() => xml(fixture('scans').replaceAll('Musterstadt (DE)', 'Musterville (CZ)'))];
+    expect(await tracking.track({ number: NUMBER })).toMatchObject({ status: 'delivered' });
+    expect(steps).toEqual([['app', 'indeterminate'], ['abroad', 'ok']]);
+    expect(guestCalls.map(url => new URL(url).searchParams.get('businessUnit')).filter(Boolean)).toEqual(['DPD-BE']);
   });
 
   it.each([
@@ -769,12 +771,19 @@ describe('DPD Germany tiers', () => {
   it.each([
     ['a missing parcel', () => guest(new Response('', { status: 404 })), 'not_found'],
     ['a parcel it names unknown without the postcode', () => [...guest(unknownParcel()), unknownParcel()], 'not_found'],
-    ['another country', () => guest(Response.json({ parcelNumber: NUMBER, status: { description: 'DELIVERED', countryCode: 'CH' },
-      parcelHistory: [{ description: 'DELIVERED', eventDateAndTime: '2026-01-03T10:00:00+01:00' }] })), 'indeterminate'],
   ])('with a postcode, does not ask the app service about %s', async (_, replies, kind) => {
     const { app, steps, tracking } = tiers(replies());
     await expect(tracking.track({ number: NUMBER, postcode: '10115' })).rejects.toMatchObject({ kind });
     expect(app.calls).toHaveLength(0);
     expect(steps.map(([step]) => step)).toEqual(['direct']);
+  });
+
+  it('with a postcode, asks DPD\'s group rather than the app service about another country', async () => {
+    const elsewhere = { parcelNumber: NUMBER, status: { description: 'DELIVERED', countryCode: 'CZ' },
+      parcelHistory: [{ description: 'DELIVERED', eventDateAndTime: '2026-01-03T10:00:00+01:00' }] };
+    const { app, steps, tracking } = tiers([...guest(Response.json(elsewhere)), ...guest(Response.json(elsewhere))]);
+    expect(await tracking.track({ number: NUMBER, postcode: '10115' })).toMatchObject({ status: 'delivered' });
+    expect(app.calls).toHaveLength(0);
+    expect(steps).toEqual([['direct', 'indeterminate'], ['abroad', 'ok']]);
   });
 });

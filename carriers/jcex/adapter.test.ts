@@ -11,6 +11,7 @@ import { statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const NUMBER = 'JCZ9900000001DH';
+const HANDED_OVER = 'JCZ9900000002DH';
 const UNKNOWN = 'JCZ9999999999DH';
 const READ = Date.parse('2026-05-01T00:00:00Z');
 
@@ -66,9 +67,9 @@ describe('JCEX HTTP adapter', () => {
       expected_delivery: null, destination_country: 'US' });
     expect(result.last_update_local).toBeUndefined();
     expect(result.events!.map((event) => [event.time ?? event.local_time, event.provider_code ?? null, event.stage, event.location ?? null])).toEqual([
-      ['2026-04-20T10:05:00-05:00', 'Delivered_Other', 'delivered', 'EXAMPLE, MO 00000'],
-      ['2026-04-20T06:44:00-05:00', 'OutForDelivery_Other', 'out_for_delivery', 'EXAMPLE, MO 00000'],
-      ['2026-04-20T06:33:00-05:00', 'InTransit_Other', 'in_transit', 'EXAMPLE, MO 00000'],
+      ['2026-04-20T10:05:00-05:00', 'Delivered_Other', 'delivered', 'EXAMPLE, MO'],
+      ['2026-04-20T06:44:00-05:00', 'OutForDelivery_Other', 'out_for_delivery', 'EXAMPLE, MO'],
+      ['2026-04-20T06:33:00-05:00', 'InTransit_Other', 'in_transit', 'EXAMPLE, MO'],
       ['2026-04-18T13:07:00-05:00', 'InTransit_Other', 'in_transit', 'EXAMPLE CITY KS DISTRIBUTION CENTER'],
       ['2026-04-18T04:10:00-05:00', null, 'in_transit', 'EXAMPLE TOWN IL DISTRIBUTION CENTER'],
       // The United States keeps several clocks, and these rows name no state.
@@ -86,6 +87,40 @@ describe('JCEX HTTP adapter', () => {
     ]);
     // The recipient's city and postcode and the shipment's reference are never read.
     expect(JSON.stringify(result)).not.toMatch(/SAMPLEVILLE|99999|9900000000001/);
+  });
+
+  it('reads the handover to the delivering partner as transit and orders the rows by their clocks', () => {
+    const result = parseJcex(fixture('handed-over'), HANDED_OVER, Date.parse('2026-11-01T00:00:00Z'));
+    expect(result).toMatchObject({ current_stage: 'failed_attempt', current_stage_source: 'carrier_map',
+      last_update: null, last_update_local: '2026-10-19T13:00:46', destination_country: 'FR' });
+    expect(result.delivered_at).toBeUndefined();
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.provider_code, event.stage, event.location ?? null])).toEqual([
+      // Colissimo's rows keep France's wall clock: JCEX gives them China's offset.
+      ['2026-10-19T13:00:46', 'Exception_Other', 'failed_attempt', 'FR'],
+      ['2026-10-19T08:34:41', 'OutForDelivery_Other', 'out_for_delivery', 'FR'],
+      ['2026-10-17T15:39:42', 'InTransit_Other', 'in_transit', 'FR'],
+      // JCEX lists its handover first and files it as delivered.
+      ['2026-10-17T14:47:28', 'Delivered_Other', 'in_transit', 'Exampleville, FR'],
+      ['2026-10-17T07:47:40', 'InTransit_Other', 'in_transit', null],
+      ['2026-10-16T22:22:29+08:00', 'InTransit_Departure', 'in_transit', 'SH, CN'],
+      ['2026-10-09T09:14:17+08:00', 'InTransit_Departure', 'in_transit', 'SH, CN'],
+      ['2026-10-07T19:55:12+08:00', 'InTransit_PickedUp', 'accepted', 'GUANG ZHOU'],
+      ['2026-10-06T10:21:14', 'InfoReceived', 'registered', null],
+      // Colissimo's announcement, at the time JCEX received the order on France's clock.
+      ['2026-10-06T04:21:14', 'InTransit_Other', 'registered', 'FR'],
+    ]);
+    expect(JSON.stringify(result)).not.toMatch(/SAMPLEVILLE|99999|XYZ0000000001|00000"/);
+  });
+
+  it('counts a delivered code only with wording that reads as a delivery', () => {
+    const handover = parseJcex(changed('handed-over', (content) => {
+      content.trackDetails.splice(1, 3);
+      content.trackDetails[0]!.eventDetailEn = 'Handed to the last-mile carrier';
+    }), HANDED_OVER, Date.parse('2026-11-01T00:00:00Z'));
+    expect(handover.events![0]).toMatchObject({ provider_code: 'Delivered_Other', description: 'Handed to the last-mile carrier' });
+    expect(handover.current_stage).not.toBe('delivered');
+    expect(statusMapAnswer({ carrier: 'jcex', providerCode: 'Delivered_Other', description: 'Handed to the last-mile carrier' })).toEqual({ kind: 'unknown' });
+    expect(statusMapAnswer({ carrier: 'jcex', providerCode: 'Delivered_Other', description: 'Delivered, in mailbox' })).toEqual({ kind: 'mapped', stage: 'delivered' });
   });
 
   it('keeps a wall clock whose offset its place does not have then', () => {

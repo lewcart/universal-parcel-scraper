@@ -39,6 +39,17 @@ function text(row: Record<string, unknown>, key: string, maxLength = 500): strin
   return cleanScalar(value, maxLength);
 }
 
+/** A place as JCEX writes it, "TOWN,TOWN,FR,00000" or "TOWN, ST 00000", without its postcode and each part once. */
+function placeOf(location: string): string {
+  const parts: string[] = [];
+  for (const raw of location.split(',')) {
+    const part = raw.trim().replace(/\s+\d{4,6}(?:-\d{4})?$/, '');
+    if (!part || /^\d{4,6}(?:-\d{4})?$/.test(part) || part.toUpperCase() === parts.at(-1)?.toUpperCase()) continue;
+    parts.push(part);
+  }
+  return parts.join(', ');
+}
+
 /**
  * The zone a row's place keeps. A bare country code is the place, even when
  * the row's country is another: JCEX files its Hong Kong hub's rows under the
@@ -68,14 +79,14 @@ function placedTime(local: string, label: string, location: string, country: str
 }
 
 /** A row's clock: its instant where its place settles it, else its wall clock. */
-function clockOf(row: Record<string, unknown>, location: string, country: string): { time: string; at: number } | { local_time: string; at: number } {
+function clockOf(row: Record<string, unknown>, location: string, country: string): { clock: { time: string } | { local_time: string }; local: string; at: number } {
   const wall = WALL_CLOCK.exec(text(row, 'eventTime', 64));
   const local = wall ? `${wall[1]}T${wall[2]}` : '';
   const home = local ? firstOccurrence(DateTime.fromISO(local, { zone: HOME_ZONE })) : null;
   // Luxon rolls 24:00:00 over to the next day; only a clock that reads back unchanged is kept.
   if (!home?.isValid || home.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== local) throw new SchemaError(PROVIDER, 'JCEX returned an invalid scan time');
   const time = placedTime(local, text(row, 'timeZone', 16), location, country);
-  return time ? { time: time.iso, at: time.timestamp } : { local_time: local, at: home.toMillis() };
+  return time ? { clock: { time: time.iso }, local, at: time.timestamp } : { clock: { local_time: local }, local, at: home.toMillis() };
 }
 
 function stageOf(code: string, description: string): { stage: Stage; source: string } | undefined {
@@ -85,13 +96,13 @@ function stageOf(code: string, description: string): { stage: Stage; source: str
   return worded.source === 'none' ? undefined : { stage: worded.stage, source: worded.source };
 }
 
-function projectRow(row: unknown, readAt: number): { key: string; event: CarrierEvent } | null {
+function projectRow(row: unknown, readAt: number): { key: string; local: string; event: CarrierEvent } | null {
   if (!isRecord(row)) throw new SchemaError(PROVIDER, 'JCEX returned an invalid scan');
   const description = text(row, 'eventDetailEn') || text(row, 'eventDetailCn');
   if (!description) return null;
-  const location = text(row, 'location', 200);
+  const location = placeOf(text(row, 'location', 200));
   const country = text(row, 'countryCode', 8).toUpperCase();
-  const { at, ...clock } = clockOf(row, location, country);
+  const { clock, local, at } = clockOf(row, location, country);
   // A row dated after the read is not a scan yet.
   if (at > readAt) return null;
   const code = text(row, 'platformEventCode', 64);
@@ -103,7 +114,7 @@ function projectRow(row: unknown, readAt: number): { key: string; event: Carrier
     ...(code ? { provider_code: code } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };
-  return { key: JSON.stringify([text(row, 'eventTime', 64), text(row, 'timeZone', 16), code, description, location]), event };
+  return { key: JSON.stringify([local, text(row, 'timeZone', 16), code, description, location]), local, event };
 }
 
 /** The one shipment of a reply that is for the number asked. */
@@ -119,11 +130,11 @@ function shipmentFor(data: unknown, number: string): Record<string, unknown> {
 /**
  * The reply of `POST /api/track/tracking`, the lookup track.jcex.com makes:
  * one entry per number asked, its shipment under `content` with JCEX's
- * waybill and order numbers, its status and its scans newest first. An
- * unknown number comes back without either number; a waybill JCEX has
+ * waybill and order numbers, its status and its scans, mostly newest first.
+ * An unknown number comes back without either number; a waybill JCEX has
  * printed but not scanned has them and no scans. The recipient's province,
- * city and postcode, the shipment's reference and its other numbers are not
- * read.
+ * city and postcode, the postcodes in the scans' places, the shipment's
+ * reference and its other numbers are not read.
  */
 export function parseJcex(payload: unknown, raw: string, readAt = Date.now()): CarrierResult {
   const number = normalizeJcexNumber(raw);
@@ -141,13 +152,17 @@ export function parseJcex(payload: unknown, raw: string, readAt = Date.now()): C
   if (!own.includes(number)) throw new IndeterminateError(PROVIDER, 'JCEX answered for another shipment');
 
   const seen = new Set<string>();
-  const events: CarrierEvent[] = [];
-  for (const row of rows) {
+  const scans: { local: string; index: number; event: CarrierEvent }[] = [];
+  rows.forEach((row, index) => {
     const scan = projectRow(row, readAt);
-    if (!scan || seen.has(scan.key)) continue;
+    if (!scan || seen.has(scan.key)) return;
     seen.add(scan.key);
-    events.push(scan.event);
-  }
+    scans.push({ local: scan.local, index, event: scan.event });
+  });
+  // Rows come newest first, but JCEX puts its own milestone, such as the
+  // handover to the delivering partner, on top: the rows are ordered by their
+  // places' wall clocks, and rows on one clock keep the reply's order.
+  const events = scans.sort((a, b) => (a.local === b.local ? a.index - b.index : a.local < b.local ? 1 : -1)).map(({ event }) => event);
   if (!events.length) throw new NoHistoryError(PROVIDER, 'JCEX has no scans for the waybill yet');
 
   const newest = events[0]!;

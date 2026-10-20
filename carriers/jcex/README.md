@@ -26,15 +26,22 @@ Tracked through the lookup its tracking page makes.
   reads that code: JCEX's own event codes group rows of several stages. The origin warehouse's
   "Arrive at the delivery point" is the parcel reaching JCEX, which the shared rules would read
   as a parcel waiting for collection. Rows without a code are read by their wording.
+- JCEX files its handover to the delivering partner's depot as delivered too, so
+  `Delivered_Other` counts only with wording the shared rules read as a delivery, and the
+  handover rows seen are transit. Rows seen under a code too broad for them, such as
+  Colissimo's failed visit under `Exception_Other`, are mapped one by one.
+- Rows come newest first, but JCEX puts its own milestone, such as that handover, on top. The
+  rows are ordered by their places' wall clocks, and rows on one clock keep the reply's order.
 - A row is read on the clock its place keeps: its country's when the country has one, and in
   the United States its state's when the place names one, as USPS writes it. A row whose place
   is a bare country code keeps that country's clock: JCEX files its Hong Kong hub's rows under
   the destination with the destination's offset. An offset the place does not keep at that
-  time, and a place without one clock, keep the wall clock.
+  time, and a place without one clock, keep the wall clock: Colissimo's rows come on France's
+  clock with China's offset.
 - The newest scan's instant, when it has one, is the last update, and a delivered scan's is the
   delivery time. Rows dated after the read are dropped.
-- The recipient's province, city and postcode, the shipment's reference and the delivery
-  estimate are never read.
+- The recipient's province, city and postcode, the postcodes in the rows' places, the
+  shipment's reference and the delivery estimate are never read.
 
 ## Limitations
 
@@ -44,8 +51,8 @@ Tracked through the lookup its tracking page makes.
 
 ## Numbers
 
-ParcelPanel's JCEX page offers a waybill of `JCZ`, ten digits and `DH`, and JCEX's tracker
-answers it. `jcex-1` claims that layout.
+ParcelPanel's JCEX page offers waybills of `JCZ`, ten digits and `DH`, and JCEX's tracker
+answers them. `jcex-1` claims that layout.
 
 ## Testing
 

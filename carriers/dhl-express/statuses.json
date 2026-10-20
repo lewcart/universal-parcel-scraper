@@ -147,6 +147,33 @@
       "stage": "exception",
       "confirmedBy": "live",
       "note": "A missort: the parcel goes on to the right facility, late. The unified feed codes it MS; the web feed sends the wording alone."
+    },
+    {
+      "code": "CC",
+      "wording": "Awaiting collection by the consignee",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Held at a DHL facility for the consignee to collect; matched on its start. The unified feed codes it CC, which stages it in any wording."
+    },
+    {
+      "code": "ND",
+      "wording": "Delivery attempt could not be completed",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Matched on its start. The unified feed codes it ND, which stages it in any wording."
+    },
+    {
+      "code": "RT",
+      "wording": "Returned to shipper",
+      "language": "en",
+      "stage": "returned",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The unified feed codes it RT, which stages it in any wording."
     }
   ]
 }

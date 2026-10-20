@@ -21,10 +21,15 @@ const EXACT: ReadonlyMap<string, Stage> = new Map([
   ['shipment is out with courier for delivery', 'out_for_delivery'],
   ['shipment is on hold', 'exception'],
   ['delivered', 'delivered'],
+  // Sent back: the shipper, not the consignee, has the parcel.
+  ['returned to shipper', 'returned'],
 ]);
 
 const PREFIXES: ReadonlyArray<readonly [string, Stage]> = [
   ['delivery attempted', 'failed_attempt'],
+  ['delivery attempt could not be completed', 'failed_attempt'],
+  // Held at a DHL facility for the consignee to collect.
+  ['awaiting collection by ', 'ready_for_pickup'],
   // A missort: DHL forwards the parcel to the right facility, late.
   ['shipment arrived at incorrect facility', 'exception'],
   // A completed clearance puts the parcel back in transit; one still running stays in customs.
@@ -42,11 +47,13 @@ const PREFIXES: ReadonlyArray<readonly [string, Stage]> = [
  * DHL's event codes on the unified feed, each seen with the wording above: SA
  * the shipment's acceptance, IC its processing for clearance, CD a clearance
  * step without its outcome, PY the payment of fees during clearance, MS a
- * missort. They stage a scan whose wording the map does not know, as in
- * another language.
+ * missort, CC the wait for the consignee's collection, ND a delivery attempt
+ * that could not be completed, RT the return to the shipper. They stage a scan
+ * whose wording the map does not know, as in another language.
  */
 const CODES: ReadonlyMap<string, Stage> = new Map([
   ['SA', 'accepted'], ['IC', 'customs'], ['CD', 'customs'], ['PY', 'customs'], ['MS', 'exception'],
+  ['CC', 'ready_for_pickup'], ['ND', 'failed_attempt'], ['RT', 'returned'],
 ]);
 
 /** The checkpoint's stage from DHL's own wording, if the wording is one of DHL's checkpoints. */

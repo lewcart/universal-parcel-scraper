@@ -228,6 +228,15 @@ describe('status map answers', () => {
       .toEqual(mapped('registered'));
   });
 
+  it("answers DHL Express's wait for collection, missed delivery and return", () => {
+    expect(answer('dhl-express', 'CC', 'Awaiting collection by the consignee')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('dhl-express', 'ND', 'Delivery attempt could not be completed')).toEqual(mapped('failed_attempt'));
+    expect(answer('dhl-express', 'RT', 'Returned to shipper')).toEqual(mapped('returned'));
+    // The web feed sends the same wording without a code.
+    expect(answer('dhl-express', null, 'Awaiting collection by the consignee')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('dhl-express', 'RT', 'Synthetic checkpoint')).toEqual(mapped('returned'));
+  });
+
   it("answers STO's scan types by the wording stored for them, on the way out and back", () => {
     expect(answer('sto', '派件', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
     expect(answer('sto', '发件', 'Departed for Example hub')).toEqual(mapped('in_transit'));

@@ -90,6 +90,15 @@ describe('DHL Express projection', () => {
         .toEqual({ stage: 'exception', source: 'carrier_map' });
     }
     expect(dhlExpressStage('Synthetic missort wording', 'MS')).toEqual({ stage: 'exception', source: 'carrier_map' });
+    // A wait for collection, a missed delivery and a return, coded or not.
+    for (const [description, code, stage] of [
+      ['Awaiting collection by the consignee', 'CC', 'ready_for_pickup'],
+      ['Delivery attempt could not be completed', 'ND', 'failed_attempt'],
+      ['Returned to shipper', 'RT', 'returned'],
+    ] as const) {
+      for (const coded of [code, null]) expect(dhlExpressStage(description, coded), description).toEqual({ stage, source: 'carrier_map' });
+      expect(dhlExpressStage('Synthetic checkpoint', code), code).toEqual({ stage, source: 'carrier_map' });
+    }
     expect(dhlExpressStage('Clearance processing complete at EXAMPLE CITY - FRANCE', 'CD').stage).toBe('in_transit');
     expect(dhlExpressStage('Synthetic checkpoint', 'XX').source).not.toBe('carrier_map');
     expect(dhlExpressStage('Customs clearance status updated. Note - The Customs clearance process is under way.'))

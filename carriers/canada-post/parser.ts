@@ -175,12 +175,14 @@ export function parseCanadaPostTrackingResponse(payload: unknown, trackingNumber
     const country = isRecord(raw.locationAddr) ? textField(raw.locationAddr, 'countryCd', 8).toUpperCase() : '';
     const location = isRecord(raw.locationAddr)
       ? [textField(raw.locationAddr, 'city', 160), region].filter(Boolean).join(', ') : '';
-    const stage = type === 'Signature' || code === SIGNATURE_CODE ? null : canadaPostScanStage(code, description) ?? canadaPostStage(description);
+    // The signature row can come without its type.
+    const signature = type === 'Signature' || code === SIGNATURE_CODE;
+    const stage = signature ? null : canadaPostScanStage(code, description) ?? canadaPostStage(description);
     const relayed = relayedClock(code, country, region);
     const clock = eventClock(raw.datetime, relayed);
     const event: CarrierEvent = { ...clock, description: stage === 'delivered' ? 'Delivered' : description,
       provider_code: code, ...(stage ? { stage } : {}), ...(location ? { location } : {}) };
-    return { event, type, region, country, sourceDate: isRecord(raw.datetime) ? calendarDate(raw.datetime.date) : null,
+    return { event, type, signature, region, country, sourceDate: isRecord(raw.datetime) ? calendarDate(raw.datetime.date) : null,
       returnCue: returnStarted(description) || type === 'RtsLabelProc', guessed: relayed?.zone === null && 'time' in clock };
   });
   // Native detail history is newest first. Compare instants only when every
@@ -201,7 +203,7 @@ export function parseCanadaPostTrackingResponse(payload: unknown, trackingNumber
   const summaryStage = canadaPostPackageStage(summary);
   const delivery = rows.find(row => row.event.stage === (currentReturn ? 'returned' : 'delivered'));
   const matchingDelivery = delivery?.event.time && latest.event.time === delivery.event.time
-    && (latest === delivery || latest.type === 'Signature') ? delivery : undefined;
+    && (latest === delivery || latest.signature) ? delivery : undefined;
   let current: Stage | null = (latest.event.stage as Stage | undefined) ?? summaryStage;
   let snapshot: 'delivery' | 'return' | null = null;
   if (currentReturn && !explicitReturn) {

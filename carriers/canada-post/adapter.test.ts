@@ -33,6 +33,15 @@ describe('Canada Post native history', () => {
     expect(result.events?.[1]).toMatchObject({ description: 'Delivered', stage: 'delivered', location: 'EXAMPLE CITY, ON', provider_code: '1466' });
   });
 
+  it('dates the delivery under a signature row that comes without its type', () => {
+    const payload = delivered();
+    const signature = payload.events.find((event: { cd: string }) => event.cd === '20');
+    delete signature.type;
+    expect(parse(payload)).toMatchObject({ status: 'delivered', current_stage: 'delivered',
+      last_update: '2026-03-14T08:00:34-05:00', delivered_at: '2026-03-14T08:00:34-05:00' });
+    expect(parse(payload).events?.some(event => event.summary_snapshot)).toBe(false);
+  });
+
   it('retains a current outbound estimate with known native movement', () => {
     expect(parse(moving(), MOVING_NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit',
       last_update: '2026-03-15T22:41:00-05:00', expected_delivery: '2026-03-20' });

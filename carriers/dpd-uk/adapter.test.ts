@@ -7,21 +7,71 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const NUMBER = '15500000000001';
 const CODE = `${NUMBER}*10000`;
-const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
+const fixture = (name = 'delivered') => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
 const project = (payload = fixture()) => parseDpdUkHistory(payload.detail, payload.history, NUMBER, CODE);
 const json = (payload: unknown, status = 200) => new Response(JSON.stringify(payload), { status });
 
 describe('DPD UK public history projection', () => {
-  it('binds the exact formatted number and handle, preserving local clocks and source order', () => {
+  it('binds the exact formatted number and handle, dating UK scans in winter and keeping source order', () => {
     const payload = fixture();
     expect(parseDpdUkReference(payload.reference, NUMBER)).toBe(CODE);
     const result = project(payload);
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: null, last_update_local: '2026-01-06T08:15:00' });
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered',
+      last_update: '2026-01-06T08:15:00+00:00', delivered_at: '2026-01-06T08:15:00+00:00' });
+    expect(result.last_update_local).toBeUndefined();
     expect(result.events?.map(event => event.stage)).toEqual(['delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'registered']);
-    expect(result.events?.every(event => event.time === undefined)).toBe(true);
-    expect(result.delivered_at).toBeUndefined();
+    expect(result.events?.map(event => event.time)).toEqual(['2026-01-06T08:15:00+00:00', '2026-01-06T06:59:00+00:00',
+      '2026-01-06T02:49:00+00:00', '2026-01-05T20:22:00+00:00', '2026-01-05T12:38:00+00:00']);
+    expect(result.events?.some(event => event.local_time !== undefined)).toBe(false);
     expect(result.sender_name).toBe('Example Merchant');
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE-SYNTHETIC|10000|15500000000001/);
+  });
+
+  it('dates DPD and sender records on summer time and keeps partner and Pickup shop clocks local', () => {
+    const result = project(fixture('partner'));
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: null, last_update_local: '2026-08-04T11:20:00' });
+    expect(result.delivered_at).toBeUndefined();
+    expect(result.sender_name).toBeUndefined();
+    expect(result.events?.map(event => [event.time, event.local_time])).toEqual([
+      [undefined, '2026-08-04T11:20:00'],
+      [undefined, '2026-08-04T07:40:00'],
+      [undefined, '2026-07-31T03:10:00'],
+      ['2026-07-30T04:05:00+01:00', undefined],
+      [undefined, '2026-07-29T18:30:00'],
+      ['2026-07-29T12:15:00+01:00', undefined],
+    ]);
+    expect(JSON.stringify(result.events)).not.toMatch(/Example|Sender/);
+  });
+
+  it('reads the sender record under the account display name, and no other account', () => {
+    const payload = fixture('partner');
+    payload.detail.data.shipperDetails.customerDisplayName = 'Example Merchant';
+    payload.history.data[5].eventLocation = 'Example Merchant';
+    payload.history.data[4].eventLocation = 'Other Merchant';
+    const events = project(payload).events!;
+    expect(events[5]).toMatchObject({ time: '2026-07-29T12:15:00+01:00', stage: 'registered' });
+    expect(events[4]).toMatchObject({ local_time: '2026-07-29T18:30:00' });
+    expect(events[4]?.time).toBeUndefined();
+  });
+
+  it('dates the newest UK scan as the last update and delivery', () => {
+    const payload = fixture('partner');
+    payload.history.data[0].eventLocation = 'DPD';
+    expect(project(payload)).toMatchObject({ last_update: '2026-08-04T11:20:00+01:00', delivered_at: '2026-08-04T11:20:00+01:00' });
+    expect(project(payload).last_update_local).toBeUndefined();
+  });
+
+  it.each([
+    ['2026-03-29 00:30:00', '2026-03-29T00:30:00+00:00'],
+    ['2026-03-29 01:30:00', undefined],
+    ['2026-03-29 02:30:00', '2026-03-29T02:30:00+01:00'],
+    ['2026-10-25 01:30:00', '2026-10-25T01:30:00+01:00'],
+    ['2026-10-25 02:30:00', '2026-10-25T02:30:00+00:00'],
+  ])('reads the UK clock change at %s', (clock, time) => {
+    const payload = fixture(); payload.history.data[0].eventDate = clock;
+    const event = project(payload).events![0]!;
+    expect(event.time).toBe(time);
+    expect(event.local_time).toBe(time ? undefined : clock.replace(' ', 'T'));
   });
 
   it('reads a check character that is a digit', () => {

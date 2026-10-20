@@ -29,8 +29,15 @@ before reading history under the returned handle.
   also know a British parcel, sometimes only as an order, so recognition asks
   DPD UK first for those ranges or a British country hint, and files the parcel
   under it when they all know it.
-- Scan times have no stated timezone, including delivery-partner scans. They
-  remain local clocks; the adapter does not assign a London offset.
+- Scan times carry no offset. Scans recorded by `DPD` are on UK time: DPD's
+  group tracking service gives the same scans, at the same wall clocks, with
+  London's offset. The sender's data record, under the account's display name
+  or `Sender`, comes from the same UK system. Both are dated on
+  `Europe/London`; a time the clocks skip in spring keeps its wall clock, and
+  a repeated autumn time reads as its first occurrence.
+- Scans of partner networks abroad and of Pickup shops keep their wall clocks
+  in `local_time`, since no source gives their offset. The last update is the
+  newest scan's instant when it has one, else its wall clock.
 - History stays in the page's newest-first order. Exact repeated scans are
   collapsed, and only a nonempty history produces a successful result.
 - Parcel handles and recipient details remain outside the result and errors.

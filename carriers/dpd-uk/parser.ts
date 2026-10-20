@@ -5,7 +5,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { classifyWording, languageStageStatus } from '../../core/status/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 
@@ -88,12 +88,32 @@ function publicDescription(value: unknown): string {
   return text.replace(/(\bdelivered)\s+(?:to\s+.+|and\s+signed\s+(?:for\s+)?by\s+.+|signed\s+(?:for\s+)?by\s+.+)$/i, '$1');
 }
 
-function clockFields(clock: string): Partial<Pick<CarrierEvent, 'time' | 'local_time' | 'provider_time_text'>> {
+/**
+ * DPD's group tracking service gives the scans of DPD's own network with
+ * London's offset, at the wall clocks this feed shows. The sender's data
+ * record, under the account's display name or `Sender`, comes from the same
+ * UK system. Partner networks abroad and Pickup shops may keep another clock.
+ */
+function onUkClock(recorder: string, sender: string): boolean {
+  return recorder === 'DPD' || recorder === 'Sender' || (sender !== '' && recorder === sender);
+}
+
+/** A UK wall clock's instant, unless the clocks skip it when summer time starts. */
+function ukTime(local: string): string | undefined {
+  const placed = isoTime(local, 'Europe/London');
+  return placed?.iso.startsWith(local) ? placed.iso : undefined;
+}
+
+function clockFields(clock: string, uk: boolean): Partial<Pick<CarrierEvent, 'time' | 'local_time' | 'provider_time_text'>> {
   const shape = /^(\d{4}-\d{2}-\d{2})[ T]((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d)(Z|[+-]\d{2}:?\d{2})?$/.exec(clock);
   if (!shape) return { provider_time_text: clock };
   const iso = `${shape[1]}T${shape[2]}${shape[3] ?? ''}`;
   if (!DateTime.fromISO(iso, { zone: 'UTC', setZone: true }).isValid) return { provider_time_text: clock };
-  if (!shape[3]) return { local_time: `${shape[1]}T${shape[2]}` };
+  if (!shape[3]) {
+    const local = `${shape[1]}T${shape[2]}`;
+    const time = uk ? ukTime(local) : undefined;
+    return time ? { time } : { local_time: local };
+  }
   const offset = /[+-](\d{2}):?(\d{2})$/.exec(iso);
   if (offset && (Number(offset[1]) > 14 || Number(offset[2]) > 59 || (Number(offset[1]) === 14 && Number(offset[2]) !== 0))) {
     return { provider_time_text: clock };
@@ -108,6 +128,8 @@ export function parseDpdUkHistory(detailPayload: unknown, historyPayload: unknow
   const detail = validateDpdUkParcel(detailPayload, number, code);
   if (!isRecord(historyPayload) || !Array.isArray(historyPayload.data) || historyPayload.data.length > 1000) throw new SchemaError(PROVIDER);
   if (!historyPayload.data.length) throw new IndeterminateError(PROVIDER, 'DPD UK returned no parcel history');
+  // The account that booked the parcel: the shop whose name the page shows.
+  const sender = isRecord(detail.shipperDetails) ? clean(detail.shipperDetails.customerDisplayName, 120) : '';
   // The official page renders these rows newest first. Do not reorder uncertain clocks.
   const events: CarrierEvent[] = historyPayload.data.map(row => {
     if (!isRecord(row)) throw new SchemaError(PROVIDER);
@@ -118,7 +140,7 @@ export function parseDpdUkHistory(detailPayload: unknown, historyPayload: unknow
     if (!description || !clock || typeof row.eventDate !== 'string' || row.eventDate.length > 64) throw new SchemaError(PROVIDER, 'DPD UK returned an incomplete scan');
     const classification = classifyDpdUkWording(description);
     // `eventLocation` names the network or the sender that recorded the scan, not a place.
-    return { description, ...clockFields(clock),
+    return { description, ...clockFields(clock, onUkClock(clean(row.eventLocation, 120), sender)),
       ...(classification.source !== 'none' ? { stage: classification.stage, stage_source: classification.source } : {}) };
   });
   const seen = new Set<string>();
@@ -131,8 +153,6 @@ export function parseDpdUkHistory(detailPayload: unknown, historyPayload: unknow
   const summary = publicDescription(detail.trackingStatusCurrent);
   const summaryClassification = classifyDpdUkWording(summary);
   const current = summary ? summaryClassification : classifyDpdUkWording(latest.description!);
-  // The account that booked the parcel: the shop whose name the page shows.
-  const sender = isRecord(detail.shipperDetails) ? clean(detail.shipperDetails.customerDisplayName, 120) : '';
   return { status: current.source !== 'none' ? languageStageStatus(current.stage) : 'unknown',
     ...(current.source !== 'none' ? { current_stage: current.stage, current_stage_source: current.source } : {}),
     last_status_text: summary || latest.description, last_update: latest.time ?? null,

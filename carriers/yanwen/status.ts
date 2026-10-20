@@ -37,6 +37,7 @@ const WORDING = new Map<string, ClassifiedStatus>([
   ['Votre Colissimo va bientôt nous être confié ! Il est en cours de préparation chez votre expéditeur.', { status: 'pending', stage: 'registered' }],
   ['Accepted at USPS Origin Facility', { status: 'in_transit', stage: 'in_transit' }],
   ['Your shipment has been accepted by delivery carrier', { status: 'in_transit', stage: 'in_transit' }],
+  ['Your shipment has arrived at sorting center', { status: 'in_transit', stage: 'in_transit' }],
   ['Parcel dispatched to be delivered', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['UA.In the New Post Office', { status: 'out_for_delivery', stage: 'ready_for_pickup' }],
 ]);

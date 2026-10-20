@@ -392,6 +392,7 @@ describe('status map answers', () => {
     expect(answer('yanwen', null, 'Yanwen Pickup Scan')).toEqual(mapped('accepted'));
     expect(answer('yanwen', null, 'Order Submited.')).toEqual(mapped('registered'));
     expect(answer('yanwen', null, 'Shipment order created')).toEqual(mapped('accepted'));
+    expect(answer('yanwen', null, 'Your shipment has arrived at sorting center')).toEqual(mapped('in_transit'));
     expect(answer('yanwen', null, 'Votre colissimo va bientôt nous être confié ! il est en cours de préparation chez votre expéditeur.')).toEqual(mapped('registered'));
     expect(answer('yanwen', null, '【EXAMPLE】Arrived.')).toEqual(mapped('in_transit'));
     expect(answer('yanwen', 'LM40', 'Synthetic last-mile wording')).toEqual(mapped('delivered'));

@@ -214,6 +214,14 @@
       "note": "The last-mile carrier's handover scan; Yanwen's pickup scan is the acceptance."
     },
     {
+      "wording": "Your shipment has arrived at sorting center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The last-mile carrier's sorting scan, after Yanwen's batch handover."
+    },
+    {
       "wording": "Parcel dispatched to be delivered",
       "language": "en",
       "stage": "out_for_delivery",

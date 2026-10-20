@@ -55,8 +55,7 @@
           "aramex",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "TrackingMore lists it as an example on its Saia LTL Freight page; it is not described as a live shipment."
@@ -83,8 +82,7 @@
           "cdek",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "ParcelPanel's Saia page says it entered this PRO on Saia's tracker and the shipment details showed up."
@@ -111,8 +109,7 @@
           "cdek",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "ParcelPanel's Saia page gives it as an example PRO number; it is not described as a live shipment."
@@ -171,8 +168,7 @@
           "cdek",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."
@@ -201,8 +197,7 @@
           "cdek",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."

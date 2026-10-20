@@ -19,8 +19,7 @@
           "cdek",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to GLS Germany, which stays one candidate among several."
@@ -434,8 +433,7 @@
           "cdek",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."

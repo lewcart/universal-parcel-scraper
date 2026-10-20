@@ -88,8 +88,7 @@
           "aramex",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "Looked up on SPS's own tracker without the 703 country prefix, as an archived address shows. SPS's tracking service returns the parcel's history for this form too."
@@ -150,8 +149,7 @@
           "gls-de",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "Looked up on SPS's own tracker without the 703 country prefix, as an archived address shows. SPS's tracking service returns the history of the parcel with that prefix."

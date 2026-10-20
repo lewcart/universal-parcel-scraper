@@ -113,7 +113,6 @@ describe('recognition candidates', () => {
       { carrier: 'gls-ch', needsInput: 'postcode', preferred: false },
       { carrier: 'postlogistics', needsInput: null, preferred: false },
       { carrier: 'dhl-ecommerce-pl', needsInput: null, preferred: false },
-      { carrier: 'ppl', needsInput: null, preferred: false },
       { carrier: 'gls-pl', needsInput: null, preferred: false },
       { carrier: 'gls-at', needsInput: null, preferred: false },
     ]);

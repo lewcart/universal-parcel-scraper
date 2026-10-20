@@ -327,6 +327,67 @@
         ]
       },
       "note": "Looked up on PPL's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "50250073144",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230529090308/https://www.ppl.cz/vyhledat-zasilku?shipmentId=50250073144",
+        "date": "2023-05-29",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
+      },
+      "note": "Looked up on PPL's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "80152106930",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251023080529/https://www.ppl.cz/vyhledat-zasilku?shipmentId=80152106930",
+        "date": "2025-10-23",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
+      },
+      "note": "Looked up on PPL's own tracker, as an archived address shows; the capture was not opened."
     }
   ]
 }

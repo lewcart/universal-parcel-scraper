@@ -56,8 +56,7 @@
           "gls-de",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "ShipBlu's own API collection, published on its developer documentation site, uses it as the tracking number in its shipping-label requests; no history is shown."

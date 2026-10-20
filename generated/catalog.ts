@@ -24162,7 +24162,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^\\d{11}$",
+        "pattern": "^[2-9]\\d{10}$",
         "confidence": "low"
       }
     ]

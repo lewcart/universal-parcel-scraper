@@ -34,9 +34,10 @@ the maintainer's approval. A rejected key is a challenge.
 - The expected day is kept only while the page itself shows it and the parcel is still on its
   way, and is dropped when it falls before the latest scan.
 - Scan clocks carry their UTC offset. A clock without one stays unresolved text.
-- Numbers one apart both occur, so the last digit is no check digit and only the length is
-  checked. Eleven digits are shared with other carriers, so `ppl-1` only suggests PPL among
-  them.
+- Numbers one apart both occur, so the last digit is no check digit. The first digit names the
+  product, from 2 for export parcels to 9 for company pallets in PPL's API documentation, so
+  `ppl-1` takes eleven digits starting 2 to 9. Eleven digits are shared with other carriers,
+  so it only suggests PPL among them.
 - Recognition makes the same search. A Czech caller, or a provider that names PPL, asks PPL
   first; otherwise the commoner eleven-digit carriers are asked before it. Providers name PPL
   beside the DHL networks that take a parcel abroad, and only PPL's rule fits its number.

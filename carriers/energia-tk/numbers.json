@@ -22,8 +22,7 @@
           "gls-de",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "Gdeposylka's TK Energia page gives it as an example receipt number, and Energia's tracker knows it."

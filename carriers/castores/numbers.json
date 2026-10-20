@@ -24,8 +24,7 @@
           "gls-de",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "Castores' tracking manual prints it under the barcode of a carta porte as an example of the 11-digit talón number."
@@ -72,8 +71,7 @@
           "gls-de",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "An archived lookup on Castores' own talón tracker shows the carta porte documented and in transit."
@@ -101,8 +99,7 @@
           "gls-de",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "An archived lookup on Castores' own talón tracker shows the carta porte documented, in transit and delivered."
@@ -130,8 +127,7 @@
           "gls-de",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "An archived lookup on Castores' own talón tracker shows the carta porte delivered."
@@ -162,8 +158,7 @@
           "aramex",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "An archived lookup on Castores' own talón tracker shows the carta porte delivered."
@@ -221,8 +216,7 @@
           "old-dominion",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl",
-          "ppl"
+          "gls-pl"
         ]
       },
       "note": "An archived lookup on Castores' former tracking path; the capture holds only the script app shell, without the history."

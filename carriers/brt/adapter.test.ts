@@ -195,7 +195,8 @@ describe('BRT direct tracking', () => {
       const first = $('.table_stato_dati tr').eq(1).children('td');
       first.eq(0).text(date); first.eq(1).text(clock); first.eq(2).text(place);
     }), NUMBER);
-    for (const place of ['DPD-ROV-AUSTRIA (991)', 'DPD-ROV-GERMANIA (992)', 'BELGIO/LUSSEMBURGO (994)', 'FRANCIA SAMPLEVILLE (995)', 'GERMANY TEST (997)']) {
+    for (const place of ['DPD-ROV-AUSTRIA (991)', 'DPD-ROV-GERMANIA (992)', 'BELGIO/LUSSEMBURGO (994)', 'FRANCIA SAMPLEVILLE (995)', 'GERMANY TEST (997)',
+      'CHR-FR SAMPLE (998)', 'DPD AT TEST (999)']) {
       expect(abroad(place), place).toMatchObject({ status: 'delivered', last_update: '2026-01-16T21:07:00+01:00', delivered_at: '2026-01-16T21:07:00+01:00' });
       expect(abroad(place, '16.07.2026').last_update, place).toBe('2026-07-16T21:07:00+02:00');
       // The hour the change from summer time repeats stays local.
@@ -203,6 +204,10 @@ describe('BRT direct tracking', () => {
     }
     // A depot naming a country on another clock, or one of several zones, keeps its wall clock.
     for (const place of ['DPD IRLANDA (991)', 'AUSTRIA/REGNO UNITO (992)', 'DPD FRANCIA PORTOGALLO (993)', 'SAMPLE RUSSIA (994)']) {
+      expect(abroad(place), place).toMatchObject({ last_update: null, last_update_local: '2026-01-16T21:07:00' });
+    }
+    // Two letters that are no single-zone country's code, or one on another clock: "GE" is Genoa's and Georgia's.
+    for (const place of ['DPD-GE IMPORT TEST (995)', 'DPD-XX TEST (996)', 'CHR-FR XY (997)', 'SAMPLE US (998)', 'NA-SAMPLETOWN (999)']) {
       expect(abroad(place), place).toMatchObject({ last_update: null, last_update_local: '2026-01-16T21:07:00' });
     }
   });

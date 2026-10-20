@@ -137,15 +137,35 @@ function depotZones(place: string): string[] | null {
 }
 
 /**
+ * The zones a depot's two-letter words give as country codes, as "FR" in
+ * "CHR-FR SUD". BRT's own depots open with their province's two letters, which
+ * can be another country's code ("NA-…" is Naples and Namibia). Null when a
+ * word is no code of a single-zone country, or the name has none.
+ */
+function codeZones(place: string): string[] | null {
+  const codes = DEPOT.exec(place)?.[1]?.split(/[^\p{L}]+/u).filter((word) => word.length === 2) ?? [];
+  const zones = new Set<string>();
+  for (const code of codes) {
+    const zone = countryTimeZone(code);
+    if (!zone) return null;
+    zones.add(zone);
+  }
+  return zones.size ? [...zones] : null;
+}
+
+/**
  * The clocks a scan's place may keep. A depot named after a country keeps
  * that country's clock or BRT's own, Italy's. A depot naming none is one of
- * BRT's in Italy only where the caller knows it to be.
+ * BRT's in Italy only where the caller knows it to be; elsewhere a two-letter
+ * country code in its name counts as its country.
  */
 function clockZones(place: string, inItaly: boolean): string[] | null {
   const zones = depotZones(place);
   if (!zones) return null;
   if (zones.length) return [HOME_ZONE, ...zones];
-  return inItaly && !/^DPD\b/i.test(place) ? [HOME_ZONE] : null;
+  if (inItaly && !/^DPD\b/i.test(place)) return [HOME_ZONE];
+  const codes = codeZones(place);
+  return codes ? [HOME_ZONE, ...codes] : null;
 }
 
 /**

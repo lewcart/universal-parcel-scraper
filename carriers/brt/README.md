@@ -38,7 +38,11 @@ come in the same form, and a shipment BRT hands to a partner abroad names no
 delivering depot, so its other places are not known to be in Italy. A depot
 named after a country, such as `DPD-ROV-AUSTRIA`, shows either that country's
 clock or BRT's own; where both read the same, as for Austria, Germany or
-France, its scans become instants too. Other clocks stay local times, as do
+France, its scans become instants too. So do a depot's two letters, as in
+`CHR-FR SUD`, where it is not known to be in Italy and they are the code of a
+country on Italy's clock. BRT's own depots open with their province's two
+letters, so a code of a country on another clock proves nothing: `GE` is
+Genoa's and Georgia's, and `DPD-GE` keeps local times. Other clocks stay local times, as do
 places without a depot code and a clock that the change to or from summer time
 repeats or skips. Dates without a
 clock remain provider text. The newest scan, when dated, gives the last update

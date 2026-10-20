@@ -129,6 +129,7 @@ describe('status map answers', () => {
     expect(answer('js-express', null, 'Domestic allocation has begun')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'Under domestic allocation')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'Inbound to customs temporary warehouse')).toEqual(mapped('customs'));
+    expect(answer('imile', '1003', '【Sample DS】Shipment out for delivery.')).toEqual(mapped('out_for_delivery'));
     // BYHD's kind codes group wordings; the wording decides.
     expect(answer('byhd', 'ARRIVAL', '到达收货点')).toEqual(mapped('accepted'));
     expect(answer('byhd', 'SHIPMENT', 'Goods leaving the operation center')).toEqual(mapped('in_transit'));

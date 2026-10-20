@@ -52,6 +52,7 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
   ['your order has assigned delivery drvier', 'in_transit'],
   ['dispatch task assigned to da', 'in_transit'],
   ['our delivery associate is out for delivery', 'out_for_delivery'],
+  ['shipment out for delivery', 'out_for_delivery'],
   ['delivery attempt finished,return to local logistics company warehouse', 'failed_attempt'],
   // Drivers' reasons, each followed by the attempt's end and the return to the centre.
   ['switch off', 'failed_attempt'],

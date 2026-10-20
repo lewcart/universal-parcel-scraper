@@ -9114,6 +9114,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^BCM[A-Z]{1,3}\\d{7,9}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^BCM[A-Z]{2}\\d{13}CN$",
+        "confidence": "high"
       }
     ]
   },
@@ -32303,7 +32307,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "chunil": [],
   "city-express-rs": ["city-express-rs-1"],
   "citylink-express": [],
-  "citymail": ["citymail-1"],
+  "citymail": ["citymail-1","citymail-2"],
   "citysprint": [],
   "cj-logistics": [],
   "cj-packet": ["cj-packet-1"],

@@ -63921,6 +63921,14 @@
     ]
   },
   {
+    "input": "BCMXY0000000000000CN",
+    "carrier": "citymail",
+    "confidence": "high",
+    "candidates": [
+      "citymail"
+    ]
+  },
+  {
     "input": "BCMYWR002915032",
     "carrier": "citymail",
     "confidence": "high",

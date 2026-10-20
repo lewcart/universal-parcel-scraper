@@ -183,6 +183,16 @@ describe('CityMail HTTP adapter', () => {
     expect(parseTrackingInput(`https://tracking.citymail.se/?search=${DELIVERED}`)).toMatchObject({ trackingNumber: DELIVERED, carrier: 'citymail' });
   });
 
+  it('claims references of BCM, two letters, thirteen digits and CN, and not their near misses', () => {
+    const reference = 'BCMXY0000000000001CN';
+    expect(normalizeCitymailNumber(reference.toLowerCase())).toBe(reference);
+    expect(detectCarrierMatch(reference)).toMatchObject({ carrier: 'citymail', confidence: 'high', candidates: ['citymail'] });
+    expect(recognitionCandidates(reference)).toEqual([]);
+    for (const number of ['BCMXY000000000001CN', 'BCMXY00000000000001CN', 'BCMX0000000000001CN', 'BCMXYZ0000000000001CN', 'BCMXY0000000000001SE']) {
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('citymail');
+    }
+  });
+
   it('proposes no hand-off: the tracker names no other carrier or number', () => {
     expect(deliveryHandoff('citymail', PICKUP, parseCitymail(fixture('pickup'), PICKUP))).toBeNull();
   });

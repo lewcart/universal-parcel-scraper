@@ -210,6 +210,18 @@
         "confidence": "high"
       },
       "note": "Example in the number field of CityMail's own Spåra paket page, which asks for the tracking number with this sample."
+    },
+    {
+      "number": "BCMXY0000000000000CN",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-20",
+      "expect": {
+        "carrier": "citymail",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of a reference CityMail's tracker answered with its own scans."
     }
   ]
 }

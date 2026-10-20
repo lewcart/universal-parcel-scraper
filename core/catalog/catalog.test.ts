@@ -81,6 +81,14 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('upaya', 'QQQQQQ0000-0000000')).toBe('QQQQQQ0000-0000000');
     expect(trackingNumberForLink('upaya', 'SAMPLE')).toBe('SAMPLE');
     expect(CARRIERS.upaya.trackingUrl?.('QQQQQQ000000000000')).toBe('https://upaya.com.np/track/?tracking=QQQQQQ00000-0000000');
+    expect(trackingNumberForLink('flippost', '000000009')).toBe('00-0000009');
+    expect(trackingNumberForLink('flippost', '0000009')).toBe('000-0009');
+    expect(trackingNumberForLink('flippost', '00 0000009')).toBe('00-0000009');
+    // Eight digits are four and four or two and three and three: they stay as given.
+    expect(trackingNumberForLink('flippost', '00000009')).toBe('00000009');
+    expect(trackingNumberForLink('flippost', '00-000-009')).toBe('00-000-009');
+    expect(trackingNumberForLink('flippost', 'SAMPLE')).toBe('SAMPLE');
+    expect(CARRIERS.flippost.trackingUrl?.('000000009')).toBe('https://flippost.com/instruments/online/?number=00-0000009');
     expect(trackingNumberForLink('ecoscooting', 'prt 0000000 1234 000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', 'CNPRT00000001234000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', '000000000000000001')).toBe('000000000000000001');

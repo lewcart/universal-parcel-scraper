@@ -9,6 +9,7 @@
  */
 import { cdlRequestNumber } from '../../carriers/cdl/number.js';
 import { ecoscootingReference } from '../../carriers/ecoscooting/number.js';
+import { FLIPPOST_ONE_LAYOUT, flippostWaybills } from '../../carriers/flippost/number.js';
 import { normalizeGogoXpressNumber } from '../../carriers/gogo-xpress/number.js';
 import { inpostUkTrackingUrl } from '../../carriers/inpost/number.js';
 import { NOEST_LAYOUT, noestRequestNumber } from '../../carriers/noest/number.js';
@@ -60,6 +61,9 @@ export function trackingNumberForLink(carrierId: CarrierId, raw: string): string
   if (carrierId === 'gofo-fr') return regionalGofoRequestNumber(normalized);
   // Upaya's page finds a code only in capitals with the hyphen before its last seven digits.
   if (carrierId === 'upaya' && UPAYA_LAYOUT.test(normalized)) return normalizeUpayaNumber(normalized);
+  // Flip Post prints its waybills with dashes, and its tracking API finds one only with them, so a
+  // link gives seven or nine digits their dashes. Eight digits fit two layouts and stay as given.
+  if (carrierId === 'flippost' && FLIPPOST_ONE_LAYOUT.test(normalized)) return flippostWaybills(normalized)[0]!;
   // Ecoscooting's page finds a Cainiao reference only with its CN.
   if (carrierId === 'ecoscooting' && ecoscootingReference(normalized) !== normalized) return ecoscootingReference(normalized);
   return raw;

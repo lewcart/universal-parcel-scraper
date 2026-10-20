@@ -1844,6 +1844,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'kit-tk', number: '0000000009',
     route: /^https:\/\/tk-kit\.ru\/tracking\?track_code=0000000009$/,
     marker: /Отслеживание груза|Заказ не найден/ },
+  // The page fills its field in from the address; the lookup waits for a captcha.
+  { carrier: 'flippost', number: '00-0000009',
+    route: /^https:\/\/flippost\.com\/instruments\/online\/\?number=00-0000009$/,
+    marker: /Отследить отправление|Введите код для отслеживания/ },
 ];
 
 /**

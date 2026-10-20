@@ -212,6 +212,7 @@ import { adapter as flashExpress } from '../carriers/flash-express/adapter.js';
 import { adapter as flashExpressPh } from '../carriers/flash-express-ph/adapter.js';
 import { adapter as fleetex } from '../carriers/fleetex/adapter.js';
 import { adapter as fleetoptics } from '../carriers/fleetoptics/adapter.js';
+import { adapter as flippost } from '../carriers/flippost/adapter.js';
 import { adapter as followmont } from '../carriers/followmont/adapter.js';
 import { adapter as forwardAir } from '../carriers/forward-air/adapter.js';
 import { adapter as forzaDelivery } from '../carriers/forza-delivery/adapter.js';
@@ -810,6 +811,7 @@ export const REGISTRY: RegistryDefinition = {
     "flash-express-ph": flashExpressPh,
     "fleetex": fleetex,
     "fleetoptics": fleetoptics,
+    "flippost": flippost,
     "followmont": followmont,
     "forward-air": forwardAir,
     "forza-delivery": forzaDelivery,
@@ -1460,7 +1462,7 @@ export const REGISTRY: RegistryDefinition = {
     "flash-express-ph": "flash-express-ph",
     "fleetex": "fleetex",
     "fleetoptics": "fleetoptics",
-    "flippost": "universal",
+    "flippost": "flippost",
     "fliway": "universal",
     "flyking": "universal",
     "followmont": "followmont",

@@ -185,6 +185,7 @@ import { statusMap as flashExpress } from '../../carriers/flash-express/status.j
 import { statusMap as flashExpressPh } from '../../carriers/flash-express-ph/status.js';
 import { statusMap as fleetex } from '../../carriers/fleetex/status.js';
 import { statusMap as fleetoptics } from '../../carriers/fleetoptics/status.js';
+import { statusMap as flippost } from '../../carriers/flippost/status.js';
 import { statusMap as followmont } from '../../carriers/followmont/status.js';
 import { statusMap as forwardAir } from '../../carriers/forward-air/status.js';
 import { statusMap as forzaDelivery } from '../../carriers/forza-delivery/status.js';
@@ -552,7 +553,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   fastfrate, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery,
   'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
-  fleetex, fleetoptics, followmont, 'forward-air': forwardAir, 'forza-delivery': forzaDelivery, 'four-px': fourPx, foxpost, 'franch-express': franchExpress, fukuyama, gaash, gati, gdex,
+  fleetex, fleetoptics, flippost, followmont, 'forward-air': forwardAir, 'forza-delivery': forzaDelivery, 'four-px': fourPx, foxpost, 'franch-express': franchExpress, fukuyama, gaash, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   globalpost, 'gms-worldwide': gmsWorldwide, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
   'grand-slam-express': grandSlamExpress, 'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, 'gtl-goto': gtlGoto, gzyl,

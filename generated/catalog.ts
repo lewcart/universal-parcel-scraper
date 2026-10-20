@@ -13975,7 +13975,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "flippost",
+      "recognitionRank": 568,
+      "localClocks": true
     },
     "canaryUrl": "https://flippost.com/instruments/online/",
     "trackingUrlTemplate": "https://flippost.com/instruments/online/?number={trackingNumber}",

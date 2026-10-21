@@ -8,7 +8,7 @@ One anonymous request to the public website API. Its WebAssembly signing reduces
 
 ## Interpretation
 
-CNE's own wordings map exactly. Partner rows are read by their label, the text before a full-width semicolon, because the explanation after it can announce a later step. A row no rule reads takes its CNE status code, as CNE's tracking page labels the codes; a partner's acceptance that CNE codes as shipping stays transit. A summary code other than shipping (delivered, returned, customs inspection, invalid address, lost, exception or destroyed) outranks the latest row, which can stop at the hand-off.
+CNE's own wordings map exactly, in any capitalisation, since CNE capitalises the same labels differently. Its "Arrived at destination" is the arrival in the destination country, before that network's sorting and customs, not at the delivery office. Partner rows are read by their label, the text before a full-width semicolon, because the explanation after it can announce a later step. A row no rule reads takes its CNE status code, as CNE's tracking page labels the codes; a partner's acceptance that CNE codes as shipping stays transit. A summary code other than shipping (delivered, returned, customs inspection, invalid address, lost, exception or destroyed) outranks the latest row, which can stop at the hand-off.
 
 A named last-mile supplier declares the hand-off: its transfer number becomes the delivery tracking number, and DHL, Royal Mail, SpeedX and USPS are named as the delivery carrier. Without a named supplier, the transfer number can be a merchant's reference and is not followed; merchant references never are.
 

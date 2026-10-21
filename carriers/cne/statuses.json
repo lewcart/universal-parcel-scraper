@@ -111,6 +111,13 @@
       "confirmedBy": "live"
     },
     {
+      "wording": "Arrived at destination",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Arrival in the destination country, coded 2 (Shipping), not at the delivery office: the destination network's sorting and customs clearance can still follow."
+    },
+    {
       "wording": "The shipment is picked up by customs broker",
       "language": "en",
       "stage": "customs",

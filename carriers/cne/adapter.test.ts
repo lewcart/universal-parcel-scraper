@@ -91,6 +91,14 @@ describe('CNE response projection', () => {
     expect(result.delivered_at).toBeUndefined();
   });
 
+  it('reads its own labels in any capitalisation, the arrival in the destination country as transit', () => {
+    for (const details of ['Arrived at destination', 'Arrived At Destination', 'ARRIVED AT CNE FACILITY']) {
+      const payload = handoffFixture();
+      payload.trackingEventList.push({ date: '2026-02-11 09:00:00', details, place: 'Example City', state: '2' });
+      expect(parseCne(payload, HANDOFF_NUMBER).events?.[0]).toMatchObject({ stage: 'in_transit', stage_source: 'carrier_map' });
+    }
+  });
+
   it('names no carrier for a supplier outside the catalog and follows no unnamed transfer', () => {
     const payload = handoffFixture(); payload.lastMileSupplier = { enName: 'Example Courier', code: 'XX Example' };
     expect(parseCne(payload, HANDOFF_NUMBER)).toMatchObject({ delivery_tracking_number: 'ZZ000000005GB' });

@@ -22,7 +22,11 @@ const WORDING: Readonly<Record<string, Stage>> = {
   'Pickup from airport': 'in_transit', 'Arrived At The Delivery Company': 'in_transit',
   // Last-mile labels the shared rules miss; the courier's van takes the parcel on board.
   'On Board with Courier': 'out_for_delivery', 'Parcel Unloaded From Container': 'in_transit',
+  // Arrival in the destination country, before its sorting and customs, not at the delivery office.
+  'Arrived at destination': 'in_transit',
 };
+// CNE capitalises the same labels differently ("Arrived At" and "Arrived at").
+const WORDING_ANY_CASE: ReadonlyMap<string, Stage> = new Map(Object.entries(WORDING).map(([wording, stage]) => [wording.toLowerCase(), stage]));
 // Status codes as CNE's tracking page labels them: 1 and 2 Shipping, 3 Delivered,
 // 5 Customs inspection, 6 Invalid address, 7 Lost, 8 Returned, 9 Exception and
 // 10 Destroyed. 0 (not sent), 4 (time out) and 99 (unknown) establish nothing.
@@ -65,7 +69,7 @@ function stageOf(description: string, code: string): { stage: Stage; source: str
   // Last-mile partners write "label；explanation". The explanation can announce
   // a later step ("It will be out for delivery"), so only the label is read.
   const label = description.split('；')[0]!.trim() || description;
-  const exact = WORDING[description] ?? WORDING[label];
+  const exact = WORDING_ANY_CASE.get(description.toLowerCase()) ?? WORDING_ANY_CASE.get(label.toLowerCase());
   if (exact) return { stage: exact, source: 'carrier_map' };
   const worded = classifyWording(label, 'pending');
   // CNE codes a partner's acceptance or pre-advice after the hand-off as

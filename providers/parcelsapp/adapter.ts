@@ -1003,6 +1003,46 @@ function markHandovers(carried: readonly { event: CarrierEvent; carrier: string 
   }
 }
 
+const DAY_MS = 86_400_000;
+const clockOf = (event: CarrierEvent): string => event.time ?? (typeof event.local_time === 'string' ? event.local_time : '');
+/** An event's moment, a wall clock read as if UTC; a day alone is its start, or its end with `end`. */
+function moment(event: CarrierEvent, end = false): number {
+  if (event.time) return Date.parse(event.time);
+  const local = clockOf(event);
+  return local.length === 10 ? Date.parse(`${local}T00:00:00Z`) + (end ? DAY_MS : 0) : Date.parse(`${local}Z`);
+}
+
+const BARE_DELIVERY = /^delivered[.!]?$/i;
+const MOVEMENTS: ReadonlySet<string> = new Set(['accepted', 'in_transit', 'customs', 'out_for_delivery', 'failed_attempt']);
+/**
+ * The bare "Delivered" rows a scan of the reply moves the parcel past more
+ * than a day later. ParcelsApp words a leg's end so: SEUR's on the day it
+ * handed a parcel to BRT, five days before BRT's own scans of it, and
+ * MailAmericas' "Delivered by Airline" before the destination's customs. A
+ * day, as the clocks of a reply's networks can stand hours apart.
+ */
+function passedDeliveries(events: readonly CarrierEvent[]): CarrierEvent[] {
+  const moves = events.filter((event) => event.stage_source !== 'none' && MOVEMENTS.has(event.stage ?? '')).map((event) => moment(event));
+  return events.filter((event) => BARE_DELIVERY.test(event.description?.trim() ?? '') && moves.some((at) => at - moment(event, true) > DAY_MS));
+}
+
+/**
+ * The steps dated by their day alone (`datedOnly`) that a timed scan of the
+ * reply shows at the same stage that day: BRT's "FOR DELIVERY" on a parcel DPD
+ * Germany delivers, whose "Parcel out for delivery" ParcelsApp has at its
+ * minute. With no time, the copy has no place among the day's scans.
+ */
+function timedTwins(events: readonly CarrierEvent[], days: ReadonlySet<CarrierEvent>): CarrierEvent[] {
+  return [...days].filter((day) => day.stage_source !== 'none' && events.some((other) => !days.has(other) && other.stage === day.stage
+    && other.stage_source !== 'none' && clockOf(other).slice(0, 10) === day.local_time));
+}
+
+/** Leaves out the passed deliveries and the timed steps' untimed twins. */
+function dropPassed(events: CarrierEvent[], steps: ReadonlySet<CarrierEvent>): void {
+  const dropped = new Set([...passedDeliveries(events), ...timedTwins(events, steps)]);
+  for (let index = events.length; index--;) if (dropped.has(events[index]!)) events.splice(index, 1);
+}
+
 /**
  * The country the parcel is bound for, as the reply names it, or for a reply
  * that does not, as an EcoScooting reference does ("CNPRT" for Portugal,
@@ -1134,6 +1174,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     fixed: Boolean(entry.offset) || relaysFacilityClock(entry.name), location: entry.location })))
     .forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
   const dayOnly = dayOnlyNetworks(entries);
+  const steps = new Set<CarrierEvent>();
   const latest = new LatestScan(SOURCE);
   for (const [index, entry] of entries.entries()) {
     const { raw, name, scan, date } = entry;
@@ -1149,7 +1190,8 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     const unplaced = facility || (!zone && !entry.location && UNLOCATED_LOCAL_CLOCKS.has(nameKey(name)));
     const localOnly = !zone && !unplaced && entry.wallOnly;
     // A step or network its carrier dates by the day alone keeps the day (`datedOnly`, `dayOnlyNetworks`).
-    const day = datedOnly(name, relayedLabel(raw.status), date) ?? networkDay(dayOnly, name, date);
+    const step = datedOnly(name, relayedLabel(raw.status), date);
+    const day = step ?? networkDay(dayOnly, name, date);
     const parsed = day ? dayEvent(day, entry.wording)
       : localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced || localOnly ? mislabeledWallTime(date) : undefined) ?? date, entry.wording);
     if (parsed) latest.see(mislabeledWallTime(date) ?? '', facility);
@@ -1165,11 +1207,13 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
       events.push(parsed);
       carried.push({ event: parsed, carrier: nameKey(name) });
       scanCarriers.add(name);
+      if (step) steps.add(parsed);
     }
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });
   }
   markReturnLeg(scans);
   markHandovers(carried);
+  dropPassed(events, steps);
   latest.check();
   if (!events.length) {
     const gates = payload.states.filter((raw: unknown): raw is Record<string, unknown> => isRecord(raw)
@@ -1284,6 +1328,7 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
       fixed: Boolean(state.offset) || relaysFacilityClock(name), location: '' };
   })).forEach((zone, index) => { if (zone) zones[index] = zone; });
   const dayOnly = dayOnlyNetworks(rows.map(({ name, state }) => ({ name, date: state.date, offset: state.offset })), true);
+  const steps = new Set<CarrierEvent>();
   for (const [index, { name, description, state, scan }] of rows.entries()) {
     const zone = zones[index]!;
     const unplaced = !zone && relaysFacilityClock(name);
@@ -1292,7 +1337,8 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
       undated++;
       continue;
     }
-    const day = datedOnly(name, description, state.date) ?? networkDay(dayOnly, name, state.date);
+    const step = datedOnly(name, description, state.date);
+    const day = step ?? networkDay(dayOnly, name, state.date);
     // A scan whose label nothing vouches for keeps its wall clock, as in the JSON reply.
     const wall = !zone && state.wallOnly ? mislabeledWallTime(state.date) : null;
     const parsed = day ? dayEvent(day, scan?.wording ?? description)
@@ -1300,10 +1346,12 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
         : event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.date, scan?.wording ?? description);
     if (parsed) events.push(parsed);
     if (parsed) carried.push({ event: parsed, carrier: nameKey(name) });
+    if (parsed && step) steps.add(parsed);
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });
   }
   markReturnLeg(scans);
   markHandovers(carried);
+  dropPassed(events, steps);
   latest.check();
   return { ...result(events, SOURCE), ...(undated ? { undated_event_count: undated } : {}),
     ...universalCarrierHints(carriers.slice(0, 20), numberOf(trackingNumber)) };

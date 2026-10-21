@@ -154,7 +154,10 @@ step exists for future protocol changes.
   time FedEx never gives. It stays a scan, so when it is the latest one `last_update` is
   null. BRT's "FOR DELIVERY" at 00:00 keeps its day the same way: BRT's page gives that
   step a date and no time. A pickup at another time, another FedEx or BRT scan at 00:00
-  and other carriers' midnight scans keep their instants.
+  and other carriers' midnight scans keep their instants. Such a step is left out when a
+  timed scan of the reply shows the same stage that day, as DPD Germany's "Parcel out for
+  delivery" does BRT's "FOR DELIVERY" on a parcel BRT hands to it: without a time, the
+  copy has no place among that day's scans.
 - A network whose every scan in the reply is at 00:00, at least three of them over two
   days or more, keeps their days in `local_time` the same way. ParcelsApp writes
   Shiprocket's scans so, while Shiprocket's own tracker gives each its minute. So does a
@@ -456,6 +459,11 @@ step exists for future protocol changes.
 - An acceptance by one carrier after another already moved the parcel (in transit or in
   customs) reads as in transit: DPD's "Parcel handed" when it takes a cleared parcel from
   the line carrier is a hand-over, not a new start.
+- A bare "Delivered" is left out when a scan of the reply moves the parcel on (accepted,
+  in transit, in customs, out for delivery or a failed attempt) more than a day later.
+  ParcelsApp words a leg's end so: a first carrier's on the day it hands the parcel to the
+  next, and MailAmericas' "Delivered by Airline" before the destination's customs. The day
+  covers the hours a reply's networks' clocks can stand apart.
 - Cross-border replies stay uncertain: scans can be filed under the wrong operator (an
   India-to-France parcel listed La Poste scans under India Post).
 - Notices are skipped, not events: `require_fields` rows, postcode, sign-in and

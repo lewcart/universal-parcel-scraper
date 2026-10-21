@@ -1724,6 +1724,42 @@ describe('ParcelsApp result parsing', () => {
     expect(page.events?.[0]?.time).toBeUndefined();
   });
 
+  it('leaves out an untimed step a timed scan shows at the same stage that day', () => {
+    // Live shape: BRT hands a parcel to DPD Germany, whose round ParcelsApp has at its minute.
+    const states = [
+      { date: '2026-10-21T06:30:01Z', status: 'Parcel out for delivery', carrier: 1 },
+      { date: '2026-10-21T00:00:00Z', status: 'FOR DELIVERY', carrier: 0, location: 'EXAMPLE DEPOT (990)' },
+      { date: '2026-10-20T13:20:56Z', status: 'In transit', carrier: 1 },
+    ];
+    const read = (list: Record<string, unknown>[]) => parseParcelsAppResponse({ carriers: ['BRT Bartolini', 'DPD Germany'], states: list }, number, identity())
+      .events?.map(({ description }) => description);
+    expect(read(states)).toEqual(['Parcel out for delivery', 'In transit']);
+    // Without that scan, or with one on another day, the step keeps its day.
+    expect(read(states.slice(1))).toEqual(['FOR DELIVERY', 'In transit']);
+    expect(read([{ ...states[0]!, date: '2026-10-22T06:30:01Z' }, ...states.slice(1)])).toEqual(['Parcel out for delivery', 'FOR DELIVERY', 'In transit']);
+  });
+
+  it('leaves out a bare delivery a later scan moves the parcel past', () => {
+    // Live shapes: a first carrier's "Delivered" on its hand-over to the next, and an
+    // airline's delivery to the line carrier, days before the destination's scans.
+    const read = (states: Record<string, unknown>[]) => parseParcelsAppResponse({ carriers: ['Example Line', 'Example Post'], states }, number, identity());
+    const handOver = read([
+      { date: '2026-10-13T23:00:03Z', status: 'Out for delivery', carrier: 1 },
+      { date: '2026-10-08T23:00:01Z', status: 'Delivered', carrier: 0 },
+      { date: '2026-10-07T10:00:00Z', status: 'In transit', carrier: 0 },
+    ]);
+    expect(handOver.events?.map(({ description }) => description)).toEqual(['Out for delivery', 'In transit']);
+    expect(read([
+      { date: '2026-10-12T01:54:00Z', status: 'Destination customs. Received at Destination Customs', carrier: 1 },
+      { date: '2026-10-10T04:45:00Z', status: 'Delivered', carrier: 0 },
+    ]).events?.map(({ description }) => description)).toEqual(['Destination customs. Received at Destination Customs']);
+    // A delivery stays when nothing moves the parcel later, or only within the day its clocks can differ by.
+    for (const later of [[], [{ date: '2026-10-09T10:00:00Z', status: 'Out for delivery', carrier: 1 }],
+      [{ date: '2026-10-12T10:00:00Z', status: 'Return to sender', carrier: 1 }]]) {
+      expect(read([...later, { date: '2026-10-08T23:00:01Z', status: 'Delivered', carrier: 0 }]).events?.some(({ stage }) => stage === 'delivered')).toBe(true);
+    }
+  });
+
   it('reads a DPD Group scan on the clock its labelling network shares with the destination', () => {
     // Live shape: a line carrier's parcel from China that DPD Switzerland delivers. ParcelsApp
     // names DPD's number next, and DPD Switzerland's own tracker dates the scan "+02:00".

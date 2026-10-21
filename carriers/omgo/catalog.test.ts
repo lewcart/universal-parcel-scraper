@@ -51,7 +51,7 @@ describe('OMGO catalog and tracking', () => {
     expect(String(fetcher.mock.calls[2]![0])).toBe('https://parcelsapp.com/api/v2/parcels');
   });
 
-  it('retrieves the dedicated history with providers disabled and keeps local clocks unresolved', async () => {
+  it('retrieves the dedicated history with providers disabled and dates its local clocks on a deduced zone', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(fixture('tracking-page.html')))
       .mockResolvedValueOnce(new Response(fixture('tracking.json')));
     expect(carrierAdapter('omgo')).toBe('omgo');
@@ -59,7 +59,7 @@ describe('OMGO catalog and tracking', () => {
     const answer = await createTracker({ fetcher, providers: [] }).track({ number });
     expect(answer).toMatchObject({ carrier: 'omgo', source: 'omgo', attempts: [{ source: 'omgo', kind: 'ok' }],
       result: { current_stage: 'in_transit', destination_country: 'CA', events: expect.any(Array) } });
-    expect(answer.result.events.every(event => event.local_time && !event.instant)).toBe(true);
+    expect(answer.result.events.every(event => event.local_time && event.instant && event.time_zone_basis)).toBe(true);
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 

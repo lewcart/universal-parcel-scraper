@@ -302,14 +302,18 @@
   },
   "./places": {
     "values": [
+      "airportTimeZone",
+      "dateLocalClocks",
       "locatePlace",
+      "placeTimeZone",
       "placesForEvents",
       "preloadPlaces"
     ],
     "types": [
       "EventPlace",
       "EventPoint",
-      "PlaceHints"
+      "PlaceHints",
+      "ZoneBasis"
     ]
   }
 }

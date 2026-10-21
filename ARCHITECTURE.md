@@ -307,8 +307,13 @@ not establish in `local_time`: a consumer reads an offset-less `time` in the res
 else in the carrier's catalog zone. A wall time the clocks repeat when they go back reads as
 its first occurrence in every season: Luxon would pick by the season the code runs in, so a
 parser reads a wall clock in a zone through `firstOccurrence()`, which lint enforces, unless
-it keeps that hour in `local_time`. More rows alone do not prove a fresher or more complete
-history.
+it keeps that hour in `local_time`. Node lookups (`trackCarrier()`, `createTracker()`) then
+date such a scan on a deduced zone with `dateLocalClocks()` ([places](places/README.md#clocks)):
+its place, the nearest scan with a place, the destination the carrier delivers in, else the
+carrier's home clock. The scan keeps `local_time` and gains `time_zone` and
+`time_zone_basis`, so a consumer can tell a deduced instant from one the carrier stated. A
+zone the carrier states, or one learned for it from copies that carry an instant, belongs in
+its adapter. More rows alone do not prove a fresher or more complete history.
 
 The app's scan-identity policies, one per source in `core/catalog/eventIdentity.ts`, say
 what identifies a stored scan that its source now reports at the same instant with a

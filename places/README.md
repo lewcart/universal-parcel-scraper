@@ -91,6 +91,26 @@ The gazetteer loads once per process, from the packaged asset. `preloadPlaces()`
 ahead of the first lookup. Results are cached in memory; consumers decide whether to
 persist them or serve a parcel when place resolution fails.
 
+## Clocks
+
+`placeTimeZone` gives the zone a place keeps its clock on: its country's, or in a country of
+several zones, its state's or province's (the US, Canada, Australia, Brazil) or the zone whose
+principal place in the tz database's `zone.tab` lies nearest. A place that names only such a
+country takes the zone most of its people live on. `airportTimeZone` reads an airport its code
+alone names ("AMS"): such a code places nothing on the map, but it tells a forwarder's clock.
+
+`dateLocalClocks(carrier, result)` dates the scans a carrier gives on a wall clock in no stated
+zone (`local_time`). The zone comes from the scan's place, read with the scans around it; else
+from the nearest scan that has a place; else from the parcel's destination, when the carrier
+delivers there; else from the carrier's home clock: its catalog zone, or with UTC there, its
+first country's. The scan keeps `local_time` and gains `time`, `time_zone` and
+`time_zone_basis` (`place`, `neighbour`, `destination` or `carrier`). Node lookups through
+`trackCarrier()` and `createTracker()` apply it to a carrier's own answer.
+
+A deduced zone can be wrong near a border between zones, or for a carrier that keeps one clock
+everywhere. A zone the carrier states, or one learned by comparing its clocks with copies that
+carry an instant, belongs in its adapter, which then dates the scan itself.
+
 ## Facilities
 
 Some carriers say exactly where a scan happened, and the town's centre can be kilometres off:

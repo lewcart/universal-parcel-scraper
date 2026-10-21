@@ -24,6 +24,14 @@ export type CarrierStatus =
 
 export interface CarrierEvent extends JsonObject {
   time?: string;
+  /** The scan's wall clock, when the carrier does not say in which zone. */
+  local_time?: string;
+  /**
+   * The zone a deduced `time` reads `local_time` in, and how it was chosen:
+   * `place`, `neighbour`, `destination` or `carrier` (`dateLocalClocks` in `/places`).
+   */
+  time_zone?: string;
+  time_zone_basis?: string;
   location?: string;
   description?: string;
   stage?: string;

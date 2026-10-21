@@ -28,7 +28,8 @@ describe('J&T Cargo catalog and routing', () => {
       const answer = await createTracker({ fetcher, providers: [] }).track({ number, carrier: 'j-and-t-cargo' });
       expect(answer).toMatchObject({ carrier: 'j-and-t-cargo', source: 'j-and-t-cargo', result: { current_stage: stage },
         attempts: [{ source: 'j-and-t-cargo', kind: 'ok' }] });
-      expect(answer.result.events.every(event => event.local_time && !event.instant)).toBe(true);
+      // The scans keep their wall clocks and gain an instant on a deduced zone.
+      expect(answer.result.events.every(event => event.local_time && event.instant && event.time_zone_basis)).toBe(true);
       expect(fetcher).toHaveBeenCalledOnce();
       expect(JSON.parse(String(fetcher.mock.calls[0]![1]!.body)).waybillNo).toBe(number);
     });

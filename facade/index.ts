@@ -7,6 +7,7 @@ import { detectCarrierMatch, normalizeTrackingNumber, parseTrackingInput, validT
 import { BudgetExceededError, IndeterminateError, InputRequiredError, type CarrierErrorKind } from '../core/errors/index.js';
 import { failureHint, failureKind, type FailureHint } from '../core/errors/hint.js';
 import { MAX_RECOGNITIONS, recognitionCandidates, recognizeAll, settleRecognition, type RecognitionOutcome } from '../core/recognition/index.js';
+import { normalizeCarrierResult } from '../core/result/index.js';
 import { fillPartialAnswer, isPartialAnswer } from '../core/result/partial.js';
 import { resolveResult, resultHasUpdate, type ResolvedResult } from '../core/result/resolve.js';
 import { runSteps } from '../core/runner/index.js';
@@ -15,6 +16,7 @@ import { TrawlClient } from '../core/transport/trawl.js';
 import { sendsThrough } from '../core/transport/transportOf.js';
 import { userAgentOf } from '../core/transport/userAgent.js';
 import { REGISTRY } from '../generated/registry.js';
+import { dateLocalClocks } from '../places/clocks.js';
 import { universalPlan, universalSourceBudget } from '../providers/plan.js';
 import type { UniversalSource } from '../providers/types.js';
 import { UniversalTracker } from '../providers/universal.js';
@@ -236,12 +238,13 @@ export function createTracker(options: TrackerOptions = {}) {
     const adapter = registry.for(carrier);
     const directInput = { number, postcode: fields.postcode, trackingUrl: fields.trackingUrl };
     const directBudget = () => Math.min(remaining() + DEADLINE_SLACK_MS, 60_000);
-    let result = adapter ? await attempt(carrier, () => adapter.recordsSteps || adapter.steps.length > 1
-      ? adapter.track(directInput, { signal, budgetMs: directBudget() })
-      : runSteps({ carrier, budgetMs: directBudget(), signal, recorder: environment.recorder }, [
-        { id: adapter.steps[0] ?? 'direct', run: ({ signal: stepSignal, remainingMs }) => adapter.track(
-          directInput, { signal: stepSignal, budgetMs: remainingMs }) },
-      ])) : null;
+    let result = adapter ? await attempt(carrier, async () => dateLocalClocks(carrier, normalizeCarrierResult(
+      await (adapter.recordsSteps || adapter.steps.length > 1
+        ? adapter.track(directInput, { signal, budgetMs: directBudget() })
+        : runSteps({ carrier, budgetMs: directBudget(), signal, recorder: environment.recorder }, [
+          { id: adapter.steps[0] ?? 'direct', run: ({ signal: stepSignal, remainingMs }) => adapter.track(
+            directInput, { signal: stepSignal, budgetMs: remainingMs }) },
+        ]))))) : null;
     let source: string = carrier;
     // A partial direct answer stands unless an enabled provider holds a fuller history that is not behind it.
     const partial = result && isPartialAnswer(result) ? result : null;

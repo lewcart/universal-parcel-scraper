@@ -161,7 +161,7 @@ function place(group: Record<string, unknown>): string {
   return COUNTRY.test(country) ? `${town}, ${country}` : town;
 }
 
-const written = (event: CarrierEvent): string => (event.local_time as string | undefined) ?? event.time!.slice(0, 19);
+const written = (event: CarrierEvent): string => event.local_time ?? event.time!.slice(0, 19);
 
 /** The events the reply groups by terminal, with the event's own name; remarks and who logged it stay out. */
 function history(groups: unknown[]): CarrierEvent[] {

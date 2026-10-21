@@ -111,7 +111,7 @@ export function parseDellin(payload: unknown, raw: string): CarrierResult {
   const stage = dellinState(state);
   const newest = events[0];
   const day = text(order, 'stateDate', 16);
-  const updated = (newest?.local_time as string | undefined) ?? (DATE.test(day) ? day : undefined);
+  const updated = newest?.local_time ?? (DATE.test(day) ? day : undefined);
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),

@@ -182,7 +182,7 @@ export function parseFoursides(payload: unknown, raw: string): CarrierResult {
   const summary: Stage | undefined = delivered && scanned?.stage !== 'delivered' && scanned?.stage !== 'returned' ? 'delivered' : undefined;
   const stage = (summary ?? scanned?.stage) as Stage | undefined;
   const newest = events[0];
-  const updated = [newest?.local_time as string | undefined, delivered].filter(Boolean).sort().at(-1)!;
+  const updated = [newest?.local_time, delivered].filter(Boolean).sort().at(-1)!;
   const kilograms = weight(text(payload, 'weight', 16));
   const country = text(payload, 'receiverCountry', 80);
   const code = country ? destinationCountry(country) : null;

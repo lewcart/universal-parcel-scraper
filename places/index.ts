@@ -7,6 +7,9 @@ import { ambiguousAddressCodes, militaryPostOffice, trackingPlace } from './trac
 import facilityList from './facilities.json' with { type: 'json' };
 import hubList from './hubs.json' with { type: 'json' };
 import { nameKey, nameKeys } from './names.mjs';
+import { mainZone, pointZone, regionZone } from './zones.js';
+
+export { dateLocalClocks, type ZoneBasis } from './clocks.js';
 
 /** Where a scan happened, as precisely as its free-text location allows. */
 export interface EventPlace {
@@ -239,8 +242,8 @@ function distanceKm(latitude1: number, longitude1: number, latitude2: number, lo
   return 12742 * Math.asin(Math.sqrt(a));
 }
 
-/** How far a point is from a country: from the nearest of its towns. */
-function countryDistanceKm(country: string, latitude: number, longitude: number): number {
+/** The gazetteer's places in a country. */
+function countryPlaces(country: string): readonly number[] {
   const data = gazetteer();
   if (!data.byCountry.size) {
     data.country.forEach((code, index) => {
@@ -250,11 +253,63 @@ function countryDistanceKm(country: string, latitude: number, longitude: number)
       else data.byCountry.set(name, [index]);
     });
   }
+  return data.byCountry.get(country) ?? [];
+}
+
+/** How far a point is from a country: from the nearest of its towns. */
+function countryDistanceKm(country: string, latitude: number, longitude: number): number {
+  const data = gazetteer();
   let nearest = Infinity;
-  for (const index of data.byCountry.get(country) ?? []) {
+  for (const index of countryPlaces(country)) {
     nearest = Math.min(nearest, distanceKm(latitude, longitude, data.latitude[index]!, data.longitude[index]!));
   }
   return nearest;
+}
+
+/** The state or province of the town nearest a point in a country, by postal code ("IL", "ON", "NSW"). */
+function regionNear(country: string, latitude: number, longitude: number): string | null {
+  const data = gazetteer();
+  let nearest = -1;
+  let best = Infinity;
+  for (const index of countryPlaces(country)) {
+    const distance = distanceKm(latitude, longitude, data.latitude[index]!, data.longitude[index]!);
+    if (distance < best) [nearest, best] = [index, distance];
+  }
+  if (nearest < 0) return null;
+  const admin1 = data.codes[data.admin1[nearest]!] ?? '';
+  const postal = Object.entries(ADMIN_CODES[country] ?? {}).find(([, code]) => code === admin1)?.[0];
+  return postal ?? admin1;
+}
+
+/**
+ * The zone of an airport its IATA code alone names ("AMS"), as forwarders write
+ * their air legs. Such a code places nothing on a map, but it can still tell a
+ * scan's clock.
+ */
+export function airportTimeZone(code: string): string | null {
+  const airport = /^[A-Z]{3}$/.test(code.trim()) ? gazetteer().airports.get(code.trim()) : undefined;
+  return airport ? placeTimeZone({ ...airport, precision: 'city', name: airport.town }) : null;
+}
+
+const ZONED_REGIONS = new Set(['US', 'CA', 'AU', 'BR']);
+const zoneCache = new Map<string, string | null>();
+
+/**
+ * The zone a scan at this place keeps its clock on: its country's, or where a
+ * country keeps several, its state's or province's (the US, Canada, Australia,
+ * Brazil) or the zone whose principal place lies nearest. A place that names
+ * only a country with several zones takes the one most of its people live on.
+ * Null for a country the tz database does not know.
+ */
+export function placeTimeZone(place: EventPlace): string | null {
+  if (place.precision === 'country') return mainZone(place.country);
+  const key = `${place.country}|${place.latitude.toFixed(2)}|${place.longitude.toFixed(2)}`;
+  if (zoneCache.has(key)) return zoneCache.get(key)!;
+  const region = ZONED_REGIONS.has(place.country) ? regionNear(place.country, place.latitude, place.longitude) : null;
+  const zone = (region ? regionZone(place.country, region) : null) ?? pointZone(place.country, place.latitude, place.longitude);
+  if (zoneCache.size >= CACHE_SIZE) zoneCache.clear();
+  zoneCache.set(key, zone);
+  return zone;
 }
 
 /** The instant an ISO 8601 time stands for, when it gives its offset. */

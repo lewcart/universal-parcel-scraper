@@ -30,8 +30,8 @@ describe('Day & Ross', () => {
   it('uses the anonymous guest session and passes the internal order id to the history request', async () => {
     const fetcher = service();
     const answer = await createTracker({ fetcher, env: {}, providers: [] }).track({ number, carrier: 'day-ross' }, { budgetMs: 5000 });
-    expect(answer).toMatchObject({ carrier: 'day-ross', source: 'day-ross', result: { current_stage: 'delivered', last_update: null,
-      last_update_local: '2031-04-16T12:00:00', service_name: 'Standard' } });
+    expect(answer).toMatchObject({ carrier: 'day-ross', source: 'day-ross', result: { current_stage: 'delivered',
+      last_update: '2031-04-16T12:00:00-03:00', last_update_local: '2031-04-16T12:00:00', service_name: 'Standard' } });
     expect(answer.result.events).toHaveLength(3);
     expect(JSON.stringify(answer.result)).not.toContain('PRIVATE');
     expect(String(fetcher.mock.calls[2]![0])).toContain('probillNumber=99900001');

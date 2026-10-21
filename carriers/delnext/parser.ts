@@ -200,7 +200,7 @@ export function parseDelnext(html: string, raw: string): CarrierResult {
     last_status_text: (decider ?? events[0]!).description!,
     last_update: null,
     last_update_local: events[0]!.local_time,
-    expected_delivery: estimate($, stage, events[0]!.local_time as string),
+    expected_delivery: estimate($, stage, events[0]!.local_time),
     ...partnerFields,
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),

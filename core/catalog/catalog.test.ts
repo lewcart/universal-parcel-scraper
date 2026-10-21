@@ -100,6 +100,14 @@ describe('the derived CARRIERS record', () => {
       .toBe('https://www.gofo.com/fr/tracking-results/?id=PK-0000000000000000000-1');
   });
 
+  it('fills every placeholder of a template that names the number twice', () => {
+    expect(CARRIERS['fedex-pl'].trackingUrl?.('6230000000005'))
+      .toBe('https://fds2tracking.emea.fedex.com/#/preview?packages=6230000000005&trackingKey=6230000000005');
+    for (const carrier of Object.values(CARRIERS)) {
+      expect(carrier.trackingUrl?.('ZZ0000000000') ?? '', carrier.id).not.toContain('{trackingNumber}');
+    }
+  });
+
   it('routes Ninja Van portal links to the identifier\'s national network', () => {
     for (const country of ['sg', 'my', 'id', 'ph', 'th', 'vn']) {
       const number = `NL${country.toUpperCase()}A00000000`;

@@ -75,8 +75,9 @@ export function trackingLink(carrierId: CarrierId, template: string | undefined)
   if (carrierId === 'amazon-shipping') return amazonShippingUrl;
   if (carrierId === 'ninja-van') return ninjaVanTrackingUrl;
   if (!template) return undefined;
+  // FedEx Poland's link names the number twice: as the shipment listed and as the one looked up.
   const link = (trackingNumber: string) =>
-    template.replace(
+    template.replaceAll(
       '{trackingNumber}',
       encodeURIComponent(trackingNumberForLink(carrierId, trackingNumber)),
     );

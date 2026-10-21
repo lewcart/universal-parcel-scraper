@@ -164,8 +164,9 @@ describe('Post Haste HTTP adapter', () => {
   it('rejects numbers Post Haste does not print and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
     // An all-zero label or ticket, a ticket too short once its zeros go that is too short for a consignment
-    // number, a code of one letter or with a digit, a nine-digit label and an SSCC that fails its check digit.
-    for (const number of ['00000000', 'ZZ 00000000', 'ZZZZ 00123', 'Z 01234567', 'E60 1234567', '123456789',
+    // number, a code of one letter or with a digit, a nine-digit label, letters before nine digits (another
+    // carrier's layout, such as Purolator's PIN) and an SSCC that fails its check digit.
+    for (const number of ['00000000', 'ZZ 00000000', 'ZZZZ 00123', 'Z 01234567', 'E60 1234567', '123456789', 'ZZZ123456789',
       '1234567', '0000000 01234567', '00000000000000000011', 'SAMPLETRACKING', `ZZ${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input', provider: 'Post Haste' });
     }

@@ -19,9 +19,10 @@ const TICKET = /^([A-Z]{2,3}|[A-Z]\d{2})(\d{5,8})$/;
 // Charge labels have eight digits, international consignments nine.
 const LABEL = /^\d{8,9}$/;
 // A customer printed label's consignment number, which the sender's own system
-// writes: letters, then digits, not all zeros (three or four letters and six
-// digits on the labels seen, on both networks).
-const CONSIGNMENT = /^[A-Z]{2,6}(?!0+$)\d{6,12}$/;
+// writes: letters, then six to eight digits, not all zeros (three or four
+// letters and six digits on the labels seen, on both networks). A longer run,
+// such as Purolator's PIN of three letters and nine digits, is refused.
+const CONSIGNMENT = /^[A-Z]{2,6}(?!0+$)\d{6,8}$/;
 // The tracker's lookup refuses a query of fewer than six characters.
 const MIN_QUERY = 6;
 const MAX_ITEMS = 50;

@@ -13,10 +13,10 @@ const LABEL = /^\d{8}$/;
 /** Post Haste on the Freightways group's tracking lookup, which New Zealand Couriers' adapter also reads. */
 export const POST_HASTE: FreightwaysNetwork = {
   carrier: 'post-haste', provider: PROVIDER, path: 'PostHaste', ticket: TICKET, label: LABEL,
-  numbers: 'a ticket, an eight-digit charge label or an SSCC',
+  numbers: 'a ticket, an eight-digit charge label, an SSCC or a customer printed label',
 };
 
-/** A ticket, charge label or SSCC as the lookup takes it. Anything else is invalid input. */
+/** A ticket, charge label, SSCC or customer printed label as the lookup takes it. Anything else is invalid input. */
 export function postHasteQuery(raw: string): FreightwaysQuery {
   return freightwaysQuery(POST_HASTE, raw);
 }

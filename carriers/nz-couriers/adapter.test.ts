@@ -234,7 +234,7 @@ describe('New Zealand Couriers HTTP adapter', () => {
 
   it('rejects numbers the tracker does not read and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['00000000', '000000000', 'ZZ 0000000', 'ZZ12345', 'ZZZZ123', 'ZZZZ000000', 'ZZZZZZZ012345', 'ZZ1234567890123',
+    for (const number of ['00000000', '000000000', 'ZZ 0000000', 'ZZ12345', 'ZZZZ123', 'ZZZZ000000', 'ZZZZZZZ012345', 'ZZ012345678', 'ZZZ123456789', 'ZZ1234567890123',
       'ZZ123456785ZZ', '1234567', '1234567890', '0000000 01234567', '00000000000000000011', '10000000000000000017', 'SAMPLETRACKING',
       `ZZ${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
@@ -247,7 +247,7 @@ describe('New Zealand Couriers HTTP adapter', () => {
     expect(nzCouriersQuery('zzzz 012345')).toEqual({ kind: 'consignment', number: CUSTOMER, query: CUSTOMER });
     // Two or three letters and up to eight digits are a ticket's layout.
     expect(nzCouriersQuery('ZZZ123456')).toMatchObject({ kind: 'ticket', code: 'ZZZ', query: '123456' });
-    expect(nzCouriersQuery('ZZ012345678')).toEqual({ kind: 'consignment', number: 'ZZ012345678', query: 'ZZ012345678' });
+    expect(nzCouriersQuery('ZZZZZ01234567')).toEqual({ kind: 'consignment', number: 'ZZZZZ01234567', query: 'ZZZZZ01234567' });
   });
 
   it('gives its one read the whole budget and ends a hanging read inside it', async () => {

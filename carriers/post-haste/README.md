@@ -40,8 +40,9 @@ adapter also reads.
 
 ## Limitations
 
-- A customer printed label is read only by a consignment number of letters then digits.
-  Contract bags and manifest references are not read.
+- A customer printed label is read only by a consignment number of letters then six to eight
+  digits, as on the labels seen, so a number of another carrier's layout, such as Purolator's
+  three letters and nine digits, is refused. Contract bags and manifest references are not read.
 - A consignment the tracker no longer holds reads as not found.
 - No weight or service.
 

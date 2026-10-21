@@ -48,8 +48,10 @@ Zealand. Tracked through the lookup its tracking page makes.
 
 ## Limitations
 
-- A customer printed label is read only by a consignment number of letters then digits; one
-  of digits alone reads as a label. The page's search for an account and consignment number
+- A customer printed label is read only by a consignment number of letters then six to eight
+  digits, as on the labels seen; one of digits alone reads as a label. A longer run of digits
+  is refused, so a number of another carrier's layout, such as Purolator's three letters and
+  nine digits, is refused rather than asked and answered as unknown. The page's search for an account and consignment number
   did not find labels whose consignments the lookup still holds.
 - Contract bags, manifest references and other barcodes are not read.
 - A consignment the tracker no longer holds reads as not found.

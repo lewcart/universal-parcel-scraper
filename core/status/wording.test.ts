@@ -723,7 +723,7 @@ describe('classifyWording', () => {
   it('reads relayed pre-advice, receipts, cross-docks and flights the providers pass on', () => {
     for (const [wording, stage] of [
       ['Order submitted, pending to receive.', 'registered'], ['Order created. Order submitted and pending receipt', 'registered'],
-      ['Shipment data uploaded', 'registered'], ['Sender preparing item', 'registered'],
+      ['Shipment data uploaded', 'registered'], ['Sender preparing item', 'registered'], ['Forecast has been received', 'registered'],
       ['Sender preparing item. The sender has let us know they have despatched your item', 'registered'],
       ['Shipping info sent to BRT', 'registered'],
       ['Information, We have received your shipment information, we will have your goods soon', 'registered'],

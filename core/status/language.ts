@@ -308,6 +308,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // The sender's order or data reached the carrier, not the parcel: "Order submitted, pending to
   // receive", "Sender preparing item", "Shipping info sent to BRT".
   if (/\border submitted(?:,| and)? pending (?:to )?rece(?:iv|ipt)|\bshipment data uploaded\b|^sender preparing item\b|^shipping info(?:rmation)? sent to (?!(?:the |your? )?(?:recipient|customer|consignee|addressee|buyer)\b)|\bwe have received your shipment information\b|\bhemos recibido la informacion de su envio\b|\bwe will pick up (?:the|your) (?:package|parcel) from the sender\b|^booked for collection$|\bpending shipping by (?:the )?(?:seller|sender|shipper|merchant)\b|\bshipment order created\b/.test(text)) return 'registered';
+  // A Shenzhen forwarder's pre-advice from the shipper, before its warehouse has the parcel.
+  if (/^forecast has been received$/.test(text)) return 'registered';
   // The carrier has not had the parcel yet: "Shipment not yet received or
   // processed". What else the scan reports still counts: "Arrived at hub; not
   // yet processed" is in transit, and a clearance delay stays with customs,

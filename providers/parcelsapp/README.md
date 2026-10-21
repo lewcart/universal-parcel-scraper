@@ -140,8 +140,8 @@ step exists for future protocol changes.
   and the base can be anywhere in its region, so no guess and no zone of the scans around
   it fits. Each stays a scan: as the latest one it sets the stage with `last_update` null,
   and it moves no freshness watermark. Another carrier's acceptance is a hand-over to it
-  once a different carrier moved the parcel before; for a wall clock, more than a day
-  before.
+  once a different carrier moved the parcel before. A wall clock is later than a move by
+  more than a day, or as soon as it would sort above a dated one.
 - A state with no `date` (an Asendia Spain leg listed after dated US scans), or with an
   offset-less date that no zone resolves, but for the scans above that keep their wall
   clock, has no instant. It is skipped and counted in `undated_event_count`, so it never
@@ -476,7 +476,9 @@ step exists for future protocol changes.
   is counted the same way, as is a placeholder date.
 - An acceptance by one carrier after another already moved the parcel (in transit or in
   customs) reads as in transit: DPD's "Parcel handed" when it takes a cleared parcel from
-  the line carrier is a hand-over, not a new start.
+  the line carrier is a hand-over, not a new start. An acceptance on a wall clock that
+  would sort above another carrier's dated move is one too, though within a day it may
+  come first, so it never sets the stage back over that move.
 - A bare "Delivered" is left out when a scan of the reply moves the parcel on (accepted,
   in transit, in customs, out for delivery or a failed attempt) more than a day later.
   ParcelsApp words a leg's end so: a first carrier's on the day it hands the parcel to the

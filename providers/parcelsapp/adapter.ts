@@ -1033,7 +1033,11 @@ function moment(event: CarrierEvent, end = false): number {
  * A carrier's acceptance after another carrier already moved the parcel is the
  * hand-over to it, as DPD's "parcel handed" is when it takes a cleared parcel
  * from the line carrier: the parcel moves on rather than starting over. A wall
- * clock is later only by more than a day, whatever its zone.
+ * clock is later only by more than a day, whatever its zone, except after a
+ * dated move: an acceptance whose wall time would sort above that move, as the
+ * result sorts it, is the hand-over too, so it does not stand as the parcel's
+ * newest step over the move (a forwarder's "goods have been picked up from
+ * warehouse" on its own clock, hours after DPD Poland's dated scans).
  */
 function markHandovers(carried: readonly { event: CarrierEvent; carrier: string }[]): void {
   const moved = new Map<string, CarrierEvent>();
@@ -1042,8 +1046,8 @@ function markHandovers(carried: readonly { event: CarrierEvent; carrier: string 
     if (carrier && clockOf(event) && (event.stage === 'in_transit' || event.stage === 'customs')
       && (!earliest || moment(event) < moment(earliest))) moved.set(carrier, event);
   }
-  const before = (earlier: CarrierEvent, later: CarrierEvent) => earlier.time && later.time
-    ? earlier.time < later.time : moment(earlier, true) + DAY_MS < moment(later);
+  const before = (earlier: CarrierEvent, later: CarrierEvent) => earlier.time && clockOf(later).length > 10
+    ? moment(earlier) < moment(later) : moment(earlier, true) + DAY_MS < moment(later);
   for (const { event, carrier } of carried) {
     if (event.stage !== 'accepted' || !carrier || !clockOf(event)) continue;
     if ([...moved].some(([other, earlier]) => other !== carrier && before(earlier, event))) event.stage = 'in_transit';

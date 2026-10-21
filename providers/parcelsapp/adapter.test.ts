@@ -1429,10 +1429,34 @@ describe('ParcelsApp result parsing', () => {
     // DPD's own acceptance, before any other carrier moved the parcel, stays one.
     expect(parseParcelsAppResponse({ carriers, states: [{ date: '2026-06-20T02:25:00+00:00', status: 'Parcel handed', carrier: 2 },
       { date: '2026-06-09T20:51:00Z', status: 'Order information has been sent to DPD.', carrier: 0 }] }, xzg, identity(xzg)).current_stage).toBe('accepted');
-    // Nor is a wall clock within a day of another carrier's move known to be later.
-    expect(parseParcelsAppResponse({ carriers, states: [{ date: '2026-06-17T08:00:00+00:00', status: 'Parcel handed', carrier: 2 },
-      ...[0, 1].map((carrier) => ({ date: '2026-06-16T18:40:00Z', status: scans[1]![1], carrier }))] }, xzg, identity(xzg)).events?.[0])
-      .toMatchObject({ local_time: '2026-06-17T08:00:00.000', stage: 'accepted' });
+    // Within a day of another carrier's dated move, a wall clock is not known to be later. Above the move it is still
+    // the hand-over, so it does not set the parcel back; below it, it keeps its acceptance.
+    const handed = (date: string) => parseParcelsAppResponse({ carriers, states: [{ date, status: 'Parcel handed', carrier: 2 },
+      ...[0, 1].map((carrier) => ({ date: '2026-06-16T18:40:00Z', status: scans[1]![1], carrier }))] }, xzg, identity(xzg));
+    expect(handed('2026-06-17T08:00:00+00:00').events?.[0]).toMatchObject({ local_time: '2026-06-17T08:00:00.000', stage: 'in_transit' });
+    expect(handed('2026-06-16T08:00:00+00:00')).toMatchObject({ current_stage: 'in_transit' });
+    expect(handed('2026-06-16T08:00:00+00:00').events?.[1]).toMatchObject({ local_time: '2026-06-16T08:00:00.000', stage: 'accepted' });
+  });
+
+  it("reads a forwarder's wall-clock pickup hours after another network's dated moves as the hand-over", () => {
+    // Live shape: a forwarder outside the catalog dates its steps by a wall clock,
+    // DPD Poland by its own; the forwarder's reference is the number asked.
+    const reference = 'ZZZZ000000000';
+    const states = [
+      { date: '2026-10-20T16:44:18Z', status: 'Goods have been picked up from warehouse', carrier: 0 },
+      { date: '2026-10-20T11:09:42+00:00', status: 'Sent abroad', carrier: 1, location: 'Example, Poland' },
+      { date: '2026-10-20T11:06:29+00:00', status: 'Receipt of the package at the DPD branch', carrier: 1, location: 'Example, Poland' },
+      { date: '2026-10-20T10:49:27Z', status: 'Arrived at overseas warehouse on 10/19, waiting for sorting', carrier: 0 },
+      { date: '2026-10-19T23:59:50+00:00', status: 'Package picked up by the courier', carrier: 1 },
+      { date: '2026-10-14T09:31:14Z', status: 'Arrived at port, waiting for customs clearance', carrier: 0 },
+      { date: '2026-09-05T14:39:03Z', status: 'Container loaded, vessel name and voyage EXAMPLE', carrier: 0 },
+    ];
+    const parsed = parseParcelsAppResponse({ carriers: ['Example Forwarding', 'DPD Poland'], states }, reference, identity(reference));
+
+    expect(parsed.events?.slice(0, 3).map(({ time, local_time, stage }) => [time ?? local_time, stage])).toEqual([
+      ['2026-10-20T16:44:18.000', 'in_transit'], ['2026-10-20T10:49:27.000', 'in_transit'], ['2026-10-20T09:09:42.000Z', 'in_transit'],
+    ]);
+    expect(parsed.current_stage).toBe('in_transit');
   });
 
   it('reads XZG on China\'s clock with or without DHLink\'s copies, whatever zone routing passes', () => {

@@ -2,24 +2,62 @@ name: Carrier canaries
 
 on:
   schedule:
-    # One run a day. Monday's also probes the carriers' front doors.
-    - cron: '41 2 * * 1'
-    - cron: '41 2 * * 0,2-6'
+    # One run a day; Monday's also probes the carriers' front doors. GitHub
+    # starts scheduled runs hours late or drops them, so later slots stand in
+    # and the gate lets only the day's first scheduled run work.
+    - cron: '41 2 * * *'
+    - cron: '13 4 * * *'
+    - cron: '47 5 * * *'
+    - cron: '19 7 * * *'
   workflow_dispatch:
 
 permissions:
   contents: read
 
+# A later slot waits for the running canary instead of cancelling it, then
+# finds it in the gate.
 concurrency:
   group: carrier-canaries
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
+  gate:
+    name: First scheduled run of the day
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    outputs:
+      run: ${{ steps.gate.outputs.run }}
+      weekly: ${{ steps.gate.outputs.weekly }}
+    steps:
+      - name: Skip a slot after the day's first scheduled run
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          set -euo pipefail
+          run=true
+          weekly=true
+          if [ "$EVENT" = schedule ]; then
+            earlier=$(gh api -X GET "repos/$GH_REPO/actions/workflows/carrier-canary.yml/runs" \
+              -f event=schedule -f created=">=$(date -u +%F)" -F per_page=100 \
+              --jq "[.workflow_runs[] | select(.run_number < $RUN_NUMBER)] | length")
+            if [ "$earlier" != 0 ]; then run=false; fi
+            if [ "$(date -u +%u)" != 1 ]; then weekly=false; fi
+          fi
+          echo "run=$run" >>"$GITHUB_OUTPUT"
+          echo "weekly=$weekly" >>"$GITHUB_OUTPUT"
+
   probe:
     name: Public carrier reachability
+    needs: gate
     # No lookup depends on a front door, so a weekly look is enough. The daily
     # jobs below exercise what tracking uses.
-    if: ${{ github.event_name != 'schedule' || github.event.schedule == '41 2 * * 1' }}
+    if: ${{ needs.gate.outputs.run == 'true' && needs.gate.outputs.weekly == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -38,6 +76,8 @@ jobs:
 
   adapters:
     name: Carrier adapters with synthetic numbers
+    needs: gate
+    if: ${{ needs.gate.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -62,6 +102,8 @@ jobs:
 
   tracking-links:
     name: Rendered UI tracking links
+    needs: gate
+    if: ${{ needs.gate.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     outputs:
@@ -89,7 +131,8 @@ jobs:
     name: Carrier search pages at phone size
     # The pages a shared parcel links to when it hides its number. They change
     # rarely, so a weekly look is enough.
-    if: ${{ github.event_name != 'schedule' || github.event.schedule == '41 2 * * 1' }}
+    needs: gate
+    if: ${{ needs.gate.outputs.run == 'true' && needs.gate.outputs.weekly == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 40
     outputs:
@@ -112,8 +155,9 @@ jobs:
 
   report:
     name: Track failures in an issue
-    needs: [probe, adapters, tracking-links, search-pages]
-    if: ${{ always() && github.ref == 'refs/heads/main' }}
+    needs: [gate, probe, adapters, tracking-links, search-pages]
+    # A skipped slot says nothing about carrier health.
+    if: ${{ always() && github.ref == 'refs/heads/main' && needs.gate.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

@@ -1277,10 +1277,6 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'uzbekistan-post', number: 'ZZ000000014UZ',
     route: /^https:\/\/uz\.post\/ru\/tracking\/ZZ000000014UZ\/?$/,
     marker: /CC123456789UZ/ },
-  // The page puts the number in its address into its field, looks it up and names it in its not-found row.
-  { carrier: 'posta-north-macedonia', number: 'ZZ000000014MK',
-    route: /^https:\/\/www\.posta\.com\.mk\/Tracking\/index\.html\?tn=ZZ000000014MK$/,
-    marker: /Не се пронајдени податоци за \(ZZ000000014MK\)/ },
   // The page reads the code from the fragment and looks it up. An address without the language
   // redirects to one with it and drops the fragment, and an English one shows its labels' keys.
   { carrier: 'haypost', number: 'ZZ000000045AM',
@@ -1922,6 +1918,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   ocasa: 'the tracking link opens a reCAPTCHA checkbox, with the number in a hidden field, before it shows the shipment, so number forwarding cannot be verified',
   passport: 'track.passportglobal.com answers automated Chrome with a Human Verification page that watches the visitor\'s activity before it shows the tracker, so number forwarding cannot be verified',
   'pilot-freight': 'Pilot\'s tracking service opens any shipment it holds under the pro number asked, and a synthetic nine-digit one can be another person\'s shipment, so only a known pro number verifies the link',
+  'posta-north-macedonia': 'www.posta.com.mk often drops connections from the daily check\'s network, and its lookup can stall past the render window, so number forwarding cannot be verified daily; the page puts the number in its address into its field, looks it up and names it in its not-found row',
   'poste-italiane': 'the results page exposes no readable text to headless Chrome',
   ptt: 'the link opens the home page, whose tracking window stays folded until a visitor opens it and asks for a Cloudflare Turnstile token before each lookup',
   rivigo: 'Rivigo\'s ten-digit consignment numbers run densely, so a synthetic one can open another shipper\'s consignment, whose page names its consignor and consignee; only a known consignment verifies the link',

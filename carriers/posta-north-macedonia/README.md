@@ -44,7 +44,8 @@ Macedonia, through the lookup its tracking page on posta.com.mk makes.
 - The adapter takes only S10 codes with a valid check digit. The page also looks up the post's
   eleven-digit internet order numbers, which the adapter does not take.
 - After a burst of lookups the site may stop accepting connections from that address for a
-  while, which reads as a network failure.
+  while, which reads as a network failure. Some networks, including the daily link check's,
+  often get no connection at all, and the lookup itself can stall.
 
 ## Numbers
 

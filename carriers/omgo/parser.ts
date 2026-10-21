@@ -54,11 +54,15 @@ export function parseOmgoTrackingJson(json: string, rawNumber: string): CarrierR
   let root: unknown;
   try { root = JSON.parse(json); } catch { throw new SchemaError(PROVIDER, 'OMGO returned invalid tracking JSON'); }
   if (!isRecord(root) || typeof root.success !== 'boolean' || !isRecord(root.data)) throw new SchemaError(PROVIDER);
-  // The site's generic negative does not name the requested parcel or prove absence.
-  if (!root.success) throw new IndeterminateError(PROVIDER, 'OMGO returned an inconclusive tracking response');
+  // The site's generic negative does not name the requested parcel or prove absence. Its not-found
+  // wording and an empty result still answer the one number asked, so the reason tells them from an outage.
+  if (!root.success) {
+    throw new IndeterminateError(PROVIDER, 'OMGO returned an inconclusive tracking response',
+      /^Tracking Code not Found\.?$/i.test(clean(root.data.message, 80)) ? { reason: 'portal_not_found' } : {});
+  }
   const data = root.data;
   if (data.total_found === 0 && Array.isArray(data.tracking_data) && data.tracking_data.length === 0) {
-    throw new IndeterminateError(PROVIDER, 'OMGO returned no identity-bound history');
+    throw new IndeterminateError(PROVIDER, 'OMGO returned no identity-bound history', { reason: 'portal_not_found' });
   }
   if (data.total_found !== 1 || data.total_not_found !== 0 || !Array.isArray(data.tracking_data) || data.tracking_data.length !== 1
     || !Array.isArray(data.found) || data.found.length !== 1 || typeof data.found[0] !== 'string'

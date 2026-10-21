@@ -22,7 +22,8 @@ the requested reference is retained in the page's search field, and only an LTN'
 absence is final. A merchant reference reaches the adapter upper-cased and without
 the spaces, dots and hyphens the user may have written. The page found a reference
 in lower case as well, but found no parcel by an order reference holding a hyphen,
-as printed or without it, so a merchant reference's absence stays inconclusive.
+as printed or without it, so a merchant reference's absence stays inconclusive. It carries the
+reason `portal_not_found`, so a consumer can tell Landmark's answer from an outage.
 
 ## Notes
 

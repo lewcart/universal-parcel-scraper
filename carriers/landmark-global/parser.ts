@@ -52,7 +52,7 @@ export function parseLandmark(html: string, rawNumber: string): CarrierResult {
     && errors.length && errors.every(error => error === ABSENT) && $('title').text().trim() === 'Landmark Global | Landmark Tracking') {
     // A reference arrives without the spaces, dots and hyphens the user may have written, and the
     // page found no parcel by an order reference holding a hyphen, as printed or without it.
-    if (merchant) throw new IndeterminateError('Landmark Global', 'Landmark found no parcel for this reference, but its search misses references written with punctuation');
+    if (merchant) throw new IndeterminateError('Landmark Global', 'Landmark found no parcel for this reference, but its search misses references written with punctuation', { reason: 'portal_not_found' });
     throw new NotFoundError('Landmark Global');
   }
   const canonical = identities.length === 1 ? clean(identities.next('div').text(), 64) : '';

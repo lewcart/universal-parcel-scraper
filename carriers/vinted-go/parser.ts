@@ -131,8 +131,9 @@ export function parseVintedGo(payload: unknown, raw: string): CarrierResult {
   if (!isRecord(payload) || !Array.isArray(payload.tracking_events)) throw new SchemaError(PROVIDER, 'Vinted Go returned an unexpected reply');
   const rows = payload.tracking_events as unknown[];
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'Vinted Go returned an oversized history');
-  // The tracker treats an empty list like an unknown number, but no reply showed one.
-  if (!rows.length) throw new IndeterminateError(PROVIDER, 'Vinted Go returned no scans for the parcel');
+  // The tracker treats an empty list like an unknown number, but no reply showed one. Vinted Go
+  // answered, so the reason tells it from an outage.
+  if (!rows.length) throw new IndeterminateError(PROVIDER, 'Vinted Go returned no scans for the parcel', { reason: 'portal_not_found' });
 
   const seen = new Set<string>();
   const scans: Scan[] = [];

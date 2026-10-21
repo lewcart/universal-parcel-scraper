@@ -13,8 +13,9 @@ posts the nonce and whole number as multipart `shi_get_tracking_info` to
 `/wp-admin/admin-ajax.php`. No account, browser or persistent session is needed.
 
 The response must name the requested shipment. Generic "Tracking Code not Found"
-errors remain inconclusive because they carry no shipment identity. Invoice
-references are discarded.
+errors remain inconclusive because they carry no shipment identity. They and an
+empty result carry the reason `portal_not_found`, so a consumer can tell OMGO's
+answer from an outage. Invoice references are discarded.
 
 ## Limitations
 

@@ -87,7 +87,7 @@ describe('Landmark Global history', () => {
     }
     // Only an LTN's absence is final: a reference may have lost punctuation the page needs.
     for (const raw of ['PK000000002', 'pk-0000.00002']) {
-      expect(() => parseLandmark(negative('PK000000002'), raw)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+      expect(() => parseLandmark(negative('PK000000002'), raw)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
     }
   });
   it('requires exact absence with the requested form identity and never treats challenges as not found', () => {

@@ -142,7 +142,8 @@ describe('Vinted Go HTTP adapter', () => {
       change(payload);
       expect(() => parseVintedGo(payload, DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
     }
-    expect(() => parseVintedGo({ tracking_events: [], meta: {} }, DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseVintedGo({ tracking_events: [], meta: {} }, DELIVERED))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
   });
 
   it('keeps an unknown number, an expired history and a missing route apart', async () => {

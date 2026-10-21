@@ -22,10 +22,13 @@ describe('OMGO tracking parser', () => {
   });
 
   it('keeps generic negative and empty history inconclusive', () => {
-    expect(() => parseOmgoTrackingJson(fixture('unknown.json'), NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseOmgoTrackingJson(fixture('unknown.json'), NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    expect(() => parse({ success: false, data: {} })).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
     const empty = payload(); empty.data.tracking_data[0].trackHistory = [];
-    expect(() => parse(empty)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(() => parse({ success: true, data: { total_found: 0, tracking_data: [] } })).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parse(empty)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
+    expect(() => parse({ success: true, data: { total_found: 0, tracking_data: [] } }))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
   });
 
   it.each([

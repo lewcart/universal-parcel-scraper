@@ -16,7 +16,9 @@ Portugal and Finland. Tracked through the service its tracking page's search box
 - An unknown number gets HTTP 404 with an empty body: `NotFoundError`. A number whose label is
   over six months old gets 404 with `shipment_expired`, worked out from the number alone, so it
   is inconclusive with the reason `history_expired`. A missing route answers "Not found" in plain
-  text, and that, a redirect, another refusal or an empty scan list is inconclusive too.
+  text, and that, a redirect, another refusal or an empty scan list is inconclusive too. The
+  empty scan list carries the reason `portal_not_found`, so a consumer can tell Vinted Go's
+  answer from an outage.
 - Recognition makes the same request. `vinted-go-1` offers Vinted Go for these numbers next to
   DHL eCommerce, Evri and TNT, so preflight asks this adapter.
 

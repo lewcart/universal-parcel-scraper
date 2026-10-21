@@ -39,14 +39,28 @@ describe('Postal Ninja result parsing', () => {
     ]);
   });
 
+  it('names the services that reported the scans as carrier hints', () => {
+    // A catalog carrier no detection rule claims the number for is still the hint (Raben's fifteen digits).
+    const freight = '990000000000001';
+    expect(parsePostalNinjaResponse({ ...found, track: { ...found.track, tc: freight, events: [
+      { ds: 'Raben', dt: '2026-08-12T08:00:00', dsc: 'Registered in the system' },
+      { ds: 'Raben', dt: '2026-08-14T09:00:00', dsc: 'Inventory in a warehouse' },
+    ] } }, freight)).toMatchObject({ reported_carriers: ['Raben'], discovered_carrier: 'raben' });
+    expect(parsePostalNinjaResponse(found, number)).toMatchObject({ reported_carriers: ['DPD'] });
+    // A name outside the catalog may be the number's owner, so it leaves no hint.
+    const other = parsePostalNinjaResponse(withEvents([{ ds: 'Example Unlisted Courier', dt: '2026-08-12T08:00:00', dsc: 'Collected' }]), number);
+    expect(other.reported_carriers).toEqual(['Example Unlisted Courier']);
+    expect(other.discovered_carrier).toBeUndefined();
+  });
+
   const times = (parsed: { events?: { time?: string | null; local_time?: string | null }[] }) =>
     parsed.events?.map((scan) => scan.time ?? `local ${scan.local_time}`);
   const postal = (tc: string, destCn: string | undefined, events: unknown[]) =>
     ({ ...found, track: { ...found.track, tc, ...(destCn ? { destCn } : {}), events } });
 
   it('reads a service that Postal Ninja keeps on one clock in that clock, whatever the carrier\'s zone', () => {
-    // Austrian Post's and Poste Italiane's scans are UTC, not Vienna or Rome time.
-    for (const [ds, zone] of [['Austrian Post', 'Europe/Vienna'], ['Poste Italiane', 'Europe/Rome']]) {
+    // Austrian Post's, Poste Italiane's and Raben's scans are UTC, not Vienna, Rome or Warsaw time.
+    for (const [ds, zone] of [['Austrian Post', 'Europe/Vienna'], ['Poste Italiane', 'Europe/Rome'], ['Raben', 'Europe/Warsaw']]) {
       const scans = [{ ds, dt: '2026-08-17T07:22:00', dsc: 'Out for delivery' }, { ds, dt: '2026-08-17T11:17:00', dsc: 'Delivered' }];
       expect(times(parsePostalNinjaResponse(withEvents(scans), number, zone))).toEqual(['2026-08-17T11:17:00.000Z', '2026-08-17T07:22:00.000Z']);
     }

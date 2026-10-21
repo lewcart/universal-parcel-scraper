@@ -72,7 +72,7 @@ numbers or handles cannot end the lookup.
 
   | Clock | Services | Evidence |
   |---|---|---|
-  | UTC | Austrian Post, Correos de El Salvador, Intelcom, OnTrac, Poste Italiane | Austrian Post 9/9 scans, which post.at shows two hours later in summer; Poste Italiane 9/9 against its epoch times; OnTrac 14/14 on two parcels its API dates at −07:00 and −04:00; Intelcom 5/5; Correos de El Salvador's own tracker gives the same digits in UTC, and its arrival in San Salvador at 21:30:17 is UPU's 15:30 local (checked 2026-10-11) |
+  | UTC | Austrian Post, Correos de El Salvador, Intelcom, OnTrac, Poste Italiane, Raben | Austrian Post 9/9 scans, which post.at shows two hours later in summer; Poste Italiane 9/9 against its epoch times; Raben 9/9 against its epoch times, in Germany and Italy; OnTrac 14/14 on two parcels its API dates at −07:00 and −04:00; Intelcom 5/5; Correos de El Salvador's own tracker gives the same digits in UTC, and its arrival in San Salvador at 21:30:17 is UPU's 15:30 local (checked 2026-10-11) |
   | One zone, wherever the scan happened | Swiss Post (Zurich), Singapore Post (Singapore) | Swiss Post's own scans on two items, to El Salvador and China; Singapore Post 9/9 on an item to China, with its Chinese scans |
   | One zone per network, by destination | GOFO Express: US Los Angeles, FR Paris | 20/20 on two US parcels, with New Jersey and New York scans; 7/7 on a French parcel and the newest scan of a YunExpress parcel GOFO delivered in France |
   | The scanning office's | An Post Ireland, CTT Express, Correos de España, DHL Parcel Netherlands, DPD, DPD Poland, DPD UK, GLS, Hermes Germany, MRW, Nova Poshta, Packeta, Poczta Polska, PostNord, Posten Norge, UkrPoshta | Domestic parcels in their countries, `DPD` on the Polish, German and Spanish networks; UkrPoshta's Ukrainian scans of an item to China |
@@ -135,6 +135,9 @@ numbers or handles cannot end the lookup.
   pickup", Posten Norge's "Last day for retrieval"), or any row dated more than an hour
   after the reply's `lastFetch`. A wall time counts as after it only when it is that late
   in every zone, up to UTC+14.
+- The services that reported the scans (`ds`) are the reply's carrier names, hints as other
+  providers' are ([providers](../README.md)): a single catalog carrier among them, such as
+  Raben, is the `discovered_carrier` even where no detection rule claims the number.
 - `track.toAddress` is never read. At most 1000 events.
 
 ## Rejected approaches

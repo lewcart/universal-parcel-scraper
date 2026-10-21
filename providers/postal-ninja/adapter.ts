@@ -22,7 +22,7 @@ import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/tr
 import { isRecord } from '../../core/types.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { classifyEvent, event, hasPrivateDeliveryDetails, isNotice, numberOf, result, text, type UniversalSource } from '../shared/result.js';
-import { courierZone } from '../shared/hints.js';
+import { courierZone, universalCarrierHints } from '../shared/hints.js';
 import { carrierHomeZone, originCopy, serviceZone } from './clocks.js';
 
 const SOURCE: UniversalSource = 'Postal Ninja';
@@ -130,8 +130,10 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
     : Date.parse(`${String(scan.local_time)}Z`) - EARLIEST_ZONE_MS) > readAt + CLOCK_SKEW_MS;
   const kept = events.filter((scan) => !after(scan));
   // Services on different clocks interleave in Postal Ninja's order. Once
-  // every scan has an instant, they are ordered by it.
-  return result(kept, SOURCE, kept.some((scan) => !scan.time));
+  // every scan has an instant, they are ordered by it. The services that
+  // reported the scans are discovery hints, as other providers' carrier names.
+  return { ...result(kept, SOURCE, kept.some((scan) => !scan.time)),
+    ...universalCarrierHints([...services].filter(Boolean).slice(0, 20), number) };
 }
 
 export interface PostalNinjaOptions extends Omit<UniversalBrowserOptions, 'signal'> {

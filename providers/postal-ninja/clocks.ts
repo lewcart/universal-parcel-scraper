@@ -20,6 +20,7 @@ const FIXED_CLOCKS: ReadonlyMap<string, string> = new Map([
   ['Intelcom', 'UTC'],
   ['OnTrac', 'UTC'],
   ['Poste Italiane', 'UTC'],
+  ['Raben', 'UTC'],
   // Also for their scans abroad: Singapore Post's in China. Swiss Post's own are in
   // Switzerland; the destination post's it relays keep their office's clock (serviceZone).
   ['Singapore Post', 'Asia/Singapore'],

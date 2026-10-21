@@ -8,8 +8,9 @@ import { ChallengeError, InvalidInputError, SchemaError } from '../../core/error
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
-import { firstOccurrence, usStateTimeZone } from '../../core/time/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
+import { STATE_PATTERN, uspsScanZone } from './clock.js';
 import { uspsStage, uspsStatus } from './status.js';
 
 /**
@@ -53,16 +54,13 @@ export function uspsTrackingUrl(trackingNumber: string): string {
 const MONTHS = '(January|February|March|April|May|June|July|August|September|October|November|December)';
 const DATE_PATTERN = new RegExp(`${MONTHS}\\s+\\d{1,2},?\\s+\\d{4}`, 'i');
 const TIME_PATTERN = /\d{1,2}:\d{2}(?::\d{2})?\s*[ap]\.?m\.?/i;
-const STATE_PATTERN = /,\s*([A-Z]{2})\b/;
-// A facility names its state before its kind: "EXAMPLE CITY NY DISTRIBUTION CENTER", "ISC EXAMPLE CITY NY (USPS)".
-const FACILITY_STATE = /\s([A-Z]{2})\s*(?:\(USPS\)|(?:(?:NETWORK|REGIONAL|INTERNATIONAL)\s+)?DISTRIBUTION\s+CENTER)$/;
 
 function eventTime(dateText: string, timeText: string, location: string): { iso: string; timestamp: number } | null {
   const dateMatch = DATE_PATTERN.exec(dateText);
   const timeMatch = TIME_PATTERN.exec(timeText);
   if (!dateMatch || !timeMatch) return null;
   // Facility-local wall time lives in the event's own state.
-  const zone = usStateTimeZone(STATE_PATTERN.exec(location)?.[1] ?? FACILITY_STATE.exec(location)?.[1]);
+  const zone = uspsScanZone(location);
   if (!zone) return null;
   const date = firstOccurrence(DateTime.fromFormat(dateMatch[0], 'MMMM d, yyyy', { locale: 'en-US', zone }));
   const clock = timeMatch[0].replace(/\./g, '').toLowerCase();

@@ -25,6 +25,7 @@ import { daiPostRelayZone } from '../../carriers/dai-post/clock.js';
 import { HYWL_CHINA_ZONE, hywlInChina } from '../../carriers/hywl/clock.js';
 import { placedInIndia } from '../../carriers/shiprocket/clock.js';
 import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
+import { uspsScanZone } from '../../carriers/usps/clock.js';
 import { universalCarrierHints } from '../shared/hints.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
@@ -174,6 +175,17 @@ const HYWL = 192109;
  * is counted, not dated, as DHL Express's are.
  */
 const DAI_POST = 100790;
+
+/**
+ * 17TRACK's carrier 21051, USPS, shows USPS's wall clocks, each the scanning
+ * facility's (`time_raw` has no zone), and puts on each an offset it guesses
+ * from the scan's state: Arizona's came right, but a distribution center in
+ * Indiana, on Eastern time, came under -05:00, an hour late against USPS's own
+ * page (checked 2026-10-22). A row whose place names its state is read in that
+ * state's zone, as USPS's adapter reads it (carriers/usps/clock.ts); any other
+ * keeps 17TRACK's reading, the last guess.
+ */
+const USPS = 21051;
 
 /** The recipient's country, the only field of the address read. */
 function recipientCountry(shipment: Record<string, unknown>): string | null {
@@ -356,6 +368,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const shiprocket = reported.key === SHIPROCKET;
     const hywl = reported.key === HYWL;
     const daiPost = reported.key === DAI_POST;
+    const usps = reported.key === USPS;
     for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
@@ -364,9 +377,12 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       // The destination post's scan Swiss Post relays, its wall clock under Swiss Post's offset, or Huiyi Logistics' row in China under "+00:00".
       const relayed = bound ? swissPostDestinationZone(text(raw.description), text(raw.location), bound)
         : hywl && hywlInChina(text(raw.location)) ? HYWL_CHINA_ZONE : null;
+      // A USPS facility's clock in its state's zone, where its place names one.
+      const facility = usps ? uspsScanZone(text(raw.location)) : null;
       // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's, Shiprocket's or DAI Post's, on which 17TRACK puts one offset for the whole parcel.
-      const wall = relayed ? rawClock(raw) : relaysFacilityClock(name) || utc || nz || exchange || own || shiprocket || daiPost ? facilityWall(raw) : null;
-      const zone = !wall ? null : relayed ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
+      const wall = relayed ? rawClock(raw)
+        : facility || relaysFacilityClock(name) || utc || nz || exchange || own || shiprocket || daiPost ? facilityWall(raw) : null;
+      const zone = !wall ? null : relayed ?? facility ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
         : nz ? 'Pacific/Auckland' : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null)
         : daiPost ? daiPostRelayZone(text(raw.description), text(raw.location)) : facilityZone(text(raw.location)));
       const placed = wall && zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;

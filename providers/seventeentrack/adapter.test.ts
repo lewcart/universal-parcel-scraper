@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { DateTime } from 'luxon';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { carrierErrorKind } from '../../core/errors/index.js';
@@ -253,6 +254,31 @@ describe('17TRACK result parsing', () => {
     // Another feed keeps 17TRACK's reading.
     expect(parse17TrackResponse(reply(100999, [row('2026-10-11', '15:06:00', 'Example Town, Brisbane, AU')]), number).events?.[0]?.time)
       .toBe('2026-10-11T14:06:00.000Z');
+  });
+
+  it('reads USPS\'s scans in their state\'s zone, not on the offset 17TRACK guesses for it', () => {
+    // Public shape: USPS's wall clock in time_raw with no zone, and the offset 17TRACK guessed from the state.
+    const row = (date: string, time: string, offset: string, location: string | null, description = 'Arrived at USPS Regional Facility') => {
+      const at = DateTime.fromISO(`${date}T${time}${offset}`, { setZone: true });
+      return { time_iso: at.toISO({ suppressMilliseconds: true }), time_utc: at.toUTC().toISO({ suppressMilliseconds: true }),
+        time_raw: { date, time, timezone: null }, description, location, stage: null, sub_status: 'InTransit_Other' };
+    };
+    const reply = (key: number, events: unknown[]): Payload => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key, name: 'USPS', country: 'US' }, events }] } } }] });
+    const indiana = row('2026-05-07', '20:16:00', '-05:00', 'EXAMPLE CITY IN DISTRIBUTION CENTER');
+    const parsed = parse17TrackResponse(reply(21051, [
+      row('2026-05-08', '09:00:00', '-05:00', null, 'In Transit to Next Facility'),
+      indiana,
+      row('2026-05-06', '16:35:00', '-07:00', 'EXAMPLE CITY AZ DISTRIBUTION CENTER'),
+      row('2026-05-06', '15:20:00', '-07:00', 'EXAMPLE CITY, AZ 00000', 'Accepted at USPS Origin Facility'),
+    ]), number);
+    // Indiana keeps Eastern time; a row that names no state keeps 17TRACK's reading.
+    expect(parsed.events?.map((event) => event.time)).toEqual([
+      '2026-05-08T14:00:00.000Z', '2026-05-08T00:16:00.000Z', '2026-05-06T23:35:00.000Z', '2026-05-06T22:20:00.000Z']);
+    expect(parsed.events?.[1]).toMatchObject({ provider_time_iso: '2026-05-07T20:16:00-05:00', time_provenance: 'provider_inferred' });
+    expect(parsed.undated_event_count).toBeUndefined();
+    // Another feed keeps 17TRACK's reading.
+    expect(parse17TrackResponse(reply(100999, [indiana]), number).events?.[0]?.time).toBe('2026-05-08T01:16:00.000Z');
   });
 
   it('reads NZ Post\'s clock at the scan\'s own date, abroad too when nothing names a country', () => {

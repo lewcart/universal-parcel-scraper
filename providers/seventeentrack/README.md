@@ -104,6 +104,11 @@ carrier.
   [DHL Express rule](../../carriers/dhl-express/clock.ts) reads from their location
   instead. A scan the rule cannot place is counted in `undated_event_count`, and when it
   is the reply's latest scan the reply is inconclusive.
+- USPS's leg (carrier key 21051) shows USPS's wall clocks, each the scanning facility's,
+  and 17TRACK puts on each an offset it guesses from the scan's state: right in Arizona, but
+  `-05:00` in Indiana, which keeps Eastern time, an hour late against USPS's own page. A row
+  whose place names its state is read in that state's zone, as the
+  [USPS adapter](../../carriers/usps/README.md) reads it; any other keeps 17TRACK's reading.
 - Asendia USA (carrier key 100016) relays A1's tracking, which dates every scan in UTC,
   partners' scans too, and 17TRACK labels those digits with US Eastern time. A Swiss Post
   scan at 18:20 `+02:00` is A1's 16:20, which 17TRACK showed as 16:20 `-04:00` (checked

@@ -124,6 +124,8 @@ describe('bpost direct history', () => {
     expect(parseBpost(returned, NUMBER)).not.toHaveProperty('pickup_point');
     expect(parseBpost(returned, NUMBER).events?.[0]).toMatchObject({ provider_leg: 'return', stage: 'returned' });
     expect(classifyBpostStatus('Item available at Pick-up point')?.stage).toBe('ready_for_pickup');
+    // A parcel posted abroad passes these before and after bpost's own scans.
+    for (const wording of ['Arrival at facilities', 'Item has passed a checkpoint']) expect(classifyBpostStatus(wording)?.stage).toBe('in_transit');
     for (const wording of ['__proto__', 'constructor', 'Delivery expected']) expect(classifyBpostStatus(wording)).toBeUndefined();
   });
 

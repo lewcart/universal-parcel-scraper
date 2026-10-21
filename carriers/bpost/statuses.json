@@ -97,6 +97,22 @@
       "firstSeen": "2026-09-28"
     },
     {
+      "wording": "Arrival at facilities",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "A parcel posted abroad, at a facility in the sending country before bpost's own scans."
+    },
+    {
+      "wording": "Item has passed a checkpoint",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "A movement scan, with or without a place, as a parcel posted abroad leaves the sending country or Belgium."
+    },
+    {
       "wording": "Parcel is handled",
       "language": "en",
       "stage": "in_transit",

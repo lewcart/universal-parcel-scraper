@@ -19,6 +19,8 @@ const WORDINGS: Record<string, ClassifiedStatus> = {
   'Departure to country of destination': { status: 'in_transit', stage: 'in_transit' },
   'Arrival at international depot': { status: 'in_transit', stage: 'in_transit' },
   'Parcel is handled': { status: 'in_transit', stage: 'in_transit' },
+  'Arrival at facilities': { status: 'in_transit', stage: 'in_transit' },
+  'Item has passed a checkpoint': { status: 'in_transit', stage: 'in_transit' },
   'Landmark Global (bpost) has received the item': { status: 'in_transit', stage: 'accepted' },
   'Confirmation of preparation of the shipment received': { status: 'pending', stage: 'registered' },
   'Item is announced / Landmark Global (bpost) received the information': { status: 'pending', stage: 'registered' },

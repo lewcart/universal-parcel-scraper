@@ -1,8 +1,11 @@
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
+import { brandCarrierIds } from '../../core/catalog/hints.js';
 import { isBrtCustomerParcelId, isBrtTrackingNumber } from '../../core/detection/brt.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import type { CarrierId } from '../../generated/catalog.js';
 import { calendarDay, countryCode, countryTimeZone, isoTime, sharedClockZone } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { classifyBrtStatus } from './status.js';
@@ -190,6 +193,26 @@ function scanClock(date: string, clock: string, zones: readonly string[] | null)
 }
 
 /**
+ * The DPD network that delivers a parcel BRT sent abroad: the one in the single
+ * country that the DPD depot of its newest scan is named after ("DPD DE …",
+ * "DPD-ROV-GERMANIA"). BRT copies that network's scans, often with their dates
+ * alone; the network itself dates them.
+ */
+function dpdNetwork(place: string): string | undefined {
+  const words = (/^DPD\b/.test(place) ? DEPOT.exec(place)?.[1] : undefined)?.split(/[^\p{L}]+/u).filter(Boolean) ?? [];
+  const countries = new Set<string>();
+  for (let start = 0; start < words.length; start += 1) {
+    for (let end = start + 1; end <= words.length; end += 1) {
+      const country = countryCode(words.slice(start, end).join(' '));
+      if (country) countries.add(country);
+    }
+  }
+  const [country] = countries;
+  return countries.size === 1
+    ? brandCarrierIds('DPD').find((id) => CARRIER_DEFINITIONS[id as CarrierId]?.countries?.[0] === country) : undefined;
+}
+
+/**
  * Projects one BRT detail page. A parcel ID's page does not repeat the ID, so
  * it is only read together with the shipment's parcel list naming that ID.
  */
@@ -246,11 +269,19 @@ export function parseBrt(html: string, raw: string, parcelList?: string): Carrie
   const weightLabels = weightText.match(/\bPeso \(kg\):/g) ?? [];
   const weightMatch = /\bPeso \(kg\):\s*(\d+(?:[,.]\d{1,4})?)(?=\s+Volume\b|$)/.exec(weightText);
   const weight = weightLabels.length === 1 && weightMatch ? Number(weightMatch[1]!.replace(',', '.')) : NaN;
+  // A shipment of one parcel that BRT sent from Italy and DPD delivers abroad: the detail
+  // names the parcel's DPD number. BRT's DPD import depots in Italy go by their province's letters.
+  const parcels = [...weightText.matchAll(/\bColli:\s*(\d+)/g)];
+  const dpdRow = metadata.find('tr').filter((_, node) => rowLabel($, node) === 'Parcel number dpd').children('td');
+  const dpdNumber = dpdRow.length === 2 ? clean(dpdRow.last().text(), 40) : '';
+  const partner = !deliveredHome && !/^DPD\b/.test(origin) && parcels.length === 1 && parcels[0]![1] === '1'
+    && /^\d{14}$/.test(dpdNumber) ? dpdNetwork(latest.location ?? '') : undefined;
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
     last_status_text: latest.description, last_update: latest.time ?? null,
     ...(latest.local_time ? { last_update_local: latest.local_time } : {}),
     ...(mapped?.stage === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),
     ...(Number.isFinite(weight) && weight > 0 && weight <= 100_000 ? { weight_kg: weight } : {}),
+    ...(partner ? { delivery_carrier: partner, delivery_tracking_number: dpdNumber } : {}),
     events: events.slice(0, 100) };
 }
 

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { normalizeCarrierResult, type CarrierEvent, type CarrierResult } from '../../core/result/index.js';
 import { BrtTracker, adapter, type BrtOriginLookup } from './adapter.js';
 import { brtOriginPartner, normalizeBrtNumber, parseBrt, stagedDpdLeg, withOriginLeg } from './parser.js';
@@ -221,6 +222,39 @@ describe('BRT direct tracking', () => {
     // Two letters that are no single-zone country's code, or one on another clock: "GE" is Genoa's and Georgia's.
     for (const place of ['DPD-GE IMPORT TEST (995)', 'DPD-XX TEST (996)', 'CHR-FR XY (997)', 'SAMPLE US (998)', 'NA-SAMPLETOWN (999)']) {
       expect(abroad(place), place).toMatchObject({ last_update: null, last_update_local: '2026-01-16T21:07:00' });
+    }
+  });
+
+  it('names the DPD network that delivers a parcel BRT sent abroad, under the DPD number its detail gives', () => {
+    const DPD_NUMBER = '99000000000009';
+    // No arrival depot in Italy, the parcel's DPD number, and BRT's copy of DPD's newest scan, dated alone.
+    const sent = (place: string) => edit($ => {
+      $('.table_dati_spedizione tr').last().remove();
+      $('.table_dati_spedizione').append(`<tr><td class="bold">Parcel number dpd</td><td>${DPD_NUMBER}</td></tr>`);
+      const first = $('.table_stato_dati tr').eq(1).children('td');
+      first.eq(1).text(''); first.eq(2).text(place); first.eq(3).text('FOR DELIVERY');
+    });
+    const result = normalizeCarrierResult(parseBrt(sent('DPD DE SAMPLE (990)'), NUMBER));
+    expect(result).toMatchObject({ current_stage: 'out_for_delivery', last_update: null, delivery_carrier: 'dpd-de', delivery_tracking_number: DPD_NUMBER });
+    expect(deliveryHandoff('brt', NUMBER, result)).toEqual({ carrier: 'dpd-de', number: DPD_NUMBER, basis: 'partner' });
+    for (const [place, network] of [['DPD-ROV-GERMANIA (991)', 'dpd-de'], ['DPD FR NORD (992)', 'dpd-fr'], ['DPD-ROV-AUSTRIA (993)', 'dpd-at']] as const) {
+      expect(parseBrt(sent(place), NUMBER).delivery_carrier, place).toBe(network);
+    }
+    // A depot naming no country, several, Italy, one without a DPD network (BRT's import depot at Genoa
+    // reads as Georgia), or a depot that is not DPD's.
+    for (const place of ['DPD XX NORD (991)', 'DPD FRANCIA PORTOGALLO (992)', 'DPD ITALIA (993)', 'DPD-GE IMPORT TEST (994)',
+      'BELGIO/LUSSEMBURGO (995)', 'GERMANY TEST (996)', 'TEST DEPOT (997)']) {
+      expect(parseBrt(sent(place), NUMBER).delivery_carrier, place).toBeUndefined();
+    }
+    // Several parcels, another number's shape, two DPD numbers, a delivery in Italy, or a parcel DPD brought to BRT.
+    const page = sent('DPD DE SAMPLE (990)');
+    for (const body of [page.replace('Colli: 1', 'Colli: 2'), page.replace(DPD_NUMBER, DPD_NUMBER.slice(1)),
+      changed(page, $ => $('.table_dati_spedizione tr').last().clone().appendTo('.table_dati_spedizione')),
+      changed(page, $ => $('.table_dati_spedizione').append('<tr><td class="bold">Filiale di arrivo</td><td>TEST DEPOT</td></tr>')),
+      changed(page, $ => $('.table_stato_dati tr').last().children('td').eq(2).text('DPD SAMPLE (998)'))]) {
+      const other = parseBrt(body, NUMBER);
+      expect(other.delivery_carrier).toBeUndefined();
+      expect(other.delivery_tracking_number).toBeUndefined();
     }
   });
 

@@ -38,6 +38,14 @@ map leaves its hand-over, depot intake and transit scans unstaged, because an
 origin depot can follow an import's customs. Before BRT's hand-over they are the
 acceptance and transit, unless DPD staged the parcel past acceptance first.
 
+BRT also sends parcels abroad through the DPD network. For a shipment of one
+parcel that started at one of BRT's depots and names no delivering depot in
+Italy, the detail gives the parcel's DPD number ("Parcel number dpd"). Once the
+newest scan is at a DPD depot named after a single country with a DPD network
+in the catalog, such as `DPD DE …`, that network is the `delivery_carrier` and
+the DPD number the `delivery_tracking_number`. BRT copies that network's scans,
+often with their dates alone; the network dates them.
+
 ## Notes
 
 BRT's depots in Italy keep Italian civil time, which San Marino and the
@@ -74,8 +82,8 @@ when every clock among them is dated. A BRT clock without an offset may be up to
 14 hours ahead of UTC, so a partner scan must be older than that. While BRT has only
 the shipping data, a newer partner scan gives the current status.
 
-Recipient details, sender references and shipment identifiers beyond the
-requested identifier are excluded from the result.
+Recipient details, sender references and shipment identifiers other than the
+requested identifier and that DPD number are excluded from the result.
 
 A negative requires the portal's matching parcel-label error. BRT answers a
 shipment number it has not found with its TIS0564 error, "Shipment not found or

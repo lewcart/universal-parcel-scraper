@@ -662,13 +662,22 @@ function regionScanZone(name: unknown, location: string, inNorthAmerica: boolean
   return region && (region.certain || inNorthAmerica) ? region : null;
 }
 
+const POLAND_POST_RELAY = /^International Postal System$/i;
+
 /**
- * The offset of a GOFO scan that carries one of its own: GOFO France's feed
- * gives the same instants, "+02:00" in summer (checked 2026-10-10). Its US
- * scans come labeled UTC, on their local clock.
+ * The offset of a scan that carries one of its own. GOFO France's feed gives
+ * the same instants, "+02:00" in summer (checked 2026-10-10); its US scans
+ * come labeled UTC, on their local clock. Poland Post's scans at a place, a
+ * Polish office or Poczta Polska's sender platform ("Electronic Sender"),
+ * have the digits and offset of Poczta Polska's own tracker. Its relays from
+ * abroad, with no place or at the "International Postal System", put
+ * Poland's offset on the other country's clock, which its tracker leaves
+ * without one.
  */
-function ownOffset(name: unknown, date: unknown): string | null {
-  const offset = nameKey(name) === 'gofoexpress' && typeof date === 'string' ? /[+-]\d{2}:\d{2}$/.exec(date.trim())?.[0] : undefined;
+function ownOffset(name: unknown, date: unknown, location = ''): string | null {
+  const key = nameKey(name);
+  const own = key === 'gofoexpress' || (key === 'polandpost' && location !== '' && !POLAND_POST_RELAY.test(location));
+  const offset = own && typeof date === 'string' ? /[+-]\d{2}:\d{2}$/.exec(date.trim())?.[0] : undefined;
   return offset && !/^[+-]00:00$/.test(offset) ? offset : null;
 }
 
@@ -719,7 +728,8 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
   if (carrier === 'tnt' && /^\d{9}$/.test(number)) return null;
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
-  if (carrier === 'paack' || carrier === 'vinted-go' || carrier === 'austrian-post' || carrier === 'straightship' || ownOffset(name, state.date)) return null;
+  if (carrier === 'paack' || carrier === 'vinted-go' || carrier === 'austrian-post' || carrier === 'straightship'
+    || ownOffset(name, state.date, scanLocation(name, state.location))) return null;
   if (key === 'sunyousytrack' && SUNYOU_DESTINATION_LEG.test(status.trim())) return countryTimeZone(destination) ?? undefined;
   if (carrier === 'imile') return countryTimeZone(destination);
   // Cainiao's copies of Speedaf's scans keep Speedaf's digits, its arrival at the linehaul office too.
@@ -831,7 +841,7 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   inNorthAmerica = false, destination: string | null = null, origin: string | null = null) {
   const name = stateCarrierName(payload, raw);
   const location = scanLocation(name, raw.location);
-  const offset = ownOffset(name, raw.date);
+  const offset = ownOffset(name, raw.date, location);
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
   const laterLeg = cttyexLaterLeg(name, status);
   const own = laterLeg ? null : carrierClock(payload, raw, number, status, destination);

@@ -286,6 +286,11 @@ step exists for future protocol changes.
   feed, and are taken as given. Other carriers' copies of the same scan (YTO's, Cirro's,
   EQuick China's) write its digits under a UTC label; a copy with the same digits and
   wording takes that offset, so it does not stand as a later or earlier scan.
+- Poland Post's dates at a place, a Polish office or Poczta Polska's sender platform
+  ("Electronic Sender"), carry the digits and offset of Poczta Polska's own tracker and are
+  taken as given, whatever zone routing passes for a parcel filed under the line carrier
+  that sent it. Its relays from abroad, with no place or at the "International Postal
+  System", put Poland's offset on the other country's clock and are read as before.
 - Home clocks: some networks are named their own way, and their dates are their own
   instants or labels shown on their home clock wherever the scan was (checked
   2026-10-10). "Italy Post" has Poste Italiane's epoch milliseconds on Rome time. "New

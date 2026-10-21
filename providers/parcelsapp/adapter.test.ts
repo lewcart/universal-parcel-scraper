@@ -1348,6 +1348,25 @@ describe('ParcelsApp result parsing', () => {
     expect(result.undated_event_count).toBeUndefined();
   });
 
+  it('takes the offset of a Poland Post scan at a place as its instant, whatever zone routing passes', () => {
+    // Poczta Polska's own tracker has the same digits and offset for its sender platform's
+    // item data and its office scans, and none for a relay from abroad.
+    const payload = { carriers: ['Example Line', 'Poland Post'], states: [
+      { date: '2026-10-21T13:14:20Z', status: 'Parcel has been packed and is ready for outbound shipping', carrier: 0, location: 'China' },
+      { date: '2026-10-20T11:11:00+02:00', status: 'Electronic shipment data received', carrier: 1, location: 'Electronic Sender' },
+      { date: '2026-07-16T13:11:00+02:00', status: 'Przyjęta w kraju przeznaczenia', carrier: 1 },
+      { date: '2026-07-14T14:25:00+02:00', status: 'Obsługa celna', carrier: 1, location: 'International Postal System' },
+      { date: '2026-07-06T17:11:00+02:00', status: 'Nadanie przesyłki', carrier: 1, location: 'Placówka Pocztowa Example 1' },
+    ] };
+    for (const zone of [null, 'Asia/Shanghai']) {
+      const times = parseParcelsAppResponse(payload, number, identity(), zone).events?.map((scan) => scan.time);
+      expect([times?.[1], times?.[4]]).toEqual(['2026-10-20T09:11:00.000Z', '2026-07-06T15:11:00.000Z']);
+    }
+    // The relays keep the reading they had: the label, or routing's zone.
+    expect(parseParcelsAppResponse(payload, number, identity(), 'Asia/Shanghai').events?.slice(2, 4).map((scan) => scan.time))
+      .toEqual(['2026-07-16T03:11:00.000Z', '2026-07-14T04:25:00.000Z']);
+  });
+
   it('reads a network nothing places on its copies\' clock, and a later acceptance by another carrier as a hand-over', () => {
     // A line provider outside the catalog files DHLink's scans at the same
     // digits with no place; DPD takes the parcel once it is cleared.

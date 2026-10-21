@@ -12431,8 +12431,12 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^(?!PB)[A-Z]{3}[CPR]\\d{10}$",
+        "pattern": "^(?:AMI|BAL|BGS|BSI|DEL|FLO|FMP|GLA|LUA|MY[ENS]|SDL|SHO|SPO|SRT|TEL)[CPR]\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^(?!PB)[A-Z]{3}[CPR]\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -32444,7 +32448,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "econt": [],
   "ecourier": ["ecourier-1"],
   "egypt-post": ["egypt-post-1","egypt-post-s10"],
-  "ekart": ["ekart-ecommerce"],
+  "ekart": ["ekart-ecommerce","ekart-merchant"],
   "elta": ["elta-s10"],
   "emile": ["emile-1","emile-2"],
   "emirates-post": [],

@@ -56,6 +56,16 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     expect(recognitionCandidates('300000000005').map(candidate => candidate.carrier)).not.toContain('purolator');
   });
 
+  it('names Ekart for its known merchant codes and only suggests it for other letters', () => {
+    for (const number of ['FMPP0000000001', 'MYSR0000000001', 'BSIC0000000001', 'SRTP0000000001', 'fmpp 0000000001']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'ekart', confidence: 'high' });
+    }
+    expect(detectCarrierMatch('HRBC0123456789')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['ekart'] });
+    for (const number of ['PBXC0000000001', 'FMPX0000000001', 'FMPP000000001', 'FMPP00000000001', 'FM1P0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? []).not.toContain('ekart');
+    }
+  });
+
   it('selects OnTrac only in its own C and D ranges while preserving LaserShip detection', () => {
     for (const number of ['C10000000000004', 'C17000000000007', 'D10000000000003']) {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'ontrac', confidence: 'high', candidates: ['ontrac'] });

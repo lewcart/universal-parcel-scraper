@@ -60,8 +60,13 @@
   "detection": [
     {
       "id": "ekart-ecommerce",
-      "pattern": "^(?!PB)[A-Z]{3}[CPR]\\d{10}$",
+      "pattern": "^(?:AMI|BAL|BGS|BSI|DEL|FLO|FMP|GLA|LUA|MY[ENS]|SDL|SHO|SPO|SRT|TEL)[CPR]\\d{10}$",
       "confidence": "high"
+    },
+    {
+      "id": "ekart-merchant",
+      "pattern": "^(?!PB)[A-Z]{3}[CPR]\\d{10}$",
+      "confidence": "low"
     }
   ]
 }

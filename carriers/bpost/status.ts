@@ -3,10 +3,14 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 const WORDINGS: Record<string, ClassifiedStatus> = {
   'Item delivered': { status: 'delivered', stage: 'delivered' },
   'Item available at Pick-up point': { status: 'in_transit', stage: 'ready_for_pickup' },
-  // On its way to a locker, with the brand the parser puts in place of bpost's placeholder.
+  // On its way to a locker, then waiting in it, with the brand the parser puts in place of
+  // bpost's placeholder.
   "Item on it's way to Parcel Locker": { status: 'in_transit', stage: 'in_transit' },
   "Item on it's way to bbox locker": { status: 'in_transit', stage: 'in_transit' },
   "Item on it's way to parcel locker": { status: 'in_transit', stage: 'in_transit' },
+  'Item available at the Parcel Locker': { status: 'in_transit', stage: 'ready_for_pickup' },
+  'Item available at the bbox locker': { status: 'in_transit', stage: 'ready_for_pickup' },
+  'Item available at the parcel locker': { status: 'in_transit', stage: 'ready_for_pickup' },
   "The postman's delivery round for your item has started": { status: 'out_for_delivery', stage: 'out_for_delivery' },
   'Your shipment has arrived at the postal operator of the country of destination and will be delivered in the coming days': { status: 'in_transit', stage: 'in_transit' },
   'Your item has been sorted': { status: 'in_transit', stage: 'in_transit' },

@@ -138,6 +138,12 @@ describe('bpost direct history', () => {
     expect(parseBpost(locker, NUMBER).events?.[0]).toMatchObject({ description: "Item on it's way to Parcel Locker", stage: 'in_transit' });
     delete locker.items[0].bboxRebrandCategory;
     expect(parseBpost(locker, NUMBER).events?.[0]).toMatchObject({ description: "Item on it's way to parcel locker", stage: 'in_transit' });
+    locker.items[0].events[0].key.EN.description = 'Item available at the {{bboxRebrand}}';
+    for (const [category, name] of [['bbox', 'bbox locker'], ['parcelLocker', 'Parcel Locker'], [undefined, 'parcel locker']] as const) {
+      locker.items[0].bboxRebrandCategory = category;
+      expect(parseBpost(locker, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup',
+        last_status_text: `Item available at the ${name}` });
+    }
   });
 
   it('keeps the pickup point after collection there, never after a door delivery or in transit', () => {

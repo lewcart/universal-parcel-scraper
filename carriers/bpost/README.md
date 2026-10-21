@@ -31,9 +31,10 @@ tracker, and no other carrier is known to issue the prefix. The longer plate
 bpost's barcode page lists among its common parcel barcodes, the letter and
 twenty-two digits, selects bpost too.
 
-A scan on the way to a locker names it `{{bboxRebrand}}`. bpost's tracker puts
-there the name of the item's `bboxRebrandCategory` from its translations, such
-as "bbox locker", and so does the adapter, in English.
+Scans on the way to a locker and at it name the locker `{{bboxRebrand}}`.
+bpost's tracker puts there the name of the item's `bboxRebrandCategory` from
+its translations, such as "bbox locker", and so does the adapter, in English.
+An item available at the locker is ready for pickup.
 
 The receiver's country code becomes `destination_country`. The sender's
 barcode becomes `international_tracking_number` only when it is a valid S10

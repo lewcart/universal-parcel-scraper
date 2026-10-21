@@ -32,6 +32,22 @@
       "note": "The same scan for the parcelLocker category, named from bpost's tracker translations."
     },
     {
+      "wording": "Item available at the bbox locker",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "bpost's Item available at the {{bboxRebrand}}, after the scan on its way to the locker: the parcel waits in the locker for its recipient."
+    },
+    {
+      "wording": "Item available at the Parcel Locker",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "source",
+      "firstSeen": "2026-10-21",
+      "note": "The same scan for the parcelLocker category, named from bpost's tracker translations."
+    },
+    {
       "wording": "The postman's delivery round for your item has started",
       "language": "en",
       "stage": "out_for_delivery",

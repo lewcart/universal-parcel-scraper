@@ -296,3 +296,28 @@ export function withOriginLeg(result: CarrierResult, partner: CarrierResult): Ca
   for (const field of STATUS_FIELDS) delete merged[field];
   return { ...merged, ...Object.fromEntries(STATUS_FIELDS.flatMap((field) => partner[field] === undefined ? [] : [[field, partner[field]]])) };
 }
+
+/**
+ * DPD's scans that its own map leaves without a stage (carriers/dpd): there an origin depot's
+ * intake can follow an import's customs. In the leg that brought a parcel to BRT, all of it
+ * before BRT's hand-over, the hand-over to DPD and its depot's intake are the acceptance, unless
+ * DPD had already staged the parcel past it. The scans worded as moving it on are transit once
+ * DPD has it; SPL, worded so, also comes before the origin depot, and stays unstaged there.
+ */
+const DPD_INTAKE = new Set(['PARCEL_HANDED', 'ORI']);
+const DPD_TRANSIT = new Set(['IN_TRANSIT', 'SPL', 'AT_DELIVERY_CENTER']);
+
+export function stagedDpdLeg(result: CarrierResult): CarrierResult {
+  if (!result.events?.length) return result;
+  let taken = false;
+  let moved = false;
+  const events = [...result.events].reverse().map((event) => {
+    const code = event.provider_code ?? '';
+    const stage = event.stage
+      ?? (DPD_INTAKE.has(code) ? (moved ? 'in_transit' : 'accepted') : DPD_TRANSIT.has(code) && taken ? 'in_transit' : undefined);
+    if (stage && stage !== 'registered') taken = true;
+    if (event.stage && event.stage !== 'registered' && event.stage !== 'accepted') moved = true;
+    return stage === event.stage ? event : { ...event, stage };
+  }).reverse();
+  return { ...result, events };
+}

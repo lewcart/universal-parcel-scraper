@@ -6,7 +6,7 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { ChronopostTracker } from '../chronopost/adapter.js';
 import { DPDTracker } from '../dpd/adapter.js';
-import { brtOriginPartner, brtParcelListPath, normalizeBrtNumber, parseBrt, withOriginLeg, type BrtOriginPartner } from './parser.js';
+import { brtOriginPartner, brtParcelListPath, normalizeBrtNumber, parseBrt, stagedDpdLeg, withOriginLeg, type BrtOriginPartner } from './parser.js';
 
 const BASE = 'https://vas.brt.it/vas/';
 /** The time kept for BRT's own answer when a partner's lookup runs out. */
@@ -77,7 +77,7 @@ export const adapter: AdapterFactory = environment => {
   // Recognition reads BRT alone.
   const tracking = new BrtTracker({ ...transport, recorder: environment.recorder, origins: {
     chronopost: (number, context) => chronopost.fetch(number, context),
-    dpd: (number, context) => dpd.fetch(number, '', context),
+    dpd: (number, context) => dpd.fetch(number, '', context).then(stagedDpdLeg),
   } });
   return { id: 'brt', recordsSteps: true, steps: ['direct'], track: (input, context) => tracking.fetch(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeBrtNumber(number))) };

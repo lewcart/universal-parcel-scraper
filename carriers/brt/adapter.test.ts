@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult, type CarrierEvent, type CarrierResult } from '../../core/result/index.js';
 import { BrtTracker, adapter, type BrtOriginLookup } from './adapter.js';
-import { brtOriginPartner, normalizeBrtNumber, parseBrt, withOriginLeg } from './parser.js';
+import { brtOriginPartner, normalizeBrtNumber, parseBrt, stagedDpdLeg, withOriginLeg } from './parser.js';
 import { classifyBrtStatus } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { IndeterminateError, InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
@@ -434,6 +434,23 @@ describe('BRT origin legs', () => {
     const sent = withOriginLeg(brt([preAdvice('2026-01-12T18:02:00+01:00')], 'pending'), partner(scan('Sample preparation', '2026-01-12T07:45:00+01:00')));
     expect(descriptions(sent)).toEqual(['SHIPPING INFO SENT TO BRT', 'Sample preparation']);
     expect(sent).toMatchObject({ status: 'pending', current_stage: 'registered', last_update: '2026-01-12T18:02:00+01:00' });
+  });
+
+  it('stages the DPD scans DPD\'s own map leaves without one, in the leg before BRT', () => {
+    const coded = (code: string, description: string, clock: string, stage?: string) => ({ ...scan(description, clock, stage), provider_code: code });
+    const leg = stagedDpdLeg(partner(coded('OTHER', 'Sample update', '2026-01-17T09:00:00+01:00'),
+      coded('SPL', 'Your parcel is on its way', '2026-01-17T00:53:00+01:00'), coded('ORI', 'Your parcel arrived at our depot', '2026-01-12T15:50:00Z'),
+      coded('PARCEL_HANDED', 'Parcel handed to DPD', '2026-01-12T15:50:00Z')));
+    expect(leg.events!.map(event => event.stage)).toEqual([undefined, 'in_transit', 'accepted', 'accepted']);
+    // After DPD's own transit or customs scan, an origin depot's intake is no longer the acceptance.
+    const imported = stagedDpdLeg(partner(coded('ORI', 'Your parcel arrived at our depot', '2026-01-14T08:00:00Z'),
+      coded('CUSTOMS', 'Sample customs', '2026-01-13T08:00:00Z', 'customs')));
+    expect(imported.events!.map(event => event.stage)).toEqual(['in_transit', 'customs']);
+    // DPD words SPL as moving the parcel on before its origin depot too.
+    const early = stagedDpdLeg(partner(coded('ORI', 'Your parcel arrived at our depot', '2026-01-12T15:50:00Z'),
+      coded('SPL', 'Your parcel is on its way', '2026-01-12T09:00:00Z')));
+    expect(early.events!.map(event => event.stage)).toEqual(['accepted', undefined]);
+    expect(stagedDpdLeg({ status: 'in_transit', events: [] })).toEqual({ status: 'in_transit', events: [] });
   });
 
   it('keeps only partner scans surely before a wall clock, and leaves a shipment without a dated leg as it was', () => {

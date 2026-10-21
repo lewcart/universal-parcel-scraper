@@ -731,6 +731,8 @@ describe('classifyWording', () => {
       ['We will pick up the package from the sender soon', 'registered'],
       ['We will pick up your parcel from the sender soon.', 'registered'],
       ['Booked for collection', 'registered'], ['Processing at destination branch', 'in_transit'],
+      ['Receipt of the package at the DPD branch', 'in_transit'], ['Release of shipment for delivery', 'out_for_delivery'],
+      ['Erfolgreich abgeholt', 'accepted'], ['Die Sendung wurde erfolgreich abgeholt', 'accepted'],
       ['Parcel received by UniUni', 'in_transit'],
       ['The courier will deliver the parcel soon. Additional details are available in the app, email or SMS.', 'out_for_delivery'],
       ['Item received by Royal Mail', 'accepted'],

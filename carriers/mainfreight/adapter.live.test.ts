@@ -24,6 +24,12 @@ describe('Mainfreight live retrieval', () => {
     expect(result.events!.every(event => event.time === undefined && WALL_CLOCK.test(String(event.local_time)))).toBe(true);
   }, 30_000);
 
+  it.skipIf(!process.env.MAINFREIGHT_MASTER_BILL_NUMBER)('retrieves an air and ocean job by its master bill', async () => {
+    const result = await direct().track({ number: process.env.MAINFREIGHT_MASTER_BILL_NUMBER! });
+    expect(result.canonical_tracking_number).toMatch(/^S\d{8}$/);
+    expect(result.events!.length).toBeGreaterThan(0);
+  }, 30_000);
+
   it.skipIf(!process.env.MAINFREIGHT_UNKNOWN_NUMBER)('reads an unknown number as not found', async () => {
     await expect(direct().track({ number: process.env.MAINFREIGHT_UNKNOWN_NUMBER! })).rejects.toMatchObject({ kind: 'not_found' });
     await expect(direct().recognize!(process.env.MAINFREIGHT_UNKNOWN_NUMBER!)).resolves.toEqual({ known: false });

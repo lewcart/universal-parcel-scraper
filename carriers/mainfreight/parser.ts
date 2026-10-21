@@ -68,6 +68,17 @@ export function mainfreightJson(body: string): unknown {
   }
 }
 
+/** A search's entries: the address each lists, if it has one, and the reference it shows. */
+function listedEntries(reply: unknown): { shipment: MainfreightShipment | null; reference: string }[] {
+  if (!Array.isArray(reply) || reply.length > MAX_RESULTS) throw new SchemaError(PROVIDER, 'Mainfreight returned an invalid search reply');
+  return reply.map((entry) => {
+    if (!isRecord(entry) || typeof entry.url !== 'string') throw new SchemaError(PROVIDER, 'Mainfreight returned an invalid search result');
+    const path = PATH.exec(entry.url.trim());
+    const reference = typeof entry.reference === 'string' && entry.reference.length <= 80 ? normalizeTrackingNumber(entry.reference.trim()) : '';
+    return { shipment: path ? { code: path[1]!.toUpperCase(), reference: path[2]!.toUpperCase() } : null, reference };
+  });
+}
+
 /**
  * The one shipment the search lists under the whole number: the one whose own
  * number it is, else the one that carries it as its reference. The search
@@ -75,22 +86,58 @@ export function mainfreightJson(body: string): unknown {
  * does; several are no answer.
  */
 export function searchedShipment(reply: unknown, number: string): MainfreightShipment | null {
-  if (!Array.isArray(reply) || reply.length > MAX_RESULTS) throw new SchemaError(PROVIDER, 'Mainfreight returned an invalid search reply');
   const own = new Map<string, MainfreightShipment>();
   const referenced = new Map<string, MainfreightShipment>();
-  for (const entry of reply) {
-    if (!isRecord(entry) || typeof entry.url !== 'string') throw new SchemaError(PROVIDER, 'Mainfreight returned an invalid search result');
-    const path = PATH.exec(entry.url.trim());
-    const tail = path ? path[2]!.toUpperCase() : '';
-    const reference = typeof entry.reference === 'string' && entry.reference.length <= 80 ? normalizeTrackingNumber(entry.reference.trim()) : '';
+  for (const { shipment, reference } of listedEntries(reply)) {
+    const tail = shipment?.reference ?? '';
     if (tail !== number && reference !== number) continue;
-    if (!path) throw new SchemaError(PROVIDER, 'Mainfreight listed a shipment without its address');
-    const shipment = { code: path[1]!.toUpperCase(), reference: tail };
+    if (!shipment) throw new SchemaError(PROVIDER, 'Mainfreight listed a shipment without its address');
     (tail === number ? own : referenced).set(`${shipment.code}/${shipment.reference}`, shipment);
   }
   const matches = own.size ? own : referenced;
   if (matches.size > 1) throw new IndeterminateError(PROVIDER, 'Several Mainfreight shipments carry this number');
   return [...matches.values()][0] ?? null;
+}
+
+/**
+ * The air and ocean jobs a search lists. The search also finds a job by its
+ * master bill, but lists it under its job number and house bill.
+ */
+export function listedJobs(reply: unknown): MainfreightShipment[] {
+  const jobs = new Map<string, MainfreightShipment>();
+  for (const { shipment } of listedEntries(reply)) {
+    if (shipment?.code === 'CW') jobs.set(shipment.reference, shipment);
+  }
+  return [...jobs.values()];
+}
+
+/**
+ * The master bills Mainfreight's app gives for the job at `at`: an air
+ * waybill's eleven digits, or an ocean master bill of lading. Null when the app
+ * does not know the job. The reply also lists the job's other references and
+ * its parties, which are not read.
+ */
+export function masterBillsOf(reply: unknown, at: MainfreightShipment): string[] | null {
+  if (!isRecord(reply) || typeof reply.success !== 'boolean') throw new SchemaError(PROVIDER, 'Mainfreight\'s app returned an invalid reply');
+  if (!reply.success) return null;
+  const document = isRecord(reply.document) && isRecord(reply.document.document) ? reply.document.document : null;
+  if (!document || !Array.isArray(document.references) || document.references.length > MAX_ROWS) {
+    throw new SchemaError(PROVIDER, 'Mainfreight\'s app returned an invalid shipment');
+  }
+  if (typeof document.shortCode !== 'string' || document.shortCode.trim().toUpperCase() !== at.code
+    || typeof document.primaryReference !== 'string' || document.primaryReference.length > 80
+    || normalizeTrackingNumber(document.primaryReference.trim()) !== at.reference) {
+    throw new SchemaError(PROVIDER, 'Mainfreight answered for a different shipment');
+  }
+  return document.references.flatMap((entry) => {
+    if (!isRecord(entry) || typeof entry.type !== 'string') throw new SchemaError(PROVIDER, 'Mainfreight\'s app returned an invalid reference');
+    if (entry.type !== 'MasterBillNumber') return [];
+    if (typeof entry.reference !== 'string' || entry.reference.length > 80) {
+      throw new SchemaError(PROVIDER, 'Mainfreight\'s app returned an invalid reference');
+    }
+    const bill = normalizeTrackingNumber(entry.reference.trim());
+    return bill ? [bill] : [];
+  });
 }
 
 interface Clock {

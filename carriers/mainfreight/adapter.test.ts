@@ -5,8 +5,10 @@ import { parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
-import { adapter, CONSIGNMENT_SERVICES, MAINFREIGHT_API, MainfreightTracker, mainfreightSearchUrl, mainfreightShipmentUrl } from './adapter.js';
-import { normalizeMainfreightNumber, parseMainfreight, searchedShipment } from './parser.js';
+import {
+  adapter, CONSIGNMENT_SERVICES, MAINFREIGHT_API, MAINFREIGHT_APP_API, MainfreightTracker, mainfreightSearchUrl, mainfreightShipmentUrl,
+} from './adapter.js';
+import { listedJobs, masterBillsOf, normalizeMainfreightNumber, parseMainfreight, searchedShipment } from './parser.js';
 import { mainfreightMappedStage, mainfreightStage, placedWording, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -18,6 +20,7 @@ const US = '99900000028';
 const EU = '99900000035';
 const CONTAINER = 'CJ999000001';
 const UNKNOWN = 'S09990009';
+const MASTER_BILL = '00012345675';
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 type Row = { status: unknown; additionalDetails: { value: unknown }[] };
 type Shipment = Record<string, unknown> & { timelineDetails: Row[]; details: { items: { label: string; value: unknown }[] }[] };
@@ -25,6 +28,14 @@ const fixture = (name: string): Shipment[] => JSON.parse(text(`${name}.json`)) a
 const edited = (name: string, change: (shipment: Shipment, reply: Shipment[]) => void): Shipment[] => {
   const reply = fixture(name);
   change(reply[0]!, reply);
+  return reply;
+};
+type AppDocument = Record<string, unknown> & { references: Record<string, unknown>[] };
+type AppReply = Record<string, unknown> & { document: { document: AppDocument } };
+/** The app's reply for the air job, changed. */
+const appReply = (change: (document: AppDocument, reply: AppReply) => void = () => {}): AppReply => {
+  const reply = JSON.parse(text('app-job.json')) as AppReply;
+  change(reply.document.document, reply);
   return reply;
 };
 const at = (code: string, reference: string) => ({ code, reference });
@@ -257,6 +268,72 @@ describe('Mainfreight tracking adapter', () => {
       { url: 'MSNZS/99900000042', reference: SENDER_REFERENCE }, { url: 'MSAUS/99900000059', reference: SENDER_REFERENCE }]) });
     await expect(carrier(several).track({ number: SENDER_REFERENCE })).rejects.toMatchObject({ kind: 'indeterminate' });
     expect(several).toHaveBeenCalledTimes(1);
+  });
+
+  it('finds an air and ocean job by its master bill once Mainfreight’s app names it the job’s', async () => {
+    const fetcher = routed({ [mainfreightSearchUrl(MASTER_BILL)]: listing(`CW/${TRANSIT_JOB}`, 'ZZHBL9990003'),
+      [MAINFREIGHT_APP_API]: text('app-job.json'), [mainfreightShipmentUrl(at('CW', TRANSIT_JOB))]: text('job-in-transit.json') });
+    const result = await carrier(fetcher).track({ number: '000-1234 5675' });
+    expect(result).toMatchObject({ status: 'in_transit', last_status_text: 'Departure from First Load Port', last_update_local: '2026-04-08T23:30:00',
+      canonical_tracking_number: TRANSIT_JOB });
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+      mainfreightSearchUrl(MASTER_BILL), MAINFREIGHT_APP_API, mainfreightShipmentUrl(at('CW', TRANSIT_JOB)),
+    ]);
+    const [, init] = fetcher.mock.calls[1]!;
+    expect(init).toMatchObject({ method: 'POST', redirect: 'manual', signal: expect.any(AbortSignal),
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' } });
+    expect(JSON.parse(String(init!.body))).toEqual({ permalink: 'CW', reference: TRANSIT_JOB, brand: 'MFT' });
+    expect(JSON.stringify(result)).not.toMatch(/ZZZU|SAMPLE\.ORDER|SYNTHETIC|Sampleport/);
+    await expect(carrier(fetcher).recognize!(MASTER_BILL)).resolves.toMatchObject({ known: true });
+  });
+
+  it('takes a job the search lists for a master bill only when the app names that bill, and one job alone', async () => {
+    const pages = (app: unknown) => routed({ [mainfreightSearchUrl(MASTER_BILL)]: listing(`CW/${TRANSIT_JOB}`, 'ZZHBL9990003'),
+      [MAINFREIGHT_APP_API]: JSON.stringify(app), [mainfreightShipmentUrl(at('CW', TRANSIT_JOB))]: text('job-in-transit.json') });
+    // Another master bill: the job is not this number's, which the transport services may still know.
+    const other = pages(appReply((document) => { document.references[5]!.reference = '00012345686'; }));
+    await expect(carrier(other).track({ number: MASTER_BILL })).rejects.toMatchObject({ kind: 'not_found' });
+    expect(other.mock.calls.map(([url]) => String(url))).toEqual([
+      mainfreightSearchUrl(MASTER_BILL), MAINFREIGHT_APP_API, ...CONSIGNMENT_SERVICES.map(code => mainfreightShipmentUrl(at(code, MASTER_BILL))),
+    ]);
+    const unopened = pages({ document: { document: null, resultDocument: null, podUrl: '' }, success: false,
+      message: 'Sorry, we couldn’t find that one...', podUrl: '' });
+    await expect(carrier(unopened).track({ number: MASTER_BILL })).rejects.toMatchObject({ kind: 'indeterminate' });
+    const elsewhere = pages(appReply((document) => { document.primaryReference = 'S09990001'; }));
+    await expect(carrier(elsewhere).track({ number: MASTER_BILL })).rejects.toMatchObject({ kind: 'schema' });
+    for (const [status, kind] of [[429, 'rate_limited'], [403, 'challenge'], [404, 'transport']] as const) {
+      const failing = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url) === MAINFREIGHT_APP_API ? reply('', status)
+        : reply(listing(`CW/${TRANSIT_JOB}`, 'ZZHBL9990003')));
+      await expect(carrier(failing).track({ number: MASTER_BILL }), String(status)).rejects.toMatchObject({ kind });
+    }
+    const blocked = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url) === MAINFREIGHT_APP_API ? reply(text('block.html'), 200, 'text/html')
+      : reply(listing(`CW/${TRANSIT_JOB}`, 'ZZHBL9990003')));
+    await expect(carrier(blocked).track({ number: MASTER_BILL })).rejects.toMatchObject({ kind: 'challenge' });
+    // A consolidation lists each of its jobs under the one master bill.
+    const consolidation = routed({ [mainfreightSearchUrl(MASTER_BILL)]: JSON.stringify([
+      { url: `CW/${TRANSIT_JOB}`, reference: 'ZZHBL9990003' }, { url: 'CW/S09990004', reference: 'ZZHBL9990004' }, { url: 'CWID/B09990005', reference: 'X' }]) });
+    await expect(carrier(consolidation).track({ number: MASTER_BILL })).rejects.toMatchObject({ kind: 'indeterminate' });
+    expect(consolidation).toHaveBeenCalledTimes(1);
+  });
+
+  it('reads the master bills in the app’s reply, bound to the job it was asked for', () => {
+    const job = at('CW', TRANSIT_JOB);
+    expect(masterBillsOf(appReply(), job)).toEqual([MASTER_BILL]);
+    expect(masterBillsOf(appReply((document) => { document.references.pop(); }), job)).toEqual([]);
+    expect(masterBillsOf(appReply((document) => { document.references[5]!.reference = ' 000-12345675 '; }), job)).toEqual([MASTER_BILL]);
+    // Only the master bill is read: the other references can be anything.
+    expect(masterBillsOf(appReply((document) => { document.references[4]!.reference = null; }), job)).toEqual([MASTER_BILL]);
+    expect(masterBillsOf({ success: false, document: { document: null } }, job)).toBeNull();
+    expect(listedJobs([{ url: `CW/${TRANSIT_JOB}` }, { url: `cw/${TRANSIT_JOB.toLowerCase()}` }, { url: 'CWID/B09990005' }, { url: 'MSNZS/99900000042' }]))
+      .toEqual([job]);
+    for (const payload of [null, [], {}, { success: 'true' }, appReply((_, reply) => { reply.document = null as never; }),
+      appReply((document) => { document.references = {} as never; }),
+      appReply((document) => { document.references = Array.from({ length: 501 }, () => ({ type: 'OrderReference' })); }),
+      appReply((document) => { document.references[5] = 'x' as never; }), appReply((document) => { document.references[5]!.type = 7; }),
+      appReply((document) => { document.references[5]!.reference = 7; }), appReply((document) => { document.shortCode = 'CWID'; }),
+      appReply((document) => { document.primaryReference = 'S09990004'; }), appReply((document) => { delete document.primaryReference; })]) {
+      expect(() => masterBillsOf(payload, job), JSON.stringify(payload)?.slice(0, 80)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    }
   });
 
   it('reads a firewall page as a challenge, and other replies that are not the API’s as inconclusive or changed', async () => {

@@ -3,7 +3,7 @@
 Mainfreight is a New Zealand freight and logistics group. Its transport networks in New Zealand,
 Australia, the United States and Europe carry pallets and freight between businesses, and its
 air and ocean arm forwards shipments worldwide. Tracked through the lookups its tracking page
-makes.
+and app make.
 
 ## How it works
 
@@ -23,6 +23,12 @@ makes.
   whole requested number, else the one whose reference is. Several such entries are
   inconclusive; none is not found. An opened shipment must carry the service code and number it
   was opened under.
+- The search finds an air and ocean job by its master bill too, such as an air waybill's eleven
+  digits without the dash, but lists the job under its job number and house bill. The adapter
+  then asks Mainfreight's app, `POST https://mobile.mainfreight.com/2.3/Tracker/Retrieve` with
+  `{"permalink":"CW","reference":"{job}","brand":"MFT"}`, for the job's references, and opens
+  the job only when they name the whole number as its master bill. Several jobs under one master
+  bill, as in a consolidation, are inconclusive.
 - An address the tracker does not know answers `[]`. A shipment the search lists but that does
   not open, or an empty body, is inconclusive. Some shipments answer HTTP 500 every time, which
   is inconclusive too.
@@ -58,13 +64,13 @@ makes.
 
 ## Numbers
 
-The tracker takes consignment, job, house bill and container job numbers, and senders'
-references. Transport consignments in New Zealand, Australia, the United States and Europe are
-eleven digits; air and ocean jobs are `S` and eight digits, and customs declarations `B` and
-eight digits; container jobs are `CJ` and nine digits. Some senders' consignment references are
-three letters and eight digits. Eleven digits are shared by many carriers, and the job layout is
-common to freight forwarders on the same software, so no rule claims them. The samples and their
-sources are in [`numbers.json`](numbers.json).
+The tracker takes consignment, job, house bill, master bill and container job numbers, and
+senders' references. Transport consignments in New Zealand, Australia, the United States and
+Europe are eleven digits; air and ocean jobs are `S` and eight digits, and customs declarations
+`B` and eight digits; container jobs are `CJ` and nine digits. Some senders' consignment
+references are three letters and eight digits. Eleven digits are shared by many carriers, and
+the job layout is common to freight forwarders on the same software, so no rule claims them. The
+samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 
@@ -75,5 +81,6 @@ form builds. A tracked shipment opens at `/track/` followed by a service code an
 
 `npm run test:carriers:live -- carriers/mainfreight`, with `MAINFREIGHT_TRACKING_NUMBER` set
 outside the repository to an eleven-digit transport consignment. Optionally set
-`MAINFREIGHT_JOB_NUMBER` to check an air and ocean job and `MAINFREIGHT_UNKNOWN_NUMBER` to check
-a number the tracker does not know.
+`MAINFREIGHT_JOB_NUMBER` to check an air and ocean job, `MAINFREIGHT_MASTER_BILL_NUMBER` to check
+one found by its master bill and `MAINFREIGHT_UNKNOWN_NUMBER` to check a number the tracker does
+not know.

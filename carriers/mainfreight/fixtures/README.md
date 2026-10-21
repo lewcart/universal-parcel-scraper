@@ -17,6 +17,8 @@ are shipments as the tracker opens them under their service's code.
   rescheduled arrival day.
 - `container-job.json`: a New Zealand container job through its legs to the final delivery.
 - `declaration.json`: a customs declaration the tracker lists without a status or a timeline.
+- `app-job.json`: the air job as Mainfreight's app opens it, with the references it carries by
+  type, its master bill among them.
 - `block.html`: a firewall's block page in place of a reply.
 
 Numbers, references, names, places, postcodes, contacts, keys and clocks are invented.

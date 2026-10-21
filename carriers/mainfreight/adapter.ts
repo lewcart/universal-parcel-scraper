@@ -6,11 +6,14 @@ import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import {
-  MAINFREIGHT_MAX_BYTES, mainfreightJson, normalizeMainfreightNumber, parseMainfreight, PROVIDER, searchedShipment, type MainfreightShipment,
+  listedJobs, MAINFREIGHT_MAX_BYTES, mainfreightJson, masterBillsOf, normalizeMainfreightNumber, parseMainfreight, PROVIDER, searchedShipment,
+  type MainfreightShipment,
 } from './parser.js';
 
 /** The tracker's API, which mainfreight.com/track reads: a search by reference, and a shipment under its service's code. */
 export const MAINFREIGHT_API = 'https://www.mainfreight.com/track/api/trackings';
+/** Mainfreight's app opens a shipment here, with the references it carries by type. */
+export const MAINFREIGHT_APP_API = 'https://mobile.mainfreight.com/2.3/Tracker/Retrieve';
 /**
  * The transport services whose eleven-digit consignment numbers the search
  * does not find: New Zealand, Australia and the United States. Their own
@@ -34,17 +37,38 @@ export function mainfreightShipmentUrl(shipment: MainfreightShipment): string {
 export class MainfreightTracker {
   constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
 
-  async #get(url: string, signal: AbortSignal, timeoutMs: number): Promise<unknown> {
-    const { response, bytes } = await fetchBounded(url, { method: 'GET', signal, headers: {
+  /** A GET, or a POST of `payload` as JSON, read as JSON. */
+  async #get(url: string, signal: AbortSignal, timeoutMs: number, payload?: unknown): Promise<unknown> {
+    const { response, bytes } = await fetchBounded(url, { method: payload === undefined ? 'GET' : 'POST', signal, headers: {
       Accept: 'application/json', 'User-Agent': userAgentOf(this.options.userAgent),
-    } }, { provider: PROVIDER, timeoutMs, maxBytes: MAINFREIGHT_MAX_BYTES, redirect: 'manual',
-      allowHttpStatuses: [...REDIRECTS, ...GONE], fetcher: this.options.fetcher });
+      ...(payload === undefined ? {} : { 'Content-Type': 'application/json' }),
+    }, ...(payload === undefined ? {} : { body: JSON.stringify(payload) }) }, { provider: PROVIDER, timeoutMs, maxBytes: MAINFREIGHT_MAX_BYTES,
+      redirect: 'manual', allowHttpStatuses: [...REDIRECTS, ...GONE], fetcher: this.options.fetcher });
     if (REDIRECTS.includes(response.status) || GONE.includes(response.status)) {
       throw new TransportError(PROVIDER, 'Mainfreight\'s tracking API is unavailable', { status: response.status });
     }
     const body = decodeText(bytes).replace(/^\uFEFF/, '').trim();
     if (!body) throw new IndeterminateError(PROVIDER, 'Mainfreight returned an empty reply');
     return mainfreightJson(body);
+  }
+
+  /**
+   * The air and ocean job the search found by its master bill. The search
+   * lists it under its job number and house bill, so the app's reply has to
+   * name the number as the job's master bill. Several jobs under one master
+   * bill, as in a consolidation, are no answer.
+   */
+  async #underMasterBill(search: unknown, number: string, signal: AbortSignal, left: () => number): Promise<MainfreightShipment | null> {
+    const jobs = listedJobs(search);
+    if (jobs.length > 1) throw new IndeterminateError(PROVIDER, 'Several Mainfreight jobs carry this number');
+    const job = jobs[0];
+    if (!job) return null;
+    signal.throwIfAborted();
+    const bills = masterBillsOf(await this.#get(MAINFREIGHT_APP_API, signal, left(), {
+      permalink: job.code, reference: job.reference, brand: 'MFT',
+    }), job);
+    if (!bills) throw new IndeterminateError(PROVIDER, 'Mainfreight listed the shipment but did not open it');
+    return bills.includes(number) ? job : null;
   }
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
@@ -54,7 +78,8 @@ export class MainfreightTracker {
       // A request left without time fails as a timeout, which the retry can recover.
       const left = () => Math.max(1, Math.floor(deadline - performance.now()));
       // The page's own search, then the shipment it opens.
-      const listed = searchedShipment(await this.#get(mainfreightSearchUrl(number), signal, left()), number);
+      const search = await this.#get(mainfreightSearchUrl(number), signal, left());
+      const listed = searchedShipment(search, number) ?? await this.#underMasterBill(search, number, signal, left);
       if (listed) {
         signal.throwIfAborted();
         const result = parseMainfreight(await this.#get(mainfreightShipmentUrl(listed), signal, left()), listed, number);

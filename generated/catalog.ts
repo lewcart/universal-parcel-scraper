@@ -9601,7 +9601,14 @@ export const CARRIER_CATALOG = {
         "path": "^/seguimiento_envios/consultar/oidn/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "correo-uruguayo": {
     "displayName": "Correo Uruguayo",
@@ -32502,7 +32509,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "coordinadora": [],
   "copa-courier": ["copa-courier-1"],
   "corre": [],
-  "correo-argentino": [],
+  "correo-argentino": ["correo-argentino-s10"],
   "correo-uruguayo": [],
   "correos-bolivia": [],
   "correos-cuba": [],

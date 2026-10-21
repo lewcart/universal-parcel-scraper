@@ -9599,7 +9599,14 @@
         "path": "^/seguimiento_envios/consultar/oidn/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "correo-uruguayo": {
     "displayName": "Correo Uruguayo",

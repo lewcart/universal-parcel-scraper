@@ -531,6 +531,15 @@
     "reason": "The South African issuer suffix suggests the South African Post Office but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}AR with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "correo-argentino",
+      "intl-post"
+    ],
+    "reason": "The Argentine issuer suffix suggests Correo Argentino but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}BY with a valid S10 check digit",
     "carriers": [
       "belpost",

@@ -97,6 +97,15 @@ describe('S10-shaped numbers', () => {
     expect(recognitionAskedCarriers('CP123456789PL')).not.toContain('poczta-polska');
   });
 
+  it('asks Correo Argentino first about an Argentine-issued number without selecting it', () => {
+    expect(detectCarrierMatch('hc 123 456 785 ar')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionCandidates('hc 123 456 785 ar')).toEqual([
+      { carrier: 'correo-argentino', needsInput: null, preferred: true },
+      { carrier: 'chronopost', needsInput: null, preferred: false },
+    ]);
+    expect(recognitionAskedCarriers('HC123456789AR')).not.toContain('correo-argentino');
+  });
+
   it('asks Australia Post and Ukrposhta first about the numbers they issue without selecting them', () => {
     expect(detectCarrierMatch('rr 123 456 785 au')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     expect(recognitionCandidates('rr 123 456 785 au')).toEqual([

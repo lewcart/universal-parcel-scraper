@@ -58,8 +58,9 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   if (payload.code === 500) throw new IndeterminateError(PROVIDER);
   if (payload.success !== true || payload.code !== 0 || !Array.isArray(payload.result)
     || payload.result.length > 20 || payload.result.some((entry) => !isRecord(entry))) throw new SchemaError(PROVIDER);
-  // SF also answers an empty success envelope for waybills it has scanned.
-  if (!payload.result.length) throw new IndeterminateError(PROVIDER, 'SF Express returned no shipment');
+  // SF also answers an empty success envelope for waybills it has scanned. It answered, so the reason
+  // tells it from an outage.
+  if (!payload.result.length) throw new IndeterminateError(PROVIDER, 'SF Express returned no shipment', { reason: 'portal_not_found' });
   const results = payload.result.filter(isRecord).filter((entry) => entry.id === number);
   if (results.length !== 1) throw new SchemaError(PROVIDER, 'SF Express returned a different or ambiguous shipment');
   const shipment = results[0]!;

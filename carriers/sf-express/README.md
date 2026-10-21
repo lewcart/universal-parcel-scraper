@@ -32,7 +32,8 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
 - There is no reliable not-found. `code: 60000` (`运单路由查询被管控`, query restricted) and captcha
   failures (`code: 1` "captcha verification failure", `70000`) are challenges; synthetic numbers get
   `60000` too. `500` is indeterminate, and so is an empty success envelope: SF sends one for
-  waybills it has scanned too.
+  waybills it has scanned too. The envelope carries the reason `portal_not_found` so a consumer
+  can tell SF's answer from an outage; `500` has no reason.
 - On the capture: 401/403 is a challenge, 404/410 means the endpoint is gone, 429 is rate limited
   (honours `Retry-After`).
 - Exactly one `result` entry must have `id` equal to the number. Sibling references and

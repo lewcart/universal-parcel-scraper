@@ -71,7 +71,8 @@ describe('SF Express public route parsing', () => {
   });
 
   it('keeps an empty success envelope inconclusive', () => {
-    expect(() => parse({ ...fixture, result: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parse({ ...fixture, result: [] }, NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
   });
 
   it('keeps verification failures and server errors distinct from unknown shipments', () => {
@@ -79,7 +80,7 @@ describe('SF Express public route parsing', () => {
       .toThrow(expect.objectContaining({ kind: 'challenge' }));
     expect(() => parse({ code: 70000, result: null }, NUMBER)).toThrow(expect.objectContaining({ kind: 'challenge' }));
     expect(() => parse({ code: 60000, result: null, detailMessage: '运单路由查询被管控' }, NUMBER)).toThrow(expect.objectContaining({ kind: 'challenge' }));
-    expect(() => parse({ code: 500, result: null }, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parse({ code: 500, result: null }, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
     for (const value of [null, [], {}, { ...fixture, success: false }, { ...fixture, result: [null] }]) {
       expect(() => parse(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
     }

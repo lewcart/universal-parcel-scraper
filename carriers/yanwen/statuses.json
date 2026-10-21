@@ -270,6 +270,14 @@
       "note": "Relayed from DPD Poland when the courier takes the parcel, shortly before the delivery scan."
     },
     {
+      "wording": "Your shipment is out for delivery",
+      "language": "en",
+      "stage": "out_for_delivery",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "The partner's delivery round, at the town it delivers in, after its acceptance by the delivery carrier; Yanwen's coded copy of the same scan is its out-for-delivery code."
+    },
+    {
       "wording": "UA.In the New Post Office",
       "language": "en",
       "stage": "ready_for_pickup",

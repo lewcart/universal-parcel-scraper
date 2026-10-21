@@ -46,6 +46,7 @@ const WORDING = new Map<string, ClassifiedStatus>([
   ['Arrived at delivery centre', { status: 'in_transit', stage: 'in_transit' }],
   ['Your shipment has been processed at sorting center and ready for shipping', { status: 'in_transit', stage: 'in_transit' }],
   ['Parcel dispatched to be delivered', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
+  ['Your shipment is out for delivery', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['UA.In the New Post Office', { status: 'out_for_delivery', stage: 'ready_for_pickup' }],
 ]);
 

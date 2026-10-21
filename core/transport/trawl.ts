@@ -296,7 +296,9 @@ export class TrawlClient {
     const { bytes } = await fetchBounded(this.commandUrl(), {
       method: 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cmd: 'request.get', url, maxTimeout: options.timeoutMs }),
+      // TRAWL 1.9 stopped solving a page's embedded form widgets on this API unless asked; earlier
+      // releases ignore the field and solve them anyway.
+      body: JSON.stringify({ cmd: 'request.get', url, maxTimeout: options.timeoutMs, solveEmbeddedCaptchas: true }),
     }, {
       provider: options.provider,
       timeoutMs: options.timeoutMs + TRANSPORT_ALLOWANCE_MS,

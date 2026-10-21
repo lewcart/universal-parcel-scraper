@@ -131,7 +131,7 @@ describe('TrawlClient.scrape', () => {
     await expect(client.solve('https://e.test/page', options)).resolves.toBe('<html>solved</html>');
     const [url, init] = (fetcher as unknown as { mock: { calls: [URL, RequestInit][] } }).mock.calls[0]!;
     expect(url.toString()).toBe('http://trawl:8191/v1');
-    expect(JSON.parse(String(init.body))).toEqual({ cmd: 'request.get', url: 'https://e.test/page', maxTimeout: 1_000 });
+    expect(JSON.parse(String(init.body))).toEqual({ cmd: 'request.get', url: 'https://e.test/page', maxTimeout: 1_000, solveEmbeddedCaptchas: true });
     await expect(new TrawlClient('http://trawl:8191', jsonFetcher({ status: 'error' })).solve('https://e.test', options)).rejects.toBeInstanceOf(TrawlError);
   });
 });

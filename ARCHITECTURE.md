@@ -163,7 +163,10 @@ caller. It and `UniversalTracker` hand adapters and providers the normalized num
 `createTracker()` does: a number stored as typed, with a letter O for a zero in an S10 serial,
 reaches them corrected. An adapter with `recordsSteps` reports its own lookup, so dispatch
 does not wrap its telemetry a second time. `CarrierError.reason` separates expected details,
-such as Amazon Shipping's expired history, from transport failures.
+such as Amazon Shipping's expired history, from transport failures. An inconclusive error
+for the carrier's own answer that it holds no history under the number, an empty result or
+not-found notice, carries `portal_not_found`, so a consumer can tell that answer from an
+outage; it does not make the parcel absent.
 
 USPS barcode validation shares the carrier adapter's whole-identifier checks. A routing
 barcode is `420`, the recipient's five- or nine-digit ZIP code and a 22- or 26-digit package

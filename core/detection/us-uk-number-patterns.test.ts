@@ -267,10 +267,11 @@ it('names UniUni for Canadian cross-border shipper references marked U and only 
   for (const number of ['GV00CAA0U000000001', 'JY00CAA0U000000001']) {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'uniuni', confidence: 'high' });
   }
-  for (const number of ['JY00CAA0D000000001', 'JY00CAA0T000000001', 'GV00USA0U000000001']) {
+  for (const number of ['JY00CAA0D000000001', 'JY00CAA0T000000001', 'GV00USA0U000000001', 'JY00CA00A000000001']) {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['uniuni'] });
   }
-  for (const number of ['GV00CAA1U000000001', 'GV00CAA0U00000001', 'G100CAA0U000000001', 'GV00CAA0U0000000001', 'GV00UKA0U000000001']) {
+  for (const number of ['GV00CAA1U000000001', 'GV00CAA0U00000001', 'G100CAA0U000000001', 'GV00CAA0U0000000001', 'GV00UKA0U000000001',
+    'JY00CA00A00000001', 'JY00CA00B000000001', 'JY00US00A000000001', 'GV00CA00A000000001']) {
     expect(detectCarrierMatch(number).candidates).not.toContain('uniuni');
   }
 });

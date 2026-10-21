@@ -76039,6 +76039,17 @@
     ]
   },
   {
+    "input": "JY00CA00A000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "uniuni"
+    ],
+    "asked": [
+      "uniuni"
+    ]
+  },
+  {
     "input": "JY1276193661",
     "carrier": "j-and-t",
     "confidence": "high",

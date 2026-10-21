@@ -40,7 +40,9 @@ Cross-border shippers' references of two letters, two digits, `CAA0`, a letter
 and nine digits only suggest UniUni: Intelcom's tracker accepts them too. Detection
 names UniUni when that letter is `U`: every public one is on UniUni's tracker and
 unknown to Intelcom's. Those for the United States carry `USA0` instead; no public
-sample shows one, but UniUni's tracker follows them.
+sample shows one, but UniUni's tracker follows them. The `JY` shipper also writes
+`JY`, two digits, `CA`, two digits, `A` and nine digits; UniUni's tracker follows
+those, and they only suggest UniUni.
 Recognition looks them up at UniUni, whose tracker lists a reference it does not
 know as invalid.
 

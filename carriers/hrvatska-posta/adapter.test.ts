@@ -130,6 +130,13 @@ describe('Hrvatska pošta tracking adapter', () => {
     expect(result.events![0]!.time).toBeUndefined();
   });
 
+  it('stages the destination\'s relayed customs scans by the map', () => {
+    for (const [wording, stage] of [['Item sent to Customs', 'customs'], ['Item returned from Customs', 'in_transit']] as const) {
+      const result = parseHrvatskaPosta(page('locker').replace('>Item delivered<', `>${wording}<`), LOCKER);
+      expect(result, wording).toMatchObject({ current_stage: stage, current_stage_source: 'carrier_map' });
+    }
+  });
+
   it('stages new wording through the shared rules and keeps the rest visible without a stage', () => {
     const shared = parseHrvatskaPosta(page('locker').replace('>Item delivered<', '>Item held by customs<'), LOCKER);
     expect(shared).toMatchObject({ current_stage: 'customs' });

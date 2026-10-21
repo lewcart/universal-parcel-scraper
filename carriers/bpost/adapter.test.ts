@@ -127,6 +127,19 @@ describe('bpost direct history', () => {
     for (const wording of ['__proto__', 'constructor', 'Delivery expected']) expect(classifyBpostStatus(wording)).toBeUndefined();
   });
 
+  it('names the locker bpost leaves as a placeholder in its wording, as its tracker does', () => {
+    const locker = payload(); locker.items[0].events.shift();
+    locker.items[0].events.shift();
+    locker.items[0].events[0].key.EN.description = "Item on it's way to {{bboxRebrand}}";
+    locker.items[0].bboxRebrandCategory = 'bbox';
+    expect(parseBpost(locker, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit',
+      last_status_text: "Item on it's way to bbox locker" });
+    locker.items[0].bboxRebrandCategory = 'parcelLocker';
+    expect(parseBpost(locker, NUMBER).events?.[0]).toMatchObject({ description: "Item on it's way to Parcel Locker", stage: 'in_transit' });
+    delete locker.items[0].bboxRebrandCategory;
+    expect(parseBpost(locker, NUMBER).events?.[0]).toMatchObject({ description: "Item on it's way to parcel locker", stage: 'in_transit' });
+  });
+
   it('keeps the pickup point after collection there, never after a door delivery or in transit', () => {
     for (const step of ['PICKED_UP_IN_POST_POINT', 'PICKED_UP_IN_KARIBOO_POINT', 'PICKED_UP_IN_PARCEL_LOCKER',
       'PICKED_UP_IN_SHOP', 'PICKED_UP_IN_PICKUP_POINT_INTERNATIONAL']) {

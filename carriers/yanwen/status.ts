@@ -38,6 +38,12 @@ const WORDING = new Map<string, ClassifiedStatus>([
   ['Accepted at USPS Origin Facility', { status: 'in_transit', stage: 'in_transit' }],
   ['Your shipment has been accepted by delivery carrier', { status: 'in_transit', stage: 'in_transit' }],
   ['Your shipment has arrived at sorting center', { status: 'in_transit', stage: 'in_transit' }],
+  // A partner's manifest as the parcel leaves Yanwen's facility, then the destination leg's
+  // release from customs, intake and arrival at the delivery office.
+  ['Manifest created', { status: 'in_transit', stage: 'in_transit' }],
+  ['Out customs authorities', { status: 'in_transit', stage: 'in_transit' }],
+  ['Handled by local carrier', { status: 'in_transit', stage: 'in_transit' }],
+  ['Arrived at delivery centre', { status: 'in_transit', stage: 'in_transit' }],
   ['Your shipment has been processed at sorting center and ready for shipping', { status: 'in_transit', stage: 'in_transit' }],
   ['Parcel dispatched to be delivered', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['UA.In the New Post Office', { status: 'out_for_delivery', stage: 'ready_for_pickup' }],

@@ -64,6 +64,16 @@ function deliveredInBelgium(value: unknown): string {
 }
 
 /**
+ * The locker brands bpost's tracker puts in place of a scan's `{{bboxRebrand}}`, by the item's
+ * `bboxRebrandCategory`, in its English translations. An unknown brand reads as a parcel locker.
+ */
+const LOCKER_BRANDS: Readonly<Record<string, string>> = { parcelLocker: 'Parcel Locker', bbox: 'bbox locker' };
+
+function lockerBrand(category: unknown): string {
+  return typeof category === 'string' && Object.hasOwn(LOCKER_BRANDS, category) ? LOCKER_BRANDS[category]! : 'parcel locker';
+}
+
+/**
  * A scan's wall clock on Brussels time, or '' for one the change to summer time skips. bpost
  * dates its scans in Belgium on Belgian time: its reply also carries the item's creation as an
  * instant, and that is the pre-advice scan's clock read on Brussels time.
@@ -98,7 +108,7 @@ export function parseBpost(payload: unknown, number: string): CarrierResult {
   for (const raw of item.events) {
     if (!isRecord(raw)) throw new SchemaError('bpost', 'bpost returned an incomplete scan');
     const key = isRecord(raw.key) && isRecord(raw.key.EN) ? raw.key.EN : null;
-    const description = clean(key?.description, 500);
+    const description = clean(key?.description, 500).replaceAll('{{bboxRebrand}}', lockerBrand(item.bboxRebrandCategory));
     const date = clean(raw.date, 32);
     const clock = clean(raw.time, 16);
     const text = [date, clock].filter(Boolean).join(' ');

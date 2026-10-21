@@ -16,6 +16,22 @@
       "firstSeen": "2026-09-28"
     },
     {
+      "wording": "Item on it's way to bbox locker",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "bpost sends {{bboxRebrand}} for the locker; its tracker puts the name of the item's bboxRebrandCategory there, from its translations, and so does the parser. A parcel on its way to a locker, before it is available there."
+    },
+    {
+      "wording": "Item on it's way to Parcel Locker",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "source",
+      "firstSeen": "2026-10-21",
+      "note": "The same scan for the parcelLocker category, named from bpost's tracker translations."
+    },
+    {
       "wording": "The postman's delivery round for your item has started",
       "language": "en",
       "stage": "out_for_delivery",

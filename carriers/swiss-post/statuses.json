@@ -492,6 +492,15 @@
       "firstSeen": "2026-09-12"
     },
     {
+      "code": "3700",
+      "wording": "The recipient has refused delivery",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "A refusal, not the return: sending it back comes as its own scan, and the shipment summary then reads RETURNED."
+    },
+    {
       "code": "3800",
       "wording": "Delivered to the mailbox/letter box",
       "language": "en",

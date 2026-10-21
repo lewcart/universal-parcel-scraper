@@ -95,6 +95,8 @@ export const EVENT_STAGE_BY_CODE: Record<string, Stage> = {
   '2101': 'ready_for_pickup',
   '2102': 'ready_for_pickup',
   '3600': 'returned',
+  // The recipient's refusal. Sending the item back is a later scan of its own.
+  '3700': 'exception',
   '3800': 'delivered',
   '4000': 'delivered',
   '4001': 'delivered',

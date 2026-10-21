@@ -46,6 +46,7 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   // Overall statuses.
   ['created', 'registered'],
   ['received', 'accepted'],
+  ['departed', 'in_transit'],
   ['departed origin', 'in_transit'],
   ['arrived at final discharge port', 'in_transit'],
   ['final delivery', 'delivered'],

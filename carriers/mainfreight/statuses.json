@@ -40,6 +40,7 @@
     {"wording": "Final Pick Up (Empty to Customer)", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Container job: the last leg, before its delivery."},
     {"wording": "Final Delivery (Empty to Customer)", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Container job: the last leg's delivery."},
     {"wording": "Created", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "Overall status of a shipment without a milestone yet."},
+    {"wording": "Departed", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Overall status of an air or ocean job after its departure from the first load port."},
     {"wording": "Departed Origin", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Overall status of an air or ocean job."},
     {"wording": "Arrived at Final Discharge Port", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Overall status of an air or ocean job."},
     {"wording": "Final Delivery", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Overall status of a delivered container job."}

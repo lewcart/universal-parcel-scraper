@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { dpdParcelNumber, isValidDpdParcelNumber } from '../../core/detection/dpd.js';
-import { isValidS10TrackingNumber } from '../../core/detection/index.js';
+import { isAnotherPostItemAtChronopost } from '../../core/detection/chronopost.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
@@ -14,18 +14,6 @@ export const CHRONOPOST_MAX_BYTES = 2_000_000;
 const SOAP = 'http://schemas.xmlsoap.org/soap/envelope/';
 export const CHRONOPOST_NAMESPACE = 'http://cxf.tracking.soap.chronopost.fr/';
 const MAX_EVENTS = 500;
-// Chronopost's own postal-shaped codes: its dedicated prefixes, and suffixes
-// that name one of its services rather than a country.
-const OWN_CODE = /^(?:PZ|XR|XT|XU|XW|XY)|(?:JB|JF|TS|RV|VF)$/;
-
-/**
- * Another post's letter or parcel item, which La Poste delivers in France and
- * its overseas departments; Chronopost delivers only the EMS items among them
- * and may scan the others in one of its hubs on the way.
- */
-function laPosteDelivers(number: string): boolean {
-  return isValidS10TrackingNumber(number) && !number.endsWith('FR') && !number.startsWith('E') && !OWN_CODE.test(number);
-}
 
 export function normalizeChronopostNumber(raw: string): string {
   const value = raw.toUpperCase().replace(/[\s.-]/g, '');
@@ -257,7 +245,7 @@ export function parseChronopostTrackingXml(xml: string, rawNumber: string): Carr
     ...(stage === 'delivered' && deliveredAt ? { delivered_at: deliveredAt } : {}),
     ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
     ...(reference ? { delivery_tracking_number: reference } : {}),
-    ...(partner ? { delivery_carrier: partner } : !reference && laPosteDelivers(requested) ? { delivery_carrier: 'la-poste' } : {}),
+    ...(partner ? { delivery_carrier: partner } : !reference && isAnotherPostItemAtChronopost(requested) ? { delivery_carrier: 'la-poste' } : {}),
     ...(destination ? { destination_country: destination } : {}),
     events,
   };

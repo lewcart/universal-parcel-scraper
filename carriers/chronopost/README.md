@@ -38,7 +38,9 @@ Chronopost also answers for other posts' letter and parcel items that pass
 through one of its hubs, often with that single scan. La Poste delivers those
 in France and its overseas departments and holds their whole history, so such
 an item names La Poste as its delivery carrier. EMS items, French items and
-Chronopost's own codes do not: Chronopost delivers inbound EMS itself.
+Chronopost's own codes do not: Chronopost delivers inbound EMS itself. Nor is
+the destination's post proposed for them, though their shape passes the S10
+check: La Poste's feed relays Chronopost's scans and would take the parcel over.
 
 A scan's location is its office, or the depot Chronopost names for a partner's
 scan abroad. Office labels that name a service rather than a place give none:

@@ -107,6 +107,15 @@ describe('general delivery handoff candidates', () => {
     for (const hint of ['DE', null]) expect(deliveryHandoff('dhl', 'UL123456785DE', unscanned, hint), String(hint)).toBeNull();
   });
 
+  it('leaves Chronopost the codes, French items and EMS it delivers itself', () => {
+    for (const number of ['XW123456785TS', 'NP123456785JB', 'XY123456785DE', 'CW123456785FR', 'EE123456785CN']) {
+      expect(deliveryHandoff('chronopost', number, { destination_country: 'FR' }, 'FR'), number).toBeNull();
+      expect(deliveryHandoff('chronopost', number, {}, 'FR'), number).toBeNull();
+    }
+    expect(deliveryHandoff('chronopost', 'RR123456785TW', { destination_country: 'FI' }))
+      .toEqual({ carrier: 'posti', number: 'RR123456785TW', basis: 'destination' });
+  });
+
   it('uses the destination instead of treating a postal reference’s issuer as its delivery operator', () => {
     expect(deliveryHandoff('aliexpress', 'LP00000000000001', {
       destination_country_name: 'Finland', delivery_tracking_number: 'RA123456785CH',

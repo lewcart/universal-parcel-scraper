@@ -5,6 +5,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 import { carrierIdsFromPartnerLinks, nationalPostCandidate } from './hints.js';
 import { followsPartnerNumbers } from './partners.js';
 import { detectCarrierMatch, isValidS10TrackingNumber, supportsSwissPostHandoff } from '../detection/index.js';
+import { isAnotherPostItemAtChronopost } from '../detection/chronopost.js';
 import { isPosteItalianeLookup } from '../detection/posteItaliane.js';
 import { countryCode } from '../time/index.js';
 
@@ -51,8 +52,10 @@ export function deliveryHandoff(carrier: string, number: string, result: Carrier
   // S10 binds the postal identity across borders. Its issuer suffix does not
   // identify the destination operator; try that country's post only when no
   // partner is named, and let the shared progress/freshness checks confirm it.
-  // Japan Post does not track `U`-prefixed customs labels.
-  if (!target && isValidS10TrackingNumber(reference)) {
+  // Japan Post does not track `U`-prefixed customs labels. Chronopost names
+  // La Poste itself for the other posts' items it scans; it delivers the rest.
+  if (!target && isValidS10TrackingNumber(reference)
+    && (carrier !== 'chronopost' || isAnotherPostItemAtChronopost(reference))) {
     // Origins such as An Post name no destination. The recipient of an item
     // from abroad is likely the one looking it up; in the issuer's own
     // country it is more likely the sender.

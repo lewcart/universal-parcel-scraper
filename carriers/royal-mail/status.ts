@@ -44,6 +44,12 @@ const EVENT_STAGES = new Map<string, Stage>([
   ['EVBAH', 'in_transit'],
   ['EVJOE', 'in_transit'],
   ['EVJDU', 'in_transit'],
+  // The release ends the customs stage, as the summary category "Released from customs" does.
+  ['EVJIA', 'in_transit'],
+  // After a missed delivery: the redelivery round comes as its own scan, and the item kept at a
+  // Customer Service Point waits for its recipient, who can also book a redelivery.
+  ['EVNAR', 'failed_attempt'],
+  ['EVNDA', 'ready_for_pickup'],
   ['EVCAD', 'accepted'],
   ['EVPPA', 'accepted'],
   ['LOPPA', 'accepted'],

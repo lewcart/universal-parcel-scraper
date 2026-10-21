@@ -155,6 +155,21 @@ describe('Royal Mail structured response', () => {
     expect(JSON.stringify(result)).not.toContain('**');
   });
 
+  it('places a customs release and the redelivery after a missed delivery by their codes', () => {
+    const result = parseRoyalMailTrackingResponse({ mailPieces: {
+      mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: 'In transit' },
+      events: [
+        { eventCode: 'EVNDA', eventName: '**Available for Redelivery or Collection**', eventDateTime: '2026-10-16T12:10:00+01:00', locationName: 'Example CSP' },
+        { eventCode: 'EVGPD', eventName: '**Due to be delivered today by**', eventDateTime: '2026-10-15T07:02:16+01:00' },
+        { eventCode: 'EVNAR', eventName: '**Due for Redelivery the Next Working Day**', eventDateTime: '2026-10-15T06:40:00+01:00', locationName: 'Example DO' },
+        { eventCode: 'EVJIA', eventName: '**Released from Customs**', eventDateTime: '2026-10-12T20:46:17+01:00' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(result.events?.map(event => event.stage)).toEqual(['ready_for_pickup', 'out_for_delivery', 'failed_attempt', 'in_transit']);
+    expect(result.events?.every(event => event.stage_source === 'carrier_map')).toBe(true);
+  });
+
   it('places an international journey by its codes and names the destination', () => {
     const result = parseRoyalMailTrackingResponse({ mailPieces: {
       mailPieceId: DELIVERED_NUMBER,

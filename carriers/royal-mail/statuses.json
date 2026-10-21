@@ -284,6 +284,33 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-12",
       "note": "Departure from the destination country's office of exchange."
+    },
+    {
+      "code": "EVJIA",
+      "wording": "Released from Customs",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "The release ends the customs stage, as the summary category of the same name does; the shared customs term alone would keep it in customs."
+    },
+    {
+      "code": "EVNAR",
+      "wording": "Due for Redelivery the Next Working Day",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "The morning after a missed delivery; the redelivery round comes as its own out-for-delivery scan."
+    },
+    {
+      "code": "EVNDA",
+      "wording": "Available for Redelivery or Collection",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Kept at a Customer Service Point after missed deliveries, for the recipient to collect or book a redelivery."
     }
   ]
 }

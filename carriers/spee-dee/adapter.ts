@@ -1,10 +1,11 @@
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
-import { SchemaError, TransportError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
+import { RateLimitedError, SchemaError, TransportError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
+import { isRecord } from '../../core/types.js';
 import { normalizeSpeeDeeNumber, parseSpeeDee } from './parser.js';
 
 const PROVIDER = 'Spee-Dee';
@@ -20,9 +21,22 @@ const REDIRECTS = [301, 302, 303, 307, 308];
 // A connection dropped or refused.
 const UNANSWERED_CODES = new Set(['UND_ERR_CONNECT_TIMEOUT', 'ECONNREFUSED', 'ETIMEDOUT', 'EHOSTUNREACH']);
 const UNANSWERED = 'unanswered';
+// Over its per-minute search limit the host answers 503 with a Retry-After and
+// says so. Any other 503 is the host's own unavailability.
+const SEARCH_LIMIT = /\blimited to \d+ search requests per minute\b/i;
 
 export function speeDeeProgressUrl(raw: string): string {
   return `${PROGRESS}?${new URLSearchParams({ v: 'detail', barcode: normalizeSpeeDeeNumber(raw) })}`;
+}
+
+/** The search limit a 503 page states, else the 503 itself. */
+function unavailable(page: string, retryAfter: unknown): Error {
+  const header = typeof retryAfter === 'string' ? retryAfter.trim() : '';
+  const delay = /^\d+$/.test(header) ? Number(header) * 1_000 : Date.parse(header) - Date.now();
+  const retryAfterMs = Number.isFinite(delay) ? Math.max(0, delay) : undefined;
+  return SEARCH_LIMIT.test(page)
+    ? new RateLimitedError(PROVIDER, retryAfterMs, 'Spee-Dee limits searches per minute')
+    : new UpstreamHttpError(PROVIDER, 503, retryAfterMs);
 }
 
 /**
@@ -67,7 +81,7 @@ export class SpeeDeeTracker {
         fetched = await fetchBounded(speeDeeProgressUrl(number), { signal, headers: {
           'User-Agent': userAgentOf(this.options.userAgent), Accept: 'text/html',
         } }, { provider: PROVIDER, timeoutMs: Math.max(1, Math.min(REQUEST_TIMEOUT_MS, Math.floor(remainingMs))),
-          maxBytes: MAX_BYTES, redirect: 'manual', allowHttpStatuses: REDIRECTS, fetcher });
+          maxBytes: MAX_BYTES, redirect: 'manual', allowHttpStatuses: [...REDIRECTS, 503], fetcher });
       } catch (error) {
         if (signal.aborted) throw error;
         // A missing page or a host that does not answer says nothing about the package.
@@ -81,6 +95,9 @@ export class SpeeDeeTracker {
         throw error;
       }
       if (REDIRECTS.includes(fetched.response.status)) throw new SchemaError(PROVIDER, 'Spee-Dee tracking page moved');
+      if (fetched.response.status === 503) {
+        throw unavailable(decodeText(fetched.bytes), fetched.response.headers.get('retry-after'));
+      }
       return parseSpeeDee(decodeText(fetched.bytes), number);
     } }, {
       id: 'trawl', enabled: Boolean(this.options.trawl), recovers: speeDeeUnanswered,
@@ -93,13 +110,17 @@ export class SpeeDeeTracker {
           reply = await this.options.trawl!.scrape({ url, maxTier: 1, maxTimeout: timeoutMs }, {
             provider: PROVIDER, timeoutMs, signal: AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]),
             fetcher: this.options.fetcher,
-            maxBytes: 4_000_000, requireSolved: false,
+            maxBytes: 4_000_000, requireSolved: false, allowHttpStatuses: [503],
           });
         } catch (error) {
           if (error instanceof UpstreamHttpError && [404, 410].includes(error.status)) {
             throw new TransportError(PROVIDER, 'Spee-Dee remote tracking page is unavailable', { cause: error });
           }
           throw error;
+        }
+        if (reply.statusCode === 503 && reply.tier === 1) {
+          const headers = isRecord(reply.raw.responseHeaders) ? reply.raw.responseHeaders : {};
+          throw unavailable(reply.html, Object.entries(headers).find(([key]) => key.toLowerCase() === 'retry-after')?.[1]);
         }
         if (reply.url !== url || reply.statusCode !== 200 || reply.tier !== 1) {
           throw new SchemaError(PROVIDER, 'Spee-Dee remote tracking page changed');

@@ -54,7 +54,12 @@ each have a 10-second cap.
   That is a transport failure, never not found, whose message says the host refuses some
   networks; either the caller or its TRAWL service needs a network the host accepts.
   A failed name lookup, a bad certificate, or a reply that starts and then breaks or
-  stalls is a plain transport failure.
+  stalls is a plain transport failure. The refusal follows the network, not the client:
+  where the host answers, TRAWL's HTTP tier gets the same page with or without its
+  browser-like TLS profile.
+- The host allows a few searches per minute from one address and then answers 503 with a
+  `Retry-After` and a sentence saying so. That page is a rate limit, through TRAWL too; any
+  other 503 is maintenance.
 - An earlier shipment that did not end in a delivery cannot be told apart from the current
   one, and any scan after a delivery is read as the start of a new shipment.
 - A barcode reused for a new shipment that has no scans yet is answered with the previous

@@ -64,6 +64,8 @@ export interface TrawlCallOptions {
   requireSolved?: boolean;
   /** Which bounded capture window to retain. Defaults to the first 50 responses. */
   captureWindow?: 'first' | 'last';
+  /** Page statuses to return with their page instead of raising, for a caller that reads the page. */
+  allowHttpStatuses?: readonly number[];
 }
 
 export class TrawlError extends CarrierError {
@@ -270,7 +272,7 @@ export class TrawlClient {
       throw new TrawlError(options.provider, cleanScalar(value.error, 200) || 'The browser service could not fetch the page');
     }
     const statusCode = Number(value.statusCode);
-    if (Number.isInteger(statusCode) && statusCode >= 400) {
+    if (Number.isInteger(statusCode) && statusCode >= 400 && !options.allowHttpStatuses?.includes(statusCode)) {
       throw pageHttpError(options.provider, statusCode, value.responseHeaders);
     }
     const tier = Number(value.tier);

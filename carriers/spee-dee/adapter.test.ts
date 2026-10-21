@@ -94,6 +94,15 @@ describe('Spee-Dee adapter', () => {
     await expect(adapter(environment(fetcher)).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 120_000 });
   });
 
+  it('reads the host\'s per-minute search limit as a rate limit, never as an outage', async () => {
+    const limit = 'Searching via Spee Dee Delivery\'s website is limited to 10 search requests per minute.';
+    const fetcher = vi.fn<typeof fetch>(async () => html(limit, { status: 503, headers: { 'Retry-After': '60' } }));
+    await expect(adapter(environment(fetcher)).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 60_000 });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const down = vi.fn<typeof fetch>(async () => html('Service Temporarily Unavailable', { status: 503, headers: { 'Retry-After': '60' } }));
+    await expect(adapter(environment(down)).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'maintenance', retryAfterMs: 60_000 });
+  });
+
   it('does not follow a redirect away from the progress page', async () => {
     const fetcher = vi.fn<typeof fetch>(async () => new Response(null, { status: 301, headers: { Location: '/elsewhere.php' } }));
     await expect(adapter(environment(fetcher)).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'schema' });
@@ -258,6 +267,13 @@ describe('Spee-Dee remote network recovery', () => {
       expect(fetcher).toHaveBeenCalledTimes(2);
     },
   );
+
+  it('reads the search limit the service relays as a rate limit', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValueOnce(refused()).mockResolvedValueOnce(reply(
+      'Searching via Spee Dee Delivery\'s website is limited to 10 search requests per minute.',
+      { statusCode: 503, responseHeaders: { 'retry-after': '60' } }));
+    await expect(setup(fetcher).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 60_000 });
+  });
 
   it('caps waiting for the service even when the caller has a larger budget', async () => {
     const fetcher = vi.fn<typeof fetch>().mockRejectedValueOnce(refused()).mockImplementationOnce((_url, init) =>

@@ -260,8 +260,11 @@ const CAINIAO_LAST_MILE = [
  * EMS's scans at the destination's office of exchange, from its arrival to its
  * departure, are on the destination's clock, as its origin leg is on the
  * origin's (`POSTAL_ORIGIN_LEG`): on a parcel from the UK to South Africa they
- * had the digits of the South African post's own copies. Borrowed from the
- * origin's scans before them, they came an hour late.
+ * had the digits of the South African post's own copies, and its unplaced
+ * "Held for customs inspection" those of UPU's "Held by customs" at the
+ * Johannesburg office. Borrowed from the origin's scans before them, they came
+ * an hour late. Its hold at that office ("Held at destination import office")
+ * is the same office's scan.
  *
  * FIRST LINE's ("1ST") scans from its arrival at the destination airport are
  * on the destination's clock, as its partner's scans after them are (see
@@ -314,8 +317,8 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
       'departed from destination facility']), zone: DESTINATION },
   ]],
   ['ems', [
-    { wording: wordings(['arrived at destination import office', 'presented to import customs', 'released from import customs',
-      'departed from destination import office']), zone: DESTINATION },
+    { wording: wordings(['arrived at destination import office', 'held at destination import office', 'held for customs inspection',
+      'presented to import customs', 'released from import customs', 'departed from destination import office']), zone: DESTINATION },
   ]],
   ['ecoscooting', [
     { wording: /^(?:shipment data information received|shipment has left cainiao express's partner facility|shipment is in transit to cainiao express)$/i,

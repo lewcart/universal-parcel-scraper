@@ -266,11 +266,12 @@ step exists for future protocol changes.
   were dated up to six hours after ParcelsApp first returned them, and come before that
   moment only on China's clock; the scans in Colombia matched Cainiao's import customs to
   the minute. EMS dates its scans at the destination's office of exchange ("Arrived at
-  destination import office" to "Departed from destination import office", import
-  customs between) on the destination's clock, as it dates its origin leg on the
+  destination import office" to "Departed from destination import office", its holds and
+  import customs between) on the destination's clock, as it dates its origin leg on the
   origin's: on a parcel from the UK to South Africa they have the digits of the South
-  African post's own copies. Borrowed from the British scans before them, they came an
-  hour late. FIRST LINE ("1ST") dates its scans in China and Hong Kong, and its order data
+  African post's own copies, and its unplaced "Held for customs inspection" those of
+  UPU's "Held by customs" at the Johannesburg office. Borrowed from the British scans
+  before them, they came an hour late. FIRST LINE ("1ST") dates its scans in China and Hong Kong, and its order data
   with no place, on Beijing's clock, as 17TRACK's copies do. Its scans abroad are its
   delivery partner's, on their facility's clock, and from "Arrived at Destination Airport"
   they are in the destination: on a parcel to California, its copies of GOFO's scans had

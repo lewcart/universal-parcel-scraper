@@ -73,8 +73,10 @@ export function parseCorreosChileTracking(payload: unknown, raw: string): Carrie
   if (payload.error === true) {
     if (payload.maxLimit === true) throw new RateLimitedError('Correos de Chile');
     // The same reply covers an unknown reference and a previously valid
-    // shipment whose history is no longer available.
-    throw new IndeterminateError('Correos de Chile', 'Tracking lookup returned no usable shipment history');
+    // shipment whose history is no longer available. Its not-found notice
+    // carries a reason that tells that answer from an outage.
+    throw new IndeterminateError('Correos de Chile', 'Tracking lookup returned no usable shipment history',
+      /no encontrad/i.test(clean(payload.descripcion, 200)) ? { reason: 'portal_not_found' } : {});
   }
   if (payload.error !== false || typeof payload.seguimiento !== 'string' || payload.seguimiento.length > 250_000) {
     throw new SchemaError('Correos de Chile', 'Tracking response has no shipment detail');

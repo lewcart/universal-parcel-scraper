@@ -71,9 +71,9 @@ describe('J&T Cargo parser', () => {
     expect(() => parseJntCargo(value, MASTER)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
-  it.each([null, []])('keeps a bound placeholder or empty history inconclusive (%j)', details => {
+  it.each([[null, 'portal_not_found'], [[], undefined]])('keeps a bound placeholder or empty history inconclusive (%j)', (details, reason) => {
     const value = payload('unknown.json'); value.data[0]!.details = details;
-    expect(() => parseJntCargo(value, MASTER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseJntCargo(value, MASTER)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason }));
   });
 
   it('keeps generic empty and failed replies inconclusive, while malformed schema is rejected', () => {

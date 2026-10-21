@@ -32,7 +32,9 @@ the scan location, including departures; upload clocks are not scan clocks.
 
 An unknown waybill returns an echoed identifier with null shipment fields inside a
 success envelope. That placeholder remains inconclusive, as does a history without
-scans. HTTP endpoint failures and verification responses are never parcel absence.
+scans. The placeholder carries the reason `portal_not_found`, so a consumer can tell
+J&T Cargo's answer from an outage. HTTP endpoint failures and verification responses
+are never parcel absence.
 
 ## Testing
 

@@ -18,6 +18,8 @@ evidence rather than invented instants. Future progress-rail markers, customer
 details, delivery names, identity numbers, notices and the branch directory are
 excluded. Free-form status text is replaced with a neutral update. A missing
 shipment response may also mean its history expired, so it remains inconclusive.
+Its not-found notice carries the reason `portal_not_found`, so a consumer can
+tell the carrier's answer from an outage.
 
 The page can return a browser challenge instead of an anonymous session, or
 redirect to Radware's bot check; both are reported as challenges. Servers abroad

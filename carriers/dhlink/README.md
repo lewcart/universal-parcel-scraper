@@ -24,7 +24,8 @@ page makes.
 - The parcel counts only when the number asked is its tracking number or its DHLink number:
   the search can find a parcel by its other numbers.
 - An empty parcel with state 1 is the unknown-number answer. For a DHLink number or a last
-  leg's number in the partner table it is inconclusive, since the search gives it for parcels it has too. A
+  leg's number in the partner table it is inconclusive, since the search gives it for parcels it has too. It
+  then carries the reason `portal_not_found`, so a consumer can tell DHLink's answer from an outage. A
   refusal in the envelope, or a parcel without rows, is inconclusive.
 - DHLink's firewall answers clients it refuses, such as a headless browser's User-Agent, with a
   block page and HTTP 403, on the page and the lookup alike. A block is a challenge, never a

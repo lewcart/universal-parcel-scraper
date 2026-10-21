@@ -40,15 +40,16 @@ export function parseCanpar(payload: unknown, rawNumber: string): CarrierResult 
   const packages = Array.isArray(payload.result) ? payload.result
     : isRecord(payload.result) ? payload.result.packages : null;
   if (!Array.isArray(packages) || packages.length > 25 || !packages.every(isRecord)) throw new SchemaError('Canpar');
-  if (!packages.length) throw new IndeterminateError('Canpar', 'Canpar returned no parcel history');
+  if (!packages.length) throw new IndeterminateError('Canpar', 'Canpar returned no parcel history', { reason: 'portal_not_found' });
   if (packages.length !== 1 || packages[0]!.barcode !== number) {
     throw new SchemaError('Canpar', 'Canpar did not identify one matching parcel');
   }
   const item = packages[0]!;
   if (!Array.isArray(item.events) || item.events.length > 500) throw new SchemaError('Canpar');
   // Unknown barcodes can return an identity-shaped empty package. Its status
-  // and delivered flag establish neither a registered parcel nor absence.
-  if (!item.events.length) throw new IndeterminateError('Canpar', 'Canpar returned no parcel history');
+  // and delivered flag establish neither a registered parcel nor absence. Canpar
+  // answered, so the reason tells it from an outage.
+  if (!item.events.length) throw new IndeterminateError('Canpar', 'Canpar returned no parcel history', { reason: 'portal_not_found' });
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
   // The official widget displays this newest-first sequence without sorting.

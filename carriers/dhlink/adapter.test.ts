@@ -236,7 +236,7 @@ describe('DHLink HTTP adapter', () => {
   it('keeps an unknown number, a refused lookup, a parcel without scans and a firewall block apart', async () => {
     const lookup = (body: unknown, number = UNKNOWN, init?: ResponseInit) => carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(body, init))).track({ number });
     await expect(lookup(fixture('not-found'))).rejects.toMatchObject({ kind: 'not_found' });
-    await expect(lookup({ ...fixture('not-found'), code: 500, msg: '系统繁忙' })).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(lookup({ ...fixture('not-found'), code: 500, msg: '系统繁忙' })).rejects.toMatchObject({ kind: 'indeterminate', reason: undefined });
     await expect(lookup(changed('swiftx-at-warehouse', (parcel) => { parcel.trackinfoList = null as never; }), WAREHOUSE)).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(lookup(changed('swiftx-at-warehouse', (parcel) => { parcel.trackinfoList = []; }), WAREHOUSE)).rejects.toMatchObject({ kind: 'indeterminate' });
     // The firewall refuses a headless browser's User-Agent with its page and HTTP 403.
@@ -253,7 +253,7 @@ describe('DHLink HTTP adapter', () => {
     // tracking number, and the last leg's number always.
     for (const number of ['FC9900000000009', 'SWX990000000000000009', 'GFUS99000000000009']) {
       const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(fixture('not-found')));
-      await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'indeterminate' });
+      await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
       await expect(carrier(fetcher).recognize!(number), number).rejects.toMatchObject({ kind: 'indeterminate' });
       expect(fetcher).toHaveBeenCalledTimes(2);
     }

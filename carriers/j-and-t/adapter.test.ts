@@ -161,10 +161,10 @@ describe('J&T Indonesia router reply', () => {
       expect(() => parseJnt(empty, number)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     }
     for (const number of ['JA0000000001', 'JT0000000001', 'JT0000000000001', '100000000001']) {
-      expect(() => parseJnt(empty, number)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+      expect(() => parseJnt(empty, number)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
     }
     expect(() => parseJnt(edited((payload) => { payload.data.bills[0]!.details = []; }), NUMBER))
-      .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
   });
 
   it.each([

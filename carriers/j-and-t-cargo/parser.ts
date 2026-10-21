@@ -70,9 +70,11 @@ export function parseJntCargo(payload: unknown, rawNumber: string): CarrierResul
   const bill: unknown = payload.data[0];
   if (!isRecord(bill) || bill.keyword !== number) invalid('J&T Cargo returned a different waybill');
   // Unknown numbers return a success envelope with the query echoed and null
-  // shipment fields. That placeholder does not establish absence or ownership.
+  // shipment fields. That placeholder does not establish absence or ownership,
+  // but its reason tells J&T Cargo's answer from an outage.
   if (bill.details === null || Array.isArray(bill.details) && !bill.details.length) {
-    throw new IndeterminateError(JNT_CARGO_PROVIDER, 'J&T Cargo returned the waybill without shipment history');
+    throw new IndeterminateError(JNT_CARGO_PROVIDER, 'J&T Cargo returned the waybill without shipment history',
+      bill.details === null ? { reason: 'portal_not_found' } : {});
   }
   if (!Array.isArray(bill.details)) invalid();
   if (bill.details.length > MAX_SCANS) invalid('J&T Cargo returned excessive tracking history');

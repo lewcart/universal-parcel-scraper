@@ -201,9 +201,14 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
   // The tracker answers a number it does not know with an empty parcel and counts it not found.
   if (entry.state === STATE_NOT_FOUND && !tracking && !own && (rows === null || rows === undefined)) {
     // It answers a parcel's DHLink number the same way when the parcel has another tracking
-    // number, and its last leg's number always: for those layouts the answer settles nothing.
-    if (DHLINK_NUMBER.test(number)) throw new IndeterminateError(PROVIDER, 'DHLink finds a parcel by its DHLink number only when that is its tracking number');
-    if (DHLINK_LAST_LEGS.some((leg) => leg.number.test(number))) throw new IndeterminateError(PROVIDER, 'DHLink does not find a parcel by the number of its last leg');
+    // number, and its last leg's number always: for those layouts the answer settles nothing,
+    // but the reason tells it from an outage.
+    if (DHLINK_NUMBER.test(number)) {
+      throw new IndeterminateError(PROVIDER, 'DHLink finds a parcel by its DHLink number only when that is its tracking number', { reason: 'portal_not_found' });
+    }
+    if (DHLINK_LAST_LEGS.some((leg) => leg.number.test(number))) {
+      throw new IndeterminateError(PROVIDER, 'DHLink does not find a parcel by the number of its last leg', { reason: 'portal_not_found' });
+    }
     throw new NotFoundError(PROVIDER);
   }
   if (tracking !== number && own !== number) throw new IndeterminateError(PROVIDER, 'DHLink answered with another parcel');

@@ -157,7 +157,8 @@ export function parseJnt(payload: unknown, raw: string): CarrierResult {
     // The router answers the same for any string it does not hold. Only an
     // Indonesian waybill can be missing here; other shapes may live elsewhere.
     if (INDONESIAN_WAYBILL.test(number)) throw new NotFoundError(PROVIDER);
-    throw new IndeterminateError(PROVIDER, 'J&T Indonesia does not hold this waybill');
+    // The router still answered, so the reason tells it from an outage.
+    throw new IndeterminateError(PROVIDER, 'J&T Indonesia does not hold this waybill', { reason: 'portal_not_found' });
   }
   if (bills.length !== 1) invalid('J&T returned several waybills');
   const bill: unknown = bills[0];

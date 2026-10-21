@@ -6,7 +6,9 @@ Tracks individual full parcel barcodes through the official anonymous tracker.
 
 One bounded JSON POST requests parcel history without expanding the shipment.
 The response must contain one matching barcode. Empty placeholder packages and
-provider errors remain inconclusive.
+provider errors remain inconclusive. An empty result or placeholder carries the
+reason `portal_not_found`, so a consumer can tell Canpar's answer from an outage;
+a provider error has no reason.
 
 ## Notes
 

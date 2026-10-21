@@ -75,9 +75,11 @@ describe('Canpar parcel history', () => {
   it('keeps empty identity-shaped placeholders and upstream errors inconclusive', () => {
     const value = fixture(); value.result[0].events = []; value.result[0].shipping_date = null;
     value.result[0].status = 0; value.result[0].delivered = false;
-    for (const input of [value, { error: null, result: [] }, { error: 'Unavailable', result: fixture().result }]) {
-      expect(() => parseCanpar(input, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    for (const input of [value, { error: null, result: [] }]) {
+      expect(() => parseCanpar(input, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
     }
+    expect(() => parseCanpar({ error: 'Unavailable', result: fixture().result }, NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
   });
 
   it('uses the newest actual scan over the package summary or a prior completed return', () => {
@@ -148,7 +150,7 @@ describe('Canpar retrieval', () => {
     expect(new Headers(init?.headers).has('Cookie')).toBe(false);
     const empty = fixture(); empty.result[0].events = [];
     fetcher.mockResolvedValueOnce(Response.json(empty));
-    await expect(instance.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(instance.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
   });
 
   it.each([[404, 'transport'], [403, 'challenge'], [429, 'rate_limited'], [503, 'maintenance']])('keeps HTTP %s distinct from absence', async (status, kind) => {

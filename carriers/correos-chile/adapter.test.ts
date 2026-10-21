@@ -60,7 +60,9 @@ describe('Correos de Chile anonymous tracking', () => {
 
   it('keeps ambiguous missing or expired tracking inconclusive', () => {
     expect(() => parseCorreosChileTracking({ error: true, descripcion: 'Seguimiento no encontrado' }, NUMBER))
-      .toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+      .toThrowError(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    expect(() => parseCorreosChileTracking({ error: true }, NUMBER))
+      .toThrowError(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
     expect(() => parseCorreosChileTracking({ error: true, maxLimit: true }, NUMBER))
       .toThrowError(expect.objectContaining({ kind: 'rate_limited' }));
   });
@@ -144,7 +146,8 @@ describe('Correos de Chile anonymous tracking', () => {
     expect(oversizedDetail).toHaveBeenCalledTimes(2);
     const inconclusive = vi.fn<typeof fetch>().mockResolvedValueOnce(pageResponse())
       .mockResolvedValueOnce(Response.json({ error: true, descripcion: 'Seguimiento no encontrado' }));
-    await expect(adapter(environment(inconclusive)).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(adapter(environment(inconclusive)).track({ number: NUMBER }))
+      .rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
   });
 
   it('reports the bot manager redirect as a challenge rather than a missing resource', async () => {

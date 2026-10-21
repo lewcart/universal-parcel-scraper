@@ -19,9 +19,10 @@ No tracking page of the carrier remains, so no link opens one parcel.
 
 ## Why there is no adapter
 
-The site's tracking and login links opened a Hualei tracker on two bare addresses. The site has
-commented them out, neither address answers, and its service terms send customers to 17TRACK. So
-Juxi Express stays on universal providers.
+The site's tracking and login links opened a Hualei tracker on a bare address, and later on two
+others. The site has commented the last two out, none of the three answers, Hualei's own tracker
+does not hold Juxi Express waybills, and the service terms send customers to 17TRACK. So Juxi
+Express stays on universal providers.
 
 ## Testing
 

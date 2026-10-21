@@ -4,9 +4,10 @@ import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
-import { adapter, TeamGlobalExpressTracker, TGE_DETAILS, TGE_SEARCH } from './adapter.js';
+import { adapter, TeamGlobalExpressTracker, TGE_DETAILS, TGE_NZ_TRACKER, TGE_SEARCH } from './adapter.js';
+import { fastTrackerConsignment, MAX_ITEM_PAGES } from './fastTracker.js';
 import { normalizeTeamGlobalExpressNumber, parseTeamGlobalExpressDetails, parseTeamGlobalExpressSearch, teamGlobalExpressSearchUrl } from './parser.js';
-import { statusMap, teamGlobalExpressStage } from './status.js';
+import { fastTrackerStage, statusMap, teamGlobalExpressStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = '9900000000017';
@@ -257,6 +258,117 @@ describe('Team Global Express HTTP adapter', () => {
       .resolves.toMatchObject({ carrier: 'team-global-express', source: 'team-global-express', result: { current_stage: 'delivered' } });
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith('https://www.myteamge.com/'))).toBe(true);
     for (const number of [DELIVERED, IN_TRANSIT, '990000000017', '990000017']) expect(detectCarrierMatch(number).carrier).not.toBe('team-global-express');
+  });
+});
+
+const NZ = 'ZZZZ0000123';
+const NZ_LABEL = `${NZ}00002`;
+const NZ_ITEM = (n: number) => `0a1b2c3d-0000-4000-8000-00000000000${n}`;
+/** Fast Tracker's search and item pages, by the query each address carries. */
+const fastTracker = (search: Reply, items: Record<string, Reply>, myTeamGe?: Reply) => vi.fn<typeof fetch>().mockImplementation(async (url) => {
+  const address = new URL(String(url));
+  const answer = address.origin === new URL(TGE_SEARCH).origin ? myTeamGe ?? fixture('search-not-found')
+    : address.searchParams.has('ConsignmentNumber') ? search : items[address.searchParams.get('ConsignmentDetailId')!] ?? 'missing';
+  return typeof answer === 'string' ? reply(answer) : answer();
+});
+/** The second item, delivered after the first. */
+const nzDelivered = () => fixture('nz-item-out-for-delivery')
+  .replace(/(<\/tr>\s*<\/table>\s*<\/div>\s*<\/body>)/, `<tr><td id="ConsignmentDetails_repEvents_eventDescription_5">GOODS DELIVERED</td>
+    <td>03/07/26 14:10</td><td>1</td><td>WELLINGTON</td></tr>$1`);
+
+describe('Team Global Express New Zealand', () => {
+  it('asks Fast Tracker for a New Zealand consignment and reads each item’s page, through the supplied transport', async () => {
+    const fetcher = fastTracker(fixture('nz-search'), { [NZ_ITEM(1)]: fixture('nz-item-delivered'), [NZ_ITEM(2)]: nzDelivered() });
+    const result = await new TeamGlobalExpressTracker({ fetcher, userAgent: 'SyntheticHost/1.0' }).fetch(` ${NZ.toLowerCase()} `, { budgetMs: 1000 });
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+      `${TGE_NZ_TRACKER}?fasttracker_action=search&ConsignmentNumber=${NZ}`,
+      `${TGE_NZ_TRACKER}?ConsignmentDetailId=${NZ_ITEM(1)}`, `${TGE_NZ_TRACKER}?ConsignmentDetailId=${NZ_ITEM(2)}`,
+    ]);
+    for (const [, init] of fetcher.mock.calls) {
+      expect(init).toMatchObject({ method: 'GET', redirect: 'manual', headers: { Accept: 'text/html', 'User-Agent': 'SyntheticHost/1.0' } });
+    }
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
+      last_status_text: 'GOODS DELIVERED', last_update: '2026-07-03T14:10:00+12:00', expected_delivery: null, timezone: 'Pacific/Auckland',
+      service_name: 'STANDARD', weight_kg: 15.5, destination_country: 'NZ' });
+    // Both items' scans, newest first, a scan they share once, each on New Zealand's clock.
+    expect(result.events!.map((event) => [event.time, event.description, event.location, event.stage])).toEqual([
+      ['2026-07-03T14:10:00+12:00', 'GOODS DELIVERED', 'WELLINGTON', 'delivered'],
+      ['2026-07-03T13:58:00+12:00', 'GOODS DELIVERED', 'WELLINGTON', 'delivered'],
+      ['2026-07-03T08:26:00+12:00', 'OUT FOR DELIVERY', 'WELLINGTON', 'out_for_delivery'],
+      ['2026-07-03T07:26:00+12:00', 'PROCESSING AT DESTINATION BRANCH', 'WELLINGTON', 'in_transit'],
+      ['2026-07-03T06:52:00+12:00', 'PROCESSING AT DESTINATION BRANCH', 'WELLINGTON', 'in_transit'],
+      ['2026-07-02T21:41:00+12:00', 'IN TRANSIT', 'AUCKLAND', 'in_transit'],
+      ['2026-07-02T21:33:00+12:00', 'IN TRANSIT', 'AUCKLAND', 'in_transit'],
+      ['2026-07-02T10:52:00+12:00', 'GOODS PICKED UP', 'AUCKLAND', 'accepted'],
+      ['2026-07-01T15:03:00+12:00', 'BOOKED FOR COLLECTION', 'AUCKLAND', 'registered'],
+    ]);
+    expect(result).not.toHaveProperty('canonical_tracking_number');
+    // The sender, the places and references, the receiver who signed and the item ids are not kept.
+    expect(JSON.stringify(result)).not.toMatch(/Sample Sender|Sampletown|Exampleville|SAMPLE-REF|ORDER-0000001|Sample R|0a1b2c3d|base64/);
+  });
+
+  it('keeps a consignment in transit until every item is delivered, with its estimate', async () => {
+    const fetcher = fastTracker(fixture('nz-search'), { [NZ_ITEM(1)]: fixture('nz-item-delivered'), [NZ_ITEM(2)]: fixture('nz-item-out-for-delivery') });
+    await expect(carrier(fetcher).track({ number: NZ })).resolves.toMatchObject({ status: 'in_transit', current_stage: 'in_transit',
+      current_stage_source: 'carrier_map', last_status_text: 'GOODS DELIVERED', expected_delivery: '2026-07-06' });
+  });
+
+  it('reads a label as its consignment, which it reports as the number', async () => {
+    expect([NZ, NZ_LABEL, `${NZ}0001`, 'ZZZ0000123', '0000123456', 'ZZZZ00001230000001'].map(fastTrackerConsignment))
+      .toEqual([NZ, NZ, null, null, null, null]);
+    const fetcher = fastTracker(fixture('nz-search'), { [NZ_ITEM(1)]: fixture('nz-item-delivered'), [NZ_ITEM(2)]: nzDelivered() });
+    await expect(carrier(fetcher).track({ number: NZ_LABEL })).resolves.toMatchObject({ canonical_tracking_number: NZ, current_stage: 'delivered' });
+    expect(String(fetcher.mock.calls[0]![0])).toContain(`ConsignmentNumber=${NZ}`);
+  });
+
+  it('asks MyTeamGE once Fast Tracker has no result, and reports not found when neither has the number', async () => {
+    const missing = fixture('nz-search-not-found').replaceAll('ZZZZ0000999', NZ);
+    const notFound = fastTracker(missing, {}, fixture('search-not-found').replace(UNKNOWN, NZ));
+    await expect(carrier(notFound).track({ number: NZ })).rejects.toMatchObject({ kind: 'not_found' });
+    expect(notFound.mock.calls.map(([url]) => new URL(String(url)).origin)).toEqual([new URL(TGE_NZ_TRACKER).origin, new URL(TGE_SEARCH).origin]);
+    // A notice for another number is no answer about this one.
+    await expect(carrier(fastTracker(fixture('nz-search-not-found'), {})).track({ number: NZ })).rejects.toMatchObject({ kind: 'indeterminate' });
+    // Another number's shape goes to MyTeamGE alone.
+    const australian = fastTracker('unused', {}, fixture('search-not-found'));
+    await expect(carrier(australian).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'not_found' });
+    expect(australian.mock.calls.every(([url]) => String(url).startsWith(TGE_SEARCH))).toBe(true);
+  });
+
+  it('refuses an answer for another consignment or item, a changed page and a browser check', async () => {
+    const items = { [NZ_ITEM(1)]: fixture('nz-item-delivered'), [NZ_ITEM(2)]: fixture('nz-item-out-for-delivery') };
+    const other = fixture('nz-search').replaceAll(NZ, 'ZZZZ0000124');
+    await expect(carrier(fastTracker(other, items)).track({ number: NZ })).rejects.toMatchObject({ kind: 'indeterminate' });
+    const swapped = { [NZ_ITEM(1)]: fixture('nz-item-out-for-delivery'), [NZ_ITEM(2)]: fixture('nz-item-delivered') };
+    await expect(carrier(fastTracker(fixture('nz-search'), swapped)).track({ number: NZ })).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(carrier(fastTracker('<html><body>Maintenance</body></html>', items)).track({ number: NZ })).rejects.toMatchObject({ kind: 'schema' });
+    await expect(carrier(fastTracker('<html><title>Request blocked</title></html>', items)).track({ number: NZ }))
+      .rejects.toMatchObject({ kind: 'challenge' });
+    const badId = fixture('nz-search').replace(NZ_ITEM(2), '../elsewhere');
+    await expect(carrier(fastTracker(badId, items)).track({ number: NZ })).rejects.toMatchObject({ kind: 'schema' });
+    const badClock = { ...items, [NZ_ITEM(2)]: fixture('nz-item-out-for-delivery').replace('03/07/26 08:26', '32/07/26 08:26') };
+    await expect(carrier(fastTracker(fixture('nz-search'), badClock)).track({ number: NZ })).rejects.toMatchObject({ kind: 'schema' });
+    const moved = fastTracker(() => new Response('', { status: 302, headers: { Location: '/PageDeprecatedMessage.html' } }), items);
+    await expect(carrier(moved).track({ number: NZ })).rejects.toMatchObject({ kind: 'transport' });
+  });
+
+  it('reads the first items’ pages of a large consignment and says the history is cut', async () => {
+    // Every row opens the same item's page, as the fake site answers it.
+    const rows = Array.from({ length: MAX_ITEM_PAGES + 2 }, () => `<tr><td><a href='fast-tracker.aspx?ConsignmentDetailId=${NZ_ITEM(1)}'>${NZ}-01</a></td>
+      <td>01/07/26 15:03</td><td>A</td><td>B</td><td>1</td><td>1</td><td>0.1</td></tr>`);
+    const search = fixture('nz-search').replace(/<tr>\s*<td style="width:17\.5%"[\s\S]*<\/tr>/, rows.join(''));
+    const fetcher = fastTracker(search, { [NZ_ITEM(1)]: fixture('nz-item-delivered') });
+    await expect(carrier(fetcher).track({ number: NZ })).resolves.toMatchObject({ history_truncated: true, weight_kg: MAX_ITEM_PAGES + 2 });
+    expect(fetcher).toHaveBeenCalledTimes(MAX_ITEM_PAGES + 1);
+  });
+
+  it('stages the tracker’s wordings and leaves others to the shared rules', () => {
+    for (const [wording, stage] of [['BOOKED FOR COLLECTION', 'registered'], ['GOODS PICKED UP', 'accepted'], ['IN TRANSIT', 'in_transit'],
+      ['Processing at destination branch', 'in_transit'], ['OUT FOR DELIVERY', 'out_for_delivery'], ['GOODS DELIVERED', 'delivered']] as const) {
+      expect(fastTrackerStage(wording), wording).toEqual({ stage, source: 'carrier_map' });
+      expect(statusMapAnswer({ carrier: 'team-global-express', providerCode: '', description: wording })).toEqual({ kind: 'mapped', stage });
+    }
+    expect(fastTrackerStage('Delivered to the receiver')).toMatchObject({ stage: 'delivered', source: expect.stringMatching(/^wording:/) });
+    expect(fastTrackerStage('Synthetic note')).toBeNull();
   });
 });
 

@@ -3664,6 +3664,12 @@
   },
   {
     "carrier": "team-global-express",
+    "pattern": "^[A-Z]{4}\\d{7}$",
+    "kind": "by_design",
+    "reason": "New Zealand consignments are a sender's four letters and seven digits, a sender-prefix layout other carriers can print, and no published format ties it to Team Global Express."
+  },
+  {
+    "carrier": "team-global-express",
     "pattern": "^[A-Z]{3}\\d{8}$",
     "kind": "by_design",
     "reason": "One archived lookup; nothing in the layout points to Team Global Express alone."

@@ -22,6 +22,13 @@ describe('Team Global Express live retrieval', () => {
     await expect(direct().recognize!(process.env.TEAM_GLOBAL_EXPRESS_TRACKING_NUMBER!)).resolves.toMatchObject({ known: true });
   }, 45_000);
 
+  it.skipIf(!process.env.TEAM_GLOBAL_EXPRESS_NZ_TRACKING_NUMBER)('retrieves a New Zealand consignment from Fast Tracker on New Zealand time', async () => {
+    const result = await direct().track({ number: process.env.TEAM_GLOBAL_EXPRESS_NZ_TRACKING_NUMBER! });
+    expect(result).toMatchObject({ timezone: 'Pacific/Auckland', destination_country: 'NZ' });
+    expect(result.events.length).toBeGreaterThan(0);
+    expect(result.events.every((event) => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00\+1[23]:00$/.test(String(event.time)) && event.location)).toBe(true);
+  }, 45_000);
+
   it.skipIf(!process.env.TEAM_GLOBAL_EXPRESS_UNKNOWN_NUMBER)('reads an unknown number as not found', async () => {
     await expect(direct().track({ number: process.env.TEAM_GLOBAL_EXPRESS_UNKNOWN_NUMBER! })).rejects.toMatchObject({ kind: 'not_found' });
   }, 45_000);

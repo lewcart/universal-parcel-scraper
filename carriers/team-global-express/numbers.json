@@ -338,6 +338,25 @@
         ]
       },
       "note": "A review of Team Global Express gives it as the consignment number."
+    },
+    {
+      "number": "KMRT0185615",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250428002416/https://fasttracker.teamglobalexp.co.nz/fast-tracker.aspx?fasttracker_action=search&ConsignmentNumber=KMRT0185615",
+        "date": "2025-04-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An archived search on Team Global Express's New Zealand Fast Tracker lists this consignment's items; the tracker still answers it."
     }
   ]
 }

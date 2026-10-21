@@ -34,6 +34,12 @@
     {"code": "PRTDEL", "wording": "Partially delivered", "stage": "in_transit", "language": "en", "confirmedBy": "bundle", "note": "A milestone from the page's own label table: some items are delivered and the rest are on their way."},
     {"code": "DELVERD", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "A milestone, which files the shipment and each of its scans; the page shows its label."},
     {"code": "COLLCTD", "wording": "Collected", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "A milestone: the receiver collected the parcel from a depot or service hub."},
-    {"code": "CANCLD", "wording": "Cancelled", "stage": "exception", "language": "en", "confirmedBy": "bundle", "note": "A milestone from the page's own label table."}
+    {"code": "CANCLD", "wording": "Cancelled", "stage": "exception", "language": "en", "confirmedBy": "bundle", "note": "A milestone from the page's own label table."},
+    {"wording": "BOOKED FOR COLLECTION", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "New Zealand's Fast Tracker, whose scans carry no code: the sender booked a pickup."},
+    {"wording": "GOODS PICKED UP", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "New Zealand's Fast Tracker."},
+    {"wording": "IN TRANSIT", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "New Zealand's Fast Tracker."},
+    {"wording": "PROCESSING AT DESTINATION BRANCH", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "New Zealand's Fast Tracker: sorted at the branch that delivers it."},
+    {"wording": "OUT FOR DELIVERY", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "New Zealand's Fast Tracker."},
+    {"wording": "GOODS DELIVERED", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "New Zealand's Fast Tracker."}
   ]
 }

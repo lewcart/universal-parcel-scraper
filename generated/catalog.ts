@@ -28593,6 +28593,15 @@ export const CARRIER_CATALOG = {
         "params": [
           "shipmentID"
         ]
+      },
+      {
+        "domains": [
+          "fasttracker.teamglobalexp.co.nz"
+        ],
+        "pathPattern": "^/fast-tracker\\.aspx$",
+        "params": [
+          "ConsignmentNumber"
+        ]
       }
     ],
     "detectionRules": []

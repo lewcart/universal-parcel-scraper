@@ -76,7 +76,31 @@ export function teamGlobalExpressStage(code: string, milestone: string, exceptio
   return worded.source === 'none' ? null : worded;
 }
 
+/** The wordings New Zealand's Fast Tracker gives its scans, which carry no code. */
+const FAST_TRACKER: ReadonlyMap<string, Stage> = new Map([
+  ['BOOKED FOR COLLECTION', 'registered'], // The sender booked a pickup.
+  ['GOODS PICKED UP', 'accepted'],
+  ['IN TRANSIT', 'in_transit'],
+  ['PROCESSING AT DESTINATION BRANCH', 'in_transit'],
+  ['OUT FOR DELIVERY', 'out_for_delivery'],
+  ['GOODS DELIVERED', 'delivered'],
+]);
+
+/** The stage the map gives a Fast Tracker wording. */
+export function fastTrackerMappedStage(wording: string): Stage | undefined {
+  return FAST_TRACKER.get(wording.trim().replace(/\s+/g, ' ').toUpperCase());
+}
+
+/** A Fast Tracker scan's stage: its wording in the map, else the shared wording rules, else nothing. */
+export function fastTrackerStage(wording: string): ClassifiedWording | null {
+  const mapped = fastTrackerMappedStage(wording);
+  if (mapped) return { stage: mapped, source: 'carrier_map' };
+  const worded = classifyWording(wording, 'in_transit');
+  return worded.source === 'none' ? null : worded;
+}
+
 export const statusMap: CarrierStatusMap = {
-  stage: (code) => (code ? teamGlobalExpressMappedStage(code) : undefined),
+  // New Zealand's scans come without a code.
+  stage: (code, wording) => (code ? teamGlobalExpressMappedStage(code) : fastTrackerMappedStage(wording)),
   gaps: [],
 };

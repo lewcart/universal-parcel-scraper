@@ -19,7 +19,7 @@ export const VINTED_GO_MAX_BYTES = 512 * 1024;
 const NUMBER = /^1\d{15}$/;
 // `VGS` and fourteen digits, the other number the service answers. They hold
 // no timestamp and no Luhn check digit.
-const VGS_NUMBER = /^VGS\d{14}$/;
+const VGS_NUMBER = /^VGS\d{13,14}$/;
 // Sixteen capital letters and digits, letters among them, which the service
 // answers like the others. A VGS number with a digit missing is not one.
 const CODE = /^(?!VGS?\d+$)(?=\d*[A-Z])[A-Z\d]{16}$/;
@@ -39,7 +39,7 @@ const MAX_EVENTS = 100;
 export function normalizeVintedGoNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
   if (!VGS_NUMBER.test(number) && !CODE.test(number) && !(NUMBER.test(number) && hasLuhnCheckDigit(number))) {
-    throw new InvalidInputError(PROVIDER, 'Vinted Go numbers are sixteen digits starting 1 whose last digit passes the Luhn check, VGS and fourteen digits, or sixteen capital letters and digits');
+    throw new InvalidInputError(PROVIDER, 'Vinted Go numbers are sixteen digits starting 1 whose last digit passes the Luhn check, VGS and thirteen or fourteen digits, or sixteen capital letters and digits');
   }
   return number;
 }

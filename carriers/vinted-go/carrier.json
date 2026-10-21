@@ -99,7 +99,7 @@
     },
     {
       "id": "vinted-go-vgs",
-      "pattern": "^VGS\\d{14}$",
+      "pattern": "^VGS\\d{13,14}$",
       "confidence": "high"
     },
     {

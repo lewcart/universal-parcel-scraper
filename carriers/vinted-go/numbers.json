@@ -164,6 +164,18 @@
       "note": "Made-up number in the shape of a VGS number Vinted Go's own tracking service answers."
     },
     {
+      "number": "VGS9000000000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "vinted-go",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of a VGS number of thirteen digits Vinted Go's own tracking service answers."
+    },
+    {
       "number": "FMP1UW2ABCDEFGHI",
       "role": "shipment",
       "evidence": "synthetic",

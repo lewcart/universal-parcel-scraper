@@ -30369,7 +30369,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^VGS\\d{14}$",
+        "pattern": "^VGS\\d{13,14}$",
         "confidence": "high"
       },
       {

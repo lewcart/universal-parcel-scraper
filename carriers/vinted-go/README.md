@@ -52,9 +52,9 @@ takes sixteen digits starting `1` that pass the check. `vinted-go-1` suggests Vi
 confidence for those starting `17` or `18`, because DHL eCommerce, Evri and TNT accept any
 sixteen digits.
 
-Vinted Go also issues `VGS` and fourteen digits, with no timestamp or check digit, and the
-service answers them like the others. The adapter takes them, and `vinted-go-vgs` claims them at
-high confidence: the prefix is Vinted Go's own.
+Vinted Go also issues `VGS` and thirteen or fourteen digits, with no timestamp or check digit,
+and the service answers both lengths like the others. The adapter takes them, and `vinted-go-vgs`
+claims them at high confidence: the prefix is Vinted Go's own.
 
 The service also answers codes of sixteen capital letters and digits, mostly letters. The adapter
 takes them when an aggregator names Vinted Go for one or the user picks it. No public sample shows

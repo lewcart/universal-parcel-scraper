@@ -295,6 +295,11 @@ step exists for future protocol changes.
   taken as given, whatever zone routing passes for a parcel filed under the line carrier
   that sent it. Its relays from abroad, with no place or at the "International Postal
   System", put Poland's offset on the other country's clock and are read as before.
+- Croatia Post's dates have the digits of Hrvatska pošta's tracker under a UTC label. A
+  scan at a facility abroad, named by its UPU office code, is on that facility's clock when
+  the code names a country keeping one, else it keeps its wall clock, as Hrvatska pošta's
+  own adapter reads it. Read on Zagreb's clock, a British office's scans came out an hour
+  early. Its other scans take Zagreb's clock.
 - Home clocks: some networks are named their own way, and their dates are their own
   instants or labels shown on their home clock wherever the scan was (checked
   2026-10-10). "Italy Post" has Poste Italiane's epoch milliseconds on Rome time. "New

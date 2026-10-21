@@ -12,6 +12,7 @@ import type { CarrierEvent } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
 import { cdekScan } from '../../carriers/cdek/status.js';
 import { emileScan } from '../../carriers/emile/status.js';
+import { hrvatskaPostaScan } from '../../carriers/hrvatska-posta/status.js';
 import { paackScan } from '../../carriers/paack/status.js';
 import { ytoScan } from '../../carriers/yto/status.js';
 
@@ -19,11 +20,14 @@ export interface CarrierScan {
   stage: Stage;
   wording: string;
   returnLeg?: true;
+  // A receipt that, once the item moved on, is a facility further on receiving it.
+  receipt?: true;
 }
 
 const VOCABULARIES: Readonly<Record<string, (label: string) => CarrierScan | undefined>> = {
   cdek: cdekScan,
   emile: emileScan,
+  'hrvatska-posta': hrvatskaPostaScan,
   paack: paackScan,
   yto: ytoScan,
 };
@@ -52,5 +56,16 @@ export function markReturnLeg(scans: ReadonlyArray<{ event: CarrierEvent; scan: 
     const wording = RETURN_LEG[scan.stage];
     Object.assign(event, { provider_leg: 'return' }, wording ? { description: wording,
       stage: scan.stage === 'delivered' ? 'returned' : scan.stage } : {});
+  }
+}
+
+/** Reads a receipt scan after the item moved on as a facility further on receiving it, as the carrier's own tracker does. */
+export function markLaterReceipts(scans: ReadonlyArray<{ event: CarrierEvent; scan: CarrierScan }>): void {
+  const clock = (event: CarrierEvent) => event.time ?? event.local_time ?? '';
+  const moved = scans.filter(({ scan }) => !['pending', 'registered', 'accepted'].includes(scan.stage))
+    .map(({ event }) => clock(event)).filter(Boolean).sort()[0];
+  if (!moved) return;
+  for (const { event, scan } of scans) {
+    if (scan.receipt && event.stage === 'accepted' && clock(event) > moved) event.stage = 'in_transit';
   }
 }

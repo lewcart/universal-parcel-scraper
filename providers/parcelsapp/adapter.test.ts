@@ -129,6 +129,35 @@ describe('ParcelsApp YTO scans', () => {
     expect(parseParcelsAppResponse({ carriers: ['CDEK'], states: states(1) }, number, identity())).toMatchObject({ current_stage: 'accepted' });
   });
 
+  it("reads Croatia Post's relayed labels by its own map and a post abroad on that office's clock", () => {
+    // Shape of ParcelsApp's copy of Hrvatska pošta's tracker: its wall clocks under a UTC label.
+    const parcel = (rows: string[][]) => parseParcelsAppResponse({ carriers: ['Croatia Post'],
+      states: rows.map(([date, status, location]) => ({ date, status, location, carrier: 0 })) }, number, identity());
+    const parsed = parcel([
+      ['2026-10-14T05:46:00Z', 'The shipment has been handed over to the parcelstation', ''],
+      ['2026-10-12T11:25:00Z', 'Delivery attempt', ''],
+      ['2026-10-10T20:47:00Z', 'Item received in destination country', 'GBEXAA EXAMPLE HUB'],
+      ['2026-10-10T04:37:00Z', 'Item received', 'GBEXAA EXAMPLE HUB'],
+      ['2026-10-09T03:08:00Z', 'Item sent', '10000 EXAMPLE CITY'],
+      ['2026-10-06T10:23:00Z', 'Item received', '20000 EXAMPLE TOWN'],
+    ]);
+    expect(parsed).toMatchObject({ current_stage: 'ready_for_pickup' });
+    expect(parsed.events?.map((event) => [event.description, event.stage, event.time])).toEqual([
+      ['The shipment has been handed over to the parcelstation', 'ready_for_pickup', '2026-10-14T03:46:00.000Z'],
+      ['Delivery attempt', 'failed_attempt', '2026-10-12T09:25:00.000Z'],
+      ['Item received in destination country', 'in_transit', '2026-10-10T19:47:00.000Z'],
+      ['Item received', 'in_transit', '2026-10-10T03:37:00.000Z'],
+      ['Item sent', 'in_transit', '2026-10-09T01:08:00.000Z'],
+      ['Item received', 'accepted', '2026-10-06T08:23:00.000Z'],
+    ]);
+    // An office abroad in a country of several zones names no clock.
+    expect(parcel([['2026-10-10T04:37:00Z', 'Item received', 'USEXAA EXAMPLE HUB']]).events?.[0])
+      .toMatchObject({ local_time: '2026-10-10T04:37:00.000' });
+    // A delivery once the item is on its way back reaches its sender.
+    expect(parcel([['2026-10-20T09:00:00Z', 'Item delivered', '20000 EXAMPLE TOWN'],
+      ['2026-10-18T09:00:00Z', 'Item returned to sender', '20000 EXAMPLE TOWN']])).toMatchObject({ current_stage: 'returned' });
+  });
+
   it("reads Mayi Yinfu's relayed airport hand-over as transit, and its delivery abroad as a delivery", () => {
     const parcel = (states: Record<string, unknown>[]) => parseParcelsAppResponse({ carriers: ['DHL Parcel Spain', 'Mayiyinfu'],
       originCode: 'CN', destinationCode: 'ES', states }, number, identity());

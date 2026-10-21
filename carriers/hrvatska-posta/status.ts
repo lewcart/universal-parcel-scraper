@@ -33,6 +33,19 @@ export function hrvatskaPostaScanStage(wording: string): Stage | undefined {
 }
 
 /**
+ * A label an aggregator relays from the tracker, staged by the map. Its
+ * receipt is also a facility abroad receiving an item that already moved on,
+ * and the item handed back to its sender starts the trip back.
+ */
+export function hrvatskaPostaScan(label: string): { stage: Stage; wording: string; receipt?: true; returnLeg?: true } | undefined {
+  const stage = hrvatskaPostaScanStage(label);
+  if (!stage) return undefined;
+  const key = normalizeStatusWording(label);
+  return { stage, wording: label.trim(), ...(key === 'item received' ? { receipt: true as const } : {}),
+    ...(key === 'item returned to sender' ? { returnLeg: true as const } : {}) };
+}
+
+/**
  * A scan's stage from the map, else from the shared wording rules. Wording
  * neither knows stays without a stage, so it remains visible for review.
  */

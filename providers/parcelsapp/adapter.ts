@@ -30,10 +30,11 @@ import { militaryPostOffice } from '../../places/trackingLocation.js';
 import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { cttyexChinaStep } from '../../carriers/cttyex/status.js';
+import { hrvatskaPostaForeignZone } from '../../carriers/hrvatska-posta/parser.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
 import { event, isNotice, localEvent, numberOf, place as reportedPlace, result, type UniversalSource } from '../shared/result.js';
-import { carrierScan, markReturnLeg, type CarrierScan } from '../shared/scans.js';
+import { carrierScan, markLaterReceipts, markReturnLeg, type CarrierScan } from '../shared/scans.js';
 import { PARCELSAPP_API, ParcelsAppHttpClient } from './http.js';
 
 const SOURCE: UniversalSource = 'ParcelsApp';
@@ -739,6 +740,9 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   if (carrier === 'swiftx' && SWIFTX_LABEL.test(status.trim())) return SWIFTX_LABEL_CLOCK;
   if (carrier === 'swiftx' && swiftxSiteZone(scanLocation(name, state.location))) return undefined;
   if (key === 'royalmail' && royalMailRelay(scanLocation(name, state.location), status, destination)) return ROYAL_MAIL_RELAY_CLOCK;
+  // Croatia Post relays a post abroad on that facility's clock, as its own tracker does.
+  const abroad = carrier === 'hrvatska-posta' ? hrvatskaPostaForeignZone(scanLocation(name, state.location)) : undefined;
+  if (abroad !== undefined) return abroad;
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   // A home clock stays a guess that a location abroad rules out, even when
   // the catalog gives the network that zone (GEODIS Poland for "Pekaes").
@@ -861,8 +865,10 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const own = laterLeg ? null : carrierClock(payload, raw, number, status, destination);
   // iMile's page writes every scan on the recipient country's clock, wherever it happened, and
   // ParcelsApp has its digits; read on iMile's catalog zone they came out early. A destination
-  // of one zone places them, and without one they keep their wall clock.
-  const imileWall = own === null && !offset && typeof name === 'string' && carrierIdFromName(name) === 'imile';
+  // of one zone places them, and without one they keep their wall clock. So does Croatia Post's
+  // scan at a facility abroad whose office code names no single clock.
+  const unplacedWall = own === null && !offset && typeof name === 'string'
+    && ['imile', 'hrvatska-posta'].includes(carrierIdFromName(name) ?? '');
   const sited = own === undefined ? siteZone(payload, raw, number, inNorthAmerica, status, destination) : undefined;
   const placed = own !== undefined ? own : sited;
   // A posting that only its office's capital places borrows first (`postingOffice`).
@@ -877,7 +883,7 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
     fallback: wallClock || office ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null,
     // With no zone, a scan whose label nothing vouches for keeps its wall clock.
-    wallOnly: laterLeg || imileWall || unknownNetwork(name) || localClockBrand(name) || militaryPostOffice(location) };
+    wallOnly: laterLeg || unplacedWall || unknownNetwork(name) || localClockBrand(name) || militaryPostOffice(location) };
 }
 
 type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' | 'labeled';
@@ -1211,8 +1217,9 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     // with no instant, and so is a UPS or FedEx scan with no location that
     // nothing places. A scan at a US military post office, of a network no
     // table knows (`unknownNetwork`), of a bare brand on local clocks
-    // (`localClockBrand`), of CTTYEX after China (`cttyexLaterLeg`)
-    // or of iMile for a destination of several zones keeps its wall clock as
+    // (`localClockBrand`), of CTTYEX after China (`cttyexLaterLeg`), of
+    // iMile for a destination of several zones or of Croatia Post at an
+    // office abroad that its code does not place keeps its wall clock as
     // its local time. Any other scan with no zone
     // keeps ParcelsApp's label.
     const facility = !zone && relaysFacilityClock(name);
@@ -1241,6 +1248,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });
   }
   markReturnLeg(scans);
+  markLaterReceipts(scans);
   markHandovers(carried);
   dropPassed(events, steps);
   latest.check();
@@ -1379,6 +1387,7 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });
   }
   markReturnLeg(scans);
+  markLaterReceipts(scans);
   markHandovers(carried);
   dropPassed(events, steps);
   latest.check();

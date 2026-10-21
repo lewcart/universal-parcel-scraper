@@ -57,15 +57,20 @@ function wallClock(stamp: string): string | null {
 }
 
 /**
- * The clock of the office that scanned: Zagreb's for a numbered Croatian office
- * or locker. A foreign post's scan, relayed through the postal union, is on its
- * facility's clock, which the facility's UPU office code settles when it names
- * a country keeping one civil time.
+ * The clock of a foreign post's scan, relayed through the postal union: its
+ * facility's, which the facility's UPU office code settles when it names a
+ * country keeping one civil time, else none. Undefined for an office that is
+ * not abroad.
  */
+export function hrvatskaPostaForeignZone(office: string): string | null | undefined {
+  const code = FOREIGN_OFFICE.exec(office)?.[1];
+  return code ? postalOfficeZone(code) : undefined;
+}
+
+/** The clock of the office that scanned: Zagreb's for a numbered Croatian office or locker, else a foreign facility's. */
 function officeZone(office: string): string | null {
   if (OFFICE_NUMBER.test(office)) return HOME_ZONE;
-  const code = FOREIGN_OFFICE.exec(office)?.[1];
-  return code ? postalOfficeZone(code) : null;
+  return hrvatskaPostaForeignZone(office) ?? null;
 }
 
 /**

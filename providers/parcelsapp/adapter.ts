@@ -76,8 +76,9 @@ export function parseParcelsAppResponse(payload: unknown, trackingNumber: string
  * destination ("DPD Group", `brandNetworkZones`), else the zone routing passes
  * for the parcel. Without one it stays as labeled, as it does when the name's
  * country or the parcel's zone meets a location in another country, unless
- * nothing knows its network (`unknownNetwork`) or it is at a US military post
- * office: it then keeps its wall clock. TNT's
+ * nothing knows its network (`unknownNetwork`), it is a bare brand whose
+ * networks all keep local clocks (`localClockBrand`) or it is at a US
+ * military post office: it then keeps its wall clock. TNT's
  * international scans stay as labeled too: tnt.com gives them offsets, and
  * ParcelsApp's UTC matches them. So do Asendia USA's, wherever they happened:
  * their dates are the UTC instants of Asendia's A1 feed, and Swiss Post's own
@@ -796,6 +797,19 @@ function unknownNetwork(name: unknown): boolean {
 }
 
 /**
+ * Whether a scan names a bare brand all of whose catalog networks keep a local
+ * clock ("DPD Group", "GLS"; `brandTimeZones`). Its date is the wall clock of
+ * whichever network scanned it under a UTC label: DPD Germany's own tracker
+ * dates a "DPD Group" handover two hours before ParcelsApp's label. So one
+ * that no step places, where the networks keep different clocks or the scan's
+ * location may be a network outside the catalog, has no instant. A brand with
+ * a network on UTC (DHL's eCommerce network) keeps its label.
+ */
+function localClockBrand(name: unknown): boolean {
+  return typeof name === 'string' && brandTimeZones(name).length > 0;
+}
+
+/**
  * Whether a scan is CTTYEX's from a leg after its own in China. Its own
  * tracker words only its steps in China, from the order data to the flight
  * out, on Beijing time ([CTTYEX](../../carriers/cttyex/README.md)), and those
@@ -863,7 +877,7 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
     fallback: wallClock || office ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null,
     // With no zone, a scan whose label nothing vouches for keeps its wall clock.
-    wallOnly: laterLeg || imileWall || unknownNetwork(name) || militaryPostOffice(location) };
+    wallOnly: laterLeg || imileWall || unknownNetwork(name) || localClockBrand(name) || militaryPostOffice(location) };
 }
 
 type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' | 'labeled';
@@ -996,23 +1010,6 @@ function copiedNetworkZones(items: readonly { name: unknown; key: string; zone: 
   });
 }
 
-/**
- * A carrier's acceptance after another carrier already moved the parcel is the
- * hand-over to it, as DPD's "parcel handed" is when it takes a cleared parcel
- * from the line carrier: the parcel moves on rather than starting over.
- */
-function markHandovers(carried: readonly { event: CarrierEvent; carrier: string }[]): void {
-  const moved = new Map<string, string>();
-  for (const { event: { stage, time }, carrier } of carried) {
-    const earliest = moved.get(carrier);
-    if (carrier && time && (stage === 'in_transit' || stage === 'customs') && (!earliest || time < earliest)) moved.set(carrier, time);
-  }
-  for (const { event, carrier } of carried) {
-    if (event.stage !== 'accepted' || !carrier || !event.time) continue;
-    if ([...moved].some(([other, time]) => other !== carrier && time < event.time!)) event.stage = 'in_transit';
-  }
-}
-
 const DAY_MS = 86_400_000;
 const clockOf = (event: CarrierEvent): string => event.time ?? (typeof event.local_time === 'string' ? event.local_time : '');
 /** An event's moment, a wall clock read as if UTC; a day alone is its start, or its end with `end`. */
@@ -1020,6 +1017,27 @@ function moment(event: CarrierEvent, end = false): number {
   if (event.time) return Date.parse(event.time);
   const local = clockOf(event);
   return local.length === 10 ? Date.parse(`${local}T00:00:00Z`) + (end ? DAY_MS : 0) : Date.parse(`${local}Z`);
+}
+
+/**
+ * A carrier's acceptance after another carrier already moved the parcel is the
+ * hand-over to it, as DPD's "parcel handed" is when it takes a cleared parcel
+ * from the line carrier: the parcel moves on rather than starting over. A wall
+ * clock is later only by more than a day, whatever its zone.
+ */
+function markHandovers(carried: readonly { event: CarrierEvent; carrier: string }[]): void {
+  const moved = new Map<string, CarrierEvent>();
+  for (const { event, carrier } of carried) {
+    const earliest = moved.get(carrier);
+    if (carrier && clockOf(event) && (event.stage === 'in_transit' || event.stage === 'customs')
+      && (!earliest || moment(event) < moment(earliest))) moved.set(carrier, event);
+  }
+  const before = (earlier: CarrierEvent, later: CarrierEvent) => earlier.time && later.time
+    ? earlier.time < later.time : moment(earlier, true) + DAY_MS < moment(later);
+  for (const { event, carrier } of carried) {
+    if (event.stage !== 'accepted' || !carrier || !clockOf(event)) continue;
+    if ([...moved].some(([other, earlier]) => other !== carrier && before(earlier, event))) event.stage = 'in_transit';
+  }
 }
 
 const BARE_DELIVERY = /^delivered[.!]?$/i;
@@ -1192,7 +1210,8 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     // A DHL Express scan whose facility the rule cannot place is a wall clock
     // with no instant, and so is a UPS or FedEx scan with no location that
     // nothing places. A scan at a US military post office, of a network no
-    // table knows (`unknownNetwork`), of CTTYEX after China (`cttyexLaterLeg`)
+    // table knows (`unknownNetwork`), of a bare brand on local clocks
+    // (`localClockBrand`), of CTTYEX after China (`cttyexLaterLeg`)
     // or of iMile for a destination of several zones keeps its wall clock as
     // its local time. Any other scan with no zone
     // keeps ParcelsApp's label.

@@ -305,7 +305,7 @@ describe('ParcelsApp result parsing', () => {
   });
 
   describe('a 1 January 00:00 placeholder', () => {
-    const carriers = ['DPD', 'Chronopost France'];
+    const carriers = ['DPD Germany', 'Chronopost France'];
     const dated = [
       { date: '2026-09-24T14:05:00Z', status: 'Package delivered', carrier: 0 },
       { date: '2026-09-23T08:30:00Z', status: 'Colis en cours d\'acheminement', carrier: 1 },
@@ -322,7 +322,7 @@ describe('ParcelsApp result parsing', () => {
     it('is counted as undated when it lies months before every other scan, in the JSON reply and on the page', () => {
       const states = [...dated, ...steps('2026-01-01T00:00:00Z')];
       const json = parseParcelsAppResponse({ carriers, states }, number, identity());
-      expect(json).toMatchObject({ current_stage: 'delivered', last_update: '2026-09-24T14:05:00.000Z', undated_event_count: 4 });
+      expect(json).toMatchObject({ current_stage: 'delivered', last_update: '2026-09-24T12:05:00.000Z', undated_event_count: 4 });
       expect(json.events?.map((scan) => scan.description)).toEqual(['Delivered', 'Colis en cours d\'acheminement', 'Colis pris en charge']);
       const html = parseParcelsAppHtml(page(states), number);
       expect(html).toMatchObject({ undated_event_count: 4, last_update: json.last_update, current_stage: json.current_stage });
@@ -490,19 +490,19 @@ describe('ParcelsApp result parsing', () => {
     const scans = (carriers: string[], dates: string[], extra: Record<string, unknown> = {}) => parseParcelsAppResponse({
       carriers, states: dates.map((date) => ({ date, status: 'In transit', carrier: 0, ...extra })),
     }, number, identity()).events?.map((scan) => scan.time);
-    expect(scans(['DPD Group'], ['2026-07-02T18:30:00+00:00', '2026-01-14T09:15:00+00:00'])).toEqual([
-      '2026-07-02T18:30:00.000Z',
-      '2026-01-14T09:15:00.000Z',
-    ]);
+    // Its scans keep their wall clocks rather than ParcelsApp's UTC label.
+    expect(scans(['DPD Group'], ['2026-07-02T18:30:00+00:00', '2026-01-14T09:15:00+00:00'])).toEqual([undefined, undefined]);
+    expect(parseParcelsAppResponse({ carriers: ['DPD Group'], states: [{ date: '2026-07-02T18:30:00+00:00', status: 'In transit', carrier: 0 }] },
+      number, identity()).events?.[0]?.local_time).toBe('2026-07-02T18:30:00.000');
     expect(scans(['GLS'], ['2026-07-02T18:30:00+00:00'])).toEqual(['2026-07-02T16:30:00.000Z']);
     expect(scans(['Hermes'], ['2026-01-14T09:15:00+00:00'])).toEqual(['2026-01-14T08:15:00.000Z']);
     // A network the name or location places elsewhere keeps that country's clock.
     expect(scans(['DPD UK'], ['2026-07-02T18:30:00+00:00'])).toEqual(['2026-07-02T17:30:00.000Z']);
     expect(scans(['DPD Group'], ['2026-07-02T18:30:00+00:00'], { location: 'Example Hub, United Kingdom' }))
       .toEqual(['2026-07-02T17:30:00.000Z']);
-    // A location it cannot place may be a network outside the catalog: no brand clock.
+    // A location it cannot place may be a network outside the catalog: no brand clock, and the wall clock stays.
     for (const location of ['EXAMPLE CITY, CA, US', 'Example City, ON', 'Example Hub']) {
-      expect(scans(['GLS'], ['2026-07-02T18:30:00+00:00'], { location })).toEqual(['2026-07-02T18:30:00.000Z']);
+      expect(scans(['GLS'], ['2026-07-02T18:30:00+00:00'], { location })).toEqual([undefined]);
     }
     // A name's country can be a branch: the scan's own location comes first.
     expect(scans(['Cainiao (China)'], ['2026-07-02T18:30:00+00:00'], { location: 'Example Hub, Spain' }))
@@ -1385,8 +1385,9 @@ describe('ParcelsApp result parsing', () => {
     const json = parseParcelsAppResponse({ carriers, states: scans.map(([date, status, carrier]) => ({ date, status, carrier })) }, xzg, identity(xzg));
     const page = identity(xzg).replace('</table>', `</table><ul class="events">${scans.map(([date, status, carrier]) =>
       carrierRow(DateTime.fromISO(date, { zone: 'UTC' }).toFormat('dd LLL yyyy'), date.slice(11, 16), status, carriers[carrier]!)).join('')}</ul>`);
+    // DPD Group's scan keeps its wall clock; four days after the line's, it is still later.
     const expected = [
-      ['2026-06-20T02:25:00.000Z', 'in_transit'], ['2026-06-16T10:40:00.000Z', 'in_transit'], ['2026-06-11T08:43:00.000Z', 'in_transit'],
+      [undefined, 'in_transit'], ['2026-06-16T10:40:00.000Z', 'in_transit'], ['2026-06-11T08:43:00.000Z', 'in_transit'],
       ['2026-06-09T12:51:00.000Z', 'registered'], ['2026-06-09T11:04:00.000Z', 'accepted'],
     ];
     for (const parsed of [json, parseParcelsAppHtml(page, xzg)]) {
@@ -1396,6 +1397,10 @@ describe('ParcelsApp result parsing', () => {
     // DPD's own acceptance, before any other carrier moved the parcel, stays one.
     expect(parseParcelsAppResponse({ carriers, states: [{ date: '2026-06-20T02:25:00+00:00', status: 'Parcel handed', carrier: 2 },
       { date: '2026-06-09T20:51:00Z', status: 'Order information has been sent to DPD.', carrier: 0 }] }, xzg, identity(xzg)).current_stage).toBe('accepted');
+    // Nor is a wall clock within a day of another carrier's move known to be later.
+    expect(parseParcelsAppResponse({ carriers, states: [{ date: '2026-06-17T08:00:00+00:00', status: 'Parcel handed', carrier: 2 },
+      ...[0, 1].map((carrier) => ({ date: '2026-06-16T18:40:00Z', status: scans[1]![1], carrier }))] }, xzg, identity(xzg)).events?.[0])
+      .toMatchObject({ local_time: '2026-06-17T08:00:00.000', stage: 'accepted' });
   });
 
   it('reads XZG on China\'s clock with or without DHLink\'s copies, whatever zone routing passes', () => {
@@ -1783,21 +1788,23 @@ describe('ParcelsApp result parsing', () => {
     // Live shape: a line carrier's parcel from China that DPD Switzerland delivers. ParcelsApp
     // names DPD's number next, and DPD Switzerland's own tracker dates the scan "+02:00".
     const swiss = '06080000000002';
-    const time = (reply: Record<string, unknown>, trackingNumber = number, timezone: string | null = null) => parseParcelsAppResponse({
+    const scan = (reply: Record<string, unknown>, trackingNumber = number, timezone: string | null = null) => parseParcelsAppResponse({
       carriers: ['Example Line', 'DPD Group'], originCode: 'CN', destinationCode: 'CH', next_tracking_ids: [swiss],
       states: [{ date: '2026-07-02T10:37:00+00:00', status: 'Parcel handed', carrier: 1 }], ...reply,
-    }, trackingNumber, identity(trackingNumber), timezone).events?.[0]?.time;
+    }, trackingNumber, identity(trackingNumber), timezone).events?.[0];
+    const time = (...args: Parameters<typeof scan>) => scan(...args)?.time;
+    const wall = (...args: Parameters<typeof scan>) => [scan(...args)?.time, scan(...args)?.local_time];
     expect(time({})).toBe('2026-07-02T08:37:00.000Z');
     expect(time({}, number, 'Europe/London')).toBe('2026-07-02T08:37:00.000Z');
     // The number asked can be DPD's own.
     expect(time({ next_tracking_ids: undefined }, swiss)).toBe('2026-07-02T08:37:00.000Z');
-    // Without a network's number, the zone is not known: the label, or routing's zone, stays.
-    expect(time({ next_tracking_ids: undefined })).toBe('2026-07-02T10:37:00.000Z');
-    expect(time({ next_tracking_ids: ['06460000000002'] })).toBe('2026-07-02T10:37:00.000Z');
+    // Without a network's number, the zone is not known: routing's zone, or the wall clock, stays.
+    expect(wall({ next_tracking_ids: undefined })).toEqual([undefined, '2026-07-02T10:37:00.000']);
+    expect(wall({ next_tracking_ids: ['06460000000002'] })).toEqual([undefined, '2026-07-02T10:37:00.000']);
     expect(time({ next_tracking_ids: undefined }, number, 'Europe/Zurich')).toBe('2026-07-02T08:37:00.000Z');
     // Nor is it when the destination, or an origin with a DPD network, keeps another clock, or none is named.
     for (const reply of [{ destinationCode: 'GB' }, { originCode: 'GB' }, { destinationCode: 'US' }, { destinationCode: undefined }]) {
-      expect(time(reply)).toBe('2026-07-02T10:37:00.000Z');
+      expect(wall(reply)).toEqual([undefined, '2026-07-02T10:37:00.000']);
     }
     // An origin without a DPD network, or one on the same clock, leaves it.
     expect(time({ originCode: 'DE' })).toBe('2026-07-02T08:37:00.000Z');
@@ -1870,8 +1877,8 @@ describe('ParcelsApp result parsing', () => {
       { date: '2026-07-02T10:37:00+00:00', status: 'Delivered', carrier: 0 },
       { date: '2026-01-14T09:15:00+00:00', status: 'Parcel handed', carrier: 0 },
     ] }, swiss, identity(swiss));
-    expect(rendered.events?.map((scan) => scan.time)).toEqual(['2026-07-02T10:37:00.000Z', '2026-01-14T09:15:00.000Z']);
-    expect(rendered.events?.map((scan) => scan.time)).toEqual(json.events?.map((scan) => scan.time));
+    expect(rendered.events?.map((scan) => scan.time ?? scan.local_time)).toEqual(['2026-07-02T10:37:00.000', '2026-01-14T09:15:00.000']);
+    expect(rendered.events?.map((scan) => [scan.time, scan.local_time])).toEqual(json.events?.map((scan) => [scan.time, scan.local_time]));
     expect(rendered).toMatchObject({ reported_carriers: ['DPD Group'], discovered_carrier: 'dpd' });
   });
 

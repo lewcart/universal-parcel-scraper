@@ -129,14 +129,18 @@ step exists for future protocol changes.
   `carrierIdFromName` still treats these brands as ambiguous, so discovery and routing
   are unchanged.
 
-  Two kinds of scan with no zone, and CTTYEX's later scans (below), keep their wall clock
+  Three kinds of scan with no zone, and CTTYEX's later scans (below), keep their wall clock
   in `local_time` instead, with no instant. One names no carrier, or a network that
   neither the catalog nor the tables here know ("Example Parcel Co"): nothing says its
-  label is an instant. The other is at a US military post office ("Fpo, AE", "APO AP
+  label is an instant. Another names a bare brand whose catalog networks all keep local
+  clocks ("DPD Group", "GLS"; Brand zones below): its label is the wall clock of whichever
+  network scanned it. The third is at a US military post office ("Fpo, AE", "APO AP
   96001"), which names no country: AE there is the Armed Forces Europe, not the Emirates,
   and the base can be anywhere in its region, so no guess and no zone of the scans around
   it fits. Each stays a scan: as the latest one it sets the stage with `last_update` null,
-  and it moves no freshness watermark.
+  and it moves no freshness watermark. Another carrier's acceptance is a hand-over to it
+  once a different carrier moved the parcel before; for a wall clock, more than a day
+  before.
 - A state with no `date` (an Asendia Spain leg listed after dated US scans), or with an
   offset-less date that no zone resolves, but for the scans above that keep their wall
   clock, has no instant. It is skipped and counted in `undated_event_count`, so it never
@@ -438,12 +442,13 @@ step exists for future protocol changes.
   falls in, when the destination and, if DPD has a network there, the origin keep the
   same clock. A line carrier's parcel from China that DPD Switzerland delivers names DPD
   Switzerland's number next, and its "DPD Group" scan has the digits DPD Switzerland's
-  own tracker dates "+02:00". Otherwise the scan stays as labeled unless routing passes a
-  zone. A brand with a UTC carrier (DHL, through DHL eCommerce) gets no zone. A location
-  that names no single-clock country ("Toronto, ON", "Chicago, US") can be one of the
-  brand's networks outside the catalog, so step 4 skips any scan with a location. A
-  location-less GLS or Hermes scan from such a network would still be read as Central
-  European time.
+  own tracker dates "+02:00". Otherwise, unless routing passes a zone, it keeps its wall
+  clock: DPD Germany's own tracker dates a "DPD Group" handover two hours before the
+  label. A brand with a UTC carrier (DHL, through DHL eCommerce) gets no zone and keeps
+  its label. A location that names no single-clock country ("Toronto, ON", "Chicago, US")
+  can be one of the brand's networks outside the catalog, so step 4 skips any scan with a
+  location, which keeps its wall clock too. A location-less GLS or Hermes scan from such a
+  network would still be read as Central European time.
 - Brand zones follow the catalog. A new GLS or Hermes carrier, or a changed `timezone`, on
   another clock turns step 4's shared zone off for that brand, and a new DPD network or
   depot range changes which parcels it dates. Either moves stored scans, and so their

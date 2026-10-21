@@ -91,6 +91,7 @@
       "normalizeTrackingNumber",
       "orderUniversalSources",
       "parseTrackingInput",
+      "postalOfficeZone",
       "priorityUniversalSource",
       "recognitionCandidates",
       "recognitionNumberShape",

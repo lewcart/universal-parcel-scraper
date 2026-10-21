@@ -2,7 +2,7 @@ import { DateTime, Settings } from 'luxon';
 import { describe, expect, it } from 'vitest';
 import {
   calendarDay, countryCode, countryTimeZone, epochMillisTime, epochSecondsTime, explicitOffsetTime, firstOccurrence, isoTime, mislabeledLocalTime,
-  mislabeledWallTime, canadaProvinceTimeZone, regionHasTown, settleGuessedClocks, sharedClockZone, timeZoneCountry, townKey,
+  mislabeledWallTime, canadaProvinceTimeZone, postalOfficeZone, regionHasTown, settleGuessedClocks, sharedClockZone, timeZoneCountry, townKey,
   usStateTimeZone, zonedTime,
 } from './index.js';
 
@@ -127,6 +127,16 @@ describe('time policies', () => {
     expect(countryTimeZone('Réunion')).toBe('Indian/Reunion');
     for (const value of ['GA', 'TN', 'PA', 'Georgia']) expect(countryTimeZone(value)).toBeNull();
     expect(countryTimeZone(undefined)).toBeNull();
+  });
+
+  it('reads a UPU office code on its country\'s single clock', () => {
+    expect(postalOfficeZone('GBLALA')).toBe('Europe/London');
+    expect(postalOfficeZone('DEFRAA')).toBe('Europe/Berlin');
+    expect(postalOfficeZone('JPTYO1')).toBe('Asia/Tokyo');
+    // Several zones, islands on clocks of their own, and no office code.
+    for (const code of ['AUSYDB', 'USJFKA', 'ESMADA', 'PTLISA', 'ZZXMPA', 'GBLAL', 'GBLALAX', 'gblala', 'AL1066', 'LONDON BPI']) {
+      expect(postalOfficeZone(code), code).toBeNull();
+    }
   });
 
   it('names any country by code or English name, whatever its clocks', () => {

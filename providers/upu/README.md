@@ -46,13 +46,18 @@ curl --fail-with-body --max-time 15 \
   `/Date(ms+offset)/` strings and `State` is numeric. Stages come from known event codes.
   `State` never proves delivery.
 - The WCF offset is not the event's zone: for one Finnish delivery it was an hour off
-  Posti's own timestamp. Each scan keeps its wall time as `local_time`, and
-  `time`/`last_update` stay unset. ISO-shaped replies are treated the same way.
+  Posti's own timestamp. ISO-shaped replies are treated the same way. The wall time is
+  the office's clock: a Sydney office's was Australia Post's own instant on Sydney time.
+  Each scan keeps it as `local_time`. A scan whose location is the UPU code of an office
+  in the record's origin or destination country (`GBLALA`) also gets its instant in
+  `time` when that country keeps one civil time. Countries with several zones, and Spain
+  and Portugal, whose islands keep other clocks, get none. The newest scan's instant is
+  `last_update`.
 - Origin, destination country and mail class are present but not projected. No
   documented schema has an onward tracking number or destination operator.
 - Signature and recipient details are not projected.
 
-Because UPU gives no instant, the host archives its scans (up to 1,000 per lookup
+Because most UPU scans have no instant, the host archives its scans (up to 1,000 per lookup
 number). It adds newly seen milestones to the timeline at observation time, and never
 lets UPU advance the UTC watermark or replace richer saved progress. The rules are in
 [docs/ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md).

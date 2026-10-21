@@ -6,6 +6,7 @@ import { InvalidInputError, NotFoundError, SchemaError } from '../../core/errors
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
 import { runSteps } from '../../core/runner/index.js';
+import { isoTime, postalOfficeZone } from '../../core/time/index.js';
 import { decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { classifyEvent, hasPrivateDeliveryDetails, isNotice, numberOf, result, text } from '../shared/result.js';
@@ -20,7 +21,7 @@ const STAGES: Record<string, Stage> = {
   EXA: 'customs', EXB: 'customs', EXC: 'in_transit', EMI: 'delivered',
 };
 
-/** The wire offset was contradicted by a destination operator; retain wall time only. */
+/** The wall time: the wire offset was contradicted by a destination operator. */
 function localTime(value: unknown): string {
   if (typeof value !== 'string') throw new SchemaError(SOURCE, 'UPU event has no date');
   const wcf = /^\/Date\((-?\d+)([+-])(\d{2})(\d{2})\)\/$/.exec(value);
@@ -44,6 +45,23 @@ function localTime(value: unknown): string {
   return date.toFormat("yyyy-MM-dd'T'HH:mm:ss");
 }
 
+/** The countries a record has the item leave and reach. */
+function routeOf(record: Record<string, unknown>): ReadonlySet<string> {
+  return new Set([record.OriginCountryCd, record.DestinationCountryCd].filter((code): code is string => typeof code === 'string'));
+}
+
+/**
+ * The instant of a scan at an office whose code names a country on the item's
+ * route that keeps one civil time: the office's wall clock is that country's.
+ * A Sydney office's wall clock was Australia Post's own instant on Sydney
+ * time. Other scans, and a wall clock the zone skips, have none.
+ */
+function officeTime(wall: string, location: string, route: ReadonlySet<string>): { time?: string } {
+  const zone = route.has(location.slice(0, 2)) ? postalOfficeZone(location) : null;
+  const placed = zone ? isoTime(wall, zone) : null;
+  return placed?.iso.startsWith(wall) ? { time: placed.iso } : {};
+}
+
 export function parseUpuResponse(payload: unknown, trackingNumber: string): CarrierResult {
   const number = numberOf(trackingNumber);
   if (Array.isArray(payload) && payload.length === 0) throw new NotFoundError(SOURCE, 'UPU has no available history');
@@ -54,10 +72,13 @@ export function parseUpuResponse(payload: unknown, trackingNumber: string): Carr
     || !payload.every((record) => isRecord(record) && record.ID === number && Array.isArray(record.Events))) {
     throw new SchemaError(SOURCE, 'UPU has no matching shipment history');
   }
-  const rows = payload.flatMap((record) => (record as { Events: unknown[] }).Events);
+  const rows = payload.flatMap((record: Record<string, unknown> & { Events: unknown[] }) => {
+    const route = routeOf(record);
+    return record.Events.map((raw) => ({ raw, route }));
+  });
   if (rows.length > MAX_EVENTS) throw new SchemaError(SOURCE, 'UPU has no matching shipment history');
   const events: CarrierEvent[] = [];
-  for (const raw of rows) {
+  for (const { raw, route } of rows) {
     if (!isRecord(raw) || typeof raw.EventCd !== 'string' || !/^[A-Z0-9]{2,8}$/.test(raw.EventCd)) {
       throw new SchemaError(SOURCE, 'UPU returned an invalid event');
     }
@@ -70,7 +91,8 @@ export function parseUpuResponse(payload: unknown, trackingNumber: string): Carr
     const { stage } = classified;
     if (stage !== 'delivered' && hasPrivateDeliveryDetails(description)) continue;
     const location = text(raw.EventLocation);
-    events.push({ local_time: localTime(raw.EventDT), provider_code: raw.EventCd,
+    const wall = localTime(raw.EventDT);
+    events.push({ ...officeTime(wall, location, route), local_time: wall, provider_code: raw.EventCd,
       description: stage === 'delivered' ? 'Delivered' : description, ...classified,
       ...(location && !hasPrivateDeliveryDetails(location) ? { location } : {}),
     });

@@ -65,6 +65,26 @@ describe('UPU postal tracking', () => {
       .toMatchObject({ local_time: '2026-09-12T05:48:00' });
   });
 
+  it('dates a scan at an office of a country on the route that keeps one clock, and keeps every wall clock', () => {
+    const at = (EventLocation: string, EventDT: string, EventCd = 'EMC') => ({ ...scan(EventCd, 'Departure from outward office of exchange', EventDT), EventLocation });
+    const route = (Events: unknown[]) => [{ ID: number, Events, State: 3, OriginCountryCd: 'GB', DestinationCountryCd: 'HR' }];
+    const summer = parseUpuResponse(route([scan(), at('GBLALA', '2026-10-17T03:36:00')]), number);
+    expect(summer.events?.[0]).toMatchObject({ time: '2026-10-17T03:36:00+01:00', local_time: '2026-10-17T03:36:00', location: 'GBLALA' });
+    expect(summer).toMatchObject({ last_update: '2026-10-17T03:36:00+01:00', last_update_local: '2026-10-17T03:36:00' });
+    expect(summer.events?.[1]).not.toHaveProperty('time');
+    expect(parseUpuResponse(route([at('GBLALA', '2026-01-08T06:22:00')]), number).events?.[0]?.time).toBe('2026-01-08T06:22:00+00:00');
+    expect(parseUpuResponse(route([at('HRZAGA', '2026-10-18T09:00:00', 'EMD')]), number).events?.[0]?.time).toBe('2026-10-18T09:00:00+02:00');
+    // An office in a country with several clocks, off the route, a name and a wall clock the zone skips keep only the wall clock.
+    for (const [location, wall] of [['AUSYDB', '2026-10-08T05:46:00'], ['DEFRAA', '2026-10-17T03:36:00'], ['SYDNEY', '2026-10-17T03:36:00'],
+      ['GBLALA', '2026-03-29T01:30:00']]) {
+      const value = parseUpuResponse(route([at(location!, wall!)]), number);
+      expect(value.events?.[0], location).toMatchObject({ local_time: wall });
+      expect(value.events?.[0], location).not.toHaveProperty('time');
+      expect(value.last_update, location).toBeNull();
+    }
+    expect(parseUpuResponse(payload([at('GBLALA', '2026-10-17T03:36:00')]), number).events?.[0]).not.toHaveProperty('time');
+  });
+
   it('keeps separate locations and codes when labels and wall times coincide', () => {
     const value = parseUpuResponse(payload([scan(), { ...scan(), EventLocation: 'Other office' },
       { ...scan(), EventCd: 'EMB' }, scan()]), number);

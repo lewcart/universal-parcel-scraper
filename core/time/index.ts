@@ -248,6 +248,21 @@ export function countryTimeZone(country: unknown): string | null {
   return code && Object.hasOwn(COUNTRY_ZONES, code) ? COUNTRY_ZONES[code]! : null;
 }
 
+// A UPU office code (IMPC): two letters for its country, three for its place and one more.
+const POSTAL_OFFICE = /^([A-Z]{2})[A-Z]{3}[A-Z0-9]$/;
+
+/**
+ * The zone of a postal office named by its UPU office code ("GBLALA"), such as
+ * an office of exchange: its country's, when the country keeps one civil time.
+ * Scans the posts relay through the postal union carry the office's wall clock.
+ * Spain's and Portugal's islands keep clocks of their own, so their offices
+ * have none.
+ */
+export function postalOfficeZone(code: string): string | null {
+  const country = POSTAL_OFFICE.exec(code)?.[1];
+  return country && country !== 'ES' && country !== 'PT' ? countryTimeZone(country) : null;
+}
+
 /** The single-zone country keeping this civil time ("Europe/Zurich" is Switzerland's); null for UTC. */
 export function timeZoneCountry(zone: string): string | null {
   const countries = Object.keys(COUNTRY_ZONES).filter((code) => COUNTRY_ZONES[code] === zone);

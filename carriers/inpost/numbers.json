@@ -33,8 +33,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ciblex",
           "inpost",
+          "ciblex",
           "bpost",
           "austrian-post"
         ]
@@ -51,8 +51,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ciblex",
           "inpost",
+          "ciblex",
           "bpost",
           "austrian-post"
         ]
@@ -70,8 +70,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ciblex",
           "inpost",
+          "ciblex",
           "bpost",
           "austrian-post"
         ]
@@ -185,8 +185,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ciblex",
           "inpost",
+          "ciblex",
           "bpost",
           "austrian-post"
         ]
@@ -222,8 +222,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ciblex",
           "inpost",
+          "ciblex",
           "bpost",
           "austrian-post"
         ]
@@ -339,6 +339,96 @@
         ]
       },
       "note": "Looked up on Yodel's former tracker, now InPost's UK network, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "520000000000000000000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost",
+          "ciblex",
+          "bpost",
+          "austrian-post"
+        ]
+      },
+      "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
+    },
+    {
+      "number": "650000000000000000000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost",
+          "ciblex",
+          "bpost",
+          "austrian-post"
+        ]
+      },
+      "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
+    },
+    {
+      "number": "660000000000000000000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost",
+          "ciblex",
+          "bpost",
+          "austrian-post"
+        ]
+      },
+      "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
+    },
+    {
+      "number": "800000000000000000000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost",
+          "ciblex",
+          "bpost",
+          "austrian-post"
+        ]
+      },
+      "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
+    },
+    {
+      "number": "820000000000000000000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost",
+          "ciblex",
+          "bpost",
+          "austrian-post"
+        ]
+      },
+      "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
     }
   ]
 }

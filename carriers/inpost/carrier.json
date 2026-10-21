@@ -74,6 +74,12 @@
   ],
   "detection": [
     {
+      "id": "inpost-answered-prefix",
+      "pattern": "^(?:20|52|6[2456]|8[02])\\d{22}$",
+      "confidence": "low",
+      "preferred": true
+    },
+    {
       "id": "inpost-1",
       "pattern": "^\\d{24}$",
       "confidence": "low"

@@ -2239,6 +2239,11 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
+        "pattern": "^(?:20|52|6[2456]|8[02])\\d{22}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
         "pattern": "^\\d{24}$",
         "confidence": "low"
       },
@@ -32201,7 +32206,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "royal-mail": ["royal-mail-1","royal-mail-2","royal-mail-3"],
   "parcelforce": ["parcelforce-1","parcelforce-2"],
   "evri": ["evri-international","evri-1"],
-  "inpost": ["inpost-1","inpost-2","inpost-3","inpost-4","inpost-5"],
+  "inpost": ["inpost-answered-prefix","inpost-1","inpost-2","inpost-3","inpost-4","inpost-5"],
   "an-post": ["an-post-1"],
   "bpost": ["bpost-numeric-prefix","bpost-1","bpost-2","bpost-3","bpost-jjbe"],
   "austrian-post": ["austrian-post-4","austrian-post-1","austrian-post-3","austrian-post-2"],

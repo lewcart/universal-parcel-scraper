@@ -75905,6 +75905,22 @@
     ]
   },
   {
+    "input": "JXCYT7091667250YQ",
+    "carrier": "juxi-express",
+    "confidence": "high",
+    "candidates": [
+      "juxi-express"
+    ]
+  },
+  {
+    "input": "JXCZZ9000000001YQ",
+    "carrier": "juxi-express",
+    "confidence": "high",
+    "candidates": [
+      "juxi-express"
+    ]
+  },
+  {
     "input": "JY1276193661",
     "carrier": "j-and-t",
     "confidence": "high",

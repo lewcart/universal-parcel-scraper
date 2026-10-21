@@ -18054,6 +18054,35 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "juxi-express": {
+    "displayName": "Juxi Express",
+    "color": "#e2393c",
+    "aliases": [
+      "SHJX",
+      "SHJX Juxi Express",
+      "驹隙物流",
+      "上海驹隙",
+      "上海驹隙国际物流有限公司",
+      "Shanghai Juxi International Freight Forwarding"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^JXC[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
   "kargoist": {
     "displayName": "Kargoist",
     "color": "#18b6d6",
@@ -31817,6 +31846,7 @@ export const CARRIER_IDS = [
   "jrt",
   "js-express",
   "jumppoint",
+  "juxi-express",
   "kargoist",
   "kazpost",
   "kerry-tj",
@@ -32600,6 +32630,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jrt": ["jrt-1","jrt-2"],
   "js-express": ["js-express-1"],
   "jumppoint": ["jumppoint-1"],
+  "juxi-express": ["juxi-express-1"],
   "kargoist": ["kargoist-1"],
   "kazpost": ["kazpost-s10"],
   "kerry-tj": [],

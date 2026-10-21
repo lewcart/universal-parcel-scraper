@@ -33,7 +33,7 @@ const cases = [
   { carrier: 'dtdc', number: 'N00000001', fixture: 'delivered.json' },
   { carrier: 'yunexpress', number: 'YT0000000000000001', fixture: 'in-transit.json', unresolved: true },
   { carrier: 'postnord', number: '00573000000000000001', fixture: 'delivered.json' },
-  { carrier: 'bpost', number: '000000000000000000000001', fixture: 'delivered.json', unresolved: true },
+  { carrier: 'bpost', number: '000000000000000000000001', fixture: 'delivered.json' },
   { carrier: 'purolator', number: '100000000001', fixture: 'delivered.json', unresolved: true },
   { carrier: 'yto', number: 'YT0000000000001', fixture: 'delivered.json' },
   { carrier: 'correios-br', number: 'AA000000005BR', fixture: 'delivered.json' },

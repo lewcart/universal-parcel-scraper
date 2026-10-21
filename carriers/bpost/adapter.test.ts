@@ -14,14 +14,17 @@ const payload = () => structuredClone(fixture);
 const POINT = 'Example Post Point\nExample Street 1\n1000 Example Town';
 
 describe('bpost direct history', () => {
-  it('reads the identity-bound timeline and preserves clocks without inventing offsets', () => {
+  it('reads the identity-bound timeline, its scans in Belgium on Brussels time', () => {
     const result = normalizeCarrierResult(parseBpost(payload(), NUMBER));
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: null,
-      last_update_local: '2026-01-04T12:00:00', weight_kg: 0.32, dimensions_text: '26.1 × 7.5 × 38.4 cm', expected_delivery: null,
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: '2026-01-04T12:00:00+01:00',
+      weight_kg: 0.32, dimensions_text: '26.1 × 7.5 × 38.4 cm', expected_delivery: null,
       delivered_at: '2026-01-04T12:00:00+01:00', destination_country: 'BE', pickup_point: POINT });
     expect(result).not.toHaveProperty('international_tracking_number');
+    expect(result).not.toHaveProperty('last_update_local');
     expect(result.events?.map((event) => event.stage)).toEqual(['delivered', 'ready_for_pickup', 'out_for_delivery', 'in_transit', 'registered']);
-    expect(result.events?.every((event) => event.local_time && !event.time)).toBe(true);
+    expect(result.events?.map((event) => event.time)).toEqual(['2026-01-04T12:00:00+01:00', '2026-01-03T12:00:00+01:00',
+      '2026-01-03T10:00:00+01:00', '2026-01-02T12:00:00+01:00', '2026-01-01T12:00:00+01:00']);
+    expect(result.events?.some((event) => event.local_time)).toBe(false);
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|recipient|receiver|sender|actualDeliveryTime|activeStep/);
     const declared = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
     const waiting = payload(); waiting.items[0].events.shift();
@@ -69,9 +72,41 @@ describe('bpost direct history', () => {
     const excessive = payload(); excessive.items[0].events = Array(501).fill(excessive.items[0].events[0]);
     expect(() => parseBpost(excessive, NUMBER)).toThrowError(expect.objectContaining({ kind: 'schema' }));
     const order = payload(); order.items[0].events[1].date = '2026-01-05';
-    expect(parseBpost(order, NUMBER).last_update_local).toBe('2026-01-04T12:00:00');
+    expect(parseBpost(order, NUMBER).last_update).toBe('2026-01-04T12:00:00+01:00');
     order.items[0].events.push(order.items[0].events[0]);
     expect(parseBpost(order, NUMBER).events).toHaveLength(5);
+  });
+
+  it('dates every scan of a national parcel on Brussels time, and keeps wall clocks a clock abroad may hold', () => {
+    const national = payload();
+    national.items[0].countryOfDepurture = 'BE';
+    for (const event of national.items[0].events) event.location = { locationName: 'Example sorting centre' };
+    national.items[0].events[0].date = '2026-07-01';
+    expect(parseBpost(national, NUMBER).events?.map((event) => event.time)).toEqual(['2026-07-01T12:00:00+02:00',
+      '2026-01-03T12:00:00+01:00', '2026-01-03T10:00:00+01:00', '2026-01-02T12:00:00+01:00', '2026-01-01T12:00:00+01:00']);
+    const bySender = payload();
+    bySender.items[0].sender = { countryCode: 'BE' };
+    bySender.items[0].events[1].location = { locationName: 'Example sorting centre' };
+    expect(parseBpost(bySender, NUMBER).events?.[1]).toMatchObject({ time: '2026-01-03T12:00:00+01:00' });
+    // From abroad, a scan that names no country, or another one, keeps its wall clock.
+    const imported = payload();
+    imported.items[0].countryOfDepurture = 'NL';
+    imported.items[0].events[3].location = { locationName: 'Example hub' };
+    imported.items[0].events[4].location = { locationName: 'Example hub', countryCode: 'NL' };
+    const events = parseBpost(imported, NUMBER).events ?? [];
+    expect(events[0]).toMatchObject({ time: '2026-01-04T12:00:00+01:00' });
+    expect(events.slice(3)).toEqual([expect.objectContaining({ local_time: '2026-01-02T12:00:00', location: 'Example hub' }),
+      expect.objectContaining({ local_time: '2026-01-01T12:00:00', location: 'Example hub, NL' })]);
+    expect(events.slice(3).some((event) => event.time)).toBe(false);
+    // The hour the change to summer time skips has no instant; the repeated one takes its first.
+    const changes = payload();
+    changes.items[0].events[0] = { ...changes.items[0].events[0], date: '2026-03-29', time: '02:30' };
+    changes.items[0].events[1] = { ...changes.items[0].events[1], date: '2026-10-25', time: '02:30' };
+    const [skipped, repeated] = parseBpost(changes, NUMBER).events ?? [];
+    expect(skipped).toMatchObject({ local_time: '2026-03-29T02:30:00' });
+    expect(skipped).not.toHaveProperty('time');
+    expect(repeated).toMatchObject({ time: '2026-10-25T02:30:00+02:00' });
+    expect(parseBpost(changes, NUMBER)).toMatchObject({ last_update: null, last_update_local: '2026-03-29T02:30:00' });
   });
 
   it('keeps pickup availability, unrecognized scans and return delivery distinct', () => {
@@ -187,7 +222,7 @@ describe('bpost anonymous batch request', () => {
     await expect(instance.recognize!('123')).resolves.toEqual({ known: false });
     expect(fetcher).not.toHaveBeenCalled();
     fetcher.mockResolvedValueOnce(new Response(JSON.stringify(payload())));
-    await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: '2026-01-04T11:00:00.000Z' });
     fetcher.mockResolvedValueOnce(new Response(JSON.stringify({ error: 'NO_DATA_FOUND' })));
     await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: false });
     fetcher.mockResolvedValueOnce(new Response(JSON.stringify({ error: 'INVALID_POSTAL_CODE' })));

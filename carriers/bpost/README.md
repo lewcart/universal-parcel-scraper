@@ -46,8 +46,14 @@ none.
 
 ## Limitations
 
-Scan clocks have no offsets. The adapter preserves their local digits and the
-provider's order; see [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md) for unresolved
+Scan clocks have no offsets. bpost's scans in Belgium are on Belgian time: the
+reply also gives the item's creation as an instant (`key.tmmCreated`), and that
+is the pre-advice scan's clock read on Brussels time (`key.created` has the same
+digits as UTC). So a scan that names Belgium, and every scan of a national
+parcel (departure country and receiver both Belgium) even where it names no
+country, is read on Brussels time. Other scans keep their local digits, as
+does a clock the change to summer time skips, and the provider's order is kept;
+see [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md) for unresolved
 history handling. Weight and dimensions have explicit units. Recipient and
 sender names and addresses, the point's code, delivery instructions and proof
 assets are excluded. The delivery time bpost lists for a delivered parcel has no

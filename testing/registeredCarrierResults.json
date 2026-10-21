@@ -776,8 +776,7 @@
       "status": "delivered",
       "current_stage": "delivered",
       "last_status_text": "Item delivered",
-      "last_update": null,
-      "last_update_local": "2026-01-04T12:00:00",
+      "last_update": "2026-01-04T12:00:00+01:00",
       "expected_delivery": null,
       "weight_kg": 0.32,
       "dimensions_text": "26.1 × 7.5 × 38.4 cm",
@@ -786,31 +785,31 @@
       "destination_country": "BE",
       "events": [
         {
-          "local_time": "2026-01-04T12:00:00",
+          "time": "2026-01-04T12:00:00+01:00",
           "description": "Item delivered",
           "location": "Example facility, BE",
           "stage": "delivered"
         },
         {
-          "local_time": "2026-01-03T12:00:00",
+          "time": "2026-01-03T12:00:00+01:00",
           "description": "Item available at Pick-up point",
           "location": "Example facility, BE",
           "stage": "ready_for_pickup"
         },
         {
-          "local_time": "2026-01-03T10:00:00",
+          "time": "2026-01-03T10:00:00+01:00",
           "description": "The postman's delivery round for your item has started",
           "location": "Example facility, BE",
           "stage": "out_for_delivery"
         },
         {
-          "local_time": "2026-01-02T12:00:00",
+          "time": "2026-01-02T12:00:00+01:00",
           "description": "Your item has been sorted",
           "location": "Example facility, BE",
           "stage": "in_transit"
         },
         {
-          "local_time": "2026-01-01T12:00:00",
+          "time": "2026-01-01T12:00:00+01:00",
           "description": "Item is announced / Landmark Global (bpost) received the information",
           "location": "Example facility, BE",
           "stage": "registered"

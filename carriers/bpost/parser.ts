@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { zonedTime } from '../../core/time/index.js';
+import { firstOccurrence, zonedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { classifyBpostStatus } from './status.js';
@@ -63,6 +63,17 @@ function deliveredInBelgium(value: unknown): string {
   return zonedTime(`${day} ${clock}`, clock.length === 5 ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd HH:mm:ss', 'Europe/Brussels')?.iso ?? '';
 }
 
+/**
+ * A scan's wall clock on Brussels time, or '' for one the change to summer time skips. bpost
+ * dates its scans in Belgium on Belgian time: its reply also carries the item's creation as an
+ * instant, and that is the pre-advice scan's clock read on Brussels time.
+ */
+function brusselsTime(local: string): string {
+  const zoned = firstOccurrence(DateTime.fromISO(local, { zone: 'Europe/Brussels' }));
+  return zoned.isValid && zoned.toISO({ includeOffset: false, suppressMilliseconds: true }) === local
+    ? zoned.toISO({ suppressMilliseconds: true }) ?? '' : '';
+}
+
 export function parseBpost(payload: unknown, number: string): CarrierResult {
   const requested = normalizeBpostNumber(number);
   if (!isRecord(payload)) throw new SchemaError('bpost');
@@ -77,6 +88,11 @@ export function parseBpost(payload: unknown, number: string): CarrierResult {
   if (!Array.isArray(item.events) || item.events.length > 500) throw new SchemaError('bpost');
   const returnDelivery = item.retourOrBackToSender === true && isRecord(item.activeStep)
     && item.activeStep.knownProcessStep === 'DELIVERED_TO_SENDER';
+  const destination = isRecord(item.receiver) ? countryCode(item.receiver.countryCode) : '';
+  // A national parcel, sent from Belgium to Belgium, is scanned in Belgium even where a scan
+  // names no country. An international one can be scanned abroad, on another clock.
+  const origin = countryCode(item.countryOfDepurture) || (isRecord(item.sender) ? countryCode(item.sender.countryCode) : '');
+  const national = origin === 'BE' && destination === 'BE';
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
   for (const raw of item.events) {
@@ -94,8 +110,10 @@ export function parseBpost(payload: unknown, number: string): CarrierResult {
     const parsed = DateTime.fromFormat(text, clock.length === 5 ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd HH:mm:ss', { zone: 'UTC' });
     const local = parsed.isValid ? parsed.toISO({ includeOffset: false, suppressMilliseconds: true }) : null;
     if (!local) throw new SchemaError('bpost', 'bpost returned an invalid scan date');
+    const country = isRecord(raw.location) ? countryCode(raw.location.countryCode) : '';
     const location = isRecord(raw.location) ? [clean(raw.location.locationName, 160), clean(raw.location.countryCode, 2)]
       .filter(Boolean).join(', ') : '';
+    const time = country === 'BE' || (national && !country) ? brusselsTime(local) : '';
     const dedup = `${local}\u0000${description}\u0000${location}`;
     if (seen.has(dedup)) continue;
     seen.add(dedup);
@@ -106,14 +124,13 @@ export function parseBpost(payload: unknown, number: string): CarrierResult {
       throw new IndeterminateError('bpost', 'bpost returned an ambiguous return-delivery milestone');
     }
     const stage = returnDelivery && mapped?.stage === 'delivered' ? 'returned' : mapped?.stage;
-    events.push({ local_time: local, description, ...(location ? { location } : {}),
+    events.push({ ...(time ? { time } : { local_time: local }), description, ...(location ? { location } : {}),
       ...(stage ? { stage } : {}), ...(item.retourOrBackToSender === true ? { provider_leg: 'return' } : {}) });
   }
   if (!events.length) throw new IndeterminateError('bpost', 'bpost returned no parcel history');
   const latest = events[0]!;
   const mapped = classifyBpostStatus(latest.description!);
   const current = returnDelivery && mapped?.stage === 'delivered' ? { status: 'exception' as const, stage: 'returned' as const } : mapped;
-  const destination = isRecord(item.receiver) ? countryCode(item.receiver.countryCode) : '';
   // The delivery point is the pickup point itself, apart from the receiver: bpost's
   // tracker shows it with opening hours and directions from its own coordinates.
   // It stays once the parcel is collected there, never after a door delivery.
@@ -128,7 +145,7 @@ export function parseBpost(payload: unknown, number: string): CarrierResult {
   const dimensions = clean(item.dimensionsInCm, 100);
   const dimensionMatch = dimensions.match(/^(\d+(?:\.\d+)?)cm x (\d+(?:\.\d+)?)cm x (\d+(?:\.\d+)?)cm$/);
   return { status: current?.status ?? 'unknown', ...(current ? { current_stage: current.stage } : {}),
-    last_status_text: latest.description, last_update: null, last_update_local: latest.local_time,
+    last_status_text: latest.description, last_update: latest.time ?? null, ...(latest.time ? {} : { last_update_local: latest.local_time }),
     expected_delivery: null,
     ...(typeof grams === 'number' && Number.isFinite(grams) && grams > 0 ? { weight_kg: grams / 1000 } : {}),
     ...(dimensionMatch && dimensionMatch.slice(1).every((value) => Number(value) > 0)

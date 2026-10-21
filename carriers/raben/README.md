@@ -51,9 +51,11 @@ across Central and Eastern Europe. Tracked through the lookup its myRaben tracki
 ## Numbers
 
 Raben's tracking box asks for the shipment number. Lookups archived from its myRaben shipment
-page and Raben's own customer guides show fifteen-digit numbers. Fifteen-digit runs are printed
-by several parcel carriers, so no rule claims them and preflight does not ask Raben about them.
-The samples and their sources are in [`numbers.json`](numbers.json).
+page and Raben's own customer guides show fifteen-digit numbers, most of them opening with 27.
+Fifteen-digit runs are printed by several parcel carriers, BRT's parcel IDs among them, so
+`raben-1` claims only 27 and thirteen digits, with low confidence, and recognition asks myRaben
+about them. Other fifteen-digit numbers are not offered to Raben. The samples and their sources
+are in [`numbers.json`](numbers.json).
 
 ## Links
 

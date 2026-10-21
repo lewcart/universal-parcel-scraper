@@ -24901,7 +24901,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^27\\d{13}$",
+        "confidence": "low"
+      }
+    ]
   },
   "ram-hand-to-hand": {
     "displayName": "RAM Hand-to-Hand Couriers",

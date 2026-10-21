@@ -24903,7 +24903,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^27\\d{13}$",
+        "confidence": "low"
+      }
+    ]
   },
   "ram-hand-to-hand": {
     "displayName": "RAM Hand-to-Hand Couriers",
@@ -32848,7 +32853,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "quicksilver-sa": ["quicksilver-sa-1"],
   "quiqup": [],
   "qwintry": ["qwintry-1"],
-  "raben": [],
+  "raben": ["raben-1"],
   "ram-hand-to-hand": ["ram-hand-to-hand-1"],
   "redpack": [],
   "redur": [],

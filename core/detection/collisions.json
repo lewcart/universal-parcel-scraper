@@ -955,6 +955,25 @@
     "reason": "BRT parcel IDs and Yunda's fifteen-digit rule both accept any fifteen digits and neither carries a check digit, so the number stays a low-confidence suggestion."
   },
   {
+    "shape": "Fifteen digits starting with 27 that pass the GS1 check",
+    "carriers": [
+      "brt",
+      "fedex",
+      "raben",
+      "yunda"
+    ],
+    "reason": "Raben's shipment numbers open with 27, a prefix BRT and Yunda also accept, and a passing GS1 check digit adds FedEx; none of them owns the shape, so recognition asks the carriers' trackers."
+  },
+  {
+    "shape": "Fifteen digits starting with 27 that fail the GS1 check",
+    "carriers": [
+      "brt",
+      "raben",
+      "yunda"
+    ],
+    "reason": "Raben's shipment numbers open with 27, while BRT parcel IDs and Yunda's fifteen-digit rule accept any fifteen digits; none carries a check digit, so recognition asks the carriers' trackers."
+  },
+  {
     "shape": "Fifteen digits starting with 0 or 1 that fail the GS1 check",
     "carriers": [
       "brt",

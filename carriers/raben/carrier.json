@@ -103,5 +103,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "raben-1",
+      "pattern": "^27\\d{13}$",
+      "confidence": "low"
+    }
+  ]
 }

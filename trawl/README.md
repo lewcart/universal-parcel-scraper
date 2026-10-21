@@ -62,6 +62,11 @@ separate local Chromium transport.
 `REDIS_URL` configures the session cache. `AUSTRALIA_POST_BROWSER_LOCALE` overrides the
 browser locale for Australia Post, and `FFMPEG_PATH` selects SF Express's PNG decoder.
 
+`BROWSER_SHUTDOWN_DRAIN_MS` lets accepted lookups finish when the container stops; by default
+TRAWL interrupts them. It exits by force 30 seconds after the drain, so give the container a
+stop timeout of the drain plus 30 seconds, or the supervisor kills it mid-drain. `GET /metrics`
+reports the browser pool to Prometheus.
+
 The image sets `LOG_LEVEL=warn`. TRAWL's request log includes the page path, where some
 carriers put the parcel number; `LOG_LEVEL=info` turns that log on.
 

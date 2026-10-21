@@ -747,7 +747,12 @@ describe('classifyWording', () => {
       ['Takeover by pickup parcel shop_shop', 'ready_for_pickup'], ['Parcel handed over to DPD at the Pickup parcel shop', 'accepted'],
       ['Has been put into storage', 'accepted'], ['Has left the warehouse', 'in_transit'],
       ['Package left the warehouse', 'in_transit'],
+      // A forwarder's warehouse scans before the flight, relayed by providers.
+      ['Warehouse scanning bagging', 'in_transit'], ['Master Airway Bill Number Received', 'in_transit'],
+      ['Master air waybill assigned', 'in_transit'], ['Unbagging', 'in_transit'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
+    // A parcel's own air waybill still marks registration.
+    expect(wordingStage('Air waybill created', 'pending')).toBe('registered');
     // A notice sent to the recipient is no pre-advice, and an item received elsewhere keeps its reading.
     expect(wordingStage('Shipping information sent to the recipient', 'pending')).not.toBe('registered');
     expect(wordingStage('Item received at delivery office', 'pending')).toBe('accepted');

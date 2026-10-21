@@ -94,13 +94,19 @@
       "evidence": "public_shipment_report",
       "source": {
         "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/reso-ritornato-al-mittente-e-p/5341225f84324f54e4",
-        "date": "2025-07-07"
+        "date": "2025-07-07",
+        "access": "full_page",
+        "dateKind": "publication"
       },
       "expect": {
         "carrier": "spring-gds",
         "confidence": "high"
       },
-      "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Poste Italiane; detection selects PostNL."
+      "note": "AliExpress parcel from abroad its recipient quotes in a complaint against Poste Italiane, attaching the tracking Poste Italiane's site gave for it. Detection selects PostNL.",
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "shipment_tracking"
+      }
     },
     {
       "number": "RA00020974503",
@@ -1316,6 +1322,106 @@
         "confidence": "high"
       },
       "note": "Made-up number in the shape of Poste Italiane's ISO 15459 plate: J, the UPU's agency code J, Poste's UPU operator code ITA and its thirteen-character code. Poste's own tracker follows the whole plate."
+    },
+    {
+      "number": "CA088250120DE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/pacco-smarito-per-ignioranza-d/e91037b38afa461b1a",
+        "date": "2026-01-23",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "DHL parcel from Germany its recipient quotes in a complaint, with Poste Italiane's tracker link for the German number and its history: a delivery that failed on the address, then the return to the sender."
+    },
+    {
+      "number": "LT352506590GB",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/pacco-perso/222a1f7573420d1527",
+        "date": "2026-04-14",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "royal-mail",
+        "confidence": "high"
+      },
+      "note": "Royal Mail tracked item to Italy. Poste Italiane's reply, quoted in the complaint, calls it tracked mail from abroad that its website follows."
+    },
+    {
+      "number": "LX326232915JP",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/pacco-internazionale-fermo-da-/459d6f6df12d1355ef",
+        "date": "2026-08-21",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "japan-post",
+        "confidence": "high"
+      },
+      "note": "Japan Post item to Italy. The complaint quotes Poste Italiane's tracker under the Japanese number: taken in charge in Italy, then held for customs clearance."
+    },
+    {
+      "number": "CO603129011FR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/pacco-estero-non-consegnato/ab8a7f57af5e745e1f",
+        "date": "2025-08-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "la-poste",
+        "confidence": "high"
+      },
+      "note": "Colissimo parcel from France its recipient looked up on Poste Italiane's site, whose history says the address is wrong or incomplete."
+    },
+    {
+      "number": "CM004716595NL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/pacco-non-consegnato/30c41e24aa4064598d",
+        "date": "2025-12-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "spring-gds",
+        "confidence": "high"
+      },
+      "note": "PostNL parcel to Italy. Its recipient says Poste Italiane's site still shows it in the Netherlands."
     }
   ]
 }

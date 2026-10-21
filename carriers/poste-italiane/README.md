@@ -4,13 +4,24 @@ The Italian postal operator. Tracked through the keyless DoveQuando REST endpoin
 `poste.it/cerca` tracker. Dutch handoffs of Poste Italiane consignments stay with
 [PostNL](../spring-gds/README.md). SDA parcel shapes are recognition candidates;
 matching native Poste status or progress confirms them. Other postal shapes use the generic postal fallback.
-Of the S10 numbers, the adapter takes the ones Poste issues (`IT` last and a valid check digit)
-and refuses the others: mail from abroad is relabelled with a code of Poste's own, so the
-tracker does not know the sender's number. Detection names Poste Italiane for the parcels, EMS,
-registered and tracked-letter items it issues (`C`, `E`, `L` or `R` first). Its tracker follows
-them abroad, to delivery or back. Its other `IT` codes stay with the generic postal carrier, and
-the low-confidence `poste-italiane-s10` rule makes recognition ask Poste Italiane first. `UB`
-codes, for one, label goods for customs and are not tracked.
+Detection names Poste Italiane for the parcels, EMS, registered and tracked-letter items it
+issues (`C`, `E`, `L` or `R` first, `IT` last and a valid check digit). Its tracker follows them
+abroad, to delivery or back. Its other `IT` codes stay with the generic postal carrier, and the
+low-confidence `poste-italiane-s10` rule makes recognition ask Poste Italiane first. `UB` codes,
+for one, label goods for customs and are not tracked.
+
+The adapter also takes the S10 number of mail from abroad, with a valid check digit, so the
+hand-off to the destination country's post asks Poste's tracker about mail to Italy. Poste's
+[page on receiving from abroad](https://web.archive.org/web/20250317115204/https://www.poste.it/prodotti/ricevere-spedizioni-da-estero.html)
+says its tracker follows a tracked item from abroad by its code: a parcel once Poste takes it in
+Italy, letter post from the country of origin when that post shares its leg. Complaints in the
+corpus quote the tracker for such items, and the
+[prior-art client's tests](https://github.com/ha-parcel-integrations/ha-poste-italiane/blob/dbf814a5c1319f77af9855abe5f014e10a829902/tests/payloads.py)
+keep its reply for one from Japan. The tracker does not know every item by that number: Poste's
+[barcode sheet](https://web.archive.org/web/20241105100904/https://business.poste.it/business/files/1476611371030/scheda-tecnica-prodotto-codice-a-barre-3-di-9.pdf)
+gives imported registered and insured letters new codes of its own, ending in `NN`. A
+hand-off that finds nothing leaves the item with the sending post. Detection never names Poste
+Italiane for a number issued abroad.
 
 ## How it works
 

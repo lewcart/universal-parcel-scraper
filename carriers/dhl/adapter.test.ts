@@ -131,7 +131,8 @@ describe('DHL public tracking normalization', () => {
   // destination's national post, which then has to confirm it.
   it.each([
     ['France', { carrier: 'la-poste', number: NUMBER, basis: 'destination' }],
-    ['Italy', null],
+    ['Italy', { carrier: 'poste-italiane', number: NUMBER, basis: 'destination' }],
+    ['India', null],
   ])('proposes an S10 item bound for %s to that country’s post only when it has one', (zielland, expected) => {
     const result = parseDHLTrackingResponse(shipment({ zielland }), NUMBER);
     expect(deliveryHandoff('dhl', NUMBER, result)).toEqual(expected);

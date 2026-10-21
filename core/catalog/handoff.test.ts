@@ -37,14 +37,14 @@ describe('general delivery handoff candidates', () => {
     })).toEqual({ carrier: 'posti', number: 'LOCAL12345', basis: 'partner' });
     expect(deliveryHandoff('la-poste', 'CW123456785FR', { delivery_carrier: 'usps' })?.carrier).toBe('usps');
   });
-  it.each(['XX', 'IT', undefined])('does not guess an operator without a supported destination: %s', (destination_country) => {
+  it.each(['XX', 'IN', undefined])('does not guess an operator without a supported destination: %s', (destination_country) => {
     for (const number of ['CW123456785FR', 'LX123456785CH', '1234567890']) {
       expect(deliveryHandoff('la-poste', number, { destination_country })).toBeNull();
     }
   });
   it.each([['FI', 'posti'], ['CH', 'swiss-post'], ['FR', 'la-poste'], ['US', 'usps'], ['SE', 'postnord'], ['Sweden', 'postnord'],
     ['AU', 'australia-post'], ['Australia', 'australia-post'], ['PL', 'poczta-polska'], ['Poland', 'poczta-polska'],
-    ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta']])(
+    ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta'], ['IT', 'poste-italiane'], ['Italy', 'poste-italiane']])(
     'proposes one national post for a checksum-valid postal reference going to %s', (destination_country, target) => {
       expect(deliveryHandoff('spring-gds', 'LX123456785NL', { destination_country }))
         .toEqual({ carrier: target, number: 'LX123456785NL', basis: 'destination' });
@@ -88,7 +88,7 @@ describe('general delivery handoff candidates', () => {
     }
     // A reported destination or partner comes first, even one no post answers for.
     expect(deliveryHandoff('an-post', 'LX123456785IE', { destination_country: 'SE' }, 'FI')?.carrier).toBe('postnord');
-    expect(deliveryHandoff('an-post', 'LX123456785IE', { destination_country: 'IT' }, 'FI')).toBeNull();
+    expect(deliveryHandoff('an-post', 'LX123456785IE', { destination_country: 'IN' }, 'FI')).toBeNull();
     expect(deliveryHandoff('an-post', 'LX123456785IE', { delivery_carrier: 'usps' }, 'FI')?.carrier).toBe('usps');
     // Not from the issuer's own country, a country no post answers for, a name, or no hint.
     for (const hint of ['IE', 'XX', 'Finland', '', null, undefined]) {
@@ -215,22 +215,25 @@ describe('delivery partners with an optional input', () => {
 });
 
 describe('delivery partners that look up only their own references', () => {
-  it('asks Poste Italiane about its own numbers and the partner plates it takes over, not an S10 item from abroad', async () => {
+  it('asks Poste Italiane about its own numbers, the partner plates it takes over and S10 items from abroad', async () => {
     // DHL names Poste Italiane for parcels bound for Italy, under DHL's own postal number.
-    expect(deliveryHandoff('dhl', 'LF123456785DE', { destination_country: 'IT', delivery_carrier: 'poste-italiane' })).toBeNull();
-    expect(hasDirectHandoffAdapter('poste-italiane', 'LF123456785DE')).toBe(false);
+    expect(deliveryHandoff('dhl', 'LF123456785DE', { destination_country: 'IT', delivery_carrier: 'poste-italiane' }))
+      .toEqual({ carrier: 'poste-italiane', number: 'LF123456785DE', basis: 'partner' });
+    expect(deliveryHandoff('dhl', 'LF123456780DE', { destination_country: 'IT', delivery_carrier: 'poste-italiane' })).toBeNull();
     const plate = 'JJD000000000000000000001';
     expect(deliveryHandoff('ppl', plate, { destination_country: 'IT', delivery_carrier: 'poste-italiane' }))
       .toEqual({ carrier: 'poste-italiane', number: plate, basis: 'partner' });
     expect(hasDirectHandoffAdapter('poste-italiane', '990001A000001')).toBe(true);
-    // The check mirrors the adapter, which refuses the S10 item before any request.
+    // The check mirrors the adapter, which refuses any other reference before a request.
+    for (const number of ['LF123456780DE', '1Z1234567890123454']) expect(hasDirectHandoffAdapter('poste-italiane', number)).toBe(false);
     const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('offline'));
     vi.stubGlobal('fetch', fetcher);
     const registry = new AdapterRegistry(REGISTRY, { fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
     const outcome = (number: string) => (async () => registry.for('poste-italiane')!.track({ number, postcode: null }, { budgetMs: 2_000 }))()
       .then(() => null, (caught: unknown) => carrierErrorKind(caught));
-    expect(await outcome('LF123456785DE')).toBe('invalid_input');
-    for (const number of [plate, '990001A000001']) expect(await outcome(number)).not.toBe('invalid_input');
+    for (const number of ['LF123456780DE', '1Z1234567890123454']) expect(await outcome(number)).toBe('invalid_input');
+    expect(fetcher).not.toHaveBeenCalled();
+    for (const number of [plate, '990001A000001', 'LF123456785DE']) expect(await outcome(number)).not.toBe('invalid_input');
     expect(fetcher).toHaveBeenCalled();
   });
 });

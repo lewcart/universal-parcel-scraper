@@ -55,7 +55,7 @@ describe('Poste Italiane tracking normalization', () => {
     // Registered mail: eleven digits and the check digit, printed after a dash or a space.
     expect(normalizePosteItalianeTrackingNumber('99000000001-0')).toBe('990000000010');
     expect(normalizePosteItalianeTrackingNumber('99000000001 0')).toBe('990000000010');
-    for (const raw of ['12345', 'Z8328162951', 'LD156008025FR', 'CW123456780IT', 'CP123456785FR', 'F990D0000001', 'F990E00000001',
+    for (const raw of ['12345', 'Z8328162951', 'CW123456780IT', 'CP123456780FR', 'F990D0000001', 'F990E00000001',
       'D9900A000001', 'D990000000001', 'E99000A000001', '990000000011', '99000000001', '9900000000100', '']) {
       expect(() => normalizePosteItalianeTrackingNumber(raw)).toThrow(InvalidInputError);
     }
@@ -73,6 +73,16 @@ describe('Poste Italiane tracking normalization', () => {
     for (const raw of ['2UW1A2B345678', 'JJITA8UW1A2B34567', 'JJITA8UW1A2B3456789', 'JJITB8UW1A2B345678', 'JJD8UW1A2B345678']) {
       expect(() => normalizePosteItalianeTrackingNumber(raw), raw).toThrow(InvalidInputError);
       expect(detectCarrierMatch(raw).carrier, raw).not.toBe('poste-italiane');
+    }
+  });
+
+  it('takes the S10 number of mail from abroad for a hand-off, which detection leaves to the sending post', () => {
+    for (const number of ['RR123456785DE', 'LF123456785DE', 'CP123456785FR', 'LX123456785NL', 'RA123456785CN']) {
+      expect(normalizePosteItalianeTrackingNumber(number.toLowerCase()), number).toBe(number);
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('poste-italiane');
+    }
+    for (const raw of ['RR123456780DE', 'RR12345678DE', 'RR1234567855DE', 'R1123456785DE']) {
+      expect(() => normalizePosteItalianeTrackingNumber(raw), raw).toThrow(InvalidInputError);
     }
   });
 
@@ -257,6 +267,26 @@ describe('Poste Italiane response parsing', () => {
     ]);
     const serialized = JSON.stringify(result);
     for (const secret of ['VIA DI PROVA', '00000', '9999', '08:20', 'frazionario']) expect(serialized).not.toContain(secret);
+  });
+
+  it('follows an item from abroad under the sending post\'s S10 number', async () => {
+    const FROM_ABROAD = JSON.parse(readFileSync(new URL('./fixtures/from-abroad.json', import.meta.url), 'utf8')) as unknown;
+    const result = parsePosteItalianeTrackingResponse(FROM_ABROAD, 'lx 123 456 785 jp');
+    expect(result).toMatchObject({
+      status: 'out_for_delivery', current_stage: 'out_for_delivery', last_update: '2026-01-03T00:00:00.000Z',
+      expected_delivery: '2026-01-05',
+    });
+    expect(result.events?.map((event) => [event.stage, event.time])).toEqual([
+      ['out_for_delivery', '2026-01-03T00:00:00.000Z'],
+      ['in_transit', '2026-01-02T00:00:00.000Z'],
+      ['in_transit', '2026-01-01T00:00:00.000Z'],
+    ]);
+    const fetcher = vi.fn<typeof fetch>(async (_url, init) => {
+      expect(JSON.parse(String(init?.body)).codiceSpedizione).toBe('LX123456785JP');
+      return response(FROM_ABROAD);
+    });
+    expect(await new PosteItalianeTracker({ fetcher }).fetch('LX123456785JP')).toMatchObject({ current_stage: 'out_for_delivery' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('reads the bare letter-post answer for a code Poste does not know as not found', () => {

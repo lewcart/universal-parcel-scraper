@@ -1,6 +1,6 @@
 
 import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { isPosteItalianePartnerPlate, isPosteItalianeTrackingNumber } from '../../core/detection/posteItaliane.js';
+import { isPosteItalianeLookup } from '../../core/detection/posteItaliane.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
@@ -102,8 +102,8 @@ function captchaRequired(bytes: Uint8Array): boolean {
 
 export function normalizePosteItalianeTrackingNumber(raw: string): string {
   const value = raw.toLocaleUpperCase('en-US').replace(/[\s.-]/g, '');
-  if (!isPosteItalianeTrackingNumber(value) && !isPosteItalianePartnerPlate(value)) {
-    throw new InvalidInputError('Poste Italiane', 'Poste Italiane tracking requires a Poste Italiane parcel identifier');
+  if (!isPosteItalianeLookup(value)) {
+    throw new InvalidInputError('Poste Italiane', 'Poste Italiane tracking requires a Poste Italiane identifier or a postal S10 number');
   }
   return value;
 }

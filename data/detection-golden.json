@@ -64896,6 +64896,14 @@
     ]
   },
   {
+    "input": "CA088250120DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
     "input": "CA107308006SI",
     "carrier": "intl-post",
     "confidence": "high",
@@ -66403,6 +66411,14 @@
     ]
   },
   {
+    "input": "CM004716595NL",
+    "carrier": "spring-gds",
+    "confidence": "high",
+    "candidates": [
+      "spring-gds"
+    ]
+  },
+  {
     "input": "CM125686622AR",
     "carrier": "intl-post",
     "confidence": "high",
@@ -66861,6 +66877,14 @@
     ],
     "asked": [
       "tnt-it"
+    ]
+  },
+  {
+    "input": "CO603129011FR",
+    "carrier": "la-poste",
+    "confidence": "high",
+    "candidates": [
+      "la-poste"
     ]
   },
   {
@@ -77787,6 +77811,14 @@
     ]
   },
   {
+    "input": "LT352506590GB",
+    "carrier": "royal-mail",
+    "confidence": "high",
+    "candidates": [
+      "royal-mail"
+    ]
+  },
+  {
     "input": "LT383724833CH",
     "carrier": "swiss-post",
     "confidence": "high",
@@ -78254,6 +78286,14 @@
     "confidence": "high",
     "candidates": [
       "correos-spain"
+    ]
+  },
+  {
+    "input": "LX326232915JP",
+    "carrier": "japan-post",
+    "confidence": "high",
+    "candidates": [
+      "japan-post"
     ]
   },
   {

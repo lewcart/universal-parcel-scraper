@@ -33,10 +33,11 @@ const CATALOG_NAMES = new Set([
 
 // Postal lookup candidates, not proof of which operator delivers a shipment.
 // Only operators whose dedicated adapter looks up mail from abroad by its S10
-// number are useful here: India Post's and Poste Italiane's take only numbers
-// of their own. Pos Malaysia's tracker answers any S10 number, but it
-// leaves the scans of mail from abroad undated, so it is not the hand-off for
-// mail to Malaysia. Poczta Polska dates scans at its
+// number are useful here: India Post's takes only numbers of its own. Poste
+// Italiane's tracker follows some mail from abroad under the sending post's
+// number and does not know the rest. Pos Malaysia's tracker answers any S10
+// number, but it leaves the scans of mail from abroad undated, so it is not the
+// hand-off for mail to Malaysia. Poczta Polska dates scans at its
 // delivery office, and other inward scans when they name a Polish office; those
 // relayed from the origin keep its wall clock. Ukrposhta dates its scans in
 // Ukraine. Its status API misses some mail from abroad, and its portal then
@@ -55,7 +56,7 @@ const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['BG', 'bulgarian-posts'], ['BR', 'correios-br'], ['BY', 'belpost'], ['CA', 'canada-post'],
   ['CH', 'swiss-post'], ['DE', 'dhl'], ['DZ', 'algerie-poste'], ['EG', 'egypt-post'], ['ES', 'correos-spain'],
   ['FI', 'posti'], ['FO', 'posta-faroe'], ['FR', 'la-poste'], ['GB', 'royal-mail'], ['IS', 'posturinn'],
-  ['JO', 'jordan-post'], ['JP', 'japan-post'], ['KE', 'posta-kenya'], ['MA', 'barid-al-maghrib'],
+  ['IT', 'poste-italiane'], ['JO', 'jordan-post'], ['JP', 'japan-post'], ['KE', 'posta-kenya'], ['MA', 'barid-al-maghrib'],
   ['MK', 'posta-north-macedonia'], ['NL', 'spring-gds'], ['PH', 'phlpost'], ['PL', 'poczta-polska'],
   ['PT', 'ctt'], ['RO', 'posta-romana'], ['SA', 'saudi-post'], ['SE', 'postnord'],
   ['SV', 'correos-el-salvador'], ['UA', 'ukrposhta'], ['US', 'usps'], ['UY', 'correo-uruguayo'],

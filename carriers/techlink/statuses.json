@@ -1,4 +1,8 @@
 {
   "carrier": "techlink",
-  "entries": []
+  "entries": [
+    {"code": "InfoReceived", "wording": "Parcel electronic information received", "stage": "registered", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-21", "note": "The order's data reached Techlink; its Chinese name is 收到电子信息."},
+    {"code": "Warehousing_Received", "wording": "Parcel has been received and processed at original facility", "stage": "accepted", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-21", "note": "The parcel was booked in at Techlink's warehouse in China; its Chinese name is 仓库入库."},
+    {"code": "Warehousing_Packed", "wording": "Parcel has been packed and is ready for outbound shipping", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-21", "note": "Packed at the warehouse for the line abroad; its Chinese name is 包裹装箱."}
+  ]
 }

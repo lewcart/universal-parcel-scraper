@@ -1,11 +1,34 @@
 # Techlink
 
-Techlink parcels use enabled universal providers. There is no dedicated adapter yet.
-
 Techlink is 智禾国际物流(深圳)有限公司 (智禾), a Shenzhen cross-border forwarder whose site is
 techlinksz.cn, with special-line small-parcel services to Europe and the United States. Its
 parcels reach the destination country's courier, which prints its own number; CJ Packet
-ships some of its parcels on Techlink's line.
+ships some of its parcels on Techlink's line. Tracked through the lookup its tracking page makes.
+
+## How it works
+
+1. `direct`: one `POST http://api.techlinksz.com/api/trackinfo/` with the body
+   `{"order_nums":"{number}"}`, as the tracking page sends it, with no cookie, token or key. The
+   API answers over HTTP only. A lookup that does not reach it gets one `retry`.
+
+- The JSON reply has one entry per number asked, with the scans newest first in `track_list`.
+  The entry and every scan must name the whole number asked.
+- An order the tracker does not have has no scans and the entry's `msg` is `无订单信息`, which
+  is not found. An order it has before its first scan has none and `success`, which is no
+  history.
+- Each scan has a code (`Warehousing_Packed`), which stages it, English and Chinese wording,
+  the wall clock in `actual_time`, a place given as a country code, both countries and the
+  last-mile number.
+- Techlink's own records are on Beijing's clock: the order's electronic information, which has
+  no place, and the warehouse scans in China. Any other scan keeps `local_time`.
+- The last-mile number is returned as `delivery_tracking_number` with the destination country.
+  The reply does not name the carrier; the shared hand-off proposes the destination's post or
+  the carrier whose numbers have that shape.
+
+## Limitations
+
+- No estimated delivery, weight or service name.
+- No scan after the hand-off has been seen in a reply, so the zone of such a scan is unknown.
 
 ## Numbers
 
@@ -19,15 +42,7 @@ too, under its own CJ Packet number, so CJ Packet's adapter does not take it.
 The site's tracking page takes no number in its address, and the site is HTTP only, so neither
 a link nor a search page is recorded.
 
-## Adapter lead
-
-The site's tracking page posts `{"order_nums": "<numbers, comma-separated>"}` to
-`http://api.techlinksz.com/api/trackinfo/` with no cookie, token or key. The JSON reply has one
-entry per number with its `order_num`, the scans in `track_list` and the latest in `new_track`.
-Each scan has a code, Chinese and English wording, a location, both countries and the last-mile
-number. The API answers over HTTP only.
-
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/techlink`, with `TECHLINK_TRACKING_NUMBER` and optionally
+`TECHLINK_UNKNOWN_NUMBER` set outside the repository.

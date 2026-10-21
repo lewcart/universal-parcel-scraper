@@ -478,6 +478,7 @@ import { statusMap as tealca } from '../../carriers/tealca/status.js';
 import { statusMap as teamExpressAe } from '../../carriers/team-express-ae/status.js';
 import { statusMap as teamGlobalExpress } from '../../carriers/team-global-express/status.js';
 import { statusMap as teamWorldwide } from '../../carriers/team-worldwide/status.js';
+import { statusMap as techlink } from '../../carriers/techlink/status.js';
 import { statusMap as teleship } from '../../carriers/teleship/status.js';
 import { statusMap as tfmExpress } from '../../carriers/tfm-express/status.js';
 import { statusMap as tforceFreight } from '../../carriers/tforce-freight/status.js';
@@ -616,7 +617,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy,
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
-  'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
+  'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, techlink, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, thhy, tiki, tipsa, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,
   trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
   'ubi-smart-parcel': ubiSmartParcel,

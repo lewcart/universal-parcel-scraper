@@ -22,6 +22,7 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
   ['F366', 'customs'], ['F370', 'customs'], ['F380', 'customs'], // Received, processed and inspected by Brazilian customs.
   ['F399', 'in_transit'], // Released by customs.
   ['F410', 'in_transit'], // Received at the import dispatch warehouse.
+  ['F419', 'in_transit'], // Sent on from customs to the last leg in Brazil, before the last-mile hub.
   ['F440', 'in_transit'], ['F441', 'in_transit'], ['F450', 'in_transit'], // First-mile hub.
   ['F510', 'in_transit'], ['F515', 'in_transit'], ['F540', 'in_transit'], ['F541', 'in_transit'], // Sorting centre.
   ['F550', 'in_transit'], ['F580', 'in_transit'], ['A103', 'in_transit'], // Line haul and progress notices.

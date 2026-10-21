@@ -185,6 +185,14 @@
       "note": "Hidden on the public page."
     },
     {
+      "code": "F419",
+      "wording": "Pedido em transferência para última etapa",
+      "language": "pt",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "After the customs release, before the last-mile hub (F599)."
+    },
+    {
       "code": "F366",
       "wording": "Pedido está na alfândega de importação",
       "language": "pt",

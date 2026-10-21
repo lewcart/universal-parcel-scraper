@@ -19,6 +19,7 @@
     { "wording": "Shipment information sent to FedEx", "language": "en", "stage": "registered", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "" },
     { "wording": "Picked up", "language": "en", "stage": "accepted", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "" },
     { "wording": "Tendered at FedEx location", "language": "en", "stage": "accepted", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "" },
+    { "wording": "In FedEx possession", "language": "en", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-21", "note": "Scan status; seen with the details \"At FedEx location\"." },
     { "wording": "Arrived at FedEx location", "language": "en", "stage": "accepted", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "Adapter result status: in_transit." },
     { "wording": "Departed FedEx location", "language": "en", "stage": "in_transit", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "" },
     { "wording": "At local FedEx facility", "language": "en", "stage": "in_transit", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "" },

@@ -77,7 +77,9 @@ const REGISTERED_TERMS = [
   'initiated',
   'order created',
 ];
-const ACCEPTED_TERMS = ['picked up', 'pickedup', 'tendered at fedex', 'arrived at fedex location', 'accepted at'];
+// "In FedEx possession — At FedEx location": FedEx has taken the parcel in at one of its
+// locations. A hold for the recipient carries its own codes (HL, HP) and wording.
+const ACCEPTED_TERMS = ['picked up', 'pickedup', 'tendered at fedex', 'arrived at fedex location', 'accepted at', 'in fedex possession'];
 const IN_TRANSIT_TERMS = [
   'in transit',
   'on the way',

@@ -7,9 +7,10 @@ Zealand. Tracked through the lookup its tracking page makes.
 
 1. `direct`: one `GET https://public-website.ep-prod.freightways.co.nz/public-website/v1/carriers/NZCouriers/tracking-events`,
    as the script of `nzcouriers.co.nz/track` asks it. A courier ticket goes as
-   `?searchType=TK&ticketProductCode={code}&query={number}`, a label as `?query={number}`.
-   The number loses its leading zeros, as on the page, unless it is a 20-digit SSCC. It needs
-   no cookie, token, key or browser. The JSON reply is the consignment with each of its parcels'
+   `?searchType=TK&ticketProductCode={code}&query={number}`, a label or a customer printed
+   label's consignment number as `?query={number}`. The number loses its leading zeros, as on
+   the page, unless it is a 20-digit SSCC or a consignment number. It needs no cookie, token,
+   key or browser. The JSON reply is the consignment with each of its parcels'
    scans, oldest first.
 
 - An unknown number is an empty HTTP 204, which the page reports as not found. A 404 or a
@@ -17,8 +18,9 @@ Zealand. Tracked through the lookup its tracking page makes.
 - The lookup refuses a query of fewer than six characters with HTTP 400, so a ticket number of
   five digits once its zeros are dropped is invalid input.
 - The reply's `shortConsignmentId` must be the number asked: the ticket's product code and
-  number, or the label alone. A bare number can also find a customer printed label whose
-  consignment number it is, which is another consignment.
+  number, or the label alone. A label can also find a customer printed label whose
+  consignment number it is, which is another consignment. A customer printed label's
+  consignment number, letters then digits, comes after the sender's account number.
 - Recognition is off. The lookup tells a known consignment from an unknown one, but other
   carriers share eight and nine digits and SSCCs, Post Haste prints the same ticket layout,
   and the lookup answers for Freightways' other networks too, so a known answer would not show
@@ -43,9 +45,11 @@ Zealand. Tracked through the lookup its tracking page makes.
 
 ## Limitations
 
-- Customer printed labels, contract bags, manifest references and other barcodes are not
-  read. The page's search for an account and consignment number did not find labels whose
-  consignments the lookup still holds.
+- A customer printed label is read only by a consignment number of letters then digits that
+  does not fit a ticket's layout; one of digits alone reads as a label. The page's search for
+  an account and consignment number did not find labels whose consignments the lookup still
+  holds.
+- Contract bags, manifest references and other barcodes are not read.
 - A consignment the tracker no longer holds reads as not found.
 - No weight or service.
 

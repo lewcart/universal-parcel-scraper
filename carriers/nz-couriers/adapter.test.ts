@@ -11,6 +11,7 @@ import statuses from './statuses.json' with { type: 'json' };
 const DELIVERED = '00000000000000000017';
 const IN_TRANSIT = 'ZZ 01234567';
 const UNKNOWN = '00000000000000000000';
+const CUSTOMER = 'ZZZZ012345';
 
 type Row = Record<string, unknown>;
 type Item = Row & { trackingEvents: Row[] };
@@ -58,6 +59,12 @@ describe('New Zealand Couriers HTTP adapter', () => {
       '?searchType=TK&ticketProductCode=E00&query=1234567',
       '?searchType=TK&ticketProductCode=ZZZ&query=123456',
     ]);
+  });
+
+  it('asks for a customer printed label’s consignment number whole, and reads the consignment the sender’s account heads', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(changed('delivered', (body) => { body.shortConsignmentId = `0000000 ${CUSTOMER}`; })));
+    await expect(carrier(fetcher).track({ number: 'zzzz-012345' })).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(String(fetcher.mock.calls[0]![0])).toBe(`${NZ_COURIERS_API}?query=${CUSTOMER}`);
   });
 
   it('keeps the delivery by the rural partner without the signatory, the photo, the tag or the postcode', () => {
@@ -142,6 +149,16 @@ describe('New Zealand Couriers HTTP adapter', () => {
     expect(parseNzCouriers(changed('delivered', (body) => { body.shortConsignmentId = '1234567'; }), '01234567').events).toHaveLength(5);
   });
 
+  it('counts a customer printed label only when its consignment number is the whole number asked', () => {
+    for (const shortId of [`0000000 ${CUSTOMER}`, CUSTOMER.toLowerCase(), ` 0000000  ${CUSTOMER} `]) {
+      expect(parseNzCouriers(changed('delivered', (body) => { body.shortConsignmentId = shortId; }), CUSTOMER).events, shortId).toHaveLength(5);
+    }
+    for (const shortId of ['0000000 ZZZZ12345', '0000000 ZZZZ0123456', 'ZZZZ 012345', '0000000', `ZZ00000 ${CUSTOMER}`, `0000000 ${CUSTOMER} 1`]) {
+      expect(() => parseNzCouriers(changed('delivered', (body) => { body.shortConsignmentId = shortId; }), CUSTOMER), shortId)
+        .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'New Zealand Couriers answered for another consignment' }));
+    }
+  });
+
   it('reads a consignment without scans as no history', () => {
     expect(() => parseNzCouriers(changed('delivered', (body) => { body.consignmentItems[0]!.trackingEvents = []; }), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
@@ -200,8 +217,9 @@ describe('New Zealand Couriers HTTP adapter', () => {
 
   it('rejects numbers the tracker does not read and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['00000000', '000000000', 'ZZ 0000000', 'ZZ 0012345', 'ZZ12345', 'ZZZZ 1234567', '1234567', '1234567890',
-      '0000000 01234567', '00000000000000000011', '10000000000000000017', 'SAMPLETRACKING', `ZZ${'0'.repeat(70)}`]) {
+    for (const number of ['00000000', '000000000', 'ZZ 0000000', 'ZZ 0012345', 'ZZ12345', 'ZZZZ123', 'ZZZZZZZ012345', 'ZZ1234567890123',
+      'ZZ123456785ZZ', '1234567', '1234567890', '0000000 01234567', '00000000000000000011', '10000000000000000017', 'SAMPLETRACKING',
+      `ZZ${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
@@ -209,6 +227,10 @@ describe('New Zealand Couriers HTTP adapter', () => {
     expect(nzCouriersQuery('zz-01234567')).toEqual({ kind: 'ticket', number: 'ZZ01234567', code: 'ZZ', query: '1234567' });
     expect(nzCouriersQuery('e60 1234567')).toEqual({ kind: 'ticket', number: 'E601234567', code: 'E60', query: '1234567' });
     expect(nzCouriersQuery('0123 4567')).toEqual({ kind: 'label', number: '01234567', query: '1234567' });
+    expect(nzCouriersQuery('zzzz 012345')).toEqual({ kind: 'consignment', number: CUSTOMER, query: CUSTOMER });
+    // Two or three letters and up to eight digits are a ticket's layout.
+    expect(nzCouriersQuery('ZZZ123456')).toMatchObject({ kind: 'ticket', code: 'ZZZ', query: '123456' });
+    expect(nzCouriersQuery('ZZ012345678')).toEqual({ kind: 'consignment', number: 'ZZ012345678', query: 'ZZ012345678' });
   });
 
   it('gives its one read the whole budget and ends a hanging read inside it', async () => {

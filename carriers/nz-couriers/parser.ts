@@ -18,6 +18,10 @@ export const NZ_COURIERS_MAX_BYTES = 512 * 1024;
 const TICKET = /^([A-Z]{2,3}|[A-Z]\d{2})(\d{5,8})$/;
 // Charge labels have eight digits, international consignments nine.
 const LABEL = /^\d{8,9}$/;
+// A customer printed label's consignment number, which the sender's own system
+// writes: letters, then digits (four and six on a label seen). One a ticket's
+// layout also fits is read as the ticket.
+const CONSIGNMENT = /^[A-Z]{2,6}\d{4,12}$/;
 // The tracker's lookup refuses a query of fewer than six characters.
 const MIN_QUERY = 6;
 const MAX_ITEMS = 50;
@@ -26,24 +30,29 @@ const MAX_EVENTS = 100;
 const ZONE = 'Pacific/Auckland';
 const ESTIMATE = /^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+(\d{1,2})\s+([A-Za-z]+)$/i;
 
-/** The number as the tracker's lookup takes it: a ticket's product code and number, or a label alone. */
+/**
+ * The number as the tracker's lookup takes it: a ticket's product code and
+ * number, or a label or a customer printed label's consignment number alone.
+ */
 export type NzCouriersQuery =
   | { kind: 'ticket'; number: string; code: string; query: string }
-  | { kind: 'label'; number: string; query: string };
+  | { kind: 'label' | 'consignment'; number: string; query: string };
 
 const withoutZeros = (value: string) => value.replace(/^0+/, '');
 
 /**
  * A ticket, charge label, international consignment or SSCC, as the tracking
  * page sends it: without the number's leading zeros, except in a 20-digit
- * barcode. Anything else is not a number this tracker reads.
+ * barcode. A customer printed label's consignment number goes whole. Anything
+ * else is not a number this tracker reads.
  */
 export function nzCouriersQuery(raw: string): NzCouriersQuery {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
   const ticket = TICKET.exec(number);
+  if (!ticket && CONSIGNMENT.test(number)) return { kind: 'consignment', number, query: number };
   const query = ticket ? withoutZeros(ticket[2]!) : LABEL.test(number) ? withoutZeros(number) : isValidSscc(number) ? number : '';
   if (query.length < MIN_QUERY) {
-    throw new InvalidInputError(PROVIDER, 'New Zealand Couriers numbers are a ticket, an eight- or nine-digit label or an SSCC');
+    throw new InvalidInputError(PROVIDER, 'New Zealand Couriers numbers are a ticket, an eight- or nine-digit label, an SSCC or a customer printed label');
   }
   return ticket ? { kind: 'ticket', number, code: ticket[1]!, query } : { kind: 'label', number, query };
 }
@@ -60,10 +69,13 @@ function text(row: Record<string, unknown>, key: string, maxLength = 300): strin
  * Whether the consignment the reply heads with, `shortConsignmentId`, is the
  * whole number asked: a ticket's product code and number, or the label alone.
  * The ticket number and a short label may come with or without their leading zeros.
+ * A customer printed label's consignment number comes after the sender's
+ * account number.
  */
 function sameConsignment(value: string, asked: NzCouriersQuery): boolean {
   const parts = value.toUpperCase().split(/\s+/).filter(Boolean);
   if (asked.kind === 'ticket') return parts.length === 2 && parts[0] === asked.code && withoutZeros(parts[1]!) === asked.query;
+  if (asked.kind === 'consignment') return parts.at(-1) === asked.number && (parts.length === 1 || parts.length === 2 && /^\d+$/.test(parts[0]!));
   return parts.length === 1 && (asked.query.length === 20 ? parts[0] === asked.query : withoutZeros(parts[0]!) === asked.query);
 }
 

@@ -361,6 +361,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // Speedy's scans as providers relay them: its courier's collection, then an
   // office's receipt and a handover to a partner abroad, as its own map reads them.
   if (/^courier pick up$/.test(text)) return 'accepted';
+  // A Chinese forwarder's collection from the sender, as ParcelsApp relays it.
+  if (/^shipment pick ?up$/.test(text)) return 'accepted';
   if (/^(?:received in office|export to foreign provider)$/.test(text)) return 'in_transit';
   // Sent on to another country: "Sent abroad".
   if (/^(?:(?:the )?(?:shipment|parcel|package|item) )?(?:(?:has been|was) )?(?:sent|dispatched|forwarded) abroad$/.test(text)) return 'in_transit';

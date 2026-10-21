@@ -335,7 +335,7 @@ describe('classifyWording', () => {
 
   it('maps sender drop-off and carrier pickup scans to accepted', () => {
     for (const wording of [
-      'Drop-Off', 'Pickup Scan', 'Pick-up scan',
+      'Drop-Off', 'Pickup Scan', 'Pick-up scan', 'Shipment pickup',
       'The UPS Access Point™ location has prepared the package for return to UPS or pickup by UPS.',
     ]) expect(classifyWording(wording)).toEqual({ stage: 'accepted', source: 'wording:language' });
     // Recipient-side pickup wording must not be read as the carrier accepting the parcel.

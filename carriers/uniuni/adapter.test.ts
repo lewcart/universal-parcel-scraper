@@ -178,6 +178,28 @@ describe('UniUni parcel history', () => {
     expect(() => parseUniuni(excessive, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
+  it("dates a scan without corrected seconds on the zone UniUni names when its province keeps that clock", () => {
+    // Live shapes: a cross-border shipper's rows name a zone and no corrected seconds;
+    // the zone can be another country's, and the first row names no province.
+    const reference = 'ZZ00CAA0U000000001';
+    const scan = (pathInfo: string, province: string, timezone: string, localTime: string) => ({ pathInfo,
+      pathAddress: 'PRIVATE_SYNTHETIC_ADDRESS', state: 202, city: 'Example City', province, dateTime: { timezone, localTime } });
+    const reply = (...spath_list: object[]) => ({ status: 'SUCCESS', data: { invalid_tno: '',
+      valid_tno: [{ tno: reference, urlType: 'ltian', state: 202, spath_list }] } });
+    const info = scan('Shipping information received. Your parcel is on its way to UniUni for delivery to you', '', 'Asia/Krasnoyarsk', '2026-01-01 00:48:44');
+    const received = scan('Parcel received by UniUni', 'ON', 'America/New_York', '2026-01-04 13:17:48');
+    const result = parseUniuni(reply(info, received), reference, new Date('2026-01-05T00:00:00Z'));
+    expect(result).toMatchObject({ last_update: '2026-01-04T13:17:48-05:00', last_update_local: null });
+    expect(result.events?.map(({ time, local_time }) => time ?? local_time)).toEqual(['2026-01-04T13:17:48-05:00', '2026-01-01T00:48:44']);
+    // London for Quebec is no clock of the place; a reading after the lookup, or after a newer scan's instant, does not stand.
+    expect(parseUniuni(reply(info, { ...received, province: 'QC', dateTime: { timezone: 'Europe/London', localTime: '2026-01-04 13:17:48' } }),
+      reference, new Date('2026-01-05T00:00:00Z')).events?.[0]).toMatchObject({ local_time: '2026-01-04T13:17:48' });
+    expect(parseUniuni(reply(info, received), reference, new Date('2026-01-04T12:00:00Z')).events?.[0]).not.toHaveProperty('time');
+    const newer = { ...scan('Delivered', 'ON', 'America/Toronto', '2026-01-04 13:00:00'), state: 203, dateTime: { ts: 1767549600 } };
+    expect(parseUniuni(reply(info, received, newer), reference, new Date('2026-01-05T00:00:00Z')).events?.[1])
+      .toMatchObject({ local_time: '2026-01-04T13:17:48' });
+  });
+
   it('preserves an incomplete newest clock without borrowing local-encoded pathTime or an older delivery', () => {
     const value = fixture(); const latest = value.data.valid_tno[0].spath_list.at(-1);
     delete latest.dateTime.ts;

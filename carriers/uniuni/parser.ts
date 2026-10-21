@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
-import { epochSecondsTime } from '../../core/time/index.js';
+import { canadaProvinceTimeZone, epochSecondsTime, isoTime, settleGuessedClocks, sharedClockZone, usStateTimeZone, type ParsedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { uniuniDropOffStage, uniuniPartnerStatus, uniuniStatus } from './status.js';
@@ -50,7 +50,21 @@ function clock(raw: unknown): Pick<CarrierEvent, 'time'> & { local_time?: string
     : { provider_time_text: text };
 }
 
-export function parseUniuni(payload: unknown, rawNumber: string): CarrierResult {
+/**
+ * A scan without corrected seconds read on the zone UniUni names for it, when
+ * its province keeps that clock then. A scan with corrected seconds is always
+ * on the zone named with it, but a cross-border shipper's can name another
+ * country's (London for a scan in Quebec), and one with no province names no
+ * place to check the zone against.
+ */
+function namedZoneTime(raw: unknown, province: unknown, local: string | undefined): ParsedTime | null {
+  if (!local || !isRecord(raw) || typeof raw.timezone !== 'string' || raw.timezone.length > 80) return null;
+  const place = usStateTimeZone(province) ?? canadaProvinceTimeZone(province);
+  const zone = place ? sharedClockZone([raw.timezone, place], local) : null;
+  return zone ? isoTime(local, zone) : null;
+}
+
+export function parseUniuni(payload: unknown, rawNumber: string, readAt = new Date()): CarrierResult {
   const number = normalizeUniuniNumber(rawNumber);
   if (!isRecord(payload) || typeof payload.status !== 'string') throw new SchemaError(PROVIDER);
   if (payload.status !== 'SUCCESS') throw new IndeterminateError(PROVIDER, 'UniUni returned an inconclusive lookup response');
@@ -79,6 +93,7 @@ export function parseUniuni(payload: unknown, rawNumber: string): CarrierResult 
   if (!Array.isArray(item.spath_list) || item.spath_list.length > 500) throw new SchemaError(PROVIDER);
   const events: CarrierEvent[] = [];
   const statuses: (ClassifiedStatus | undefined)[] = [];
+  const guesses: (ParsedTime | null)[] = [];
   const seen = new Set<string>();
   const scans: unknown[] = item.spath_list;
   // The public client displays this oldest-first list in reverse. Keep that
@@ -98,12 +113,25 @@ export function parseUniuni(payload: unknown, rawNumber: string): CarrierResult 
     const location = [clean(scan.city, 100), clean(scan.province, 20)].filter(Boolean).join(', ');
     // UniUni's own detailed pathInfo, addresses, coordinates, operators and POD
     // data can contain recipient or courier information; retain its English summary.
-    const event: CarrierEvent = { description, ...(state === undefined ? {} : { provider_code: String(state) }), ...clock(scan.dateTime),
+    const read = clock(scan.dateTime);
+    const event: CarrierEvent = { description, ...(state === undefined ? {} : { provider_code: String(state) }), ...read,
       ...(location ? { location } : {}), ...(mapped ? { stage: mapped.stage } : {}) };
     const key = JSON.stringify(event);
-    if (!seen.has(key)) { seen.add(key); events.push(event); statuses.push(mapped); }
+    if (!seen.has(key)) {
+      seen.add(key); events.push(event); statuses.push(mapped);
+      guesses.push(namedZoneTime(scan.dateTime, scan.province, read.local_time));
+    }
   }
   if (!events.length) throw new IndeterminateError(PROVIDER, 'UniUni returned no parcel history');
+  // That reading stands only in the list's order against the scans with corrected seconds, and not after the lookup.
+  settleGuessedClocks(events.map((event, index) => ({
+    known: event.time ? { iso: event.time, timestamp: Date.parse(event.time) } : null, guesses: [guesses[index]!],
+  })), readAt.getTime()).forEach((settled, index) => {
+    const event = events[index]!;
+    if (event.time || !settled) return;
+    event.time = settled.iso;
+    delete event.local_time;
+  });
   const latest = events[0]!;
   const mapped = statuses[0];
   // UniUni delivers within the United States and Canada; the parcel names which.

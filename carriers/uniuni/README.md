@@ -15,16 +15,21 @@ identify the whole parcel; master shipments with multiple pieces remain inconclu
 ## Notes
 
 Corrected per-scan seconds provide instants. The older numeric clock field
-encodes local wall time and is excluded. Missing corrected seconds retain local
-clocks in provider order without advancing freshness. Impossible local dates retain
-their original text. Current status comes from
+encodes local wall time and is excluded. A scan's local clock is always on the
+zone named with it when corrected seconds come too. Without them, a cross-border
+shipper's scan can name another country's zone (London for a scan in Quebec), so
+its local clock becomes an instant only when its state or province keeps that
+clock then, and the reading keeps the list's order against the scans with corrected
+seconds and is not after the lookup. Other scans retain local clocks in provider
+order without advancing freshness. Impossible local dates retain their original
+text. Current status comes from
 the latest actual scan. The legacy estimate field is excluded because the
 current page uses a separate service with an explicit enabled flag. Detailed delivery prose, addresses,
 coordinates, operators and proof images are excluded.
 
 After a handover, a partner courier's scans arrive without UniUni's English
 summary, as does a Uni Store drop-off, which also has no status code. Their own
-short scan text is kept as the description; they carry local clocks only.
+short scan text is kept as the description; they carry no corrected seconds.
 Cross-border shippers' scans arrive the same way, but with code 202 on every row
 until delivery, so code 202 on such a row is read by its wording: it otherwise
 means out for delivery. The parcel's country, the United States or Canada, is the

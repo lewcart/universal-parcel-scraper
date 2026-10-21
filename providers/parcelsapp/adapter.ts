@@ -30,6 +30,7 @@ import { militaryPostOffice } from '../../places/trackingLocation.js';
 import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { cttyexChinaStep } from '../../carriers/cttyex/status.js';
+import { FIRST_LINE_CHINA_ZONE, firstLineInChina } from '../../carriers/first-line/clock.js';
 import { hrvatskaPostaForeignZone } from '../../carriers/hrvatska-posta/parser.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
@@ -197,8 +198,13 @@ function dayEvent(day: string, description: string): CarrierEvent | null {
  * leg by leg, on GMT+8, +2 or +1, also under EcoScooting; 4PX's and
  * MailAmericas' (below). They are read in the state, province or single-clock
  * country their location names; `wallClockZones` reads the others.
+ * FIRST LINE's ("1ST") rows abroad are its delivery partner's scans on their
+ * facility's clock: a copy of a GOFO scan in California came at GOFO's digits,
+ * and read on Beijing's clock, its arrival in Los Angeles came twelve minutes
+ * after the flight left Shenzhen. Its rows in China, and its order data with
+ * no place, are Beijing's (`carrierClock`).
  */
-const WALL_CLOCKS = new Set(['usps', 'canadapost', 'gofoexpress', 'speedpak', 'ems', 'cainiao', 'ecoscooting', '4pxexpress', 'mailamericas']);
+const WALL_CLOCKS = new Set(['usps', 'canadapost', 'gofoexpress', 'speedpak', 'ems', 'cainiao', 'ecoscooting', '4pxexpress', 'mailamericas', '1st']);
 // Known clocks that are the destination or origin country's (`knownClock`).
 const DESTINATION = 'destination';
 const ORIGIN = 'origin';
@@ -257,6 +263,11 @@ const CAINIAO_LAST_MILE = [
  * had the digits of the South African post's own copies. Borrowed from the
  * origin's scans before them, they came an hour late.
  *
+ * FIRST LINE's ("1ST") scans from its arrival at the destination airport are
+ * on the destination's clock, as its partner's scans after them are (see
+ * `WALL_CLOCKS`). Borrowed from its scans in Shenzhen, they came 15 hours
+ * early on a parcel to California.
+ *
  * A scan on a fixed clock borrows no neighbour's: borrowed from a GOFO
  * parcel's Florida scans, the label came 3 hours early and Cainiao's "Order
  * received" 12 hours after it, 19 seconds on China time. One in the
@@ -297,6 +308,10 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
     { wording: wordings(['arrival to the destination airport', 'arrived at warehouse', 'released from customs: customs cleared\\.?',
       'customs clearance agent received the shipment in destnation country\\.?', 'in transit, it\'s progressing through post network',
       'handed over to last mile', 'your shipment has been processed at sorting center and ready for shipping']), zone: DESTINATION },
+  ]],
+  ['1st', [
+    { wording: wordings(['arrived at destination airport', 'import scan', 'released from customs: customs cleared\\.?',
+      'departed from destination facility']), zone: DESTINATION },
   ]],
   ['ems', [
     { wording: wordings(['arrived at destination import office', 'presented to import customs', 'released from import customs',
@@ -759,6 +774,10 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   if (carrier === 'swiftx' && SWIFTX_LABEL.test(status.trim())) return SWIFTX_LABEL_CLOCK;
   if (carrier === 'swiftx' && swiftxSiteZone(scanLocation(name, state.location))) return undefined;
   if (ROYAL_MAIL_NAMES.has(key) && royalMailRelay(scanLocation(name, state.location), status, destination)) return ROYAL_MAIL_RELAY_CLOCK;
+  if (key === '1st') {
+    const location = scanLocation(name, state.location);
+    return !location || firstLineInChina(location) ? FIRST_LINE_CHINA_ZONE : undefined;
+  }
   // Croatia Post relays a post abroad on that facility's clock, as its own tracker does.
   const abroad = carrier === 'hrvatska-posta' ? hrvatskaPostaForeignZone(scanLocation(name, state.location)) : undefined;
   if (abroad !== undefined) return abroad;

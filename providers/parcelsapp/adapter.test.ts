@@ -1720,6 +1720,35 @@ describe('ParcelsApp result parsing', () => {
     expect(parsed.last_status_text).toBe('Departed from destination import office');
   });
 
+  it('reads FIRST LINE\'s scans in China on Beijing\'s clock with its own map, and its partner\'s in the destination on theirs', () => {
+    // 17TRACK's copies of the Chinese rows have Beijing's instants; GOFO's own scans give California's clock.
+    const scan = (date: string, status: string, carrier: number, location?: string) => ({ date, status, carrier, ...(location ? { location } : {}) });
+    const parsed = parseParcelsAppResponse({ carriers: ['1ST', 'GoFo Express'], originCode: 'CN', destinationCode: 'US', states: [
+      scan('2026-10-21T05:22:36Z', 'In Transit to Next Facility', 1, 'Example Grove, CA'),
+      scan('2026-10-21T05:22:00Z', 'Arrived at Facility', 0, 'Example Grove, CA, Example Grove CA 00000'),
+      scan('2026-10-19T11:30:00Z', 'Import Scan', 0, 'Los Angeles USA US'),
+      scan('2026-10-18T05:55:00Z', 'Arrived at Destination Airport', 0, 'Los Angeles USA US'),
+      scan('2026-10-18T05:43:00Z', 'Departed from Origin Airport', 0, 'SHENZHEN'),
+      scan('2026-10-17T16:51:00Z', 'Arrived at Origin Airport', 0, 'SZ international airport'),
+      scan('2026-10-16T16:41:00Z', 'Export customs declaration completed', 0, 'SHENZHEN'),
+      scan('2026-10-16T02:34:00Z', 'Packaged', 0, 'SHENZHEN'),
+      scan('2026-10-15T22:30:00Z', 'Barcode scanning', 0, 'SHENZHEN'),
+      scan('2026-10-14T16:08:00Z', 'Forecast has been received', 0),
+    ] }, number, identity());
+    expect(parsed.events?.map((event) => [event.description, event.time, event.stage, event.stage_source])).toEqual([
+      ['In Transit to Next Facility', '2026-10-21T12:22:36.000Z', 'in_transit', 'wording:language'],
+      ['Arrived at Facility', '2026-10-21T12:22:00.000Z', 'in_transit', 'wording:language'],
+      ['Import Scan', '2026-10-19T18:30:00.000Z', 'in_transit', 'wording:language'],
+      ['Arrived at Destination Airport', '2026-10-18T12:55:00.000Z', 'in_transit', 'wording:language'],
+      ['Departed from Origin Airport', '2026-10-17T21:43:00.000Z', 'in_transit', 'wording:language'],
+      ['Arrived at Origin Airport', '2026-10-17T08:51:00.000Z', 'in_transit', 'wording:language'],
+      ['Export customs declaration completed', '2026-10-16T08:41:00.000Z', 'in_transit', 'carrier_map'],
+      ['Packaged', '2026-10-15T18:34:00.000Z', 'in_transit', 'carrier_map'],
+      ['Barcode scanning', '2026-10-15T14:30:00.000Z', 'accepted', 'carrier_map'],
+      ['Forecast has been received', '2026-10-14T08:08:00.000Z', 'registered', 'carrier_map'],
+    ]);
+  });
+
   it('reads bpost\'s office of exchange abroad on its own clock, and bpost\'s copies of its scans on Brussels\'s', () => {
     // bpost's own feed copies an office's departure at the same instant, an hour later by the digits for an office in London.
     expect(parseParcelsAppResponse({ carriers: ['Bpost Belgium'], originCode: 'GB', destinationCode: 'DE', states: [

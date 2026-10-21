@@ -13,4 +13,10 @@ export function firstLineStage(_code: string | null, wording: string): Stage | u
   return WORDINGS.get(wording);
 }
 
+/** The stage of one FIRST LINE row an aggregator relays, with its wording unchanged; a partner's row is left to the shared rules. */
+export function firstLineScan(label: string): { stage: Stage; wording: string } | undefined {
+  const stage = firstLineStage(null, normalizeStatusWording(label));
+  return stage && { stage, wording: label };
+}
+
 export const statusMap: CarrierStatusMap = { stage: firstLineStage, gaps: [] };

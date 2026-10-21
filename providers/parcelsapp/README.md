@@ -189,7 +189,7 @@ step exists for future protocol changes.
   Created") take GMT-07:00, which its own tracker gives them in every season. The rendered
   page prints no location, so it places no site.
 - Wall clocks: the dates of USPS, Canada Post, GOFO's US scans, SpeedPAK, EMS, Cainiao,
-  EcoScooting, 4PX and MailAmericas are each scan's local clock under a label that is
+  EcoScooting, 4PX, MailAmericas and FIRST LINE abroad are each scan's local clock under a label that is
   never its instant (checked 2026-10-10 scan for scan: USPS's page and the "at 8:25 am" in
   the status text ParcelsApp relays; Canada Post's own digits; GOFO's US feed, which gives
   the offsets; Orange Connex's times and offsets for SpeedPAK; the EMS office clocks
@@ -270,7 +270,12 @@ step exists for future protocol changes.
   customs between) on the destination's clock, as it dates its origin leg on the
   origin's: on a parcel from the UK to South Africa they have the digits of the South
   African post's own copies. Borrowed from the British scans before them, they came an
-  hour late.
+  hour late. FIRST LINE ("1ST") dates its scans in China and Hong Kong, and its order data
+  with no place, on Beijing's clock, as 17TRACK's copies do. Its scans abroad are its
+  delivery partner's, on their facility's clock, and from "Arrived at Destination Airport"
+  they are in the destination: on a parcel to California, its copies of GOFO's scans had
+  GOFO's digits, and read on Beijing's clock, its arrival in Los Angeles came twelve
+  minutes after the flight left Shenzhen.
 
   The destination is the country the reply names (`destinationCode` or `destination`),
   else the one an EcoScooting reference names ("CNPRT" for Portugal, "CNESP" for Spain).

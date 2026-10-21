@@ -22,15 +22,15 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   const source = readFileSync(path, 'utf8');
   const needle = 'const pageCapture = attachPageCapture(page, capture)';
   if (source.split(needle).length !== 2) throw new Error('TRAWL source changed: review the tracking capture integration');
-  const solverGuard = 'if (solveRemaining > 5000)';
+  const solverGuard = 'if (capture.solveEmbeddedCaptchas !== false && budget.remaining() > 5000)';
   if (source.split(solverGuard).length !== 2) throw new Error('TRAWL solver guard changed');
-  const beforeSolve = 'const solveRemaining = budget.remaining()';
+  const beforeSolve = 'const solveRemaining = Math.max(0, budget.remaining() - 2000)';
   if (source.split(beforeSolve).length !== 2) throw new Error('TRAWL solver integration changed');
   // The helpers open their own context, so they run before the tier opens one.
   const entry = 'if (!budget) throw new Error("Browser task requires an operation budget")';
   if (source.split(entry).length !== 2) throw new Error('TRAWL tier entry changed');
   const carrierRunners = `${entry}
-  const carrierPage = ${fresh ? '!proxyUrl && !capture.sessionContext && ' : ''}!screenshot && (!method || method === "GET")
+  const carrierPage = !proxyUrl && ${fresh ? '!capture.sessionContext && ' : ''}!screenshot && (!method || method === "GET")
     && !body && !Object.keys(extraHeaders ?? {}).length
   const carrierRun = { url, handle, tier: ${tier}, maxTimeout: budget.remaining() - ${reserveMs}, capture,
     installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) }
@@ -81,10 +81,10 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
     + source.replace(entry, carrierRunners)
       .replace(needle, 'const pageCapture = reserveDeadline(await attachTrackingCapture(page, url, capture)'
         + ` ?? attachPageCapture(page, capture), ${reserveMs})`)
-      .replace(solverGuard, 'if (solveRemaining > 5000 && !pageCapture.hasResponse?.() && !pageCapture.hasTrackingRequest?.())')
+      .replace(solverGuard, solverGuard.slice(0, -1) + ' && !pageCapture.hasResponse?.() && !pageCapture.hasTrackingRequest?.())')
       // A widget the solver cannot pass must not cost the page behind it.
       .replace(beforeSolve, 'await pageCapture.prepare?.(budget.remaining())\n    '
-        + `${beforeSolve} - ${reserveMs}`));
+        + `const solveRemaining = Math.max(0, budget.remaining() - ${reserveMs})`));
 }
 
 // The client classifies an HTTP-only failure by the page's own status and
@@ -106,8 +106,3 @@ writeFileSync(poolPath, 'import { preferredFedExEntry } from "../../tiers/src/ut
   + pool.replace(pick, '    const retained = preferredFedExEntry(available, domain)\n'
     + '    if (retained) return retained\n' + pick));
 
-// A Turnstile widget embedded in an ordinary page is not a Cloudflare wall.
-const { challengeWaitSource } = await import('/app/packages/tiers/src/utils/challenge-wait.mjs');
-const challengeWaitPath = '/app/packages/tiers/src/utils/challengeWait.ts';
-writeFileSync(challengeWaitPath, challengeWaitSource(readFileSync(challengeWaitPath, 'utf8'),
-  readFileSync('/app/packages/tiers/src/utils/detect.ts', 'utf8')));

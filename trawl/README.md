@@ -69,10 +69,6 @@ TRAWL drops a reply that reaches its request deadline. The image ends its own wa
 TRAWL's CAPTCHA solvers 2.5 seconds before it, so a page behind an unsolved widget and
 the replies already captured are still returned.
 
-The image makes TRAWL's Cloudflare wait count a Turnstile frame as a challenge only on a page
-that may be a wall, so a page that embeds the widget in a form, such as Postal Ninja's, is not
-reloaded until the deadline.
-
 TRAWL's reCAPTCHA audio solver stops as soon as Google's challenge frame shows its
 automated-traffic page or refuses an answer. It reads both from the frame's class names, so a
 widget in any language counts, and it requests no more audio from a refused address.

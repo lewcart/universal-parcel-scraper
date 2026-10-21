@@ -31,7 +31,7 @@ export async function solveRecaptchaV2(page: Page, timeoutMs = 30_000, signal?: 
           .catch(() => "")
         console.log("[recaptcha] audio element not found; bframe:", bframeText2.slice(0, 120).replace(/\\s+/g, " "))
         if (/automated queries|try again|network may be/i.test(bframeText2)) {
-          console.log("[recaptcha] blocked by Google — audio challenge requires residential proxy")
+          console.log("[recaptcha] blocked by Google - audio challenge requires residential proxy")
           return false
         }
       }

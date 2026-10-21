@@ -190,7 +190,7 @@ jobs:
       - name: Include matching TRAWL source
         if: ${{ inputs.publish_trawl }}
         run: |
-          gh api repos/germondai/trawl/tarball/bbd908bf8256eb64ac4251be1f7e839a85ca4894 > trawl-upstream-source.tar.gz
+          gh api repos/germondai/trawl/tarball/5e9a58e1b5932255d5e7545a7cf88f336df3bb2c > trawl-upstream-source.tar.gz
           git archive --format=tar.gz --prefix=universal-parcel-scraper/ HEAD trawl > trawl-patch-source.tar.gz
       - name: Publish npm package with provenance
         if: ${{ steps.npm.outputs.publish == 'true' }}

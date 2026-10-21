@@ -4,7 +4,7 @@ RUN python3 -m venv /opt/zto-ocr \
        opencv-python-headless==5.0.0.93 pyyaml==6.0.3 shapely==2.2.0 pyclipper==1.4.0 six==1.17.0 tqdm==4.70.1 \
     && /opt/zto-ocr/bin/pip install --no-cache-dir --no-deps ddddocr==1.6.1 rapidocr-onnxruntime==1.4.4
 
-FROM ghcr.io/germondai/trawl:1.8.0@sha256:44091fc0af5f9a0190d4cb23d944f69207684a28382a921800dda5b73b41ba2f
+FROM ghcr.io/germondai/trawl:1.9.2@sha256:cfa32f8d6ce5df7d3916d6b014aeeb61256342197b992bd7151ea70e180e3c8f
 LABEL org.opencontainers.image.source="https://github.com/plhery/universal-parcel-scraper" \
       org.opencontainers.image.licenses="AGPL-3.0-only"
 # TRAWL's request log includes the page path, where some carriers put the parcel number.
@@ -14,7 +14,6 @@ COPY --from=zto-ocr /opt/zto-ocr /opt/zto-ocr
 RUN /opt/zto-ocr/bin/python -c 'import ddddocr, rapidocr_onnxruntime, cv2'
 COPY LICENSE /usr/share/licenses/trawl/LICENSE
 COPY tracking-capture.mjs /app/packages/tiers/src/utils/tracking-capture.mjs
-COPY challenge-wait.mjs /app/packages/tiers/src/utils/challenge-wait.mjs
 COPY royal-mail-history.mjs /app/packages/tiers/src/utils/royal-mail-history.mjs
 COPY fedex-session.mjs /app/packages/tiers/src/utils/fedex-session.mjs
 COPY australia-post-browser.mjs /app/packages/tiers/src/utils/australia-post-browser.mjs

@@ -34,7 +34,7 @@ const AUDIO_WAIT = `      const hasAudioSrc = await bframe
           .catch(() => "")
         console.log("[recaptcha] audio element not found; bframe:", bframeText2.slice(0, 120).replace(/\\s+/g, " "))
         if (/automated queries|try again|network may be/i.test(bframeText2)) {
-          console.log("[recaptcha] blocked by Google — audio challenge requires residential proxy")
+          console.log("[recaptcha] blocked by Google - audio challenge requires residential proxy")
           return false
         }
       }`;
@@ -44,7 +44,7 @@ const FAST_AUDIO_WAIT = `      const audioWaitEnd = Math.min(deadline, Date.now(
       while (!hasAudioSrc && Date.now() < audioWaitEnd) {
         const verdict = await audioVerdict(bframe)
         if (verdict === "blocked") {
-          console.log("[recaptcha] blocked by Google — audio challenge requires residential proxy")
+          console.log("[recaptcha] blocked by Google - audio challenge requires residential proxy")
           return false
         }
         if (verdict === "refused") {
@@ -73,7 +73,7 @@ const FAST_VERIFY = `        .locator("#recaptcha-verify-button")
         if ((await anchor.locator('#recaptcha-anchor[aria-checked="true"]').count().catch(() => 0)) > 0) break
         const verdict = await audioVerdict(bframe)
         if (verdict === "blocked") {
-          console.log("[recaptcha] blocked by Google — audio challenge requires residential proxy")
+          console.log("[recaptcha] blocked by Google - audio challenge requires residential proxy")
           return false
         }
         if (verdict === "refused") {

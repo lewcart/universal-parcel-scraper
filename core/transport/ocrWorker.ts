@@ -10,6 +10,14 @@ function withAbort<T>(operation: Promise<T>, signal: AbortSignal, abort?: () => 
   });
 }
 
+/**
+ * The host's Node flags for the worker, without `--input-type`: a worker refuses
+ * it, so a host that reads its own code as a module from stdin could start none.
+ */
+export function workerExecArgv(argv: readonly string[]): string[] {
+  return argv.filter((flag, index) => !flag.startsWith('--input-type') && argv[index - 1] !== '--input-type');
+}
+
 /** One lazy CPU worker reuses its model; queued work shares the lookup deadline. */
 export class OcrWorker {
   private worker: Worker | null = null;
@@ -33,7 +41,7 @@ export class OcrWorker {
     try {
       await withAbort(previous, signal);
       signal.throwIfAborted();
-      const worker = this.worker ??= new Worker(this.workerUrl, { workerData: this.workerData });
+      const worker = this.worker ??= new Worker(this.workerUrl, { workerData: this.workerData, execArgv: workerExecArgv(process.execArgv) });
       worker.ref();
       const id = ++this.nextId;
       const operation = new Promise<string>((resolve, reject) => {

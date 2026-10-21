@@ -738,6 +738,15 @@ describe('classifyWording', () => {
       ['The collection has been registered', 'registered'], ['The shipment has been deposited at a SEUR pickup point', 'accepted'],
       ['The collection has been carried out', 'accepted'], ['Order placed', 'registered'], ['Sent abroad', 'in_transit'],
       ['Example Forwarding has received the goods, Example Town, CN.', 'accepted'],
+      // DAI Post's own words, relayed by universal providers.
+      ["We’ve received your delivery details. We’ll let you know as soon as your parcel is in our hands.", 'registered'],
+      ['Your parcel’s checked in and being prepared for its journey.', 'accepted'], ['Checked in at origin hub', 'accepted'],
+      ['Your parcel is in the air and is heading your way.', 'in_transit'],
+      ['Your parcel’s left the transfer country and is back on the move.', 'in_transit'],
+      ['Touchdown! Your parcel has landed.', 'in_transit'], ['Collected from the airline for processing', 'in_transit'],
+      ['Your parcel’s on an interstate journey. We’ll keep you updated as it travels.', 'in_transit'],
+      ['It’s happening, your parcel will be delivered today. Get ready!', 'out_for_delivery'],
+      ['Parcel out for final mile carrier delivery', 'out_for_delivery'], ['Parcel unsafe to leave at address', 'failed_attempt'],
       ['Parcel received by UniUni', 'in_transit'],
       ['The courier will deliver the parcel soon. Additional details are available in the app, email or SMS.', 'out_for_delivery'],
       ['Item received by Royal Mail', 'accepted'],
@@ -766,6 +775,8 @@ describe('classifyWording', () => {
     // A delivery window is not a sender's notice.
     expect(wordingStage('Expected from tomorrow', 'pending')).toBe('pending');
     expect(wordingStage('Expected from 9am to 11am', 'pending')).toBe('pending');
+    // Another carrier's delivery forecast for the day stays one.
+    expect(wordingStage('Your parcel will be delivered today', 'pending')).toBe('pending');
     // Goods a recipient, a pickup point or a destination received are no acceptance.
     for (const wording of ['The recipient has received the goods', 'The pickup point has received the goods, Example Town, CN.', 'Destination warehouse has received the goods']) {
       expect(wordingStage(wording, 'pending'), wording).not.toBe('accepted');

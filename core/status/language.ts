@@ -195,6 +195,13 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   const text = comparable(description);
 
   if (/^wird zugestellt$/.test(text)) return 'out_for_delivery';
+  // DAI Post's scans in its own words, as universal providers relay them for a parcel not
+  // filed under DAI Post. The delivery today is its out-for-delivery scan, not a forecast.
+  if (/^we've received your delivery details\. we'll let you know as soon as your parcel is in our hands$/.test(text)) return 'registered';
+  if (/^your parcel's checked in and being prepared for its journey$|^checked in at origin hub$/.test(text)) return 'accepted';
+  if (/^your parcel is in the air and is heading your way$|^your parcel's left the transfer country and is back on the move$|^touchdown! your parcel has landed$|^collected from the airline for processing$|^your parcel's on an interstate journey\. we'll keep you updated as it travels$/.test(text)) return 'in_transit';
+  if (/^it's happening, your parcel will be delivered today\. get ready$|^parcel out for final mile carrier delivery$/.test(text)) return 'out_for_delivery';
+  if (/^parcel unsafe to leave at address$/.test(text)) return 'failed_attempt';
   // Every rule below reads only what happened, never a delivery still to come.
   const reported = deliveryForecastRemainder(text);
   if (reported !== undefined) return reported ? trackingLanguageStage(reported) : undefined;

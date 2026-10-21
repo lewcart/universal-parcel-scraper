@@ -95,6 +95,13 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
   wall clock, provider code and location. Swiss Post's own unlocated events (813, 915)
   keep its offset. [clock.ts](clock.ts) lists
   them, and their wording for relays that give no code.
+- On a parcel from abroad (`internationalImport`), the origin post's events (`912`, `913`,
+  `915`) carry its office's wall clock under Swiss Post's offset too: a departure from a
+  London office of exchange came at the 17:57 UPU gives that office, as `17:57+02:00`. The
+  reply names no origin to read them in: `senderCountry` was empty, and the barcode's post
+  can run an office in another country. They keep Swiss Post's offset, right for a
+  neighbour on its clock and an hour or more off elsewhere. Read without it, they would
+  have no instant at all.
 - Wording is only trimmed, not whitespace-collapsed, so `core/transport`'s
   `clean()` is not used.
 - Scan locations keep the facility's name and number as sent ("Zürich

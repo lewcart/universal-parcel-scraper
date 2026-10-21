@@ -24,7 +24,9 @@ the destination country. Tracked through the lookup its tracking page makes.
 - The lookup also finds an order by its partner's number or the shop's reference, and reads the
   digit after `SFC` loosely: `SFC1` to `SFC5` with the same order code give the same order. The
   reply must echo the number asked, and the order counts only when its own order code, the
-  number without `SFC` and the digit, or its AliExpress number is the number asked.
+  number without `SFC` and the digit, or its AliExpress number is the number asked. A partner's
+  number of ten to thirty digits counts when the order lists it as its own tracking number, so a
+  reader who picks SFC for the number a shop gave can follow the order.
 - A scan's `statu` is SFC's English wording, then the partner's own text in brackets. That text
   names the recipient and the courier and carries phone numbers, so only SFC's wording is kept,
   and phone numbers are removed from every line.
@@ -45,7 +47,8 @@ the destination country. Tracked through the lookup its tracking page makes.
 ## Limitations
 
 - No delivery estimate, weight, or delivery time as an instant.
-- Partner numbers and shop references are not looked up; they belong to other rules or none.
+- Lettered partner numbers and shop references are not looked up. No rule names SFC for a
+  partner's number of digits; other carriers' rules or none take it.
 - J&T's name in the reply is the Chinese network's and its website J&T Mexico's home page, so
   the reply alone names no partner. Detection of the partner's number decides it.
 

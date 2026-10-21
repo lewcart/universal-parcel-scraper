@@ -166,7 +166,7 @@ describe('SFC HTTP adapter', () => {
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'SFC found several orders for the number' }));
   });
 
-  it('counts an order only when its own code, or its AliExpress number, is the number asked', () => {
+  it('counts an order only when its own code, its AliExpress number or its partner number is the number asked', () => {
     expect(() => parseSfc(fixture('not-found'), 'SFC1ZZ0000000000004'))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'SFC answered for another number' }));
     expect(() => parseSfc(changed('in-transit', (body) => { body.order_code = DELIVERED; }), DELIVERED))
@@ -179,6 +179,12 @@ describe('SFC HTTP adapter', () => {
     const otherDigit = 'SFC1WX0000000000002';
     expect(parseSfc(changed('in-transit', (body) => { body.order_code = otherDigit; }), otherDigit).events).toHaveLength(8);
     expect(parseSfc(changed('in-transit', (body) => { body.order_code = IN_TRANSIT.toLowerCase(); }), IN_TRANSIT).events).toHaveLength(8);
+    // A partner's number of digits counts when the order lists it as its tracking number.
+    const partner = '000000000012';
+    expect(parseSfc(changed('in-transit', (body) => { body.order_code = partner; body.orderInfo.tracking_number = partner; }), partner).events)
+      .toHaveLength(8);
+    expect(() => parseSfc(changed('in-transit', (body) => { body.order_code = partner; }), partner))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'SFC answered for another shipment' }));
   });
 
   it('rejects a changed reply', () => {
@@ -243,13 +249,14 @@ describe('SFC HTTP adapter', () => {
   it('rejects numbers SFC does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
     for (const number of ['WX0000000000002', 'SFCWX0000000000002', 'SFC3WX000000000000', 'SFC3WX000000000000002', 'SFCAA000000001YQ',
-      'JMX000000000001', `SFC3WX${'0'.repeat(60)}`]) {
+      'JMX000000000001', '000000001', '0'.repeat(31), `SFC3WX${'0'.repeat(60)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
     expect(normalizeSfcNumber('sfcaa 0000-0000-01 yq')).toBe(DELIVERED);
     expect(normalizeSfcNumber('SFC2WI00000000000000')).toBe('SFC2WI00000000000000');
+    expect(normalizeSfcNumber('0000 0000 0012')).toBe('000000000012');
   });
 
   it('sends a read that failed to reach the site once more', async () => {

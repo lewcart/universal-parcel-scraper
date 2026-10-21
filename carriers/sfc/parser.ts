@@ -16,17 +16,19 @@ export const SFC_MAX_BYTES = 512 * 1024;
 const LABEL_NUMBER = /^SFC\d([A-Z]{2}\d{13,14})$/;
 // The number SFC gives an AliExpress order: SFC, two letters, ten digits and YQ.
 const AE_NUMBER = /^SFC[A-Z]{2}\d{10}YQ$/;
+// The number of the courier SFC hands the parcel to, when it is digits alone.
+const PARTNER_NUMBER = /^\d{10,30}$/;
 const ISO_CLOCK = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
 // Older replies wrote the month first.
 const US_CLOCK = /^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})$/;
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
 
-/** An SFC number, or the number SFC gives an AliExpress order; anything else is not one SFC issues. */
+/** An SFC number, the number SFC gives an AliExpress order, or a partner's number of digits. */
 export function normalizeSfcNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw).toUpperCase() : '';
-  if (!LABEL_NUMBER.test(number) && !AE_NUMBER.test(number)) {
-    throw new InvalidInputError(PROVIDER, 'SFC numbers are SFC, a digit, two letters and thirteen or fourteen digits');
+  if (!LABEL_NUMBER.test(number) && !AE_NUMBER.test(number) && !PARTNER_NUMBER.test(number)) {
+    throw new InvalidInputError(PROVIDER, 'SFC numbers are SFC, a digit, two letters and thirteen or fourteen digits, or its partner\'s number of digits');
   }
   return number;
 }
@@ -138,7 +140,8 @@ function handoff(handover: Handover | undefined, info: Record<string, unknown>, 
  * `count` 0 is the page's unknown-number answer. The lookup also finds an
  * order by its partner's number or the shop's reference and reads the
  * number's digit after SFC loosely, so an order counts only when its own
- * order code, or its AliExpress number, is the number asked.
+ * order code, its AliExpress number or, for digits alone, the partner number
+ * it lists is the number asked.
  */
 export function parseSfc(payload: unknown, raw: string): CarrierResult {
   const number = normalizeSfcNumber(raw);
@@ -155,7 +158,8 @@ export function parseSfc(payload: unknown, raw: string): CarrierResult {
   const info = payload.orderInfo;
   if (!isRecord(info)) throw new SchemaError(PROVIDER, 'SFC returned an order without its details');
   const order = LABEL_NUMBER.exec(number)?.[1];
-  const own = order ? text(info, 'order_code', 64).toUpperCase() === order : text(info, 'order_code_ae', 64).toUpperCase() === number;
+  const listed = PARTNER_NUMBER.test(number) ? 'tracking_number' : 'order_code_ae';
+  const own = order ? text(info, 'order_code', 64).toUpperCase() === order : text(info, listed, 64).toUpperCase() === number;
   if (!own) throw new IndeterminateError(PROVIDER, 'SFC answered for another shipment');
   const rows = rowsOf(payload.trackingList);
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'SFC returned an oversized history');

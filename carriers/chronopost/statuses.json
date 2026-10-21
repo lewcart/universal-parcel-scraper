@@ -226,6 +226,15 @@
       "language": "fr"
     },
     {
+      "code": "N",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Chronopost trackSkybillV2; code mapping requires matching wording. A delivery partner's postponement, relayed without a reason or an attempt; nothing is asked of the recipient and the parcel moves on by itself.",
+      "wording": "Livraison reportée",
+      "language": "fr"
+    },
+    {
       "code": "TA",
       "stage": "out_for_delivery",
       "confirmedBy": "live",

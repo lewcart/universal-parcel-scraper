@@ -149,6 +149,7 @@ describe('Chronopost direct tracking', () => {
     ['IS', 'Livraison prévue lundi prochain', 'in_transit'],
     ['SD', 'Livraison reportée de 24h', 'in_transit'],
     ['IA', 'Livraison reportée de 24h', 'in_transit'],
+    ['N', 'Livraison reportée', 'in_transit'],
     ['TA', 'Colis en cours de livraison', 'out_for_delivery'],
     ['TA', 'Colis en cours de livraison par le livreur', 'out_for_delivery'],
     ['RB', 'Colis en cours de livraison au point de retrait', 'in_transit'],

@@ -35,6 +35,9 @@ const OBSERVED: ReadonlyArray<readonly [code: string, label: string, stage: Chro
   // checked, or a recipient closed that day. Delivery resumes on its own.
   ['SD', 'Livraison reportée de 24h', 'in_transit'],
   ['IA', 'Livraison reportée de 24h', 'in_transit'],
+  // A delivery partner's postponement, which Chronopost relays without a reason or an attempt.
+  // Nothing is asked of the recipient, so it is a delay as well.
+  ['N', 'Livraison reportée', 'in_transit'],
   // The round, the courier on the way to a pickup point and its arrival there. They come
   // within two minutes of the delivering partner's own scans, and La Poste's feed stages the
   // same scans alike as MD1, ET1 and AG1.

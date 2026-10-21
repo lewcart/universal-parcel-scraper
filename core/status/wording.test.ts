@@ -733,6 +733,9 @@ describe('classifyWording', () => {
       ['Booked for collection', 'registered'], ['Processing at destination branch', 'in_transit'],
       ['Receipt of the package at the DPD branch', 'in_transit'], ['Release of shipment for delivery', 'out_for_delivery'],
       ['Erfolgreich abgeholt', 'accepted'], ['Die Sendung wurde erfolgreich abgeholt', 'accepted'],
+      ['Expected from Forward2me Ltd', 'registered'],
+      ['Csomagod elkészült. Csomagod létrejött a rendszerünkben, a feladó még nem adta át azt a FOXPOST részére.', 'registered'],
+      ['The collection has been registered', 'registered'], ['The shipment has been deposited at a SEUR pickup point', 'accepted'],
       ['Parcel received by UniUni', 'in_transit'],
       ['The courier will deliver the parcel soon. Additional details are available in the app, email or SMS.', 'out_for_delivery'],
       ['Item received by Royal Mail', 'accepted'],
@@ -758,6 +761,9 @@ describe('classifyWording', () => {
       ['Master air waybill assigned', 'in_transit'], ['Unbagging', 'in_transit'],
       ['Parcel has been packed and is ready for outbound shipping', 'in_transit'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
+    // A delivery window is not a sender's notice.
+    expect(wordingStage('Expected from tomorrow', 'pending')).toBe('pending');
+    expect(wordingStage('Expected from 9am to 11am', 'pending')).toBe('pending');
     // A parcel's own air waybill still marks registration.
     expect(wordingStage('Air waybill created', 'pending')).toBe('registered');
     // A notice sent to the recipient is no pre-advice, and an item received elsewhere keeps its reading.

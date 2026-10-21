@@ -20,7 +20,14 @@ excluded. Free-form status text is replaced with a neutral update. A missing
 shipment response may also mean its history expired, so it remains inconclusive.
 
 The page can return a browser challenge instead of an anonymous session, or
-redirect to Radware's bot check; both are reported as challenges.
+redirect to Radware's bot check; both are reported as challenges. Servers abroad
+can be refused by the site even from a browser, so the adapter has no browser
+step.
+
+The official mobile app reads the same shipment detail, with no session, key or
+bot check, from `GET https://appmovil.correos.cl/api/tracking/tracking_code/{number}/list_status`.
+That host only accepts connections from Chilean networks, so the adapter does
+not use it. An unknown or expired number answers there with an empty history.
 
 ## Testing
 

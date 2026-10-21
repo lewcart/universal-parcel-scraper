@@ -221,6 +221,21 @@ function utcClock(scan: Record<string, unknown>): unknown {
     && !EXPLICIT_OFFSET_PATTERN.test(scan.timestamp) ? `${scan.timestamp}Z` : scan.timestamp;
 }
 
+/**
+ * Mainfreight's air and ocean jobs list planned milestones beside those that happened, and its
+ * own tracker marks them "(Estimated)" (carriers/mainfreight). Its feed here drops the mark, so a
+ * milestone whose clock has yet to come anywhere on Earth is a plan, not a scan.
+ */
+const PLANNING_FEEDS = new Set(['mainfreight-tracking']);
+
+function planned(scan: Record<string, unknown>, event: CarrierEvent, now: number): boolean {
+  const code = isRecord(scan.courier) ? scan.courier.crawler_code : null;
+  if (typeof code !== 'string' || !PLANNING_FEEDS.has(code)) return false;
+  const moment = event.time ? DateTime.fromISO(event.time)
+    : typeof event.local_time === 'string' ? firstOccurrence(DateTime.fromISO(event.local_time, { zone: 'UTC+14' })) : null;
+  return Boolean(moment?.isValid && moment.toMillis() > now);
+}
+
 /** A relabelling feed's timestamp as the scan's wall clock; any other is left as Ship24 sent it. */
 function feedClock(timestamp: unknown, feed: Feed | null): unknown {
   if (!feed || typeof timestamp !== 'string' || !EXPLICIT_OFFSET_PATTERN.test(timestamp)) return timestamp;
@@ -338,7 +353,7 @@ function borrowedZone(readings: readonly Reading[], reading: Reading, journey: J
   return earlier?.zone ?? later?.zone ?? null;
 }
 
-export function parseShip24Response(payload: unknown, trackingNumber: string, timezone: string | null = null): CarrierResult {
+export function parseShip24Response(payload: unknown, trackingNumber: string, timezone: string | null = null, now = Date.now()): CarrierResult {
   const number = numberOf(trackingNumber);
   const data = isRecord(payload) && isRecord(payload.data) ? payload.data : null;
   if (!data || data.tracking_number !== number || data.error
@@ -372,7 +387,7 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
     const relayed = swissPostRelayZone(raw, journey);
     const clock = relayed && typeof raw.timestamp === 'string' ? raw.timestamp.replace(EXPLICIT_OFFSET_PATTERN, '') : feedClock(utcClock(raw), feed);
     const parsed = localEvent(clock, raw.status, raw.dispatch_code_id === 7 ? 'Delivered' : undefined);
-    if (!parsed) continue;
+    if (!parsed || planned(raw, parsed, now)) continue;
     const location = place(raw.location);
     if (location) parsed.location = location;
     const wall = typeof parsed.local_time === 'string' ? parsed.local_time : null;

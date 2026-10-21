@@ -98,6 +98,10 @@ No account, cookie, fingerprint or issued token is used.
   clock ([Swiss Post](../../carriers/swiss-post/README.md)). On a parcel to a country with
   one clock, they are read on it (`destination_country_code`); elsewhere the offset stays,
   the last guess.
+- `mainfreight-tracking` relays an air or ocean job's planned milestones without the
+  "(Estimated)" Mainfreight's tracker gives them ([Mainfreight](../../carriers/mainfreight/README.md)).
+  A milestone whose clock has yet to come anywhere on Earth (UTC+14) is left out. One due
+  within that margin still shows.
 - A wall clock is read in the first clock found among:
   1. the scan location's:
      - CTT's offices of exchange (`PTLISA - …`) and own sites are on Portugal's clock,

@@ -257,6 +257,16 @@ describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {
     expect(reply.events?.map((event) => event.time)).toEqual(['2026-10-14T18:18:43.000Z', '2026-10-14T18:18:43.000Z']);
   });
 
+  it('leaves out a milestone Mainfreight\'s feed relays before its clock has come anywhere', () => {
+    // Live shape: an air job's arrival a day ahead, without the tracker's "(Estimated)".
+    const scan = (timestamp: string, status: string) => ({ timestamp, status, courier: { crawler_code: 'mainfreight-tracking' } });
+    const reply = parseShip24Response({ data: { tracking_number: number, couriers: [{ translation: { name: 'Mainfreight' } }],
+      events: [scan('2026-10-22T05:40:00', 'Arrival at Final Discharge Port'), scan('2026-10-21T19:00:00', 'Arrival at Transshipment Port'),
+        scan('2026-10-20T16:55:00', 'Departed')] } }, number, 'Pacific/Auckland', Date.parse('2026-10-21T06:00:00Z'));
+    // 19:00 has come at UTC+14, so it may have happened.
+    expect(reply.events?.map((event) => event.description)).toEqual(['Arrival at Transshipment Port', 'Departed']);
+  });
+
   it('turns 4PX\'s instant back into the wall clock it read on China\'s, then places it', () => {
     expect(feed('4px-tracking', '4PX', [['2026-05-26T06:30:03+00:00', 'US  NY  EXAMPLE TOWN 12345'], ['2026-05-24T23:39:05+00:00', 'US     '],
       ['2026-05-21T12:35:30+00:00', 'CN'], ['2026-05-21T09:08:01+00:00', 'US  NY  EXAMPLE TOWN 12345'], ['2026-05-21T09:04:13+00:00', undefined]],

@@ -146,7 +146,7 @@ describe('Royal Mail structured response', () => {
       ],
     } }, DELIVERED_NUMBER);
     expect(result.events?.map(event => event.stage)).toEqual([
-      'delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'registered',
+      'delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'in_transit', 'accepted', 'registered',
     ]);
     expect(result.delivered_at).toBe('2026-01-03T09:56:31Z');
     expect(result.events?.every(event => event.stage_source === 'carrier_map')).toBe(true);
@@ -212,6 +212,7 @@ describe('Royal Mail structured response', () => {
       ],
     } }, IN_TRANSIT_NUMBER);
     expect(piece('EVDAC', 'We\'ve got it').events?.map(event => event.stage)).toEqual(['accepted', 'registered']);
+    expect(piece('EVDAV', 'We\'ve got it').events?.map(event => event.stage)).toEqual(['accepted', 'registered']);
     expect(piece('EVIAV', 'In transit').events?.map(event => event.stage)).toEqual(['in_transit', 'registered']);
   });
 

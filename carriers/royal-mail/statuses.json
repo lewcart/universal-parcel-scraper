@@ -141,7 +141,7 @@
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-10-05",
-      "note": "Full-history code takes precedence over repeated display wording."
+      "note": "A mail centre or hub receipt. The first one is the acceptance when no scan accepted the item before it."
     },
     {
       "code": "EVAIP",

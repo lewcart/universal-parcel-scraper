@@ -8,7 +8,7 @@ import { explicitOffsetTime, zonedTime } from '../../core/time/index.js';
 import { clean, parseJsonBytes } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { facilityZone } from './clock.js';
-import { DhlMobileApi } from './mobile.js';
+import { DhlMobileApi, MobilePacedError } from './mobile.js';
 import { dhlExpressStage } from './status.js';
 
 const PROVIDER = 'DHL Express';
@@ -266,8 +266,9 @@ export class DhlExpressTracker {
     const number = normalizeNumber(raw);
     const trawl = !!this.environment.trawl;
     return runSteps(run, [
-      // While a CAPTCHA holds the app's API would fail without a request, so a browser service is asked at once.
-      { id: 'direct', enabled: !(trawl && this.mobile.captchaHeld()),
+      // While a CAPTCHA holds or the hour's requests are spent, the app's API would fail without a request,
+      // so a browser service is asked at once.
+      { id: 'direct', enabled: !(trawl && this.mobile.withheld()),
         run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: Math.min(remainingMs, 10_000) }) },
       { id: 'trawl', enabled: trawl, run: ({ signal, remainingMs }) => this.browser(number, { signal, budgetMs: remainingMs }) },
     ]);
@@ -283,7 +284,9 @@ export const adapter: AdapterFactory = (environment) => {
       return recognizeFromLookup(() => tracker.direct(number, context), () => accepted(() => normalizeNumber(number)));
     },
     recognizeWithBrowser: async (number, context, previousError) => {
-      if (previousError instanceof RateLimitedError || previousError instanceof SchemaError || previousError instanceof NotFoundError) throw previousError;
+      // The adapter's own pacing of the app's API says nothing about the global page.
+      if ((previousError instanceof RateLimitedError && !(previousError instanceof MobilePacedError))
+        || previousError instanceof SchemaError || previousError instanceof NotFoundError) throw previousError;
       return recognizeFromBrowserLookup(() => isPieceId(number) ? tracker.browserPiece(number, context) : tracker.browser(normalizeNumber(number), context));
     } };
 };

@@ -4,7 +4,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import { adapter, DhlExpressTracker, normalizeNumber, normalizePieceId, parse, parseMobile, parseUnified, parseUnifiedPiece } from './adapter.js';
-import { CAPTCHA_MEMORY_MS, SETTINGS_TTL_MS } from './mobile.js';
+import { CAPTCHA_MEMORY_MS, HOURLY_REQUESTS, MAX_CAPTCHA_MEMORY_MS, MobilePacedError, SETTINGS_TTL_MS } from './mobile.js';
 import { dhlExpressStage } from './status.js';
 
 const number = '1234567891';
@@ -322,17 +322,25 @@ describe('DHL mobile API', () => {
     }
   });
   it('trusts an empty list under the reused setting and reads it again after a rejected or unexpected reply', async () => {
-    const fetcher = mobileFetcher([]); const carrier = adapter(environment(fetcher));
-    expect(await carrier.recognize!(number)).toEqual({ known: false });
-    expect(await carrier.recognize!(number)).toEqual({ known: false });
-    expect(fetcher).toHaveBeenCalledTimes(3);
-    for (const [reply, kind] of [[{ statusCode: 401 }, ChallengeError], ['temporary_blocked', RateLimitedError],
-      [{ statusCode: 404, error: 'Not Found' }, SchemaError]] as const) {
-      fetcher.mockClear().mockImplementation(async (_url, init) => new Response(JSON.stringify(JSON.parse(String(init?.body)).method === 'tracking' ? reply : settings)));
-      await expect(carrier.recognize!(number)).rejects.toThrow(kind);
-      fetcher.mockImplementation(async (_url, init) => new Response(JSON.stringify(JSON.parse(String(init?.body)).method === 'tracking' ? [] : settings)));
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const fetcher = mobileFetcher([]); const carrier = adapter(environment(fetcher));
       expect(await carrier.recognize!(number)).toEqual({ known: false });
-      expect(services(fetcher)).toEqual(['shipments-tracking', 'shipments-tracking', 'common-countrySettingsBySettingName']);
+      expect(await carrier.recognize!(number)).toEqual({ known: false });
+      expect(fetcher).toHaveBeenCalledTimes(3);
+      for (const [reply, kind] of [[{ statusCode: 401 }, ChallengeError], ['temporary_blocked', RateLimitedError],
+        [{ statusCode: 404, error: 'Not Found' }, SchemaError]] as const) {
+        // An hour on, so the hour's requests allow the setting's read and the rejection.
+        vi.setSystemTime(Date.now() + 60 * 60_000);
+        expect(await carrier.recognize!(number)).toEqual({ known: false });
+        fetcher.mockClear().mockImplementation(async (_url, init) => new Response(JSON.stringify(JSON.parse(String(init?.body)).method === 'tracking' ? reply : settings)));
+        await expect(carrier.recognize!(number)).rejects.toThrow(kind);
+        fetcher.mockImplementation(async (_url, init) => new Response(JSON.stringify(JSON.parse(String(init?.body)).method === 'tracking' ? [] : settings)));
+        expect(await carrier.recognize!(number)).toEqual({ known: false });
+        expect(services(fetcher)).toEqual(['shipments-tracking', 'shipments-tracking', 'common-countrySettingsBySettingName']);
+      }
+    } finally {
+      vi.useRealTimers();
     }
   });
   it('asks nothing for any waybill while a CAPTCHA may hold, and goes straight to the browser meanwhile', async () => {
@@ -387,6 +395,67 @@ describe('DHL mobile API', () => {
     await expect(tracker.direct(number)).rejects.toMatchObject({ kind: 'challenge', status: 503 });
     await expect(tracker.direct(number)).rejects.toThrow('recently required verification');
     expect(services(fetcher)).toEqual(['shipments-tracking', 'common-countrySettingsBySettingName']);
+  });
+  it('pauses longer each time the first request after a pause draws the CAPTCHA, until one is answered', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const captcha = async () => new Response(JSON.stringify({ error: 'DRG10012' }), { status: 503 });
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(captcha);
+      const tracker = new DhlExpressTracker(environment(fetcher));
+      const pauses = [CAPTCHA_MEMORY_MS, 2 * CAPTCHA_MEMORY_MS, 4 * CAPTCHA_MEMORY_MS, MAX_CAPTCHA_MEMORY_MS, MAX_CAPTCHA_MEMORY_MS];
+      await expect(tracker.direct(number)).rejects.toMatchObject({ kind: 'challenge', status: 503 });
+      for (const [index, pause] of pauses.entries()) {
+        vi.setSystemTime(Date.now() + pause - 1);
+        await expect(tracker.direct(number)).rejects.toThrow('recently required verification');
+        vi.setSystemTime(Date.now() + 1);
+        if (index < pauses.length - 1) await expect(tracker.direct(number)).rejects.toMatchObject({ status: 503 });
+      }
+      expect(fetcher).toHaveBeenCalledTimes(pauses.length);
+      fetcher.mockImplementation(async () => new Response(JSON.stringify(mobilePayload())));
+      await expect(tracker.direct(number)).resolves.toMatchObject({ status: 'delivered' });
+      fetcher.mockImplementation(captcha);
+      await expect(tracker.direct(number)).rejects.toMatchObject({ status: 503 });
+      vi.setSystemTime(Date.now() + CAPTCHA_MEMORY_MS);
+      fetcher.mockImplementation(async () => new Response(JSON.stringify(mobilePayload())));
+      await expect(tracker.direct(number)).resolves.toMatchObject({ status: 'delivered' });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it('sends a transport no more requests in an hour than DHL lets pass, and goes to the browser meanwhile', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const fetcher = mobileFetcher([]);
+      const trawl = new TrawlClient('https://browser.example');
+      const scrape = vi.spyOn(trawl, 'scrape').mockResolvedValue({ url: '', html: '', cookies: [], userAgent: null, tier: 2, statusCode: 200, raw: {},
+        capturedResponses: [captured()] });
+      const recorder = { ...NOOP_RECORDER, step: vi.fn() };
+      const tracker = new DhlExpressTracker({ ...environment(fetcher, trawl), recorder });
+      const carrier = adapter(environment(fetcher, trawl));
+      // The settings read counts as one of the hour's requests.
+      await expect(tracker.direct(number)).rejects.toThrow(NotFoundError);
+      const first = Date.now();
+      vi.setSystemTime(first + 10 * 60_000);
+      for (let sent = 2; sent < HOURLY_REQUESTS; sent++) await expect(tracker.direct(number)).rejects.toThrow(NotFoundError);
+      expect(fetcher).toHaveBeenCalledTimes(HOURLY_REQUESTS);
+      const paced = await carrier.recognize!(number).catch((error: unknown) => error);
+      expect(paced).toBeInstanceOf(MobilePacedError);
+      expect(paced).toMatchObject({ kind: 'rate_limited', retryAfterMs: 50 * 60_000 });
+      await expect(carrier.recognizeWithBrowser!(number, {}, paced)).resolves.toMatchObject({ known: true });
+      await expect(carrier.recognizeWithBrowser!(number, {}, new RateLimitedError('DHL Express'))).rejects.toThrow(RateLimitedError);
+      await expect(tracker.fetch(number)).resolves.toMatchObject({ status: 'delivered' });
+      expect(recorder.step.mock.calls.map(([record]) => record.step)).toEqual(['trawl']);
+      expect(scrape).toHaveBeenCalledTimes(2);
+      await expect(new DhlExpressTracker(environment(fetcher)).fetch(number)).rejects.toThrow(MobilePacedError);
+      expect(fetcher).toHaveBeenCalledTimes(HOURLY_REQUESTS);
+      // An hour after the first two requests, two more may be sent: tracking and the expired setting's read.
+      vi.setSystemTime(first + 60 * 60_000);
+      await expect(tracker.direct(number)).rejects.toThrow(NotFoundError);
+      expect(fetcher).toHaveBeenCalledTimes(HOURLY_REQUESTS + 2);
+      await expect(tracker.direct(number)).rejects.toThrow(MobilePacedError);
+    } finally {
+      vi.useRealTimers();
+    }
   });
   it('does not remember another verification requirement', async () => {
     const fetcher = mobileFetcher({ statusCode: 401 }); const tracker = new DhlExpressTracker(environment(fetcher));

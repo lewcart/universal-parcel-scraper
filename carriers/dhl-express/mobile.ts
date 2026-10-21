@@ -18,27 +18,46 @@ const CAPTCHA_CODES = ['DRG10012', 'DRG10013'];
 /**
  * How long after a CAPTCHA tracking is not asked again. Asked every two
  * minutes, the address kept its CAPTCHA past a quarter of an hour; left alone
- * for half an hour, it was gone.
+ * for half an hour, it was gone. When the first request after the pause draws
+ * it again, the next pause is twice as long, up to `MAX_CAPTCHA_MEMORY_MS`.
  */
 export const CAPTCHA_MEMORY_MS = 30 * 60_000;
+export const MAX_CAPTCHA_MEMORY_MS = 4 * 60 * 60_000;
+/**
+ * How many requests the mobile API is sent through one transport in an hour.
+ * A waybill checked every ten minutes went unchallenged for hours; at twelve
+ * checks an hour the address drew the CAPTCHA within the hour, and again a few
+ * requests after each pause.
+ */
+export const HOURLY_REQUESTS = 6;
+const HOUR_MS = 60 * 60_000;
 
 /** The mobile API's CAPTCHA, which the transport's state remembers. */
 class CaptchaError extends ChallengeError {}
 
+/** Tracking not asked because the transport's requests for the hour are spent. */
+export class MobilePacedError extends RateLimitedError {
+  constructor(retryAfterMs: number) {
+    super(PROVIDER, retryAfterMs, 'DHL mobile tracking was asked as often as an hour allows');
+    this.name = 'MobilePacedError';
+  }
+}
+
 /**
  * What the mobile API answered last through one transport: when `api_awb_encryption` last
- * read N, null until it is read again, and when tracking last drew the CAPTCHA. DHL turns the
+ * read N, null until it is read again; when a request last drew the CAPTCHA, null once one is
+ * answered, and the pause it began; and when the past hour's requests were sent. DHL turns the
  * CAPTCHA on for a whole address, so every adapter instance in the process that sends through
  * the same fetcher shares this, as a host's several registries do. A restart forgets it.
  */
-interface TransportState { settingsCheckedAt: number | null; captchaAt: number | null }
+interface TransportState { settingsCheckedAt: number | null; captchaAt: number | null; captchaMemoryMs: number; sentAt: number[] }
 const states = new WeakMap<object, TransportState>();
 const GLOBAL_FETCH = {};
 
 function transportState(fetcher: typeof fetch | undefined): TransportState {
   const key = transportOf(fetcher) ?? GLOBAL_FETCH;
   let state = states.get(key);
-  if (!state) states.set(key, state = { settingsCheckedAt: null, captchaAt: null });
+  if (!state) states.set(key, state = { settingsCheckedAt: null, captchaAt: null, captchaMemoryMs: CAPTCHA_MEMORY_MS, sentAt: [] });
   return state;
 }
 
@@ -80,11 +99,14 @@ export class DhlMobileApi {
    * one its own lookup cancelled or ran out of time for, says nothing about it.
    * A CAPTCHA holds for every waybill and device from the address for a while,
    * so for `CAPTCHA_MEMORY_MS` after one, lookups through the same transport
-   * fail as a challenge without a request.
+   * fail as a challenge without a request. Once the transport has sent
+   * `HOURLY_REQUESTS` in the past hour, lookups fail as paced without one.
    */
   async tracking(number: string, budget: LookupBudget): Promise<unknown> {
     const state = this.state;
     if (this.captchaHeld()) throw new ChallengeError(PROVIDER, 'DHL mobile tracking recently required verification');
+    const pacedMs = this.pacedMs();
+    if (pacedMs > 0) throw new MobilePacedError(pacedMs);
     let payload: unknown;
     try {
       payload = await this.request(budget, 'tracking', 'shipments', { airWayBill: number, countryCode: 'GB', languageCd: 'en',
@@ -104,7 +126,19 @@ export class DhlMobileApi {
   /** Whether a CAPTCHA drawn through this transport may still hold, so tracking would fail without a request. */
   captchaHeld(): boolean {
     const captchaAt = this.state.captchaAt;
-    return captchaAt !== null && Date.now() - captchaAt < CAPTCHA_MEMORY_MS;
+    return captchaAt !== null && Date.now() - captchaAt < this.state.captchaMemoryMs;
+  }
+
+  /** How long until the transport may send another request this hour, 0 when it may now. */
+  pacedMs(): number {
+    const now = Date.now();
+    const sentAt = this.state.sentAt = this.state.sentAt.filter((at) => now - at < HOUR_MS);
+    return sentAt.length < HOURLY_REQUESTS ? 0 : sentAt[sentAt.length - HOURLY_REQUESTS]! + HOUR_MS - now;
+  }
+
+  /** Whether tracking would fail without a request, held by a CAPTCHA or paced. */
+  withheld(): boolean {
+    return this.captchaHeld() || this.pacedMs() > 0;
   }
 
   private async checkSettings(budget: LookupBudget): Promise<void> {
@@ -120,6 +154,7 @@ export class DhlMobileApi {
 
   private async request(budget: LookupBudget, method: string, service: string, extra: Record<string, unknown>): Promise<unknown> {
     budget.signal.throwIfAborted();
+    this.state.sentAt.push(Date.now());
     const { response, bytes } = await fetchBounded(`${API}?${new URLSearchParams({ appVersion: VERSION, service: `${service}-${method}` })}`, {
       method: 'POST', signal: budget.signal,
       headers: { accept: 'application/json', 'content-type': 'application/json', authorization: APPLICATION_BEARER,
@@ -144,10 +179,18 @@ export class DhlMobileApi {
     }
     try { checkReply(payload, response.status); }
     catch (error) {
-      if (error instanceof CaptchaError) this.state.captchaAt = Date.now();
+      if (error instanceof CaptchaError) {
+        const state = this.state;
+        const now = Date.now();
+        if (state.captchaAt === null) state.captchaMemoryMs = CAPTCHA_MEMORY_MS;
+        // The first request after a pause drew it again, so the next pause is longer.
+        else if (now - state.captchaAt >= state.captchaMemoryMs) state.captchaMemoryMs = Math.min(state.captchaMemoryMs * 2, MAX_CAPTCHA_MEMORY_MS);
+        state.captchaAt = now;
+      }
       throw error;
     }
     if (response.status !== 200) throw new UpstreamHttpError(PROVIDER, response.status);
+    this.state.captchaAt = null;
     return payload;
   }
 }

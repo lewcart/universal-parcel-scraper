@@ -86,10 +86,17 @@ limit, not a block of the address.
 Asked every two minutes, the code stayed on past a quarter of an hour; after
 half an hour without requests it was gone. So after one, no adapter instance in
 the process that sends through the same fetcher asks the mobile API for half an
-hour. With a browser service, lookups skip `direct` meanwhile and go straight to
-`trawl`, so only the request that drew the code records a challenge; without
-one, `direct` answers with the challenge at once. A restart forgets it, so a
-host that restarts often asks again each time and can keep the code on.
+hour, and for twice as long each time the first request after a pause draws it
+again, up to four hours; an answered request ends the doubling. A waybill
+checked every ten minutes drew no code for hours, while twelve checks an hour
+drew it within the hour, so a transport also sends at most six requests in an
+hour, the settings read included. With a browser service, lookups skip `direct`
+during a pause or once the hour's requests are spent and go straight to
+`trawl`, so only the request that drew the code records a challenge. Without
+one, `direct` answers at once with the challenge, or with a rate limit whose
+retry delay is when the next request may go; browser recognition still runs
+after that rate limit. A restart forgets all of this, so a host that restarts
+often asks again each time and can keep the code on.
 
 Checkpoint stages come from [status.ts](status.ts). DHL's fixed sentences match
 whole, and those that end with the facility ("Processed at CITY - COUNTRY")

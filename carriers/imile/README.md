@@ -91,7 +91,9 @@ iMile's own waybill numbers are thirteen digits. Most are a 6, the day the waybi
 month, day and two-digit year, then six digits: every sample was reported days or months
 after its date. `imile-2` suggests iMile for that layout, with years from 24, at low confidence.
 Other carriers' thirteen digits are a bare counter that can fit it, Korea Post's domestic
-parcels among them, so the tracker has to confirm the number. The waybills that start with 3
+parcels among them, so the tracker has to confirm the number. Every parcel seen in the layout
+was iMile's, so detection lists iMile first, ahead of the country hint, and keeps the others as
+candidates. The waybills that start with 3
 show no such date, and no rule claims them. Its Italian parcels also carry `IM` and fourteen
 digits, which iMile calls their waybill number. Every sample starts `IM0601`, so `imile-3`
 names iMile for that prefix. No other carrier's rule takes the layout, and `imile-1` suggests

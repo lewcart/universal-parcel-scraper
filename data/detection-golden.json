@@ -44900,15 +44900,18 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
-      "imile"
+      "imile",
+      "la-poste"
     ]
   },
   {
@@ -45280,15 +45283,18 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
-      "imile"
+      "imile",
+      "la-poste"
     ]
   },
   {
@@ -45391,17 +45397,20 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "yunda",
       "korea-post",
-      "fedex-pl",
+      "fedex-pl"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
+      "imile",
       "fedex-pl",
-      "la-poste",
-      "imile"
+      "la-poste"
     ]
   },
   {
@@ -45409,16 +45418,19 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
       "imile",
+      "la-poste",
       "delhivery"
     ]
   },
@@ -45626,16 +45638,19 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
       "imile",
+      "la-poste",
       "delhivery"
     ]
   },
@@ -45644,16 +45659,19 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
       "imile",
+      "la-poste",
       "delhivery"
     ]
   },
@@ -45662,18 +45680,21 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "delhivery",
       "yunda",
       "korea-post",
-      "fedex-pl",
+      "fedex-pl"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
+      "imile",
       "fedex-pl",
       "la-poste",
-      "imile",
       "delhivery"
     ]
   },
@@ -45704,16 +45725,19 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
       "imile",
+      "la-poste",
       "delhivery"
     ]
   },
@@ -45792,15 +45816,18 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
-      "imile"
+      "imile",
+      "la-poste"
     ]
   },
   {
@@ -45808,15 +45835,18 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
-      "imile"
+      "imile",
+      "la-poste"
     ]
   },
   {
@@ -45824,16 +45854,19 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post",
+      "korea-post"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
-      "la-poste",
       "imile",
+      "la-poste",
       "delhivery"
     ]
   },
@@ -46147,18 +46180,21 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "imile",
       "la-poste",
       "correos-chile",
       "delhivery",
       "yunda",
       "korea-post",
-      "fedex-pl",
+      "fedex-pl"
+    ],
+    "preferred": [
       "imile"
     ],
     "asked": [
+      "imile",
       "fedex-pl",
       "la-poste",
-      "imile",
       "delhivery"
     ]
   },

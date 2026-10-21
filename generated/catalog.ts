@@ -16761,7 +16761,8 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^6(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])2[4-9]\\d{6}$",
-        "confidence": "low"
+        "confidence": "low",
+        "preferred": true
       }
     ]
   },

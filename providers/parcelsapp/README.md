@@ -67,8 +67,9 @@ step exists for future protocol changes.
 
 - API scans retain their reported location. Chronopost's delivery-service label in that
   field is excluded because it names a service, not a place, and so is Posti's "ULKOMAILLA"
-  ("abroad"). A repeat without a place keeps the location another copy of the same scan
-  reported.
+  ("abroad"). A Post Office branch's postcode, which Royal Mail appends in brackets and
+  ParcelsApp copies, is left out, as Royal Mail's own adapter does. A repeat without a
+  place keeps the location another copy of the same scan reported.
 - Identity: the API reply does not echo the number, so a direct result is bound to the
   single POST that sent it. A different `correctId` is rejected as an unverified alias.
   A browser capture must render exactly one matching `Tracking number` row in the result
@@ -313,8 +314,11 @@ step exists for future protocol changes.
   destination's single clock, or else only a guess. "iMile" has the digits of iMile's
   page, which writes every scan on the recipient country's clock, wherever it was: they
   take the destination's single clock, or else keep their wall clock, as iMile's own
-  lookup does. "South Korea Post" (Korea Post's page), "Posten Norge - Norway
-  Post" (Bring's offsets, in Denmark too) and "Royal Mail" (Parcelforce's offsets) were
+  lookup does. "Royal Mail", "Parcelforce" and "Parcelforce Worldwide" have the labels
+  of Royal Mail's tracker, on London time at home and beyond Europe: a South African
+  office's scans have the instants of the South African post's own clock that way.
+  Their European partners' relays are on another clock (below). "South Korea Post"
+  (Korea Post's page) and "Posten Norge - Norway Post" (Bring's offsets, in Denmark too) were
   checked at home only, so their home clock is a step 3 guess that a location in another
   country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local
   times, 10:27 for a delivery in Japan that Cainiao dates 10:27 GMT+9 and Ship24 01:27Z.
@@ -335,9 +339,8 @@ step exists for future protocol changes.
   have the digits of La Poste's own scans, and its "Item Received" and customs scans in
   Portugal come an hour after CTT's digits, at the same minute. Step 1 reads a Royal Mail
   scan located in another European country on Brussels time, and so one with no place that
-  puts the item "in the destination country" on a parcel bound there. No sample shows the
-  relays beyond Europe, so those keep the country's clock. A
-  name or relay added here moves its stored scans (see Limitations).
+  puts the item "in the destination country" on a parcel bound there, and so for
+  Parcelforce's names. A name or relay added here moves its stored scans (see Limitations).
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
   written in Chinese, ends with a mainland province ("Example City, Guangdong") or is only
   the city of one of its processing centres ("Shenzhen") is read on China time, as

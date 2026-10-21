@@ -27,6 +27,9 @@ it('keeps scan locations from the API while excluding a delivery-service label a
   }, number, identity()).events?.[0];
   expect(parse('  Example   Sorting Centre, France  ')?.location).toBe('Example Sorting Centre, France');
   expect(parse('France')?.location).toBe('France');
+  // A Post Office branch's postcode, which Royal Mail appends in brackets, is left out; other brackets stay.
+  expect(parse('Example Post Office [ZZ9 9ZZ]')?.location).toBe('Example Post Office');
+  expect(parse('Example DO [Main]')?.location).toBe('Example DO [Main]');
   for (const location of [undefined, '', 'Type de livraison : Livraison Standard', 'ULKOMAILLA', ['France'], { city: 'Example City' }]) {
     expect(parse(location)).not.toHaveProperty('location');
   }
@@ -1515,7 +1518,9 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-09-30T04:48:00.000Z', '2026-09-29T10:00:00.000Z']);
     expect(times(['Posten Norge - Norway Post'], [scan('2026-09-30T09:38:23Z'), scan('2026-09-30T06:17:37Z', 'Example Town, Denmark, 1000')]))
       .toEqual(['2026-09-30T07:38:23.000Z', '2026-09-30T04:17:37.000Z']);
-    expect(times(['Royal Mail'], [scan('2026-09-16T14:39:39Z', 'Example DO')])).toEqual(['2026-09-16T13:39:39.000Z']);
+    for (const name of ['Royal Mail', 'Parcelforce', 'Parcelforce Worldwide']) {
+      expect(times([name], [scan('2026-09-16T14:39:39Z', 'Example DO')])).toEqual(['2026-09-16T13:39:39.000Z']);
+    }
     expect(times(['Japan Post'], [scan('2026-10-02T10:27:00Z', 'Example Town')])).toEqual(['2026-10-02T01:27:00.000Z']);
     for (const name of ['Yodel', 'InPost UK', 'Collect+']) {
       expect(times([name], [scan('2026-09-29T21:42:44Z'), scan('2026-09-28T09:00:00Z', 'Example City, Poland')]))
@@ -1644,8 +1649,16 @@ describe('ParcelsApp result parsing', () => {
     ])).toEqual(['2026-07-21T09:24:00.000Z', '2026-07-21T08:05:00.000Z', '2026-07-17T03:12:09.000Z', '2026-07-16T17:40:00.000Z']);
     expect(times('FR', [scan('2026-07-21T19:30:00Z', 'Item has left the overseas International Processing Centre', 'EXAMPLE IPC, France')]))
       .toEqual(['2026-07-21T17:30:00.000Z']);
-    // No sample shows the relays beyond Europe: a scan in the US keeps the clock it had.
-    expect(times('US', [scan('2026-09-11T23:38:00Z', 'Item Received', 'Example City, USA')])).toEqual(['2026-09-11T23:38:00.000Z']);
+    expect(parseParcelsAppResponse({ carriers: ['Parcelforce'], originCode: 'GB', destinationCode: 'FR',
+      states: [scan('2026-07-21T19:30:00Z', 'Item Received', 'EXAMPLE IPC, France')] }, number, identity()).events?.[0]?.time)
+      .toBe('2026-07-21T17:30:00.000Z');
+    // Beyond Europe the label is on London time: the South African post's own clock gives these scans the same instants.
+    expect(times('US', [scan('2026-09-11T23:38:00Z', 'Item Received', 'Example City, USA')])).toEqual(['2026-09-11T22:38:00.000Z']);
+    expect(times('ZA', [
+      scan('2026-10-20T23:07:00Z', 'Released from Customs', 'South Africa'),
+      scan('2026-10-20T22:55:00Z', 'Your item is currently with Customs in the destination country', 'EXAMPLE EMS'),
+      scan('2026-10-20T22:54:00Z', 'Item Received', 'EXAMPLE EMS, South Africa'),
+    ])).toEqual(['2026-10-20T22:07:00.000Z', '2026-10-20T21:55:00.000Z', '2026-10-20T21:54:00.000Z']);
     // Bound for the UK, a customs scan with no place is Royal Mail's own, at home, as are the Crown Dependencies'.
     expect(times('GB', [
       scan('2026-07-21T11:24:00Z', 'Your item is currently with Customs in the destination country.'),

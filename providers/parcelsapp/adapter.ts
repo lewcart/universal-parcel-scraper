@@ -324,11 +324,15 @@ function knownClock(name: unknown, status: string, destination: string | null, o
  * also for its scans in China, and SunYou's those of its feed's origin leg,
  * on "+08:00". Landmark Global's are its tracking page's US Central clock,
  * also for the delivery partner's scans it relays: guessed from the check's
- * zone instead, the same scan moved by two hours.
+ * zone instead, the same scan moved by two hours. Royal Mail's and
+ * Parcelforce's are the labels of Royal Mail's tracker on London time, at
+ * home and beyond Europe: a South African office's scans have the instants of
+ * the South African post's own clock that way. Their European partners'
+ * relays keep another clock (`royalMailRelay`).
  */
 const HOME_CLOCKS: Readonly<Record<string, string>> = {
   italypost: 'Europe/Rome', landmarkglobal: 'America/Chicago', newzealandpost: 'Pacific/Auckland', singaporepost: 'Asia/Singapore',
-  sunyousytrack: 'Asia/Shanghai',
+  sunyousytrack: 'Asia/Shanghai', royalmail: 'Europe/London', parcelforce: 'Europe/London', parcelforceworldwide: 'Europe/London',
 };
 /**
  * SunYou's feed dates its destination leg, from the arrival at the
@@ -403,10 +407,9 @@ function cttZone(payload: Record<string, unknown>, location: string, date: unkno
 }
 /**
  * Networks whose dates are their scans' local clocks, checked at home only
- * (2026-10-10): Korea Post's page, Bring's offsets (in Denmark too) and
- * Parcelforce's for Royal Mail; Japan Post's, which its portal gives as local
- * times, at 10:27 for a delivery in Japan that Cainiao dates 10:27 GMT+9 and
- * Ship24 01:27Z (2026-10-11). Pekaes' are the offset-less digits its own
+ * (2026-10-10): Korea Post's page and Bring's offsets (in Denmark too);
+ * Japan Post's, which its portal gives as local times, at 10:27 for a delivery
+ * in Japan that Cainiao dates 10:27 GMT+9 and Ship24 01:27Z (2026-10-11). Pekaes' are the offset-less digits its own
  * history gives and its page labels Polish time (2026-10-13). Yodel's, InPost's
  * UK network, are London's: InPost's own offsets give the same instants
  * (2026-10-16), as they do for Collect+'s, Yodel's shop network, which Ship24
@@ -425,7 +428,7 @@ function cttZone(payload: Record<string, unknown>, location: string, date: unkno
  * country rules out.
  */
 const HOME_COUNTRIES: Readonly<Record<string, string>> = {
-  southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', royalmail: 'Europe/London', japanpost: 'Asia/Tokyo',
+  southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', japanpost: 'Asia/Tokyo',
   pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London', collect: 'Europe/London', xzg: 'Asia/Shanghai',
   spl: 'Asia/Riyadh', saudipost: 'Asia/Riyadh',
   brtbartolini: 'Europe/Rome', brtbartoliniparcelid: 'Europe/Rome', brtbartolinidpd: 'Europe/Rome',
@@ -438,10 +441,11 @@ const HOME_COUNTRIES: Readonly<Record<string, string>> = {
  * came an hour after CTT's own digits, Lisbon time, at the same minute. A scan
  * located in another European country is such a relay, and so is one with no
  * place in Royal Mail's words for the destination ("Your item is currently with
- * Customs in the destination country.") on a parcel bound there. No sample
- * shows the relays beyond Europe, so their scans keep the country's clock.
+ * Customs in the destination country.") on a parcel bound there. Beyond
+ * Europe, the label is on London time (`HOME_CLOCKS`).
  */
 const ROYAL_MAIL_RELAY_CLOCK = 'Europe/Brussels';
+const ROYAL_MAIL_NAMES = new Set(['royalmail', 'parcelforce', 'parcelforceworldwide']);
 const ROYAL_MAIL_HOME = new Set(['GB', 'JE', 'GG', 'IM']);
 const ROYAL_MAIL_ABROAD = /\bin the destination country\b/i;
 const europeanAbroad = (country: string | null) => Boolean(country && !ROYAL_MAIL_HOME.has(country)
@@ -739,7 +743,7 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   // A SwiftX label keeps its own clock, and a listed SwiftX site dates its scans (`siteZone`).
   if (carrier === 'swiftx' && SWIFTX_LABEL.test(status.trim())) return SWIFTX_LABEL_CLOCK;
   if (carrier === 'swiftx' && swiftxSiteZone(scanLocation(name, state.location))) return undefined;
-  if (key === 'royalmail' && royalMailRelay(scanLocation(name, state.location), status, destination)) return ROYAL_MAIL_RELAY_CLOCK;
+  if (ROYAL_MAIL_NAMES.has(key) && royalMailRelay(scanLocation(name, state.location), status, destination)) return ROYAL_MAIL_RELAY_CLOCK;
   // Croatia Post relays a post abroad on that facility's clock, as its own tracker does.
   const abroad = carrier === 'hrvatska-posta' ? hrvatskaPostaForeignZone(scanLocation(name, state.location)) : undefined;
   if (abroad !== undefined) return abroad;

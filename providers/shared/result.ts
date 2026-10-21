@@ -50,14 +50,17 @@ export function hasPrivateDeliveryDetails(description: string): boolean {
 const NOT_PLACES = /^(?:(?:[A-Z]{2}, )?system(?:, system)*|(?:uni )?data cent(?:er|re)|linehaul agent|centro di smistamento(?: - hub)?)$/i;
 // Poste Italiane delivers "dalla sede operativa di" the depot's town, which providers also translate.
 const DEPOT_PREFIX = /^(?:dalla sede operativa di|from the operational headquarters in)\s+/i;
+// Royal Mail appends a Post Office branch's postcode in brackets ("Example Post Office [ZZ9 9ZZ]"), which providers copy.
+const BRACKETED_POSTCODE = /\s*\[\s*[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\s*\]$/i;
 
 /**
  * The place a provider reports for a scan, without the words before a depot's
- * town, unless it is a label that names no place, holds private delivery
+ * town or a branch's postcode, which can narrow down a sender's or recipient's
+ * area, unless it is a label that names no place, holds private delivery
  * details or is Posti's "abroad" label.
  */
 export function place(value: unknown): string {
-  const location = text(value).slice(0, 200).replace(DEPOT_PREFIX, '');
+  const location = text(value).slice(0, 200).replace(DEPOT_PREFIX, '').replace(BRACKETED_POSTCODE, '');
   return location && !NOT_PLACES.test(location) && !hasPrivateDeliveryDetails(location) && !isPostiAbroadLabel(location)
     ? location : '';
 }

@@ -18,7 +18,8 @@ export function parseEkart(payload: unknown, raw: string): CarrierResult {
   const number = normalizeEkartNumber(raw);
   if (!isRecord(payload)) throw new SchemaError(PROVIDER);
   const keys = Object.keys(payload);
-  if (!keys.length) throw new IndeterminateError(PROVIDER, 'Ekart returned no tracking history');
+  // An empty object is Ekart's answer for a number it does not know: inconclusive, but not an outage.
+  if (!keys.length) throw new IndeterminateError(PROVIDER, 'Ekart returned no tracking history', { reason: 'portal_not_found' });
   if (keys.length !== 1 || normalizeTrackingNumber(keys[0]!) !== number || !isRecord(payload[keys[0]!])) {
     throw new SchemaError(PROVIDER, 'Ekart returned a different or ambiguous shipment');
   }

@@ -182,6 +182,10 @@ describe('DHL public tracking normalization', () => {
   it('does not silently treat other DHL services or required verification as unannounced', () => {
     expect(() => parseDHLTrackingResponse({ sendungen: [{ id: NUMBER, plzBenoetigt: true }] }, NUMBER)).toThrow('verification');
     expect(() => parseDHLTrackingResponse({ sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDhlPaketSendung: true } }] }, NUMBER)).toThrow('own tracking website');
+    for (const missing of [{ keineDhlPaketSendung: true, keineDatenVerfuegbar: true }, { sendungsnummerNichtSuchbar: true }]) {
+      expect(() => parseDHLTrackingResponse({ sendungen: [{ id: NUMBER, sendungNichtGefunden: missing }] }, NUMBER))
+        .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    }
   });
 
   it('normalizes safe identifiers and builds an official tracking link', () => {

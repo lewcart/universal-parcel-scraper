@@ -112,8 +112,10 @@ export function parseDHLTrackingResponse(payload: unknown, trackingNumber: strin
     throw new InputRequiredError(PROVIDER, 'a postcode or shipping date', 'DHL requires additional verification on its tracking website');
   }
   const missing = isRecord(shipment.sendungNichtGefunden) ? shipment.sendungNichtGefunden : {};
+  // DHL Paket's tracker answered that it holds no Paket shipment under the number. Another DHL
+  // service may still know it, so it stays inconclusive, but it is an answer, not an outage.
   if (missing.keineDhlPaketSendung === true || missing.sendungsnummerNichtSuchbar === true) {
-    throw new IndeterminateError(PROVIDER, 'This DHL service needs its own tracking website');
+    throw new IndeterminateError(PROVIDER, 'This DHL service needs its own tracking website', { reason: 'portal_not_found' });
   }
   const details = isRecord(shipment.sendungsdetails) ? shipment.sendungsdetails : {};
   const timeline = isRecord(details.sendungsverlauf) ? details.sendungsverlauf : {};

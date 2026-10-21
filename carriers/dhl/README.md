@@ -110,7 +110,9 @@ once.
 
 - Shipments that need a postcode or shipping date on DHL's site, and numbers
   belonging to another DHL service, are explicit errors, not "not yet
-  announced".
+  announced". When DHL Paket says it holds no Paket shipment under the number,
+  the inconclusive error carries the reason `portal_not_found`, so a consumer
+  can tell DHL's answer from an outage.
 - No weight, dimensions, sender or pickup-point data is read.
 - Recipient name, address (beyond its country), signature and service details
   are never read; a test asserts it.

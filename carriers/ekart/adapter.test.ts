@@ -67,9 +67,9 @@ describe('Ekart parser', () => {
     }
   });
   it('keeps unknown history and unresolved clocks inconclusive without inventing 1970 dates', () => {
-    expect(() => parseEkart({}, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseEkart({}, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
     const value = fixture(); value[NUMBER].shipmentTrackingDetails = [];
-    expect(() => parseEkart(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseEkart(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
     value[NUMBER].shipmentTrackingDetails = [{ date: 1767456000, statusDetails: 'New operation', city: 'Example depot' }];
     expect(parseEkart(value, NUMBER)).toMatchObject({ status: 'unknown', last_update: null, events: [{ provider_time_text: '1767456000' }] });
     expect(parseEkart(value, NUMBER).current_stage).toBeUndefined();

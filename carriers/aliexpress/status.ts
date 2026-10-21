@@ -49,6 +49,8 @@ export const CAINIAO_ACTION_STATUS = new Map<string, CarrierStatus>([
   ['PARTNER_OUTBOUND_FR', 'in_transit'],
   ['IN_TRANSIT_FR', 'in_transit'],
   ['CW_INBOUND', 'in_transit'],
+  // "Arrived at warehouse": the consolidation warehouse signs the parcel in, before its "Departed from warehouse".
+  ['CW_SIGN_IN_SUCCESS', 'in_transit'],
   ['CW_OUTBOUND', 'in_transit'],
   ['CW_COMMON_PROCESSING1', 'in_transit'],
   ['PU_PICKUP_SUCCESS', 'in_transit'],

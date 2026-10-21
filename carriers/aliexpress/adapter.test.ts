@@ -448,6 +448,14 @@ describe('Cainiao projection', () => {
     expect(reply([{ actionCode: '', standerdDesc: 'Synthetic scan' }]).events?.[0]).not.toHaveProperty('provider_code');
   });
 
+  it("stages the consolidation warehouse's sign-in in transit, like its departure", () => {
+    const signIn = { actionCode: 'CW_SIGN_IN_SUCCESS', standerdDesc: 'Arrived at warehouse' };
+    const result = parseCainiaoTrackingResponse({ module: [{ mailNo: 'LP00000000000007', latestTrace: signIn, detailList: [signIn] }] },
+      'LP00000000000007');
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(result.events?.[0]).toMatchObject({ provider_code: 'CW_SIGN_IN_SUCCESS', stage: 'in_transit' });
+  });
+
   it('reads a failed delivery attempt as one, newest or not', () => {
     const reply = (detailList: Array<{ actionCode: string; standerdDesc: string }>) => parseCainiaoTrackingResponse({
       module: [{ mailNo: 'LP00000000000005', latestTrace: detailList[0], detailList }],

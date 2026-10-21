@@ -97,6 +97,15 @@
       "note": ""
     },
     {
+      "code": "CW_SIGN_IN_SUCCESS",
+      "wording": "Arrived at warehouse",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": ""
+    },
+    {
       "code": "CW_OUTBOUND",
       "wording": "Departed from warehouse",
       "language": "en",

@@ -13,7 +13,7 @@ import {
   royalMailTrackingUrl,
 } from './adapter.js';
 import { fetchRoyalMailInBrowser } from './browser.js';
-import { royalMailStage, royalMailStatus } from './status.js';
+import { royalMailStage, royalMailStatus, statusMap } from './status.js';
 
 vi.mock(import('./browser.js'), async (importOriginal) => {
   const actual = await importOriginal();
@@ -160,14 +160,20 @@ describe('Royal Mail structured response', () => {
       mailPieceId: IN_TRANSIT_NUMBER,
       summary: { statusCategory: 'In transit', statusDescription: 'In transit' },
       events: [
-        { eventCode: 'EVNDA', eventName: '**Available for Redelivery or Collection**', eventDateTime: '2026-10-16T12:10:00+01:00', locationName: 'Example CSP' },
-        { eventCode: 'EVGPD', eventName: '**Due to be delivered today by**', eventDateTime: '2026-10-15T07:02:16+01:00' },
-        { eventCode: 'EVNAR', eventName: '**Due for Redelivery the Next Working Day**', eventDateTime: '2026-10-15T06:40:00+01:00', locationName: 'Example DO' },
-        { eventCode: 'EVJIA', eventName: '**Released from Customs**', eventDateTime: '2026-10-12T20:46:17+01:00' },
+        { eventCode: 'EVNCE', eventName: '**Collected From Your Customer Service Point**', eventDateTime: '2026-01-20T08:20:30+00:00', locationName: 'Example CSP' },
+        { eventCode: 'EVNSC', eventName: '**Collected and Signed at Your Customer Service Point**', eventDateTime: '2026-01-20T08:20:00+00:00', locationName: 'Example CSP' },
+        { eventCode: 'EVNDA', eventName: '**Available for Redelivery or Collection**', eventDateTime: '2026-01-14T05:10:00+00:00', locationName: 'Example CSP' },
+        { eventCode: 'EVNAR', eventName: '**Due for Redelivery the Next Working Day**', eventDateTime: '2026-01-13T05:40:00+00:00', locationName: 'Example DO' },
+        { eventCode: 'EVJIA', eventName: '**Released from Customs**', eventDateTime: '2026-01-10T20:15:00+00:00' },
       ],
     } }, IN_TRANSIT_NUMBER);
-    expect(result.events?.map(event => event.stage)).toEqual(['ready_for_pickup', 'out_for_delivery', 'failed_attempt', 'in_transit']);
-    expect(result.events?.every(event => event.stage_source === 'carrier_map')).toBe(true);
+    // Leaving the Customer Service Point is neither an acceptance nor, by itself, the recipient's collection.
+    expect(result.events?.map(event => [event.stage, event.stage_source])).toEqual([
+      [undefined, undefined], [undefined, undefined],
+      ['ready_for_pickup', 'carrier_map'], ['failed_attempt', 'carrier_map'], ['in_transit', 'carrier_map'],
+    ]);
+    expect(statusMap.gaps.map(gap => gap.code)).toEqual(['EVNSC', 'EVNCE']);
+    expect(statusMap.stage('EVNCE', 'collected from your customer service point')).toBeUndefined();
   });
 
   it('places an international journey by its codes and names the destination', () => {

@@ -62,6 +62,17 @@ export function royalMailEventStage(code: string): Stage | null {
   return EVENT_STAGES.get(code) ?? null;
 }
 
+// Codes the map leaves without a stage on purpose, so their "collected" is not read as an acceptance.
+const UNSTAGED_EVENTS: ReadonlyMap<string, string> = new Map([
+  ['EVNSC', 'Collected and signed at a Customer Service Point: seen just before a booked redelivery, and it could as well be the recipient collecting the item.'],
+  ['EVNCE', 'Collected from a Customer Service Point: seen just before a booked redelivery, and it could as well be the recipient collecting the item.'],
+]);
+
+/** A scan's stage by its code, else by its wording, unless the code leaves it without one on purpose. */
+export function royalMailScanStage(code: string, description: string): Stage | undefined {
+  return royalMailEventStage(code) ?? (UNSTAGED_EVENTS.has(code) ? undefined : royalMailStage(description) ?? undefined);
+}
+
 const SUMMARY_STAGES = new Map<string, Stage>([
   ["we're expecting it", 'registered'],
   ["we've got it", 'accepted'],
@@ -121,6 +132,6 @@ export function royalMailStatus(text: string): CarrierStatus {
 
 /** What the map says about one scan: its event code, else its wording, as the parser reads them. */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => (code ? royalMailEventStage(code) : null) ?? royalMailStage(wording) ?? undefined,
-  gaps: [],
+  stage: (code, wording) => royalMailScanStage(code ?? '', wording),
+  gaps: [...UNSTAGED_EVENTS].map(([code, note]) => ({ code, note })),
 };

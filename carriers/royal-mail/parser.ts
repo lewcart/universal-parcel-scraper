@@ -7,7 +7,7 @@ import { countryCode, countryTimeZone, explicitOffsetTime, isoTime } from '../..
 import { isRecord } from '../../core/types.js';
 import { isRoyalMailDomesticReference } from '../../core/detection/royalMail.js';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
-import { royalMailEventStage, royalMailStage, royalMailSummaryStage, statusForStage } from './status.js';
+import { royalMailEventStage, royalMailScanStage, royalMailSummaryStage, statusForStage } from './status.js';
 
 /** Read the response produced by Royal Mail's form and hCaptcha callback. */
 const TRACKING_BASE = 'https://www.royalmail.com/track-your-item';
@@ -137,7 +137,7 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
     if (!description) throw new SchemaError('Royal Mail', 'Royal Mail returned invalid tracking events');
     const code = cleanScalar(raw.eventCode, 64);
     const mapped = royalMailEventStage(code);
-    const stage = mapped ?? royalMailStage(description) ?? undefined;
+    const stage = royalMailScanStage(code, description);
     const timeText = cleanScalar(raw.eventDateTime, 64);
     const location = placeName(raw.locationName);
     const clock = abroadClock(timeText, location, description, abroadCountry);

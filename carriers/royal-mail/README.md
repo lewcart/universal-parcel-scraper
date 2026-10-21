@@ -41,6 +41,10 @@ fails every parcel alike, so it should fail fast.
   none, so that first receipt is its acceptance, as the summary's "We've got
   it" says. A
   first receipt elsewhere keeps its in-transit stage, as the summary does.
+- An item leaving a Customer Service Point ("Collected and Signed at",
+  "Collected From Your Customer Service Point") gets no stage: these scans came
+  just before a booked redelivery's round, and they could as well be the
+  recipient's own collection.
 - A delivery's scan time becomes `delivered_at`. The details reply's
   destination country becomes `destination_country`.
 - Scan places lose the postcode Royal Mail appends to a Post Office branch,

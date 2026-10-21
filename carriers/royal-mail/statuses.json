@@ -311,6 +311,24 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-21",
       "note": "Kept at a Customer Service Point after missed deliveries, for the recipient to collect or book a redelivery."
+    },
+    {
+      "code": "EVNSC",
+      "wording": "Collected and Signed at Your Customer Service Point",
+      "language": "en",
+      "unmapped": true,
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Seen with EVNCE just before a booked redelivery's round, after a week at the Customer Service Point; it could as well be the recipient's own collection, so it gets no stage."
+    },
+    {
+      "code": "EVNCE",
+      "wording": "Collected From Your Customer Service Point",
+      "language": "en",
+      "unmapped": true,
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Seen seconds after EVNSC, just before a booked redelivery's round; it could as well be the recipient's own collection, so it gets no stage."
     }
   ]
 }

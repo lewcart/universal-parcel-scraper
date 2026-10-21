@@ -13,6 +13,7 @@ describe('same-instant identity policies', () => {
     ['ctt', 'UTC'],
     ['canada-post', 'Etc/GMT+5'],
     ['royal-mail', 'Europe/London'],
+    ['parcelforce', 'Europe/London'],
     ['la-poste', 'Europe/Paris'],
     ['posta-slovenije', 'Europe/Ljubljana'],
   ])('requires %s scans to retain their provider code, and lets a scan take its own offset', (source, zone) => {
@@ -32,6 +33,7 @@ describe('same-instant identity policies', () => {
     ['swiss-post', '2026-01-09T14:30:00+01:00', '2026-01-09T14:30:00-06:00'],
     ['royal-mail', '2026-10-10T20:51:00Z', '2026-10-10T21:51:00+02:00'],
     ['royal-mail', '2026-01-10T21:51:00Z', '2026-01-10T21:51:00+01:00'],
+    ['parcelforce', '2026-10-20T21:54:00Z', '2026-10-20T22:54:00+02:00'],
     ['la-poste', '2026-07-05T20:25:00+02:00', '2026-07-05T20:25:00+03:00'],
     ['la-poste', '2026-01-05T14:45:00+01:00', '2026-01-05T14:45:00Z'],
     ['posta-slovenije', '2026-10-08T16:07:00Z', '2026-10-08T18:07:00+03:00'],
@@ -160,6 +162,13 @@ describe('same-instant identity policies', () => {
       { ...depot, description: 'In transit' },
     ]) expect(policy?.matches?.(different, depot)).toBe(false);
     expect(policy?.matches?.({ ...stored, location: '' }, { ...stored, location: 'Example System Park, US' })).toBe(false);
+  });
+
+  it("lets a universal copy that lost a Post Office branch's postcode take over its stored row", () => {
+    const policy = sameInstantIdentityPolicy('unknown', { supportsScanMatching: true });
+    const stored = { stage: 'accepted', description: 'Accepted at Parcelshop', location: 'Example Post Office [ZZ9 9ZZ]', providerCode: '' };
+    expect(policy?.matches?.({ ...stored, location: 'Example Post Office' }, stored)).toBe(true);
+    expect(policy?.matches?.({ ...stored, location: 'Other Post Office' }, stored)).toBe(false);
   });
 
   it('matches a Cainiao scan whose town has left its wording for its location', () => {

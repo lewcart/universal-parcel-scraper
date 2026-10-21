@@ -176,11 +176,9 @@ describe('Royal Mail structured response', () => {
     expect(result.events?.map(event => event.stage)).toEqual([
       'delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'accepted', 'accepted', 'registered',
     ]);
-    // The delivery abroad names a country of several zones, so its wall clock dates nothing.
-    expect(result).toMatchObject({ status: 'delivered', destination_country: 'US' });
-    expect(result).not.toHaveProperty('delivered_at');
-    expect(result.events?.[0]).toMatchObject({ local_time: '2026-01-09T15:24:00' });
-    expect(result.events?.[0]).not.toHaveProperty('time');
+    // Beyond Europe, Royal Mail's label is the delivery's instant.
+    expect(result).toMatchObject({ status: 'delivered', destination_country: 'US', delivered_at: '2026-01-09T15:24:00+01:00' });
+    expect(result.events?.[0]).toMatchObject({ time: '2026-01-09T15:24:00+01:00' });
     expect(result.events?.[1]).toMatchObject({ time: '2026-01-09T13:10:00+01:00' });
     expect(result.events?.map(event => event.location)).toEqual([
       'Exampleville, United States of America', undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'Example Post Office', 'Example DO [Main]', undefined,
@@ -273,18 +271,24 @@ describe('Royal Mail structured response', () => {
     expect(elsewhere.events?.[0]!.time).toBe('2026-10-20T11:40:00+01:00');
   });
 
-  it('keeps a scan abroad on a clock of several zones out of last_update', () => {
+  it('keeps Royal Mail\'s label as the instant of a scan beyond Europe', () => {
+    // Shape of a parcel to South Africa, whose post's own tracker dates these scans an hour later on its clock.
     const result = parseRoyalMailTrackingResponse({ mailPieces: {
       mailPieceId: IN_TRANSIT_NUMBER,
-      summary: { statusCategory: 'In transit', statusDescription: 'In transit', lastEventDateTime: '2026-10-11T08:00:00+01:00' },
+      summary: { statusCategory: 'In transit', statusDescription: 'In transit', lastEventCode: 'EVJIA',
+        lastEventDateTime: '2026-10-20T23:07:00+01:00', destinationCountryCode: 'ZA' },
       events: [
+        { eventCode: 'EVJIA', eventName: 'Released from Customs', eventDateTime: '2026-10-20T23:07:00+01:00', locationName: 'South Africa' },
+        { eventCode: 'EVJBA', eventName: 'Your item is currently with Customs in the destination country', eventDateTime: '2026-10-20T22:55:00+01:00', locationName: 'EXAMPLE EMS' },
+        { eventCode: 'EVJOE', eventName: 'Item Received', eventDateTime: '2026-10-20T22:54:00+01:00', locationName: 'EXAMPLE EMS, South Africa' },
         { eventCode: 'EVIIS', eventName: 'Item received at Sorting Office', eventDateTime: '2026-10-11T08:00:00+01:00', locationName: 'Exampleville, United States of America' },
         { eventCode: 'EVHOE', eventName: 'Item Leaving the UK', eventDateTime: '2026-10-10T03:31:09+01:00' },
       ],
     } }, IN_TRANSIT_NUMBER);
-    expect(result.events?.[0]).toMatchObject({ local_time: '2026-10-11T08:00:00' });
-    expect(result.events?.[0]).not.toHaveProperty('time');
-    expect(result.last_update).toBeNull();
+    expect(result.events?.map(event => event.time)).toEqual([
+      '2026-10-20T23:07:00+01:00', '2026-10-20T22:55:00+01:00', '2026-10-20T22:54:00+01:00', '2026-10-11T08:00:00+01:00', '2026-10-10T03:31:09+01:00',
+    ]);
+    expect(result.last_update).toBe('2026-10-20T23:07:00+01:00');
   });
 
   it('dates a summary-only delivery from its last event and ignores an unusable destination', () => {

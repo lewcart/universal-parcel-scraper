@@ -60,21 +60,21 @@ const europeanAbroad = (country: string | null) => Boolean(country && !HOME.has(
 const placeCountry = (location: string) => countryCode(/(?:^|,)\s*([^,]+)$/.exec(location)?.[1]);
 
 /**
- * A scan abroad names its country as, or after, the place, and Royal Mail labels
- * that office's wall clock with the UK's offset. A European partner's clock, and
- * an unplaced scan in a European destination country, is read on Central European
- * time; another country's in its zone, or kept as a wall clock when it has several.
- * Null at home.
+ * A scan abroad names its country as, or after, the place. A European partner's
+ * scan, and an unplaced one in a European destination country, carries the
+ * partner's Central European wall clock under the UK's offset, and is read on
+ * that clock. Null for any other scan: beyond Europe, Royal Mail's label is the
+ * scan's instant, as at home. The South African post's own tracker dates a South
+ * African office's scans at those instants.
  */
 function abroadClock(raw: string, location: string, description: string, destination: string | null): { time: string } | { local_time: string } | null {
   if (!eventTime(raw)) return null;
   const country = placeCountry(location);
   const relayed = country ? europeanAbroad(country) : !location && europeanAbroad(destination) && IN_DESTINATION.test(description);
-  if (!relayed && (!country || HOME.has(country))) return null;
+  if (!relayed) return null;
   const wall = DateTime.fromISO(raw, { setZone: true }).toISO({ includeOffset: false, suppressMilliseconds: true });
   if (!wall) return null;
-  const zone = relayed ? RELAY_CLOCK : countryTimeZone(country!);
-  const placed = zone ? isoTime(wall, zone) : null;
+  const placed = isoTime(wall, RELAY_CLOCK);
   return placed ? { time: placed.iso } : { local_time: wall };
 }
 

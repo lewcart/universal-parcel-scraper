@@ -27,7 +27,7 @@ import { sameInstantIdentityPolicy as postlogistics } from '../../carriers/postl
 import { sameInstantIdentityPolicy as postaSlovenije } from '../../carriers/posta-slovenije/identity.js';
 import { sameInstantIdentityPolicy as posteItaliane } from '../../carriers/poste-italiane/identity.js';
 import { sameInstantIdentityPolicy as posti } from '../../carriers/posti/identity.js';
-import { sameInstantIdentityPolicy as royalMail } from '../../carriers/royal-mail/identity.js';
+import { parcelforceIdentityPolicy as parcelforce, sameInstantIdentityPolicy as royalMail } from '../../carriers/royal-mail/identity.js';
 import { sameInstantIdentityPolicy as sfExpress } from '../../carriers/sf-express/identity.js';
 import { sameInstantIdentityPolicy as speedpak } from '../../carriers/speedpak/identity.js';
 import { sameInstantIdentityPolicy as sunYou } from '../../carriers/sunyou/identity.js';
@@ -72,7 +72,7 @@ export interface SameInstantIdentityPolicy {
 }
 
 const policies: ReadonlyMap<string, SameInstantIdentityPolicy> = new Map(
-  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, dhlEcommerce, dhlExpress, dpd, dpdFrance, hermesGermany, indiaPost, inpost, jdLogistics, laPoste, lbcExpress, mondialRelay, mrw, nzPost, packeta, posMalaysia, postlogistics, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, ups, swissPost, yanwen, universal].map((policy) => [policy.sourceCarrierId, policy]),
+  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, dhlEcommerce, dhlExpress, dpd, dpdFrance, hermesGermany, indiaPost, inpost, jdLogistics, laPoste, lbcExpress, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, ups, swissPost, yanwen, universal].map((policy) => [policy.sourceCarrierId, policy]),
 );
 
 /** Unlisted sources cannot identify a reworded scan by its instant alone. */

@@ -356,6 +356,9 @@ describe('classifyWording', () => {
     ]) expect(classifyWording(wording)).toEqual({ stage: 'in_transit', source: 'wording:language' });
     expect(wordingStage('On vehicle for delivery')).toBe('out_for_delivery');
     expect(wordingStage('On FedEx vehicle for delivery')).toBe('out_for_delivery');
+    // Australia Post's wording, which providers relay for parcels filed under no carrier.
+    expect(classifyWording('Onboard for delivery', 'pending')).toEqual({ stage: 'out_for_delivery', source: 'wording:language' });
+    expect(wordingStage('On board for delivery')).toBe('out_for_delivery');
     expect(wordingStage('Loaded onto the delivery vehicle')).toBe('out_for_delivery');
     expect(wordingStage('Delivery successful.')).toBe('delivered');
     expect(wordingStage('Delivery complete. Recipient : () Result : Delivery complete')).toBe('delivered');

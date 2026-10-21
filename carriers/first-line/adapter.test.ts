@@ -49,36 +49,40 @@ describe('FIRST LINE HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('keeps each scan’s wall clock and place without its postcode, in the tracker’s order, each once', () => {
+  it('dates the Chinese leg on Beijing’s clock, keeps the destination’s wall clocks and places without postcodes, in the tracker’s order, each once', () => {
     const result = parseFirstLine(text('delivered.txt'), DELIVERED, READ_AT);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered, Parcel Locker',
       last_update: null, last_update_local: '2026-03-17T15:30:00', expected_delivery: null });
-    expect(result.events!.map((event) => [event.local_time, event.location, event.description, event.stage, event.stage_source])).toEqual([
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.location, event.description, event.stage, event.stage_source])).toEqual([
       ['2026-03-17T15:30:00', 'SAMPLE TOWN FL', 'Delivered, Parcel Locker', 'delivered', 'wording:language'],
       ['2026-03-17T06:10:00', 'SAMPLE TOWN FL', 'Out for Delivery, Expected Delivery by 9:00pm', 'out_for_delivery', 'wording:language'],
       ['2026-03-15T21:04:00', 'EXAMPLE CITY FL DISTRIBUTION CENTER', 'Arrived at USPS Regional Facility', 'in_transit', 'wording:language'],
       ['2026-03-14T13:35:00', undefined, 'In Transit, Arriving Late', 'in_transit', 'wording:language'],
       ['2026-03-12T12:00:14', 'New York NY USA', 'Released from customs: customs cleared.', 'in_transit', 'wording:language'],
       ['2026-03-11T20:53:44', 'New York NY USA', 'Arrived at destination airport', 'in_transit', 'wording:language'],
-      ['2026-03-11T03:15:15', 'HK international airport', 'Customs clearance begins', 'customs', 'wording:language'],
-      ['2026-03-10T08:16:37', 'SHENZHEN', 'Depart from facility to service provider', 'in_transit', 'carrier_map'],
-      ['2026-03-09T16:15:29', 'SHENZHEN', 'Packaged', 'in_transit', 'carrier_map'],
-      ['2026-03-09T13:08:38', 'SHENZHEN', 'Shipment arrived', 'accepted', 'carrier_map'],
+      ['2026-03-11T03:15:15+08:00', 'HK international airport', 'Customs clearance begins', 'customs', 'wording:language'],
+      ['2026-03-10T08:16:37+08:00', 'SHENZHEN', 'Depart from facility to service provider', 'in_transit', 'carrier_map'],
+      ['2026-03-09T16:15:29+08:00', 'SHENZHEN', 'Packaged', 'in_transit', 'carrier_map'],
+      ['2026-03-09T13:08:38+08:00', 'SHENZHEN', 'Shipment arrived', 'accepted', 'carrier_map'],
       ['2026-03-09T04:24:59', undefined, 'Parcel information received', 'registered', 'carrier_map'],
       ['2026-03-09T01:30:00', 'SAMPLE HUB GA', 'Shipping Label Created, USPS Awaiting Item', 'registered', 'wording:language'],
     ]);
-    // Clocks of China, Hong Kong and the United States are not given an offset.
-    expect(result.events!.every((event) => event.time === undefined)).toBe(true);
+    // The United States' clocks, and a row with no place that is not the shipper's order data, are not given an offset.
+    expect(result.events!.filter((event) => event.local_time).map((event) => event.location ?? null))
+      .toEqual(['SAMPLE TOWN FL', 'SAMPLE TOWN FL', 'EXAMPLE CITY FL DISTRIBUTION CENTER', null, 'New York NY USA', 'New York NY USA', null, 'SAMPLE HUB GA']);
     expect(JSON.stringify(result)).not.toMatch(/0000[12]|&nbsp;/);
   });
 
   it('reads a parcel at the Shenzhen warehouse after its export declaration as in transit', () => {
     const result = parseFirstLine(text('export.txt'), EXPORT, READ_AT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
-      last_status_text: 'Export customs declaration completed', last_update_local: '2026-10-20T16:41:31' });
-    expect(result.events!.map((event) => [event.description, event.stage])).toEqual([
-      ['Export customs declaration completed', 'in_transit'], ['Leaving Scan', 'in_transit'], ['Packaged', 'in_transit'],
-      ['Barcode scanning', 'accepted'], ['Forecast has been received', 'registered'],
+      last_status_text: 'Export customs declaration completed', last_update: '2026-10-20T16:41:31+08:00' });
+    expect(result.last_update_local).toBeUndefined();
+    // 17TRACK's copies of these rows have the same instants, the shipper's order data, which names no place, too.
+    expect(result.events!.map((event) => [event.description, event.stage, event.time])).toEqual([
+      ['Export customs declaration completed', 'in_transit', '2026-10-20T16:41:31+08:00'], ['Leaving Scan', 'in_transit', '2026-10-18T06:28:11+08:00'],
+      ['Packaged', 'in_transit', '2026-10-18T02:34:12+08:00'], ['Barcode scanning', 'accepted', '2026-10-17T22:30:52+08:00'],
+      ['Forecast has been received', 'registered', '2026-10-15T16:08:38+08:00'],
     ]);
   });
 

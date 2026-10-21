@@ -23,11 +23,14 @@ The tracker answers plain HTTP only. No account, key, CAPTCHA or browser is need
   number's block says 未找到此单号信息 instead. A lookup without the session cookies, or with a
   spent signature, answers `error{FGF}` and 身份验证失败, which says nothing about the waybill.
 - Scan times are wall clocks without an offset, each on its facility's clock: Shenzhen's, Hong
-  Kong's, then the destination's, where the delivering partner's scans are relayed. They stay
-  wall clocks, in the tracker's order. A row is held back only when it is after the lookup on
-  China's clock, the latest of them.
+  Kong's, then the destination's, where the delivering partner's scans are relayed. Rows in
+  China and Hong Kong, and the shipper's order data ("Forecast has been received"), which names
+  no place, are dated on Beijing's clock: 17TRACK's copies have those instants to the second.
+  The destination's rows stay wall clocks. Rows keep the tracker's order. A row is held back
+  only when it is after the lookup on China's clock, the latest of them.
 - The forwarder's own rows are mapped in [statuses.json](statuses.json); the delivering
-  partner's, such as USPS's, go to the shared wording rules.
+  partner's, such as USPS's, go to the shared wording rules. ParcelsApp names the line "1ST"
+  and relays its rows, which take the same map.
 - The site answers a visitor sending many requests with HTTP 403 and 服务器繁忙 ("server busy"),
   which is read as rate limited.
 

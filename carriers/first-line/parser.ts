@@ -6,6 +6,7 @@ import { classifyWording, languageStageStatus, type Stage } from '../../core/sta
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { firstOccurrence } from '../../core/time/index.js';
 import { textFromHtml } from '../../core/transport/index.js';
+import { FIRST_LINE_CHINA_ZONE, firstLineInChina } from './clock.js';
 import { firstLineStage } from './status.js';
 
 export const PROVIDER = 'FIRST LINE';
@@ -22,8 +23,8 @@ const SESSION_REFUSED = /身份验证失败/;
 const NOT_FOUND = '未找到此单号信息';
 // A scan as the tracker lists it: its wall clock, its place (possibly empty) and its wording, six spaces apart.
 const ROW = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})(?:&nbsp;){6}(.*?)(?:&nbsp;){6}(.*)$/s;
-// The latest of the clocks the rows can be on, so a past scan is never read as a future one.
-const LATEST_ZONE = 'Asia/Shanghai';
+// The shipper's order data, which names no place; 17TRACK and ParcelsApp date it on Beijing's clock.
+const ORDER_DATA = /^forecast has been received$/i;
 const MAX_SHIPMENTS = 5;
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
@@ -59,7 +60,8 @@ function projectRow(row: string, readAt: number): { key: string; event: CarrierE
   const match = ROW.exec(row.trim());
   if (!match) throw new SchemaError(PROVIDER, 'FIRST LINE returned an invalid scan');
   const local = `${match[1]}T${match[2]}`;
-  const latest = firstOccurrence(DateTime.fromISO(local, { zone: LATEST_ZONE }));
+  // China's clock is the latest of the clocks the rows can be on, so a past scan is never read as a future one.
+  const latest = firstOccurrence(DateTime.fromISO(local, { zone: FIRST_LINE_CHINA_ZONE }));
   // Luxon rolls 24:00:00 over to the next day; only a clock that reads back unchanged is kept.
   if (!latest?.isValid || latest.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== local) throw new SchemaError(PROVIDER, 'FIRST LINE returned an invalid scan time');
   // A row dated after the read on every clock it could be on is not a scan yet.
@@ -68,8 +70,10 @@ function projectRow(row: string, readAt: number): { key: string; event: CarrierE
   if (!description) return null;
   const location = placeOf(textFromHtml(match[3], 200));
   const staged = stageOf(description);
+  // A row in China or Hong Kong is on Beijing's clock; any other keeps its wall clock.
+  const inChina = location ? firstLineInChina(location) : ORDER_DATA.test(description);
   const event: CarrierEvent = {
-    local_time: local,
+    ...(inChina ? { time: latest.toISO({ suppressMilliseconds: true }) } : { local_time: local }),
     description,
     ...(location ? { location } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
@@ -94,9 +98,10 @@ function shipmentFor(html: string, number: string): string {
  * tracking page makes: `ok{FGF}` and an HTML list with one block per number
  * asked, a header row with the number and its newest scan, then the scans,
  * newest first. An unknown number's block says so instead of listing scans.
- * Scan times are each facility's own wall clock, China's, Hong Kong's or the
- * destination's, without an offset, so they stay wall clocks. The header's
- * system number and the places' postcodes are not read.
+ * Scan times are each facility's own wall clock without an offset: rows in
+ * China and Hong Kong, and the shipper's order data, are dated on Beijing's
+ * clock, and the destination's rows stay wall clocks. The header's system
+ * number and the places' postcodes are not read.
  */
 export function parseFirstLine(body: string, raw: string, readAt = Date.now()): CarrierResult {
   const number = normalizeFirstLineNumber(raw);
@@ -139,8 +144,8 @@ export function parseFirstLine(body: string, raw: string, readAt = Date.now()): 
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time!,
+    last_update: newest.time ?? null,
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
     expected_delivery: null,
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),

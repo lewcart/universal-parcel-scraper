@@ -9,12 +9,18 @@ on:
     - cron: '13 4 * * *'
     - cron: '47 5 * * *'
     - cron: '19 7 * * *'
+  # Those slots can all start hours late. A CI run that ends on main from 02:41
+  # UTC also starts one, so the day's canary runs with the next push.
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
-# A later slot waits for the running canary instead of cancelling it, then
+# A later start waits for the running canary instead of cancelling it, then
 # finds it in the gate.
 concurrency:
   group: carrier-canaries
@@ -22,7 +28,7 @@ concurrency:
 
 jobs:
   gate:
-    name: First scheduled run of the day
+    name: First automatic run of the day
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -31,7 +37,7 @@ jobs:
       run: ${{ steps.gate.outputs.run }}
       weekly: ${{ steps.gate.outputs.weekly }}
     steps:
-      - name: Skip a slot after the day's first scheduled run
+      - name: Skip any start after the day's first automatic run
         id: gate
         env:
           GH_TOKEN: ${{ github.token }}
@@ -42,10 +48,14 @@ jobs:
           set -euo pipefail
           run=true
           weekly=true
-          if [ "$EVENT" = schedule ]; then
+          if [ "$EVENT" = schedule ] || [ "$EVENT" = workflow_run ]; then
+            # The day's canary starts at 02:41 UTC, the first slot.
+            start="$(date -u +%F)T02:41:00Z"
+            if [ "$(date -u +%FT%TZ)" \< "$start" ]; then run=false; fi
             earlier=$(gh api -X GET "repos/$GH_REPO/actions/workflows/carrier-canary.yml/runs" \
-              -f event=schedule -f created=">=$(date -u +%F)" -F per_page=100 \
-              --jq "[.workflow_runs[] | select(.run_number < $RUN_NUMBER)] | length")
+              -f created=">=$(date -u +%F)" -F per_page=100 \
+              --jq "[.workflow_runs[] | select(.event == \"schedule\" or .event == \"workflow_run\")
+                | select(.created_at >= \"$start\" and .run_number < $RUN_NUMBER)] | length")
             if [ "$earlier" != 0 ]; then run=false; fi
             if [ "$(date -u +%u)" != 1 ]; then weekly=false; fi
           fi

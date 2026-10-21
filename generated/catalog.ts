@@ -31263,6 +31263,27 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "z-leading": {
+    "displayName": "Z-Leading",
+    "color": "#005ab0",
+    "aliases": [
+      "Zhongling",
+      "中领国际",
+      "Shenzhen Z-leading International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "zajil": {
     "displayName": "Zajil Express",
     "color": "#ffc20e",
@@ -32233,6 +32254,7 @@ export const CARRIER_IDS = [
   "yilong-logistics",
   "yimidida",
   "yurtici-kargo",
+  "z-leading",
   "zajil",
   "zeleris",
   "zheldor",
@@ -33018,6 +33040,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "yilong-logistics": ["yilong-logistics-1"],
   "yimidida": [],
   "yurtici-kargo": [],
+  "z-leading": [],
   "zajil": [],
   "zeleris": ["zeleris-1"],
   "zheldor": [],

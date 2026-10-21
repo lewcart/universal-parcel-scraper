@@ -32,7 +32,8 @@ Tracked through the lookup its tracking page makes.
   followed the leg, so the adapter dates two legs: the origin warehouse (`WH`) on the origin
   country's clock, and customs, the intermediate warehouse, the delivery offices and the
   delivery (`AD`, `WI`, `RC`, `LM`, `PF`) on Argentina's, Colombia's, Peru's, Mexico City's or
-  Santiago's. The reply's origin country and the recipient's state are read only for this.
+  Santiago's. The reply's origin country and the recipient's state, which it can abbreviate
+  (`JAL.`), are read only for this.
 - The older tracker gave Mexico City's clock to scans in Cancún and Ciudad Juárez too, so a
   Mexican scan is dated only when the recipient's state keeps Mexico City's clock at that time.
   A Chilean scan is dated only when the region keeps Santiago's; Valparaíso's includes Easter

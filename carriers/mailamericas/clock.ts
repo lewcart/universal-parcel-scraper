@@ -29,7 +29,7 @@ const CENTRAL = [MEXICO_CITY];
 // the United States' summer time.
 const NORTHEAST = ['America/Monterrey', 'America/Matamoros'];
 // Mexico's states as the reply names them, with the zones their towns keep.
-const MEXICO_STATES: Readonly<Record<string, readonly string[]>> = {
+const MEXICO_STATE_ZONES: Readonly<Record<string, readonly string[]>> = {
   aguascalientes: CENTRAL, bajacalifornia: ['America/Tijuana'], bajacaliforniasur: ['America/Mazatlan'],
   campeche: ['America/Merida'], chiapas: CENTRAL,
   chihuahua: ['America/Chihuahua', 'America/Ciudad_Juarez', 'America/Ojinaga'],
@@ -40,6 +40,17 @@ const MEXICO_STATES: Readonly<Record<string, readonly string[]>> = {
   queretaro: CENTRAL, queretarodearteaga: CENTRAL, quintanaroo: ['America/Cancun'], sanluispotosi: CENTRAL,
   sinaloa: ['America/Mazatlan'], sonora: ['America/Hermosillo'], tabasco: CENTRAL, tamaulipas: NORTHEAST, tlaxcala: CENTRAL,
   veracruz: CENTRAL, veracruzdeignaciodelallave: CENTRAL, yucatan: ['America/Merida'], zacatecas: CENTRAL,
+};
+const MEXICO_STATES: Readonly<Record<string, readonly string[]>> = {
+  ...MEXICO_STATE_ZONES,
+  // The customary abbreviations the reply can give instead: "JAL." for Jalisco.
+  ...Object.fromEntries(Object.entries({
+    ags: 'aguascalientes', bc: 'bajacalifornia', bcs: 'bajacaliforniasur', camp: 'campeche', chis: 'chiapas', chih: 'chihuahua',
+    coah: 'coahuila', col: 'colima', df: 'distritofederal', dgo: 'durango', gto: 'guanajuato', gro: 'guerrero', hgo: 'hidalgo',
+    jal: 'jalisco', mex: 'mexico', edomex: 'mexico', mich: 'michoacan', mor: 'morelos', nay: 'nayarit', nl: 'nuevoleon',
+    oax: 'oaxaca', pue: 'puebla', qro: 'queretaro', qroo: 'quintanaroo', slp: 'sanluispotosi', sin: 'sinaloa', son: 'sonora',
+    tab: 'tabasco', tamps: 'tamaulipas', tlax: 'tlaxcala', ver: 'veracruz', yuc: 'yucatan', zac: 'zacatecas',
+  }).map(([short, state]) => [short, MEXICO_STATE_ZONES[state]!])),
 };
 
 const SANTIAGO = 'America/Santiago';

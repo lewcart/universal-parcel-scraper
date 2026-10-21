@@ -159,9 +159,14 @@ describe('MailAmericas HTTP adapter', () => {
       for (const scan of data.events) scan.date = String(scan.date).replace(/^2026-07/, '2026-12').replace(/^2026-08/, '2027-01');
     });
     expect(parseMailamericas(winter, MEXICO, new Date('2027-02-01T00:00:00Z'))).toMatchObject({ last_update: '2027-01-04T09:12:00-06:00' });
-    for (const state of [null, 'Sample Province']) {
+    for (const state of [null, 'Sample Province', 'Q. Roo', 'XYZ.']) {
       expect(parseMailamericas(changed('mexico', (data) => { data.state = state; }), MEXICO, READ_AT), String(state))
         .toMatchObject({ last_update: null, last_update_local: '2026-08-04T09:12:00' });
+    }
+    // The reply can abbreviate the state.
+    for (const state of ['JAL.', 'Qro.', 'Edo. Méx.']) {
+      expect(parseMailamericas(changed('mexico', (data) => { data.state = state; }), MEXICO, READ_AT), state)
+        .toMatchObject({ last_update: '2026-08-04T09:12:00-06:00' });
     }
   });
 

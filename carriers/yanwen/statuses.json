@@ -238,6 +238,38 @@
       "note": "Placed at Asendia Hong Kong as the parcel left Yanwen's facility, after Yanwen's pickup scan: the partner's record of the hand-over, not a pre-advice."
     },
     {
+      "wording": "Shipment created",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "A destination partner's order, written after Yanwen's facility scans and before the parcel leaves China, like Shipping Order Created."
+    },
+    {
+      "wording": "Shipment under processing at origin hub",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "The destination partner's intake hub, after Yanwen's batch handover at the destination port."
+    },
+    {
+      "wording": "Shipment received",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "The destination partner's receipt at the same minute as its intake hub scan, after Yanwen's batch handover: a handover, not the acceptance."
+    },
+    {
+      "wording": "Shipment despatched to transshipment hub",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "The destination partner sends the parcel on to its transshipment hub."
+    },
+    {
       "wording": "Out customs authorities",
       "language": "en",
       "stage": "in_transit",

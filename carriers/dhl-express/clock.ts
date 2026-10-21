@@ -17,6 +17,18 @@ const CANADA_PROVINCES: Readonly<Record<string, string>> = {
   'NOVA SCOTIA': 'NS', 'NORTHWEST TERRITORIES': 'NT', NUNAVUT: 'NU', ONTARIO: 'ON', 'PRINCE EDWARD ISLAND': 'PE',
   QUEBEC: 'QC', SASKATCHEWAN: 'SK', YUKON: 'YT',
 };
+// Australia's states and territories, each on its capital's clock. DHL names one by its first
+// four letters ("VICT"), and a gateway after the capital, without a region.
+const AUSTRALIA: ReadonlyArray<readonly [code: string, name: string, capital: string, zone: string]> = [
+  ['ACT', 'AUSTRALIAN CAPITAL TERRITORY', 'CANBERRA', 'Australia/Sydney'],
+  ['NSW', 'NEW SOUTH WALES', 'SYDNEY', 'Australia/Sydney'],
+  ['NT', 'NORTHERN TERRITORY', 'DARWIN', 'Australia/Darwin'],
+  ['QLD', 'QUEENSLAND', 'BRISBANE', 'Australia/Brisbane'],
+  ['SA', 'SOUTH AUSTRALIA', 'ADELAIDE', 'Australia/Adelaide'],
+  ['TAS', 'TASMANIA', 'HOBART', 'Australia/Hobart'],
+  ['VIC', 'VICTORIA', 'MELBOURNE', 'Australia/Melbourne'],
+  ['WA', 'WESTERN AUSTRALIA', 'PERTH', 'Australia/Perth'],
+];
 // DHL's own names for countries the English ones do not cover: the forms on its
 // scans, and those of its country list for the countries whose zone is known.
 const COUNTRIES: Readonly<Record<string, string>> = {
@@ -34,13 +46,24 @@ function regionCode(region: string, names: Readonly<Record<string, string>>): st
   return parts.find((part) => /^[A-Z]{2}$/.test(part)) ?? parts.map((part) => names[part]).find(Boolean) ?? '';
 }
 
+/** An Australian facility's zone: its state's, by code, name or four letters, or else its capital's. */
+function australiaZone(city: string, region: string): string | null {
+  const name = region.toUpperCase();
+  const state = name
+    ? AUSTRALIA.find(([code, full]) => name === code || name.length >= 4 && full.startsWith(name))
+    : AUSTRALIA.find(([, , capital]) => capital === city.toUpperCase());
+  return state?.[3] ?? null;
+}
+
 /**
  * The zone of a DHL Express facility, from its location: "CITY - COUNTRY", and
- * in the USA and Canada "CITY - REGION - COUNTRY" or "CITY, ST - COUNTRY". Null
+ * in the USA, Canada and Australia "CITY - REGION - COUNTRY" or "CITY, ST - COUNTRY". Null
  * when the location does not settle one: a country with several clocks and no
  * region DHL names, or a country it writes in a form this does not know.
  *
- * A US state or Canadian province with several clocks takes its majority zone.
+ * A US state, Canadian province or Australian state with several clocks takes its
+ * majority zone. An Australian facility without a region is placed only when it is
+ * named after a state's capital.
  * Spain and Portugal take their mainland's, except for a town or island of the
  * Canary Islands or the Azores.
  */
@@ -51,6 +74,7 @@ export function facilityZone(location: string): string | null {
   const region = parts.length > 2 ? parts.at(-2)! : /, ([A-Z]{2})$/i.exec(parts[0]!)?.[1] ?? '';
   if (country === 'USA') return usStateTimeZone(regionCode(region, US_STATES));
   if (country === 'CANADA') return canadaProvinceTimeZone(regionCode(region, CANADA_PROVINCES));
+  if (country === 'AUSTRALIA') return australiaZone(parts[0]!, region);
   // DHL writes the article first or last: "THE PEOPLE'S REPUBLIC OF CHINA", "NETHERLANDS, THE".
   const name = country.replace(/^THE /, '').replace(/, THE$/, '');
   const zone = countryTimeZone(COUNTRIES[name] ?? name.replaceAll(',', ''));

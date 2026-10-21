@@ -127,6 +127,13 @@ describe('DHL Express projection', () => {
     expect(clock('EXAMPLE CITY - ON - CANADA')).toBe('2026-10-05T12:00:00-04:00');
     expect(clock('EXAMPLE SERVICE AREA - ONTARIO - CANADA')).toBe('2026-10-05T12:00:00-04:00');
     expect(clock('EXAMPLE CITY, CA - USA')).toBe('2026-10-05T12:00:00-07:00');
+    // Australia's states by DHL's four letters, their code or name, and gateways named after a capital.
+    expect(clock('EXAMPLE CITY - VICT - AUSTRALIA')).toBe('2026-10-05T12:00:00+11:00');
+    expect(clock('EXAMPLE CITY - VICT - AUSTRALIA', 'Sunday, June 07, 2026')).toBe('2026-06-07T12:00:00+10:00');
+    expect(clock('MELBOURNE - AUSTRALIA')).toBe('2026-10-05T12:00:00+11:00');
+    expect(clock('EXAMPLE CITY - QLD - AUSTRALIA')).toBe('2026-10-05T12:00:00+10:00');
+    expect(clock('EXAMPLE CITY - SOUTH AUSTRALIA - AUSTRALIA')).toBe('2026-10-05T12:00:00+10:30');
+    expect(clock('PERTH - AUSTRALIA')).toBe('2026-10-05T12:00:00+08:00');
     // DHL's own names for countries.
     expect(clock("EXAMPLE CITY - THE PEOPLE'S REPUBLIC OF CHINA")).toBe('2026-10-05T12:00:00+08:00');
     expect(clock('EXAMPLE CITY - CHINA, PEOPLES REPUBLIC')).toBe('2026-10-05T12:00:00+08:00');
@@ -143,6 +150,7 @@ describe('DHL Express projection', () => {
     expect(clock('PONTA DELGADA - PORTUGAL')).toBe('2026-10-05T12:00:00+00:00');
     // Several clocks and no region DHL names, an unknown country, or no country at all.
     for (const location of ['EXAMPLE CITY - USA', 'EXAMPLE CITY - Example - USA', 'EXAMPLE CITY - CANADA',
+      'EXAMPLE CITY - AUSTRALIA', 'EXAMPLE CITY - EXAMPLE - AUSTRALIA',
       'EXAMPLE CITY - UNITED STATES OF AMERICA', 'EXAMPLE CITY - EXAMPLELAND', 'FRANCE', '']) {
       expect(clock(location)).toBe('local 2026-10-05T12:00:00');
     }

@@ -106,10 +106,12 @@ The mobile API answers a missing waybill with an empty shipment list. A waybill 
 records for but shows nothing about, such as one several shipments reuse, comes back as one
 blank checkpoint: that is inconclusive (`portal_not_found`), and the global page is asked next.
 A mobile scan carries its facility's clock and its location, without an offset. The
-location reads `CITY - COUNTRY`, or `CITY - REGION - COUNTRY` in the USA and Canada, where
-the region is a state's or province's name or code. [clock.ts](clock.ts) reads the clock in
-the country's zone when the country keeps one civil time, and in the majority zone of the
-state or province, so a facility in its other zone is an hour off. Spain and Portugal file
+location reads `CITY - COUNTRY`, or `CITY - REGION - COUNTRY` in the USA, Canada and
+Australia, where the region is a state's or province's name or code, or for an Australian
+state its first four letters (`VICT`). [clock.ts](clock.ts) reads the clock in the country's
+zone when the country keeps one civil time, and in the majority zone of the state or
+province, so a facility in its other zone is an hour off. An Australian gateway without a
+region is placed when DHL names it after a state's capital. Spain and Portugal file
 their islands under the country: a town or island of the Canary Islands or the Azores takes
 the islands' clock, unless the mainland has a town of that name. Ship24 relays the same
 scans with DHL's own offsets, and the rule agrees with them on every scan of the public

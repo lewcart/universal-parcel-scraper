@@ -68,7 +68,7 @@
   "detection": [
     {
       "id": "chunghwa-post-1",
-      "pattern": "^[CELR][A-Z]\\d{9}TW$",
+      "pattern": "^(?:[CELR][A-Z]|UH)\\d{9}TW$",
       "confidence": "high",
       "checksum": "s10"
     }

@@ -88897,6 +88897,14 @@
     ]
   },
   {
+    "input": "UH000000005TW",
+    "carrier": "chunghwa-post",
+    "confidence": "high",
+    "candidates": [
+      "chunghwa-post"
+    ]
+  },
+  {
     "input": "UH015319935DO",
     "carrier": "intl-post",
     "confidence": "high",

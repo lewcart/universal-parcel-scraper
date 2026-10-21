@@ -206,6 +206,18 @@
         ]
       },
       "note": "Looked up on Chunghwa Post's own tracker, as an archived address shows; the capture was not opened. The former domestic lookup on postserv.post.gov.tw."
+    },
+    {
+      "number": "UH000000005TW",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "chunghwa-post",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of Taiwan-issued letter post that Chunghwa Post's tracker answered."
     }
   ]
 }

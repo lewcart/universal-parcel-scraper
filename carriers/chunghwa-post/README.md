@@ -28,10 +28,10 @@ form.
 ## Numbers
 
 Detection names Chunghwa Post for the EMS, parcel, registered and tracked-letter S10 items it
-issues: C, E, L or R first, TW last and a passing check digit. UH-prefixed letter-post items
-stay with international mail in detection. The adapter can
-query a complete UH…TW reference when Chunghwa Post is explicitly selected or named by a
-provider; a successful reply must confirm the whole item. Other U series remain unsupported.
+issues, C, E, L or R first, and for its UH letter post: TW last and a passing check digit. Its
+tracker answered a UH item with the scan a universal provider had, so UH items go to it too.
+A successful reply must confirm the whole item. Other U series stay with international mail
+and remain unsupported.
 
 ## Limitations
 

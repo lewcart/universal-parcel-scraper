@@ -1690,6 +1690,36 @@ describe('ParcelsApp result parsing', () => {
     ])).toEqual(['2026-07-21T10:24:00.000Z', '2026-07-20T08:02:00.000Z']);
   });
 
+  it('reads the South African post\'s and EMS\'s copies of a UK parcel\'s scans on the clock where each happened', () => {
+    // Parcelforce's labels are London's; SAPO's and EMS's copies are the wall clock of the office that scanned.
+    const scan = (date: string, status: string, carrier: number, location?: string) => ({ date, status, carrier, ...(location ? { location } : {}) });
+    const parsed = parseParcelsAppResponse({ carriers: ['South Africa Post Office', 'Parcelforce', 'EMS'], originCode: 'GB', destinationCode: 'ZA', states: [
+      scan('2026-07-22T00:00:00Z', 'Estimated delivery', 0),
+      scan('2026-07-21T01:09:00+00:00', 'Departed from destination import office', 2, 'Example City'),
+      scan('2026-07-21T00:07:00+00:00', 'Released from import customs', 2),
+      scan('2026-07-20T23:55:00+00:00', 'Presented to import customs', 2),
+      scan('2026-07-20T23:54:00Z', 'Arrival at inward office of exchange', 0, 'EXAMPLE EMS, South Africa'),
+      scan('2026-07-20T23:54:00+00:00', 'Arrived at destination import office', 2, 'Example City'),
+      scan('2026-07-20T22:54:00Z', 'Item Received', 1, 'EXAMPLE EMS, South Africa'),
+      scan('2026-07-16T01:48:06Z', 'Item Leaving the UK', 1, 'EXAMPLE HWDC'),
+      scan('2026-07-16T01:48:00Z', 'Departure from outward office of exchange', 0, 'EXAMPLE HWDC, United Kingdom'),
+      scan('2026-07-16T01:48:00+00:00', 'Departed from export office', 2, 'Example Town'),
+    ] }, number, identity());
+    expect(parsed.events?.map((event) => [event.description, event.time])).toEqual([
+      ['Departed from destination import office', '2026-07-20T23:09:00.000Z'],
+      ['Released from import customs', '2026-07-20T22:07:00.000Z'],
+      ['Presented to import customs', '2026-07-20T21:55:00.000Z'],
+      ['Arrival at inward office of exchange', '2026-07-20T21:54:00.000Z'],
+      ['Arrived at destination import office', '2026-07-20T21:54:00.000Z'],
+      ['Item Received', '2026-07-20T21:54:00.000Z'],
+      ['Item Leaving the UK', '2026-07-16T00:48:06.000Z'],
+      ['Departure from outward office of exchange', '2026-07-16T00:48:00.000Z'],
+      ['Departed from export office', '2026-07-16T00:48:00.000Z'],
+    ]);
+    // ParcelsApp's forecast is no scan: it neither dates the reply nor names its status.
+    expect(parsed.last_status_text).toBe('Departed from destination import office');
+  });
+
   it('reads bpost\'s office of exchange abroad on its own clock, and bpost\'s copies of its scans on Brussels\'s', () => {
     // bpost's own feed copies an office's departure at the same instant, an hour later by the digits for an office in London.
     expect(parseParcelsAppResponse({ carriers: ['Bpost Belgium'], originCode: 'GB', destinationCode: 'DE', states: [

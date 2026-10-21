@@ -265,7 +265,12 @@ step exists for future protocol changes.
   country" on the destination's. On a parcel from China to Colombia, the Tax ID checks
   were dated up to six hours after ParcelsApp first returned them, and come before that
   moment only on China's clock; the scans in Colombia matched Cainiao's import customs to
-  the minute.
+  the minute. EMS dates its scans at the destination's office of exchange ("Arrived at
+  destination import office" to "Departed from destination import office", import
+  customs between) on the destination's clock, as it dates its origin leg on the
+  origin's: on a parcel from the UK to South Africa they have the digits of the South
+  African post's own copies. Borrowed from the British scans before them, they came an
+  hour late.
 
   The destination is the country the reply names (`destinationCode` or `destination`),
   else the one an EcoScooting reference names ("CNPRT" for Portugal, "CNESP" for Spain).
@@ -334,6 +339,10 @@ step exists for future protocol changes.
   instead. So was "BRT Bartolini", with or without the identifier type in brackets, on
   Rome time: its dates have the digits of BRT's own page, which writes its depots'
   Italian wall clocks; BRT's catalog zone, UTC, read them two hours late in summer.
+  So was "South Africa Post Office", on Johannesburg time: on a parcel from the UK, its
+  copy of the departure from the British office of exchange has the digits of Royal
+  Mail's own scan, on London time, so a location in another country dates its scans
+  instead; read in the catalog zone, that copy came an hour early.
   Royal Mail's relays of its partners' scans abroad are on Central European time
   whatever the country's clock: its receipt and departure at France's office of exchange
   have the digits of La Poste's own scans, and its "Item Received" and customs scans in
@@ -502,7 +511,8 @@ step exists for future protocol changes.
 - The destination country the reply names (`destinationCode`, else a `destination` that
   is a country name) becomes `destination_country`, which routing uses to propose the
   destination's post for a postal number. A country only read off a reference ("CNPRT")
-  dates scans but is not reported. Sender and estimate fields are not kept.
+  dates scans but is not reported. Sender and estimate fields are not kept, and neither
+  are ParcelsApp's `Estimated delivery` rows, a forecast dated ahead of the read.
 
 ## Limitations
 
@@ -526,7 +536,6 @@ step exists for future protocol changes.
   `NO_DATA` for a parcel the adapter fetched from that server and address minutes
   earlier, with the same body and User-Agent, over HTTP/1.1 and HTTP/2.
 - Email, phone, house-number, sign-in and country-selector forms are not supported.
-- `Estimated delivery` forecast rows are projected as events and can set `last_update`.
 
 ## Rejected approaches
 

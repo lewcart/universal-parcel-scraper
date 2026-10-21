@@ -251,6 +251,12 @@ const CAINIAO_LAST_MILE = [
  * China's clock, the parcel's origin (2026-10-16). Its scans in the
  * destination matched Cainiao's import customs to the minute on Colombia's.
  *
+ * EMS's scans at the destination's office of exchange, from its arrival to its
+ * departure, are on the destination's clock, as its origin leg is on the
+ * origin's (`POSTAL_ORIGIN_LEG`): on a parcel from the UK to South Africa they
+ * had the digits of the South African post's own copies. Borrowed from the
+ * origin's scans before them, they came an hour late.
+ *
  * A scan on a fixed clock borrows no neighbour's: borrowed from a GOFO
  * parcel's Florida scans, the label came 3 hours early and Cainiao's "Order
  * received" 12 hours after it, 19 seconds on China time. One in the
@@ -291,6 +297,10 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
     { wording: wordings(['arrival to the destination airport', 'arrived at warehouse', 'released from customs: customs cleared\\.?',
       'customs clearance agent received the shipment in destnation country\\.?', 'in transit, it\'s progressing through post network',
       'handed over to last mile', 'your shipment has been processed at sorting center and ready for shipping']), zone: DESTINATION },
+  ]],
+  ['ems', [
+    { wording: wordings(['arrived at destination import office', 'presented to import customs', 'released from import customs',
+      'departed from destination import office']), zone: DESTINATION },
   ]],
   ['ecoscooting', [
     { wording: /^(?:shipment data information received|shipment has left cainiao express's partner facility|shipment is in transit to cainiao express)$/i,
@@ -424,14 +434,19 @@ function cttZone(payload: Record<string, unknown>, location: string, date: unkno
  * a departure from Sydney has the digits of EMS's there. "BRT Bartolini"'s,
  * with or without the identifier type in brackets, are Rome's: they have the
  * digits of BRT's own page, which writes its depots' Italian wall clocks
- * (2026-10-21). Their home clock is a guess, which a location in another
- * country rules out.
+ * (2026-10-21). The South African post's are Johannesburg's at home and their
+ * place's abroad: on a parcel from the UK, its copy of the departure from the
+ * British office of exchange had the digits of Royal Mail's own scan on London
+ * time, and read on Johannesburg's, its arrival there came at the instant of
+ * Parcelforce's label read on London's. Their home clock is a guess, which a
+ * location in another country rules out.
  */
 const HOME_COUNTRIES: Readonly<Record<string, string>> = {
   southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', japanpost: 'Asia/Tokyo',
   pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London', collect: 'Europe/London', xzg: 'Asia/Shanghai',
   spl: 'Asia/Riyadh', saudipost: 'Asia/Riyadh',
   brtbartolini: 'Europe/Rome', brtbartoliniparcelid: 'Europe/Rome', brtbartolinidpd: 'Europe/Rome',
+  southafricapostoffice: 'Africa/Johannesburg', southafricapost: 'Africa/Johannesburg',
 };
 /**
  * Royal Mail relays its partners' scans abroad on Central European time,
@@ -1106,6 +1121,12 @@ function replyOrigin(payload: Record<string, unknown>, number: string): string |
 }
 
 /**
+ * ParcelsApp's own forecast, a row dated the expected day that the
+ * destination's post names: no scan, and dated ahead of the read.
+ */
+const FORECAST = /^estimated delivery$/i;
+
+/**
  * ParcelsApp relays some carriers' labels twice over, TIPSA's as
  * "ENTREGADOENTREGADO". Only a label made of two identical halves is collapsed.
  */
@@ -1183,6 +1204,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
       continue;
     }
     const status = relayedLabel(raw.status);
+    if (FORECAST.test(status)) continue;
     const state = readState(payload, raw, status, timezone, number, inNorthAmerica, destination, origin);
     const carrier = typeof state.name === 'string' ? carrierIdFromName(state.name) : undefined;
     const scan = carrierScan(carrier, status) ?? airportHandOver(carrier, status, state.location, destination);
@@ -1333,7 +1355,7 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     const row = $(node);
     if (row.find('input, select, form').length) return;
     const description = relayedLabel(row.find('.event-content > strong').first().text());
-    if (isNotice(description)) return;
+    if (isNotice(description) || FORECAST.test(description)) return;
     const date = row.find('.event-time > strong').text().trim();
     const time = row.find('.event-time > span').text().trim();
     // Notice rows ("No information about your package...") render a date with

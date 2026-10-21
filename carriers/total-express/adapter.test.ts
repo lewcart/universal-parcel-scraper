@@ -221,8 +221,8 @@ describe('Total Express HTTP adapter', () => {
   it('recognizes a known AWB and the search’s unknown answer, and asks nothing for a number Total Express does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered')))
       .mockResolvedValueOnce(SERVER_ERROR()).mockResolvedValueOnce(reply(JSON.parse(file('search-empty.json'))));
-    // Local clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-05T10:31:13' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('0000000000')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(3);

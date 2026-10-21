@@ -206,8 +206,8 @@ describe('Express One direct tracking', () => {
     const instance = adapter(environment(known));
     expect(await instance.recognize!('12345')).toEqual({ known: false });
     expect(known).not.toHaveBeenCalled();
-    // Wall clocks cannot rank reuse of a number.
-    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-06-03T14:12:00' });
     const unknown = vi.fn(async () => reply(absent, 404));
     expect(await adapter(environment(unknown as unknown as typeof fetch)).recognize!(NUMBER)).toEqual({ known: false });
     const outage = vi.fn(async () => reply('<html>Karbantartás</html>'));

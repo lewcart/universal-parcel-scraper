@@ -29,7 +29,7 @@ describe('OMGO direct adapter', () => {
   it('recognizes exact local-clock history without inventing an activity instant', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(page()).mockResolvedValueOnce(new Response(fixture('tracking.json')))
       .mockResolvedValueOnce(page()).mockResolvedValueOnce(new Response(fixture('unknown.json')));
-    await expect(carrier(fetcher).recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(carrier(fetcher).recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-05T10:45:00' });
     await expect(carrier(fetcher).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(carrier(fetcher).recognize!('X' + NUMBER)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(4);

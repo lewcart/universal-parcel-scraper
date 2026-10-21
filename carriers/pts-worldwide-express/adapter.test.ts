@@ -233,8 +233,8 @@ describe('PTS Worldwide Express HTTP adapter', () => {
   it('recognizes a known number and an unknown one, and asks nothing for a number PTS does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json(reply('delivered')))
       .mockResolvedValueOnce(json(reply('not-found'), { status: 400 }));
-    // Local clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-09T11:21:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('12345678901')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

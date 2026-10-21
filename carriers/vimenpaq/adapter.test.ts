@@ -158,8 +158,8 @@ describe('Vimenpaq HTTP adapter', () => {
   it('recognizes a known number and the empty guide, and asks nothing for a number Vimenpaq does not take', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered')))
       .mockResolvedValueOnce(reply(fixture('not-found')));
-    // Local clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-05-13T15:48:19' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('AAA0000')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

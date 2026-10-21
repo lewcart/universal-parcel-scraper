@@ -185,8 +185,8 @@ describe('SGH Global Japan HTTP adapter', () => {
   it('recognizes a known air waybill and the unknown answer, and asks nothing for a number SGX does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered')))
       .mockResolvedValueOnce(reply(fixture('not-found')));
-    // Wall clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-05-08T16:45:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('100000000005')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

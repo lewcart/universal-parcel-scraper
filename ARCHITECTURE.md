@@ -217,7 +217,10 @@ and catalog rank. These signals do not add candidates or confirm ownership.
 `recognitionAskedCarriers` is the first `MAX_RECOGNITIONS` of that order. `createTracker()`
 asks those first, and the next `MAX_RECOGNITIONS` only while none asked so far knows the
 number and the budget lasts.
-`settleRecognition` takes the only carrier that knows the number. When AliExpress and a
+`settleRecognition` sets aside an answer quiet for 60 days, taken for an older parcel that
+reused the number. An answer without an instant is dated by its local clock
+(`lastActivityLocal`); one without any clock counts only when no dated answer is recent.
+It takes the only carrier that knows the number. When AliExpress and a
 delivery carrier both know it, the number is the delivery carrier's and AliExpress started
 the journey, so it takes AliExpress. Otherwise it takes the only one number evidence backs.
 When all that know it are one brand's networks, it takes one that tracks without the user's

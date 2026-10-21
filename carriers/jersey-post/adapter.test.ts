@@ -165,8 +165,8 @@ describe('Jersey Post HTTP adapter', () => {
   it('recognizes a known number and the unknown-number answer, and asks nothing for a number Jersey Post does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered')))
       .mockResolvedValueOnce(reply(fixture('not-found')));
-    // Local clocks cannot date the item's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-12T10:41:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('LX000000014GB')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

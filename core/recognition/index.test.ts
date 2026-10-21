@@ -245,6 +245,33 @@ describe('settling on a carrier', () => {
       .toEqual({ carrier: 'ciblex', choices: [] });
     expect(settleRecognition([outcome('dpd', 'unknown')], now)).toEqual({ choices: [] });
   });
+  it('takes an answer without a clock for one of unknown age, never for a recent one', () => {
+    const recentScan = { lastActivityAt: '2026-09-09T08:00:00Z' };
+    // A reused number: Happy-Post still knows its old label, dated on its local clock only.
+    const oldLabel = { lastActivityLocal: '2026-03-02T09:00:00' };
+    expect(settleRecognition([outcome('happy-post', 'known', oldLabel)], now)).toEqual({ choices: [] });
+    expect(settleRecognition([outcome('happy-post', 'known', oldLabel), outcome('dpd-uk', 'known', recentScan)], now))
+      .toEqual({ carrier: 'dpd-uk', choices: [] });
+    // A label without any clock does not compete with a recent scan, and settles when it is the only answer.
+    expect(settleRecognition([outcome('happy-post', 'known'), outcome('dpd-uk', 'known', recentScan)], now))
+      .toEqual({ carrier: 'dpd-uk', choices: [] });
+    expect(settleRecognition([outcome('happy-post', 'known'), outcome('dpd-uk', 'known', { lastActivityAt: '2026-01-02T00:00:00Z' })], now))
+      .toEqual({ carrier: 'happy-post', choices: [] });
+    // A local clock is recent while any zone can still read it inside the window, which ends on 12 July at noon UTC.
+    expect(settleRecognition([outcome('happy-post', 'known', { lastActivityLocal: '2026-07-12T06:00:00' })], now))
+      .toEqual({ carrier: 'happy-post', choices: [] });
+    expect(settleRecognition([outcome('happy-post', 'known', { lastActivityAt: '2026-07-12T06:00:00Z' })], now)).toEqual({ choices: [] });
+    expect(settleRecognition([outcome('happy-post', 'known', { lastActivityLocal: '2026-09-08T09:00:00' }), outcome('dpd-uk', 'known', recentScan)], now))
+      .toEqual({ choices: ['happy-post', 'dpd-uk'] });
+  });
+
+  it('carries a local clock from the answer to the outcome', async () => {
+    const [answer] = await recognizeAll([{ carrier: 'happy-post', needsInput: null, preferred: false }],
+      async () => ({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-02T09:00:00' }), 1_000);
+    expect(answer).toMatchObject({ status: 'known', lastActivityAt: null, lastActivityLocal: '2026-03-02T09:00:00' });
+    expect(settleRecognition([answer!], now)).toEqual({ choices: [] });
+  });
+
   it('prefers number evidence, then one brand\'s most common network, and otherwise lets the user choose', () => {
     expect(settleRecognition([outcome('dpd', 'known', { preferred: true }), outcome('ciblex', 'known')], now))
       .toEqual({ carrier: 'dpd', choices: [] });

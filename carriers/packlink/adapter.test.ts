@@ -179,8 +179,8 @@ describe('Packlink HTTP adapter', () => {
   it('recognizes a known reference and the unknown-reference answer, and asks nothing for a number Packlink does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered')))
       .mockResolvedValueOnce(reply(fixture('not-found'), { status: 404 }));
-    // Wall clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-05-13T18:05:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('ES2026XYZ0000000101')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

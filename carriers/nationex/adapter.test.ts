@@ -246,8 +246,8 @@ describe('Nationex tracking adapter', () => {
   it('reads the not-found notice as unknown and recognizes a known shipment, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('transit'))).mockResolvedValueOnce(reply(NOT_FOUND))
       .mockResolvedValueOnce(reply(NOT_FOUND));
-    // Wall clocks cannot rank reuse of a number.
-    await expect(carrier(fetcher).recognize!(TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-11T03:22:51' });
     await expect(carrier(fetcher).recognize!(ABSENT)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).track({ number: ABSENT })).rejects.toMatchObject({ kind: 'not_found' });
     expect(fetcher).toHaveBeenCalledTimes(3);

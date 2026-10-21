@@ -230,8 +230,8 @@ describe('Laar Courier HTTP adapter', () => {
 
   it('recognizes a known guía and the unknown-guía answer, and asks nothing for a guía Laar does not issue', async () => {
     const delivered = serve(fixture('delivered'));
-    // Local clocks cannot date the parcel's last activity.
-    await expect(carrier(delivered).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(delivered).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-05-13T11:31:07' });
     const unknown = serve(fixture('not-found'));
     await expect(carrier(unknown).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(unknown).recognize!('GYE-00')).resolves.toEqual({ known: false });

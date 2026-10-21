@@ -199,8 +199,8 @@ describe('Indah Logistik HTTP adapter', () => {
   it('recognizes a known number by its rows and an unknown one by the not-found answer', async () => {
     const fetcher = service({ [DELIVERED]: fixture('delivered') });
     const indah = carrier(fetcher);
-    // The rows' wall clocks name no zone, so they give no time of last activity.
-    await expect(indah.recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // The rows' wall clocks name no zone, so they date the last activity without an instant.
+    await expect(indah.recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-06T15:42:08' });
     await expect(indah.recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(indah.recognize!('ZZ1CS00000011')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

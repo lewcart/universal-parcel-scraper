@@ -157,9 +157,9 @@ describe('Starex HTTP adapter', () => {
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(absent())).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'not_found' });
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(absent())).track({ number: FORMER })).rejects.toMatchObject({ kind: 'not_found' });
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(absent())).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
-    // Wall clocks cannot date the parcel's last activity.
+    // A local clock dates the last activity without an instant.
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')))).recognize!(DELIVERED))
-      .resolves.toEqual({ known: true, lastActivityAt: null });
+      .resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-09-18T16:05:00' });
   });
 
   it('keeps an unknown number, a refusal, a moved route, a browser check and a broken reply apart', async () => {

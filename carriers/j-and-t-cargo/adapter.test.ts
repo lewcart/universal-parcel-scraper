@@ -37,8 +37,8 @@ describe('J&T Cargo anonymous transport', () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(fixture('master.json')))
       .mockResolvedValueOnce(new Response(fixture('piece.json'))).mockResolvedValueOnce(new Response(fixture('unknown.json')));
     const direct = carrier(fetcher);
-    await expect(direct.recognize!(MASTER)).resolves.toEqual({ known: true, lastActivityAt: null });
-    await expect(direct.recognize!(PIECE)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(direct.recognize!(MASTER)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-02T12:30:00' });
+    await expect(direct.recognize!(PIECE)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-03T15:45:00' });
     await expect(direct.recognize!(MASTER)).rejects.toMatchObject({ kind: 'indeterminate' });
     for (const number of ['20000000001', '570000000001', PIECE + '0']) await expect(direct.recognize!(number)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(3);

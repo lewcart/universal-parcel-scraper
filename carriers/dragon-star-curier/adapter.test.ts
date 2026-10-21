@@ -176,8 +176,8 @@ describe('Dragon Star Curier HTTP adapter', () => {
   it('recognizes a known number and the not-found notice, and asks nothing for a number DSC does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(html(page('returned')))
       .mockResolvedValueOnce(html(page('not-found')));
-    // Local clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(RETURNED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(RETURNED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-12T10:41:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('000001')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

@@ -11,7 +11,8 @@ import { BudgetExceededError, carrierErrorKind, InvalidInputError } from '../err
 import { normalizeCarrierResult, type CarrierResult } from '../result/index.js';
 import type { StepRecorder } from '../telemetry/index.js';
 import type { TrawlClient } from '../transport/trawl.js';
-import { explicitOffsetTime } from '../time/index.js';
+import { EXPLICIT_OFFSET_PATTERN, explicitOffsetTime } from '../time/index.js';
+import { eventTimestamp } from '../time/result.js';
 
 export interface TrackingInput {
   /** The tracking number as stored on the parcel, validated at the API boundary. */
@@ -96,6 +97,8 @@ export interface Recognition {
   known: boolean;
   /** The newest activity the check saw, when it reports one; old parcels can share a reused number. */
   lastActivityAt?: string | null;
+  /** Without such an instant, the newest scan on the carrier's local clock: an offset-less ISO wall time. */
+  lastActivityLocal?: string | null;
 }
 
 /** Browser confirmation retains the lookup, normalized like any tracking result, so a consumer can reuse its history. */
@@ -154,7 +157,7 @@ export async function recognizeFromLookup(
     if (['not_found', 'invalid_input'].includes(carrierErrorKind(error) ?? '')) return { known: false };
     throw error;
   }
-  // Local clocks and malformed dates cannot rank reuse of a tracking number.
+  // Local clocks and malformed dates name no instant.
   const iso = (value: string | null | undefined) => {
     if (typeof value !== 'string') return Number.NaN;
     const raw = value.trim();
@@ -167,11 +170,15 @@ export async function recognizeFromLookup(
   // A pending status without a scan is no evidence: some carriers answer any number that way.
   const known = (result.events?.length ?? 0) > 0 || !['unknown', 'pending', undefined].includes(result.status);
   const updated = iso(result.last_update);
-  return {
-    known,
-    lastActivityAt: !known ? null : times.length ? new Date(Math.max(...times)).toISOString()
-      : Number.isFinite(updated) ? new Date(updated).toISOString() : null,
-  };
+  const lastActivityAt = !known ? null : times.length ? new Date(Math.max(...times)).toISOString()
+    : Number.isFinite(updated) ? new Date(updated).toISOString() : null;
+  // A local clock still tells an old parcel's label from a new one, to within a day.
+  const walls = [result.last_update, result.last_update_local, ...(result.events ?? []).flatMap((event) => [event.time, event.local_time])]
+    .map((value) => typeof value === 'string' && !EXPLICIT_OFFSET_PATTERN.test(value.trim()) ? Date.parse(eventTimestamp(value, 'UTC') ?? '') : Number.NaN)
+    .filter(Number.isFinite);
+  return known && !lastActivityAt && walls.length
+    ? { known, lastActivityAt, lastActivityLocal: new Date(Math.max(...walls)).toISOString().slice(0, 19) }
+    : { known, lastActivityAt };
 }
 
 /** Browser shells and undated default statuses do not establish a shipment. */

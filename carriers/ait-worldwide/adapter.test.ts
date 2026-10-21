@@ -243,9 +243,9 @@ describe('AIT Worldwide Logistics HTTP adapter', () => {
     });
 
   it('recognizes a known number and the unknown answer, and asks nothing for a number AIT does not issue', async () => {
-    // Wall clocks cannot date the activity.
-    await expect(carrier(page('delivered')).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
-    await expect(carrier(page('several')).recognize!(INITIATED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(page('delivered')).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-12T14:40:00' });
+    await expect(carrier(page('several')).recognize!(INITIATED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-12-29T15:41:06' });
     await expect(carrier(page('not-found')).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(answering(() => reply(CHALLENGE))).recognize!(UNKNOWN)).rejects.toMatchObject({ kind: 'challenge' });
     // A page for another shipment is no answer either way.

@@ -220,8 +220,8 @@ describe('Forza Delivery tracking adapter', () => {
 
   it('recognizes a known guía and an unknown one from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(text('delivered'))).mockResolvedValueOnce(reply(text('not-found')));
-    // Wall clocks cannot date the activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-12T14:07:31' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
@@ -260,13 +260,20 @@ describe('Forza Delivery tracking adapter', () => {
   });
 
   it('routes a guía filed under Forza, or detected as one, to the adapter', async () => {
-    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(text('delivered')));
-    const tracker = createTracker({ fetcher, providers: [], env: {} });
-    await expect(tracker.track({ number: DELIVERED, carrier: 'forza-delivery' }, { budgetMs: 3000 }))
-      .resolves.toMatchObject({ carrier: 'forza-delivery', source: 'forza-delivery', result: { current_stage: 'delivered' } });
-    await expect(tracker.track({ number: DELIVERED }, { budgetMs: 3000 }))
-      .resolves.toMatchObject({ carrier: 'forza-delivery', source: 'forza-delivery' });
-    expect(fetcher.mock.calls.every(([url]) => String(url) === FORZA_API)).toBe(true);
+    // Recognition asks a day after the delivery on Forza's local clock.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-03-13T12:00:00Z'));
+    try {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(text('delivered')));
+      const tracker = createTracker({ fetcher, providers: [], env: {} });
+      await expect(tracker.track({ number: DELIVERED, carrier: 'forza-delivery' }, { budgetMs: 3000 }))
+        .resolves.toMatchObject({ carrier: 'forza-delivery', source: 'forza-delivery', result: { current_stage: 'delivered' } });
+      await expect(tracker.track({ number: DELIVERED }, { budgetMs: 3000 }))
+        .resolves.toMatchObject({ carrier: 'forza-delivery', source: 'forza-delivery' });
+      expect(fetcher.mock.calls.every(([url]) => String(url) === FORZA_API)).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
 

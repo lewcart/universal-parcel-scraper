@@ -255,7 +255,7 @@ describe('DHL eCommerce Iberia adapter', () => {
 
   it('recognizes a known parcel without an instant and leaves other answers inconclusive', async () => {
     const known = adapter(environment(async () => Response.json(clone())));
-    await expect(known.recognize?.(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(known.recognize?.(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-12T10:15:00' });
     const other = adapter(environment(async () => Response.json(structuredClone(delivered))));
     await expect(other.track({ number: NUMBER })).rejects.toMatchObject({ kind: 'schema' });
     for (const status of [409, 503]) {

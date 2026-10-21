@@ -215,7 +215,7 @@ describe('NACEX direct tracking', () => {
     const instance = adapter(environment(positive));
     expect(await instance.recognize!('invalid')).toEqual({ known: false });
     expect(positive).not.toHaveBeenCalled();
-    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-16T00:00:00' });
     const absent = vi.fn().mockResolvedValueOnce(freshSession()).mockResolvedValueOnce(response(negative));
     expect(await adapter(environment(absent as unknown as typeof fetch)).recognize!(NUMBER)).toEqual({ known: false });
     expect(absent).toHaveBeenCalledTimes(2);

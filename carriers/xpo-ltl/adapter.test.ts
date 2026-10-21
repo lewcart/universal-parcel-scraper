@@ -175,7 +175,7 @@ describe('XPO HTTP adapter', () => {
   it('recognizes a known PRO from its summary alone, and an unknown one from both systems', async () => {
     const fetcher = site({ summary: [fixture('summary-in-transit.html'), fixture('summary-not-found.html')],
       mexico: [mexico(fixture('summary-not-found.html'))] });
-    await expect(carrier(fetcher).recognize!(MOVING)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(carrier(fetcher).recognize!(MOVING)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-04T09:05:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('990000002')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(3);

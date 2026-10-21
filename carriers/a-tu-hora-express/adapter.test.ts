@@ -295,8 +295,8 @@ describe('A Tu Hora Express HTTP adapter', () => {
 
   it('recognizes the 24-digit label and an unknown one, and asks nothing for a code that needs a postcode', async () => {
     const fetcher = replies(stub(DELIVERED_GUID), text('delivered'), '');
-    // Wall clocks without an offset date no activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED_LABEL)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED_LABEL)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-05-06T13:41:20' });
     await expect(carrier(fetcher).recognize!(UNKNOWN_LABEL)).resolves.toEqual({ known: false });
     for (const number of [DELIVERED, IN_TRANSIT_SHORT, 'ATH9990000024']) await expect(carrier(fetcher).recognize!(number)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(3);

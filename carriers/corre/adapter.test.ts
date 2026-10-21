@@ -148,8 +148,8 @@ describe('CORRE tracking adapter', () => {
 
   it('recognizes a known item and an unknown code from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(text('received'))).mockResolvedValueOnce(reply(text('not-found')));
-    // Local clocks cannot date the item's last activity.
-    await expect(carrier(fetcher).recognize!(RECEIVED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(RECEIVED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-11T09:14:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
     const changed = vi.fn<typeof fetch>().mockResolvedValue(reply('<html><body>Sample</body></html>'));

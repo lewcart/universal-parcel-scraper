@@ -304,8 +304,8 @@ describe('Norsk Global HTTP adapter', () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered')))
       .mockResolvedValueOnce(reply(fixture('in-transit'))).mockResolvedValueOnce(reply(fixture('not-found')))
       .mockResolvedValueOnce(reply(fixture('in-transit')));
-    // Local clocks cannot date the parcel's last activity; offsets can.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // Local clocks date the parcel's last activity without an instant; offsets give one.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-05-19T14:02:00' });
     await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: '2026-06-02T07:10:00.000Z' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!(LANDMARK)).rejects.toMatchObject({ kind: 'indeterminate' });
@@ -337,14 +337,21 @@ describe('Norsk Global HTTP adapter', () => {
   });
 
   it('routes a reference filed under Norsk Global, or detected as one of its own, to the adapter', async () => {
-    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url) === LOOKUP
-      ? reply(fixture('delivered')) : new Response('', { status: 404 }));
-    const tracker = createTracker({ fetcher, providers: [], env: {} });
-    await expect(tracker.track({ number: DELIVERED, carrier: 'norsk-global' }, { budgetMs: 3000 }))
-      .resolves.toMatchObject({ carrier: 'norsk-global', source: 'norsk-global', result: { current_stage: 'delivered' } });
-    await expect(tracker.track({ number: DELIVERED }, { budgetMs: 3000 }))
-      .resolves.toMatchObject({ carrier: 'norsk-global', source: 'norsk-global' });
-    expect(fetcher.mock.calls.some(([url]) => String(url) === LOOKUP)).toBe(true);
+    // Recognition asks a day after the delivery on Norsk Global's local clock.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-05-20T12:00:00Z'));
+    try {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url) === LOOKUP
+        ? reply(fixture('delivered')) : new Response('', { status: 404 }));
+      const tracker = createTracker({ fetcher, providers: [], env: {} });
+      await expect(tracker.track({ number: DELIVERED, carrier: 'norsk-global' }, { budgetMs: 3000 }))
+        .resolves.toMatchObject({ carrier: 'norsk-global', source: 'norsk-global', result: { current_stage: 'delivered' } });
+      await expect(tracker.track({ number: DELIVERED }, { budgetMs: 3000 }))
+        .resolves.toMatchObject({ carrier: 'norsk-global', source: 'norsk-global' });
+      expect(fetcher.mock.calls.some(([url]) => String(url) === LOOKUP)).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
 

@@ -383,7 +383,7 @@ describe('BRT direct tracking', () => {
     expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-01-16T20:07:00.000Z' });
     // Without an arrival depot in Italy, only the depot of origin is on Rome's clock.
     const abroad = vi.fn<typeof fetch>().mockResolvedValue(response(edit($ => $('.table_dati_spedizione tr').last().remove())));
-    expect(await adapter(environment(abroad)).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    expect(await adapter(environment(abroad)).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-16T21:07:00' });
     const absent = vi.fn<typeof fetch>().mockResolvedValue(response(negative()));
     expect(await adapter(environment(absent)).recognize!(NUMBER)).toEqual({ known: false });
     const outage = vi.fn<typeof fetch>().mockResolvedValue(response('<html>Unavailable</html>'));

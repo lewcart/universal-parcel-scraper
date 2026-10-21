@@ -210,7 +210,7 @@ describe('Jeebly HTTP adapter', () => {
   });
 
   it('recognizes a shipment one service has, and not a number none has', async () => {
-    await expect(carrier(byService({ Moveo: 'in-transit.html' })).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(carrier(byService({ Moveo: 'in-transit.html' })).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-01T07:40:00' });
     await expect(carrier(byService()).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     const fetcher = vi.fn<typeof fetch>();
     await expect(carrier(fetcher).recognize!('JB12345')).resolves.toEqual({ known: false });

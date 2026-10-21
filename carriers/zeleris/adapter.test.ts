@@ -159,8 +159,8 @@ describe('Zeleris tracking adapter', () => {
   it('reads the redirect for an unknown number as not found and recognizes a known shipment, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(page('depot'))).mockResolvedValueOnce(moved(searchPage(ABSENT)))
       .mockResolvedValueOnce(moved(searchPage(ABSENT)));
-    // Wall clocks cannot rank reuse of a number.
-    await expect(carrier(fetcher).recognize!(DEPOT)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DEPOT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-05-08T19:03:00' });
     await expect(carrier(fetcher).recognize!(ABSENT)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).track({ number: ABSENT })).rejects.toMatchObject({ kind: 'not_found' });
     expect(fetcher).toHaveBeenCalledTimes(3);

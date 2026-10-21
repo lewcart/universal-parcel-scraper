@@ -159,8 +159,8 @@ describe('AEX tracking adapter', () => {
   it('reads the notice for an unknown guía as not found and recognizes a known one, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(page('in-transit'))).mockResolvedValueOnce(reply(page('not-found')))
       .mockResolvedValueOnce(reply(page('not-found'))).mockResolvedValueOnce(reply(page('empty-form'))).mockResolvedValueOnce(reply(page('in-transit')));
-    // Wall clocks cannot rank reuse of a guía.
-    await expect(carrier(fetcher).recognize!(TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-02-02T07:15:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'not_found' });
     await expect(carrier(fetcher).recognize!('ZZ000000000')).resolves.toEqual({ known: false });

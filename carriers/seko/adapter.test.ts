@@ -193,8 +193,8 @@ describe('SEKO HTTP adapter', () => {
 
   it('recognizes a known number and the unknown-number answer, and asks nothing for a number SEKO does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered'))).mockResolvedValueOnce(missing());
-    // Local clocks cannot date the shipment's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-16T13:42:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('ABC123')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

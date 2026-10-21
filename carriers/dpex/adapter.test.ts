@@ -250,8 +250,8 @@ describe('DPEX Worldwide HTTP adapter', () => {
       return reply(asked.endsWith(IN_TRANSIT) ? fixture('china-in-transit') : chinaUnknown(UNKNOWN));
     });
     await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: '2026-03-16T06:41:00.000Z' });
-    // DPEX China's wall clocks show the air waybill exists but cannot rank it.
-    await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // DPEX China's wall clocks show the air waybill exists and date it without an instant.
+    await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-04-19T22:15:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     const blocked = trackers(() => reply(fixture('not-found')), () => reply('', { status: 403 }));
     await expect(carrier(blocked).recognize!(UNKNOWN)).rejects.toMatchObject({ kind: 'challenge' });

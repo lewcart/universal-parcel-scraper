@@ -237,9 +237,9 @@ describe('Foxpost direct tracking', () => {
     try {
       vi.setSystemTime(SUMMER);
       expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-06-04T16:27:00.000Z' });
-      // A summer scan viewed in winter keeps its wall clock, which cannot rank reuse of a number.
+      // A summer scan viewed in winter keeps its wall clock, which dates the last activity without an instant.
       vi.setSystemTime(WINTER);
-      expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+      expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-06-04T18:27:00' });
     } finally {
       vi.useRealTimers();
     }

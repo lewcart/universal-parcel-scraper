@@ -169,8 +169,8 @@ describe('RAM HTTP adapter', () => {
         body.waybillNo = DELIVERED;
         body.groups[0]!.waybill = DELIVERED;
       })));
-    // Local clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-05T19:30:00' });
     await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('RAM-0')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

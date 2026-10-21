@@ -174,8 +174,8 @@ describe('Early Bird tracking adapter', () => {
     const found = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(text('door'))).mockResolvedValueOnce(reply(text('legacy')))
       .mockResolvedValueOnce(reply(text('handover')));
     await expect(carrier(found).recognize!(DOOR)).resolves.toEqual({ known: true, lastActivityAt: '2031-03-14T05:12:44.120Z' });
-    // Wall clocks cannot rank reuse of a number, and a handover has no clock.
-    await expect(carrier(found).recognize!(LEGACY)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant, and a handover has no clock.
+    await expect(carrier(found).recognize!(LEGACY)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2030-11-20T04:31:05' });
     await expect(carrier(found).recognize!(DOOR)).resolves.toEqual({ known: true, lastActivityAt: null });
     expect(found).toHaveBeenCalledTimes(3);
   });

@@ -266,8 +266,8 @@ describe('Saia tracking adapter', () => {
     expect(isSaiaNotFound(notFound(IN_TRANSIT), ABSENT)).toBe(false);
     expect(isSaiaNotFound({ ...notFound(ABSENT), status: 422 }, ABSENT)).toBe(false);
     const fetcher = service(() => reply(fixture('interline')), () => reply(notFound(ABSENT), 422), () => reply(notFound(ABSENT), 422));
-    // Local clocks give no instant to rank the match by.
-    await expect(carrier(fetcher).recognize!(INTERLINE)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(INTERLINE)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2031-02-20T14:14:00' });
     await expect(carrier(fetcher).recognize!(ABSENT)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).track({ number: ABSENT })).rejects.toMatchObject({ kind: 'not_found' });
     expect(fetcher).toHaveBeenCalledTimes(6);

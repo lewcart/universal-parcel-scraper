@@ -159,8 +159,8 @@ describe('Speedex HTTP adapter', () => {
   it('recognizes a known number and the not-found answer, and asks nothing for a number Speedex does not track', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(html(fixture('delivered')))
       .mockResolvedValueOnce(html(fixture('not-found')));
-    // Local clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-04T11:30:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('70000000001')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

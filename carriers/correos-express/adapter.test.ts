@@ -579,7 +579,7 @@ describe('Correos Express retrieval', () => {
     expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-01-05T17:27:00.000Z' });
     // The localizador's history alone has no localities, so no instant ranks it.
     expect(await adapter(environment(routed(() => response(negative())))).recognize!(NUMBER)).toEqual({ known: false });
-    expect(await adapter(environment(routed(() => response(negative()), () => json(feedPayload())))).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    expect(await adapter(environment(routed(() => response(negative()), () => json(feedPayload())))).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-05T18:27:05' });
     await expect(adapter(environment(routed(() => response(negative(NUMBER, '-1'))))).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(adapter(environment(routed(() => response(negative()), () => new Response('Busy', { status: 429 })))).recognize!(NUMBER))
       .rejects.toMatchObject({ kind: 'rate_limited' });

@@ -159,10 +159,10 @@ describe('Averitt tracking adapter', () => {
   it('recognizes a known shipment and the not-found notice, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(page('in-transit'))).mockResolvedValueOnce(reply(page('not-found')))
       .mockResolvedValueOnce(reply(page('aged')));
-    // Wall clocks cannot rank reuse of a number.
-    await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-04-14T03:07:00' });
     await expect(carrier(fetcher).recognize!(ABSENT)).resolves.toEqual({ known: false });
-    await expect(carrier(fetcher).recognize!(AGED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(carrier(fetcher).recognize!(AGED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2025-06-12T10:08:00' });
     expect(fetcher).toHaveBeenCalledTimes(3);
   });
 

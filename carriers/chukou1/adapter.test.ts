@@ -243,9 +243,9 @@ describe('Chukou1 HTTP adapter', () => {
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('not-found')))).track({ number: UNKNOWN }))
       .rejects.toMatchObject({ kind: 'not_found' });
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('not-found')))).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
-    // Wall clocks cannot date the parcel's last activity.
+    // A local clock dates the last activity without an instant.
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')))).recognize!(DELIVERED))
-      .resolves.toEqual({ known: true, lastActivityAt: null });
+      .resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-09-12T13:48:00' });
   });
 
   it('signs once more with the gateway’s clock when it refuses one too far from its own', async () => {

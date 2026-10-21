@@ -178,9 +178,9 @@ describe('AnserX HTTP adapter', () => {
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('not-found')))).track({ number: UNKNOWN }))
       .rejects.toMatchObject({ kind: 'not_found' });
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('not-found')))).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
-    // Wall clocks cannot date the parcel's last activity.
+    // A local clock dates the last activity without an instant.
     await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')))).recognize!(DELIVERED))
-      .resolves.toEqual({ known: true, lastActivityAt: null });
+      .resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-09-21T12:40:15' });
   });
 
   it('keeps a failed lookup, a refusal, a moved route, a browser check and a broken reply apart', async () => {

@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -69,6 +69,12 @@ describe('Cainiao DOFR detection', () => {
 describe('partner numbers Cainiao follows', () => {
   // AliExpress shows the buyer SDA's waybill while the parcel is still on Cainiao's leg.
   const waybill = '000D00000001F';
+  // Recognition asks the day after the fixture's last scan on Cainiao's local clock.
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-03-02T12:00:00Z'));
+  });
+  afterEach(() => vi.useRealTimers());
 
   function fetcherKnownTo(cainiao: boolean, poste = false) {
     return vi.fn<typeof fetch>((input) => Promise.resolve(new Response(JSON.stringify(

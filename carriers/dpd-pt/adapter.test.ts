@@ -214,8 +214,8 @@ describe('DPD Portugal tracking adapter', () => {
   it('recognizes a known parcel and an unknown number from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(delivered)).mockResolvedValueOnce(reply(page('not-found')))
       .mockResolvedValueOnce(reply(history()));
-    // Wall clocks without a zone give no activity instant.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-05T11:30:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!(DELIVERED)).rejects.toMatchObject({ kind: 'indeterminate' });
     expect(fetcher).toHaveBeenCalledTimes(3);

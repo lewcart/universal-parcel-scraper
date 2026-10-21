@@ -163,8 +163,8 @@ describe('APC Overnight tracking adapter', () => {
 
   it('recognizes a known consignment and the not-found notice, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(page('journey'))).mockImplementationOnce(async (url) => absent(url));
-    // Wall clocks cannot rank reuse of a number.
-    await expect(carrier(fetcher).recognize!(JOURNEY)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(JOURNEY)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-08T09:30:00' });
     await expect(carrier(fetcher).recognize!(ABSENT)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });

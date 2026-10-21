@@ -184,8 +184,8 @@ describe('Naqel HTTP adapter', () => {
   it('recognizes a known number and the unknown-number answer, and asks nothing for a number Naqel does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(page(fixture('delivered')))
       .mockResolvedValueOnce(page(fixture('not-found')));
-    // Local clocks give no instant to date the activity by.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-09-14T12:12:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('1000000010')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

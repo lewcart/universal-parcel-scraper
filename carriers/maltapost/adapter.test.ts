@@ -192,8 +192,8 @@ describe('MaltaPost tracking adapter', () => {
 
   it('recognizes a known item and the reply without a barcode, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(text('sendon'))).mockResolvedValueOnce(reply(text('not-found')));
-    // Wall clocks cannot rank reuse of a number.
-    await expect(carrier(fetcher).recognize!(SENDON)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(SENDON)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-13T11:42:07' });
     await expect(carrier(fetcher).recognize!(ABSENT)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });

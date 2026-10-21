@@ -10,12 +10,13 @@ import { AdapterRegistry, accepted, recognizeFromBrowserLookup, recognizeFromLoo
 const carriersDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'carriers');
 
 describe('recognition from a plain lookup', () => {
-  it.each(['2026-09-09T08:00:00', '2026-02-30T08:00:00Z', '2026-09-09', 'broken',
-    '2026-09-09T08:00:00+99:00', '2026-09-09T08:00:00+02:99', '2026-09-09T08:00:00+24:00',
-    '2026-09-09T08:00:00-24:00', '2026-09-09T08:00:00+0299'])(
-    'does not infer activity from %s', async time => {
+  it.each([['2026-09-09T08:00:00', '2026-09-09T08:00:00'], ['2026-09-09', '2026-09-09T00:00:00'], ['2026-02-30T08:00:00Z'], ['broken'],
+    ['2026-09-09T08:00:00+99:00'], ['2026-09-09T08:00:00+02:99'], ['2026-09-09T08:00:00+24:00'],
+    ['2026-09-09T08:00:00-24:00'], ['2026-09-09T08:00:00+0299']])(
+    'does not infer an instant from %s', async (time, local?: string) => {
       await expect(recognizeFromLookup(async () => ({ status: 'in_transit', last_update: time,
-        events: [{ time, description: 'Sorted' }] }))).resolves.toEqual({ known: true, lastActivityAt: null });
+        events: [{ time, description: 'Sorted' }] })))
+        .resolves.toEqual({ known: true, lastActivityAt: null, ...(local ? { lastActivityLocal: local } : {}) });
     },
   );
 
@@ -42,6 +43,22 @@ describe('recognition from a plain lookup', () => {
       .resolves.toEqual({ known: true, lastActivityAt: '2026-09-09T06:00:00.000Z' });
   });
 
+  it('keeps the newest local clock when no scan states an instant', async () => {
+    await expect(recognizeFromLookup(async () => ({ status: 'delivered', last_update_local: '2026-03-02T09:00:00',
+      events: [{ local_time: '2026-03-02T09:00:00', description: 'Delivered' }, { local_time: '2026-02-27T18:30:00', description: 'Collected' }] })))
+      .resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-02T09:00:00' });
+    // An instant comes first, and an impossible wall time or an offset is no local clock.
+    await expect(recognizeFromLookup(async () => ({ status: 'in_transit',
+      events: [{ local_time: '2026-09-10T12:00:00', description: 'Local scan' }, { time: '2026-09-09T08:00:00+02:00', description: 'Dated scan' }] })))
+      .resolves.toEqual({ known: true, lastActivityAt: '2026-09-09T06:00:00.000Z' });
+    for (const local_time of ['2026-02-30T08:00:00', '2026-09-09T08:00:00+02:00', 'broken']) {
+      await expect(recognizeFromLookup(async () => ({ status: 'in_transit', events: [{ local_time, description: 'Sorted' }] })), local_time)
+        .resolves.toEqual({ known: true, lastActivityAt: null });
+    }
+    await expect(recognizeFromLookup(async () => ({ status: 'unknown', events: [], last_update_local: '2026-03-02T09:00:00' })))
+      .resolves.toEqual({ known: false, lastActivityAt: null });
+  });
+
   it('reads a result as known, a positive not-found as unknown, and rethrows the rest', async () => {
     await expect(recognizeFromLookup(async () => ({
       status: 'in_transit', events: [
@@ -64,9 +81,9 @@ describe('recognition from a plain lookup', () => {
     expect(asked).toBe(false);
     // Any other TypeError is a failure, not an answer.
     await expect(recognizeFromLookup(async () => { throw new TypeError('Cannot read properties of null'); })).rejects.toThrow(TypeError);
-    // Day-first carrier dates are no instant: the parcel is known, its activity undated.
+    // Day-first carrier dates are no instant: the parcel is known, its activity dated on the local clock.
     await expect(recognizeFromLookup(async () => ({ status: 'in_transit', events: [{ time: '27/09/2026 08:15', description: 'Sorted' }] })))
-      .resolves.toEqual({ known: true, lastActivityAt: null });
+      .resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-09-27T08:15:00' });
     await expect(recognizeFromLookup(async () => { throw new UpstreamHttpError('Carrier', 503); })).rejects.toThrow();
   });
 });

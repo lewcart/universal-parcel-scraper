@@ -204,8 +204,8 @@ describe('Delnext tracking adapter', () => {
     const noScans = edit($ => $('.tracking-details-box-content').last().remove(), partner);
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(delivered)).mockResolvedValueOnce(reply(page('not-found')))
       .mockResolvedValueOnce(reply(partner)).mockResolvedValueOnce(reply(noScans));
-    // Wall clocks without a zone give no activity instant.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-09T15:42:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!(PARTNER)).resolves.toEqual({ known: true, lastActivityAt: null });
     await expect(carrier(fetcher).recognize!(PARTNER)).rejects.toMatchObject({ kind: 'indeterminate' });

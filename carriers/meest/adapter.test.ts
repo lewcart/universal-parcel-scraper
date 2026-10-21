@@ -204,7 +204,7 @@ describe('Meest HTTP adapter', () => {
   it('recognizes a known parcel and the empty reply with one lookup each', async () => {
     const fetcher = site(() => reply('transit'), () => reply('not-found'));
     const instance = carrier(fetcher);
-    await expect(instance.recognize!(TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(instance.recognize!(TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-10T19:27:14' });
     await expect(instance.recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(instance.recognize!('ABC12')).resolves.toEqual({ known: false });
     expect(urls(fetcher)).toEqual([MEEST_PAGE, lookup(TRANSIT), lookup(UNKNOWN)]);

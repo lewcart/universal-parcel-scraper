@@ -150,8 +150,8 @@ describe('Algérie Poste tracking adapter', () => {
 
   it('recognizes a known item and leaves an empty timeline inconclusive', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(page('parcel-network'))).mockResolvedValueOnce(reply(page('unknown')));
-    // Local clocks cannot date the item's last activity.
-    await expect(carrier(fetcher).recognize!(OWN)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(OWN)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-06-04T00:00:00' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).rejects.toMatchObject({ kind: 'indeterminate' });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });

@@ -245,8 +245,8 @@ describe('Olva Courier HTTP adapter', () => {
   it('recognizes a known guide and the no-shipment answer, and asks nothing for a number Olva does not issue', async () => {
     const unknown = { ...fixture('not-found'), queryType: 'guia_cliente', tracking: '', emision: '', display: 'ALI-OLVA99000001' };
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('in-transit'))).mockResolvedValueOnce(reply(unknown));
-    // Wall clocks without a zone date no activity.
-    await expect(carrier(fetcher).recognize!(GUIDE)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A local clock dates the last activity without an instant.
+    await expect(carrier(fetcher).recognize!(GUIDE)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-10-15T15:50:47' });
     await expect(carrier(fetcher).recognize!(GUIDE)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('ALIOLVA9900000')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

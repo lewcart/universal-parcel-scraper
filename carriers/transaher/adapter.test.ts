@@ -148,7 +148,7 @@ describe('Transaher HTTP adapter', () => {
 
   it('recognizes a known number and the unknown-number answer, and asks nothing for a number Transaher does not issue', async () => {
     const known = hub({ polls: [shipment('in-transit.html')] });
-    await expect(carrier(known.fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(carrier(known.fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-03-05T23:10:20' });
     const unknown = hub({ polls: [join(attach(), render(2, pageBatch(fixture('not-found.html'))), started())] });
     await expect(carrier(unknown.fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(hub({ polls: [() => new Response('', { status: 429 })] }).fetcher).recognize!(DELIVERED)).rejects.toMatchObject({ kind: 'rate_limited' });

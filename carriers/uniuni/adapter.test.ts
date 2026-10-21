@@ -306,7 +306,7 @@ describe('UniUni direct retrieval', () => {
     const local = fixture();
     for (const scan of local.data.valid_tno[0].spath_list) delete scan.dateTime.ts;
     fetcher.mockResolvedValueOnce(new Response(JSON.stringify(local)));
-    await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-05T16:00:00' });
     const negative = { status: 'SUCCESS', data: { invalid_tno: NUMBER, valid_tno: [] } };
     fetcher.mockResolvedValueOnce(new Response(JSON.stringify(negative)));
     await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: false });

@@ -317,6 +317,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^(?:reported|recorded|announced|item created|enregistre|annonce|erfasst|angekundigt|registrato|annunciato)$/.test(text)) return 'registered';
   // A shipment record the sender created ("Shipment created"), and nothing else.
   if (/^(?:(?:the |your |a |new )?(?:shipment|parcel|package|consignment|order|envoi|colis|expedition|commande|sendung|paket|auftrag|spedizione|pacco|ordine|envio|paquete|pedido|encomenda|przesylka|paczka|zamowienie|gonderi|kargo|siparis) )(?:(?:has been|was|a ete|wurde|e stat[oa]|ha sido|fue|foi|zostal[ao]?) )?(?:created|creee?s?|erstellt|angelegt|creat[oa]|cread[oa]|criad[oa]|utworzon[aey]|olusturuldu)$/.test(text)) return 'registered';
+  // An order placed with the seller, before any shipment.
+  if (/^(?:the |your |an? |new )?order (?:has been |was )?placed$/.test(text)) return 'registered';
   // The carrier recorded the shipment, after a "notified" label: "Notificado - El envío ha sido registrado".
   if (/^(?:notificado )?(?:el |la |su |tu )?(?:envio|paquete|pedido|encomienda) (?:ha sido|fue) registrad[oa]$/.test(text)) return 'registered';
 
@@ -353,14 +355,17 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // office's receipt and a handover to a partner abroad, as its own map reads them.
   if (/^courier pick up$/.test(text)) return 'accepted';
   if (/^(?:received in office|export to foreign provider)$/.test(text)) return 'in_transit';
+  // Sent on to another country: "Sent abroad".
+  if (/^(?:(?:the )?(?:shipment|parcel|package|item) )?(?:(?:has been|was) )?(?:sent|dispatched|forwarded) abroad$/.test(text)) return 'in_transit';
   if (/^(?:posting\/collection|posted|origin scan)$|received at (?:our |the )?(?:[a-z]+ )?origin (?:office|facility|hub)|dropped off (?:after|before) (?:the )?latest drop ?off time/.test(text)) return 'accepted';
   // Turned away rather than taken in: "Package not accepted by sorting center".
   if (/(?:\b(?:not|never)|n't)(?: (?:be|been|being))? accepted\b/.test(text)) return 'exception';
   if (/accepted|picked up|pick up was successful|^drop off$|pick ?up scan|prepared the package for return to ups or pickup by ups|handed (?:over )?to (?:dpd|gls)|package received at dhl|item booked|consignment was mailed|posted at a postal point|pris en charge|prise en charge|collecte.*(?:reussi|effectue)|recupere.*boite aux lettres|depose.*point postal|remis a (?:dpd|gls)|envoi.*depose|abholung.*erfolgreich|^(?:die sendung wurde )?erfolgreich abgeholt$|eingeliefert|an (?:dpd|gls) ubergeben|paket.*(?:angenommen|ubernommen)|ritiro.*(?:riuscito|effettuato)|pres[oa] in carico|affidat[oa] a (?:dpd|gls)|depositat.*punto postale|spedizione.*impostata/.test(text)) return 'accepted';
   // Taken in by the carrier: Royal Mail's "Item received by Royal Mail", a parcel shop's or a warehouse's
-  // receipt, the sender's drop-off at a SEUR pickup point, and its English "Has been put into storage". A bare "Item received" names no receiver
-  // and stays unread.
-  if (/^item received by royal mail$|\btaken over by one of our operators\b|\bwe've received your (?:parcel|package|item) at the parcel ?shop\b|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:was|has been) dropped off at (?:the |a )?parcel ?shop$|^the shipment has been deposited at a seur pickup point$|^已入库|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:has been |was )?put into storage$/.test(text)) return 'accepted';
+  // receipt, a forwarder's ("<company> has received the goods, <town>, <country>."), the sender's drop-off at a
+  // SEUR pickup point, a collection carried out, and its English "Has been put into storage". A bare "Item
+  // received" names no receiver and stays unread.
+  if (/^item received by royal mail$|\btaken over by one of our operators\b|\bwe've received your (?:parcel|package|item) at the parcel ?shop\b|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:was|has been) dropped off at (?:the |a )?parcel ?shop$|^(?![^,]*\b(?:recipient|consignee|receiver|customer|addressee|buyer|pick ?up point|parcel ?shop|locker|destination)\b)[a-z][\w&' -]{0,40} has received the goods(?:, [^,]{1,40}){0,2}\.?$|^the shipment has been deposited at a seur pickup point$|^(?:the |your )?collection (?:has been |was )?(?:carried out|completed)$|^已入库|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:has been |was )?put into storage$/.test(text)) return 'accepted';
   // Admitted by the carrier: Correos's "Admitido", Correos Express's "Admitido en
   // oficina". Admission still to come is registered above.
   if (/(?<!\b(?:no|nao) )\badmitid[oa]s?\b|\badmision en origen\b/.test(text)) return 'accepted';

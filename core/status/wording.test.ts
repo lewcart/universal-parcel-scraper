@@ -736,6 +736,8 @@ describe('classifyWording', () => {
       ['Expected from Forward2me Ltd', 'registered'],
       ['Csomagod elkészült. Csomagod létrejött a rendszerünkben, a feladó még nem adta át azt a FOXPOST részére.', 'registered'],
       ['The collection has been registered', 'registered'], ['The shipment has been deposited at a SEUR pickup point', 'accepted'],
+      ['The collection has been carried out', 'accepted'], ['Order placed', 'registered'], ['Sent abroad', 'in_transit'],
+      ['Example Forwarding has received the goods, Example Town, CN.', 'accepted'],
       ['Parcel received by UniUni', 'in_transit'],
       ['The courier will deliver the parcel soon. Additional details are available in the app, email or SMS.', 'out_for_delivery'],
       ['Item received by Royal Mail', 'accepted'],
@@ -764,6 +766,10 @@ describe('classifyWording', () => {
     // A delivery window is not a sender's notice.
     expect(wordingStage('Expected from tomorrow', 'pending')).toBe('pending');
     expect(wordingStage('Expected from 9am to 11am', 'pending')).toBe('pending');
+    // Goods a recipient, a pickup point or a destination received are no acceptance.
+    for (const wording of ['The recipient has received the goods', 'The pickup point has received the goods, Example Town, CN.', 'Destination warehouse has received the goods']) {
+      expect(wordingStage(wording, 'pending'), wording).not.toBe('accepted');
+    }
     // A parcel's own air waybill still marks registration.
     expect(wordingStage('Air waybill created', 'pending')).toBe('registered');
     // A notice sent to the recipient is no pre-advice, and an item received elsewhere keeps its reading.

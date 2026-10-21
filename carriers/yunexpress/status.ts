@@ -39,6 +39,8 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   ['Sender goods issue', { status: 'pending', stage: 'registered' }],
   ['Parcel data transmitted', { status: 'pending', stage: 'registered' }],
   ['In transit.', { status: 'in_transit', stage: 'in_transit' }],
+  ['At parcel delivery centre.', { status: 'in_transit', stage: 'in_transit' }],
+  ['Out for delivery.', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['Shipping Label Created', { status: 'pending', stage: 'registered' }],
   ['POD available', { status: 'delivered', stage: 'delivered' }],
   ['Shipment not yet received or processed', { status: 'pending', stage: 'registered' }],

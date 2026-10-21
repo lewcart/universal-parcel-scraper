@@ -228,6 +228,22 @@
       "note": "Relayed from the same carrier after its data record."
     },
     {
+      "wording": "At parcel delivery centre.",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Relayed from the same carrier: its delivering depot's receipt, before the delivery round."
+    },
+    {
+      "wording": "Out for delivery.",
+      "stage": "out_for_delivery",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Relayed from the same carrier."
+    },
+    {
       "wording": "Shipping Label Created",
       "stage": "registered",
       "language": "en",

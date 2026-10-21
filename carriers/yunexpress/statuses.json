@@ -212,6 +212,22 @@
       "note": "Relayed from DPD, placed at the delivering depot while the parcel was still in China: a data record, not a scan."
     },
     {
+      "wording": "Parcel data transmitted",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Relayed from a European last-mile carrier ahead of its first scan of the parcel: a data record, not a scan."
+    },
+    {
+      "wording": "In transit.",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Relayed from the same carrier after its data record."
+    },
+    {
       "wording": "Shipping Label Created",
       "stage": "registered",
       "language": "en",
@@ -393,6 +409,30 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
       "note": "Relayed after the parcel left the facilities of the network that brought it to the courier partner: a hand-over, not the parcel's acceptance."
+    },
+    {
+      "wording": "Accepted at Carrier's Facility",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Relayed from an American last-mile carrier after the label it printed: its intake, filed like Package accepted at courier partner as a hand-over to that carrier."
+    },
+    {
+      "wording": "Arrived at Carrier's Facility",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Relayed from the same carrier, at its sorting facilities."
+    },
+    {
+      "wording": "Departed Carrier's Facility",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "Relayed from the same carrier, leaving its sorting facilities."
     },
     {
       "wording": "Delivery failed, type: Recipient absent or delivery location inaccessible.",

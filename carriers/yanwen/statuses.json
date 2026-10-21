@@ -222,6 +222,14 @@
       "note": "The last-mile carrier's sorting scan, after Yanwen's batch handover."
     },
     {
+      "wording": "Your shipment has been processed at sorting center and ready for shipping",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "The last-mile carrier's sorting scan after its arrival one, before it accepts the parcel for delivery; Yanwen gives it the code of its batch handover."
+    },
+    {
       "wording": "Parcel dispatched to be delivered",
       "language": "en",
       "stage": "out_for_delivery",

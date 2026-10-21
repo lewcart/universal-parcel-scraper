@@ -37,6 +37,8 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   // delivery scan. The DHL Parcel Netherlands lines follow that carrier's codes.
   // A partner's order pre-advice is a data record too.
   ['Sender goods issue', { status: 'pending', stage: 'registered' }],
+  ['Parcel data transmitted', { status: 'pending', stage: 'registered' }],
+  ['In transit.', { status: 'in_transit', stage: 'in_transit' }],
   ['Shipping Label Created', { status: 'pending', stage: 'registered' }],
   ['POD available', { status: 'delivered', stage: 'delivered' }],
   ['Shipment not yet received or processed', { status: 'pending', stage: 'registered' }],
@@ -60,6 +62,10 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   // A courier partner's acceptance follows the scans of the network that
   // brought the parcel to it: a hand-over, not the parcel's acceptance.
   ['Package accepted at courier partner', { status: 'in_transit', stage: 'in_transit' }],
+  // An American last-mile carrier's intake after the label it printed, then its facilities.
+  ['Accepted at Carrier\'s Facility', { status: 'in_transit', stage: 'in_transit' }],
+  ['Arrived at Carrier\'s Facility', { status: 'in_transit', stage: 'in_transit' }],
+  ['Departed Carrier\'s Facility', { status: 'in_transit', stage: 'in_transit' }],
   // GLS keeps the parcel at its depot after the parcel box it was due in was full.
   ['The parcel is being stored in the GLS parcel center. It could not be delivered as the parcel box was occupied.', { status: 'exception', stage: 'failed_attempt' }],
 ];

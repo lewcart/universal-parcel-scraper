@@ -89195,6 +89195,14 @@
     ]
   },
   {
+    "input": "UL123456785DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
     "input": "UL123456789JP",
     "carrier": "unknown",
     "confidence": "low",

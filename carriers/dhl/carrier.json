@@ -101,6 +101,12 @@
       "checksum": "s10"
     },
     {
+      "id": "dhl-16",
+      "pattern": "^U[A-TV-Z]\\d{9}DE$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "dhl-15",
       "pattern": "^A0[0-9A-F]{18}$",
       "confidence": "high",

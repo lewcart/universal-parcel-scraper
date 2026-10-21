@@ -98,6 +98,15 @@ describe('general delivery handoff candidates', () => {
     expect(deliveryHandoff('la-poste', '1234567890', {}, 'FI')).toBeNull();
     expect(deliveryHandoff('posti', 'LX123456785IE', {}, 'FI')).toBeNull();
   });
+  it('asks the lookup country\'s post about a Deutsche Post item DHL holds no scan for', () => {
+    // DHL's answer for an item Deutsche Post does not scan: no history, no destination.
+    const unscanned: CarrierResult = { status: 'unknown', last_update: null, expected_delivery: null, events: [] };
+    expect(detectCarrierMatch('UL123456785DE')).toMatchObject({ carrier: 'dhl', confidence: 'high' });
+    expect(deliveryHandoff('dhl', 'UL123456785DE', unscanned, 'FR'))
+      .toEqual({ carrier: 'la-poste', number: 'UL123456785DE', basis: 'destination' });
+    for (const hint of ['DE', null]) expect(deliveryHandoff('dhl', 'UL123456785DE', unscanned, hint), String(hint)).toBeNull();
+  });
+
   it('uses the destination instead of treating a postal reference’s issuer as its delivery operator', () => {
     expect(deliveryHandoff('aliexpress', 'LP00000000000001', {
       destination_country_name: 'Finland', delivery_tracking_number: 'RA123456785CH',

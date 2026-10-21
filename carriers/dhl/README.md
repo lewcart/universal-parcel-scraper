@@ -44,6 +44,14 @@ once.
   letter tracking, the lookup deutschepost.de embeds as well, so they are DHL's
   when their S10 check digit holds rather than international mail. A letter
   without scans yet comes back with `briefNichtGefunden` and reads as no data.
+- `U`, a letter, nine digits and `DE` are Deutsche Post items without customer
+  tracking, such as Warenpost International without tracking, whose barcode
+  only sorts them ([Paketda](https://www.paketda.de/ausland/warenpost-international.php)).
+  Deutsche Post does not scan them, so this endpoint answers them with no data,
+  but they are DHL's when their S10 check digit holds: a parcel filed under DHL
+  can then ask the post of the country it is looked up from. `UU` stays
+  international mail, because Deutsche Post's offices abroad, DHL eCommerce's
+  among them, issue it too.
 - A Frankier-ID is the twenty-character identity of a letter franked with Deutsche
   Post's machine-readable postage, such as a stamp with a Matrixcode, and the
   number its basic letter tracking takes. It shows at most two letter-centre scans.

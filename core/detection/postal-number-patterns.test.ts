@@ -77,6 +77,17 @@ describe('S10-shaped numbers', () => {
     expect(detectCarrierMatch('EE123456785DE')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
   });
 
+  it('names DHL for Deutsche Post items without customer tracking whose check digit holds', () => {
+    for (const number of ['UL123456785DE', 'ux 123 456 785 de']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'dhl', confidence: 'high', candidates: ['dhl'] });
+    }
+    expect(detectCarrierMatch('UL123456789DE').candidates).not.toContain('dhl');
+    expect(checksumRejections('UL123456789DE')).toContainEqual({ carrier: 'dhl', rule: 'dhl-16', checksum: 's10' });
+    // Deutsche Post's offices abroad also issue UU under DE: the postal answer stays.
+    expect(detectCarrierMatch('UU123456785DE')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(detectCarrierMatch('UL123456785AT').carrier).not.toBe('dhl');
+  });
+
   it('asks Poczta Polska first about a Polish-issued number without selecting it', () => {
     expect(detectCarrierMatch('cp 123 456 785 pl')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     expect(recognitionCandidates('cp 123 456 785 pl')).toEqual([

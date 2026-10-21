@@ -4,9 +4,10 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { classifyWording, languageStageStatus, type Stage } from '../../core/status/index.js';
-import { countryTimeZone, isoTime } from '../../core/time/index.js';
+import { isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { daiPostScanZone } from './clock.js';
 import { daiPostStage } from './status.js';
 
 export const PROVIDER = 'DAI Post';
@@ -135,23 +136,6 @@ function scanRows(rows: unknown[]) {
     }
   }
   return { entries: [...entries.values()], absent, echoed: [...echoed] };
-}
-
-// New Zealand's Chatham Islands keep their own clock; DAI Post's New Zealand
-// scans name mainland depots, so a scan naming the Chathams keeps its clock local.
-const LANE_ZONES: Readonly<Record<string, string>> = { NZ: 'Pacific/Auckland' };
-
-/**
- * The zone a DAI Post scan's wall clock is read in: its country's, when it keeps
- * one clock. Null keeps the clock local: for Australia, the US and unplaced
- * scans, and for the label data (CI02), whose clock matched a shipper's UTC
- * dispatch for some parcels and the origin hub's for others. Asendia relays
- * these clocks too.
- */
-export function daiPostScanZone(code: string, country: string, place: string): string | null {
-  if (code === 'CI02' || !country) return null;
-  if (country === 'NZ') return /\bchatham/i.test(place) ? null : LANE_ZONES.NZ!;
-  return countryTimeZone(country);
 }
 
 // When two scans share a clock the page can list the earlier milestone first,

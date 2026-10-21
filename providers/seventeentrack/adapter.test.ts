@@ -227,6 +227,34 @@ describe('17TRACK result parsing', () => {
     expect(parse17TrackResponse(reply(100999, [row('15:51:00', 'Shenzhen')]), number).events?.[0]?.time).toBe('2026-05-07T15:51:00.000Z');
   });
 
+  it('reads DAI Post\'s scans on their country\'s clock, not on the one offset 17TRACK gives the parcel', () => {
+    // Public shape: every scan stamped with one offset, the scan's local clock in time_raw, its town and country code.
+    const row = (date: string, time: string, location: string, description = 'Parcel arrived in trans-shipment country.') => ({
+      time_iso: `${date}T${time}+01:00`, time_utc: null, time_raw: { date, time, timezone: null },
+      description, location, stage: null, sub_status: 'InTransit_Other' });
+    const reply = (key: number, events: unknown[]): Payload => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key, name: 'DAI Post', country: 'AU' }, events }] } } }] });
+    const parsed = parse17TrackResponse(reply(100790, [
+      row('2026-10-10', '10:19:06', 'Example Town, SG'),
+      row('2026-10-09', '23:40:00', 'Example Town, NZ'),
+      row('2026-10-08', '21:19:03', 'Example Town, GB', 'Your parcel is in the air and is heading your way.'),
+      row('2026-10-07', '18:00:00', 'Example Town, GB', 'We’ve received your delivery details. We’ll let you know as soon as your parcel is in our hands.'),
+    ]), number);
+    expect(parsed.events?.map((event) => event.time)).toEqual([
+      '2026-10-10T02:19:06.000Z', '2026-10-09T10:40:00.000Z', '2026-10-08T20:19:03.000Z']);
+    expect(parsed.events?.[0]).toMatchObject({ provider_time_iso: '2026-10-10T10:19:06+01:00', time_provenance: 'provider_inferred' });
+    // The label data's clock is no hub's, so it is counted, not dated.
+    expect(parsed.undated_event_count).toBe(1);
+    // A latest scan in Australia, on one of several clocks, leaves the reply unable to say where the parcel is.
+    const error = thrown(() => parse17TrackResponse(reply(100790, [
+      row('2026-10-11', '15:06:00', 'Example Town, Brisbane, AU'), row('2026-10-10', '10:19:06', 'Example Town, SG')]), number));
+    expect(carrierErrorKind(error)).toBe('indeterminate');
+    expect(String(error)).toContain('cannot place the latest DAI Post scan');
+    // Another feed keeps 17TRACK's reading.
+    expect(parse17TrackResponse(reply(100999, [row('2026-10-11', '15:06:00', 'Example Town, Brisbane, AU')]), number).events?.[0]?.time)
+      .toBe('2026-10-11T14:06:00.000Z');
+  });
+
   it('reads NZ Post\'s clock at the scan\'s own date, abroad too when nothing names a country', () => {
     const row = (date: string, time: string, offset: string, description: string) => ({
       time_iso: `${date}T${time}${offset}`, time_utc: null, time_raw: { date, time, timezone: null },

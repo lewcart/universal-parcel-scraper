@@ -25,13 +25,14 @@ export { facilityZone };
 export class LatestScan {
   private wall = '';
   private unplaced = false;
+  private network = '';
   constructor(private readonly source: UniversalSource) {}
 
-  see(wall: string, unplaced: boolean): void {
-    if (wall > this.wall || (wall === this.wall && unplaced)) [this.wall, this.unplaced] = [wall, unplaced];
+  see(wall: string, unplaced: boolean, network = 'DHL Express'): void {
+    if (wall > this.wall || (wall === this.wall && unplaced)) [this.wall, this.unplaced, this.network] = [wall, unplaced, network];
   }
 
   check(): void {
-    if (this.unplaced) throw new IndeterminateError(this.source, `${this.source} cannot place the latest DHL Express scan`);
+    if (this.unplaced) throw new IndeterminateError(this.source, `${this.source} cannot place the latest ${this.network} scan`);
   }
 }

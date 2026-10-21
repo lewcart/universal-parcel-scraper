@@ -118,6 +118,12 @@ carrier.
   most of its rows in China fall between midnight and 06:00 there, and on Beijing's clock all
   in the day. A row placed in China or Hong Kong is read on Beijing's clock; any other keeps
   17TRACK's reading, the last guess.
+- DAI Post's leg (carrier key 100790) shows the tracker's clocks, each the scan's local time,
+  and 17TRACK puts one offset on all of them: `+01:00` on a parcel from London, on its
+  Singapore and Brisbane scans too. A scan is read as the
+  [DAI Post adapter](../../carriers/dai-post/README.md) reads it, in its country's zone where
+  that keeps one clock. A scan in Australia or the US, or the label data, is counted in
+  `undated_event_count`, and when it is the reply's latest scan the reply is inconclusive.
 - NZ Post's leg (carrier key 14061) shows NZ Post's wall clocks, and 17TRACK labels them
   with New Zealand's offset on the day it looks: in October it put `+13:00` on August
   scans, when New Zealand kept `+12:00` (checked 2026-10-10). That leg's `time_raw` is read

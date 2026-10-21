@@ -47,7 +47,7 @@ import { languageStageStatus, wordingStage, type Stage } from '../../core/status
 import { explicitOffsetTime, mislabeledLocalTime, mislabeledWallTime, type ParsedTime } from '../../core/time/index.js';
 import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { daiPostScanZone } from '../dai-post/parser.js';
+import { daiPostScanZone } from '../dai-post/clock.js';
 import { classifyAsendiaA1Event, comparableText, type ClassifiedAsendiaStatus } from './status.js';
 import { AsendiaUkTracker } from './uk.js';
 import { asendiaBrowser } from './browser.js';

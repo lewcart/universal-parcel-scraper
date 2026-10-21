@@ -21,6 +21,7 @@ import { countryTimeZone, firstOccurrence } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
+import { daiPostRelayZone } from '../../carriers/dai-post/clock.js';
 import { HYWL_CHINA_ZONE, hywlInChina } from '../../carriers/hywl/clock.js';
 import { placedInIndia } from '../../carriers/shiprocket/clock.js';
 import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
@@ -162,6 +163,17 @@ const SHIPROCKET = 100662;
  * 17TRACK's reading, the last guess.
  */
 const HYWL = 192109;
+
+/**
+ * 17TRACK's carrier 100790, DAI Post, shows the tracker's clocks, each the
+ * scan's local time without an offset, and 17TRACK puts one offset on all of
+ * them: a parcel from London came with +01:00 on its Singapore and Brisbane
+ * scans too, 7 and 9 hours late (checked 2026-10-21). A scan is read as DAI
+ * Post's adapter reads it, in its country's zone where that keeps one clock
+ * (carriers/dai-post/clock.ts). One it cannot place, in Australia or the US,
+ * is counted, not dated, as DHL Express's are.
+ */
+const DAI_POST = 100790;
 
 /** The recipient's country, the only field of the address read. */
 function recipientCountry(shipment: Record<string, unknown>): string | null {
@@ -343,6 +355,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const bound = reported.key === SWISS_POST ? recipientCountry(shipment) : null;
     const shiprocket = reported.key === SHIPROCKET;
     const hywl = reported.key === HYWL;
+    const daiPost = reported.key === DAI_POST;
     for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
@@ -351,10 +364,11 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       // The destination post's scan Swiss Post relays, its wall clock under Swiss Post's offset, or Huiyi Logistics' row in China under "+00:00".
       const relayed = bound ? swissPostDestinationZone(text(raw.description), text(raw.location), bound)
         : hywl && hywlInChina(text(raw.location)) ? HYWL_CHINA_ZONE : null;
-      // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's or Shiprocket's, on which 17TRACK puts one offset for the whole parcel.
-      const wall = relayed ? rawClock(raw) : relaysFacilityClock(name) || utc || nz || exchange || own || shiprocket ? facilityWall(raw) : null;
+      // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's, Shiprocket's or DAI Post's, on which 17TRACK puts one offset for the whole parcel.
+      const wall = relayed ? rawClock(raw) : relaysFacilityClock(name) || utc || nz || exchange || own || shiprocket || daiPost ? facilityWall(raw) : null;
       const zone = !wall ? null : relayed ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
-        : nz ? 'Pacific/Auckland' : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null) : facilityZone(text(raw.location)));
+        : nz ? 'Pacific/Auckland' : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null)
+        : daiPost ? daiPostRelayZone(text(raw.description), text(raw.location)) : facilityZone(text(raw.location)));
       const placed = wall && zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;
       let parsed: CarrierEvent | null;
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }
@@ -369,7 +383,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
         continue;
       }
       const unplaced = wall !== null && !placed?.isValid;
-      latest.see(wall ?? String(raw.time_iso ?? raw.time_utc).slice(0, 19), unplaced);
+      latest.see(wall ?? String(raw.time_iso ?? raw.time_utc).slice(0, 19), unplaced, daiPost ? 'DAI Post' : undefined);
       // With no zone for the facility it is a wall time, counted like a row without a date.
       // A take-off is counted the same way, but the scans before it still say where the parcel is.
       if (unplaced || misdatedTakeOff(name, raw)) undated++;

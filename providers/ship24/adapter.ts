@@ -228,6 +228,19 @@ function utcClock(scan: Record<string, unknown>): unknown {
  */
 const PLANNING_FEEDS = new Set(['mainfreight-tracking']);
 
+/**
+ * The milestones of a Mainfreight air or ocean job, as its feed words them. The job's scans are
+ * the port's or site's wall clock, wherever that is (carriers/mainfreight), so a job with one
+ * leaves its unplaced scans on their wall clocks rather than on Mainfreight's catalog clock or
+ * routing's, New Zealand's, which only its transport scans there keep.
+ */
+const FORWARDING_MILESTONES = /^(?:booking confirmation sent|pick ?up cartage (?:advised|complete)|origin customs cleared|departure from first load port|arrival at final discharge port|customs clearance (?:commenced|finalised)|cargo (?:available|delivered))$/i;
+
+function forwardingJob(scans: unknown[]): boolean {
+  return scans.some((scan) => isRecord(scan) && isRecord(scan.courier) && scan.courier.crawler_code === 'mainfreight-tracking'
+    && typeof scan.status === 'string' && FORWARDING_MILESTONES.test(scan.status.trim()));
+}
+
 function planned(scan: Record<string, unknown>, event: CarrierEvent, now: number): boolean {
   const code = isRecord(scan.courier) ? scan.courier.crawler_code : null;
   if (typeof code !== 'string' || !PLANNING_FEEDS.has(code)) return false;
@@ -372,6 +385,7 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
   const names = universalCarrierHints(couriers.map((courier) =>
     isRecord(courier) && isRecord(courier.translation) ? courier.translation.name : undefined), number);
   const journey = journeyOf(data, data.events, number, names.reported_carriers, timezone);
+  const forwarding = forwardingJob(data.events);
   const readings: Reading[] = [];
   for (const raw of data.events) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'Ship24 returned an invalid event');
@@ -392,9 +406,11 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
     if (location) parsed.location = location;
     const wall = typeof parsed.local_time === 'string' ? parsed.local_time : null;
     // Another feed's offset-less scan takes the parcel's named clock at once;
-    // a relabelling feed's first borrows from its neighbours (below).
+    // a relabelling feed's first borrows from its neighbours (below), and a
+    // forwarding job's keeps its wall clock.
+    const unnamed = feed || (forwarding && isRecord(raw.courier) && raw.courier.crawler_code === 'mainfreight-tracking');
     readings.push({ event: parsed, wall, feed, country: feed?.country ?? locationCountry(raw.location),
-      zone: wall ? relayed ?? placedZone(journey, raw, wall, feed) ?? (feed ? null : namedZone(journey, wall)) : null });
+      zone: wall ? relayed ?? placedZone(journey, raw, wall, feed) ?? (unnamed ? null : namedZone(journey, wall)) : null });
   }
   const events = readings.map((reading): CarrierEvent => {
     const { event, wall, feed } = reading;

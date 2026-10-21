@@ -267,6 +267,20 @@ describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {
     expect(reply.events?.map((event) => event.description)).toEqual(['Arrival at Transshipment Port', 'Departed']);
   });
 
+  it('keeps the wall clocks of a Mainfreight air or ocean job, whose ports can be anywhere', () => {
+    const scan = (timestamp: string, status: string, location?: string) => ({ timestamp, status, courier: { crawler_code: 'mainfreight-tracking' },
+      ...(location ? { location } : {}) });
+    const read = (events: unknown[]) => parseShip24Response({ data: { tracking_number: number, couriers: [{ translation: { name: 'Mainfreight' } }],
+      events } }, number, 'Pacific/Auckland', Date.parse('2026-10-21T06:00:00Z')).events?.map((event) => event.time ?? event.local_time);
+    expect(read([scan('2026-10-20T16:55:00', 'Departed'), scan('2026-10-17T14:50:00', 'Departure from First Load Port')]))
+      .toEqual(['2026-10-20T16:55:00', '2026-10-17T14:50:00']);
+    // A placed scan still takes its place's clock, and a transport consignment New Zealand's.
+    expect(read([scan('2026-10-20T16:55:00', 'Departed', 'Example Port, Singapore'), scan('2026-10-17T14:50:00', 'Departure from First Load Port')])?.[0])
+      .toBe('2026-10-20T08:55:00.000Z');
+    expect(read([scan('2026-10-20T16:55:00', 'In Transit'), scan('2026-10-17T14:50:00', 'Picked Up')]))
+      .toEqual(['2026-10-20T03:55:00.000Z', '2026-10-17T01:50:00.000Z']);
+  });
+
   it('turns 4PX\'s instant back into the wall clock it read on China\'s, then places it', () => {
     expect(feed('4px-tracking', '4PX', [['2026-05-26T06:30:03+00:00', 'US  NY  EXAMPLE TOWN 12345'], ['2026-05-24T23:39:05+00:00', 'US     '],
       ['2026-05-21T12:35:30+00:00', 'CN'], ['2026-05-21T09:08:01+00:00', 'US  NY  EXAMPLE TOWN 12345'], ['2026-05-21T09:04:13+00:00', undefined]],

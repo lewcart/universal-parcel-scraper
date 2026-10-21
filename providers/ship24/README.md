@@ -101,7 +101,11 @@ No account, cookie, fingerprint or issued token is used.
 - `mainfreight-tracking` relays an air or ocean job's planned milestones without the
   "(Estimated)" Mainfreight's tracker gives them ([Mainfreight](../../carriers/mainfreight/README.md)).
   A milestone whose clock has yet to come anywhere on Earth (UTC+14) is left out. One due
-  within that margin still shows.
+  within that margin still shows. The job's scans are the port's or site's wall clock,
+  wherever that is, as on Mainfreight's tracker, so in a reply with an air or ocean
+  milestone ("Departure from First Load Port", "Customs Clearance Commenced") the feed's
+  scans that their location does not place keep their wall clocks. Mainfreight's catalog
+  clock and routing's zone, New Zealand's, are left to its transport scans.
 - A wall clock is read in the first clock found among:
   1. the scan location's:
      - CTT's offices of exchange (`PTLISA - …`) and own sites are on Portugal's clock,

@@ -27070,8 +27070,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "south-african-post-office",
-      "recognitionRank": 933,
-      "localClocks": true
+      "recognitionRank": 933
     },
     "canaryUrl": "https://trackingnew.postoffice.co.za/",
     "trackingUrlTemplate": "https://trackingnew.postoffice.co.za/?ParcelId={trackingNumber}",

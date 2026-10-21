@@ -39,23 +39,23 @@ describe('South African Post Office tracking adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('reads a delivery newest first with each scan’s wall clock and branch, without the person who took it', () => {
+  it('reads a delivery newest first with each scan on South Africa’s clock and its branch, without the person who took it', () => {
     const result = parseSouthAfricanPost(page('delivered'), DELIVERED);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Delivered', last_update: null, last_update_local: '2026-05-12T12:05:00', expected_delivery: null,
-      pickup_point: 'SAMPLE TOWN' });
-    expect(result.events!.map(event => [event.local_time, event.location, event.description, event.stage])).toEqual([
-      ['2026-05-12T12:05:00', 'SAMPLE TOWN', 'Delivered', 'delivered'],
-      ['2026-05-08T09:14:00', 'SAMPLE TOWN', 'First Notification to recipient', 'ready_for_pickup'],
-      ['2026-05-08T09:12:00', 'SAMPLE TOWN', 'In Delivery Office', 'in_transit'],
+      last_status_text: 'Delivered', last_update: '2026-05-12T12:05:00+02:00', delivered_at: '2026-05-12T12:05:00+02:00',
+      expected_delivery: null, pickup_point: 'SAMPLE TOWN' });
+    expect(result.events!.map(event => [event.time, event.location, event.description, event.stage])).toEqual([
+      ['2026-05-12T12:05:00+02:00', 'SAMPLE TOWN', 'Delivered', 'delivered'],
+      ['2026-05-08T09:14:00+02:00', 'SAMPLE TOWN', 'First Notification to recipient', 'ready_for_pickup'],
+      ['2026-05-08T09:12:00+02:00', 'SAMPLE TOWN', 'In Delivery Office', 'in_transit'],
       // The dispatch the page lists twice is kept once.
-      ['2026-05-06T23:40:00', 'SAMPLE MAIL CENTRE', 'Dispatched', 'in_transit'],
-      ['2026-05-06T07:02:00', 'SAMPLE MAIL CENTRE', 'Receive item at sorting centre', 'in_transit'],
-      ['2026-05-05T00:30:00', 'SAMPLE CITY HUB', 'Dispatched', 'in_transit'],
-      ['2026-05-04T10:21:00', 'SAMPLE CITY', 'Receive item from customer (Otb)', 'accepted'],
+      ['2026-05-06T23:40:00+02:00', 'SAMPLE MAIL CENTRE', 'Dispatched', 'in_transit'],
+      ['2026-05-06T07:02:00+02:00', 'SAMPLE MAIL CENTRE', 'Receive item at sorting centre', 'in_transit'],
+      ['2026-05-05T00:30:00+02:00', 'SAMPLE CITY HUB', 'Dispatched', 'in_transit'],
+      ['2026-05-04T10:21:00+02:00', 'SAMPLE CITY', 'Receive item from customer (Otb)', 'accepted'],
     ]);
-    expect(result.events!.every(event => event.time === undefined && event.stage_source === 'carrier_map')).toBe(true);
-    expect(result).not.toHaveProperty('delivered_at');
+    expect(result.events!.every(event => event.local_time === undefined && event.stage_source === 'carrier_map')).toBe(true);
+    expect(result).not.toHaveProperty('last_update_local');
     expect(JSON.stringify(result)).not.toMatch(/SAMPLE PERSON/);
   });
 
@@ -74,20 +74,20 @@ describe('South African Post Office tracking adapter', () => {
     const noted = parseSouthAfricanPost(withRows(row(1, 'In Transit', '2026/05/12', '9:30 AM', 'SAMPLE TOWN', 'COMMENT')
       + row(2, 'At Office', '2026/05/12', '9:14 AM', 'SAMPLE TOWN', 'First Notification to recipient')), DELIVERED);
     expect(noted).toMatchObject({ status: 'out_for_delivery', current_stage: 'ready_for_pickup', current_stage_source: 'carrier_map',
-      pickup_point: 'SAMPLE TOWN', last_status_text: 'COMMENT', last_update_local: '2026-05-12T09:30:00' });
+      pickup_point: 'SAMPLE TOWN', last_status_text: 'COMMENT', last_update: '2026-05-12T09:30:00+02:00' });
   });
 
   it('reads mail from abroad held by customs, with scans at the same minute in the page’s order and no branch', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(page('in-transit')));
     const result = await carrier(fetcher).track({ number: INBOUND });
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',
-      last_status_text: 'Awaiting proof of purchase/value from addressee', last_update_local: '2026-06-03T14:20:00' });
+      last_status_text: 'Awaiting proof of purchase/value from addressee', last_update: '2026-06-03T14:20:00+02:00' });
     expect(result.events).toEqual([
-      { local_time: '2026-06-03T14:20:00', description: 'Awaiting proof of purchase/value from addressee', stage: 'customs', stage_source: 'carrier_map' },
-      { local_time: '2026-06-03T14:20:00', description: 'Item sent to Customs', stage: 'customs', stage_source: 'carrier_map' },
-      { local_time: '2026-06-02T16:56:00', location: 'SAMPLE INTERNATIONAL MAIL CENTRE', description: 'Dispatched', stage: 'in_transit',
+      { time: '2026-06-03T14:20:00+02:00', description: 'Awaiting proof of purchase/value from addressee', stage: 'customs', stage_source: 'carrier_map' },
+      { time: '2026-06-03T14:20:00+02:00', description: 'Item sent to Customs', stage: 'customs', stage_source: 'carrier_map' },
+      { time: '2026-06-02T16:56:00+02:00', location: 'SAMPLE INTERNATIONAL MAIL CENTRE', description: 'Dispatched', stage: 'in_transit',
         stage_source: 'carrier_map' },
-      { local_time: '2026-06-01T08:36:00', location: 'SAMPLE INTERNATIONAL MAIL CENTRE', description: 'Incoming International',
+      { time: '2026-06-01T08:36:00+02:00', location: 'SAMPLE INTERNATIONAL MAIL CENTRE', description: 'Incoming International',
         stage: 'in_transit', stage_source: 'carrier_map' },
     ]);
     expect(result).not.toHaveProperty('pickup_point');
@@ -97,9 +97,9 @@ describe('South African Post Office tracking adapter', () => {
   it('reads noon, midnight and a history listed out of order newest first', () => {
     const result = parseSouthAfricanPost(withRows(row(1, 'In Transit', '2026/05/06', '12:10 AM', 'SAMPLE HUB', 'Dispatched')
       + row(2, 'In Transit', '2026/05/06', '12:10 PM', 'SAMPLE HUB', 'Receive item at location')), DELIVERED);
-    expect(result.events!.map(event => [event.local_time, event.description])).toEqual([
-      ['2026-05-06T12:10:00', 'Receive item at location'],
-      ['2026-05-06T00:10:00', 'Dispatched'],
+    expect(result.events!.map(event => [event.time, event.description])).toEqual([
+      ['2026-05-06T12:10:00+02:00', 'Receive item at location'],
+      ['2026-05-06T00:10:00+02:00', 'Dispatched'],
     ]);
   });
 
@@ -127,7 +127,7 @@ describe('South African Post Office tracking adapter', () => {
     const unknown = stage('Sample type', 'Sample counter scan');
     expect(unknown).toMatchObject({ status: 'unknown', last_status_text: 'Sample counter scan' });
     expect(unknown.current_stage).toBeUndefined();
-    expect(unknown.events![0]).toEqual({ local_time: '2026-05-12T09:00:00', location: 'SAMPLE TOWN', description: 'Sample counter scan' });
+    expect(unknown.events![0]).toEqual({ time: '2026-05-12T09:00:00+02:00', location: 'SAMPLE TOWN', description: 'Sample counter scan' });
     // A scanner's comment is not a parcel event, whatever its type.
     expect(stage('In Transit', 'COMMENT').events![0]!.stage).toBeUndefined();
   });
@@ -182,8 +182,7 @@ describe('South African Post Office tracking adapter', () => {
 
   it('recognizes a known item and an unknown code from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(page('delivered'))).mockResolvedValueOnce(reply(page('not-found')));
-    // Local clocks cannot date the item's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: '2026-05-12T10:05:00.000Z' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });

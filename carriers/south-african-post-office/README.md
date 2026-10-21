@@ -24,8 +24,11 @@ lookup its tracking page makes.
 - A delivery's comment and the page's summary name the person who collected the item. The
   adapter drops the name, and phone numbers in any comment. It reads only the item number from
   the summary.
-- A scan's date and time are the office's wall clock to the minute, with no zone, so the clocks
-  stay `local_time`.
+- A scan's date and time are the office's wall clock to the minute, with no zone. Every scan is
+  the Post Office's own, made in South Africa, which keeps one civil time all year, so the adapter
+  reads them on South Africa's clock. Royal Mail's tracker and ParcelsApp give an item's scans in
+  South Africa the same instants. The newest scan is the last update, and a delivered item's
+  delivery scan its delivery time.
 - The office that sent the notice to collect the item is its pickup point, and stays so for an
   item collected there.
 - The page lists some scans twice; the adapter keeps them once.
@@ -34,7 +37,7 @@ lookup its tracking page makes.
 
 ## Limitations
 
-- The page has no ETA, weight, service, origin, destination or delivery instant with a zone.
+- The page has no ETA, weight, service, origin or destination.
 - Older items drop out of the tracker's records and then read as not found.
 - The adapter takes only S10 codes with a valid check digit.
 

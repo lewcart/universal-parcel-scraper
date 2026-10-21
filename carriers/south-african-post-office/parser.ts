@@ -7,6 +7,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, 
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { RECEIVER, southAfricanPostStage } from './status.js';
 
@@ -15,6 +16,9 @@ export const PROVIDER = 'South African Post Office';
 export const SOUTH_AFRICAN_POST_MAX_BYTES = 1_000_000;
 
 const MAX_ROWS = 500;
+// The tracker shows only the Post Office's own scans, all made in South Africa,
+// which keeps one civil time all year.
+const CLOCK_ZONE = 'Africa/Johannesburg';
 const RESULTS = 'PARCEL TRACKING RESULTS';
 const HEADINGS = ['#', 'Type', 'Date', 'Time', 'Branch', 'Comments'];
 // The page's notice for a number its records do not hold.
@@ -49,13 +53,14 @@ export function southAfricanPostWording(type: string, comment: string): string {
   return clean(own.replace(PHONE, '')).replace(/[\s,;:-]+$/, '') || clean(type);
 }
 
-/** A scan's date ("2026/05/04") and 12-hour time ("3:43 PM"): the office's wall clock, with no zone. */
-function wallClock(date: string, time: string): string {
-  // Parsing in UTC checks the calendar fields only; no offset is assigned.
+/** A scan's date ("2026/05/04") and 12-hour time ("3:43 PM"): the office's wall clock, read on South Africa's. */
+function scanTime(date: string, time: string): string {
+  // Parsing in UTC checks the calendar fields only; the zone comes after.
   const parsed = DATE.test(date) && CLOCK.test(time)
     ? DateTime.fromFormat(`${date} ${time.toUpperCase()}`, 'yyyy/MM/dd h:mm a', { zone: 'UTC', locale: 'en-US' }) : null;
-  if (!parsed?.isValid) throw new SchemaError(PROVIDER, 'The South African Post Office returned an invalid scan time');
-  return parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss");
+  const instant = parsed?.isValid ? isoTime(parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss"), CLOCK_ZONE)?.iso : undefined;
+  if (!instant) throw new SchemaError(PROVIDER, 'The South African Post Office returned an invalid scan time');
+  return instant;
 }
 
 interface Scan { event: CarrierEvent; index: number }
@@ -72,7 +77,7 @@ function scanOf($: CheerioAPI, row: Cheerio<Element>, index: number): Scan {
   const location = clean(cells[4], 120);
   const staged = southAfricanPostStage(description, type);
   const event: CarrierEvent = {
-    local_time: wallClock(clean(cells[2], 16), clean(cells[3], 16)),
+    time: scanTime(clean(cells[2], 16), clean(cells[3], 16)),
     ...(location ? { location } : {}),
     description,
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
@@ -139,8 +144,7 @@ export function parseSouthAfricanPost(html: string, rawNumber: string): CarrierR
     scans.push(scan);
   });
   // Newest first, as the page lists them; scans at the same minute keep the page's order.
-  scans.sort((left, right) => right.event.local_time! > left.event.local_time! ? 1
-    : right.event.local_time! < left.event.local_time! ? -1 : left.index - right.index);
+  scans.sort((left, right) => Date.parse(right.event.time!) - Date.parse(left.event.time!) || left.index - right.index);
   const events = scans.map(({ event }) => event);
 
   const latest = events[0]!;
@@ -159,8 +163,8 @@ export function parseSouthAfricanPost(html: string, rawNumber: string): CarrierR
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source } : {}),
     last_status_text: latest.description!,
-    last_update: null,
-    last_update_local: latest.local_time!,
+    last_update: latest.time!,
+    ...(stage === 'delivered' ? { delivered_at: current!.time! } : {}),
     expected_delivery: null,
     ...(point ? { pickup_point: point } : {}),
     events,

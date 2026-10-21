@@ -28,7 +28,7 @@ complete it.
 
 Stages follow operation codes, with explicit failed-delivery wording refining
 the alert category to a failed attempt. Delivery requires affirmative wording.
-Preparing a parcel does not mean the carrier has received it. A return to the
+Preparing a parcel does not mean the carrier has received it, nor does a shipment in transit to GOFO, which the official client also keeps in its announced step. A return to the
 sorting centre after a delivery problem is an exception; the client's return
 category establishes a return to the sender. The service name is retained as
 the carrier supplies it.

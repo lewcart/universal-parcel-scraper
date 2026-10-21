@@ -51,6 +51,14 @@
       "confirmedBy": "live"
     },
     {
+      "code": "282",
+      "wording": "Expédition en transit vers GOFO",
+      "language": "fr",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "note": "On its way to GOFO, which has not received it yet: the official tracking client keeps this code with 100 in its announced step, before the sorting centre's receipt (202)."
+    },
+    {
       "code": "203",
       "wording": "En cours",
       "language": "fr",

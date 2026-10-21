@@ -62,6 +62,9 @@ fallback')`.
   It returns the history with its confirmation so callers can reuse it after identification.
 - Status uses `keyStatusCD` / scan `statusCD` first, then substring matches on the prose. A
   `DL` code is terminal and outranks the wording.
+- `DY` (delayed) is an exception, except while the newest scan is a pickup "received after
+  FedEx cutoff" and the wording names no problem. FedEx flags such a parcel, which leaves on the
+  next business day, so it reads as picked up.
 - Hold at location: `HL` and `HP` (FedEx's "Ready for pickup (Hold at Location)") are
   `ready_for_pickup`; `RR` (delivery option requested) and `HA` (hold accepted) stay in
   transit. A hold for a problem, such as clearance or a wrong address, carries another code

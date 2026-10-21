@@ -18,7 +18,7 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { calendarDay, explicitOffsetTime } from '../../core/time/index.js';
 import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { FEDEX_CODE_STAGE, fedexStage, fedexStatus } from './status.js';
+import { FEDEX_CODE_STAGE, fedexStage, fedexStatus, statusForStage } from './status.js';
 
 /**
  * FedEx, through the tracking reply the public page reads itself.
@@ -162,6 +162,11 @@ function holdLocation(shipment: JsonObject): string {
   return [name, street[0], street.slice(1).join(', '), town].filter(Boolean).join('\n');
 }
 
+// FedEx flags a parcel scanned in after the day's cutoff as delayed (`DY`) while
+// its wording reads as an ordinary pickup: the parcel leaves on the next business
+// day. Only that newest pickup scan explains the flag.
+const AFTER_CUTOFF = /\breceived after fedex cutoff\b/i;
+
 // Ground Economy can hand a parcel to the U.S. Postal Service for the last leg.
 // FedEx then relays USPS's scans, the first naming the package number USPS
 // tracks it under; most parcels instead say delivery stays with FedEx Ground.
@@ -268,9 +273,11 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
   const trimmed = newestFirst(listed).slice(0, MAX_EVENTS_TO_RETURN);
   const newest = trimmed[0];
   const statusText = keyStatus || newest?.description || 'Tracking information received';
-  const stage = FEDEX_CODE_STAGE[keyStatusCD.toUpperCase()]
-    ?? fedexStage(`${keyStatus} ${statusDetails}`) ?? undefined;
-  const status = fedexStatus(keyStatusCD, `${keyStatus} ${statusDetails}`, trimmed.length > 0);
+  const wording = fedexStage(`${keyStatus} ${statusDetails}`);
+  const afterCutoff = keyStatusCD.toUpperCase() === 'DY' && newest?.stage === 'accepted'
+    && AFTER_CUTOFF.test(newest.description ?? '') && !(wording && statusForStage(wording) === 'exception');
+  const stage = afterCutoff ? 'accepted' : FEDEX_CODE_STAGE[keyStatusCD.toUpperCase()] ?? wording ?? undefined;
+  const status = afterCutoff ? 'in_transit' : fedexStatus(keyStatusCD, `${keyStatus} ${statusDetails}`, trimmed.length > 0);
   const delivered = stage === 'delivered';
   const estimate = delivered ? null : expectedDelivery(shipment.estDeliveryDt);
   const pickupPoint = stage === 'ready_for_pickup' ? holdLocation(shipment) : '';

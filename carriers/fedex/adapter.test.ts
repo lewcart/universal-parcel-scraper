@@ -155,6 +155,26 @@ describe('FedEx structured response', () => {
     expect(result).not.toHaveProperty('delivered_at');
   });
 
+  it('reads a parcel scanned in after the day\'s cutoff as picked up, not as delayed', () => {
+    /** A parcel whose newest scan is `newest`, with this package code and wording. */
+    const cutoff = (newest: readonly [string, string, string, string], details = '') => {
+      const payload = groundEconomyFixture([newest, ['2026-06-04', 'OC', 'Shipment information sent to FedEx', '']], DELIVERED_NUMBER);
+      const shipment = (payload.output as { packages: Record<string, unknown>[] }).packages[0]!;
+      shipment.keyStatusCD = 'DY';
+      shipment.keyStatus = 'We have your package';
+      shipment.statusWithDetails = details;
+      return parseFedExTrackingResponse(payload, DELIVERED_NUMBER);
+    };
+    const pickup = ['2026-06-05', 'PU', 'Picked up', 'Package received after FedEx cutoff'] as const;
+    const result = cutoff(pickup);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'accepted', last_status_text: 'We have your package' });
+    expect(result.events?.[0]).toMatchObject({ description: 'Picked up — Package received after FedEx cutoff', stage: 'accepted' });
+    // A delay the wording names, or the flag on any other newest scan, stays an exception.
+    expect(cutoff(pickup, 'Delay: weather')).toMatchObject({ status: 'exception', current_stage: 'exception' });
+    expect(cutoff(['2026-06-05', 'DP', 'Left FedEx origin facility', ''])).toMatchObject({ status: 'exception', current_stage: 'exception' });
+    expect(cutoff(['2026-06-05', 'PU', 'Picked up', ''])).toMatchObject({ status: 'exception', current_stage: 'exception' });
+  });
+
   it('orders scans by their instant, not by their local date, and an undated scan last', () => {
     const payload = inTransitFixture();
     const shipment = (payload.output as { packages: Record<string, unknown>[] }).packages[0]!;

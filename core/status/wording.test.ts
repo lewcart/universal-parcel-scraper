@@ -730,6 +730,7 @@ describe('classifyWording', () => {
       ['INFORMADO. Ya hemos recibido la información de su envío, en breve dispondremos de él', 'registered'],
       ['We will pick up the package from the sender soon', 'registered'],
       ['We will pick up your parcel from the sender soon.', 'registered'],
+      ['Booked for collection', 'registered'], ['Processing at destination branch', 'in_transit'],
       ['Parcel received by UniUni', 'in_transit'],
       ['The courier will deliver the parcel soon. Additional details are available in the app, email or SMS.', 'out_for_delivery'],
       ['Item received by Royal Mail', 'accepted'],

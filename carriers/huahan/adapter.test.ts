@@ -120,6 +120,27 @@ describe('HuaHan guest tracking', () => {
     expect(several.events!.every(event => !event.time)).toBe(true);
   });
 
+  it('reads the flight, clearance and destination milestones by their codes', () => {
+    const journey = fixture();
+    journey.data[0]!.Detail = [
+      { Occur_date: '2026-01-09 12:15:00', Status: 'CC', Comment: 'Delivered, Parcel was delivered successfully', track_area: '' },
+      { Occur_date: '2026-01-09 05:44:00', Status: 'CB', Comment: 'Out for Delivery, Parcel is at courier, delivery expected soon.', track_area: '' },
+      { Occur_date: '2026-01-07 20:38:00', Status: 'IA', Comment: 'In Transit', track_area: '' },
+      { Occur_date: '2026-01-06 14:03:50', Status: 'YG', Comment: 'Import Customs clearance completed', track_area: 'NL' },
+      { Occur_date: '2026-01-06 09:34:00', Status: 'LD', Comment: 'Arrived at destination airport', track_area: 'NL' },
+      { Occur_date: '2026-01-06 06:34:00', Status: 'QG', Comment: 'Import Customs clearance started', track_area: 'NL' },
+      { Occur_date: '2026-01-05 16:35:58', Status: 'QF', Comment: 'Departed from airport of Origin', track_area: 'HK' },
+      { Occur_date: '2026-01-03 12:54:49', Status: 'BG', Comment: 'Export customs clearance completed', track_area: 'HK' },
+      { Occur_date: '2026-01-03 06:54:41', Status: 'GG', Comment: 'Transfer to Origin airport', track_area: 'CN' },
+    ];
+    const result = parseHuahan(journey, NUMBER);
+    expect(result.current_stage).toBe('delivered');
+    expect(result.events!.map(event => event.stage)).toEqual(['delivered', 'out_for_delivery', 'in_transit',
+      'in_transit', 'in_transit', 'customs', 'in_transit', 'in_transit', 'in_transit']);
+    expect(result.events!.filter(event => event.stage_source === 'carrier_map').map(event => event.provider_code))
+      .toEqual(['CC', 'CB', 'YG', 'LD', 'QG', 'QF', 'BG', 'GG']);
+  });
+
   it('keeps pickup-point arrival distinct from delivery to the recipient', () => {
     const pickup = fixture();
     pickup.data[0]!.Status = 'Available for collection';

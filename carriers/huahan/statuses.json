@@ -10,6 +10,15 @@
     {"code": "DF", "wording": "快件操作完成 Shipment departed from facility", "stage": "in_transit", "language": "zh", "confirmedBy": "official-doc", "note": "In the tracking example of HuaHan's API documentation: the parcel left HuaHan's operations centre in Shenzhen."},
     {"wording": "快件操作完成", "stage": "in_transit", "language": "zh", "confirmedBy": "official-doc", "note": "In the tracking example of HuaHan's API documentation: the latest-event summary form of the departure from the operations centre."},
     {"wording": "Data processed", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Relayed by 17TRACK without a code, between the parcel's departures from the origin facility."},
-    {"code": "JY", "wording": "Has been given to local carrier", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "HuaHan handing the parcel to the destination carrier after import clearance; the partner's scans follow it."}
+    {"code": "GG", "wording": "Transfer to Origin airport", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The parcel moving from the origin facility to the departure airport."},
+    {"code": "BG", "wording": "Export customs clearance completed", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Export clearance at the origin, before the flight."},
+    {"code": "QF", "wording": "Departed from airport of Origin", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The flight leaving the origin."},
+    {"code": "QG", "wording": "Import Customs clearance started", "stage": "customs", "language": "en", "confirmedBy": "live", "note": "Import clearance opening at the destination gateway."},
+    {"code": "LD", "wording": "Arrived at destination airport", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The flight landing at the destination gateway."},
+    {"code": "YG", "wording": "Import Customs clearance completed", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Import clearance released, before the hand-off to the destination carrier."},
+    {"code": "JY", "wording": "Has been given to local carrier", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "HuaHan handing the parcel to the destination carrier after import clearance; the partner's scans follow it."},
+    {"code": "CB", "wording": "Out for Delivery, Parcel is at courier, delivery expected soon.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "The destination carrier's courier scan, relayed under HuaHan's code."},
+    {"code": "CC", "wording": "Delivered, Parcel was delivered successfully", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "The destination carrier's delivery, relayed under HuaHan's code with that carrier's wording."},
+    {"code": "CC", "wording": "The parcel has been successfully delivered.", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "A second delivery wording from the same destination carrier under the same code."}
   ]
 }

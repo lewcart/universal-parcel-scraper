@@ -15,6 +15,7 @@
     {"wording": "Arrival sorting, distribution center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The destination network sorts the parcel at a town's distribution centre. GZYL writes the town after the wording; it is read as the place."},
     {"wording": "Leaving the sorting center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The parcel leaves a town's sorting centre for its next stop. GZYL writes the town after the wording; it is read as the place."},
     {"wording": "Package is on the way", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-20", "note": "GZYL writes a town in the destination country after the wording; it is read as the place."},
+    {"wording": "Delivered", "language": "en", "stage": "delivered", "confirmedBy": "live", "firstSeen": "2026-10-21", "note": "The destination network's delivery. GZYL writes the town after the wording; it is read as the place."},
     {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "prior-art", "note": "The platform writes this row itself for an order without scans, on its creation time."}
   ]
 }

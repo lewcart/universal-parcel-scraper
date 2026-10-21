@@ -5,8 +5,11 @@ import statuses from './statuses.json' with { type: 'json' };
 const WORDINGS = new Map<string, Stage>(statuses.entries.map((entry) => [normalizeStatusWording(entry.wording), entry.stage as Stage]));
 
 /** Wordings GZYL writes a town after, leaving the row's own place empty. */
-export const PLACED_WORDINGS: readonly string[] = ['Arrival sorting, distribution center', 'Leaving the sorting center', 'Package is on the way'];
+export const PLACED_WORDINGS: readonly string[] = ['Arrival sorting, distribution center', 'Leaving the sorting center', 'Package is on the way', 'Delivered'];
 const PLACED = PLACED_WORDINGS.map((wording) => `${normalizeStatusWording(wording)} `);
+// A town: a letter, then letters, digits, spaces, dots, apostrophes or hyphens,
+// but not a phrase such as "to the neighbour" that goes on the wording.
+export const TOWN = /^(?!(?:to|at|in|on|by|with|from|for)\b)\p{L}[\p{L}\p{N} .'-]*$/iu;
 
 /**
  * The stage GZYL's map gives a row, by its `normalizeStatusWording` wording.
@@ -15,7 +18,7 @@ const PLACED = PLACED_WORDINGS.map((wording) => `${normalizeStatusWording(wordin
  * as the wording alone.
  */
 export function gzylStage(_code: string | null, wording: string): Stage | undefined {
-  const prefix = PLACED.find((placed) => wording.startsWith(placed));
+  const prefix = PLACED.find((placed) => wording.startsWith(placed) && TOWN.test(wording.slice(placed.length)));
   return WORDINGS.get(wording) ?? (prefix ? WORDINGS.get(prefix.trimEnd()) : undefined);
 }
 

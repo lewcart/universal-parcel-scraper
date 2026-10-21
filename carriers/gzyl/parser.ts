@@ -1,11 +1,9 @@
 import type { CarrierResult } from '../../core/result/index.js';
 import { normalizeHualeiNumber, parseHualeiPage, parseHualeiTrack, type HualeiTenant } from './hualei.js';
-import { gzylStage, PLACED_WORDINGS } from './status.js';
+import { gzylStage, PLACED_WORDINGS, TOWN } from './status.js';
 
 export const PROVIDER = 'GZYL';
 export const GZYL_ORIGIN = 'http://134.175.243.207:8082';
-// A town: a letter, then letters, digits, spaces, dots, apostrophes or hyphens.
-const TOWN = /^\p{L}[\p{L}\p{N} .'-]*$/u;
 
 /**
  * GZYL writes the town of a sorting centre, or of the parcel's way, after some

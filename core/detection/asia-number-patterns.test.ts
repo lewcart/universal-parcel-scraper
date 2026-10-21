@@ -131,6 +131,16 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     expect(detectCarrierMatch('YL0000000001YQ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['gzyl'] });
   });
 
+  it('names Techlink for its dated ZHPHD waybills ending in ML', () => {
+    expect(detectCarrierMatch('ZHPHD260101000001ML')).toMatchObject({ carrier: 'techlink', confidence: 'high', candidates: ['techlink'] });
+    expect(detectCarrierMatch('zhphd 260101 000001 ml')).toMatchObject({ carrier: 'techlink', confidence: 'high' });
+    // A month or day that cannot be a date, another prefix or ending, or a digit too many or too few is no Techlink waybill.
+    for (const number of ['ZHPHD261301000001ML', 'ZHPHD260132000001ML', 'ZHPHX260101000001ML', 'ZHPHD260101000001MX',
+      'ZHPHD26010100001ML', 'ZHPHD2601010000001ML', 'CJPHD260101000001ML']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('techlink');
+    }
+  });
+
   it('asks Huiyi Logistics about its lettered numbers without naming it from the shape', () => {
     expect(detectCarrierMatch('ABCD00D0000EFGH')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['hywl'] });
     expect(recognitionAskedCarriers('ABCD00D0000EFGH')).toEqual(['hywl']);

@@ -1909,6 +1909,7 @@ export const REGISTRY: RegistryDefinition = {
     "team-express-ae": "team-express-ae",
     "team-global-express": "team-global-express",
     "team-worldwide": "team-worldwide",
+    "techlink": "universal",
     "tej-couriers": "universal",
     "teleship": "teleship",
     "tfm-express": "tfm-express",

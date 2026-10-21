@@ -91647,6 +91647,22 @@
     ]
   },
   {
+    "input": "ZHPHD250607627617ML",
+    "carrier": "techlink",
+    "confidence": "high",
+    "candidates": [
+      "techlink"
+    ]
+  },
+  {
+    "input": "ZHPHD260101000001ML",
+    "carrier": "techlink",
+    "confidence": "high",
+    "candidates": [
+      "techlink"
+    ]
+  },
+  {
     "input": "ZL53533553",
     "carrier": "unknown",
     "confidence": "low",

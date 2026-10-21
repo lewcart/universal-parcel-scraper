@@ -28641,6 +28641,34 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "techlink": {
+    "displayName": "Techlink",
+    "color": "#e73547",
+    "aliases": [
+      "TechLink",
+      "智禾",
+      "智禾国际物流",
+      "智禾国际物流(深圳)有限公司",
+      "Zhihe International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^ZHPHD\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{6}ML$",
+        "confidence": "high"
+      }
+    ]
+  },
   "tej-couriers": {
     "displayName": "Tej Couriers",
     "color": "#d2232a",
@@ -32117,6 +32145,7 @@ export const CARRIER_IDS = [
   "team-express-ae",
   "team-global-express",
   "team-worldwide",
+  "techlink",
   "tej-couriers",
   "teleship",
   "tfm-express",
@@ -32901,6 +32930,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "team-express-ae": [],
   "team-global-express": [],
   "team-worldwide": [],
+  "techlink": ["techlink-1"],
   "tej-couriers": [],
   "teleship": ["teleship-ts"],
   "tfm-express": [],

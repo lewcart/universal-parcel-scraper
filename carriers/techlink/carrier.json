@@ -1,0 +1,42 @@
+{
+  "id": "techlink",
+  "displayName": "Techlink",
+  "aliases": [
+    "TechLink",
+    "智禾",
+    "智禾国际物流",
+    "智禾国际物流(深圳)有限公司",
+    "Zhihe International Logistics"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#e73547"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://t.17track.net/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "techlink-1",
+      "pattern": "^ZHPHD\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{6}ML$",
+      "confidence": "high"
+    }
+  ]
+}

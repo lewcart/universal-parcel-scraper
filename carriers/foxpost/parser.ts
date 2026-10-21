@@ -6,6 +6,7 @@ import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, S
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { foxpostScanStage } from './status.js';
 
@@ -19,6 +20,7 @@ const ABSENT = /^A megadott csomag azonosító nem található a rendszerünkben
 const CLOCK = /^(\d{4})\.(\d{2})\.(\d{2}) (\d{2}):(\d{2})$/;
 // The page of a Foxpost locker or pickup point.
 const POINT_PAGE = /^\/~\/[A-Za-z0-9_-]{1,40}$/;
+const ZONE = 'Europe/Budapest';
 const MAX_ROWS = 200;
 const MAX_EVENTS = 100;
 
@@ -44,6 +46,23 @@ function wallClock(text: string): string | null {
   return parsed.isValid ? parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") : null;
 }
 
+/**
+ * A scan's instant from the page's clock, which the page renders at `readAt`
+ * moved by Budapest's offset then less its offset at the scan. A scan in the
+ * season the page is viewed in shows Budapest's wall clock, and a winter scan
+ * viewed in summer an hour earlier: a CLFOX parcel's ID carries the second it
+ * was created, which its first scan shows so. Null for a summer scan viewed in
+ * winter, which no page has shown, and for a scan within hours of a clock change.
+ */
+function scanInstant(wall: string, readAt: Date): string | null {
+  const view = DateTime.fromJSDate(readAt, { zone: ZONE }).offset;
+  const shown = firstOccurrence(DateTime.fromISO(wall, { zone: ZONE }));
+  const [scan, ...around] = [0, -3, 3].map((hours) => shown.plus({ hours }).offset);
+  if (scan === undefined || view < scan || around.some((offset) => offset !== scan)) return null;
+  const local = DateTime.fromISO(wall, { zone: 'UTC' }).plus({ minutes: view - scan }).toISO({ includeOffset: false });
+  return local ? firstOccurrence(DateTime.fromISO(local, { zone: ZONE })).toISO({ suppressMilliseconds: true }) : null;
+}
+
 /** The term of the parcel panel with this label, if the page shows it. */
 function term($: CheerioAPI, label: string): Selection | null {
   const terms = $('.timeline-packet-info dt').filter((_, node) => clean($(node).text(), 80) === label);
@@ -63,7 +82,7 @@ function sentenceOf(node: Selection): string {
  * The page binds to the parcel by the number it shows; a number it does not
  * know returns the form with a notice instead.
  */
-export function parseFoxpost(html: string, raw: string): CarrierResult {
+export function parseFoxpost(html: string, raw: string, readAt = new Date()): CarrierResult {
   const number = normalizeFoxpostNumber(raw);
   const $ = load(html);
   if ($('form#form-parcel-tracking').length !== 1) throw new IndeterminateError(PROVIDER, 'Foxpost did not return its tracking page');
@@ -101,7 +120,13 @@ export function parseFoxpost(html: string, raw: string): CarrierResult {
   // Newest first, as the page lists them; equal clocks keep the page's order.
   scans.sort((left, right) => right.event.local_time! > left.event.local_time! ? 1
     : right.event.local_time! < left.event.local_time! ? -1 : left.index - right.index);
-  const events = scans.map(({ event }) => event);
+  const events = scans.map(({ event }) => {
+    const time = typeof event.local_time === 'string' ? scanInstant(event.local_time, readAt) : null;
+    if (!time) return event;
+    const dated: CarrierEvent = { time, ...event };
+    delete dated.local_time;
+    return dated;
+  });
   const newest = events[0]!;
   const stage = newest.stage as Stage | undefined;
 
@@ -119,8 +144,9 @@ export function parseFoxpost(html: string, raw: string): CarrierResult {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time!,
+    last_update: newest.time ?? null,
+    last_update_local: newest.local_time ?? null,
+    ...(stage === 'delivered' && newest.time ? { delivered_at: newest.time } : {}),
     expected_delivery: null,
     ...(sender ? { sender_name: sender } : {}),
     ...(point ? { pickup_point: point } : {}),

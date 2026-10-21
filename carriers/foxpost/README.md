@@ -24,8 +24,12 @@ The Hungarian parcel-locker network. Tracked through its public tracking page.
   both a parcel the sender dropped in a locker and one waiting in the recipient's, and
   "Raktárban" covers a return as well as a parcel on its way. Stages come from the sentences,
   which are the long texts of Foxpost's API statuses. A link after a sentence is not kept.
-- Times are wall clocks without an offset. The page renders them at view time, and the same
-  winter scan shows an hour earlier when viewed in summer, so no offset can be trusted.
+- The page renders a scan's Budapest clock at view time, moved by Budapest's offset then less
+  its offset at the scan. A scan in the season the page is viewed in shows Budapest's clock,
+  and a winter scan viewed in summer an hour earlier: a `CLFOX` ID carries the second the parcel
+  was created, which its first scan shows so. Those scans are dated, and a delivery sets
+  `delivered_at` and recognition's last activity. A summer scan viewed in winter, which no page
+  has shown, and a scan within hours of a clock change keep a wall clock.
 - The sender's name is kept as `sender_name`. The delivery method is kept as the pickup point
   only when it links to a Foxpost locker or point page, and not once the parcel is returned or
   was delivered to the door. The order number and payment details are not read; recipient

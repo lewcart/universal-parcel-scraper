@@ -30,21 +30,24 @@ const OPERIN = 'Csomagod megérkezett az általad választott (vissza)kézbesít
 const RECEIVE = 'Csomagod (vissza)kézbesítve lett, a címzett/feladó átvette.';
 const reply = (body = html, status = 200, headers: Record<string, string> = {}) =>
   new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...headers } });
+// The page renders its clocks when viewed: in summer, and in winter.
+const SUMMER = new Date('2026-06-05T08:00:00Z');
+const WINTER = new Date('2026-12-05T08:00:00Z');
 const environment = (fetcher: typeof fetch) => ({ fetcher, env: {}, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} } });
 
 describe('Foxpost direct tracking', () => {
-  it('reads the scans as wall clocks, with the sender and the locker the parcel was collected from', () => {
-    const result = normalizeCarrierResult(parseFoxpost(html, NUMBER));
+  it("reads the scans on Budapest's clock, with the sender and the locker the parcel was collected from", () => {
+    const result = normalizeCarrierResult(parseFoxpost(html, NUMBER, SUMMER));
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map', last_status_text: RECEIVE,
-      last_update: null, last_update_local: '2026-06-04T18:27:00', expected_delivery: null,
+      last_update: '2026-06-04T18:27:00+02:00', last_update_local: null, delivered_at: '2026-06-04T18:27:00+02:00', expected_delivery: null,
       sender_name: 'Minta Webáruház Kft.', pickup_point: 'FOXPOST A-BOX Minta Bevásárlóközpont' });
-    expect(result.events?.map(event => [event.local_time, event.description, event.stage])).toEqual([
-      ['2026-06-04T18:27:00', RECEIVE, 'delivered'],
-      ['2026-06-03T10:05:00', OPERIN, 'ready_for_pickup'],
-      ['2026-06-02T21:40:00', SORTIN, 'in_transit'],
-      ['2026-06-01T08:03:00', CREATE, 'registered'],
+    expect(result.events?.map(event => [event.time, event.description, event.stage])).toEqual([
+      ['2026-06-04T18:27:00+02:00', RECEIVE, 'delivered'],
+      ['2026-06-03T10:05:00+02:00', OPERIN, 'ready_for_pickup'],
+      ['2026-06-02T21:40:00+02:00', SORTIN, 'in_transit'],
+      ['2026-06-01T08:03:00+02:00', CREATE, 'registered'],
     ]);
-    expect(result.events?.every(event => event.time === undefined && event.location === undefined && event.stage_source === 'carrier_map')).toBe(true);
+    expect(result.events?.every(event => event.local_time === undefined && event.location === undefined && event.stage_source === 'carrier_map')).toBe(true);
     // The order number, the payment details, the locker's page and the help link stay out.
     expect(JSON.stringify(result)).not.toMatch(/MINTA-REF|12 345|Bankkártyás|hu999|kattints|a-box-es-z-box/);
   });
@@ -92,9 +95,21 @@ describe('Foxpost direct tracking', () => {
     }
     const long = history(...Array.from({ length: 150 }, (_, index) => [`2026.06.01 ${String(Math.floor(index / 60)).padStart(2, '0')}:${String(index % 60).padStart(2, '0')}`,
       'Úton', OPEROUT] as const));
-    const events = parseFoxpost(long, NUMBER).events!;
+    const events = parseFoxpost(long, NUMBER, SUMMER).events!;
     expect(events).toHaveLength(100);
-    expect(events[0]!.local_time).toBe('2026-06-01T02:29:00');
+    expect(events[0]!.time).toBe('2026-06-01T02:29:00+02:00');
+  });
+
+  it('reads a scan in the season the page is viewed in, and a winter scan viewed in summer, from the page\'s clock', () => {
+    // Live shapes: the page moves a scan's clock by Budapest's offset when viewed less its offset at
+    // the scan. A CLFOX ID carries the second the parcel was created, which its first scan shows so.
+    const clocks = (readAt: Date, ...times: string[]) => parseFoxpost(history(...times.map((time) => [time, 'Úton', SORTOUT] as const)), NUMBER, readAt)
+      .events?.map(({ time, local_time }) => time ?? local_time);
+    expect(clocks(WINTER, '2026.12.01 07:45')).toEqual(['2026-12-01T07:45:00+01:00']);
+    expect(clocks(SUMMER, '2026.03.21 06:45', '2026.06.01 08:03')).toEqual(['2026-06-01T08:03:00+02:00', '2026-03-21T07:45:00+01:00']);
+    // No page has shown a summer scan in winter, and one near a clock change may sit on either side of it.
+    expect(clocks(WINTER, '2026.06.01 08:03')).toEqual(['2026-06-01T08:03:00']);
+    expect(clocks(SUMMER, '2026.03.29 03:30', '2026.03.28 23:30')).toEqual(['2026-03-29T03:30:00', '2026-03-28T23:30:00']);
   });
 
   it('stages each scan by its sentence, not by the title it shares with others', () => {
@@ -119,14 +134,14 @@ describe('Foxpost direct tracking', () => {
   });
 
   it('keeps new wording unstaged, and orders and dedupes the scans', () => {
-    const unknown = parseFoxpost(history(['2026.07.03 09:00', 'Új', 'Csomagod teleportálva lett.'], ['2026.07.02 09:00', 'Automatában', OPERIN]), NUMBER);
+    const unknown = parseFoxpost(history(['2026.07.03 09:00', 'Új', 'Csomagod teleportálva lett.'], ['2026.07.02 09:00', 'Automatában', OPERIN]), NUMBER, WINTER);
     expect(unknown).toMatchObject({ status: 'unknown', last_status_text: 'Csomagod teleportálva lett.' });
     expect(unknown.current_stage).toBeUndefined();
     expect(unknown.events?.[0]).toEqual({ local_time: '2026-07-03T09:00:00', description: 'Csomagod teleportálva lett.' });
-    const titled = parseFoxpost(history(['2026.07.03 09:00', 'Raktárban', '']), NUMBER);
+    const titled = parseFoxpost(history(['2026.07.03 09:00', 'Raktárban', '']), NUMBER, WINTER);
     expect(titled.events).toEqual([{ local_time: '2026-07-03T09:00:00', description: 'Raktárban' }]);
     const shuffled = parseFoxpost(history(['2026.07.01 12:00', 'Csomagod elkészült', CREATE], ['2026.07.03 09:00', 'Automatában', OPERIN + LINK],
-      ['2026.07.03 09:00', 'Automatában', OPERIN], ['2026.07.02 21:00', 'Raktárban', SORTIN], ['2026.07.02 21:00', 'Úton', SORTOUT]), NUMBER);
+      ['2026.07.03 09:00', 'Automatában', OPERIN], ['2026.07.02 21:00', 'Raktárban', SORTIN], ['2026.07.02 21:00', 'Úton', SORTOUT]), NUMBER, WINTER);
     expect(shuffled.events?.map(event => event.description)).toEqual([OPERIN, SORTIN, SORTOUT, CREATE]);
     expect(shuffled.last_update_local).toBe('2026-07-03T09:00:00');
   });
@@ -218,8 +233,16 @@ describe('Foxpost direct tracking', () => {
     const instance = adapter(environment(known));
     expect(await instance.recognize!('CLFOX1')).toEqual({ known: false });
     expect(known).not.toHaveBeenCalled();
-    // Wall clocks cannot rank reuse of a number.
-    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      vi.setSystemTime(SUMMER);
+      expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-06-04T16:27:00.000Z' });
+      // A summer scan viewed in winter keeps its wall clock, which cannot rank reuse of a number.
+      vi.setSystemTime(WINTER);
+      expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    } finally {
+      vi.useRealTimers();
+    }
     const unknown = vi.fn(async () => reply(absent));
     expect(await adapter(environment(unknown as unknown as typeof fetch)).recognize!(NUMBER)).toEqual({ known: false });
     const outage = vi.fn(async () => reply('<html>Karbantartás</html>'));

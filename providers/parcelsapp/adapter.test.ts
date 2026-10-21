@@ -2198,6 +2198,21 @@ describe('ParcelsApp direct lookup', () => {
     expect(fetcher).toHaveBeenCalledOnce();
   });
 
+  it.each(['DOWN', 'BUSY', 'PARSER', 'CAPTCHA', 'MAINTENANCE'])('leaves a failed carrier lookup (%s) inconclusive without a browser retry', async (code) => {
+    const steps: StepRecord[] = [];
+    const recorder: StepRecorder = { step: (record) => { steps.push(record); }, lookup: () => {} };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply({
+      error: code, carriers: ['Example Courier'], services: [{ name: 'Example Courier', slug: 'example-courier' }],
+    }));
+    const error = await new ParcelsAppTracker({ fetcher, recorder, trawl: new TrawlClient('http://browser.test', fetcher) })
+      .fetch(number).catch((error: unknown) => error);
+    expect(error).toMatchObject({ kind: 'indeterminate', reason: 'carrier_unavailable', message: `ParcelsApp's carrier lookup failed: ${code}` });
+    expect(error).not.toBeInstanceOf(NoHistoryError);
+    expect(steps).toMatchObject([{ step: 'direct', outcome: 'indeterminate' }]);
+    expect(steps).toHaveLength(1);
+    expect(fetcher).toHaveBeenCalledOnce();
+  });
+
   it.each([{ error: 'NO_DATA' }, { error: 'NO_TRACKER' }, { states: [] }])('leaves no-history replies inconclusive without browser retries: %j', async (payload) => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(payload));
     const error = await new ParcelsAppTracker({ fetcher, trawl: new TrawlClient('http://browser.test', fetcher) }).fetch(number).catch((error: unknown) => error);

@@ -38,6 +38,11 @@ Other outcomes:
   no browser attempt.
 - `NO_DATA`, `NO_TRACKER` and empty histories are inconclusive, not proof that the
   shipment does not exist. They end the lookup.
+- `DOWN`, `BUSY`, `PARSER`, `CAPTCHA` and `MAINTENANCE` mean ParcelsApp's own lookup at
+  the carrier failed: its page says the carrier's website is down, busy, unreadable,
+  refusing automated tracking or under maintenance. They are inconclusive (reason
+  `carrier_unavailable`) and end the lookup without a browser attempt, which would ask the
+  same lookup. They say nothing about the shipment or ParcelsApp's other carriers.
 - An error code the adapter does not know is a schema failure that names the code.
 - A reply that only asks for a postcode raises `input_required`. Browser recovery cannot
   submit a postcode and never retries a known input gate. A gate row names the carrier

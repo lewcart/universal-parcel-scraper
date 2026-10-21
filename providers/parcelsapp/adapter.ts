@@ -1188,10 +1188,21 @@ function placeholderDates(dates: readonly unknown[]): Set<string> {
     .filter((wall) => first.diff(DateTime.fromISO(wall, { zone: 'utc' }), 'days').days > PLACEHOLDER_LEAD_DAYS));
 }
 
+/**
+ * ParcelsApp's own lookup at the carrier failed: its page words these codes as the
+ * carrier's website being down, busy, unreadable, under maintenance or refusing automated
+ * tracking. The answer concerns that carrier, not the shipment or ParcelsApp's other
+ * carriers, and the browser page would ask the same lookup.
+ */
+const CARRIER_FAILURES = new Set(['DOWN', 'BUSY', 'PARSER', 'CAPTCHA', 'MAINTENANCE']);
+
 function parseHistory(payload: unknown, trackingNumber: string, timezone: string | null = null): CarrierResult {
   if (isRecord(payload) && payload.error === 'RELOAD') throw new ChallengeError(SOURCE);
   if (isRecord(payload) && (payload.error === 'NO_DATA' || payload.error === 'NO_TRACKER')) {
     throw new NoHistoryError(SOURCE, 'ParcelsApp has no usable shipment history');
+  }
+  if (isRecord(payload) && typeof payload.error === 'string' && CARRIER_FAILURES.has(payload.error)) {
+    throw new IndeterminateError(SOURCE, `ParcelsApp's carrier lookup failed: ${payload.error}`, { reason: 'carrier_unavailable' });
   }
   if (!isRecord(payload) || payload.error || !Array.isArray(payload.states) || payload.states.length > MAX_EVENTS) {
     // An error code the adapter does not know is named, to tell drift from a new answer.

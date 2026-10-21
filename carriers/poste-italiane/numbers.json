@@ -342,6 +342,18 @@
       "note": "Poste Delivery Europe shipment its sender quotes in a complaint against Poste Italiane; the tracker no longer finds it."
     },
     {
+      "number": "ZC900000001IT",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "poste-italiane",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of a Poste Delivery International Express code whose last digit fails the S10 check; Poste's tracker follows such codes."
+    },
+    {
       "number": "CE009577060IT",
       "role": "shipment",
       "evidence": "public_shipment_report",

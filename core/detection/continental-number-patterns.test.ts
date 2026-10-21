@@ -157,6 +157,18 @@ describe('continental shipment candidates', () => {
     }
   });
 
+  it('gives Poste Italiane its International Express codes whatever their last digit', () => {
+    // Poste's tracker follows ZC codes whose last digit fails the S10 check.
+    for (const number of ['ZC900000001IT', 'ZC900000005IT']) {
+      expect(isPosteItalianeTrackingNumber(number)).toBe(true);
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'poste-italiane', confidence: 'high' });
+    }
+    for (const number of ['ZC90000001IT', 'ZC9000000001IT', 'ZD900000001IT', 'ZC900000001FR']) {
+      expect(isPosteItalianeTrackingNumber(number)).toBe(false);
+      expect(detectCarrierMatch(number).carrier).not.toBe('poste-italiane');
+    }
+  });
+
   it('retains the historical PostNL id for its complete 3S barcode', () => {
     expect(detectCarrierMatch('3SZZZZ1000001')).toMatchObject({ carrier: 'spring-gds', confidence: 'high' });
     expect(recognitionAskedCarriers('3SZZZZ1000001')).toEqual([]);

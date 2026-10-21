@@ -6,7 +6,9 @@ The Italian postal operator. Tracked through the keyless DoveQuando REST endpoin
 matching native Poste status or progress confirms them. Other postal shapes use the generic postal fallback.
 Detection names Poste Italiane for the parcels, EMS, registered and tracked-letter items it
 issues (`C`, `E`, `L` or `R` first, `IT` last and a valid check digit). Its tracker follows them
-abroad, to delivery or back. Its other `IT` codes stay with the generic postal carrier, and the
+abroad, to delivery or back. Poste Delivery International Express codes, `ZC`, nine digits and
+`IT`, are Poste's whatever their last digit: its tracker follows them although that digit can
+fail the S10 check. Its other `IT` codes stay with the generic postal carrier, and the
 low-confidence `poste-italiane-s10` rule makes recognition ask Poste Italiane first. `UB` codes,
 for one, label goods for customs and are not tracked.
 

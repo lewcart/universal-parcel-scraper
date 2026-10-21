@@ -91575,6 +91575,14 @@
     ]
   },
   {
+    "input": "ZC900000001IT",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "ZDBBXK034308",
     "carrier": "xdp",
     "confidence": "high",

@@ -109,6 +109,11 @@
       "checksum": "s10"
     },
     {
+      "id": "poste-italiane-international-express",
+      "pattern": "^ZC\\d{9}IT$",
+      "confidence": "high"
+    },
+    {
       "id": "poste-italiane-own",
       "pattern": "^[CELR][A-Z]\\d{9}IT$",
       "confidence": "high",

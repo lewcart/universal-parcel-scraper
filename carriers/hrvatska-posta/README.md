@@ -51,8 +51,10 @@ is a return.
 A Croatian office or parcel locker comes with its five-digit number, a postcode, which is
 dropped; the office's or locker's name stays. A facility abroad keeps the name and code the page
 shows. Scan clocks carry no offset. A numbered Croatian office's or locker's scan is on Zagreb's
-clock. A scan relayed from abroad is on that post's clock and, like a scan without an office or a
-clock that summer time makes ambiguous, stays a local time.
+clock. A scan relayed from abroad is on its facility's clock, which the facility's UPU office
+code (`GBLALA`) settles when it names a country keeping one civil time; Spain and Portugal, whose
+islands keep other clocks, are left out. Other relayed scans, scans without an office and clocks
+that summer time makes ambiguous stay local times.
 
 The pickup point is the post office or parcel locker where the item waits, named by the scan
 that made it ready for collection, while it waits there or once it was collected there. The

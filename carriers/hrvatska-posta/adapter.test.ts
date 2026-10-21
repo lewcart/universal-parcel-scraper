@@ -109,6 +109,20 @@ describe('Hrvatska pošta tracking adapter', () => {
     ]);
   });
 
+  it('dates a foreign facility whose UPU office code names a country with one clock on that clock', () => {
+    const abroad = (office: string, day = '05.03.2026') => rows(parseHrvatskaPosta(page('abroad')
+      .replaceAll('ZZXMPA', office).replaceAll('05.03.2026', day), ABROAD)).filter(([, , place]) => String(place).endsWith('EXAMPLEVILLE AP'));
+    expect(abroad('GBXMPA')).toEqual([
+      ['2026-03-05T00:39:00+00:00', 'Item received in destination country', 'GBXMPA EXAMPLEVILLE AP', 'in_transit'],
+      ['2026-03-05T00:34:00+00:00', 'Item received', 'GBXMPA EXAMPLEVILLE AP', 'in_transit'],
+    ]);
+    expect(abroad('DEXMPA', '05.07.2026').map(([time]) => time)).toEqual(['2026-07-05T00:39:00+02:00', '2026-07-05T00:34:00+02:00']);
+    // A country with several clocks, islands on clocks of their own, and a name with no code keep the wall clock.
+    for (const office of ['USXMPA', 'ESXMPA', 'PTXMPA', 'EXAMPLE']) {
+      expect(abroad(office).map(([time]) => time), office).toEqual(['2026-03-05T00:39:00', '2026-03-05T00:34:00']);
+    }
+  });
+
   it('keeps a home scan the autumn change of clocks makes ambiguous as a local time', () => {
     const result = parseHrvatskaPosta(page('locker').replaceAll('05.03.2026', '25.10.2026').replaceAll('10:15:45', '02:30:00'), LOCKER);
     expect(result).toMatchObject({ last_update: null, last_update_local: '2026-10-25T02:30:00' });

@@ -7,7 +7,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, S
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { isoTime } from '../../core/time/index.js';
+import { isoTime, postalOfficeZone } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { hrvatskaPostaStage } from './status.js';
 
@@ -30,6 +30,8 @@ const BLOCKED = /<title>\s*(?:Request Rejected|Access Denied|Just a moment)|requ
 const STAMP = /^(\d{2}\.\d{2}\.\d{4}) (\d{2}:\d{2}:\d{2})$/;
 // A Croatian post office or parcel locker comes with its five-digit number, which is a postcode.
 const OFFICE_NUMBER = /^\d{5}\s+/;
+// A facility abroad comes with its UPU office code before its name ("GBLALA LANGLEY HWDC").
+const FOREIGN_OFFICE = /^([A-Z]{2}[A-Z]{3}[A-Z0-9])\s+\S/;
 const WEIGHT = /^(\d{1,7}) g$/;
 
 /**
@@ -55,14 +57,25 @@ function wallClock(stamp: string): string | null {
 }
 
 /**
- * When the scan happened. A Croatian office's or locker's scan is on Zagreb's
- * clock. A foreign post's scan is on that post's clock, which its facility's
- * name does not settle, so it stays a local time, as does a scan without a
- * place and a wall clock that is ambiguous at a change of summer time.
+ * The clock of the office that scanned: Zagreb's for a numbered Croatian office
+ * or locker. A foreign post's scan, relayed through the postal union, is on its
+ * facility's clock, which the facility's UPU office code settles when it names
+ * a country keeping one civil time.
  */
-function clockOf(wall: string, home: boolean): { time: string } | { local_time: string } {
-  if (home && DateTime.fromISO(wall, { zone: HOME_ZONE }).getPossibleOffsets().length === 1) {
-    const placed = isoTime(wall, HOME_ZONE);
+function officeZone(office: string): string | null {
+  if (OFFICE_NUMBER.test(office)) return HOME_ZONE;
+  const code = FOREIGN_OFFICE.exec(office)?.[1];
+  return code ? postalOfficeZone(code) : null;
+}
+
+/**
+ * When the scan happened, on its office's clock. A scan without a place or
+ * whose office's clock is not settled stays a local time, as does a wall clock
+ * that is ambiguous at a change of summer time.
+ */
+function clockOf(wall: string, zone: string | null): { time: string } | { local_time: string } {
+  if (zone && DateTime.fromISO(wall, { zone }).getPossibleOffsets().length === 1) {
+    const placed = isoTime(wall, zone);
     if (placed?.iso.startsWith(wall)) return { time: placed.iso };
   }
   return { local_time: wall };
@@ -130,7 +143,7 @@ export function parseHrvatskaPosta(html: string, rawNumber: string): CarrierResu
     if (!time || !description || spans.length > 2) throw new SchemaError(PROVIDER, 'Hrvatska pošta returned a scan without a clock or wording');
     const office = spans.length === 2 ? clean(spans.eq(1).text(), 200) : '';
     const location = place(office);
-    const event: CarrierEvent = { ...clockOf(time, OFFICE_NUMBER.test(office)), description, ...(location ? { location } : {}) };
+    const event: CarrierEvent = { ...clockOf(time, officeZone(office)), description, ...(location ? { location } : {}) };
     // A parcel can repeat a scan with the same clock, place and wording.
     const identity = JSON.stringify(event);
     if (seen.has(identity)) return;

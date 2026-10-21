@@ -24,6 +24,8 @@ describe('brand networks', () => {
     expect(carrierIdFromName('XZG')).toBe('dhlink');
     // Providers also name Correios by the English name of the country's post.
     expect(carrierIdFromName('Brazil Post')).toBe('correios-br');
+    // ParcelsApp names South Africa's post after the country.
+    expect(carrierIdFromName('South Africa Post Office')).toBe('south-african-post-office');
     expect(brandCarrierIds('DPD UK')).toEqual([]);
     expect(brandCarrierIds('Swiss Post')).toEqual([]);
   });
@@ -192,7 +194,7 @@ describe('carrier names reported by universal providers', () => {
     'La Poste', 'La Poste (Colissimo)', 'Chronopost France', 'FedEx', 'India Post', 'Posti', 'UPS',
     'Chronopost Portugal', 'Correos Chile', 'Royal Mail (UK)', 'DHL', 'DHL Express', 'GLS Italy', 'DPD UK',
     'Finland Post', 'Spain Post', 'Portugal CTT', 'Portugal Post - Portugal CTT', 'Italy Post', 'Deutsche Post - DHL Paket', 'Correos de España', 'Correos Spain',
-    'Austria Post', 'Brazil Post',
+    'Austria Post', 'Brazil Post', 'South Africa Post Office',
   ])('knows %s from the catalog', (name) => {
     expect(isKnownCarrierName(name)).toBe(true);
   });

@@ -27059,7 +27059,8 @@ export const CARRIER_CATALOG = {
       "SAPO",
       "SA Post Office",
       "Post Office South Africa",
-      "South Africa Post"
+      "South Africa Post",
+      "South Africa Post Office"
     ],
     "countries": [
       "ZA"

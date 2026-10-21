@@ -11481,6 +11481,17 @@
     ],
     "detectionRules": [
       {
+        "pattern": "^01(?:0[1-9]|[1-9]\\d)\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
+        "pattern": "^01(?:0[1-9]|[1-9]\\d)\\d{10}[0-9A-Z]$",
+        "confidence": "low",
+        "checksum": "dpd",
+        "preferred": true
+      },
+      {
         "pattern": "^\\d{14}$",
         "confidence": "low"
       },

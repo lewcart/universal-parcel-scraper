@@ -404,6 +404,20 @@ describe('wave seven courier rules', () => {
     }
   });
 
+  it('suggests DPD Germany first for its depot codes and asks it first wherever the parcel is looked up', () => {
+    for (const number of ['01010000000001', '01200000000001', '01990000000001', '012000000000019', '019900000000016']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates?.[0], number).toBe('dpd-de');
+      // DPD Germany knows only a parcel that is in Germany, so asking it first files no other network's parcel.
+      for (const countryHint of [undefined, 'DE', 'FR', 'GB', 'ES']) {
+        expect(recognitionAskedCarriers(number, { countryHint })[0], `${number} ${countryHint}`).toBe('dpd-de');
+      }
+    }
+    for (const number of ['01000000000001', '02000000000001', '09440000000001', '012000000000010', '0120000000001']) {
+      expect(detectCarrierMatch(number).preferred ?? [], number).not.toContain('dpd-de');
+    }
+  });
+
   it('suggests Drop2Shop for GLB and thirteen digits without naming it', () => {
     expect(detectCarrierMatch('GLB0000000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['drop2shop'] });
     for (const number of ['GLB000000000001', 'GLB00000000000001', 'GLC0000000000001']) {

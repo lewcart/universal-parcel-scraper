@@ -11483,6 +11483,17 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
+        "pattern": "^01(?:0[1-9]|[1-9]\\d)\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
+        "pattern": "^01(?:0[1-9]|[1-9]\\d)\\d{10}[0-9A-Z]$",
+        "confidence": "low",
+        "checksum": "dpd",
+        "preferred": true
+      },
+      {
         "pattern": "^\\d{14}$",
         "confidence": "low"
       },
@@ -32532,7 +32543,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "domex": [],
   "dpd-at": ["dpd-at-1"],
   "dpd-be": ["dpd-be-1"],
-  "dpd-de": ["dpd-de-1","dpd-de-2"],
+  "dpd-de": ["dpd-de-3","dpd-de-4","dpd-de-1","dpd-de-2"],
   "dpd-ie": [],
   "dpd-nl": ["dpd-nl-1"],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],

@@ -12,6 +12,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-de",
           "dpd",
           "dpd-fr",
           "ciblex",
@@ -19,7 +20,6 @@
           "brt",
           "dhl-ecommerce-uk",
           "dpd-be",
-          "dpd-de",
           "dpd-nl",
           "dpd-uk"
         ]
@@ -218,6 +218,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-de",
           "dpd",
           "dpd-fr",
           "ciblex",
@@ -226,7 +227,6 @@
           "brt",
           "dhl-ecommerce-uk",
           "dpd-be",
-          "dpd-de",
           "dpd-nl",
           "dpd-uk"
         ]

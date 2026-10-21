@@ -3945,6 +3945,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -3953,16 +3954,18 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "hermes-de",
       "dpd-be",
       "dpd",
-      "dpd-nl",
-      "dpd-de"
+      "dpd-nl"
     ]
   },
   {
@@ -3970,14 +3973,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "chronopost",
-      "dpd-de",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
-      "dpd",
       "dpd-de",
+      "dpd",
       "chronopost",
       "dpd-uk"
     ]
@@ -3993,6 +3999,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -4000,15 +4007,17 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "dpd-be",
       "dpd",
       "dpd-nl",
-      "dpd-de",
       "seur"
     ]
   },
@@ -4441,6 +4450,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -4448,15 +4458,17 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "dpd-be",
       "dpd",
       "dpd-nl",
-      "dpd-de",
       "seur"
     ]
   },
@@ -4482,6 +4494,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -4489,15 +4502,17 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "dpd-be",
       "dpd",
       "dpd-nl",
-      "dpd-de",
       "seur"
     ]
   },
@@ -4506,6 +4521,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -4513,15 +4529,17 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "dpd-be",
       "dpd",
       "dpd-nl",
-      "dpd-de",
       "seur"
     ]
   },
@@ -4567,6 +4585,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -4574,15 +4593,17 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "dpd-be",
       "dpd",
       "dpd-nl",
-      "dpd-de",
       "seur"
     ]
   },
@@ -4591,6 +4612,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -4598,15 +4620,17 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "dpd-be",
       "dpd",
       "dpd-nl",
-      "dpd-de",
       "seur"
     ]
   },
@@ -4615,17 +4639,20 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "chronopost",
       "brt",
       "yunda",
-      "dpd-de",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
-      "dpd",
       "dpd-de",
+      "dpd",
       "chronopost",
       "dpd-uk",
       "brt"
@@ -4636,6 +4663,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -4644,16 +4672,18 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "hermes-de",
       "dpd-be",
       "dpd",
-      "dpd-nl",
-      "dpd-de"
+      "dpd-nl"
     ]
   },
   {
@@ -5032,6 +5062,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -5039,15 +5070,17 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "dpd-be",
       "dpd",
       "dpd-nl",
-      "dpd-de",
       "seur"
     ]
   },
@@ -5056,6 +5089,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-de",
       "dpd",
       "dpd-fr",
       "ciblex",
@@ -5063,15 +5097,17 @@
       "brt",
       "dhl-ecommerce-uk",
       "dpd-be",
-      "dpd-de",
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-de"
+    ],
     "asked": [
+      "dpd-de",
       "dpd-be",
       "dpd",
       "dpd-nl",
-      "dpd-de",
       "seur"
     ]
   },

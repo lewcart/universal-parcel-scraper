@@ -178,6 +178,19 @@ and driver details are not projected. The app service does not name the sender,
 nor does the guest API's unverified reply. An estimate requires a forecast in
 DPD's reply. A delivery postcode can unlock the guest API's window.
 
+## Numbers
+
+Parcels carry DPD's fourteen-digit parcel number, whose first four digits are the issuing
+depot, and labels add a check character. [Paketda's DPD label guide](https://www.paketda.de/dpd/dpd-paketlabel.php)
+reads the depot of the sender's region there, and its [list of DPD depots in Germany](https://www.paketda.de/paketdepot-dpd.html)
+numbers them 0101 to 0199, with two more in the 0200s. `dpd-de-3` and `dpd-de-4` claim fourteen
+digits opening with 0101 to 0199, with or without the check character, at low confidence and
+list DPD Germany first, as the Austrian and Swiss rules do for their depots. Recognition asks
+DPD Germany first wherever the parcel is looked up; it knows only a parcel in Germany, so a
+parcel delivered by another network is left to that network. Other fourteen-digit numbers stay
+with the DPD entries' shared rules. The samples and their sources are in
+[`numbers.json`](numbers.json).
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/dpd-de`. Set

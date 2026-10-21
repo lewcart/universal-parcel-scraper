@@ -481,12 +481,12 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-de",
           "dpd",
           "dpd-fr",
           "chronopost",
           "brt",
           "yunda",
-          "dpd-de",
           "dpd-uk"
         ]
       },

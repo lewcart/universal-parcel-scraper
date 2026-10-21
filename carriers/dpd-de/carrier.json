@@ -98,6 +98,19 @@
   ],
   "detection": [
     {
+      "id": "dpd-de-3",
+      "pattern": "^01(?:0[1-9]|[1-9]\\d)\\d{10}$",
+      "confidence": "low",
+      "preferred": true
+    },
+    {
+      "id": "dpd-de-4",
+      "pattern": "^01(?:0[1-9]|[1-9]\\d)\\d{10}[0-9A-Z]$",
+      "confidence": "low",
+      "checksum": "dpd",
+      "preferred": true
+    },
+    {
       "id": "dpd-de-1",
       "pattern": "^\\d{14}$",
       "confidence": "low"

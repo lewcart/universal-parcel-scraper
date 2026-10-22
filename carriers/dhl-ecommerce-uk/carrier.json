@@ -23,7 +23,8 @@
       "direct"
     ],
     "recognition": {
-      "rank": 610
+      "rank": 610,
+      "pattern": "^(?:31|41|55|60)\\d{12}$"
     }
   },
   "capabilities": [

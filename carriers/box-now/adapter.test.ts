@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, BOX_NOW_ENDPOINT, BoxNowTracker } from './adapter.js';
@@ -89,6 +91,14 @@ describe('BOX NOW HTTP adapter', () => {
     undated.data[0].events[2]!.createTime = '2026-03-03 15:30';
     expect(() => parseBoxNow(undated, DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parseBoxNow({ data: {} }, DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('suggests BOX NOW for ten digits, and recognition asks it first from its countries', () => {
+    expect(detectCarrierMatch(IN_TRANSIT)).toMatchObject({ confidence: 'low', candidates: expect.arrayContaining(['box-now']) });
+    expect(detectCarrierMatch('900000001').candidates).not.toContain('box-now');
+    for (const countryHint of ['GR', 'SI']) {
+      expect(recognitionCandidates(IN_TRANSIT, { countryHint })[0]?.carrier).toBe('box-now');
+    }
   });
 
   it('recognizes a known parcel and the explicit empty list without a browser or recipient inputs', async () => {

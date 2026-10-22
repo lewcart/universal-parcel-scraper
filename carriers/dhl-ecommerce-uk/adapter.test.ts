@@ -1,5 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { STAGES } from '../../core/status/index.js';
@@ -144,5 +146,12 @@ describe('DHL eCommerce UK adapter', () => {
     const absent = adapter(environment(async () => html(fixture('missing'))));
     await expect(absent.recognize?.(NUMBER)).resolves.toEqual({ known: false });
     await expect(absent.recognize?.('JVGL0099999999')).resolves.toEqual({ known: false });
+  });
+
+  it('asks recognition only about the ranges its page shows', () => {
+    const asked = (number: string) => recognitionCandidates(number, { hint: 'dhl-ecommerce-uk' }).map(({ carrier }) => carrier);
+    for (const number of ['60120000000001', '31000000000001', '41000000000001', '55000000000001']) expect(asked(number)[0], number).toBe('dhl-ecommerce-uk');
+    expect(detectCarrierMatch('12000000000001').candidates).toContain('dhl-ecommerce-uk');
+    expect(asked('12000000000001')).not.toContain('dhl-ecommerce-uk');
   });
 });

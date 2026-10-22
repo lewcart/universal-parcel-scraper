@@ -329,9 +329,9 @@ describe('Metropolitan Warehouse twelve-digit numbers', () => {
       // The check is HTTP; the browser phase does not ask it.
       expect(recognitionCandidates(number, { phase: 'browser' }).map(({ carrier }) => carrier), number).not.toContain('metropolitan-warehouse');
     }
-    // A US caller asks Metropolitan first; without a hint the commoner twelve-digit carriers keep the first batch.
+    // A US caller asks Metropolitan first; without a hint the commoner twelve-digit carriers come before it.
     expect(recognitionCandidates('500000000013', { countryHint: 'US' })[0]).toMatchObject({ carrier: 'metropolitan-warehouse', countryMatch: 'home' });
-    expect(recognitionCandidates('500000000013').slice(0, 5).map(({ carrier }) => carrier)).not.toContain('metropolitan-warehouse');
+    expect(recognitionCandidates('500000000013').map(({ carrier }) => carrier).at(-1)).toBe('metropolitan-warehouse');
   });
 
   it('leaves Metropolitan out for other lengths and for letters', () => {

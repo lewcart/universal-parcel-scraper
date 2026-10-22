@@ -1184,6 +1184,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "relais-colis",
       "recognitionRank": 690,
+      "recognitionPattern": "^[A-Z0-9]{12,16}$",
       "localClocks": true
     },
     "canaryUrl": "https://www.relaiscolis.com/colis/suivre",
@@ -3674,11 +3675,14 @@ export const CARRIER_CATALOG = {
   "correos-chile": {
     "displayName": "Correos de Chile",
     "color": "#d9232d",
+    "aliases": [
+      "Correos Chile"
+    ],
     "countries": [
       "CL"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
       "adapter": "correos-chile",
@@ -4038,6 +4042,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "sto",
       "recognitionRank": 540,
+      "recognitionPattern": "^77\\d{13}$",
       "localClocks": true
     },
     "canaryUrl": "https://page.sto.cn/ued-projects/sto-customer-onlinekf",
@@ -4138,7 +4143,6 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "zto",
-      "recognitionRank": 51,
       "browser": true
     },
     "canaryUrl": "https://www.zto.com/check",
@@ -8032,7 +8036,8 @@ export const CARRIER_CATALOG = {
       "GR",
       "BG",
       "HR",
-      "CY"
+      "CY",
+      "SI"
     ],
     "selectable": true,
     "timezone": "Europe/Athens",
@@ -8044,7 +8049,12 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://boxnow.cy/track",
     "trackingSearchUrl": "https://boxnow.cy/track",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "bringer-parcel": {
     "displayName": "Bringer Parcel Xpress",
@@ -11050,7 +11060,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-uk",
-      "recognitionRank": 610
+      "recognitionRank": 610,
+      "recognitionPattern": "^(?:31|41|55|60)\\d{12}$"
     },
     "canaryUrl": "https://track.dhlecommerce.co.uk/",
     "trackingUrlTemplate": "https://track.dhlecommerce.co.uk/?con={trackingNumber}",
@@ -32881,7 +32892,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "border-express": ["border-express-1"],
   "bosta": [],
   "botswana-post": [],
-  "box-now": [],
+  "box-now": ["box-now-1"],
   "bringer-parcel": ["bringer-parcel-1"],
   "bts-uz": [],
   "budbee": [],

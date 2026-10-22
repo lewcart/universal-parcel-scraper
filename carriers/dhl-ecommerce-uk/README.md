@@ -39,7 +39,8 @@ and UK Mail, through its tracking page. German DHL Paket is
 - Fourteen digits is also the shape of DPD, BRT and other numbers, so detection
   offers this carrier as one candidate and the page's answer attributes the
   shipment. It suggests this carrier first for numbers starting with 6012, the
-  range its tracking page shows most.
+  range its tracking page shows most. Recognition asks it only about the ranges its
+  page and DHL's examples show, starting 31, 41, 55 or 60.
 - The page drops a shipment some time after delivery and then answers as for an
   unknown number.
 - Calling cards and customer references need the delivery postcode and are not

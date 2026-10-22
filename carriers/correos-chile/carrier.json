@@ -1,7 +1,9 @@
 {
   "id": "correos-chile",
   "displayName": "Correos de Chile",
-  "aliases": [],
+  "aliases": [
+    "Correos Chile"
+  ],
   "region": {
     "countries": [
       "CL"
@@ -11,7 +13,7 @@
     "color": "#d9232d"
   },
   "selectable": true,
-  "timezone": "UTC",
+  "timezone": "America/Santiago",
   "tracking": {
     "mode": "automatic",
     "adapter": "correos-chile",

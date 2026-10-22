@@ -52,7 +52,9 @@ merchant. The customer-service trace is the anonymous route left. The same backe
 
 An unknown waybill and an expired one get the same empty list, so tracking finds neither and
 recognition calls both unknown. Twelve- and thirteen-digit waybills are older formats. Other
-carriers' numbers share both detected lengths, so detection only suggests STO. A new salt or
+carriers' numbers share both detected lengths, so detection only suggests STO. Recognition asks
+STO only about fifteen-digit `77` waybills: the twelve-digit numbers it was asked about were
+other carriers'. A new salt or
 label in STO's page stops lookups until the constants are updated.
 
 ## Testing

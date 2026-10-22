@@ -417,6 +417,12 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
+  it('reads Correos de Chile\'s scans on Santiago\'s clock', () => {
+    // Correos de Chile's page shows the scan at 10:43, in Chile's summer time.
+    const payload = { carriers: ['Correos Chile'], states: [{ date: '2026-09-11T10:43:00Z', status: 'En tránsito', carrier: 0 }] };
+    expect(parseParcelsAppResponse(payload, number, identity()).events?.[0]?.time).toBe('2026-09-11T13:43:00.000Z');
+  });
+
   it('falls back to the parcel carrier\'s zone when a scan names no usable carrier or place', () => {
     const payload = { carriers: ['Example Parcel Co'], states: [{ date: '2026-06-10T14:05:00+00:00', status: 'Return to sender', carrier: 0 }] };
     expect(parseParcelsAppResponse(payload, number, identity(), 'Europe/Zurich').events?.[0]?.time).toBe('2026-06-10T12:05:00.000Z');

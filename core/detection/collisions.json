@@ -8,7 +8,8 @@
       "packeta",
       "relais-colis",
       "tipsa",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "box-now"
     ],
     "reason": "These carriers accept the same numeric length without a DHL Express checksum, and Packeta's packet ID is ten digits without its Z. Direct tracking must confirm the carrier."
   },
@@ -20,7 +21,8 @@
       "mondial-relay",
       "relais-colis",
       "tipsa",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "box-now"
     ],
     "reason": "These carriers accept the same numeric length without a DHL Express checksum. Packeta's packet ID never starts with 0. Direct tracking must confirm the carrier."
   },
@@ -1300,7 +1302,8 @@
       "dhl-express",
       "dhl-ecommerce-es",
       "acs-courier",
-      "geniki-taxydromiki"
+      "geniki-taxydromiki",
+      "box-now"
     ],
     "reason": "10-digit numbers are shared by several carriers; the number stays a low-confidence suggestion. ACS Courier and Geniki Taxydromiki numbers pass the same modulo-7 check as DHL Express waybills."
   },
@@ -1315,7 +1318,8 @@
       "dhl-express",
       "dhl-ecommerce-es",
       "acs-courier",
-      "geniki-taxydromiki"
+      "geniki-taxydromiki",
+      "box-now"
     ],
     "reason": "ACS Courier and Geniki Taxydromiki numbers are ten plain digits that pass the same check as DHL Express waybills. Packeta prints no leading zero. The number stays a low-confidence suggestion."
   },
@@ -1328,7 +1332,8 @@
       "relais-colis",
       "tipsa",
       "dhl-express",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "box-now"
     ],
     "reason": "10-digit numbers are shared by several carriers; the number stays a low-confidence suggestion. Packeta's packet ID never starts with 0."
   },
@@ -3813,7 +3818,8 @@
       "estafeta",
       "mondial-relay",
       "relais-colis",
-      "tipsa"
+      "tipsa",
+      "box-now"
     ],
     "reason": "Without its hyphen CDL's order number is ten digits, which DHL, Estafeta, Mondial Relay, Relais Colis, Tipsa and DHL eCommerce Spain also print; CDL stays a low-confidence suggestion."
   },
@@ -4986,7 +4992,8 @@
       "mondial-relay",
       "packeta",
       "relais-colis",
-      "tipsa"
+      "tipsa",
+      "box-now"
     ],
     "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept, and Packeta's packet ID is ten digits without its Z. Direct tracking must confirm the carrier."
   },
@@ -5003,7 +5010,8 @@
       "relais-colis",
       "tipsa",
       "acs-courier",
-      "geniki-taxydromiki"
+      "geniki-taxydromiki",
+      "box-now"
     ],
     "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept. A passing modulo-7 check prioritizes DHL Express, ACS Courier and Geniki Taxydromiki but does not establish any of them; direct tracking must confirm the carrier."
   },
@@ -5016,7 +5024,8 @@
       "gls-es",
       "mondial-relay",
       "relais-colis",
-      "tipsa"
+      "tipsa",
+      "box-now"
     ],
     "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept. Direct tracking must confirm the carrier."
   },
@@ -5030,7 +5039,8 @@
       "gls-es",
       "mondial-relay",
       "relais-colis",
-      "tipsa"
+      "tipsa",
+      "box-now"
     ],
     "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept. A passing waybill check prioritizes DHL Express but does not establish it; direct tracking must confirm the carrier."
   },
@@ -5509,7 +5519,8 @@
       "estafeta",
       "mondial-relay",
       "relais-colis",
-      "tipsa"
+      "tipsa",
+      "box-now"
     ],
     "reason": "orian numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },

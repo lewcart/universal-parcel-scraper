@@ -2,6 +2,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { IndeterminateError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { resolveResult } from '../../core/result/resolve.js';
 import {
@@ -114,6 +116,13 @@ describe('Relais Colis tracking input', () => {
     ]) {
       expect(() => normalizeRelaisColisTrackingNumber(value)).toThrow('10 to 16');
     }
+  });
+
+  it('asks recognition only about the twelve to sixteen characters its help gives', () => {
+    const asked = (number: string) => recognitionCandidates(number, { hint: 'relais-colis' }).map(({ carrier }) => carrier);
+    expect(detectCarrierMatch('1234567890').candidates).toContain('relais-colis');
+    expect(asked('1234567890')).not.toContain('relais-colis');
+    expect(asked('VD1234567890')[0]).toBe('relais-colis');
   });
 });
 

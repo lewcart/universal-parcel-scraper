@@ -21,7 +21,8 @@
       "direct"
     ],
     "recognition": {
-      "rank": 690
+      "rank": 690,
+      "pattern": "^[A-Z0-9]{12,16}$"
     },
     "localClocks": true
   },

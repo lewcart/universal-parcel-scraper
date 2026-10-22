@@ -473,12 +473,6 @@
     "reason": "Bosta's seven- to ten-digit shipment numbers are a bare digit run many carriers share."
   },
   {
-    "carrier": "box-now",
-    "pattern": "^\\d{10}$",
-    "kind": "by_design",
-    "reason": "Ten digits are shared by several carriers and nothing in the number points to BOX NOW."
-  },
-  {
     "carrier": "bts-uz",
     "pattern": "^\\d{11,12}$",
     "kind": "by_design",

@@ -19,9 +19,6 @@
       "direct",
       "trawl"
     ],
-    "recognition": {
-      "rank": 51
-    },
     "browser": true
   },
   "capabilities": [

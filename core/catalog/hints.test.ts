@@ -197,8 +197,8 @@ describe('carrier names reported by universal providers', () => {
   });
 
   it.each([
-    // Another company under the brand, a country without one zone, a brand with several networks.
-    'Correos Chile', 'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri Group',
+    // A country without one zone, a brand with several networks.
+    'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri Group',
     // A carrier whose scans are instants, followed by a country other than its home.
     'Bpost Netherlands', 'Aramex Jordan',
     // No network there, two networks there, a worldwide network, a network on another clock.
@@ -273,6 +273,7 @@ describe('zones implied by carrier names', () => {
     expect(carrierIdFromName('DHL Parcel Poland')).toBe('dhl-ecommerce-pl');
     expect(carrierIdFromName('GLS Italy')).toBe('gls-it');
     expect(carrierIdFromName('GLS Poland')).toBe('gls-pl');
+    expect(carrierIdFromName('Correos Chile')).toBe('correos-chile');
     // DPD Portugal took over Chronopost Portugal's network.
     expect(carrierIdFromName('Chronopost Portugal')).toBe('dpd-pt');
     for (const name of ['GLS Hungary', 'DHL Parcel Italy', 'DPD Group']) expect(carrierIdFromName(name)).toBeUndefined();

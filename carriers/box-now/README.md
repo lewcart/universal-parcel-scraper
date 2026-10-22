@@ -1,7 +1,7 @@
 # BOX NOW
 
-Tracks BOX NOW locker parcels in Greece, Bulgaria, Croatia and Cyprus through the anonymous
-API behind its country sites' trackers.
+Tracks BOX NOW locker parcels in Greece, Bulgaria, Croatia, Cyprus and Slovenia through the
+anonymous API behind its country sites' trackers.
 
 ## How it works
 
@@ -9,8 +9,8 @@ The [Cypriot tracker](https://boxnow.cy/track) posts `{"parcelId": ...}` as JSON
 `https://api-production.boxnow.cy/api/v1/parcels:track`, and the adapter sends that one
 request. No account, cookie, key or browser is needed. The sites load an invisible reCAPTCHA,
 but only storage extensions, PIN resends and returns send its token; tracking does not. The
-Greek site's pages sit behind a Cloudflare challenge, and the Greek, Bulgarian and Croatian
-sites post to their own API hosts, which answer the same parcels.
+Greek site's pages sit behind a Cloudflare challenge, and the Greek, Bulgarian, Croatian and
+Slovenian sites post to their own API hosts, which answer the same parcels.
 
 The reply must hold exactly one parcel with the whole requested id. An empty list is what the
 trackers show as a number that does not exist, so it is not found. Blocked pages, HTTP errors
@@ -20,8 +20,9 @@ and malformed replies keep their own failure kinds. Recognition uses the same lo
 
 BOX NOW's [partner API manual](https://www.boxnow.bg/media/PDF/API%20integration%20manual%20BOX%20NOW%20-%20EN%20v1.69.pdf)
 says a parcel id is always ten digits, so other inputs are invalid without a request. Ten
-digits are shared with several carriers and nothing in the number points to BOX NOW, so no
-detection rule claims them and preflight does not ask this adapter.
+digits are shared with several carriers and nothing in the number points to BOX NOW, so
+`box-now-1` only suggests it. Its lookup is one anonymous request that answers an unknown id
+with an empty list, so recognition asks it, first for a lookup from one of its countries.
 
 ## Notes
 

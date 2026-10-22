@@ -23,7 +23,7 @@ describe('ZTO', () => {
     expect(detectCarrierMatch(number).candidates).toContain('zto');
     expect(detectCarrierMatch(number).carrier).not.toBe('zto');
     expect(recognitionCandidates(number, { phase: 'browser' }).map(row => row.carrier)).not.toContain('zto');
-    expect(recognitionCandidates(number, { hint: 'zto' })[0]?.carrier).toBe('zto');
+    expect(recognitionCandidates(number, { hint: 'zto' }).map(row => row.carrier)).not.toContain('zto');
     expect(normalizeZtoNumber('7999 0000000001')).toBe(number);
     expect(normalizeZtoNumber('999000000001')).toBe('999000000001');
     for (const input of [number + '0', '89990000000001', 'ABC79990000000001']) expect(() => normalizeZtoNumber(input)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));

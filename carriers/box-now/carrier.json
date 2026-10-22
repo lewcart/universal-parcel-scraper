@@ -10,7 +10,8 @@
       "GR",
       "BG",
       "HR",
-      "CY"
+      "CY",
+      "SI"
     ]
   },
   "brand": {
@@ -80,5 +81,11 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "box-now-1",
+      "pattern": "^\\d{10}$",
+      "confidence": "low"
+    }
+  ]
 }

@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { failureKind } from '../../core/errors/hint.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
@@ -37,6 +39,13 @@ describe('STO trace parser', () => {
     for (const number of ['77700000000001', '7770000000000011', 'STO000000000001', '123']) {
       expect(() => normalizeStoNumber(number)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     }
+  });
+
+  it('asks recognition only about current waybills', () => {
+    const asked = (number: string) => recognitionCandidates(number, { hint: 'sto' }).map(({ carrier }) => carrier);
+    expect(detectCarrierMatch('000000000001').candidates).toContain('sto');
+    expect(asked('000000000001')).not.toContain('sto');
+    expect(asked(NUMBER)[0]).toBe('sto');
   });
 
   it('treats an empty trace as not found and a refused signature as a challenge', () => {

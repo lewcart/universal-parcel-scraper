@@ -109,6 +109,10 @@ carrier.
   `-05:00` in Indiana, which keeps Eastern time, an hour late against USPS's own page. A row
   whose place names its state is read in that state's zone, as the
   [USPS adapter](../../carriers/usps/README.md) reads it; any other keeps 17TRACK's reading.
+- Correos de Chile's leg (carrier key 3101) shows its wall clocks, and 17TRACK labels them
+  `-04:00`, Chile's offset outside summer time, in summer too: an hour late against
+  Correos de Chile's page and Correios Brazil's copies. That leg's `time_raw` is read on
+  Santiago's clock, unless its place names a country on one clock.
 - Asendia USA (carrier key 100016) relays A1's tracking, which dates every scan in UTC,
   partners' scans too, and 17TRACK labels those digits with US Eastern time. A Swiss Post
   scan at 18:20 `+02:00` is A1's 16:20, which 17TRACK showed as 16:20 `-04:00` (checked

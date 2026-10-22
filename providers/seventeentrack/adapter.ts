@@ -187,6 +187,17 @@ const DAI_POST = 100790;
  */
 const USPS = 21051;
 
+/**
+ * 17TRACK's carrier 3101, Correos de Chile, shows Correos de Chile's wall
+ * clocks (`time_raw` has no zone) and labels them -04:00, Chile's offset
+ * outside summer time, in summer too: a scan Correos de Chile's page shows at
+ * 10:43 on 11 September came as 10:43-04:00, an hour after Correios Brazil's
+ * copy of it at 10:43-03:00 (checked 2026-10-22). A row is read on Santiago's
+ * clock, the catalog's for Correos de Chile, unless its place names a country
+ * on one clock.
+ */
+const CORREOS_CHILE = 3101;
+
 /** The recipient's country, the only field of the address read. */
 function recipientCountry(shipment: Record<string, unknown>): string | null {
   const country = isRecord(shipment.shipping_info) && isRecord(shipment.shipping_info.recipient_address)
@@ -369,6 +380,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const hywl = reported.key === HYWL;
     const daiPost = reported.key === DAI_POST;
     const usps = reported.key === USPS;
+    const chile = reported.key === CORREOS_CHILE;
     for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
@@ -379,11 +391,12 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
         : hywl && hywlInChina(text(raw.location)) ? HYWL_CHINA_ZONE : null;
       // A USPS facility's clock in its state's zone, where its place names one.
       const facility = usps ? uspsScanZone(text(raw.location)) : null;
-      // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's, Shiprocket's or DAI Post's, on which 17TRACK puts one offset for the whole parcel.
+      // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's, Correos de Chile's, Shiprocket's or DAI Post's, on which 17TRACK puts one offset for the whole parcel.
       const wall = relayed ? rawClock(raw)
-        : facility || relaysFacilityClock(name) || utc || nz || exchange || own || shiprocket || daiPost ? facilityWall(raw) : null;
+        : facility || relaysFacilityClock(name) || utc || nz || exchange || own || chile || shiprocket || daiPost ? facilityWall(raw) : null;
       const zone = !wall ? null : relayed ?? facility ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
-        : nz ? 'Pacific/Auckland' : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null)
+        : nz ? 'Pacific/Auckland' : chile ? facilityZone(text(raw.location)) ?? 'America/Santiago'
+        : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null)
         : daiPost ? daiPostRelayZone(text(raw.description), text(raw.location)) : facilityZone(text(raw.location)));
       const placed = wall && zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;
       let parsed: CarrierEvent | null;

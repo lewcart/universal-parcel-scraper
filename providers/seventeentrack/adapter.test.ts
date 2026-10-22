@@ -281,6 +281,19 @@ describe('17TRACK result parsing', () => {
     expect(parse17TrackResponse(reply(100999, [indiana]), number).events?.[0]?.time).toBe('2026-05-08T01:16:00.000Z');
   });
 
+  it('reads Correos de Chile\'s scans on Santiago\'s clock, in summer time too', () => {
+    // Public shape: Correos de Chile's wall clock in time_raw with no zone, under 17TRACK's -04:00.
+    const row = (date: string, time: string, location: string | null) => ({ time_iso: `${date}T${time}-04:00`, time_utc: null,
+      time_raw: { date, time, timezone: null }, description: 'En tránsito', location, stage: null, sub_status: 'InTransit_Other' });
+    const reply = (key: number, events: unknown[]): Payload => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key, name: 'Correos Chile', country: 'CL' }, events }] } } }] });
+    const parsed = parse17TrackResponse(reply(3101, [row('2026-09-11', '10:43:00', 'EXAMPLE TOWN'), row('2026-06-02', '09:15:00', null)]), number);
+    expect(parsed.events?.map((event) => event.time)).toEqual(['2026-09-11T13:43:00.000Z', '2026-06-02T13:15:00.000Z']);
+    expect(parsed.events?.[0]).toMatchObject({ provider_time_iso: '2026-09-11T10:43:00-04:00', time_provenance: 'provider_inferred' });
+    // Another feed keeps 17TRACK's reading.
+    expect(parse17TrackResponse(reply(100999, [row('2026-09-11', '10:43:00', null)]), number).events?.[0]?.time).toBe('2026-09-11T14:43:00.000Z');
+  });
+
   it('reads NZ Post\'s clock at the scan\'s own date, abroad too when nothing names a country', () => {
     const row = (date: string, time: string, offset: string, description: string) => ({
       time_iso: `${date}T${time}${offset}`, time_utc: null, time_raw: { date, time, timezone: null },

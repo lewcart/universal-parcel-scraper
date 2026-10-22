@@ -30443,7 +30443,7 @@
         "confidence": "high"
       },
       {
-        "pattern": "^FMP\\dUW\\d[A-Z]{9}$",
+        "pattern": "^[A-Z]{3}\\dUW\\d[A-Z0-9]{9}$",
         "confidence": "low",
         "preferred": true
       }

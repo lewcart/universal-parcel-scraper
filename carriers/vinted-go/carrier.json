@@ -103,8 +103,8 @@
       "confidence": "high"
     },
     {
-      "id": "vinted-go-fmp",
-      "pattern": "^FMP\\dUW\\d[A-Z]{9}$",
+      "id": "vinted-go-uw",
+      "pattern": "^[A-Z]{3}\\dUW\\d[A-Z0-9]{9}$",
       "confidence": "low",
       "preferred": true
     }

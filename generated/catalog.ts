@@ -30445,7 +30445,7 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       },
       {
-        "pattern": "^FMP\\dUW\\d[A-Z]{9}$",
+        "pattern": "^[A-Z]{3}\\dUW\\d[A-Z0-9]{9}$",
         "confidence": "low",
         "preferred": true
       }
@@ -33069,7 +33069,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "via-cargo": [],
   "viettel-post": ["viettel-post-1"],
   "vimenpaq": [],
-  "vinted-go": ["vinted-go-1","vinted-go-vgs","vinted-go-fmp"],
+  "vinted-go": ["vinted-go-1","vinted-go-vgs","vinted-go-uw"],
   "vitran-express": [],
   "vnpost": [],
   "vozovoz": [],

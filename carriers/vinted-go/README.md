@@ -60,9 +60,9 @@ claims them at high confidence: the prefix is Vinted Go's own.
 
 The service also answers codes of sixteen capital letters and digits, mostly letters. The adapter
 takes them when an aggregator names Vinted Go for one or the user picks it. No public sample shows
-the form. Codes of `FMP`, a digit, `UW`, a digit and nine letters were answered with Vinted Go's
-own scans, so `vinted-go-fmp` suggests Vinted Go first for that layout, at low confidence: `FMP`
-also opens codes that wrap another carrier's number.
+the form. Codes of three letters, a digit, `UW`, a digit and nine letters or digits were answered
+with Vinted Go's own scans, so `vinted-go-uw` suggests Vinted Go first for that layout, at low
+confidence. `FMP` also opens codes that wrap another carrier's number in another layout.
 
 ## Links
 

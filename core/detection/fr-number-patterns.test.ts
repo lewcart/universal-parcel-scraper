@@ -73,10 +73,13 @@ describe('French carrier number candidates', () => {
     }
   });
 
-  it('suggests Vinted Go first for FMP, a digit, UW, a digit and nine letters only', () => {
-    expect(detectCarrierMatch('FMP1UW2ABCDEFGHI')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['vinted-go'] });
-    expect(recognitionCandidates('FMP1UW2ABCDEFGHI')[0]).toMatchObject({ carrier: 'vinted-go', preferred: true });
-    for (const number of ['FMP5P12A34567890', 'FMP1UW2ABCDEFGH1', 'FMP1UW2ABCDEFGH', 'FMP1UW2ABCDEFGHIJ', 'FMX1UW2ABCDEFGHI', 'FMP1UX2ABCDEFGHI']) {
+  it('suggests Vinted Go first for three letters, a digit, UW, a digit and nine letters or digits only', () => {
+    for (const number of ['FMP1UW2ABCDEFGHI', 'ABC1UW2DEFGHI34J', 'FMP1UW2ABCDEFGH1', 'FMX1UW2ABCDEFGHI']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['vinted-go'] });
+      expect(recognitionCandidates(number)[0], number).toMatchObject({ carrier: 'vinted-go', preferred: true });
+    }
+    // FMP also opens codes wrapping another carrier's number, in another layout.
+    for (const number of ['FMP5P12A34567890', 'FMP1UW2ABCDEFGH', 'FMP1UW2ABCDEFGHIJ', 'FMP1UX2ABCDEFGHI', 'ABCDUW2DEFGHI34J', 'AB12UW2DEFGHI34J', 'ABC1UW2DEFGHI34']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('vinted-go');
     }
   });

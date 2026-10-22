@@ -62528,6 +62528,20 @@
     ]
   },
   {
+    "input": "ABC1UW2DEFGHI34J",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "vinted-go"
+    ],
+    "preferred": [
+      "vinted-go"
+    ],
+    "asked": [
+      "vinted-go"
+    ]
+  },
+  {
     "input": "ABC26197473",
     "carrier": "l-post",
     "confidence": "high",

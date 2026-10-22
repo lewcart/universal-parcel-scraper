@@ -2,8 +2,8 @@
 
 Tracks waybills of FIRST LINE (壹号专线, 深圳市壹号专线供应链有限公司), a Shenzhen forwarder of
 the 1ST group (一代国际集团, 1st56.com), on its own tracker at firstline56.com. The group's
-forwarders share one system and print 1ST waybills; the group's tracking page is offline, and
-FIRST LINE's tracker answers them.
+forwarders print 1ST waybills; the group's tracking page is offline and links to 17TRACK, and
+FIRST LINE's tracker answers many of them.
 
 ## How it works
 
@@ -37,7 +37,8 @@ The tracker answers plain HTTP only. No account, key, CAPTCHA or browser is need
 ## Limitations
 
 The tracker names no delivery partner, last-mile number or destination country, and the
-places' postcodes are dropped.
+places' postcodes are dropped. It does not know every 1ST waybill: one it answers as unknown
+can still be in transit, and the providers that relay 1ST's rows track it.
 
 ## Numbers
 

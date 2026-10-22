@@ -16,7 +16,7 @@
     "color": "#dc0032"
   },
   "selectable": true,
-  "timezone": "UTC",
+  "timezone": "Europe/Rome",
   "tracking": {
     "mode": "automatic",
     "adapter": "brt",

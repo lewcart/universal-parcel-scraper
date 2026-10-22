@@ -133,6 +133,14 @@ describe('the catalog lookups the server reads', () => {
     expect(() => carrierDefinition('not-a-carrier')).toThrow(RangeError);
   });
 
+  it('gives a carrier that delivers on one clock that zone, and none to one that delivers on several', () => {
+    expect(carrierTimezone('brt')).toBe('Europe/Rome');
+    expect(carrierTimezone('royal-mail')).toBe('Europe/London');
+    expect(carrierTimezone('parcelforce')).toBe('Europe/London');
+    expect(carrierTimezone('the-courier-guy')).toBe('Africa/Johannesburg');
+    for (const carrier of ['ups', 'australia-post', 'ecoscooting', 'inpost', 'gofo']) expect(carrierTimezone(carrier), carrier).toBe('UTC');
+  });
+
   it('anchors the server requirement filter and leaves the form filter unanchored', () => {
     // A 26-digit Mondial Relay label barcode carries its own check digits.
     expect(activeRequirements('mondial-relay', '12123456780101006623123454')).toEqual([]);

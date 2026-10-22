@@ -14,7 +14,7 @@
     "color": "#fc4c02"
   },
   "selectable": true,
-  "timezone": "UTC",
+  "timezone": "Europe/Rome",
   "tracking": {
     "mode": "automatic",
     "adapter": "gofo-it",

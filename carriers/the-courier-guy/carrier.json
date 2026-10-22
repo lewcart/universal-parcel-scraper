@@ -11,7 +11,7 @@
     "color": "#264796"
   },
   "selectable": true,
-  "timezone": "UTC",
+  "timezone": "Africa/Johannesburg",
   "tracking": {
     "mode": "automatic",
     "adapter": "the-courier-guy",

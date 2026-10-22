@@ -2088,7 +2088,7 @@ export const CARRIER_CATALOG = {
       "GB"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
       "adapter": "royal-mail",
@@ -2138,7 +2138,7 @@ export const CARRIER_CATALOG = {
       "GB"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
       "adapter": "royal-mail",
@@ -2917,7 +2917,7 @@ export const CARRIER_CATALOG = {
       "IT"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
       "adapter": "brt",
@@ -5008,7 +5008,7 @@ export const CARRIER_CATALOG = {
       "ZA"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
       "adapter": "the-courier-guy",
@@ -15597,7 +15597,7 @@ export const CARRIER_CATALOG = {
       "FR"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-fr",
@@ -15648,7 +15648,7 @@ export const CARRIER_CATALOG = {
       "IT"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-it",
@@ -15695,7 +15695,7 @@ export const CARRIER_CATALOG = {
       "NL"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-nl",

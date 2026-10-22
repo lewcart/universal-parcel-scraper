@@ -2086,7 +2086,7 @@
       "GB"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
       "adapter": "royal-mail",
@@ -2136,7 +2136,7 @@
       "GB"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
       "adapter": "royal-mail",
@@ -2915,7 +2915,7 @@
       "IT"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
       "adapter": "brt",
@@ -5006,7 +5006,7 @@
       "ZA"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
       "adapter": "the-courier-guy",
@@ -15595,7 +15595,7 @@
       "FR"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-fr",
@@ -15646,7 +15646,7 @@
       "IT"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-it",
@@ -15693,7 +15693,7 @@
       "NL"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-nl",

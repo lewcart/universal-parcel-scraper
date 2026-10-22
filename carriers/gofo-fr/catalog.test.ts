@@ -15,16 +15,16 @@ const reply = (region: string) => new Response(readFileSync(new URL(`../gofo-${r
 afterEach(() => vi.useRealTimers());
 
 describe.each([
-  { id: 'gofo-fr' as const, region: 'fr', number: 'GFFR00000000000001' },
-  { id: 'gofo-it' as const, region: 'it', number: 'GFIT00000000000001' },
-  { id: 'gofo-nl' as const, region: 'nl', number: 'GFNL00000000000001' },
-])('$id routing', ({ id, region, number }) => {
+  { id: 'gofo-fr' as const, region: 'fr', zone: 'Europe/Paris', number: 'GFFR00000000000001' },
+  { id: 'gofo-it' as const, region: 'it', zone: 'Europe/Rome', number: 'GFIT00000000000001' },
+  { id: 'gofo-nl' as const, region: 'nl', zone: 'Europe/Amsterdam', number: 'GFNL00000000000001' },
+])('$id routing', ({ id, region, zone, number }) => {
   it('detects only its national network and routes ordinary tracking to its own direct HTTP adapter', async () => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: id, confidence: 'high' });
     for (const near of [`${number}0`, number.slice(0, -2)]) {
       expect(detectCarrierMatch(near).carrier).not.toBe(id); expect(detectCarrierMatch(near).candidates ?? []).not.toContain(id);
     }
-    expect(carrierAdapter(id)).toBe(id); expect(tracksAutomatically(id)).toBe(true); expect(carrierDefinition(id).timezone).toBe('UTC');
+    expect(carrierAdapter(id)).toBe(id); expect(tracksAutomatically(id)).toBe(true); expect(carrierDefinition(id).timezone).toBe(zone);
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(region));
     expect(await createTracker({ providers: [], fetcher }).track({ number })).toMatchObject({ carrier: id, source: id,
       result: { current_stage: 'delivered', destination_country: region.toUpperCase() } });

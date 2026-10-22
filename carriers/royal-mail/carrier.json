@@ -11,7 +11,7 @@
     "color": "#da202a"
   },
   "selectable": true,
-  "timezone": "UTC",
+  "timezone": "Europe/London",
   "tracking": {
     "mode": "automatic",
     "adapter": "royal-mail",

@@ -40,6 +40,11 @@ The receiver's country code becomes `destination_country`. The sender's
 barcode becomes `international_tracking_number` only when it is a valid S10
 number other than the one searched, as on a parcel posted abroad.
 
+Mail from abroad reaches bpost when a caller names it, a provider names it, or
+a result gives Belgium as the destination of an S10 item. bpost answers under
+the sending post's number, with the sender's side, customs at its international
+depot and its own scans up to the delivery.
+
 The reply's `deliveryPoint` is the pickup point or locker itself, apart from
 the receiver: bpost's tracker shows it with opening hours and directions from
 its own coordinates. While the parcel waits there, and once it is delivered

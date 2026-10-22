@@ -61,6 +61,8 @@ describe('national postal lookup candidates', () => {
     ['UY', 'correo-uruguayo'], ['Uruguay', 'correo-uruguayo'],
     ['FO', 'posta-faroe'], ['Faroe Islands', 'posta-faroe'],
     ['SV', 'correos-el-salvador'], ['El Salvador', 'correos-el-salvador'],
+    ['IE', 'an-post'], ['Ireland', 'an-post'], ['BE', 'bpost'], ['Belgium', 'bpost'],
+    ['AT', 'austrian-post'], ['Austria', 'austrian-post'],
     ['BR', 'correios-br'], ['Brazil', 'correios-br'],
     ['IT', 'poste-italiane'], ['Italy', 'poste-italiane'],
   ])('suggests one operator for destination %s', (country, expected) => {

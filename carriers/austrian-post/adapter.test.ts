@@ -20,6 +20,9 @@ const receivingBox = () => JSON.parse(readFileSync(new URL('./fixtures/receiving
 const ABROAD = '1000000000000000000003';
 const EURODIS = '010000000000000000000001';
 const eurodis = () => JSON.parse(readFileSync(new URL('./fixtures/eurodis.json', import.meta.url), 'utf8'));
+// A letter Deutsche Post sends to Austria, put through the letterbox.
+const INBOUND = 'LY000000005DE';
+const inbound = () => JSON.parse(readFileSync(new URL('./fixtures/inbound.json', import.meta.url), 'utf8'));
 
 describe('Austrian Post public tracking', () => {
   it('binds history to the item and classifies scans independently of the summary', () => {
@@ -114,6 +117,27 @@ describe('Austrian Post public tracking', () => {
     const unbound = fixture();
     unbound.data.einzelsendung.sendungsnummer = '010000000000000000000001';
     expect(() => parseAustrianPostResponse(unbound, NUMBER)).toThrow('different shipment');
+  });
+
+  it('follows an item another post sends to Austria from its posting abroad to the letterbox', () => {
+    const result = parseAustrianPostResponse(inbound(), INBOUND);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'eingeworfen',
+      delivered_at: '2026-03-06T10:24:35.810Z' });
+    expect(result.events?.map((event) => [event.description, event.stage])).toEqual([
+      ['eingeworfen', 'delivered'],
+      ['Sendung in Zustellung', 'out_for_delivery'],
+      ['Sendung in Bearbeitung Österreich', 'in_transit'],
+      ['Sendung in Österreich im Logistkzentrum eingetroffen', 'in_transit'],
+      ['Sendung in Bearbeitung Aufgabeland', 'in_transit'],
+      ['Sendung für Auslandstransport bereit', 'in_transit'],
+      ['Sendung ins Zielland unterwegs', 'in_transit'],
+      ['Postaufgabe im Ausland', 'accepted'],
+    ]);
+    expect(statusMap.stage('BNT', 'postaufgabe im ausland')).toBe('accepted');
+    expect(statusMap.stage('EXP', 'sendung ins zielland unterwegs')).toBe('in_transit');
+    expect(statusMap.stage('BNT', 'eingeworfen')).toBe('delivered');
+    // Only the bare wording: a notice put through the letterbox is no delivery.
+    expect(austrianPostEventStatus('BNT', '', 'Benachrichtigung eingeworfen')).toBeUndefined();
   });
 
   it('rejects a different returned item', () => {
@@ -321,6 +345,9 @@ describe('Austrian Post public tracking', () => {
     // Hermes Austria's fourteen-digit numbers, whole.
     expect(normalizeAustrianPostNumber(HERMES)).toBe(HERMES);
     for (const near of [HERMES.slice(1), `${HERMES}0`, `H${HERMES}`]) expect(() => normalizeAustrianPostNumber(near), near).toThrow(InvalidInputError);
+    // S10 numbers of its own and of mail from abroad, with a valid check digit.
+    expect(normalizeAustrianPostNumber(INBOUND.toLowerCase())).toBe(INBOUND);
+    expect(() => normalizeAustrianPostNumber('LY000000006DE')).toThrow(InvalidInputError);
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify(fixture())));
     const tracker = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
     await expect(tracker.recognize!('123')).resolves.toEqual({ known: false });

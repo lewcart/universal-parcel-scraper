@@ -68129,6 +68129,14 @@
     ]
   },
   {
+    "input": "CY226550310DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
     "input": "CY543604824DE",
     "carrier": "dhl",
     "confidence": "high",
@@ -77583,6 +77591,22 @@
     ]
   },
   {
+    "input": "LO427778687GB",
+    "carrier": "royal-mail",
+    "confidence": "high",
+    "candidates": [
+      "royal-mail"
+    ]
+  },
+  {
+    "input": "LO433506042GB",
+    "carrier": "royal-mail",
+    "confidence": "high",
+    "candidates": [
+      "royal-mail"
+    ]
+  },
+  {
     "input": "LP00061214526423",
     "carrier": "unknown",
     "confidence": "low",
@@ -78368,6 +78392,14 @@
     "confidence": "high",
     "candidates": [
       "correos-spain"
+    ]
+  },
+  {
+    "input": "LX310671202JP",
+    "carrier": "japan-post",
+    "confidence": "high",
+    "candidates": [
+      "japan-post"
     ]
   },
   {
@@ -88984,6 +89016,14 @@
     "confidence": "high",
     "candidates": [
       "ues-uy"
+    ]
+  },
+  {
+    "input": "UF164782444SE",
+    "carrier": "postnord",
+    "confidence": "high",
+    "candidates": [
+      "postnord"
     ]
   },
   {

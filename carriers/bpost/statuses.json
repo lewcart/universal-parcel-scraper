@@ -139,6 +139,37 @@
       "stage": "registered",
       "confirmedBy": "live",
       "firstSeen": "2026-09-28"
+    },
+    {
+      "wording": "Item delivered in mailbox",
+      "language": "en",
+      "stage": "delivered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22"
+    },
+    {
+      "wording": "Awaiting presentation to Customs",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Mail from abroad at the international depot, before customs."
+    },
+    {
+      "wording": "No extra costs",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Customs cleared mail from abroad without charges."
+    },
+    {
+      "wording": "Departure to distribution network",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Mail from abroad leaves the international depot for the national network."
     }
   ]
 }

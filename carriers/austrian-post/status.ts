@@ -44,8 +44,21 @@ export function austrianPostShowsEstimate(summary: string, newestReason: string)
 // made it ready for collection, as the page's summary EB then says.
 const DELIVERED = /\b(?:wurde zugestellt|aus postempfangsbox abgeholt|successfully delivered)\b/i;
 
+// Scans of an item another post sends to Austria: the sending post's posting
+// and dispatch, as Austrian Post relays them, then its own processing once the
+// item arrives. A letter put through the letterbox is delivered.
+const WORDINGS: Readonly<Record<string, ClassifiedStatus | undefined>> = {
+  'postaufgabe im ausland': SUMMARY.AN,
+  'sendung in bearbeitung aufgabeland': SUMMARY.IV,
+  'sendung für auslandstransport bereit': SUMMARY.IV,
+  'sendung ins zielland unterwegs': SUMMARY.IV,
+  'sendung in bearbeitung österreich': SUMMARY.IV,
+  eingeworfen: SUMMARY.ZU,
+};
+const byWording = (text: string) => WORDINGS[text.trim().toLowerCase()];
+
 export function austrianPostEventStatus(code: string, reason: string, text: string): ClassifiedStatus | undefined {
-  if (reason === 'ZA' || reason === 'ZPB' || DELIVERED.test(text)) return SUMMARY.ZU;
+  if (reason === 'ZA' || reason === 'ZPB' || DELIVERED.test(text) || byWording(text)?.stage === 'delivered') return SUMMARY.ZU;
   if (['BH', 'BN', 'HB', 'NZ', '2055', '2065'].includes(reason)) return { status: 'exception', stage: 'failed_attempt' };
   if (['EAW', 'HO', 'UPB', '2034'].includes(reason)) return SUMMARY.EB;
   if (/\b(?:rücksendung|zurückgesandt|return to sender)\b/i.test(text)) return SUMMARY.RE;
@@ -53,7 +66,7 @@ export function austrianPostEventStatus(code: string, reason: string, text: stri
   // IMP is the arrival in the destination country, which the page files under distribution.
   if (code === 'BEI' || code === 'PUG' || code === 'IMP' || transitScan(code, text)) return SUMMARY.IV;
   // Unmapped scan codes retain their wording for the host's classifier.
-  return SUMMARY[code];
+  return byWording(text) ?? SUMMARY[code];
 }
 
 /** A transit scan: the export hub gathers the item into an outgoing dispatch, or the item is in transit. */
@@ -65,12 +78,13 @@ function transitScan(code: string, text: string): boolean {
  * What the map says about one scan by its code and wording. Most scans take
  * their stage from the reason as well (an IZ scan with reason BH is a missed
  * delivery), so the map answers only scans the reason cannot change: a
- * delivery's wording and the transit scans.
+ * delivery's wording, the transit scans and the wordings above.
  */
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => {
     if (DELIVERED.test(wording)) return 'delivered';
-    return code && transitScan(code, wording) ? 'in_transit' : undefined;
+    if (code && transitScan(code, wording)) return 'in_transit';
+    return byWording(wording)?.stage;
   },
   gaps: [],
 };

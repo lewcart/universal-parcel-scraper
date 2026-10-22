@@ -126,6 +126,10 @@ describe('bpost direct history', () => {
     expect(classifyBpostStatus('Item available at Pick-up point')?.stage).toBe('ready_for_pickup');
     // A parcel posted abroad passes these before and after bpost's own scans.
     for (const wording of ['Arrival at facilities', 'Item has passed a checkpoint']) expect(classifyBpostStatus(wording)?.stage).toBe('in_transit');
+    // Mail from abroad waits for customs at the international depot, then leaves it for the letterbox.
+    expect(classifyBpostStatus('Awaiting presentation to Customs')?.stage).toBe('customs');
+    for (const wording of ['No extra costs', 'Departure to distribution network']) expect(classifyBpostStatus(wording)?.stage).toBe('in_transit');
+    expect(classifyBpostStatus('Item delivered in mailbox')).toEqual({ status: 'delivered', stage: 'delivered' });
     for (const wording of ['__proto__', 'constructor', 'Delivery expected']) expect(classifyBpostStatus(wording)).toBeUndefined();
   });
 

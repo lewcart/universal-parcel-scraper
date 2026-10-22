@@ -123,6 +123,69 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-18",
       "note": "The recipient took the parcel out of the Post Empfangsbox, with reason ZPB. The page then sums the parcel up as delivered, although the scan carries status IZ."
+    },
+    {
+      "code": "BNT",
+      "wording": "Postaufgabe im Ausland",
+      "language": "de",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The sending post's acceptance of an item it sends to Austria, as Austrian Post relays it."
+    },
+    {
+      "code": "BNT",
+      "wording": "Sendung in Bearbeitung Aufgabeland",
+      "language": "de",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The sending post processes an item bound for Austria."
+    },
+    {
+      "code": "BNT",
+      "wording": "Sendung für Auslandstransport bereit",
+      "language": "de",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The sending post readies an item bound for Austria for its dispatch abroad."
+    },
+    {
+      "code": "EXP",
+      "wording": "Sendung ins Zielland unterwegs",
+      "language": "de",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "An item bound for Austria leaves the sending country."
+    },
+    {
+      "code": "IMP",
+      "wording": "Sendung in Österreich im Logistkzentrum eingetroffen",
+      "language": "de",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "An item from abroad reaches an Austrian logistics centre; the wording's spelling is Austrian Post's."
+    },
+    {
+      "code": "BNT",
+      "wording": "Sendung in Bearbeitung Österreich",
+      "language": "de",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Austrian Post processes an item from abroad after its arrival."
+    },
+    {
+      "code": "BNT",
+      "wording": "eingeworfen",
+      "language": "de",
+      "stage": "delivered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "A letter put through the letterbox, after the delivery round; the page then sums the item up as delivered."
     }
   ]
 }

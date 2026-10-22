@@ -282,6 +282,62 @@
         ]
       },
       "note": "An Austrian Post parcel sent to Germany, from an archived capture of its own tracking page. Its tracker names the parcel by the partner's S10 number and keeps this number as the original one."
+    },
+    {
+      "number": "LY960813580DE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260924041646/https://www.dhl.com/de-en/home/tracking.html?locale=true&submit=1&tracking-id=LY960813580DE",
+        "date": "2026-09-24",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "A German postal parcel to Austria, from an archived capture of DHL's tracking page, which linked Austrian Post's tracking. Austrian Post's tracker answers for it under the same number, from Deutsche Post's acceptance to the letterbox."
+    },
+    {
+      "number": "RN700062106IT",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/Comune-di-Montesilvano/ComunicaPA/blob/main/docs/claude/postal-globalcom.md",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Raccomandata internazionale"
+      },
+      "expect": {
+        "carrier": "poste-italiane",
+        "confidence": "high"
+      },
+      "note": "Registered letter from Italy to Austria in a municipality's public integration notes. Austrian Post's tracker answers for it under the same number, with Poste Italiane's posting and dispatch and its own scans in Austria."
+    },
+    {
+      "number": "CY226550310DE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6a6a2019bb241d023f5fd21b",
+        "date": "2026-07-29",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "A parcel sent from Germany to Austria, quoted in a review of Deutsche Post. Austrian Post's tracker answers for it under the same number, from the pre-advice to the delivery."
     }
   ]
 }

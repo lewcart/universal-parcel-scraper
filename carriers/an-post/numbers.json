@@ -400,6 +400,82 @@
         "carrier": "an-post",
         "confidence": "high"
       }
+    },
+    {
+      "number": "CQ300833475DE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260904034700/https://www.dhl.com/us-en/home/tracking.html?tracking-id=CQ300833475DE",
+        "date": "2026-09-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "A German postal parcel to Ireland, from an archived capture of DHL's tracking page, which linked An Post's tracking. An Post's tracker answers for it under the same number, from its arrival to the delivery."
+    },
+    {
+      "number": "LO427778687GB",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6a5236e3cfdf2441a8c58ccf",
+        "date": "2026-07-11",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "royal-mail",
+        "confidence": "high"
+      },
+      "note": "A letter from the United Kingdom quoted in a review of Royal Mail, received in Ireland and then held by customs. An Post's tracker answers for it under the same number, from the pre-advice to the delivery."
+    },
+    {
+      "number": "LX310671202JP",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/698a253e9090b63c6a9a4edc",
+        "date": "2026-02-09",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "japan-post",
+        "confidence": "high"
+      },
+      "note": "An international parcel quoted in a review of An Post once it reached Ireland. An Post's tracker answers for it under the same number, from the pre-advice through a missed delivery to the delivery."
+    },
+    {
+      "number": "UF164782444SE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6ac9402e13d68dbac528fac6",
+        "date": "2026-10-10",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "postnord",
+        "confidence": "high"
+      },
+      "note": "A parcel from abroad quoted in a review of An Post and in An Post's reply, held for an EU customs charge. An Post's tracker answers for it under the same number with the charge and its payment."
     }
   ]
 }

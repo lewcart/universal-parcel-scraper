@@ -430,6 +430,25 @@
         "confidence": "high"
       },
       "note": "A bpost tracking lookup listed in the Wayback Machine's capture index; the capture is bpost's reply naming this domestic plate, without scans. bpost's tracker no longer returns it."
+    },
+    {
+      "number": "LO433506042GB",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6a9d63f764cad829acc9ab9b",
+        "date": "2026-09-06",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "royal-mail",
+        "confidence": "high"
+      },
+      "note": "A parcel from the United Kingdom quoted in a review of bpost while it waited for customs clearance. bpost's tracker answers for it under the same number, from Landmark Global's pre-advice through customs to the letterbox."
     }
   ]
 }

@@ -37,9 +37,10 @@ const summaryFor = (row: Record<string, unknown>, status = row.activity) => pars
 const scan = (traceCode: number, activity: string, date: string) => ({ activity, date, location: '', reason: '', traceCode });
 
 describe('An Post numbers', () => {
-  it('takes only Irish S10 numbers with a valid check digit', () => {
+  it('takes S10 numbers with a valid check digit, its own and those of mail from abroad', () => {
     expect(normalizeAnPostNumber(' cp 000 000 005 ie ')).toBe(NUMBER);
-    for (const number of ['CP000000006IE', 'CP000000005GB', 'CP0000005IE', '000000005IE', 'CP000000005I"E', 'CP000000005']) {
+    expect(normalizeAnPostNumber('CP000000005GB')).toBe('CP000000005GB');
+    for (const number of ['CP000000006IE', 'CP000000006GB', 'CP0000005IE', '000000005IE', 'CP000000005I"E', 'CP000000005']) {
       expect(() => normalizeAnPostNumber(number)).toThrowError(expect.objectContaining({ kind: 'invalid_input' }));
     }
   });
@@ -289,6 +290,13 @@ describe('An Post guest history', () => {
       last_update: '2026-09-24T11:01:30+01:00', last_update_local: '2026-09-24T11:01:30' });
     const ahead = parseAnPostSummary(summaryOf([{ ...summaryItem(), status: delivered.activity, date: delivered.date }]), NUMBER);
     expect(parseAnPostEvents(eventsOf([informed]), ahead)).toMatchObject({ last_update: null, last_update_local: delivered.date });
+    // Mail from abroad shows only An Post's scans, from the sending post's pre-advice on.
+    const inbound = [delivered, scan(6, 'We have received your item', '2026-09-20T18:15:54'),
+      scan(35, informed.activity, '2026-09-18T23:35:51')];
+    const arrived = parseAnPostEvents(eventsOf(inbound), parseAnPostSummary(summaryOf([{ ...summaryItem(),
+      anPostNo: 'CP000000005GB', status: delivered.activity, date: delivered.date }]), 'CP000000005GB'));
+    expect(arrived.events?.map(event => event.time)).toEqual(['2026-09-24T11:01:30+01:00', '2026-09-20T18:15:54+01:00',
+      '2026-09-18T23:35:51+01:00']);
     // A wall time the clocks skip names no instant.
     const skipped = scan(4, 'Your item is out for delivery', '2026-03-29T01:30:00');
     const before = parseAnPostEvents(eventsOf([skipped, scan(48, accepted.activity, '2026-03-28T23:30:12')]), summaryFor(skipped));

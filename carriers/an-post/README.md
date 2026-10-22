@@ -1,8 +1,10 @@
 # An Post
 
-Tracks Irish S10 numbers (two letters, nine digits with a valid check digit, `IE`) through
-the guest tracking API of the An Post Android app, `ie.anpost.app`. No account, cookie,
-browser or device registration is needed.
+Tracks S10 numbers (two letters, nine digits with a valid check digit, the issuer's country)
+through the guest tracking API of the An Post Android app, `ie.anpost.app`: An Post's own,
+ending `IE`, and those of mail other posts send to Ireland. No account, cookie, browser or
+device registration is needed. Mail from abroad reaches An Post when a caller names it, a
+provider names it, or a result gives Ireland as the destination of an S10 item.
 
 ## How it works
 
@@ -78,8 +80,7 @@ guest tracking client. It is included with the maintainer's approval.
 
 - An expired item and an unknown number get the same empty summary, so both are not
   found.
-- Inbound foreign S10 numbers and retailer references (`GetCustItemSummary`) are out of
-  scope.
+- Retailer references (`GetCustItemSummary`) are out of scope.
 - Neither answer names an outbound item's destination, and the partner's relayed scans have
   no location, so the result reports no destination country.
 - The website, `www.anpost.com/Post-Parcels/Track/History`, is behind Radware Bot Manager

@@ -28,11 +28,11 @@ export interface AnPostSummary {
   date: string | null;
 }
 
-/** An Post's own items: the catalog's S10 rule with an IE suffix and a valid check digit. */
+/** S10 numbers with a valid check digit: An Post's own items, and those other posts send to Ireland. */
 export function normalizeAnPostNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!/^[A-Z]{2}\d{9}IE$/.test(number) || !isValidS10TrackingNumber(number)) {
-    throw new InvalidInputError(AN_POST, 'An Post requires an Irish S10 postal tracking number');
+  if (!isValidS10TrackingNumber(number)) {
+    throw new InvalidInputError(AN_POST, 'An Post requires an S10 postal tracking number');
   }
   return number;
 }

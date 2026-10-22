@@ -1,7 +1,8 @@
 # Austrian Post
 
-Tracks domestic 22-digit and Austrian S10 postal numbers through the public
-tracking website's anonymous GraphQL read. It also takes the 24-digit EURODIS
+Tracks domestic 22-digit numbers and S10 postal numbers, its own and those of
+mail other posts send to Austria, through the public tracking website's
+anonymous GraphQL read. It also takes the 24-digit EURODIS
 barcode of a parcel it sends abroad through that network, which its tracker
 follows to the partner that delivers it, and the fourteen-digit number of a
 Hermes Austria parcel it delivers, which Hermes's tracker links to Austrian
@@ -31,6 +32,12 @@ without the postcode, and a depot a partner names after `PLZ` stays as the page
 shows it. The app's scan-identity policy lets a scan stored with a delivery
 area as its place keep its row once it loses it, provided its instant, wording
 and known stage agree.
+
+Mail from abroad reaches Austrian Post when a caller names it, a provider names
+it, or a result gives Austria as the destination of an S10 item. Its history
+opens with the sending post's posting and dispatch as Austrian Post relays
+them, staged by their wording, and a letter put through the letterbox is
+delivered.
 
 A scan can come without wording. The tracking page lists it under its date
 and time alone, with no label from its codes, so it keeps its code but gets

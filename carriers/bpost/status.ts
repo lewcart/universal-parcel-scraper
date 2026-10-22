@@ -2,6 +2,7 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 
 const WORDINGS: Record<string, ClassifiedStatus> = {
   'Item delivered': { status: 'delivered', stage: 'delivered' },
+  'Item delivered in mailbox': { status: 'delivered', stage: 'delivered' },
   'Item available at Pick-up point': { status: 'in_transit', stage: 'ready_for_pickup' },
   // On its way to a locker, then waiting in it, with the brand the parser puts in place of
   // bpost's placeholder.
@@ -18,6 +19,11 @@ const WORDINGS: Record<string, ClassifiedStatus> = {
   'Shipment ready for transport': { status: 'in_transit', stage: 'in_transit' },
   'Departure to country of destination': { status: 'in_transit', stage: 'in_transit' },
   'Arrival at international depot': { status: 'in_transit', stage: 'in_transit' },
+  // Mail from abroad waits for customs at the international depot, which clears it
+  // without charges before it leaves for the national network.
+  'Awaiting presentation to Customs': { status: 'in_transit', stage: 'customs' },
+  'No extra costs': { status: 'in_transit', stage: 'in_transit' },
+  'Departure to distribution network': { status: 'in_transit', stage: 'in_transit' },
   'Parcel is handled': { status: 'in_transit', stage: 'in_transit' },
   'Arrival at facilities': { status: 'in_transit', stage: 'in_transit' },
   'Item has passed a checkpoint': { status: 'in_transit', stage: 'in_transit' },

@@ -49,13 +49,14 @@ const CATALOG_NAMES = new Set([
 // in Kenya by name. Correo Uruguayo's clocks name no zone, and those relayed
 // from abroad keep the sender's. Posta dates only scans at a Faroese place.
 // Correos de El Salvador's clocks name no zone either. Correios Brazil names
-// each row's zone. The host also checks adapter availability and required
-// inputs before making a request.
+// each row's zone. An Post shows only its own scans of mail from abroad, on
+// Irish time; bpost dates the scans that name Belgium. The host also checks
+// adapter availability and required inputs before making a request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
-  ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
-  ['BG', 'bulgarian-posts'], ['BR', 'correios-br'], ['BY', 'belpost'], ['CA', 'canada-post'],
+  ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AT', 'austrian-post'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
+  ['BE', 'bpost'], ['BG', 'bulgarian-posts'], ['BR', 'correios-br'], ['BY', 'belpost'], ['CA', 'canada-post'],
   ['CH', 'swiss-post'], ['DE', 'dhl'], ['DZ', 'algerie-poste'], ['EG', 'egypt-post'], ['ES', 'correos-spain'],
-  ['FI', 'posti'], ['FO', 'posta-faroe'], ['FR', 'la-poste'], ['GB', 'royal-mail'], ['IS', 'posturinn'],
+  ['FI', 'posti'], ['FO', 'posta-faroe'], ['FR', 'la-poste'], ['GB', 'royal-mail'], ['IE', 'an-post'], ['IS', 'posturinn'],
   ['IT', 'poste-italiane'], ['JO', 'jordan-post'], ['JP', 'japan-post'], ['KE', 'posta-kenya'], ['MA', 'barid-al-maghrib'],
   ['MK', 'posta-north-macedonia'], ['NL', 'spring-gds'], ['PH', 'phlpost'], ['PL', 'poczta-polska'],
   ['PT', 'ctt'], ['RO', 'posta-romana'], ['SA', 'saudi-post'], ['SE', 'postnord'],

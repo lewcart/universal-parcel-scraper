@@ -1,5 +1,5 @@
 import { recognizeFromBrowserLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { ChallengeError, IndeterminateError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import { ChallengeError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
@@ -7,7 +7,7 @@ import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../
 import { isRecord } from '../../core/types.js';
 import { fetchRoyalMailInBrowser, royalMailDestination } from './browser.js';
 import { normalizeRoyalMailNumber, parseRoyalMailTrackingHtml, parseRoyalMailTrackingResponse,
-  royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl } from './parser.js';
+  royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl, royalMailUnconfirmed } from './parser.js';
 
 export { normalizeRoyalMailNumber, parseRoyalMailTrackingHtml, parseRoyalMailTrackingResponse,
   royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl } from './parser.js';
@@ -141,10 +141,8 @@ export class RoyalMailTracker {
         if (entry.status === 404 && entry.body && !entry.truncated && !entry.base64Encoded && !entry.error) {
           let payload: unknown;
           try { payload = JSON.parse(entry.body); } catch { /* Keep the HTTP failure below. */ }
-          if (isRecord(payload) && Array.isArray(payload.errors)
-            && payload.errors.some(error => isRecord(error) && error.errorCode === 'E1142')) {
-            throw new IndeterminateError('Royal Mail', 'Royal Mail could not confirm the tracking status');
-          }
+          const unconfirmed = isRecord(payload) && Array.isArray(payload.errors) ? royalMailUnconfirmed(payload.errors) : null;
+          if (unconfirmed) throw unconfirmed;
         }
         if ([404, 410].includes(entry.status)) throw new TransportError('Royal Mail', 'Royal Mail tracking endpoint is unavailable');
         if (entry.status >= 400) throw new UpstreamHttpError('Royal Mail', entry.status);

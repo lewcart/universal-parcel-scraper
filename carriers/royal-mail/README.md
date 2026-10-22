@@ -68,8 +68,10 @@ answers are not retried. An unavailable browser fails fast.
 - Markdown emphasis is removed from summary and scan wording. Delivered wording
   is reduced to `Delivered`. Recipient, signature, photo, address, GPS and
   issued credentials are discarded.
-- An unable-to-confirm response remains inconclusive. A generic HTTP 404
-  does not establish parcel absence.
+- Royal Mail's unable-to-confirm answer (E1142), its reply for a reference it cannot locate,
+  remains inconclusive and carries `portal_not_found`: an item can be unknown until its first
+  scan. Its answer that the reference's service is not tracked (E1283) is inconclusive too.
+  Another HTTP 404 does not establish parcel absence.
 - While the tracking application is down, its page answers 200 with a "Service temporarily
   unavailable" notice in place of the form. The lookup ends there at once as maintenance.
 

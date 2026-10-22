@@ -123,12 +123,15 @@ describe('Royal Mail browser response capture', () => {
 
   it.each([
     [403, {}, 'challenge'], [429, {}, 'rate_limited'], [500, {}, 'indeterminate'],
-    [404, {}, 'transport'], [404, { errors: [{ errorCode: 'E1142' }] }, 'indeterminate'],
+    [404, {}, 'transport'], [404, { errors: [{ errorCode: 'E1142' }] }, 'indeterminate', 'portal_not_found'],
+    [404, { errors: [{ errorCode: 'E1283' }] }, 'indeterminate'], [404, { errors: [{ errorCode: 'E9999' }] }, 'transport'],
     [200, { error: 'unknown provider error' }, 'indeterminate'],
-  ])('keeps HTTP %s failures distinct', async (status, body, kind) => {
+  ])('keeps HTTP %s failures distinct', async (status, body, kind, reason?: string) => {
     const h = harness();
     const result = h.capture(() => h.respond(body, { status, headers: { 'retry-after': '45' } }));
     await expect(result).rejects.toMatchObject({ kind, ...(status === 429 ? { retryAfterMs: 45_000 } : {}) });
+    // Only Royal Mail's answer for a reference it does not know is an answer about the parcel.
+    expect((await result.catch((error: unknown) => error) as { reason?: string }).reason).toBe(reason);
   });
 
   it('rejects declared oversized data before reading and decoded oversized data before parsing', async () => {

@@ -95,6 +95,22 @@ function expectedDelivery(value: unknown): string | null {
   return day && DateTime.fromISO(day).isValid ? day : null;
 }
 
+const hasCode = (errors: readonly unknown[], code: string) => errors.some(error => isRecord(error)
+  && (error.errorCode === code || error.code === code));
+
+/**
+ * Royal Mail's answers about the reference itself, not a failing route, both under HTTP 404.
+ * E1142, "unable to confirm the status", is its reply for a reference it cannot locate, which
+ * its tracking application files as not found; an item can be unknown until its first scan.
+ * E1283 says the reference's service is not tracked. Both stay inconclusive.
+ */
+export function royalMailUnconfirmed(errors: readonly unknown[]): IndeterminateError | null {
+  if (hasCode(errors, 'E1142')) {
+    return new IndeterminateError('Royal Mail', 'Royal Mail could not confirm the tracking status', { reason: 'portal_not_found' });
+  }
+  return hasCode(errors, 'E1283') ? new IndeterminateError('Royal Mail', 'Royal Mail does not track this service') : null;
+}
+
 /** Only the field vocabulary consumed by the public tracking application. */
 export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber: string): CarrierResult {
   const number = normalizeRoyalMailNumber(trackingNumber);
@@ -104,7 +120,7 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
     throw new ChallengeError('Royal Mail', 'Royal Mail denied the tracking session');
   }
   if (String(payload.httpCode) === '429') throw new RateLimitedError('Royal Mail');
-  if (errors.length) throw new IndeterminateError('Royal Mail', 'Royal Mail could not confirm the tracking status');
+  if (errors.length) throw royalMailUnconfirmed(errors) ?? new IndeterminateError('Royal Mail', 'Royal Mail could not confirm the tracking status');
   const mailpiece = payload.mailPieces;
   // Both summary and events endpoints return one object, not the array used by the
   // recent-items endpoint. Never treat a gateway 404 or schema drift as not-found.

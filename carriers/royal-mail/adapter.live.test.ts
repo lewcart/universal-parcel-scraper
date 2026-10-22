@@ -61,7 +61,7 @@ describe('Royal Mail live browser tracking', () => {
     'keeps an unknown reference inconclusive rather than inventing history', async () => {
       await expect(new RoyalMailTracker({ executablePath: process.env.TRACKING_CHROMIUM_PATH,
         browserWsEndpoint: process.env.ROYAL_MAIL_BROWSER_WS_ENDPOINT, fullHistory: true })
-        .fetch(process.env.ROYAL_MAIL_UNKNOWN_NUMBER!)).rejects.toMatchObject({ kind: 'indeterminate' });
+        .fetch(process.env.ROYAL_MAIL_UNKNOWN_NUMBER!)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
     }, 65_000,
   );
 });

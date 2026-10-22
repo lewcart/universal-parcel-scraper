@@ -4,7 +4,7 @@ import { carrierErrorKind, ChallengeError, IndeterminateError, MaintenanceError,
 import type { CarrierResult } from '../../core/result/index.js';
 import { withLocalBrowser, withRemoteBrowser } from '../../core/transport/localBrowser.js';
 import { isRecord } from '../../core/types.js';
-import { parseRoyalMailTrackingResponse, royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl } from './parser.js';
+import { parseRoyalMailTrackingResponse, royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl, royalMailUnconfirmed } from './parser.js';
 
 const PROVIDER = 'Royal Mail';
 const ORIGIN = 'https://www.royalmail.com';
@@ -104,9 +104,8 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
       const denied = errors.some(error => error.errorCode === 'E0015' || error.code === 'E0015');
       if (status === 401 && denied && !refresh) { refresh = true; return; }
       if (status === 401 || denied) throw new ChallengeError(PROVIDER);
-      if (errors.some(error => error.errorCode === 'E1142' || error.code === 'E1142')) {
-        throw new IndeterminateError(PROVIDER, 'Royal Mail could not confirm the tracking status');
-      }
+      const unconfirmed = royalMailUnconfirmed(errors);
+      if (unconfirmed) throw unconfirmed;
       if (status === 404) throw new TransportError(PROVIDER, 'Royal Mail tracking endpoint is unavailable');
       if (status !== 200) throw new UpstreamHttpError(PROVIDER, status);
       if (data.errors !== undefined || data.error !== undefined || data.httpCode !== undefined) throw new IndeterminateError(PROVIDER);

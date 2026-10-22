@@ -392,7 +392,9 @@ describe('Royal Mail structured response', () => {
     expect(() => parseRoyalMailTrackingResponse({ httpCode: '429' }, DELIVERED_NUMBER))
       .toThrow('rate limiting');
     expect(() => parseRoyalMailTrackingResponse({ errors: [{ errorCode: 'E1142' }] }, DELIVERED_NUMBER))
-      .toThrow('could not confirm');
+      .toThrow(expect.objectContaining({ message: expect.stringContaining('could not confirm'), reason: 'portal_not_found' }));
+    expect(() => parseRoyalMailTrackingResponse({ errors: [{ errorCode: 'E1477' }] }, DELIVERED_NUMBER))
+      .toThrow(expect.not.objectContaining({ reason: expect.anything() }));
   });
 
   it('supports summaries without history, sorts scans and does not guess unknown status', () => {
@@ -688,19 +690,21 @@ describe('Royal Mail lookup steps', () => {
   });
 
   it.each([
-    [404, {errors: [{errorCode: 'E1142'}]}, 'IndeterminateError'],
+    [404, {errors: [{errorCode: 'E1142'}]}, 'IndeterminateError', 'portal_not_found'],
+    [404, {errors: [{errorCode: 'E1283'}]}, 'IndeterminateError'],
     [403, {}, 'ChallengeError'],
     [429, {}, 'RateLimitedError'],
     [200, {errors: [{errorCode: 'E0015'}]}, 'ChallengeError'],
     [200, {mailPieces: {mailPieceId: 'SG999999997GB', summary: {statusDescription: 'Delivered'}}}, 'SchemaError'],
-  ])('preserves failure classification for HTTP %s', async (status, payload, name) => {
+  ])('preserves failure classification for HTTP %s', async (status, payload, name, reason?: string) => {
     const fetcher = vi.fn().mockResolvedValue(Response.json({
       tier: 3, statusCode: 200, html: '<html>tracking app</html>',
       capturedResponses: [{url: royalMailSummaryApiUrl(DELIVERED_NUMBER), status,
         body: JSON.stringify(payload), headers: {'retry-after': '60'}}],
     }));
     await expect(new RoyalMailTracker({trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher}).fetch(DELIVERED_NUMBER))
-      .rejects.toMatchObject({name, ...(status === 429 ? {retryAfterMs: 60_000} : {})});
+      .rejects.toMatchObject({name, ...(status === 429 ? {retryAfterMs: 60_000} : {}),
+        ...(reason ? {reason} : {})});
   });
 
   it('names a challenged browser page instead of reporting it as not-found', async () => {

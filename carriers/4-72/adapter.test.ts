@@ -162,8 +162,20 @@ describe('4-72 tracking adapter', () => {
     expect(normalizeFourSeventyTwoNumber(' rr-000-000-005 sg ')).toBe(INBOUND);
     expect(fourSeventyTwoLookupUrl('Search', INBOUND)).toBe(`${FOUR_SEVENTY_TWO_TRACEABILITY}/Search?guia=${INBOUND}`);
     expect(() => parseFourSeventyTwo('', text('events-empty'), 'MN000000004CO')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
-    // A cheap lookup could tell known from unknown, but the carrier declares no recognition.
-    expect(carrier(fetcher).recognize).toBeUndefined();
+    // Recognition sends nothing for a code the tracker does not take.
+    await expect(carrier(fetcher).recognize!('SAMPLETRACKING', {})).resolves.toEqual({ known: false });
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('recognizes a guía the tracker holds, and not one its search does not find, with the same requests', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url).endsWith(UNKNOWN)
+      ? reply(String(url).includes('/Search?') ? '' : text('events-empty'))
+      : reply(String(url).includes('/Search?') ? text('search') : text('events-delivered')));
+    await expect(carrier(fetcher).recognize!(DELIVERED, { budgetMs: 3000 })).resolves.toMatchObject({ known: true });
+    await expect(carrier(fetcher).recognize!(UNKNOWN, { budgetMs: 3000 })).resolves.toEqual({ known: false });
+    expect(fetcher.mock.calls.map(([url]) => String(url)).sort()).toEqual([
+      fourSeventyTwoLookupUrl('Events', DELIVERED), fourSeventyTwoLookupUrl('Events', UNKNOWN),
+      fourSeventyTwoLookupUrl('Search', DELIVERED), fourSeventyTwoLookupUrl('Search', UNKNOWN)].sort());
   });
 
   it('keeps the tracker’s rate limit with its retry window and cancels the other route', async () => {

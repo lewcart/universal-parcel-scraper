@@ -5261,6 +5261,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "4-72",
+      "recognitionRank": 896,
       "localClocks": true
     },
     "canaryUrl": "https://svc2.sipost.co/TrazabilidadWeb",
@@ -5286,7 +5287,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CO$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "4sides": {
     "displayName": "4Sides",
@@ -18943,12 +18951,20 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "la-poste-senegal",
+      "recognitionRank": 892,
       "localClocks": true
     },
     "canaryUrl": "https://www.laposte.sn/",
     "trackingSearchUrl": "https://www.laposte.sn/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SN$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "la-poste-tunisienne": {
     "displayName": "La Poste Tunisienne",
@@ -32565,7 +32581,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "17feia": ["17feia-1"],
   "247express": [],
   "2go": ["2go-1"],
-  "4-72": [],
+  "4-72": ["4-72-s10"],
   "4sides": [],
   "5post": [],
   "99minutos": [],
@@ -32911,7 +32927,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "l-post": ["l-post-1"],
   "la-poste-burkina-faso": ["la-poste-burkina-faso-s10"],
   "la-poste-ci": [],
-  "la-poste-senegal": [],
+  "la-poste-senegal": ["la-poste-senegal-s10"],
   "la-poste-tunisienne": [],
   "laar-courier": [],
   "labaih": [],

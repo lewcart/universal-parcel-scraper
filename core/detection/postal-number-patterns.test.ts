@@ -107,7 +107,8 @@ describe('S10-shaped numbers', () => {
   });
 
   it('asks the national posts first about the S10 numbers they issue without selecting them', () => {
-    const posts = { PK: 'pakistan-post', SA: 'saudi-post', UY: 'correo-uruguayo', KG: 'kyrgyz-post', BF: 'la-poste-burkina-faso', ID: 'pos-indonesia' };
+    const posts = { PK: 'pakistan-post', SA: 'saudi-post', UY: 'correo-uruguayo', KG: 'kyrgyz-post', BF: 'la-poste-burkina-faso', ID: 'pos-indonesia',
+      CO: '4-72', SN: 'la-poste-senegal' };
     for (const [country, post] of Object.entries(posts)) {
       expect(detectCarrierMatch(`rr 123 456 785 ${country}`), country).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
       expect(recognitionCandidates(`RR123456785${country}`)[0], country).toEqual({ carrier: post, needsInput: null, preferred: true });

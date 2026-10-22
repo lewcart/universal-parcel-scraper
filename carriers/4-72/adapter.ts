@@ -1,4 +1,4 @@
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { ChallengeError, TransportError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
@@ -64,5 +64,7 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: '4-72', recordsSteps: true, steps: ['direct', 'retry'],
     track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+      () => accepted(() => normalizeFourSeventyTwoNumber(number))),
   };
 };

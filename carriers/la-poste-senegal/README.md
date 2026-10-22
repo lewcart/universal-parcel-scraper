@@ -16,6 +16,7 @@ lookup the tracking box on its home page makes.
   found. A match without scans is inconclusive, and so is an empty reply, for which the page shows
   its connection error. The page also reports the site's own `not_found` flag as not found; that
   flag has not been seen and could stand for a failed lookup, so it is inconclusive too.
+- Recognition makes the same request.
 - A 429 is a rate limit, a 403 or a bot check a challenge, and a redirect or a 404 a moved route.
 - The tracking page at `/suivi-colis/` asks another route of the site for the same record but
   misreads its fields when it shows them, so the adapter makes the home page's request.
@@ -46,7 +47,8 @@ lookup the tracking box on its home page makes.
 ## Numbers
 
 International letters and parcels carry UPU S10 numbers ending in `SN`. Generic postal
-detection handles these numbers, so no rule for La Poste du Sénégal claims them.
+detection keeps these numbers, and a code ending `SN` with a valid check digit only suggests
+La Poste du Sénégal, which recognition asks first.
 
 Jotnaci, the domestic goods service, numbers its items with `JT` and thirteen digits. J&T
 Express prints the same layout, so no rule claims Jotnaci numbers either.

@@ -186,8 +186,19 @@ describe('La Poste du Sénégal tracking adapter', () => {
     expect(normalizeLaPosteSenegalNumber(' ee-000-000-005 sn ')).toBe(IN_TRANSIT);
     expect(laPosteSenegalLookupUrl(IN_TRANSIT)).toBe(`${LA_POSTE_SENEGAL_API}?code=${IN_TRANSIT}`);
     expect(() => parseLaPosteSenegal(payload('not-found'), 'LX000000004SN')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
-    // A cheap lookup could tell known from unknown, but the carrier declares no recognition.
-    expect(carrier(fetcher).recognize).toBeUndefined();
+    // Recognition sends nothing for a code the tracker does not take.
+    await expect(carrier(fetcher).recognize!('SAMPLETRACKING', {})).resolves.toEqual({ known: false });
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('recognizes an item the tracker holds, and not one it finds no match for, with the same request', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => reply(text(String(url).endsWith(UNKNOWN) ? 'not-found' : 'in-transit')));
+    await expect(carrier(fetcher).recognize!(IN_TRANSIT, { budgetMs: 3000 })).resolves.toMatchObject({ known: true });
+    await expect(carrier(fetcher).recognize!(UNKNOWN, { budgetMs: 3000 })).resolves.toEqual({ known: false });
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([laPosteSenegalLookupUrl(IN_TRANSIT), laPosteSenegalLookupUrl(UNKNOWN)]);
+    // A lookup that names no match for sure is not an unknown item.
+    const flagged = vi.fn<typeof fetch>().mockImplementation(async () => reply('{"not_found":true}'));
+    await expect(carrier(flagged).recognize!(UNKNOWN, { budgetMs: 3000 })).rejects.toMatchObject({ kind: 'indeterminate' });
   });
 
   it('keeps the tracker’s rate limit with its retry window', async () => {

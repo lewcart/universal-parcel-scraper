@@ -4,6 +4,7 @@
 export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "17feia": 991,
   "2go": 799,
+  "4-72": 896,
   "4sides": 783,
   "99minutos": 40,
   "a-duie-pyle": 736,
@@ -244,6 +245,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "l-post": 808,
   "la-poste": 1000,
   "la-poste-burkina-faso": 635,
+  "la-poste-senegal": 892,
   "laar-courier": 648,
   "labaih": 788,
   "last-one-mile-coop": 585,

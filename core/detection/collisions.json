@@ -586,6 +586,24 @@
     "reason": "The Indonesian issuer suffix suggests Pos Indonesia but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}CO with a valid S10 check digit",
+    "carriers": [
+      "4-72",
+      "chronopost",
+      "intl-post"
+    ],
+    "reason": "The Colombian issuer suffix suggests 4-72 but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
+    "shape": "AA9{9}SN with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "intl-post",
+      "la-poste-senegal"
+    ],
+    "reason": "The Senegalese issuer suffix suggests La Poste du Sénégal but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}BY with a valid S10 check digit",
     "carriers": [
       "belpost",

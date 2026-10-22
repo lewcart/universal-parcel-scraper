@@ -15,6 +15,7 @@ other posts send to Colombia, through the two requests its tracking page makes.
 - The card's heading must name the whole guía asked for. An empty card, which the page reports
   as "No se ha encontrado información de la guía", with a scan table without rows, is not found.
   Scans without a card, or a card without scans, are inconclusive.
+- Recognition makes the same requests.
 - A 429 is a rate limit, a 403 or a bot check a challenge, and a redirect or a 404 a moved route.
 
 ## Notes
@@ -41,7 +42,8 @@ other posts send to Colombia, through the two requests its tracking page makes.
 ## Numbers
 
 4-72's guías are UPU S10 numbers with the `CO` suffix, and it also tracks inbound S10 items
-from other posts. Generic postal detection handles S10 numbers, so 4-72 has no rule of its own.
+from other posts. Generic postal detection keeps S10 numbers, and a code ending `CO` with a
+valid check digit only suggests 4-72, which recognition asks first.
 
 ## Links
 

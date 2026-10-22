@@ -25,6 +25,9 @@
       "direct",
       "retry"
     ],
+    "recognition": {
+      "rank": 892
+    },
     "localClocks": true
   },
   "capabilities": [
@@ -61,5 +64,13 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "la-poste-senegal-s10",
+      "pattern": "^[A-Z]{2}\\d{9}SN$",
+      "confidence": "low",
+      "checksum": "s10",
+      "preferred": true
+    }
+  ]
 }

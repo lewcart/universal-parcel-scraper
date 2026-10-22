@@ -116,6 +116,11 @@
       "confidence": "high"
     },
     {
+      "id": "mailamericas-domc",
+      "pattern": "^DOMC\\d{9}R$",
+      "confidence": "high"
+    },
+    {
       "id": "mailamericas-s10",
       "pattern": "^[A-Z]{2}\\d{9}MH$",
       "confidence": "low",

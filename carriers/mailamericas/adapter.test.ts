@@ -341,10 +341,10 @@ describe('MailAmericas HTTP adapter', () => {
 
 describe('MailAmericas numbers', () => {
   it('claims its own layouts, whatever the destination country', () => {
-    for (const number of [DELIVERED, IN_TRANSIT, UNKNOWN, 'MLUY000000003EX', 'MMXQP000000004R', 'MMXQP000000005E', 'MMXQP000000006N']) {
+    for (const number of [DELIVERED, IN_TRANSIT, UNKNOWN, 'MLUY000000003EX', 'MMXQP000000004R', 'MMXQP000000005E', 'MMXQP000000006N', 'DOMC000000007R']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'mailamericas', confidence: 'high' });
     }
-    for (const number of ['MLAR000000002E', 'MLAR00000002EX', 'MMXQP000000004X', 'ML000000002MH']) {
+    for (const number of ['MLAR000000002E', 'MLAR00000002EX', 'MMXQP000000004X', 'ML000000002MH', 'DOMC000000007EX', 'DOMC00000007R', 'DOMX000000007R']) {
       expect(detectCarrierMatch(number).carrier, number).not.toBe('mailamericas');
     }
   });

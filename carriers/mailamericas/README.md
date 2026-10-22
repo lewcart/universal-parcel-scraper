@@ -73,7 +73,10 @@ Tracked through the lookup its tracking page makes.
 MailAmericas numbers start with `ML` and the destination country's code, then nine digits and
 `R` or `EX`. Parcels for Mexico have `MMXQP`, nine digits and `E`, `N` or `R` instead. The
 tracking page uses one of each as its examples, and no other carrier's numbers have these
-shapes, so `mailamericas-ml` and `mailamericas-mmxqp` claim them.
+shapes, so `mailamericas-ml` and `mailamericas-mmxqp` claim them. Parcels for the Dominican
+Republic have `DOMC`, nine digits and `R`: the tracker answers them, a public question about a
+parcel to the Dominican Republic quotes one beside MailAmericas, and no other carrier's numbers
+have the shape, so `mailamericas-domc` claims it.
 
 The tracker also answers parcels under UPU S10 numbers with the Mexican, Marshall Islands and
 Mauritius codes. Mexican and Mauritius numbers stay with their own posts. The catalog has no

@@ -63,6 +63,9 @@ describe('USPS status vocabulary', () => {
     expect(uspsStage('Notice Left')).toBe('failed_attempt');
     expect(uspsStage('Pre-Shipment')).toBe('registered');
     expect(uspsStage('Available for Pickup')).toBe('ready_for_pickup');
+    // The delivering post office's arrival comes before the delivery round; a held parcel waits for collection.
+    expect(uspsStage('Arrived at Post Office')).toBe('in_transit');
+    expect(uspsStage('Held at Post Office, At Customer Request')).toBe('ready_for_pickup');
     expect(uspsStage('Accepted at USPS Origin Facility')).toBe('accepted');
     expect(uspsStage('Arrived at USPS Facility')).toBe('in_transit');
     expect(uspsStage('Arrived at USPS Regional Facility')).toBe('in_transit');
@@ -163,7 +166,7 @@ describe('USPS rendered page', () => {
     expect(result.events).toEqual([
       { time: '2025-03-14T08:00:00-04:00', location: 'WASHINGTON, DC 20212', description: 'Delivered', stage: 'delivered' },
       { time: '2025-03-14T07:00:00-04:00', location: 'WASHINGTON, DC 20212', description: 'Out for Delivery', stage: 'out_for_delivery' },
-      { time: '2025-03-13T18:15:00-04:00', location: 'WASHINGTON, DC 20212', description: 'Arrived at Post Office', stage: 'ready_for_pickup' },
+      { time: '2025-03-13T18:15:00-04:00', location: 'WASHINGTON, DC 20212', description: 'Arrived at Post Office', stage: 'in_transit' },
       { time: '2025-03-12T09:30:00-04:00', location: 'LAUREL, MD 20707', description: 'Accepted at USPS Origin Facility', stage: 'accepted' },
     ]);
   });

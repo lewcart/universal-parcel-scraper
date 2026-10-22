@@ -20,10 +20,12 @@ const FAILED_ATTEMPT_TERMS = [
   'receptacle blocked', 'business closed', 'no secure location', 'no authorized recipient',
   'missed delivery', 'redelivery', 'unclaimed', 'vacant', 'no such number',
 ];
-const EXCEPTION_TERMS = ['alert', 'exception', 'damaged', 'lost', 'seized', 'dispute', 'held at post office', 'held for pickup'];
+const EXCEPTION_TERMS = ['alert', 'exception', 'damaged', 'lost', 'seized', 'dispute', 'held for pickup'];
 const DELIVERED_TERMS = ['delivered'];
 const OUT_FOR_DELIVERY_TERMS = ['out for delivery'];
-const READY_FOR_PICKUP_TERMS = ['available for pickup', 'available for pick-up', 'pickup', 'pick up', 'arrived at post office', 'arrived at unit', 'arrival at unit', 'at post office'];
+// The delivering post office's arrival ("Arrived at Post Office") comes before the delivery round, so it is transit;
+// a parcel waits there for its recipient only once it is held.
+const READY_FOR_PICKUP_TERMS = ['available for pickup', 'available for pick-up', 'pickup', 'pick up', 'held at post office'];
 const REGISTERED_TERMS = [
   'pre-shipment', 'preshipment', 'shipping label created', 'label created',
   'acceptance pending', 'usps awaiting item', 'awaiting item', 'order received',

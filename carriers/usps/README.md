@@ -65,8 +65,9 @@ Parsing, in order:
   `local_time`, and the page's newest-first order is kept rather than re-sorted. A step USPS
   dates by its day alone, as it does pre-shipment info, keeps that day as `local_time`.
 - Delivered lines are rewritten to "Delivered" because USPS names the signatory.
-- "Available for Pickup" and "Arrived at Post Office" are stage `ready_for_pickup` but result
-  status `out_for_delivery`.
+- "Available for Pickup" and a hold at the post office are stage `ready_for_pickup` but result
+  status `out_for_delivery`. "Arrived at Post Office" is the delivering office's arrival before
+  the delivery round, so it stays `in_transit`.
 - A parcel a shipping partner collects and moves reaches USPS with an acceptance scan such as
   "USPS in possession of item". After the partner's transit scans that handoff is
   `in_transit`, as is the parcel's stage; only an acceptance before any transit stays one.

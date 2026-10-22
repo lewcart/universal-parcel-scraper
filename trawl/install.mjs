@@ -28,6 +28,8 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   if (source.split(solverGuard).length !== 2) throw new Error('TRAWL solver guard changed');
   const beforeSolve = 'const solveRemaining = Math.max(0, budget.remaining() - 2000)';
   if (source.split(beforeSolve).length !== 2) throw new Error('TRAWL solver integration changed');
+  const documentCapture = 'captureBrowserDocument(page, capture, pageCapture, budget, screenshot)';
+  if (source.split(documentCapture).length !== 2) throw new Error('TRAWL document capture integration changed');
   // The helpers open their own context, so they run before the tier opens one.
   const entry = 'if (!budget) throw new Error("Browser task requires an operation budget")';
   if (source.split(entry).length !== 2) throw new Error('TRAWL tier entry changed');
@@ -86,6 +88,7 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
     + 'import { sfExpressSessionNumber, sfExpressSessions } from "../utils/sf-express-session.mjs"\n'
     + 'import { fedexSessions, fedexSessionNumber } from "../utils/fedex-session.mjs"\n'
     + source.replace(entry, carrierRunners)
+      .replace(documentCapture, 'captureBrowserDocument(page, pageCapture.contentOptions?.(capture) ?? capture, pageCapture, budget, screenshot)')
       .replace(needle, 'const pageCapture = reserveDeadline(await attachTrackingCapture(page, url, capture)'
         + ` ?? attachPageCapture(page, capture), ${reserveMs})`)
       .replace(solverGuard, solverGuard.slice(0, -1) + ' && !pageCapture.hasResponse?.() && !pageCapture.hasTrackingRequest?.())')

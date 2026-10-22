@@ -4,7 +4,7 @@ import { load } from 'cheerio';
 import { recognizeFromBrowserLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { uspsPackageIdentifier } from '../../core/detection/usps.js';
-import { ChallengeError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
@@ -22,6 +22,7 @@ import { uspsStage, uspsStatus } from './status.js';
  * nothing is replayed over plain HTTP.
  */
 const TRACKING_BASE = 'https://tools.usps.com/tracking/';
+const OUTAGE = 'https://www.usps.com/root/global/server_responses/anyapp_outage_apology.htm';
 const MAX_BYTES = 10_000_000;
 // The browser's time for every read; with the transport allowance a lookup ends within a
 // minute. Answers the page gives come well inside it.
@@ -304,6 +305,7 @@ export class USPSTracker {
       maxTimeout: timeoutMs,
       // The verification page can become idle before it reloads into tracking.
       contentWaitForSelector: '#trackingNum',
+      captureResponses: [uspsTrackingUrl(number)],
     }, {
       provider: 'TRAWL while fetching USPS',
       timeoutMs,
@@ -311,7 +313,20 @@ export class USPSTracker {
       fetcher: this.#fetcher,
       signal,
     });
-    const result = parseUSPSTrackingHtml(page.html, number);
+    let result: CarrierResult;
+    try { result = parseUSPSTrackingHtml(page.html, number); }
+    catch (error) {
+      // Prefer a complete matching page if it arrived. Only the exact tracking
+      // request's observed redirect proves an outage behind a blank wrapper.
+      if (error instanceof ChallengeError && page.capturedResponses.some(response =>
+        response.url === uspsTrackingUrl(number) && response.trackingNumberSubmitted === number
+        && response.status === 302 && response.headers.location === OUTAGE && !response.error
+        && !response.truncated && !response.base64Encoded)) {
+        // This lookup was redirected; it does not prove every USPS lookup is down.
+        throw new IndeterminateError('USPS', 'USPS sent the lookup to its service outage page', { reason: 'maintenance_page' });
+      }
+      throw error;
+    }
     result.tracking_url = uspsTrackingUrl(number);
     result.tracking_source = 'rendered-page';
     return result;

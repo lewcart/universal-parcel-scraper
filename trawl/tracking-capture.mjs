@@ -4,6 +4,7 @@
 // other capture request keeps TRAWL's stock behaviour.
 import { attachRoyalMailHistoryCapture, ROYAL_MAIL_OPT_OUT } from './royal-mail-history.mjs';
 import { attachSwiftxSlider } from './swiftx-slider.mjs';
+import { attachUspsTrackingCapture } from './usps-tracking.mjs';
 
 // TRAWL drops a result that arrives at its request deadline. End a capture's
 // waits before it, so the replies already observed are still returned.
@@ -328,6 +329,8 @@ const NETWORK_ERRORS = new Set([
 ]);
 
 export async function attachTrackingCapture(page, url, options) {
+  const usps = attachUspsTrackingCapture(page, url, options);
+  if (usps) return usps;
   const history = await attachRoyalMailHistoryCapture(page, url, options);
   if (history) return history;
   const target = new URL(url);

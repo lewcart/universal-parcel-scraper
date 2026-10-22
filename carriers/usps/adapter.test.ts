@@ -215,7 +215,7 @@ describe('USPS rendered page', () => {
 });
 
 describe('USPS lookup steps', () => {
-  function trawlReply(html: string, number = DELIVERED_NUMBER) {
+  function trawlReply(html: string, number = DELIVERED_NUMBER, capturedResponses: unknown[] = []) {
     return Response.json({
       tier: 3,
       statusCode: 200,
@@ -223,7 +223,7 @@ describe('USPS lookup steps', () => {
       html,
       cookies: [],
       userAgent: 'Mozilla/5.0 (test browser)',
-      capturedResponses: [],
+      capturedResponses,
     });
   }
 
@@ -322,6 +322,45 @@ describe('USPS lookup steps', () => {
       INTERSTITIAL_PAGE.replace('</script>', '</script><p>Please wait</p>'), INTERSTITIAL_PAGE.replace(/<script>.*<\/script>/, '')]) {
       expect(() => parseUSPSTrackingHtml(page, DELIVERED_NUMBER)).toThrowError(expect.objectContaining({ kind: 'challenge', reason: undefined }));
     }
+  });
+
+  const outageReply = {
+    url: uspsTrackingUrl(DELIVERED_NUMBER), status: 302, trackingNumberSubmitted: DELIVERED_NUMBER,
+    headers: { location: 'https://www.usps.com/root/global/server_responses/anyapp_outage_apology.htm' },
+    body: null, error: null, truncated: false, base64Encoded: false,
+  };
+
+  it('stops after a bound outage redirect without calling it missing or repeating verification', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      trawlReply(INTERSTITIAL_PAGE, DELIVERED_NUMBER, [outageReply]));
+    const { recorder, records } = stepRecorder();
+    await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER))
+      .rejects.toMatchObject({ kind: 'indeterminate', reason: 'maintenance_page' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(records).toEqual(['trawl:indeterminate', 'lookup:trawl:indeterminate']);
+    expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({
+      captureResponses: [uspsTrackingUrl(DELIVERED_NUMBER)],
+    });
+  });
+
+  it.each([
+    { url: uspsTrackingUrl(IN_TRANSIT_NUMBER) }, { trackingNumberSubmitted: IN_TRANSIT_NUMBER },
+    { trackingNumberSubmitted: undefined }, { status: 200 }, { headers: { location: 'https://example.com/outage' } },
+    { truncated: true }, { error: 'capture failed' }, { base64Encoded: true },
+  ])('does not infer an outage from unrelated or incomplete evidence: %j', async changed => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      trawlReply(INTERSTITIAL_PAGE, DELIVERED_NUMBER, [{ ...outageReply, ...changed }]));
+    await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
+      .rejects.toMatchObject({ kind: 'challenge', reason: 'interstitial_page' });
+  });
+
+  it('keeps matching full history despite an earlier outage and still rejects a wrong identity', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(TIMELINE_PAGE, DELIVERED_NUMBER, [outageReply]));
+    const tracker = new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) });
+    expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+    fetcher.mockResolvedValueOnce(trawlReply(TIMELINE_PAGE.replaceAll(DELIVERED_NUMBER, IN_TRANSIT_NUMBER),
+      DELIVERED_NUMBER, [outageReply]));
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'schema' });
   });
 
   it('does not repeat a challenge shell, wrong identity or rate limit', async () => {

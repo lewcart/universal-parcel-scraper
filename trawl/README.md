@@ -1,9 +1,13 @@
 # Optional TRAWL browser service
 
 Some carriers and universal providers only answer a full browser session. This image extends
-[TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, Royal Mail,
+[TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, USPS, Royal Mail,
 Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta, Poste Italiane, SwiftX, China Post and ZTO. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
+
+USPS also captures its tracking request's redirect to the official outage page.
+That redirect can leave the verification wrapper blank; retaining it lets the
+adapter distinguish temporary unavailability from an unresolved challenge.
 
 Spee-Dee also uses the service's HTTP tier after a refused direct connection; the benefit
 is the service's network, and no browser is launched. MTCaptcha (Hongkong Post)

@@ -100,6 +100,28 @@ describe('standalone tracker', () => {
     expect(fetcher).toHaveBeenCalled();
   });
 
+  it('keeps provider history after a USPS lookup is redirected to its outage page', async () => {
+    const usps = '9400111899223397910421'; // Synthetic PIC.
+    const url = `https://tools.usps.com/tracking/${usps}`;
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async input => {
+      if (String(input) === 'http://trawl.internal:8191/scrape') return Response.json({
+        tier: 2, statusCode: 200, html: '<html><body><script>/* synthetic verification wrapper */</script></body></html>',
+        capturedResponses: [{ url, status: 302, trackingNumberSubmitted: usps,
+          headers: { location: 'https://www.usps.com/root/global/server_responses/anyapp_outage_apology.htm' } }],
+      });
+      return Response.json({ data: { tracking_number: usps, events: [
+        { timestamp: '2026-01-02T12:00:00Z', status: 'Delivered', dispatch_code_id: 7 },
+        { timestamp: '2026-01-01T12:00:00Z', status: 'In transit', dispatch_code_id: 3 },
+      ] } }, { status: 201 });
+    });
+    const answer = await createTracker({ trawlUrl: 'http://trawl.internal:8191', fetcher, providers: ['Ship24'] })
+      .track({ number: usps, carrier: 'usps' });
+    expect(answer.source).toBe('Ship24');
+    expect(answer.result.events).toHaveLength(2);
+    expect(answer.attempts.map(attempt => attempt.kind)).toEqual(['indeterminate', 'ok']);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
   it('detects a USPS routing barcode as typed and gives providers only its package identifier', async () => {
     // Invented package identifiers, the 22-digit one outside the PIC rule, behind the made-up ZIP code 00314,
     // with or without a ZIP+4: 30, 34 and 38 digits.

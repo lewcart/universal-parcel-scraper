@@ -38,6 +38,12 @@ FLARESOLVERR_URL for browser fallback')`.
    insufficient. There is no tracking XHR to capture: the page carries its data
    as HTML.
 
+The verification wrapper can stay blank when its tracking request redirects to
+USPS's service outage page. The service captures that exact redirect as temporary
+unavailability, so enabled providers can take over without repeating the same
+outage. An unresolved verification page remains a challenge; a complete matching
+history takes precedence over an earlier outage reply.
+
 Parsing, in order:
 
 - No `.track-bar-container`: `ChallengeError`. A browser can get HTTP 200 containing only a

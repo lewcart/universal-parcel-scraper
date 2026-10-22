@@ -26,6 +26,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       },
@@ -56,6 +57,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       },
@@ -86,6 +88,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       }
@@ -118,6 +121,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       }
@@ -149,6 +153,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       }
@@ -181,6 +186,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       }
@@ -213,6 +219,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       },
@@ -246,6 +253,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       },
@@ -279,6 +287,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       }
@@ -312,6 +321,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       }
@@ -344,6 +354,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       },
@@ -377,6 +388,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       }
@@ -409,6 +421,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       }
@@ -441,6 +454,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk",
           "xpressbees"
         ]
@@ -474,6 +488,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk",
           "xpressbees"
         ]
@@ -500,7 +515,8 @@
           "dpd-uk",
           "dpd",
           "chronopost",
-          "dpd-de"
+          "dpd-de",
+          "dpd-pt"
         ]
       },
       "note": "Printed with its check character. DPD UK did not find it in October 2026."
@@ -528,7 +544,8 @@
           "chronopost",
           "brt",
           "yunda",
-          "dpd-de"
+          "dpd-de",
+          "dpd-pt"
         ]
       },
       "note": "Printed with a digit as its check character. DPD UK did not find it in October 2026."
@@ -557,7 +574,8 @@
           "chronopost",
           "brt",
           "yunda",
-          "dpd-de"
+          "dpd-de",
+          "dpd-pt"
         ]
       },
       "note": "Printed with a digit as its check character, which FedEx's fifteen-digit check also accepts. DPD UK did not find it in October 2026."
@@ -583,6 +601,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "xpressbees"
         ]
       },

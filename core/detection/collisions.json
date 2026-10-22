@@ -1598,7 +1598,8 @@
       "dpd-fr",
       "dpd-uk",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1614,7 +1615,8 @@
       "dpd-fr",
       "dpd-uk",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1632,7 +1634,8 @@
       "dpd-uk",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1649,7 +1652,8 @@
       "dpd-uk",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1665,7 +1669,8 @@
       "dpd-de",
       "dpd-uk",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1680,26 +1685,10 @@
       "dpd-de",
       "dpd-uk",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
-  },
-  {
-    "shape": "14 digits",
-    "carriers": [
-      "brt",
-      "ciblex",
-      "dpd",
-      "dpd-be",
-      "dpd-nl",
-      "dpd-de",
-      "dpd-fr",
-      "dpd-uk",
-      "hermes-de",
-      "seur",
-      "dhl-ecommerce-uk"
-    ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1716,7 +1705,8 @@
       "hermes-de",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1734,7 +1724,8 @@
       "hermes-de",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1753,7 +1744,8 @@
       "dpd-uk",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Most fourteen-digit numbers on DPD Poland's own archived tracking pages start with 13, so DPD Poland is listed first; the length stays shared with the other DPD networks and these carriers, so number shape alone cannot identify the carrier."
   },
@@ -1771,7 +1763,8 @@
       "dpd-uk",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Most fourteen-digit numbers on DPD Poland's own archived tracking pages start with 13, so DPD Poland is listed first; the length stays shared with the other DPD networks and these carriers, so number shape alone cannot identify the carrier."
   },
@@ -1791,7 +1784,8 @@
       "hermes-de",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Most fourteen-digit numbers on DPD Poland's own archived tracking pages start with 13, so DPD Poland is listed first; the length stays shared with the other DPD networks and these carriers, so number shape alone cannot identify the carrier."
   },
@@ -1808,7 +1802,8 @@
       "dpd-uk",
       "hermes-de",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1824,7 +1819,8 @@
       "dpd-uk",
       "hermes-de",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1841,7 +1837,8 @@
       "hermes-de",
       "la-poste",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1858,7 +1855,8 @@
       "dpd-uk",
       "la-poste",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1874,7 +1872,8 @@
       "dpd-uk",
       "la-poste",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1891,7 +1890,8 @@
       "dpd-uk",
       "nova-poshta",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Nova Poshta's low rule takes its domestic prefixes, such as 204, 590 or 51. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1907,7 +1907,8 @@
       "dpd-uk",
       "nova-poshta",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Nova Poshta's low rule takes its domestic prefixes, such as 204, 590 or 51. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1924,7 +1925,8 @@
       "dpd-uk",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1940,7 +1942,8 @@
       "dpd-uk",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -1958,7 +1961,8 @@
       "hermes-de",
       "nova-poshta",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Nova Poshta waybills overlap other numeric families; a valid Hermes checksum cannot establish carrier ownership."
   },
@@ -1975,7 +1979,8 @@
       "hermes-de",
       "nova-poshta",
       "seur",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Nova Poshta waybills overlap other numeric families; a valid Hermes checksum cannot establish carrier ownership."
   },
@@ -2006,23 +2011,14 @@
     "reason": "SDA numbers its parcels in this shape, and AliExpress shows the buyer such a number while the parcel is still on Cainiao's leg, before Poste Italiane knows it. Neither rule is preferred; the one that knows the number confirms it. Once both know it, it is filed under AliExpress, which proposes Poste Italiane as the delivery carrier."
   },
   {
-    "shape": "Fourteen digits and their DPD check character",
-    "carriers": [
-      "chronopost",
-      "dpd",
-      "dpd-de",
-      "dpd-uk"
-    ],
-    "reason": "DPD prints a check character after the parcel number, and Chronopost delivers DPD parcels under the same label. Direct tracking must confirm the carrier."
-  },
-  {
     "shape": "Fourteen digits starting 13 and their DPD check character",
     "carriers": [
       "chronopost",
       "dpd",
       "dpd-de",
       "dpd-pl",
-      "dpd-uk"
+      "dpd-uk",
+      "dpd-pt"
     ],
     "reason": "DPD Poland prints the same check character after its fourteen-digit parcel numbers, whose 13 range it is listed first for. The other DPD networks track the same parcel and Chronopost delivers DPD parcels under the same label, so direct tracking must confirm the carrier."
   },
@@ -2035,7 +2031,8 @@
       "dpd-de",
       "dpd-fr",
       "dpd-uk",
-      "yunda"
+      "yunda",
+      "dpd-pt"
     ],
     "reason": "When DPD's check character is a digit, the fifteen-digit rules of BRT, DPD France and Yunda match too, and Chronopost delivers DPD parcels entering France under the same number. Direct tracking must confirm the carrier."
   },
@@ -2046,7 +2043,8 @@
       "dpd",
       "dpd-de",
       "dpd-uk",
-      "la-poste"
+      "la-poste",
+      "dpd-pt"
     ],
     "reason": "La Poste's tracked-letter numbers end in the same ISO 7064 check character DPD prints; La Poste's high-confidence rule decides."
   },
@@ -2060,7 +2058,8 @@
       "dpd-fr",
       "dpd-uk",
       "fedex",
-      "yunda"
+      "yunda",
+      "dpd-pt"
     ],
     "reason": "The fifteen digits also carry a valid FedEx check digit, so FedEx's rule lists FedEx first, ahead of the BRT, DPD France and Yunda fifteen-digit rules. DPD UK's own tracking page published such a number."
   },
@@ -2939,7 +2938,8 @@
       "dpd-de",
       "dpd-uk",
       "la-poste",
-      "yunda"
+      "yunda",
+      "dpd-pt"
     ],
     "reason": "La Poste's tracked-letter numbers end in the ISO 7064 check character DPD prints; when it is a digit, the fifteen-digit BRT and Yunda rules match too. La Poste's high-confidence rule decides."
   },
@@ -2953,7 +2953,8 @@
       "dpd-uk",
       "fedex",
       "la-poste",
-      "yunda"
+      "yunda",
+      "dpd-pt"
     ],
     "reason": "When La Poste's ISO 7064 check character is a digit and the fifteen digits also pass GS1, FedEx's fifteen-digit rule matches too, as do BRT's and Yunda's. La Poste's high-confidence rule decides."
   },
@@ -3574,7 +3575,8 @@
       "hermes-de",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Hermes Germany parcel numbers share this numeric length with the DPD networks and these carriers, so number shape alone cannot identify a carrier."
   },
@@ -3591,7 +3593,8 @@
       "hermes-de",
       "seur",
       "xpressbees",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "dpd-pt"
     ],
     "reason": "Hermes Germany parcel numbers share this numeric length with the DPD networks and these carriers, so number shape alone cannot identify a carrier."
   },
@@ -3862,7 +3865,8 @@
       "dpd-uk",
       "seur",
       "slovak-parcel-service",
-      "zto"
+      "zto",
+      "dpd-pt"
     ],
     "reason": "SPS parcel numbers start with 703, Slovakia's country code, so SPS is offered next to the other carriers that print fourteen digits; number shape alone cannot identify the carrier. The same whole identifiers are also domestic ZTO candidates."
   },
@@ -3881,7 +3885,8 @@
       "hermes-de",
       "seur",
       "slovak-parcel-service",
-      "zto"
+      "zto",
+      "dpd-pt"
     ],
     "reason": "SPS parcel numbers start with 703, Slovakia's country code, and some also pass the Hermes check, so SPS is offered next to Hermes and the other fourteen-digit carriers; number shape alone cannot identify the carrier. The same whole identifiers are also domestic ZTO candidates."
   },
@@ -3899,7 +3904,8 @@
       "hermes-de",
       "seur",
       "slovak-parcel-service",
-      "zto"
+      "zto",
+      "dpd-pt"
     ],
     "reason": "SPS parcel numbers start with 703, Slovakia's country code, and some also pass the Hermes check, so SPS is offered next to Hermes and the other fourteen-digit carriers; number shape alone cannot identify the carrier. The same whole identifiers are also domestic ZTO candidates."
   },
@@ -4079,7 +4085,8 @@
       "dpd",
       "dpd-de",
       "dpd-uk",
-      "yunda"
+      "yunda",
+      "dpd-pt"
     ],
     "reason": "jne numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
@@ -4233,7 +4240,8 @@
       "dpd-fr",
       "dpd-uk",
       "seur",
-      "xpressbees"
+      "xpressbees",
+      "dpd-pt"
     ],
     "reason": "Anteraja ranges overlap other carriers. Its low-confidence suggestion requires the guest API to confirm the whole waybill."
   },
@@ -4253,7 +4261,8 @@
       "dpd-uk",
       "hermes-de",
       "seur",
-      "xpressbees"
+      "xpressbees",
+      "dpd-pt"
     ],
     "reason": "Anteraja ranges overlap other carriers. Its low-confidence suggestion requires the guest API to confirm the whole waybill."
   },
@@ -4270,7 +4279,8 @@
       "dpd-de",
       "dpd-uk",
       "seur",
-      "zto"
+      "zto",
+      "dpd-pt"
     ],
     "reason": "Domestic ZTO candidates overlap numeric parcel formats. A shape or checksum does not establish network ownership."
   },
@@ -4286,7 +4296,8 @@
       "dpd-de",
       "dpd-uk",
       "seur",
-      "zto"
+      "zto",
+      "dpd-pt"
     ],
     "reason": "Domestic ZTO candidates overlap numeric parcel formats. A shape or checksum does not establish network ownership."
   },
@@ -4304,7 +4315,8 @@
       "dpd-uk",
       "hermes-de",
       "seur",
-      "zto"
+      "zto",
+      "dpd-pt"
     ],
     "reason": "Domestic ZTO candidates overlap numeric parcel formats. A shape or checksum does not establish network ownership."
   },
@@ -4322,7 +4334,8 @@
       "dpd-uk",
       "seur",
       "zto",
-      "zto-international"
+      "zto-international",
+      "dpd-pt"
     ],
     "reason": "ZTO's own configuration gives its international waybills 771 and eleven digits, so ZTO International's preferred low rule lists it first. Domestic ZTO and the other fourteen-digit formats stay candidates: a shape does not establish the network, and recognition asks ZTO International first."
   },
@@ -4339,7 +4352,8 @@
       "dpd-uk",
       "seur",
       "zto",
-      "zto-international"
+      "zto-international",
+      "dpd-pt"
     ],
     "reason": "ZTO's own configuration gives its international waybills 771 and eleven digits, so ZTO International's preferred low rule lists it first. Domestic ZTO and the other fourteen-digit formats stay candidates: a shape does not establish the network, and recognition asks ZTO International first."
   },
@@ -4553,7 +4567,8 @@
       "dpd-nl",
       "dpd-de",
       "dpd-uk",
-      "seur"
+      "seur",
+      "dpd-pt"
     ],
     "reason": "City Express shipment numbers start with one of its centre codes; the same fourteen digits fit other carriers' low-confidence rules, so recognition asks each of them."
   },
@@ -4570,7 +4585,8 @@
       "dpd-de",
       "dpd-uk",
       "mylerz",
-      "seur"
+      "seur",
+      "dpd-pt"
     ],
     "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -4586,7 +4602,8 @@
       "dpd-de",
       "dpd-uk",
       "mylerz",
-      "seur"
+      "seur",
+      "dpd-pt"
     ],
     "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -4603,7 +4620,8 @@
       "dpd-uk",
       "hermes-de",
       "mylerz",
-      "seur"
+      "seur",
+      "dpd-pt"
     ],
     "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules; some also pass the Hermes checksum. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
@@ -5078,7 +5096,8 @@
       "dpd-fr",
       "dpd-nl",
       "dpd-uk",
-      "seur"
+      "seur",
+      "dpd-pt"
     ],
     "reason": "A DPD parcel number opens with the issuing depot, and DPD Austria's depot list gives these codes to its depots, so DPD Austria is listed first; the fourteen digits stay shared with the other DPD networks and these carriers. DPD Austria cannot be asked, so, as for DPD France, recognition leaves out the DPD networks, whose guest API would file the parcel under DPD Switzerland, and asks the others."
   },
@@ -5177,7 +5196,7 @@
     "reason": "SEUR's twenty-one-digit references share the length. Both stay low-confidence suggestions and recognition confirms the carrier."
   },
   {
-    "shape": "Fourteen digits from a DPD Portugal depot (0955 to 0988) and their DPD check character",
+    "shape": "Fourteen digits and their DPD check character",
     "carriers": [
       "chronopost",
       "dpd",
@@ -5185,10 +5204,10 @@
       "dpd-pt",
       "dpd-uk"
     ],
-    "reason": "A DPD parcel number opens with the issuing depot, and these depots are DPD Portugal's, so DPD Portugal is listed first; Chronopost and the other DPD networks print the same label. Direct tracking must confirm the carrier."
+    "reason": "DPD prints a check character after the parcel number, and Chronopost delivers DPD parcels under the same label. DPD Portugal is listed first for its own depots (0955 to 0988). Direct tracking must confirm the carrier."
   },
   {
-    "shape": "14 digits starting with a DPD Portugal depot code (0955 to 0988)",
+    "shape": "14 digits",
     "carriers": [
       "brt",
       "ciblex",
@@ -5203,7 +5222,7 @@
       "hermes-de",
       "seur"
     ],
-    "reason": "A DPD parcel number opens with the issuing depot, and these depots are DPD Portugal's, so DPD Portugal is listed first and recognition asks it first; the fourteen digits stay shared with the other DPD networks and these carriers."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. DPD Portugal is listed first for its own depots (0955 to 0988). Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "UU, nine digits and DE with a valid S10 check digit",
@@ -5600,7 +5619,8 @@
       "dpd-nl",
       "dpd-uk",
       "hermes-de",
-      "seur"
+      "seur",
+      "dpd-pt"
     ],
     "reason": "best-express-my numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },

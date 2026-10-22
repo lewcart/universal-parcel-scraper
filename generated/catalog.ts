@@ -11875,7 +11875,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-pt",
-      "recognitionRank": 894,
+      "recognitionRank": 815,
       "localClocks": true
     },
     "canaryUrl": "https://tracking.dpd.pt/track-and-trace",
@@ -11904,6 +11904,15 @@ export const CARRIER_CATALOG = {
         "confidence": "low",
         "checksum": "dpd",
         "preferred": true
+      },
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{14}[0-9A-Z]$",
+        "confidence": "low",
+        "checksum": "dpd"
       }
     ]
   },
@@ -33105,7 +33114,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-ie": [],
   "dpd-nl": ["dpd-nl-1"],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
-  "dpd-pt": ["dpd-pt-1","dpd-pt-2"],
+  "dpd-pt": ["dpd-pt-1","dpd-pt-2","dpd-pt-3","dpd-pt-4"],
   "dpd-ro": [],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],

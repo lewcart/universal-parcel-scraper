@@ -14,6 +14,9 @@ export const CHRONOPOST_MAX_BYTES = 2_000_000;
 const SOAP = 'http://schemas.xmlsoap.org/soap/envelope/';
 export const CHRONOPOST_NAMESPACE = 'http://cxf.tracking.soap.chronopost.fr/';
 const MAX_EVENTS = 500;
+// The DPD networks that look a Geopost reference up for a parcel Chronopost
+// sends to their country.
+const GEOPOST_PARTNERS: ReadonlyMap<string, string> = new Map([['DE', 'dpd-de'], ['PT', 'dpd-pt']]);
 
 export function normalizeChronopostNumber(raw: string): string {
   const value = raw.toUpperCase().replace(/[\s.-]/g, '');
@@ -232,9 +235,10 @@ export function parseChronopostTrackingXml(xml: string, rawNumber: string): Carr
   const latest = events[0]!;
   const reference = references.size === 1 ? [...references][0] : undefined;
   const destination = destinations.size === 1 ? [...destinations][0] : undefined;
-  // The typed Geopost reference and Germany destination propose a national
-  // lookup. The downstream adapter must still confirm ownership and activity.
-  const partner = reference && geoReferences.has(reference) && destination === 'DE' ? 'dpd-de' : undefined;
+  // The typed Geopost reference and a destination whose DPD network delivers
+  // Chronopost's parcels propose a national lookup. The downstream adapter
+  // must still confirm ownership and activity.
+  const partner = reference && geoReferences.has(reference) && destination ? GEOPOST_PARTNERS.get(destination) : undefined;
   return {
     status: languageStageStatus(stage),
     current_stage: stage,

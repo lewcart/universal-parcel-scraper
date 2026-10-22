@@ -23,7 +23,7 @@
       "retry"
     ],
     "recognition": {
-      "rank": 894
+      "rank": 815
     },
     "localClocks": true
   },
@@ -96,6 +96,17 @@
       "confidence": "low",
       "checksum": "dpd",
       "preferred": true
+    },
+    {
+      "id": "dpd-pt-3",
+      "pattern": "^\\d{14}$",
+      "confidence": "low"
+    },
+    {
+      "id": "dpd-pt-4",
+      "pattern": "^\\d{14}[0-9A-Z]$",
+      "confidence": "low",
+      "checksum": "dpd"
     }
   ]
 }

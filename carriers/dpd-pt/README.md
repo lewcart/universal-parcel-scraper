@@ -64,8 +64,11 @@ show both forms. Every DPD network issues the same layout and the other DPD entr
 with low rules. The first four digits are the sending depot: DPD's routing depot table gives
 Portugal 0955 to 0979, and the tracker's archived lookups and Portuguese complaints add 0980
 to 0988, which no other network uses. A preferred low rule puts DPD Portugal first for those
-depots. Parcels from other depots stay unclaimed: DPD Poland's preferred rule takes those
-starting with 13, a range DPD Portugal issues too.
+depots. Its tracker also answers parcels from other depots, which DPD Portugal delivers too, so
+a plain low rule offers it for every DPD number. Its recognition rank is below the other DPD
+networks', so for fourteen digits from another depot it is among the first carriers asked only
+in a lookup from Portugal. DPD Poland's preferred rule still lists DPD Poland first for numbers starting with 13,
+a range DPD Portugal issues too.
 
 ## Links
 

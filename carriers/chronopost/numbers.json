@@ -28,6 +28,7 @@
           "dpd",
           "chronopost",
           "dpd-de",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -487,6 +488,7 @@
           "chronopost",
           "brt",
           "yunda",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -512,6 +514,7 @@
           "dpd",
           "chronopost",
           "dpd-de",
+          "dpd-pt",
           "dpd-uk"
         ]
       },

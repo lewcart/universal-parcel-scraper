@@ -11873,7 +11873,7 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-pt",
-      "recognitionRank": 894,
+      "recognitionRank": 815,
       "localClocks": true
     },
     "canaryUrl": "https://tracking.dpd.pt/track-and-trace",
@@ -11902,6 +11902,15 @@
         "confidence": "low",
         "checksum": "dpd",
         "preferred": true
+      },
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{14}[0-9A-Z]$",
+        "confidence": "low",
+        "checksum": "dpd"
       }
     ]
   },

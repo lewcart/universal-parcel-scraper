@@ -27,6 +27,7 @@
           "dhl-ecommerce-uk",
           "dpd-be",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -55,6 +56,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -77,6 +79,7 @@
           "dpd-de",
           "dpd",
           "chronopost",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -107,6 +110,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -140,6 +144,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -173,6 +178,7 @@
           "dhl-ecommerce-uk",
           "dpd-be",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -206,6 +212,7 @@
           "dhl-ecommerce-uk",
           "dpd-be",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -237,6 +244,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -268,6 +276,7 @@
           "dhl-ecommerce-uk",
           "dpd-be",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -293,6 +302,7 @@
           "dpd",
           "chronopost",
           "dpd-de",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -319,6 +329,7 @@
           "dpd",
           "chronopost",
           "dpd-de",
+          "dpd-pt",
           "dpd-uk"
         ]
       },

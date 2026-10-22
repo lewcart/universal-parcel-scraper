@@ -73,10 +73,12 @@ pickup point, or as the delivery point together with how the parcel is
 collected; a delivery point alone can be the recipient's home. A delivered
 parcel has none, collected there or not.
 
-A checked `GEO/` parcel reference with an explicit German delivery country
-proposes DPD Germany. The tracker asks that adapter with the partner's number
-and returns its independent confirmation for consumer routing. Other safe
-partner references remain available for catalog-based confirmation. A reference
+A checked `GEO/` parcel reference with an explicit German or Portuguese delivery
+country proposes DPD Germany or DPD Portugal: Chronopost's European service runs
+on the DPD network, which delivers there under its own name. The tracker asks
+that adapter with the partner's number and returns its independent confirmation
+for consumer routing. Other safe partner references remain available for
+catalog-based confirmation. A reference
 that repeats the skybill's own letters and digits, followed by a service code
 and a check character, is Geopost's form of the same parcel and is dropped.
 Conflicting references or countries do not select a partner. Master and child

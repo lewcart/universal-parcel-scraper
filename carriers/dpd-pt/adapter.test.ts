@@ -1,7 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { dpdParcelNumber } from '../../core/detection/dpd.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { fetchTrusting } from '../../core/transport/https.js';
@@ -255,6 +258,22 @@ describe('DPD Portugal tracking adapter', () => {
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(1_100_000)));
     await expect(carrier(large).track({ number: DELIVERED })).rejects.toThrow('unexpectedly large');
+  });
+
+  it('offers another network’s depot numbers, asked with a Portuguese hint, after its own depots', () => {
+    const checked = (digits: string) => `${digits}${[...'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'].find(character => dpdParcelNumber(`${digits}${character}`))!}`;
+    for (const number of ['01500000000000', '28840000000000', checked('01500000000000')]) {
+      const match = detectCarrierMatch(number);
+      expect(match.candidates, number).toContain('dpd-pt');
+      expect(match.preferred, number).not.toContain('dpd-pt');
+      expect(recognitionAskedCarriers(number, { countryHint: 'PT' }).slice(0, 2), number).toContain('dpd-pt');
+      expect(recognitionAskedCarriers(number, { countryHint: 'IT' }), number).not.toContain('dpd-pt');
+    }
+    for (const countryHint of [undefined, 'DE', 'ES', 'FR', 'GB', 'NL']) {
+      expect(recognitionAskedCarriers('01500000000000', { countryHint }), countryHint).not.toContain('dpd-pt');
+    }
+    expect(detectCarrierMatch('09600000000000')).toMatchObject({ preferred: ['dpd-pt'] });
+    expect(recognitionAskedCarriers('09600000000000')[0]).toBe('dpd-pt');
   });
 
   it('routes a parcel filed under DPD Portugal to the adapter', async () => {

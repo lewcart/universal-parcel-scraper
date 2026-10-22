@@ -1460,6 +1460,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -1947,6 +1948,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -2480,6 +2482,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -3207,6 +3210,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -3939,6 +3943,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -3960,6 +3965,7 @@
       "dpd-de",
       "dpd",
       "chronopost",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -3969,7 +3975,8 @@
       "dpd-de",
       "dpd",
       "chronopost",
-      "dpd-uk"
+      "dpd-uk",
+      "dpd-pt"
     ]
   },
   {
@@ -3992,6 +3999,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -4435,6 +4443,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -4480,6 +4489,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -4507,6 +4517,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -4571,6 +4582,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -4598,6 +4610,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -4622,6 +4635,7 @@
       "chronopost",
       "brt",
       "yunda",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -4632,7 +4646,7 @@
       "dpd",
       "chronopost",
       "dpd-uk",
-      "brt"
+      "dpd-pt"
     ]
   },
   {
@@ -4650,6 +4664,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -5042,6 +5057,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -5069,6 +5085,7 @@
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -5137,6 +5154,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5194,6 +5212,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5238,6 +5257,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5263,6 +5283,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5288,6 +5309,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5313,6 +5335,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5338,6 +5361,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5363,6 +5387,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5388,6 +5413,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -5413,6 +5439,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -6057,6 +6084,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -6282,6 +6310,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -6743,6 +6772,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -6767,6 +6797,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -7217,6 +7248,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -7241,6 +7273,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -7323,6 +7356,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -7347,6 +7381,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -7392,6 +7427,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -7462,6 +7498,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -7480,13 +7517,15 @@
       "dpd",
       "chronopost",
       "dpd-de",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
       "dpd",
       "dpd-de",
       "chronopost",
-      "dpd-uk"
+      "dpd-uk",
+      "dpd-pt"
     ]
   },
   {
@@ -7517,6 +7556,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -7742,6 +7782,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -7804,6 +7845,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -7832,6 +7874,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -7860,6 +7903,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -7888,6 +7932,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -7916,6 +7961,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -8000,6 +8046,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -8028,6 +8075,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -8056,6 +8104,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -8392,6 +8441,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8446,6 +8496,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8483,6 +8534,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8508,6 +8560,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8730,6 +8783,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8754,6 +8808,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8778,6 +8833,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8802,6 +8858,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8922,6 +8979,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -8940,13 +8998,15 @@
       "dpd",
       "chronopost",
       "dpd-de",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
       "dpd",
       "dpd-de",
       "chronopost",
-      "dpd-uk"
+      "dpd-uk",
+      "dpd-pt"
     ]
   },
   {
@@ -8963,6 +9023,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -9208,6 +9269,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -9437,6 +9499,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -9489,6 +9552,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -9701,6 +9765,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -9893,6 +9958,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -9977,6 +10043,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10005,6 +10072,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10033,6 +10101,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10061,6 +10130,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10089,6 +10159,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10117,6 +10188,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10145,6 +10217,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10173,6 +10246,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10201,6 +10275,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10281,6 +10356,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10681,6 +10757,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10709,6 +10786,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10759,6 +10837,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -10849,6 +10928,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -11222,6 +11302,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -11250,6 +11331,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -11668,6 +11750,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -11721,6 +11804,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -11943,6 +12027,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -11970,6 +12055,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -12243,6 +12329,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -12367,6 +12454,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -12395,6 +12483,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -12423,6 +12512,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -13027,6 +13117,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -13077,6 +13168,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -13681,6 +13773,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -13848,6 +13941,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -14369,6 +14463,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -14417,13 +14512,15 @@
       "dpd",
       "chronopost",
       "dpd-de",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
       "dpd",
       "dpd-de",
       "chronopost",
-      "dpd-uk"
+      "dpd-uk",
+      "dpd-pt"
     ]
   },
   {
@@ -14470,6 +14567,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -14795,6 +14893,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -14825,6 +14924,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -14855,6 +14955,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -15014,6 +15115,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -15200,6 +15302,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -15276,6 +15379,7 @@
       "dpd",
       "chronopost",
       "dpd-de",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -15362,6 +15466,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -15393,6 +15498,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -15468,6 +15574,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -15499,6 +15606,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -15550,6 +15658,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -15740,6 +15849,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -16007,6 +16117,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -16261,6 +16372,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -16576,6 +16688,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -16601,6 +16714,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -16813,6 +16927,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -16841,6 +16956,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -16889,7 +17005,8 @@
       "chronopost",
       "brt",
       "yunda",
-      "dpd-de"
+      "dpd-de",
+      "dpd-pt"
     ],
     "preferred": [
       "dpd-uk"
@@ -16899,7 +17016,7 @@
       "dpd",
       "dpd-de",
       "chronopost",
-      "brt"
+      "dpd-pt"
     ]
   },
   {
@@ -16914,7 +17031,8 @@
       "chronopost",
       "brt",
       "yunda",
-      "dpd-de"
+      "dpd-de",
+      "dpd-pt"
     ],
     "preferred": [
       "fedex",
@@ -16925,7 +17043,7 @@
       "dpd",
       "dpd-de",
       "chronopost",
-      "brt"
+      "dpd-pt"
     ]
   },
   {
@@ -16936,7 +17054,8 @@
       "dpd-uk",
       "dpd",
       "chronopost",
-      "dpd-de"
+      "dpd-de",
+      "dpd-pt"
     ],
     "preferred": [
       "dpd-uk"
@@ -16945,7 +17064,8 @@
       "dpd-uk",
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-pt"
     ]
   },
   {
@@ -16964,6 +17084,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -16992,6 +17113,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17021,6 +17143,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17050,6 +17173,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17079,6 +17203,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17108,6 +17233,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17137,6 +17263,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17166,6 +17293,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17195,6 +17323,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17224,6 +17353,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17254,6 +17384,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17283,6 +17414,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17708,6 +17840,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "xpressbees"
     ],
     "preferred": [
@@ -17838,6 +17971,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -17864,6 +17998,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -17890,6 +18025,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -17915,6 +18051,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -18034,6 +18171,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -18317,6 +18455,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -18396,6 +18535,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -18423,6 +18563,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -18824,6 +18965,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -19005,6 +19147,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -19491,6 +19634,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -19517,6 +19661,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -19543,6 +19688,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -19568,6 +19714,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -19593,6 +19740,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -20445,6 +20593,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -20510,6 +20659,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -20535,6 +20685,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -20561,6 +20712,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -22142,6 +22294,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -22779,6 +22932,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -22821,6 +22975,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -22869,6 +23024,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -22995,6 +23151,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23020,6 +23177,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23088,6 +23246,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23114,6 +23273,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23139,6 +23299,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23164,6 +23325,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23291,6 +23453,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23345,6 +23508,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23371,6 +23535,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23397,6 +23562,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23423,6 +23589,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23518,6 +23685,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -23836,6 +24004,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -24015,6 +24184,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -24041,6 +24211,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -24066,6 +24237,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -24112,6 +24284,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -24265,6 +24438,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -24291,6 +24465,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -24360,6 +24535,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -24986,6 +25162,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -25148,6 +25325,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -25719,6 +25897,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -25742,6 +25921,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -26045,6 +26225,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -26455,6 +26636,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -26666,6 +26848,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -26767,6 +26950,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -26951,6 +27135,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -26994,6 +27179,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -27087,6 +27273,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -27137,6 +27324,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -27161,6 +27349,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -27186,6 +27375,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -27233,6 +27423,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -27257,6 +27448,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -27349,6 +27541,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -27530,6 +27723,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -28269,6 +28463,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -28680,6 +28875,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -28817,6 +29013,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -29441,6 +29638,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -29664,6 +29862,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -29688,6 +29887,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -29895,6 +30095,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -29918,6 +30119,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -30112,6 +30314,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -30388,6 +30591,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -30656,6 +30860,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -31100,6 +31305,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -32037,6 +32243,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -32060,6 +32267,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -32084,6 +32292,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -32108,6 +32317,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -32299,6 +32509,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -33101,6 +33312,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -33623,6 +33835,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -33705,6 +33918,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -33802,6 +34016,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -34937,6 +35152,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -35183,6 +35399,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -35874,6 +36091,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -36181,6 +36399,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -36763,6 +36982,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -37082,6 +37302,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -37369,6 +37590,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -37421,6 +37643,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -37549,6 +37772,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -37841,6 +38065,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -38002,6 +38227,7 @@
       "brt",
       "yunda",
       "dpd-de",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -38009,7 +38235,7 @@
       "dpd-de",
       "chronopost",
       "dpd-uk",
-      "brt"
+      "dpd-pt"
     ]
   },
   {
@@ -38549,6 +38775,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -39495,6 +39722,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -39519,6 +39747,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -39785,6 +40014,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -40059,6 +40289,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -40262,6 +40493,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -40285,6 +40517,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -40399,6 +40632,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -41148,6 +41382,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -41280,6 +41515,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -41960,6 +42196,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -43001,6 +43238,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -43367,6 +43605,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -43499,6 +43738,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -43882,6 +44122,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -43918,6 +44159,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -44630,6 +44872,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -44653,6 +44896,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -44719,6 +44963,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -44743,6 +44988,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -44768,6 +45014,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -44793,6 +45040,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -44817,6 +45065,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -44842,6 +45091,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -44867,6 +45117,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "nova-poshta"
     ],
@@ -44928,6 +45179,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -44952,6 +45204,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -44999,6 +45252,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45027,6 +45281,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45054,6 +45309,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45082,6 +45338,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45110,6 +45367,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45540,6 +45798,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45566,6 +45825,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45593,6 +45853,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45621,6 +45882,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45648,6 +45910,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45674,6 +45937,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45701,6 +45965,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45728,6 +45993,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45755,6 +46021,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -45781,6 +46048,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -46465,6 +46733,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -46846,6 +47115,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -47344,6 +47614,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -47426,6 +47697,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -47726,6 +47998,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -47751,6 +48024,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -47776,6 +48050,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -47920,6 +48195,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "mylerz"
     ],
@@ -47944,6 +48220,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "mylerz"
     ],
@@ -47969,6 +48246,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "mylerz"
     ],
@@ -48010,6 +48288,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "mylerz"
     ],
@@ -48104,6 +48383,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "mylerz"
     ],
@@ -48218,6 +48498,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "mylerz"
     ],
@@ -48578,6 +48859,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -48621,6 +48903,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -48735,6 +49018,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -48830,6 +49114,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -49291,6 +49576,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -49704,6 +49990,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -50934,6 +51221,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -50959,6 +51247,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -51041,6 +51330,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "slovak-parcel-service"
     ],
@@ -51085,6 +51375,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "slovak-parcel-service"
     ],
@@ -51111,6 +51402,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "slovak-parcel-service"
     ],
@@ -51137,6 +51429,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "slovak-parcel-service"
     ],
@@ -51424,6 +51717,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -51474,6 +51768,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -51584,6 +51879,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -52162,6 +52458,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -53092,6 +53389,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -53121,6 +53419,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -53149,6 +53448,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -53178,6 +53478,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -53207,6 +53508,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -53235,6 +53537,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -53264,6 +53567,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -53293,6 +53597,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "preferred": [
@@ -54160,6 +54465,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -54609,6 +54915,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -54635,6 +54942,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -54661,6 +54969,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -55457,6 +55766,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -55889,6 +56199,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -56616,6 +56927,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -56990,6 +57302,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -57013,6 +57326,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -57330,6 +57644,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -57468,6 +57783,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -57632,6 +57948,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -57758,6 +58075,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -58076,6 +58394,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk"
     ],
     "asked": [
@@ -58386,6 +58705,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -58412,6 +58732,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -58438,6 +58759,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -58464,6 +58786,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -58490,6 +58813,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -58516,6 +58840,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -58541,6 +58866,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -59571,6 +59897,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -60593,6 +60920,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -60682,6 +61010,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -61577,6 +61906,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -62106,6 +62436,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -62441,6 +62772,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -62465,6 +62797,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -62838,6 +63171,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -62863,6 +63197,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -62888,6 +63223,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],
@@ -62913,6 +63249,7 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
+      "dpd-pt",
       "dpd-uk",
       "xpressbees"
     ],

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { AdapterRegistry } from '../../core/adapter/index.js';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { recognitionCandidates } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NotFoundError } from '../../core/errors/index.js';
@@ -308,6 +309,13 @@ describe('Chronopost direct tracking', () => {
       .replace('EXAMPLE CITY - DE', `EXAMPLE CITY - ${country}`), number);
     expect(result.delivery_carrier).toBeUndefined();
     expect(result.delivery_tracking_number).toBe(reference.replace('GEO/', ''));
+  });
+
+  it('proposes DPD Portugal for a checked Geopost reference to Portugal, with the same reference', () => {
+    const german = parseChronopostTrackingXml(fixture, number);
+    const result = parseChronopostTrackingXml(fixture.replace('EXAMPLE CITY - DE', 'EXAMPLE CITY - PT'), number);
+    expect(result).toMatchObject({ delivery_carrier: 'dpd-pt', delivery_tracking_number: german.delivery_tracking_number, destination_country: 'PT' });
+    expect(deliveryHandoff('chronopost', number, result)).toEqual({ carrier: 'dpd-pt', number: german.delivery_tracking_number, basis: 'partner' });
   });
 
   it('drops the reference that repeats the skybill, and keeps a partner reference beside it', () => {

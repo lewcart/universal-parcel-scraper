@@ -37,6 +37,7 @@
           "dhl-ecommerce-uk",
           "dpd-be",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk"
         ]
       },
@@ -62,6 +63,7 @@
           "dpd-be",
           "dpd-de",
           "dpd-nl",
+          "dpd-pt",
           "dpd-uk",
           "xpressbees"
         ]

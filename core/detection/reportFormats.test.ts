@@ -154,6 +154,9 @@ describe('evidence-backed tracking formats', () => {
       'https://www.smartposti.lt/siuntos-sekimas/JJFI65432155555123456',
       'https://www.smartposti.lv/pakas-meklesana/JJFI65432155555123456',
       'https://www.smartposti.lv/en/tracking/JJFI65432155555123456',
+      'https://www.smartposti.lt/en/receiving/parcel-tracking?trackingCode=JJFI65432155555123456',
+      'https://www.itella.lt/en/private-customer/track-shipment/?trackingCode=JJFI65432155555123456',
+      'https://itella.lv/business-customer/track-shipment/?trackingCode=JJFI65432155555123456',
     ]) {
       expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: 'JJFI65432155555123456', carrier: 'posti', source: 'link' });
     }

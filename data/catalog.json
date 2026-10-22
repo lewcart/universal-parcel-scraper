@@ -2524,6 +2524,28 @@
           "smartposti.lv"
         ],
         "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas|pakas-meklesana)/([^/?#]+)(?:/[0-9]+)?/?$"
+      },
+      {
+        "domains": [
+          "smartposti.ee",
+          "smartposti.lt",
+          "smartposti.lv"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?receiving/parcel-tracking/?$",
+        "params": [
+          "trackingCode"
+        ]
+      },
+      {
+        "domains": [
+          "itella.ee",
+          "itella.lt",
+          "itella.lv"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?(?:private|business)-customer/track-shipment/?$",
+        "params": [
+          "trackingCode"
+        ]
       }
     ],
     "detectionRules": [

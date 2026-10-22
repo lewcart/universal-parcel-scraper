@@ -172,6 +172,8 @@ describe('DHL public tracking normalization', () => {
   it('follows the partner the arrival scan links, and names DHL Express without asking it about DHL’s number', () => {
     expect(deliveryHandoff('dhl', PARCEL, parcel('Switzerland', 'http://www.post.ch')))
       .toEqual({ carrier: 'swiss-post', number: PARCEL, basis: 'partner' });
+    expect(deliveryHandoff('dhl', PARCEL, parcel('Lithuania', `https://www.itella.lt/en/private-customer/track-shipment/?trackingCode=${PARCEL}`)))
+      .toEqual({ carrier: 'posti', number: PARCEL, basis: 'partner' });
     const express = parcel('Italy', `https://www.logistics.dhl/it-it/home/tracking/tracking-express.html?submit=1&tracking-id=${PARCEL}`);
     expect(express.delivery_carrier).toBe('dhl-express');
     expect(deliveryHandoff('dhl', PARCEL, express)).toBeNull();

@@ -73,7 +73,10 @@ stop timeout of the drain plus 30 seconds, or the supervisor kills it mid-drain.
 reports the browser pool to Prometheus.
 
 The image sets `LOG_LEVEL=warn`. TRAWL's request log includes the page path, where some
-carriers put the parcel number; `LOG_LEVEL=info` turns that log on.
+carriers put the parcel number; `LOG_LEVEL=info` turns that log on. Each tier that fails, is
+blocked or times out logs a `tier.failure` warning with the page's host, its status, the page's HTTP status and
+the error it caught: the error's name and the first line of its message, up to 200 characters,
+without URLs or query strings and with runs that could be identifiers masked.
 
 TRAWL drops a reply that reaches its request deadline. The image ends its own waits and
 TRAWL's CAPTCHA solvers 2.5 seconds before it, so a page behind an unsolved widget and

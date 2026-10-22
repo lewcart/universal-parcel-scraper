@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dhlPolandNativeSources } from '/app/packages/tiers/src/utils/dhl-poland-native.mjs';
 import { fastRecaptchaAudio } from '/app/packages/tiers/src/utils/recaptcha-audio.mjs';
+import { logTierFailures } from '/app/apps/api/src/tier-failure-log.mjs';
 
 // Every caller of the reCAPTCHA solver stops once Google blocks or refuses its audio.
 const solverPath = '/app/packages/tiers/src/solvers/recaptcha.ts';
@@ -105,4 +106,11 @@ if (pool.split(pick).length !== 2) throw new Error('TRAWL browser affinity integ
 writeFileSync(poolPath, 'import { preferredFedExEntry } from "../../tiers/src/utils/fedex-session.mjs"\n'
   + pool.replace(pick, '    const retained = preferredFedExEntry(available, domain)\n'
     + '    if (retained) return retained\n' + pick));
+
+// A failed tier says why at the image's warn level.
+const tierFailurePaths = { browser: '/app/packages/tiers/src/tiers/browser.ts', tier2: '/app/packages/tiers/src/tiers/2.ts',
+  orchestrator: orchestratorPath, requestLogging: '/app/apps/api/src/requestLogging.ts' };
+const tierFailureSources = logTierFailures(Object.fromEntries(Object.entries(tierFailurePaths)
+  .map(([file, path]) => [file, readFileSync(path, 'utf8')])));
+for (const [file, path] of Object.entries(tierFailurePaths)) writeFileSync(path, tierFailureSources[file]);
 

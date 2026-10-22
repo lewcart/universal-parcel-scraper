@@ -37,5 +37,6 @@ COPY zto-ocr.py /app/packages/tiers/src/utils/zto-ocr.py
 COPY china-post-browser.mjs /app/packages/tiers/src/utils/china-post-browser.mjs
 COPY china-post-ocr.mjs /app/packages/tiers/src/utils/china-post-ocr.mjs
 COPY china-post-ocr.py /app/packages/tiers/src/utils/china-post-ocr.py
+COPY tier-failure-log.mjs /app/apps/api/src/tier-failure-log.mjs
 COPY install.mjs /tmp/install-tracking-capture.mjs
 RUN bun /tmp/install-tracking-capture.mjs && rm /tmp/install-tracking-capture.mjs

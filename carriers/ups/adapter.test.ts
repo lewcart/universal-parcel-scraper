@@ -733,10 +733,12 @@ describe('UPS captured response sequence', () => {
   });
 
   it.each([
-    ['tiers', { error: 'Max tier reached without success', timings: [{ tier: 2, status: 'blocked' }, { tier: 3, status: 'blocked' }] }],
-    ['deadline', { error: 'Scrape deadline exceeded', timings: [{ tier: 2, status: 'blocked' }] }],
-  ])('rests the browser service after Akamai blocks the page until the %s run out', async (name, reply) => {
-    const endpoint = `${TRAWL_URL}/blocked-${name}`;
+    ['blocks the page until the tiers run out', { error: 'Max tier reached without success', timings: [{ tier: 2, status: 'blocked' }, { tier: 3, status: 'blocked' }] }],
+    ['blocks the page until the deadline runs out', { error: 'Scrape deadline exceeded', timings: [{ tier: 2, status: 'blocked' }] }],
+    ['fails the last tier otherwise', { error: 'Max tier reached without success', timings: [{ tier: 2, status: 'blocked' }, { tier: 3, status: 'error' }] }],
+    ['fails every tier', { error: 'Max tier reached without success', timings: [{ tier: 2, status: 'error' }, { tier: 3, status: 'error' }] }],
+  ])('rests the browser service after the page %s', async (name, reply) => {
+    const endpoint = `${TRAWL_URL}/failed-${name.replaceAll(' ', '-')}`;
     const blocked = vi.fn<typeof fetch>().mockResolvedValue(Response.json(reply, { status: 500 }));
     const failed = new UPSTracker({ trawl: new TrawlClient(endpoint, blocked), fetcher: blocked });
     await expect(failed.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', status: 500 });
@@ -747,7 +749,7 @@ describe('UPS captured response sequence', () => {
 
   it.each([
     ['another failure', { error: 'Browser pool exhausted' }],
-    ['a tier that failed otherwise', { error: 'Max tier reached without success', timings: [{ tier: 2, status: 'blocked' }, { tier: 3, status: 'error' }] }],
+    ['a failure before the browser', { error: 'Max tier reached without success', timings: [{ tier: 1, status: 'error' }] }],
   ])('does not rest the browser service after %s', async (name, reply) => {
     const endpoint = `${TRAWL_URL}/unblocked-${name.replaceAll(' ', '-')}`;
     const failing = vi.fn<typeof fetch>().mockResolvedValue(Response.json(reply, { status: 500 }));

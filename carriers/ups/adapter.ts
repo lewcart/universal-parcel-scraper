@@ -33,8 +33,9 @@ const MAX_CAPTURED = 20;
 // for every lookup that followed within a minute and nearly every one within five, while
 // lookups after a longer pause were answered. Akamai's blocks, which keep the browser on its
 // interstitial, come in bursts too: 84% of the lookups within five minutes of one were
-// blocked, against 3% otherwise. After either the browser rests that long, and the caller's
-// next source answers meanwhile.
+// blocked, against 3% otherwise. So do pages whose every browser tier fails outright: 90%
+// of the lookups within five minutes of one failed, against 13% after an answer. After any
+// of them the browser rests that long, and the caller's next source answers meanwhile.
 export const STATUS_HOLD_MS = 5 * 60_000;
 // Provider strings are short; the rendered page's whole text is not, and the
 // identity check reads all of it, so it passes its own limit to `clean`.
@@ -75,7 +76,7 @@ export class UPSUnavailableError extends IndeterminateError {
 
 /**
  * The browser step, skipped while UPS's status call would likely answer HTTP 500
- * again, or Akamai block the page again: inconclusive, so another source may answer.
+ * again, or the page fail again: inconclusive, so another source may answer.
  */
 export class UPSStatusHeldError extends IndeterminateError {
   constructor(readonly heldMs: number) {
@@ -85,24 +86,24 @@ export class UPSStatusHeldError extends IndeterminateError {
 }
 
 /**
- * When the status call last answered HTTP 500, or Akamai last blocked the
- * page, by browser service. Every tracker in the process that uses the service
+ * When the status call last answered HTTP 500, or the page last failed in
+ * every browser tier, by browser service. Every tracker in the process that uses the service
  * shares it, as a host's several registries do; a restart forgets it.
  */
 const statusFailedAt = new Map<string, number>();
 
 /**
- * Whether the browser service's HTTP 500 says its last browser tier stayed
- * blocked, as on Akamai's interstitial, until the tiers or the deadline ran
- * out. An excerpt cut short still shows the status.
+ * Whether the browser service's HTTP 500 says its last browser tier failed,
+ * blocked on Akamai's interstitial or with an error, until the tiers or the
+ * deadline ran out. An excerpt cut short still shows the status.
  */
-function trawlBlocked(error: unknown): boolean {
+function trawlBrowserFailed(error: unknown): boolean {
   if (!(error instanceof UpstreamHttpError) || error.status !== 500) return false;
   const excerpt = error.diagnostics?.body_excerpt ?? '';
   let reply: unknown;
-  try { reply = JSON.parse(excerpt); } catch { return /"status"\s*:\s*"blocked"/.test(excerpt); }
+  try { reply = JSON.parse(excerpt); } catch { return /"status"\s*:\s*"(?:blocked|error)"/.test(excerpt); }
   const last: unknown = isRecord(reply) && Array.isArray(reply.timings) ? reply.timings.at(-1) : undefined;
-  return isRecord(last) && (last.tier === 2 || last.tier === 3) && last.status === 'blocked';
+  return isRecord(last) && (last.tier === 2 || last.tier === 3) && (last.status === 'blocked' || last.status === 'error');
 }
 
 /** How long the browser service still rests after a 500, or 0. */
@@ -654,7 +655,7 @@ export class UPSTracker {
         captureWindow: 'last',
       });
     } catch (error) {
-      if (trawlBlocked(error)) statusFailedAt.set(trawl.endpoint.href, Date.now());
+      if (trawlBrowserFailed(error)) statusFailedAt.set(trawl.endpoint.href, Date.now());
       throw error;
     }
     // The last matching response is authoritative. An earlier success cannot

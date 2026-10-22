@@ -220,10 +220,10 @@ for (const missing of [false, true]) test(`YunExpress live hook reads a fresh ${
 const swiftxApi = 'https://swiftx-express.com/api/graphql';
 const swiftxNumber = 'SWX000000000000000001';
 const swiftxUrl = `https://swiftx-express.com/track?trackingNumber=${swiftxNumber}`;
-const swiftxQuery = '\n query GetOfficialWebsiteTrackingInfo($input: OfficialWebsiteTrackingInput!) {\n getOfficialWebsiteTrackingInfo(input: $input) { success trackingNo } }';
-const swiftxRequest = (input = { trackingNo: swiftxNumber }, query = swiftxQuery) => ({ query, variables: { input } });
-const swiftxReply = (success = true) => JSON.stringify({ data: { getOfficialWebsiteTrackingInfo: {
-  success, message: success ? '' : 'Order not found.', trackingNo: swiftxNumber, trackingEventList: [] } } });
+const swiftxQuery = '\n query GetOfficialWebsiteTrackingInfoBatch($input: OfficialWebsiteBatchTrackingInput!) {\n getOfficialWebsiteTrackingInfoBatch(input: $input) { success results { success trackingNo } } }';
+const swiftxRequest = (input = { trackingNos: [swiftxNumber], humanToken: 'SYNTHETIC_TOKEN' }, query = swiftxQuery) => ({ query, variables: { input } });
+const swiftxReply = (success = true) => JSON.stringify({ data: { getOfficialWebsiteTrackingInfoBatch: { success: true, message: '', errorCode: null,
+  results: [{ success, message: success ? '' : 'Order not found.', errorCode: null, trackingNo: swiftxNumber, trackingEventList: [] }] } } });
 
 test('SwiftX capture is restricted to the tracking page and one whole SWX number', async () => {
   for (const url of [swiftxUrl.replace('swiftx-express.com', 'other.test'), swiftxUrl.replace('://', '://www.'),
@@ -238,7 +238,9 @@ test('SwiftX capture is restricted to the tracking page and one whole SWX number
 test('SwiftX captures only the page\'s tracking query for exactly the requested number', async () => {
   const { capture, respond, handlers } = await fixture(swiftxUrl, swiftxApi);
   for (const [method, requestBody] of [['GET', swiftxRequest()], ['POST', null], ['POST', { query: swiftxQuery }],
-    ['POST', swiftxRequest({ trackingNo: 'SWX000000000000000002' })], ['POST', swiftxRequest({ trackingNo: swiftxNumber, other: 1 })],
+    ['POST', swiftxRequest({ trackingNos: ['SWX000000000000000002'] })], ['POST', swiftxRequest({ trackingNos: [swiftxNumber], other: 1 })],
+    ['POST', swiftxRequest({ trackingNos: [swiftxNumber, 'SWX000000000000000002'] })], ['POST', swiftxRequest({ trackingNos: swiftxNumber })],
+    ['POST', swiftxRequest({ trackingNo: swiftxNumber }, 'query GetOfficialWebsiteTrackingInfo { getOfficialWebsiteTrackingInfo(input: $input) { success } }')],
     ['POST', swiftxRequest(undefined, 'query GetOrderPodImages { getOrderPodImages { url } }')]]) {
     await respond(swiftxReply(), { method, requestBody });
   }

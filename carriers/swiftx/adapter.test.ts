@@ -14,7 +14,10 @@ const UNKNOWN = 'SWX000000000000000009';
 // After every synthetic scan.
 const READ_AT = Date.parse('2026-06-01T00:00:00Z');
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8');
-const fixture = (name: string) => JSON.parse(text(name)) as { data: { getOfficialWebsiteTrackingInfo: Record<string, unknown> & { trackingEventList: Record<string, unknown>[] } } };
+type Result = Record<string, unknown> & { trackingEventList: Record<string, unknown>[] };
+const fixture = (name: string) => JSON.parse(text(name)) as { data: { getOfficialWebsiteTrackingInfoBatch: Record<string, unknown> & { results: Result[] } } };
+/** The fixture's one result, as the batch reply carries it. */
+const answer = (payload: ReturnType<typeof fixture>) => payload.data.getOfficialWebsiteTrackingInfoBatch.results[0]!;
 const reply = (overrides: Record<string, unknown> = {}) => ({ url: SWIFTX_API, status: 200, headers: {}, body: text('delivered'),
   truncated: false, base64Encoded: false, error: null, ...overrides });
 const page = (capturedResponses: unknown[]) => ({ url: swiftxTrackingUrl(DELIVERED), html: '', cookies: [], userAgent: null, tier: 3,
@@ -60,7 +63,7 @@ describe('SwiftX tracking reply', () => {
     // A label a station created carries its town.
     expect(result.events!.map((event) => event.location)).toEqual([undefined, 'LAKEMONT, CA', 'LAKEMONT, CA']);
     const missing = fixture('failed-attempt');
-    missing.data.getOfficialWebsiteTrackingInfo.trackingEventList[0]!.description = 'Package Missing';
+    answer(missing).trackingEventList[0]!.description = 'Package Missing';
     expect(parseSwiftx(missing, FAILED, READ_AT)).toMatchObject({ status: 'exception', current_stage: 'exception', last_status_text: 'Package Missing' });
   });
 
@@ -82,18 +85,27 @@ describe('SwiftX tracking reply', () => {
   it('is not found only on the tracker\'s notice for the whole number', () => {
     expect(() => parseSwiftx(fixture('not-found'), UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     const other = fixture('not-found');
-    other.data.getOfficialWebsiteTrackingInfo.message = 'Service unavailable';
+    answer(other).message = 'Service unavailable';
     expect(() => parseSwiftx(other, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(() => parseSwiftx(fixture('not-found'), DELIVERED, READ_AT)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parseSwiftx(fixture('delivered'), MOVING, READ_AT)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parseSwiftx({ errors: [{ message: 'Internal error' }], data: null }, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     // A query without the page's verification gets this notice for any number.
     const unverified = fixture('not-found');
-    unverified.data.getOfficialWebsiteTrackingInfo.message = 'Verification required.';
+    answer(unverified).message = 'Verification required.';
     expect(() => parseSwiftx(unverified, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'challenge' }));
     expect(() => parseSwiftxCapture(page([reply({ body: JSON.stringify(unverified) })]), UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    // The batch refuses a query whose verification token is missing or refused, and names no result.
+    const refused = { data: { getOfficialWebsiteTrackingInfoBatch: { success: false, message: 'Human verification failed', errorCode: 'HUMAN_VERIFICATION_REQUIRED', results: [] } } };
+    expect(() => parseSwiftx(refused, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    const tooMany = { data: { getOfficialWebsiteTrackingInfoBatch: { ...refused.data.getOfficialWebsiteTrackingInfoBatch, errorCode: 'TOO_MANY_TRACKING_NUMBERS' } } };
+    expect(() => parseSwiftx(tooMany, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    // One result per lookup: a second or no result is another answer.
+    const twice = fixture('not-found');
+    twice.data.getOfficialWebsiteTrackingInfoBatch.results.push(answer(fixture('delivered')));
+    expect(() => parseSwiftx(twice, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'schema' }));
     const empty = fixture('delivered');
-    empty.data.getOfficialWebsiteTrackingInfo.trackingEventList = [];
+    answer(empty).trackingEventList = [];
     expect(() => parseSwiftx(empty, DELIVERED, READ_AT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
@@ -101,10 +113,11 @@ describe('SwiftX tracking reply', () => {
     for (const [field, value] of [['localGmtOffset', ''], ['localGmtOffset', 'PST'], ['localGmtOffset', 'GMT-15:00'], ['localTime', '2026-03-12T15:41:07'],
       ['event', ''], ['description', '  ']] as const) {
       const changed = fixture('delivered');
-      changed.data.getOfficialWebsiteTrackingInfo.trackingEventList[3]![field] = value;
+      answer(changed).trackingEventList[3]![field] = value;
       expect(() => parseSwiftx(changed, DELIVERED, READ_AT), `${field} ${value}`).toThrow(expect.objectContaining({ kind: 'schema' }));
     }
-    for (const payload of [null, [], {}, { data: {} }, { data: { getOfficialWebsiteTrackingInfo: { trackingNo: DELIVERED } } }]) {
+    for (const payload of [null, [], {}, { data: {} }, { data: { getOfficialWebsiteTrackingInfoBatch: { results: [] } } },
+      { data: { getOfficialWebsiteTrackingInfoBatch: { success: true, results: [{ trackingNo: DELIVERED }] } } }]) {
       expect(() => parseSwiftx(payload, DELIVERED, READ_AT)).toThrow(expect.objectContaining({ kind: 'schema' }));
     }
   });

@@ -8,18 +8,20 @@ tracking page. Shippers and forwarders hand parcels to SwiftX for the last mile.
 1. `trawl`: the browser service opens `swiftx-express.com/track?trackingNumber={number}`. Cloudflare
    puts a managed challenge in front of the page and of every `/api/` route, and the tracker asks
    for the page's own verification before it looks a number up. The page then posts one
-   `getOfficialWebsiteTrackingInfo` query to `/api/graphql` and gets a compressed JSON reply. The
-   service's capture helper keeps that reply only for the query naming the whole number from the
-   page's address; no request is replayed outside the browser.
+   `getOfficialWebsiteTrackingInfoBatch` query to `/api/graphql`, a batch holding the number and its
+   Turnstile token, and gets a compressed JSON reply. The service's capture helper keeps that reply
+   only for a batch of exactly the whole number from the page's address; no request is replayed
+   outside the browser.
 
 Without the browser service the adapter fails as challenged before any request: plain HTTP and
 headless Chrome get Cloudflare's checkbox on the page and its API, even from the unchallenged home
 page. Production needs a TRAWL image built with the SwiftX helper.
 
-A known number gets `success: true` and its scans. An unknown one gets `success: false` with the
-notice "Order not found." and the number echoed, which is the only missing parcel. The notice
-"Verification required.", the tracker's answer for any number to a query without the page's
-verification, is a challenge. When the browser service answers HTTP 500 because its browser
+The reply holds one result per number. A known number's result has `success: true` and its scans.
+An unknown one's has `success: false` with the notice "Order not found." and the number echoed,
+which is the only missing parcel. A batch refused with `HUMAN_VERIFICATION_REQUIRED`, or a result
+with the notice "Verification required.", is a challenge; a batch refused for another reason is
+indeterminate, and any other set of results is a schema failure. When the browser service answers HTTP 500 because its browser
 stopped at a challenge wall, or because the page never sent its query, the lookup fails as
 challenged too. Any other refusal, a reply naming another number, a GraphQL error, a challenge
 page in place of the reply, rate limits and incomplete captures keep their own failure kinds.

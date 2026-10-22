@@ -8,7 +8,7 @@ import { isRecord } from '../../core/types.js';
 import { swiftxStage } from './status.js';
 
 export const PROVIDER = 'SwiftX';
-/** The tracking page's GraphQL endpoint, which it asks once per number. */
+/** The tracking page's GraphQL endpoint, which it asks once per lookup. */
 export const SWIFTX_API = 'https://swiftx-express.com/api/graphql';
 // A reply with a few dozen scans is a few kilobytes.
 export const SWIFTX_MAX_BYTES = 1_000_000;
@@ -19,6 +19,8 @@ const MAX_EVENTS = 200;
 const NOT_FOUND = 'Order not found.';
 // Its answer, for any number, to a query sent without the page's own verification.
 const VERIFICATION = 'Verification required.';
+// The batch's own code for a query whose verification token was missing or refused.
+const VERIFICATION_CODE = 'HUMAN_VERIFICATION_REQUIRED';
 // "2026-01-13 09:04:05", the scan site's wall clock.
 const STAMP = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
 // "GMT-07:00" or "GMT-7:00", the scan site's offset at that time.
@@ -92,7 +94,15 @@ export function parseSwiftx(payload: unknown, raw: string, readAt = Date.now()):
   const number = normalizeSwiftxNumber(raw);
   if (!isRecord(payload)) throw new SchemaError(PROVIDER);
   if (payload.errors !== undefined && payload.errors !== null) throw new IndeterminateError(PROVIDER, 'SwiftX answered its tracking query with an error');
-  const info = isRecord(payload.data) ? payload.data.getOfficialWebsiteTrackingInfo : undefined;
+  // The page asks for its one number as a batch: one answer for the batch, one result per number.
+  const batch = isRecord(payload.data) ? payload.data.getOfficialWebsiteTrackingInfoBatch : undefined;
+  if (!isRecord(batch) || typeof batch.success !== 'boolean') throw new SchemaError(PROVIDER);
+  if (!batch.success) {
+    if (batch.errorCode === VERIFICATION_CODE) throw new ChallengeError(PROVIDER, 'SwiftX asked for its tracking page\'s verification');
+    throw new IndeterminateError(PROVIDER, 'SwiftX did not answer for the shipment');
+  }
+  if (!Array.isArray(batch.results) || batch.results.length !== 1) throw new SchemaError(PROVIDER, 'SwiftX returned another set of shipments');
+  const info: unknown = batch.results[0];
   if (!isRecord(info) || typeof info.success !== 'boolean') throw new SchemaError(PROVIDER);
   if (clean(info.trackingNo, 64).toUpperCase() !== number) throw new SchemaError(PROVIDER, 'SwiftX returned a different shipment');
   const list = info.trackingEventList;

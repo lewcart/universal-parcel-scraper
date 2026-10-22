@@ -102,8 +102,9 @@ const SITES = [
     },
   },
   {
-    // The page passes Cloudflare's check, then posts one GraphQL query per
-    // number in its address and gets a compressed JSON reply.
+    // The page passes Cloudflare's check, then posts one batch GraphQL query
+    // for the number in its address, with its Turnstile token, and gets a
+    // compressed JSON reply.
     api: 'https://swiftx-express.com/api/graphql',
     provider: 'SwiftX',
     requestMethod: 'POST',
@@ -116,8 +117,9 @@ const SITES = [
       try {
         const body = request.postDataJSON();
         const input = body?.variables?.input;
-        return typeof body?.query === 'string' && /\bgetOfficialWebsiteTrackingInfo\b/.test(body.query)
-          && input && typeof input === 'object' && Object.keys(input).length === 1 && input.trackingNo === number;
+        return typeof body?.query === 'string' && /\bgetOfficialWebsiteTrackingInfoBatch\b/.test(body.query)
+          && input && typeof input === 'object' && Object.keys(input).every(key => key === 'trackingNos' || key === 'humanToken')
+          && Array.isArray(input.trackingNos) && input.trackingNos.length === 1 && input.trackingNos[0] === number;
       } catch { return false; }
     },
     settled() {

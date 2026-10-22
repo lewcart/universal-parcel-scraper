@@ -1238,6 +1238,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'linhan', number: 'LHGJ99000001CD',
     route: /^https:\/\/www\.linhan56\.com\/index\/tracknumber\/track\?nos=LHGJ99000001CD$/,
     marker: /快件跟踪|跟踪\(Track\)/ },
+  // The page moves the number into its hash route, looks it up on load and lists it, with a notice while it has no data.
+  { carrier: 'dayone', number: 'DOT0990000000000001',
+    route: /^https:\/\/www\.dayonetrack\.com\/track\?trackNo=DOT0990000000000001(?:#\/track\?trackNo=DOT0990000000000001(?:&lang=[a-zA-Z-]+)?)?$/,
+    marker: /Tracked number|The order information has not been updated yet|订单信息尚未更新/ },
   // The page runs its quick search for the number on load and names it beside the count.
   { carrier: 'team-global-express', number: '9900000000000',
     route: /^https:\/\/www\.myteamge\.com\/\?externalSearchQuery=9900000000000$/,

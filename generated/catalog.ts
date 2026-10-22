@@ -10758,7 +10758,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dayone",
+      "localClocks": true
     },
     "canaryUrl": "https://www.dayonetrack.com/",
     "trackingUrlTemplate": "https://www.dayonetrack.com/track?trackNo={trackingNumber}",

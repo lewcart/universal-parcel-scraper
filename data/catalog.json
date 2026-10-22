@@ -31860,5 +31860,52 @@
         "rawPattern": "^\\d{2}-[A-Z0-9]{6}(?:[A-Z0-9]|[A-Z0-9]{4})?-ZR$"
       }
     ]
+  },
+  "zto-international": {
+    "displayName": "ZTO International",
+    "color": "#3a8eff",
+    "aliases": [
+      "中通国际",
+      "ZTO Global"
+    ],
+    "countries": [
+      "CN",
+      "KH",
+      "LA",
+      "MM",
+      "MY",
+      "PH",
+      "TH",
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "zto-international",
+      "recognitionRank": 998,
+      "localClocks": true
+    },
+    "canaryUrl": "https://m.ztoglobal.com/",
+    "trackingUrlTemplate": "https://m.ztoglobal.com/?path=TrackDetails&inputNo={trackingNumber}&lang=en",
+    "trackingSearchUrl": "https://m.ztoglobal.com/?path=Search&lang=en",
+    "linkRules": [
+      {
+        "domains": [
+          "m.ztoglobal.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "inputNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^771\\d{11}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
   }
 }

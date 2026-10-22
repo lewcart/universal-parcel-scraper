@@ -508,6 +508,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'jcex', number: 'JCZ9999999999DH',
     route: /^https:\/\/track\.jcex\.com\/\?nums=JCZ9999999999DH$/,
     marker: /查询不到|暂无轨迹详情|全部展开/ },
+  // The page looks the number in its address up on load and answers an unknown one without it.
+  { carrier: 'zto-international', number: '77100000000000',
+    route: /^https:\/\/m\.ztoglobal\.com\/\?path=TrackDetails&inputNo=77100000000000&lang=en$/,
+    marker: /No related tracking information|暂无相关运单信息|Waybill Number/ },
   { carrier: 'jumppoint', number: 'JP000000000000',
     route: /^https:\/\/tracking\.jumppoint\.io\/\?q=JP000000000000$/,
     marker: /Shipment Not Found|查無此單|查无此单|Jumppoint標準快遞 及 即日快遞|Jumppoint Standard Express and Same-day Express/ },

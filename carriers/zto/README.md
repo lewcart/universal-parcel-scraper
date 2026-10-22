@@ -3,6 +3,7 @@
 Chinese domestic ZTO waybills use the [official tracker](https://www.zto.com/check).
 Number shapes overlap other carriers; only a matching response confirms ownership.
 ZTO International uses a separate network and tracker.
+Its waybills, 771 and eleven digits, are tracked as [ZTO International](../zto-international/README.md).
 
 The adapter first posts to `hdgateway.zto.com/batchGetTrace`. A verification response
 can fall back to the bundled TRAWL image. The page obtains a Dingxiang challenge

@@ -4209,6 +4209,41 @@
     "reason": "Domestic ZTO candidates overlap numeric parcel formats. A shape or checksum does not establish network ownership."
   },
   {
+    "shape": "771 followed by eleven digits",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "seur",
+      "zto",
+      "zto-international"
+    ],
+    "reason": "ZTO's own configuration gives its international waybills 771 and eleven digits, so ZTO International's preferred low rule lists it first. Domestic ZTO and the other fourteen-digit formats stay candidates: a shape does not establish the network, and recognition asks ZTO International first."
+  },
+  {
+    "shape": "771 followed by eleven digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "seur",
+      "zto",
+      "zto-international"
+    ],
+    "reason": "ZTO's own configuration gives its international waybills 771 and eleven digits, so ZTO International's preferred low rule lists it first. Domestic ZTO and the other fourteen-digit formats stay candidates: a shape does not establish the network, and recognition asks ZTO International first."
+  },
+  {
     "shape": "P, four digits, six letters or digits and a letter (twelve characters)",
     "carriers": [
       "colis-prive",

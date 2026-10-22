@@ -608,6 +608,7 @@ import { adapter as zajil } from '../carriers/zajil/adapter.js';
 import { adapter as zeleris } from '../carriers/zeleris/adapter.js';
 import { adapter as zrExpress } from '../carriers/zr-express/adapter.js';
 import { adapter as zto } from '../carriers/zto/adapter.js';
+import { adapter as ztoInternational } from '../carriers/zto-international/adapter.js';
 
 export const REGISTRY: RegistryDefinition = {
   factories: {
@@ -1218,6 +1219,7 @@ export const REGISTRY: RegistryDefinition = {
     "zeleris": zeleris,
     "zr-express": zrExpress,
     "zto": zto,
+    "zto-international": ztoInternational,
   },
   carriers: {
     "139express": "universal",
@@ -2007,6 +2009,7 @@ export const REGISTRY: RegistryDefinition = {
     "zoom-ve": "universal",
     "zr-express": "zr-express",
     "zto": "zto",
+    "zto-international": "zto-international",
   },
 };
 

@@ -1,11 +1,11 @@
-FROM node:26.10.0-bookworm-slim AS build
+FROM node:26.12.1-bookworm-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts
 COPY . .
 RUN npm run build
 
-FROM node:26.10.0-bookworm-slim
+FROM node:26.12.1-bookworm-slim
 LABEL org.opencontainers.image.source="https://github.com/plhery/universal-parcel-scraper" \
       org.opencontainers.image.licenses="Apache-2.0"
 RUN apt-get update && apt-get install -y --no-install-recommends chromium ca-certificates tini \

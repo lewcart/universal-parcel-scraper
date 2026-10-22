@@ -37,6 +37,8 @@ const LABELS: ReadonlyMap<string, Stage> = new Map([
 export const RELAYED_LABEL = '运输途中';
 /** An estimate 17FEIA writes before the flight: no scan, so the adapter drops the row. */
 export const ESTIMATE_LABEL = '预计起飞日期';
+/** A delayed flight, written between the estimate and the take-off: the row keeps the stage of the one before it. */
+export const DELAY_LABEL = '航班延误';
 /** The order data, the one row that comes without a label. */
 const DATA_WORDING = 'item information received.';
 
@@ -62,6 +64,7 @@ function relayedStage(wording: string): ClassifiedWording {
  * the shared rules on the wording. Null when nothing reads it.
  */
 export function seventeenFeiaStage(label: string, wording: string): ClassifiedWording | null {
+  if (label === DELAY_LABEL) return null;
   const mapped = seventeenFeiaLabelStage(label, wording);
   if (mapped) return { stage: mapped, source: 'carrier_map' };
   if (label === RELAYED_LABEL) return relayedStage(wording);
@@ -72,5 +75,8 @@ export function seventeenFeiaStage(label: string, wording: string): ClassifiedWo
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => seventeenFeiaLabelStage(code ?? '', wording)
     ?? (code === RELAYED_LABEL ? relayedStage(wording).stage : undefined),
-  gaps: [{ code: ESTIMATE_LABEL, note: 'An estimated departure date written before the flight: no scan, so the adapter drops the row.' }],
+  gaps: [
+    { code: ESTIMATE_LABEL, note: 'An estimated departure date written before the flight: no scan, so the adapter drops the row.' },
+    { code: DELAY_LABEL, note: 'A delayed flight, not a movement: the parcel keeps the stage it had.' },
+  ],
 };

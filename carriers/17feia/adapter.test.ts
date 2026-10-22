@@ -199,6 +199,15 @@ describe('17FEIA HTTP adapter', () => {
     expect(result.events).toHaveLength(7);
   });
 
+  it('keeps the stage a parcel had through a delayed flight', () => {
+    // Read before the take-off: the delay follows the export declaration.
+    const result = parseSeventeenFeia(changed('dhl-relayed', (order) => {
+      order.currentOrderTrackInfos.splice(9, 0, { status: '航班延误', description: 'Flight delayed.', createTime: '2026-03-13 09:00:00', timeZone: '+01:00', country: '' });
+    }), RELAYED, Date.parse('2026-03-13T20:00:00+08:00'));
+    expect(result.events![0]).toMatchObject({ description: 'Flight delayed.', provider_code: '航班延误', stage: 'customs', stage_source: 'none' });
+    expect(result).toMatchObject({ current_stage: 'customs', current_stage_source: 'carrier_map', last_status_text: 'Flight delayed.' });
+  });
+
   it('hands over to a partner only through the table, with a number of the partner’s own', () => {
     expect(SEVENTEENFEIA_PARTNERS).toEqual({ 'DPD-DE': 'dpd-de', 'DE-DHL': 'dhl', 'FEDEX-GROUND': 'fedex' });
     const handoff = (company: unknown, number: unknown) => {

@@ -41,7 +41,8 @@ abroad on a line such as 17FEIA's. Tracked through the lookup the order search o
   name does not name the delivering carrier (an EU DHL channel can end with DPD Germany) and is
   not read. 17FEIA's own result names its delivering partner.
 - 17FEIA's estimated departure is no scan, so the adapter drops it with rows dated after the
-  read and repeated rows.
+  read and repeated rows. Its delayed flight is no movement: the row keeps the stage of the row
+  before it.
 - The order's status code is not read: the rows give the stage.
 
 ## Limitations

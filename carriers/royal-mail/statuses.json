@@ -189,6 +189,24 @@
       "note": "The sender handed the item in at a Royal Mail parcel locker."
     },
     {
+      "code": "PBIDO",
+      "wording": "Dropped off at Postbox",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The sender posted the item in a postbox, after the sender's notice and before Royal Mail's first receipt."
+    },
+    {
+      "code": "EVTPC",
+      "wording": "Proof of posting validated",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Royal Mail checked the proof of a postbox posting, before its first receipt."
+    },
+    {
       "code": "EVIPP",
       "wording": "Received at Delivery Depot",
       "language": "en",

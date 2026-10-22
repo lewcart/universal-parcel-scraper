@@ -118,6 +118,14 @@ describe('TSJY HTTP adapter', () => {
     expect(result.events).toHaveLength(7);
   });
 
+  it('keeps the stage a parcel had through a delayed flight', () => {
+    const result = parseTsjy(changed('relayed-journey', (order) => {
+      order.trackList.splice(6, 0, { event: 'Flight delayed.', date: Date.parse('2026-03-13T12:00:00Z'), loc: 'Bayside' });
+    }), JOURNEY, Date.parse('2026-03-13T15:00:00Z'));
+    expect(result.events![0]).toMatchObject({ description: 'Flight delayed.', stage: 'in_transit', stage_source: 'none' });
+    expect(result).toMatchObject({ current_stage: 'in_transit', current_stage_source: 'carrier_map', last_status_text: 'Flight delayed.' });
+  });
+
   it('hands over through the line table, else to the one carrier a high-confidence rule names', () => {
     expect(TSJY_LINES.map((line) => line.carrier)).toEqual(['17feia']);
     expect(tsjyHandoff('feish 9900 0000 01yq', AT_LINE)).toEqual({ delivery_carrier: '17feia', delivery_tracking_number: LINE });
@@ -230,7 +238,12 @@ describe('TSJY HTTP adapter', () => {
 
 describe('TSJY status vocabulary', () => {
   it('records every wording the map knows with the stage it gives', () => {
-    for (const entry of statuses.entries) {
+    for (const entry of statuses.entries as { wording: string; stage?: string }[]) {
+      if (entry.stage === undefined) {
+        expect(tsjyStage(entry.wording)).toBeNull();
+        expect(statusMapAnswer({ carrier: 'tsjy', providerCode: null, description: entry.wording })).toMatchObject({ kind: 'intentional_gap' });
+        continue;
+      }
       expect(statusMap.stage(null, entry.wording.toLowerCase())).toBe(entry.stage);
       expect(tsjyStage(entry.wording)?.stage).toBe(entry.stage);
       expect(statusMapAnswer({ carrier: 'tsjy', providerCode: null, description: entry.wording })).toEqual({ kind: 'mapped', stage: entry.stage });

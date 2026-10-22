@@ -7,7 +7,7 @@ import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { normalizeSeventeenFeiaNumber } from '../17feia/parser.js';
-import { ESTIMATE, tsjyStage } from './status.js';
+import { ESTIMATE, isTsjyDelay, tsjyStage } from './status.js';
 
 export const PROVIDER = 'TSJY';
 // A long history is a few kilobytes.
@@ -147,9 +147,15 @@ export function parseTsjy(payload: unknown, raw: string, readAt = Date.now()): C
   if (!scans.length) throw new IndeterminateError(PROVIDER, 'TSJY has no scans for the order yet');
   // Newest first, as the tracking page sorts them.
   const events = scans.sort((a, b) => b.at - a.at).map((scan) => scan.event);
+  // Oldest first: a delayed flight keeps the stage of the row before it.
+  let previous: string | undefined;
+  for (const event of [...events].reverse()) {
+    if (!isTsjyDelay(event.description!)) previous = event.stage ?? previous;
+    else if (previous) Object.assign(event, { stage: previous, stage_source: 'none' });
+  }
 
   const newest = events[0]!;
-  const current = events.find((event) => event.stage);
+  const current = events.find((event) => event.stage && !isTsjyDelay(event.description!));
   const stage = current?.stage as Stage | undefined;
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',

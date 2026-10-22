@@ -42,6 +42,14 @@ const RELAYED: ReadonlyMap<string, Stage> = new Map([
 /** 17FEIA's estimated departure, written before the flight: no scan, so the adapter drops the row. */
 export const ESTIMATE = /^estimated departure date\b/i;
 
+/** 17FEIA's delayed flight, between the estimate and the take-off: no movement. */
+const DELAY = 'flight delayed.';
+
+/** Whether a row is the line's delayed flight, which keeps the stage of the row before it. */
+export function isTsjyDelay(wording: string): boolean {
+  return normalizeStatusWording(wording) === DELAY;
+}
+
 /** The stage TSJY's map gives a row's wording: its own steps, then 17FEIA's milestones. */
 export function tsjyMappedStage(wording: string): Stage | undefined {
   const key = normalizeStatusWording(wording);
@@ -61,11 +69,12 @@ function relayedStage(wording: string): ClassifiedWording | null {
 
 /** A row's stage, or null when nothing reads it. The rows carry no code. */
 export function tsjyStage(wording: string): ClassifiedWording | null {
+  if (isTsjyDelay(wording)) return null;
   const mapped = tsjyMappedStage(wording);
   return mapped ? { stage: mapped, source: 'carrier_map' } : relayedStage(wording);
 }
 
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => code ? undefined : tsjyMappedStage(wording) ?? relayedStage(wording)?.stage,
-  gaps: [],
+  stage: (code, wording) => code || isTsjyDelay(wording) ? undefined : tsjyMappedStage(wording) ?? relayedStage(wording)?.stage,
+  gaps: [{ wording: DELAY, note: 'A delayed flight, not a movement: the parcel keeps the stage it had.' }],
 };

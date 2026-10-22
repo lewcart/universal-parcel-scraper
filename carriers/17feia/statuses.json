@@ -9,6 +9,7 @@
     {"code": "订单已出库", "wording": "Order dispatched from warehouse.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"code": "出口报关中", "wording": "Export declaration in progress.", "stage": "customs", "language": "en", "confirmedBy": "live", "note": "Export customs in China."},
     {"code": "预计起飞日期", "wording": "Estimated departure date: …", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "An estimate written before the flight, followed by its date: no scan, so the adapter drops the row."},
+    {"code": "航班延误", "wording": "Flight delayed.", "language": "en", "confirmedBy": "live", "unmapped": true, "firstSeen": "2026-10-22", "note": "Between the estimated departure and the take-off: not a movement, so the row keeps the stage of the one before it."},
     {"code": "航班已起飞", "wording": "Flight has departed.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"code": "飞机起飞", "stage": "in_transit", "language": "zh", "confirmedBy": "bundle", "note": "The departure in the tracking page's progress rail; current replies label it 航班已起飞."},
     {"code": "航班到达中转地", "wording": "Flight Arrived at Transit Hub.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},

@@ -176,6 +176,22 @@ describe('Royal Mail structured response', () => {
     expect(statusMap.stage('EVNCE', 'collected from your customer service point')).toBeUndefined();
   });
 
+  it('reads a postbox posting and its proof as the acceptance', () => {
+    const result = parseRoyalMailTrackingResponse({ mailPieces: {
+      mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: 'In transit' },
+      events: [
+        { eventCode: 'EVHAC', eventName: '**Item Received by Royal Mail**', eventDateTime: '2026-01-20T18:10:00+00:00', locationName: 'Example MC' },
+        { eventCode: 'EVTPC', eventName: '**Proof of posting validated**', eventDateTime: '2026-01-20T12:05:00+00:00' },
+        { eventCode: 'PBIDO', eventName: '**Dropped off at Postbox**', eventDateTime: '2026-01-20T11:40:00+00:00' },
+        { eventCode: 'EVAIP', eventName: '**Sender preparing item**', eventDateTime: '2026-01-19T09:00:00+00:00' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(result.events?.map(event => [event.stage, event.stage_source])).toEqual([
+      ['in_transit', 'carrier_map'], ['accepted', 'carrier_map'], ['accepted', 'carrier_map'], ['registered', 'carrier_map'],
+    ]);
+  });
+
   it('dates a delivery the delivery office records at its Customer Service Point', () => {
     const result = parseRoyalMailTrackingResponse({ mailPieces: {
       mailPieceId: DELIVERED_NUMBER,

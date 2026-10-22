@@ -56,6 +56,9 @@ const EVENT_STAGES = new Map<string, Stage>([
   ['EVCAD', 'accepted'],
   ['EVPPA', 'accepted'],
   ['LOPPA', 'accepted'],
+  // Posted in a postbox, then the proof of posting checked: both before Royal Mail's first receipt.
+  ['PBIDO', 'accepted'],
+  ['EVTPC', 'accepted'],
   ['EVAIP', 'registered'],
   ['EVAIE', 'registered'],
   ['ECCSB', 'registered'],

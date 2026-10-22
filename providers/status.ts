@@ -8,8 +8,8 @@
  * rules). A stage a provider declares and a UPU event code it maps are
  * `carrier_map`, so their scans never reach the app's review. Wording no rule
  * reads has no stage. Chronopost's notice to the recipient, a bare delivery
- * estimate and a note that the recipient's details changed, none of them a
- * scan, are left out on purpose.
+ * estimate, a note that the recipient's details changed and SEUR's delay
+ * notice, none of them a scan, are left out on purpose.
  */
 import { CHRONOPOST_NOTIFICATION } from '../carriers/chronopost/status.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../core/status/statusMap.js';
@@ -30,5 +30,8 @@ export const statusMap: CarrierStatusMap = {
   }, {
     wording: 'recipient information updated',
     note: "A note that the recipient's details changed, after the local carrier's receipt: not a scan, so it keeps the stage the parcel already had.",
+  }, {
+    wording: 'en demora - el envío ha sufrido un retraso provocando una posible demora en la entrega.',
+    note: "SEUR's delay notice as Ship24 relays it, group before wording: not a scan, so it keeps the stage the parcel already had.",
   }],
 };

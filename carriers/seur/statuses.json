@@ -90,6 +90,15 @@
       "confirmedBy": "live"
     },
     {
+      "code": "LI521",
+      "wording": "EL ENVÍO NO SE HA ENTREGADO PORQUE LA DIRECCIÓN DE ENTREGA ESTÁ INCOMPLETA O ERRÓNEA.",
+      "language": "es",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Recorded hours after each day's delivery round, which starts again the next day: an attempt the address held up."
+    },
+    {
       "code": "LI523",
       "wording": "EL ENVÍO NO SE HA ENTREGADO POR AUSENCIA O CIERRE. SE PUEDE REPROGRAMAR UNA NUEVA ENTREGA.",
       "language": "es",

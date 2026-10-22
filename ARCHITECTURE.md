@@ -286,8 +286,8 @@ The app files the scans a universal provider relays under the carrier `unknown`.
 the reading the providers give a scan ([providers/status.ts](providers/status.ts)): a 17TRACK
 sub-status where it outranks the wording, else the wording rules every provider applies,
 which put their own vocabulary around the shared language rules. A scan neither its code
-nor a rule stages is `unknown`, except Chronopost's notice to the recipient, which is no scan
-and is left out on purpose. After a release the app can ask it about every open review entry and close
+nor a rule stages is `unknown`, except notices that are no scan, such as Chronopost's notice
+to the recipient or SEUR's delay, which are left out on purpose. After a release the app can ask it about every open review entry and close
 those the map now stages or leaves out on purpose, under the version it runs.
 
 Some carrier categories cover several milestones. Exact carrier labels refine those cases;

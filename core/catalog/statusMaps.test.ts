@@ -707,9 +707,10 @@ describe("universal providers' answers", () => {
     }
   });
 
-  it("leave out only Chronopost's notice, a bare delivery estimate and a recipient update on purpose", () => {
-    expect(universal.gaps.map((gap) => gap.wording))
-      .toEqual(['destinataire informé par sms ou mail', 'estimated delivery', 'recipient information updated']);
+  it("leave out only Chronopost's notice, a bare delivery estimate, a recipient update and SEUR's delay on purpose", () => {
+    expect(universal.gaps.map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail', 'estimated delivery',
+      'recipient information updated', 'en demora - el envío ha sufrido un retraso provocando una posible demora en la entrega.']);
+    expect(answer('unknown', null, 'EN DEMORA - EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA.')).toEqual(gap);
   });
 });
 

@@ -66,6 +66,10 @@ export async function readChinaPostTraces(number: string, options: ChinaPostAppO
   const body = JSON.stringify({ mailNo: number });
   try {
     checkChinaPostGate(await post(CHINA_POST_CHECK_PATH, body, options));
+    // Node's fetch frees the check's connection a turn after its body ends.
+    // Sent at once, the trace opens a second TLS connection to China, which
+    // costs most of a second.
+    await new Promise<void>((resolve) => setImmediate(resolve));
     return await post(CHINA_POST_TRACE_PATH, body, options);
   } catch (error) {
     options.callerSignal?.throwIfAborted();

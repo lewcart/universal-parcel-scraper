@@ -131,6 +131,8 @@ export interface CarrierDefinition {
     recognitionRank?: number;
     /** The normalized numbers recognition can answer; others the carrier's rules offer are not asked. */
     recognitionPattern?: string;
+    /** Recognition asks the carrier only when the caller's country hint is one of its countries. */
+    recognitionServedCountriesOnly?: boolean;
     /** Opt-in browser confirmation; higher is asked first after HTTP is inconclusive. */
     browserRecognitionRank?: number;
     refresh?: { minMinutes: number; afterFailureMinutes?: number };

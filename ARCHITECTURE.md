@@ -217,7 +217,9 @@ its recovery policy, including rate limits and malformed responses.
 Callers can order eligible recognition candidates with a `countryHint` and aggregate
 `priorities`. A provider's carrier hint and preferred number evidence come first, followed
 by the country (home before other served countries), aggregate scores, a passing check digit
-and catalog rank. These signals do not add candidates or confirm ownership.
+and catalog rank. These signals do not add candidates or confirm ownership. A carrier whose
+`recognition` sets `servedCountriesOnly` prints bare runs that carriers elsewhere print too,
+so HTTP recognition asks it only when the country hint is one it serves.
 `recognitionAskedCarriers` is the first `MAX_RECOGNITIONS` of that order. `createTracker()`
 asks those first, and the next `MAX_RECOGNITIONS` only while none asked so far knows the
 number and the budget lasts.

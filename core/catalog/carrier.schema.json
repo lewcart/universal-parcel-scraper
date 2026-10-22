@@ -155,6 +155,10 @@
               "description": "Regular expression for the normalized numbers recognize() can answer. Recognition is only asked about those; a number another rule offers stays a suggestion. Absent: every number the carrier's rules offer.",
               "type": "string",
               "minLength": 1
+            },
+            "servedCountriesOnly": {
+              "description": "Recognition asks the carrier only when the caller's country hint is one of its countries: its numbers are bare runs that carriers elsewhere print too. Absent: asked whatever the hint.",
+              "const": true
             }
           }
         },

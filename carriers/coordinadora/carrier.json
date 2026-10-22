@@ -21,7 +21,8 @@
       "direct"
     ],
     "recognition": {
-      "rank": 973
+      "rank": 973,
+      "servedCountriesOnly": true
     },
     "localClocks": true
   },
@@ -115,5 +116,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "coordinadora-1",
+      "pattern": "^\\d{11}$",
+      "confidence": "low"
+    }
+  ]
 }

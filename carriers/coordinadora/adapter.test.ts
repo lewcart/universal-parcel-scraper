@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, COORDINADORA_API, CoordinadoraTracker } from './adapter.js';
@@ -219,6 +221,22 @@ describe('Coordinadora HTTP adapter', () => {
     await expect(tracker.track({ number: DELIVERED, carrier: 'coordinadora' }, { budgetMs: 3000 }))
       .resolves.toMatchObject({ carrier: 'coordinadora', source: 'coordinadora', result: { current_stage: 'delivered' } });
     expect(fetcher.mock.calls.some(([url]) => String(url) === COORDINADORA_API)).toBe(true);
+  });
+});
+
+describe('Coordinadora numbers', () => {
+  it('suggests eleven digits and is asked about them only for a lookup in Colombia', () => {
+    const number = '12345678901';
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(number).candidates).toContain('coordinadora');
+    expect(recognitionAskedCarriers(number, { countryHint: 'CO' })[0]).toBe('coordinadora');
+    for (const countryHint of [undefined, 'DE', 'FR', 'BE', 'IT', 'US', 'EC']) {
+      expect(recognitionAskedCarriers(number, { countryHint }), `${countryHint}`).not.toContain('coordinadora');
+    }
+    expect(recognitionAskedCarriers(number, { countryHint: 'DE' })[0]).toBe('gls-de');
+    for (const other of ['1234567890', '123456789012', 'A1234567890']) {
+      expect(detectCarrierMatch(other).candidates ?? [], other).not.toContain('coordinadora');
+    }
   });
 });
 

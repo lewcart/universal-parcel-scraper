@@ -735,12 +735,6 @@
     "reason": "The one Connect Couriers number seen is eleven bare digits, a length other carriers share, so no rule claims it."
   },
   {
-    "carrier": "coordinadora",
-    "pattern": "^\\d{11}$",
-    "kind": "by_design",
-    "reason": "Eleven digits are shared by several carriers and nothing in the number points to Coordinadora."
-  },
-  {
     "carrier": "correos-bolivia",
     "pattern": "^R[DR]\\d{9}BO$",
     "kind": "by_design",

@@ -116,9 +116,13 @@ export function recognitionCandidates(
   };
   // A carrier whose recognition answers fewer numbers than its rules offer is
   // only suggested for the rest: Saia's reply cannot bind a twelfth digit.
+  // A carrier whose numbers are bare runs that carriers elsewhere print too is
+  // only asked for its own countries: Coordinadora's eleven digits are GLS's abroad.
   const answers = (carrier: string) => {
-    const pattern = options.phase === 'browser' ? undefined : CARRIER_DEFINITIONS[carrier as CarrierId]?.tracking.recognitionPattern;
-    return pattern === undefined || new RegExp(pattern).test(normalized);
+    if (options.phase === 'browser') return true;
+    const tracking = CARRIER_DEFINITIONS[carrier as CarrierId]?.tracking;
+    if (tracking?.recognitionServedCountriesOnly && countryScore(carrier) === 0) return false;
+    return tracking?.recognitionPattern === undefined || new RegExp(tracking.recognitionPattern).test(normalized);
   };
   const printed = number.trim().toUpperCase();
   const score = (carrier: string) => [

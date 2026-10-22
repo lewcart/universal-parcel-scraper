@@ -190,6 +190,7 @@ function contractTracking(tracking) {
   // Clients predict which carriers the Add sheet's recognition asks.
   if (tracking.recognition !== undefined) contractValue.recognitionRank = tracking.recognition.rank;
   if (tracking.recognition?.pattern !== undefined) contractValue.recognitionPattern = tracking.recognition.pattern;
+  if (tracking.recognition?.servedCountriesOnly) contractValue.recognitionServedCountriesOnly = true;
   if (tracking.browserRecognition !== undefined) contractValue.browserRecognitionRank = tracking.browserRecognition.rank;
   if (tracking.refresh !== undefined) contractValue.refresh = tracking.refresh;
   if (tracking.localClocks !== undefined) contractValue.localClocks = tracking.localClocks;

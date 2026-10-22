@@ -96,7 +96,7 @@
       "domains": [
         "tandt.posta.sk"
       ],
-      "path": "^/en/items/([^/?#]+)/?$"
+      "path": "^/(?:en/items|zasielky)/([^/?#]+)/?$"
     },
     {
       "domains": [

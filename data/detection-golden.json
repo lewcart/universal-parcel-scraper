@@ -65005,6 +65005,14 @@
     ]
   },
   {
+    "input": "CB574337814FR",
+    "carrier": "la-poste",
+    "confidence": "high",
+    "candidates": [
+      "la-poste"
+    ]
+  },
+  {
     "input": "CBJ4555337",
     "carrier": "unknown",
     "confidence": "low",
@@ -65731,6 +65739,14 @@
     ]
   },
   {
+    "input": "CG019560673DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
     "input": "CG446160469DE",
     "carrier": "dhl",
     "confidence": "high",
@@ -65807,6 +65823,14 @@
   },
   {
     "input": "CH105792445NL",
+    "carrier": "spring-gds",
+    "confidence": "high",
+    "candidates": [
+      "spring-gds"
+    ]
+  },
+  {
+    "input": "CH165421756NL",
     "carrier": "spring-gds",
     "confidence": "high",
     "candidates": [
@@ -66207,6 +66231,14 @@
   },
   {
     "input": "CK089862199NL",
+    "carrier": "spring-gds",
+    "confidence": "high",
+    "candidates": [
+      "spring-gds"
+    ]
+  },
+  {
+    "input": "CK145686547NL",
     "carrier": "spring-gds",
     "confidence": "high",
     "candidates": [
@@ -67778,6 +67810,14 @@
     ]
   },
   {
+    "input": "CT106815960DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
     "input": "CTTY9900000001CN",
     "carrier": "cttyex",
     "confidence": "high",
@@ -67980,6 +68020,14 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "CW545691123FR",
+    "carrier": "la-poste",
+    "confidence": "high",
+    "candidates": [
+      "la-poste"
     ]
   },
   {
@@ -76752,6 +76800,14 @@
     ]
   },
   {
+    "input": "LA024890726NL",
+    "carrier": "spring-gds",
+    "confidence": "high",
+    "candidates": [
+      "spring-gds"
+    ]
+  },
+  {
     "input": "LA055640697CH",
     "carrier": "swiss-post",
     "confidence": "high",
@@ -77542,6 +77598,14 @@
     ],
     "asked": [
       "aliexpress"
+    ]
+  },
+  {
+    "input": "LP011278387DK",
+    "carrier": "postnord",
+    "confidence": "high",
+    "candidates": [
+      "postnord"
     ]
   },
   {
@@ -78473,6 +78537,17 @@
     "confidence": "high",
     "candidates": [
       "china-post"
+    ]
+  },
+  {
+    "input": "LZ316815810US",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
     ]
   },
   {
@@ -84337,6 +84412,14 @@
     "asked": [
       "lietuvos-pastas",
       "chronopost"
+    ]
+  },
+  {
+    "input": "RN098514532JP",
+    "carrier": "japan-post",
+    "confidence": "high",
+    "candidates": [
+      "japan-post"
     ]
   },
   {

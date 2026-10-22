@@ -39,6 +39,10 @@ issuer of an S10 code does not establish who delivers it, and the low-confidence
 `hrvatska-posta-s10` rule makes preflight ask Hrvatska pošta about them. The other shapes fit
 several carriers, so no rule claims them.
 
+Mail from abroad reaches Hrvatska pošta when a caller names it, a provider names it, or a result
+gives Croatia as the destination of an S10 item. Its tracker follows such items under the sending
+post's code to delivery.
+
 ## Notes
 
 The page groups the scans under milestones, such as "Delivery at the Post Office", whose clocks
@@ -69,13 +73,13 @@ page's logo of the delivering unit, Paket24 or the post office, is not read.
 ## Limitations
 
 The tracker keeps an item's history for a limited time, after which the item answers like an
-unknown number. Items from abroad by their foreign S10 code, and the other barcode shapes, have
-not been seen with live history. The page has no estimated delivery date or service name.
+unknown number. The barcode shapes other than S10 codes have not been seen with live history. The page has no estimated delivery date or service name.
 
 ## Links
 
 The link opens the Croatian tracking page for the number. Pasted links to the English page or to
-`/tracking/trackingdata` without a language are read too.
+`/tracking/trackingdata` without a language are read too, as are archived links to
+`/Tracking/Details` and the `broj` parameter of the tracking page on `www.posta.hr`.
 
 ## Live test
 

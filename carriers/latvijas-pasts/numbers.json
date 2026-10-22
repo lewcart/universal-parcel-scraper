@@ -56,7 +56,7 @@
         "carrier": "latvijas-pasts",
         "confidence": "high"
       },
-      "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Latvijas Pasts' own tracker, as an archived address shows; the capture was not opened."
     },
     {
       "number": "CC606787410LV",
@@ -75,7 +75,7 @@
         "carrier": "latvijas-pasts",
         "confidence": "high"
       },
-      "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Latvijas Pasts' own tracker, as an archived address shows; the capture was not opened."
     },
     {
       "number": "CC606791768LV",
@@ -94,7 +94,7 @@
         "carrier": "latvijas-pasts",
         "confidence": "high"
       },
-      "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Latvijas Pasts' own tracker, as an archived address shows; the capture was not opened."
     },
     {
       "number": "LY070390210LV",
@@ -113,7 +113,7 @@
         "carrier": "latvijas-pasts",
         "confidence": "high"
       },
-      "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Latvijas Pasts' own tracker, as an archived address shows; the capture was not opened."
     },
     {
       "number": "LY073326286LV",
@@ -132,7 +132,7 @@
         "carrier": "latvijas-pasts",
         "confidence": "high"
       },
-      "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Latvijas Pasts' own tracker, as an archived address shows; the capture was not opened."
     },
     {
       "number": "rs072786167lv",
@@ -285,6 +285,25 @@
         "confidence": "high"
       },
       "note": "ParcelPanel's Latvia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "LP011278387DK",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260929083436/https://mans.pasts.lv/track?locale=lv-LV&id=LP011278387DK",
+        "date": "2026-09-29",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "postnord",
+        "confidence": "high"
+      },
+      "note": "A Danish tracked letter to Latvia, looked up on Latvijas Pasts' tracker, as an archived address shows. Latvijas Pasts' tracker answers for it under the same number, through to the delivery."
     }
   ]
 }

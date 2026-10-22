@@ -34,6 +34,10 @@ but the issuer of an S10 code does not establish who delivers it, so detection k
 with the generic postal carrier. `lietuvos-pastas-s10` makes preflight ask Lietuvos paštas about
 them at low confidence.
 
+Mail from abroad reaches Lietuvos paštas when a caller names it, a provider names it, or a result
+gives Lithuania as the destination of an S10 item. The service knows such items under the sending
+post's code.
+
 ## Notes
 
 Each row carries a public event type, English wording, a clock, a country and often a place. The
@@ -63,8 +67,9 @@ enough.
 
 LP Express's tracker opens one parcel at `lpexpress.lt/track?parcel={number}`, the address its
 copy-link button builds. Archived lookups also used `lpexpress.lt/track/id/{number}`,
-`lpexpress.lt/tracking/{number}` and the `num` parameter of the former parcel search on
-`post.lt`. The current tracker on `post.lt` posts its form behind a proof-of-work check, so no
+`lpexpress.lt/tracking/{number}` and the `num` or `parcel_number` parameter of the former parcel
+search on `post.lt`. Links to the current tracker on `post.lt` carry numbers as `parcels` on
+`/siuntu-sekimas` and are read, but that page posts its form behind a proof-of-work check, so no
 address there opens a result.
 
 ## Live test

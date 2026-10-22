@@ -30,6 +30,10 @@ A code ending `GR` is ELTA's, but the issuer of an S10 code does not establish w
 detection keeps such codes with the generic postal carrier. A low-confidence rule makes preflight
 ask ELTA about them. Twelve digits fit several carriers, so no rule claims them.
 
+Mail from abroad reaches ELTA when a caller names it, a provider names it, or a result gives Greece
+as the destination of an S10 item. Its tracker follows such items under the sending post's code to
+delivery.
+
 ## Notes
 
 Scans carry English wording and no code. The adapter maps the wording; "Arrival in" is followed
@@ -43,8 +47,7 @@ the item ready for collection, while it waits there or once it was collected the
 ## Limitations
 
 The tracker keeps an item's history for a limited time, after which the item answers like an
-unknown code. Items from abroad by their foreign S10 code and the twelve-digit codes have not been
-seen with live history.
+unknown code. The twelve-digit codes have not been seen with live history.
 
 ELTA Courier's tracker answers `POST /track.php` with a `number` field, in Greek only. It shows
 the voucher's creation and the courier's pickup, which ELTA's tracker leaves out, and leaves out
@@ -55,7 +58,8 @@ the attempted-delivery notices ELTA's tracker shows. The adapter does not read i
 ELTA's home page sends a code to `www.elta.gr/track?code={number}` (`/en/track` in English), and
 the tracker looks up the code it finds in the address. ELTA Courier's search form sends the number
 as `br` to `www.elta-courier.gr/search`. Lookups archived from ELTA's former site carry the code as
-`qc` on `/el-gr/tabid/93/` and `/en-us/personal/tracktrace.aspx`.
+`qc` on `/el-gr/tabid/93/`, the Greek-named tracking page and `/en-us/personal/tracktrace.aspx`,
+or in the path of `/Personal/TrackTrace/tabid/93/qc/{number}/`.
 
 ## Live test
 

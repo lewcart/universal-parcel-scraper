@@ -279,6 +279,25 @@
         ]
       },
       "note": "Lietuvos paštas's own tracking service reply, archived by the Wayback Machine, shows the parcel accepted and moving between sorting centres."
+    },
+    {
+      "number": "CK145686547NL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250530061507/https://lpexpress.lt/tracking/CK145686547NL",
+        "date": "2025-05-30",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "spring-gds",
+        "confidence": "high"
+      },
+      "note": "A Dutch parcel to Lithuania, looked up on Lietuvos paštas's LP Express tracker, as an archived address shows. The service still knows it under the same number but no longer keeps its rows."
     }
   ]
 }

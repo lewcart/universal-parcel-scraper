@@ -8,6 +8,11 @@ Bring stays first for its 00370 and 00373 parcels, and Norwegian and Finnish
 prefixes keep PostNord among the other candidates. Several carriers share
 twenty digits, so recognition asks PostNord through the same lookup.
 
+Mail from abroad reaches PostNord when a caller names it, a provider names it, or a
+result gives Sweden or Denmark as the destination of an S10 item. Pasted links carry the
+number as `id` on `tracking.postnord.com` and as `shipmentId` on the national sites'
+tracking pages.
+
 ## How it works
 
 One GET returns the shipment and scans. The request carries the widget's bounded SHA-512

@@ -72,9 +72,18 @@
       "domains": [
         "posiljka.posta.hr"
       ],
-      "pathPattern": "^/(?:hr/|en/)?tracking/trackingdata/?$",
+      "pathPattern": "^/(?:hr/|en/)?tracking/(?:trackingdata|details)/?$",
       "params": [
         "barcode"
+      ]
+    },
+    {
+      "domains": [
+        "posta.hr"
+      ],
+      "pathPattern": "^/pracenje-postanskih-posiljaka-track-trace/[0-9]+/?$",
+      "params": [
+        "broj"
       ]
     }
   ],

@@ -76,7 +76,10 @@
       "domains": [
         "postaonline.cz"
       ],
-      "path": "^/trackandtrace/-/zasilka/([^/?#]+)/?$"
+      "params": [
+        "parcelNumbers"
+      ],
+      "path": "^/(?:[a-z]{2}/)?trackandtrace/-/zasilka/([^/?#]+)/?$"
     }
   ],
   "detection": [

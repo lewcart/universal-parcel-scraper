@@ -247,6 +247,44 @@
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "LZ316815810US",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250514083405/https://tandt.posta.sk/zasielky/LZ316815810US",
+        "date": "2025-05-14",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A United States tracked letter to Slovakia, looked up on Slovenská pošta's tracker, as an archived address shows. Slovenská pošta's tracker answers for it under the same number, through to the delivery."
+    },
+    {
+      "number": "CH165421756NL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250329111713/https://tandt.posta.sk/zasielky/CH165421756NL",
+        "date": "2025-03-29",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "spring-gds",
+        "confidence": "high"
+      },
+      "note": "A Dutch parcel to Slovakia, looked up on Slovenská pošta's tracker, as an archived address shows. Slovenská pošta's tracker answers for it under the same number, through to the delivery."
     }
   ]
 }

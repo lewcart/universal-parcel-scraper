@@ -90,7 +90,8 @@
         "sporing.posten.no"
       ],
       "params": [
-        "q"
+        "q",
+        "PackageNumber"
       ]
     },
     {

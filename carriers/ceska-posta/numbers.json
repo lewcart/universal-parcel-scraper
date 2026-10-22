@@ -194,6 +194,44 @@
         "confidence": "high"
       },
       "note": "Format example in the help text of Česká pošta's Track & Trace, archived by the Wayback Machine; not a real shipment."
+    },
+    {
+      "number": "CG019560673DE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260803160634/https://www.postaonline.cz/en/trackandtrace/-/zasilka/cislo?parcelNumbers=CG019560673DE",
+        "date": "2026-08-03",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "A German parcel to Czechia, looked up on Česká pošta's Track & Trace, as an archived address shows. Česká pošta's tracker answers for it under the same number, through to the delivery."
+    },
+    {
+      "number": "LA024890726NL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260713192906/https://www.postaonline.cz/en/trackandtrace/-/zasilka/cislo?parcelNumbers=LA024890726NL",
+        "date": "2026-07-13",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "spring-gds",
+        "confidence": "high"
+      },
+      "note": "A Dutch tracked letter to Czechia, looked up on Česká pošta's Track & Trace, as an archived address shows. Česká pošta's tracker answers for it under the same number, through to the delivery."
     }
   ]
 }

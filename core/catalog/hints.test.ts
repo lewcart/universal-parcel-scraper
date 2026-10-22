@@ -63,6 +63,10 @@ describe('national postal lookup candidates', () => {
     ['SV', 'correos-el-salvador'], ['El Salvador', 'correos-el-salvador'],
     ['IE', 'an-post'], ['Ireland', 'an-post'], ['BE', 'bpost'], ['Belgium', 'bpost'],
     ['AT', 'austrian-post'], ['Austria', 'austrian-post'],
+    ['HR', 'hrvatska-posta'], ['Croatia', 'hrvatska-posta'], ['CZ', 'ceska-posta'], ['Czechia', 'ceska-posta'],
+    ['GR', 'elta'], ['Greece', 'elta'], ['LV', 'latvijas-pasts'], ['Latvia', 'latvijas-pasts'],
+    ['LT', 'lietuvos-pastas'], ['Lithuania', 'lietuvos-pastas'], ['SK', 'slovenska-posta'], ['Slovakia', 'slovenska-posta'],
+    ['DK', 'postnord'], ['Denmark', 'postnord'],
     ['BR', 'correios-br'], ['Brazil', 'correios-br'],
     ['IT', 'poste-italiane'], ['Italy', 'poste-italiane'],
   ])('suggests one operator for destination %s', (country, expected) => {

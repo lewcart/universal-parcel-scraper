@@ -124,6 +124,28 @@ describe('continental shipment candidates', () => {
       .toMatchObject({ trackingNumber: '70000000000000003', carrier: 'bring-posten', source: 'link' });
   });
 
+  it('reads the national posts\' links in each language and in their older layouts', () => {
+    for (const [link, trackingNumber, carrier] of [
+      ['https://sporing.bring.no/sporing/KMSporingslink.aspx?PackageNumber=370000000000000004', '370000000000000004', 'bring-posten'],
+      ['https://www.posti.fi/seuranta/JJFI00000000000000001/12345', 'JJFI00000000000000001', 'posti'],
+      ['https://www.posti.fi/sv/uppfoljning/RR900000019FI', 'RR900000019FI', 'posti'],
+      ['https://www.posti.fi/itemtracking/posti/search_by_shipment_id?lang=en&ShipmentId=RR900000019FI', 'RR900000019FI', 'posti'],
+      ['https://www.postnord.se/vara-verktyg/spara-brev-paket-och-pall?shipmentId=00573000000000000001', '00573000000000000001', 'postnord'],
+      ['https://www.postnord.dk/en/tools/track-and-trace?shipmentId=RR900000019DK', 'RR900000019DK', 'postnord'],
+      ['https://www.postaonline.cz/en/trackandtrace/-/zasilka/cislo?parcelNumbers=DR9000000002U', 'DR9000000002U', 'ceska-posta'],
+      ['https://www.postaonline.cz/en/trackandtrace/-/zasilka/RR900000019CZ', 'RR900000019CZ', 'ceska-posta'],
+      ['https://tandt.posta.sk/zasielky/RR900000019SK', 'RR900000019SK', 'slovenska-posta'],
+      ['https://www.post.lt/siuntu-sekimas?parcels=RR900000019LT', 'RR900000019LT', 'lietuvos-pastas'],
+      ['https://www.post.lt/lt/pagalba/siuntu-paieska?parcel_number=RR900000019LT', 'RR900000019LT', 'lietuvos-pastas'],
+      ['https://www.posta.hr/pracenje-postanskih-posiljaka-track-trace/264?broj=RR900000019HR', 'RR900000019HR', 'hrvatska-posta'],
+      ['https://posiljka.posta.hr/Tracking/Details?tracklng=en&Barcode=RR900000019HR', 'RR900000019HR', 'hrvatska-posta'],
+      ['https://www.elta.gr/el-gr/εντοπισμόςαντικειμένου.aspx?qc=RR900000019GR', 'RR900000019GR', 'elta'],
+      ['https://www.elta.gr/Personal/TrackTrace/tabid/93/qc/RR900000019GR/language/en-US/Default.aspx', 'RR900000019GR', 'elta'],
+    ]) {
+      expect(parseTrackingInput(link!), link).toMatchObject({ trackingNumber, carrier, source: 'link' });
+    }
+  });
+
   it('sends whole SDA candidates through Poste recognition and rejects truncated families', () => {
     // AliExpress shows buyers the last shape while the parcel is on Cainiao's leg, so Cainiao is asked beside Poste.
     for (const { number, candidates, asked } of [

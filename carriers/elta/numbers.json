@@ -228,6 +228,44 @@
         "confidence": "high"
       },
       "note": "Looked up on ELTA's own tracker, as an archived address shows. ELTA's tracker returns its history; detection selects the generic postal carrier."
+    },
+    {
+      "number": "CW545691123FR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260812233820/https://www.elta.gr/track?code=CW545691123FR",
+        "date": "2026-08-12",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "la-poste",
+        "confidence": "high"
+      },
+      "note": "A French parcel to Greece, looked up on ELTA's tracker, as an archived address shows. ELTA's tracker answers for it under the same number, through to the delivery."
+    },
+    {
+      "number": "CB574337814FR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260804103423/https://www.elta.gr/track?code=CB574337814FR",
+        "date": "2026-08-04",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "la-poste",
+        "confidence": "high"
+      },
+      "note": "A French parcel to Greece, looked up on ELTA's tracker, as an archived address shows. ELTA's tracker answers for it under the same number, through to the delivery."
     }
   ]
 }

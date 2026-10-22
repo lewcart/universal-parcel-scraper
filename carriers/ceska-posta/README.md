@@ -29,6 +29,10 @@ A code ending `CZ` is Česká pošta's, but the issuer of an S10 code does not e
 delivers it, so detection keeps such codes with the generic postal carrier. A low-confidence
 rule makes preflight ask Česká pošta about them.
 
+Mail from abroad reaches Česká pošta when a caller names it, a provider names it, or a result
+gives Czechia as the destination of an S10 item. Its service follows such items under the sending
+post's code to delivery.
+
 ## Notes
 
 Each row carries a state code, a calendar day without a time, English wording and the office or
@@ -58,7 +62,9 @@ been seen filled, so no estimate is read.
 
 ## Links
 
-Track & Trace opens an item at `postaonline.cz/trackandtrace/-/zasilka/{number}`.
+Track & Trace opens an item at `postaonline.cz/trackandtrace/-/zasilka/{number}`. Its search form
+sends numbers as `parcelNumbers` to `/trackandtrace/-/zasilka/cislo`, and both are read with or
+without a language segment such as `/en`.
 
 ## Live test
 

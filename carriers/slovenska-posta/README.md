@@ -33,6 +33,10 @@ and a passing check digit. Its tracker follows them to delivery, abroad included
 Post's follows its own. Its other `SK` codes stay with the generic postal carrier, and a
 low-confidence rule makes preflight ask Slovenská pošta about them.
 
+Mail from abroad reaches Slovenská pošta when a caller names it, a provider names it, or a result
+gives Slovakia as the destination of an S10 item. Its tracker follows such items under the sending
+post's code to delivery.
+
 ## Notes
 
 Each event carries a code, English and Slovak wording, a clock and either a Slovak branch or a
@@ -66,8 +70,8 @@ unknown number. Some item types are not tracked. The answer has no delivery esti
 
 The tracking page reads the number from the address fragment, `#parcel={number}`, and the library
 reads it there. Lookups archived from the former tracker put the number in
-`tandt.posta.sk/en/items/{number}` or as `q` on `tandt.posta.sk/`; both now redirect to the new
-tracker without the number.
+`tandt.posta.sk/en/items/{number}`, `tandt.posta.sk/zasielky/{number}` or as `q` on
+`tandt.posta.sk/`; all now redirect to the new tracker without the number.
 
 ## Live test
 

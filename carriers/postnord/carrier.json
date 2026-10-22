@@ -82,6 +82,17 @@
         "id",
         "ID"
       ]
+    },
+    {
+      "domains": [
+        "postnord.dk",
+        "postnord.se",
+        "postnord.no",
+        "postnord.fi"
+      ],
+      "params": [
+        "shipmentId"
+      ]
     }
   ],
   "detection": [

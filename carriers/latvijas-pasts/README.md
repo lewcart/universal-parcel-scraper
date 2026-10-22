@@ -25,7 +25,8 @@ errors and malformed replies keep their own failure kinds. Recognition uses the 
 
 The adapter takes S10 codes with a valid check digit, from any country; anything else is invalid
 without a request. Latvijas Pasts' own items end `LV`, and items from abroad answer under their
-foreign S10 code.
+foreign S10 code. Mail from abroad reaches Latvijas Pasts when a caller names it, a provider names
+it, or a result gives Latvia as the destination of an S10 item.
 
 Detection names Latvijas Pasts for the parcels, EMS, registered and tracked-letter items it
 issues: `C`, `E`, `L` or `R` first, `LV` last and a passing check digit. Its tracker relays the

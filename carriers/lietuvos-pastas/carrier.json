@@ -90,9 +90,19 @@
       "domains": [
         "post.lt"
       ],
-      "pathPattern": "^/(?:lt/pagalba/siuntu-paieska|en/help/parcel-search)/index/?$",
+      "pathPattern": "^/(?:lt/pagalba/siuntu-paieska|en/help/parcel-search)(?:/index)?/?$",
       "params": [
-        "num"
+        "num",
+        "parcel_number"
+      ]
+    },
+    {
+      "domains": [
+        "post.lt"
+      ],
+      "pathPattern": "^/(?:[a-z]{2}/)?siuntu-sekimas/?$",
+      "params": [
+        "parcels"
       ]
     }
   ],

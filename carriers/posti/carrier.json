@@ -74,7 +74,16 @@
       "domains": [
         "posti.fi"
       ],
-      "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)(?:/[0-9]+)?/?$"
+      "path": "^/(?:[a-z]{2}/)?(?:tracking|seuranta|uppfoljning)/([^/?#]+)(?:/[0-9]+)?/?$"
+    },
+    {
+      "domains": [
+        "posti.fi"
+      ],
+      "pathPattern": "^/itemtracking/posti/search_by_shipment_id/?$",
+      "params": [
+        "ShipmentId"
+      ]
     },
     {
       "domains": [

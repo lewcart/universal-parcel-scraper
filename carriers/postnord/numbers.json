@@ -273,6 +273,25 @@
         ]
       },
       "note": "A DPD parcel number on a PostNord tracking link archived by the Wayback Machine. PostNord, which delivered it, returns its history."
+    },
+    {
+      "number": "LS242332049CH",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260731140005/https://tracking.postnord.com/?id=LS242332049CH",
+        "date": "2026-07-31",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "swiss-post",
+        "confidence": "high"
+      },
+      "note": "A Swiss tracked letter, looked up on PostNord's tracker, as an archived address shows. PostNord's tracker answers for it under the same number, through to the delivery."
     }
   ]
 }

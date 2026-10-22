@@ -2405,7 +2405,7 @@
           "provider_status": "FOR DELIVERY",
           "stage": "out_for_delivery",
           "location": "TEST DEPOT (990)",
-          "provider_time_text": "14.01.2026"
+          "local_time": "2026-01-14"
         },
         {
           "description": "ARRIVED AT DEPOT",

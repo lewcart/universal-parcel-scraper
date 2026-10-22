@@ -174,11 +174,13 @@ function clockZones(place: string, inItaly: boolean): string[] | null {
 /**
  * A scan's date and clock. A clock that reads as the same instant on each of
  * its place's zones, and only once on Italy's, is that instant; other clocks
- * stay local times. A date without a clock stays provider text.
+ * stay local times. A scan BRT dates by its day alone, as it does a delivery
+ * round, keeps that day; any other date or clock stays provider text.
  */
 function scanClock(date: string, clock: string, zones: readonly string[] | null): { time?: string; local_time?: string; provider_time_text?: string } {
   const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(date);
   const day = match && calendarDay(Number(match[3]), Number(match[2]), Number(match[1]));
+  if (day && !clock) return { local_time: day };
   const time = /^(\d{2})\.(\d{2})$/.exec(clock);
   if (day && time && Number(time[1]) < 24 && Number(time[2]) < 60) {
     const wall = `${day}T${time[1]}:${time[2]}:00`;

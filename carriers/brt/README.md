@@ -63,8 +63,9 @@ country on Italy's clock. BRT's own depots open with their province's two
 letters, so a code of a country on another clock proves nothing: `GE` is
 Genoa's and Georgia's, and `DPD-GE` keeps local times. Other clocks stay local times, as do
 places without a depot code and a clock that the change to or from summer time
-repeats or skips. Dates without a
-clock remain provider text. The newest scan, when dated, gives the last update
+repeats or skips. A scan BRT dates by its day alone, as it does a delivery
+round, keeps that day as `local_time`; a date that is no calendar day remains
+provider text. The newest scan, when dated, gives the last update
 and, for a delivery, the delivery instant. Source order determines current
 status even when the newest clock is unresolved.
 

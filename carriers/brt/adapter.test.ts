@@ -35,12 +35,13 @@ describe('BRT direct tracking', () => {
     expect(result.events).toHaveLength(7);
     expect(result.events?.[0]).toMatchObject({ stage: 'delivered', description: 'Delivered', time: '2026-01-16T21:07:00+01:00', location: 'TEST DEPOT (990)' });
     expect(result.events?.[1]!.stage).toBe('ready_for_pickup');
-    expect(result.events?.[2]).toMatchObject({ stage: 'out_for_delivery', provider_time_text: '14.01.2026' });
-    expect(result.events?.[2]!.local_time).toBeUndefined();
+    // BRT dates its delivery round by the day alone: the scan keeps that day, on no clock.
+    expect(result.events?.[2]).toMatchObject({ stage: 'out_for_delivery', local_time: '2026-01-14' });
+    expect(result.events?.[2]!.time).toBeUndefined(); expect(result.events?.[2]!.provider_time_text).toBeUndefined();
     expect(result.events?.[5]!.stage).toBe('accepted');
     expect(result.events?.[6]!.stage).toBe('registered');
     // The Italian depot's scans are on Rome's clock; the depot abroad, named after a country on another clock, keeps wall clocks.
-    expect(clocks(result.events)).toEqual(['2026-01-16T21:07:00+01:00', '2026-01-14T15:49:00+01:00', '14.01.2026', '2026-01-14T08:32:00+01:00',
+    expect(clocks(result.events)).toEqual(['2026-01-16T21:07:00+01:00', '2026-01-14T15:49:00+01:00', 'local 2026-01-14', '2026-01-14T08:32:00+01:00',
       'local 2026-01-13T21:00:00', 'local 2026-01-13T18:00:00', 'local 2026-01-10T14:57:00']);
     expect(result.events?.every(event => !event.provider_code)).toBe(true);
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
@@ -178,7 +179,7 @@ describe('BRT direct tracking', () => {
     const result = parseBrt(parcelPage, SHIPMENT);
     expect(result).toMatchObject({ status: 'delivered', last_update: '2026-09-04T12:38:00+02:00', delivered_at: '2026-09-04T12:38:00+02:00' });
     expect(result.last_update_local).toBeUndefined();
-    expect(clocks(result.events)).toEqual(['2026-09-04T12:38:00+02:00', '2026-09-03T12:59:00+02:00', '2026-09-02T15:21:00+02:00', '02.09.2026',
+    expect(clocks(result.events)).toEqual(['2026-09-04T12:38:00+02:00', '2026-09-03T12:59:00+02:00', '2026-09-02T15:21:00+02:00', 'local 2026-09-02',
       '2026-09-02T08:32:00+02:00', '2026-09-01T21:00:00+02:00', '2026-09-01T18:00:00+02:00', '2026-08-27T14:31:00+02:00']);
     // On its way, the newest scan's instant is the last update, without a delivery.
     const moving = parseBrt(changed(parcelPage, $ => $('.table_stato_dati').first().find('tr').slice(1, 5).remove()), SHIPMENT);
@@ -267,7 +268,7 @@ describe('BRT direct tracking', () => {
     }), NUMBER);
     expect(result).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-01-16T21:07:00' });
     expect(result.delivered_at).toBeUndefined();
-    expect(clocks(result.events)).toEqual(['local 2026-01-16T21:07:00', 'local 2026-01-14T15:49:00', '14.01.2026', 'local 2026-01-14T08:32:00',
+    expect(clocks(result.events)).toEqual(['local 2026-01-16T21:07:00', 'local 2026-01-14T15:49:00', 'local 2026-01-14', 'local 2026-01-14T08:32:00',
       '2026-01-13T21:00:00+01:00', '2026-01-13T18:00:00+01:00', '2026-01-10T14:57:00+01:00']);
   });
 
@@ -315,7 +316,7 @@ describe('BRT direct tracking', () => {
   });
 
   it('does not promote older dated delivery when the newest clock or wording is unresolved', () => {
-    for (const [date, clock] of [['', ''], ['31.02.2026', '25.00'], ['16.01.2026', '09.99'], ['Tomorrow', 'Any time']] as const) {
+    for (const [date, clock] of [['', ''], ['31.02.2026', ''], ['31.02.2026', '25.00'], ['16.01.2026', '09.99'], ['Tomorrow', 'Any time']] as const) {
       const result = parseBrt(edit($ => {
         const first = $('.table_stato_dati tr').eq(1).children('td');
         first.eq(0).text(date); first.eq(1).text(clock); first.eq(3).text('NEW PROVIDER STATUS');
@@ -327,7 +328,8 @@ describe('BRT direct tracking', () => {
       expect(result.events?.[0]!.local_time).toBeUndefined();
     }
     const delivered = parseBrt(edit($ => $('.table_stato_dati tr').eq(1).children('td').eq(1).text('')), NUMBER);
-    expect(delivered.status).toBe('delivered'); expect(delivered.last_update_local).toBeUndefined(); expect(delivered.delivered_at).toBeUndefined();
+    expect(delivered.status).toBe('delivered'); expect(delivered.last_update).toBeNull(); expect(delivered.delivered_at).toBeUndefined();
+    expect(delivered.last_update_local).toBe('2026-01-16'); expect(delivered.events?.[0]!.local_time).toBe('2026-01-16');
   });
 
   it('keeps native newest-first position, equal clocks and repeated scans without inventing codes', () => {

@@ -17,10 +17,14 @@ const fedexUrl = `https://www.fedex.com/wtrk/track/?trknbr=${fedexNumber}`;
 const fedexReply = (trackingNbr = fedexNumber) => JSON.stringify({ output: { packages: [{ trackingNbr }] } });
 async function fixture(url = `https://t.17track.net/en#nums=${number}`, endpoint = api, additional = []) {
   const handlers = {};
+  const listeners = new Map();
   let detached = false;
   const detachedEvents = [];
-  const page = { addInitScript: async () => {}, context: () => ({addCookies: async () => {}}), on: (event, fn) => { handlers[event] = fn; },
-    off: event => { detached = true; detachedEvents.push(event); } };
+  const page = { addInitScript: async () => {}, context: () => ({addCookies: async () => {}}), on: (event, fn) => {
+    if (!listeners.has(event)) listeners.set(event, new Set());
+    listeners.get(event).add(fn);
+    handlers[event] = value => Promise.all([...listeners.get(event)].map(listener => listener(value)));
+  }, off: (event, fn) => { listeners.get(event)?.delete(fn); detached = true; detachedEvents.push(event); } };
   const capture = await attachTrackingCapture(page, url, { captureResponses: [endpoint, ...additional] });
   const respond = (body, { url = endpoint, headers = {}, status = 200, method = endpoint === api || endpoint === upsApi ? 'POST' : 'GET', read,
     requestBody = endpoint === api ? { data: [{ num: number }] } : endpoint === upsApi ? { TrackingNumber: [upsNumber.toLowerCase()] } : undefined } = {}) => handlers.response({
@@ -272,6 +276,24 @@ test('SwiftX keeps its not-found reply and challenges without reading refused bo
     assert.equal(row.body, null);
     assert.equal(row.headers['retry-after'], '60');
   }
+});
+
+test('SwiftX preparation leaves the ordinary Turnstile solver its budget when no image is offered', { timeout: 1000 }, async () => {
+  const { capture } = await fixture(swiftxUrl, swiftxApi);
+  try { await capture.prepare(30_000); }
+  finally { await assert.rejects(capture.drain(), /SwiftX produced no tracking response/); }
+});
+
+test('SwiftX captures a slider-verified single-number query without retaining its token', async () => {
+  const { capture, respond } = await fixture(swiftxUrl, swiftxApi);
+  await respond(swiftxReply(), { method: 'POST', requestBody: swiftxRequest({
+    trackingNos: [swiftxNumber], humanToken: null, sliderToken: 'SYNTHETIC_SLIDER_TOKEN',
+  }) });
+  await capture.settle(100);
+  const rows = (await capture.drain()).capturedResponses;
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].body, swiftxReply());
+  assert.doesNotMatch(JSON.stringify(rows), /SYNTHETIC_SLIDER_TOKEN/);
 });
 
 test('SwiftX reports a page that never asked for the number and a failed query', async () => {

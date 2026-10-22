@@ -3,6 +3,7 @@
 // tracking endpoints, each on its public page with one valid number. Every
 // other capture request keeps TRAWL's stock behaviour.
 import { attachRoyalMailHistoryCapture, ROYAL_MAIL_OPT_OUT } from './royal-mail-history.mjs';
+import { attachSwiftxSlider } from './swiftx-slider.mjs';
 
 // TRAWL drops a result that arrives at its request deadline. End a capture's
 // waits before it, so the replies already observed are still returned.
@@ -118,7 +119,7 @@ const SITES = [
         const body = request.postDataJSON();
         const input = body?.variables?.input;
         return typeof body?.query === 'string' && /\bgetOfficialWebsiteTrackingInfoBatch\b/.test(body.query)
-          && input && typeof input === 'object' && Object.keys(input).every(key => key === 'trackingNos' || key === 'humanToken')
+          && input && typeof input === 'object' && Object.keys(input).every(key => ['trackingNos', 'humanToken', 'sliderToken'].includes(key))
           && Array.isArray(input.trackingNos) && input.trackingNos.length === 1 && input.trackingNos[0] === number;
       } catch { return false; }
     },
@@ -127,6 +128,12 @@ const SITES = [
       // reads the not-found notice itself.
       return true;
     },
+    setup(page, number, state, options) { state.slider = attachSwiftxSlider(page, number, { signal: options.budget?.signal }); },
+    async prepare(page, number, budgetMs, { state, hasTrackingRequest, refuse }) {
+      await state.slider.prepare(budgetMs, hasTrackingRequest, refuse);
+    },
+    settleAfterPrepare: false,
+    cleanup(state) { state.slider?.dispose(); },
   },
   {
     api: 'https://digitalapi.auspost.com.au/shipments-gateway/v1/watchlist/shipments',
@@ -333,8 +340,9 @@ export async function attachTrackingCapture(page, url, options) {
       ? requested.includes(candidate.api + candidate.number(target))
       : requested.includes(candidate.api)));
   if (!site) return undefined;
-  if (site.setup && site.prepareFor(target)) await site.setup(page);
   const number = site.number(target);
+  const state = {};
+  if (site.setup && (!site.prepareFor || site.prepareFor(target))) await site.setup(page, number, state, options);
   const api = site.apiForNumber ? site.apiForNumber(number)
     : site.api + (site.queryNumber ? `?trackingIds=${number}` : site.perNumber ? number : '');
   if (site.perNumber) {
@@ -343,7 +351,6 @@ export async function attachTrackingCapture(page, url, options) {
     })));
   }
   const entries = [];
-  const state = {};
   let terminal = false;
   let trackingRequested = false;
   let networkError;
@@ -437,7 +444,14 @@ export async function attachTrackingCapture(page, url, options) {
     ...(site.prepare && (!site.prepareFor || site.prepareFor(target)) ? { async prepare(budgetMs) {
       const deadline = Date.now() + Math.max(0, budgetMs);
       await site.prepare(page, number, Math.max(0, deadline - Date.now()), { state, target, settle,
-        restart: () => { ready = restart(); } });
+        restart: () => { ready = restart(); }, hasTrackingRequest: () => trackingRequested,
+        refuse({ status, retryAfter }) {
+          if (entries.length >= 20) entries.shift();
+          entries.push({ url: api, status, body: null, headers: retryAfter ? { 'retry-after': String(retryAfter).slice(0, 100) } : {},
+            truncated: false, base64Encoded: false, error: 'verification refused' });
+          finish();
+        } });
+      if (site.settleAfterPrepare === false) return;
       await settle(deadline - Date.now());
       if (!state.resultUrl || deadline - Date.now() < 1000) return;
       // Reuse this browser context: the main form has a separate verification
@@ -519,6 +533,7 @@ export async function attachTrackingCapture(page, url, options) {
       } else await settle(budgetMs);
     },
     async drain() {
+      site.cleanup?.(state);
       accepting = false;
       page.off('response', onResponse);
       if (observesRequests) {

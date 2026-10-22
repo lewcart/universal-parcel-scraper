@@ -20,7 +20,7 @@ const NOT_FOUND = 'Order not found.';
 // Its answer, for any number, to a query sent without the page's own verification.
 const VERIFICATION = 'Verification required.';
 // The batch's own code for a query whose verification token was missing or refused.
-const VERIFICATION_CODE = 'HUMAN_VERIFICATION_REQUIRED';
+const VERIFICATION_CODES = new Set(['HUMAN_VERIFICATION_REQUIRED', 'SLIDER_VERIFICATION_FAILED']);
 // "2026-01-13 09:04:05", the scan site's wall clock.
 const STAMP = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
 // "GMT-07:00" or "GMT-7:00", the scan site's offset at that time.
@@ -98,7 +98,7 @@ export function parseSwiftx(payload: unknown, raw: string, readAt = Date.now()):
   const batch = isRecord(payload.data) ? payload.data.getOfficialWebsiteTrackingInfoBatch : undefined;
   if (!isRecord(batch) || typeof batch.success !== 'boolean') throw new SchemaError(PROVIDER);
   if (!batch.success) {
-    if (batch.errorCode === VERIFICATION_CODE) throw new ChallengeError(PROVIDER, 'SwiftX asked for its tracking page\'s verification');
+    if (VERIFICATION_CODES.has(String(batch.errorCode))) throw new ChallengeError(PROVIDER, 'SwiftX asked for its tracking page\'s verification');
     throw new IndeterminateError(PROVIDER, 'SwiftX did not answer for the shipment');
   }
   if (!Array.isArray(batch.results) || batch.results.length !== 1) throw new SchemaError(PROVIDER, 'SwiftX returned another set of shipments');

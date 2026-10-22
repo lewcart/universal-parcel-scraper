@@ -98,6 +98,9 @@ describe('SwiftX tracking reply', () => {
     // The batch refuses a query whose verification token is missing or refused, and names no result.
     const refused = { data: { getOfficialWebsiteTrackingInfoBatch: { success: false, message: 'Human verification failed', errorCode: 'HUMAN_VERIFICATION_REQUIRED', results: [] } } };
     expect(() => parseSwiftx(refused, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    const sliderRefused = { data: { getOfficialWebsiteTrackingInfoBatch: { ...refused.data.getOfficialWebsiteTrackingInfoBatch,
+      errorCode: 'SLIDER_VERIFICATION_FAILED' } } };
+    expect(() => parseSwiftx(sliderRefused, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'challenge' }));
     const tooMany = { data: { getOfficialWebsiteTrackingInfoBatch: { ...refused.data.getOfficialWebsiteTrackingInfoBatch, errorCode: 'TOO_MANY_TRACKING_NUMBERS' } } };
     expect(() => parseSwiftx(tooMany, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     // One result per lookup: a second or no result is another answer.

@@ -7,9 +7,15 @@ tracking page. Shippers and forwarders hand parcels to SwiftX for the last mile.
 
 1. `trawl`: the browser service opens `swiftx-express.com/track?trackingNumber={number}`. Cloudflare
    puts a managed challenge in front of the page and of every `/api/` route, and the tracker asks
-   for the page's own verification before it looks a number up. The page then posts one
+   for the page's own verification before it looks a number up. When Turnstile cannot
+   complete, the page offers an image puzzle. The service locates a readable slider
+   cutout or the seam of an image-joining puzzle offline and drags the page's control;
+   the page verifies it and submits tracking. At most two puzzles are attempted, with
+   a refresh through the official control when a puzzle cannot be read. Rotation,
+   icon-click and ambiguous puzzles keep provider fallback.
+   The page then posts one
    `getOfficialWebsiteTrackingInfoBatch` query to `/api/graphql`, a batch holding the number and its
-   Turnstile token, and gets a compressed JSON reply. The service's capture helper keeps that reply
+   verification tokens, and gets a compressed JSON reply. The service's capture helper keeps that reply
    only for a batch of exactly the whole number from the page's address; no request is replayed
    outside the browser.
 

@@ -14,6 +14,8 @@ COPY --from=zto-ocr /opt/zto-ocr /opt/zto-ocr
 RUN /opt/zto-ocr/bin/python -c 'import ddddocr, rapidocr_onnxruntime, cv2'
 COPY LICENSE /usr/share/licenses/trawl/LICENSE
 COPY tracking-capture.mjs /app/packages/tiers/src/utils/tracking-capture.mjs
+COPY swiftx-slider.mjs /app/packages/tiers/src/utils/swiftx-slider.mjs
+COPY swiftx-slider.py /app/packages/tiers/src/utils/swiftx-slider.py
 COPY royal-mail-history.mjs /app/packages/tiers/src/utils/royal-mail-history.mjs
 COPY fedex-session.mjs /app/packages/tiers/src/utils/fedex-session.mjs
 COPY australia-post-browser.mjs /app/packages/tiers/src/utils/australia-post-browser.mjs

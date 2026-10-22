@@ -33,7 +33,8 @@ Tracked through the lookup its mobile tracking page makes.
 - Each scan's `time` is a wall clock with no zone, kept in `local_time`. ZTO dates every scan on
   Shanghai's clock, abroad too, so each is read on it. Read on Berlin's clock, the scans of a
   station in Germany came after the lookup that returned them; on Shanghai's, each falls at the
-  minute of 17TRACK's copy.
+  minute of 17TRACK's copy. [`identity.ts`](identity.ts) lets a scan take over the row an app
+  stored for its wall clock under another offset, with the same place, wording and code.
 - A scan's description is its English line without the place in brackets that opens it; a
   scan without English keeps its Chinese line. Both lose the clauses naming a courier, scanner,
   picker, signer, operator, collection point, bag or phone. The place is the station a delivery

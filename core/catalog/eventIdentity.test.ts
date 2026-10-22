@@ -286,6 +286,26 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
   });
 
+  it('lets a ZTO International scan read on Shanghai’s clock take over the row stored on another zone, by wall clock, place, wording and code', () => {
+    expect(sameInstantIdentityPolicy('zto-international')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('zto-international', { supportsScanMatching: true });
+    expect(policy).toMatchObject({
+      sourceCarrierId: 'zto-international', storedSources: ['zto-international'], requireProviderCode: false, matchEachScan: true, matchWallClock: true,
+    });
+    const stored = { stage: 'in_transit', description: 'Arrival at inward office of exchange.', location: 'Sample City01', providerCode: '230' };
+    const incoming = { ...stored, description: ' arrival at inward  office of exchange.', location: 'Sample City01 ' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(stored, incoming)).toBe(true);
+    expect(policy?.matches?.({ ...incoming, providerCode: '' }, stored)).toBe(true);
+    for (const different of [
+      { ...stored, description: 'Shipment out for delivery.' },
+      { ...stored, location: 'Sample City02' },
+      { ...stored, location: '' },
+      { ...stored, providerCode: '220' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+
   it('lets an MRW hub scan gain its bracketed label', () => {
     expect(sameInstantIdentityPolicy('mrw')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('mrw', { supportsScanMatching: true });

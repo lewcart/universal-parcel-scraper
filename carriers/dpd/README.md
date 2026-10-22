@@ -71,6 +71,9 @@ signal.
   window for the reply's own day; a different day in the reply wins. An
   unreadable newest notice leaves no estimate, and a notice lapses at a pickup
   point or once a later scan passes its day. Notices remain events.
+- `MSDLX`, DPD failing to send the delivery details, reads like a failed round
+  to the shared wording rules. It keeps the stage of the scan before it and is
+  never the summary.
 - While the parcel waits at a Pickup shop, the pickup point is the shop's
   name, then its street and its town on their own lines. Verified scans carry
   the shop's PUDO id: the newest scan with one names the shop, unless a depot

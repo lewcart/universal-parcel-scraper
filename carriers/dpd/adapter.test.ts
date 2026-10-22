@@ -360,6 +360,32 @@ describe('DPD verified guest payload', () => {
     ]);
   });
 
+  it('keeps the stage of the scan before a notice that reads like a failed round, and never summarizes it', () => {
+    const scan = (time: string, eventType: string, translation: string) => ({
+      date: '2026-07-16', time, city: 'Example', country: 'DE', translation, eventType,
+    });
+    const result = parseDPDTrackingApi({
+      parcelNumber: TRACKING_NUMBER,
+      status: { description: 'IN_TRANSIT' },
+      parcelHistory: [],
+      parcelEvents: [
+        scan('06:00:00', 'HUS', 'Your parcel is ready to be transported to our next premises'),
+        scan('06:30:00', 'SPL', 'Your parcel is on its way'),
+        scan('07:00:00', 'MSDLX', "We couldn't send a notification with your delivery details"),
+        scan('08:00:00', 'LHI', 'Your parcel is on its way'),
+        scan('09:00:00', 'DLO', 'Your parcel is out for delivery'),
+        scan('10:00:00', 'DEXD', 'There was an issue to drop off your parcel due to a lack of space in the retrieval point'),
+        scan('10:05:00', 'MSDLX', "We couldn't send a notification with your delivery details"),
+      ],
+    }, TRACKING_NUMBER, true);
+
+    expect(result.last_status_text).toBe('There was an issue to drop off your parcel due to a lack of space in the retrieval point');
+    expect(result.events?.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['MSDLX', 'failed_attempt', 'none'], ['DEXD', 'failed_attempt', undefined], ['DLO', 'out_for_delivery', undefined],
+      ['LHI', 'in_transit', undefined], ['MSDLX', 'in_transit', 'none'], ['SPL', undefined, undefined], ['HUS', 'in_transit', undefined],
+    ]);
+  });
+
   it('leaves unknown scan codes to the wording rules', () => {
     const result = parseDPDTrackingApi({
       parcelNumber: TRACKING_NUMBER,
@@ -632,17 +658,17 @@ describe('DPD status vocabulary', () => {
   });
 
   it('maps only the scan codes a live lookup paired or labelled with one movement', () => {
-    expect(['PKY', 'CCO', 'SPX', 'HUI', 'HUS', 'DLI', 'DLS', 'DLQ', 'DLO', 'DEY'].map(scanStage)).toEqual([
-      'accepted', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'out_for_delivery', 'delivered',
+    expect(['PKY', 'CCO', 'SPX', 'HUI', 'HUS', 'LHI', 'DLI', 'DLS', 'DLQ', 'DLO', 'DEY'].map(scanStage)).toEqual([
+      'accepted', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'out_for_delivery', 'delivered',
     ]);
-    expect(['DEX', 'DLR', 'DLW', 'DEHD', 'DEHDY', 'DODEI', 'DOMSDLO', 'DODEY'].map(scanStage)).toEqual([
-      'failed_attempt', 'failed_attempt', 'failed_attempt', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'delivered',
+    expect(['DEX', 'DEXD', 'DLR', 'DLW', 'DEHD', 'DEHDY', 'DODEI', 'DOMSDLO', 'DODEY'].map(scanStage)).toEqual([
+      'failed_attempt', 'failed_attempt', 'failed_attempt', 'failed_attempt', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'delivered',
     ]);
     // A sender's hand-in at a pickup point, after the label data.
     expect(['CNP', 'DOPKY', 'DODEH', 'ORS'].map(scanStage)).toEqual(['registered', 'accepted', 'in_transit', 'in_transit']);
     // ORI and SPL are left to their wording, like their PARCEL_HANDED and
     // IN_TRANSIT twins; notices and estimates are no scan, nor the proofs of delivery.
-    for (const code of ['ORI', 'SPL', 'SPE', 'MSDLO', 'MIDLI', 'MIA', 'MII', 'ENA', 'DEYY', 'DODEYY', 'XYZ', '', 'CONSTRUCTOR', '__proto__']) {
+    for (const code of ['ORI', 'SPL', 'SPE', 'MSDLO', 'MSDLX', 'MIDLI', 'MIA', 'MII', 'ENA', 'DEYY', 'DODEYY', 'XYZ', '', 'CONSTRUCTOR', '__proto__']) {
       expect(scanStage(code)).toBeNull();
     }
   });

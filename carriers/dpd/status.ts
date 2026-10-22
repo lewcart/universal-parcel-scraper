@@ -102,6 +102,8 @@ export function apiStage(description: unknown): Stage | null {
  * sender left at a pickup point opens with CNP, DPD receiving its label data,
  * then DOPKY for the hand-in at the point, DODEH when the driver collects it
  * there, and ORS, worded like HUS, as the origin depot sends it on.
+ * LHI, worded like IN_TRANSIT, comes between the hub and the delivery depot;
+ * DEXD is a round that ended at a pickup point with no space for the parcel.
  * ORI ("Origin depot - In") stays unmapped like its twin PARCEL_HANDED: the
  * result stage then comes from the same wording as the scan's, and an import
  * that cleared customs does not step back to accepted. Other codes stay
@@ -117,11 +119,13 @@ const SCAN_STAGES: Readonly<Record<string, Stage>> = {
   SPX: 'in_transit', // "Your parcel is on our premises, it will soon be on its way"
   HUI: 'in_transit', // "Your parcel arrived at our hub"
   HUS: 'in_transit', // "Your parcel is ready to be transported to our next premises"
+  LHI: 'in_transit', // "Your parcel is on its way", between the hub and the delivery depot
   DLI: 'in_transit', // "Destination depot - Inbound", twin AT_DELIVERY_CENTER
   DLS: 'in_transit', // "Your parcel has been sorted and is ready for delivery"
   DLQ: 'in_transit', // "Your parcel is at our delivery depot, it will soon be on its way"
   DLO: 'out_for_delivery', // "Destination depot - Out for delivery", twin PARCEL_OUT_FOR_DELIVERY
   DEX: 'failed_attempt', // "We couldn't deliver your parcel, it will soon be available at a retrieval point"
+  DEXD: 'failed_attempt', // "There was an issue to drop off your parcel due to a lack of space in the retrieval point"
   DLR: 'failed_attempt', // "We couldn't deliver your parcel and had to return it to the depot"
   DLW: 'failed_attempt', // "Your parcel is being held at our delivery depot, your premises were closed"
   DEHD: 'ready_for_pickup', // "Your parcel has been delivered to the retrieval point, it will soon be available for collection"
@@ -142,6 +146,13 @@ export function scanStage(code: string): Stage | null {
  * with no place. Paperwork, not a movement of the parcel.
  */
 export const PROOF_OF_DELIVERY_SCAN = 'DEYY';
+
+/**
+ * Notices worded like a movement: MSDLX, DPD failing to send the delivery
+ * details, would read as a failed round. Each keeps the stage of the scan
+ * before it.
+ */
+export const NOTICE_SCANS: ReadonlySet<string> = new Set(['MSDLX']);
 
 const MOVES_WITHOUT_MILESTONE = "DPD's map leaves it unmapped on purpose: it moves the parcel in transit without a milestone of its own.";
 
@@ -165,6 +176,7 @@ export const statusMap: CarrierStatusMap = {
     { code: 'OTHER', note: "The guest API's catch-all, which names no movement." },
     { code: 'SPE', note: 'A delivery estimate or a changed delivery day, not a scan.' },
     { code: 'MSDLO', note: 'The notice DPD emailed for the delivery round, not a scan.' },
+    { code: 'MSDLX', note: 'DPD failing to send the delivery details, not a scan: the parcel keeps the stage it had.' },
     { code: 'MIDLI', note: "The recipient's delivery instruction, not a scan." },
     { code: 'MIA', note: "The receipt of the recipient's delivery instruction, not a scan." },
     { code: 'MII', note: "The recipient's delivery instruction, as MIDLI words it, not a scan." },

@@ -8,13 +8,14 @@ import { dpdParcelNumber } from '../../core/detection/dpd.js';
 import { BudgetExceededError, carrierErrorKind, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, UpstreamHttpError, type CarrierErrorKind, type CarrierErrorOptions } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
+import { classifyWording, type Stage } from '../../core/status/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { calendarDay, isoTime, explicitOffsetTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
 import { decodeText, fetchBounded, parseJsonBytes, userAgentOf, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { DPD_DE_SESSION_OPENING, DpdOtherCountryError, sharedDpdAppService, type DpdParcelShop } from '../dpd-de/service.js';
 import {
-  API_LABELS, PROOF_OF_DELIVERY_SCAN, apiStage, apiStatus, scanStage, wordingStatus,
+  API_LABELS, NOTICE_SCANS, PROOF_OF_DELIVERY_SCAN, apiStage, apiStatus, scanStage, wordingStatus,
 } from './status.js';
 
 // Protocol provenance:
@@ -501,14 +502,22 @@ export function parseDPDTrackingApi(
     if (!PROOF_OF_DELIVERY_SCANS.has(event.provider_code ?? '')) return [event];
     return deliveryScanned || stage !== 'delivered' ? [] : [{ ...event, stage: 'delivered' }];
   }));
-  const statusText = events[0]?.description || apiDescription(currentDescription)
+  // Oldest first, a notice keeps the stage of the scan before it, read as the sync reads
+  // that scan. It never becomes the summary.
+  let previous: Stage = 'registered';
+  for (const event of [...events].reverse()) {
+    if (NOTICE_SCANS.has(event.provider_code ?? '')) Object.assign(event, { stage: previous, stage_source: 'none' });
+    else previous = (event.stage as Stage | undefined) ?? classifyWording(event.description ?? '').stage;
+  }
+  const summary = events.find((event) => !NOTICE_SCANS.has(event.provider_code ?? ''));
+  const statusText = summary?.description || apiDescription(currentDescription)
     || 'Tracking information received';
   const status = apiStatus(currentDescription, statusText, events.length > 0);
   const sender = apiSender(payload, current);
   const pickupPoint = apiPickupPoint(payload, current, stage);
   const weight = apiWeight(payload.weight);
   const deliveredAt = status === 'delivered'
-    ? events.find((event) => event.stage === 'delivered')?.time
+    ? events.find((event) => event.stage === 'delivered' && event.stage_source !== 'none')?.time
     : undefined;
   // Only the newest notice counts, so an undated or unreadable one leaves no
   // older day behind. A day that a later scan has passed, or a parcel waiting

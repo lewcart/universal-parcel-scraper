@@ -39,6 +39,15 @@
       "note": "LO001's wording and group, between the registration and the delivery round."
     },
     {
+      "code": "LT859",
+      "wording": "EL ENVÍO ESTÁ EN TRÁNSITO INTERNACIONAL. PRÓXIMAMENTE LLEGARÁ A LAS INSTALACIONES DE DESTINO.",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The international leg in the EN TRÁNSITO group, after SW189."
+    },
+    {
       "code": "LD221",
       "wording": "EL ENVÍO HA LLEGADO A LA ADUANA DE DESTINO. INICIAMOS LOS TRÁMITES DE DESPACHO ADUANERO.",
       "language": "es",

@@ -203,6 +203,13 @@ describe('status map answers', () => {
     expect(answer('allegro-one', null, 'recipient has refused to accept')).toEqual(mapped('failed_attempt'));
   });
 
+  it("answers DPD Germany's full pickup point, its line haul and its failed notice by their codes", () => {
+    expect(answer('dpd-de', 'DEXD', 'There was an issue to drop off your parcel due to a lack of space in the retrieval point')).toEqual(mapped('failed_attempt'));
+    expect(answer('dpd-de', 'LHI', 'Your parcel is on its way')).toEqual(mapped('in_transit'));
+    expect(answer('dpd-de', 'MSDLX', "We couldn't send a notification with your delivery details")).toEqual(gap);
+    expect(answer('seur', 'LT859', 'EL ENVÍO ESTÁ EN TRÁNSITO INTERNACIONAL. PRÓXIMAMENTE LLEGARÁ A LAS INSTALACIONES DE DESTINO.')).toEqual(mapped('in_transit'));
+  });
+
   it("answers Poste Italiane's wording, its failed round with the next day before the round it announces", () => {
     expect(answer('poste-italiane', null, 'non è stato possibile effettuare la consegna. la spedizione sarà in consegna il primo giorno lavorativo utile a partire dal 2026-01-01 00:00'))
       .toEqual(mapped('failed_attempt'));

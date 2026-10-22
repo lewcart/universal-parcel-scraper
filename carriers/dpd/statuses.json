@@ -131,6 +131,15 @@
       "note": "Scan code: the hub sends the parcel on."
     },
     {
+      "code": "LHI",
+      "wording": "Your parcel is on its way",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Scan code worded like IN_TRANSIT, seen between the hub and the delivery depot."
+    },
+    {
       "code": "DLI",
       "wording": "Your parcel arrived at our delivery depot",
       "language": "en",
@@ -230,6 +239,15 @@
       "note": "Scan code: a failed delivery round; the parcel goes on to a pickup point."
     },
     {
+      "code": "DEXD",
+      "wording": "There was an issue to drop off your parcel due to a lack of space in the retrieval point",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Scan code: the round ended at a pickup point with no space for the parcel, which went back to the depot."
+    },
+    {
       "code": "DEHD",
       "wording": "Your parcel has been delivered to the retrieval point, it will soon be available for collection",
       "language": "en",
@@ -297,6 +315,14 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-06",
       "note": "The notice DPD emailed for the delivery round, not a scan."
+    },
+    {
+      "code": "MSDLX",
+      "wording": "We couldn't send a notification with your delivery details",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "DPD failing to send the delivery details, not a scan: seen before and after the delivery round, it keeps the stage of the scan before it."
     },
     {
       "code": "MIDLI",

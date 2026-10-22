@@ -10743,7 +10743,7 @@ export const CARRIER_CATALOG = {
   },
   "dayone": {
     "displayName": "DayOne",
-    "color": "#f68020",
+    "color": "#e86d1c",
     "aliases": [
       "Dayone",
       "Day One",

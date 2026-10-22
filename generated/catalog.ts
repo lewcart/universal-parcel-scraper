@@ -9567,6 +9567,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "coordinadora",
       "recognitionRank": 973,
+      "recognitionServedCountriesOnly": true,
       "localClocks": true
     },
     "canaryUrl": "https://rastreo.coordinadora.com/",
@@ -9616,7 +9617,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "copa-courier": {
     "displayName": "Copa Airlines Courier",
@@ -10734,6 +10740,47 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "dayone": {
+    "displayName": "DayOne",
+    "color": "#f68020",
+    "aliases": [
+      "Dayone",
+      "Day One",
+      "Day One Track",
+      "DayOneTrack",
+      "Dayone Tracking"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dayonetrack.com/",
+    "trackingUrlTemplate": "https://www.dayonetrack.com/track?trackNo={trackingNumber}",
+    "trackingSearchUrl": "https://www.dayonetrack.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "dayonetrack.com",
+          "www.dayonetrack.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "trackNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^DOT\\d{16}$",
+        "confidence": "high"
+      }
+    ]
   },
   "dayton-freight": {
     "displayName": "Dayton Freight",
@@ -20271,6 +20318,10 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^MMXQP\\d{9}[ENR]$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^DOMC\\d{9}R$",
         "confidence": "high"
       },
       {
@@ -32231,6 +32282,7 @@ export const CARRIER_IDS = [
   "dao",
   "day-ross",
   "daylight-transport",
+  "dayone",
   "dayton-freight",
   "dellin",
   "delnext",
@@ -32993,7 +33045,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cne": ["cne-1"],
   "codexpress": [],
   "connect-couriers": [],
-  "coordinadora": [],
+  "coordinadora": ["coordinadora-1"],
   "copa-courier": ["copa-courier-1"],
   "corre": ["corre-s10"],
   "correo-argentino": ["correo-argentino-s10"],
@@ -33024,6 +33076,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dao": ["dao-1"],
   "day-ross": ["day-ross-1"],
   "daylight-transport": [],
+  "dayone": ["dayone-1"],
   "dayton-freight": [],
   "dellin": [],
   "delnext": [],
@@ -33266,7 +33319,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "m-one": ["m-one-s10"],
   "madhur-courier": [],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic"],
-  "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-s10"],
+  "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-domc","mailamericas-s10"],
   "mailplus-au": ["mailplus-au-1"],
   "mainfreight": [],
   "major-express": [],

@@ -1393,6 +1393,7 @@ export const REGISTRY: RegistryDefinition = {
     "dao": "dao",
     "day-ross": "day-ross",
     "daylight-transport": "daylight-transport",
+    "dayone": "universal",
     "dayton-freight": "dayton-freight",
     "delhivery": "delhivery",
     "delivengo": "la-poste",

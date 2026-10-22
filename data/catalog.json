@@ -9565,6 +9565,7 @@
       "mode": "automatic",
       "adapter": "coordinadora",
       "recognitionRank": 973,
+      "recognitionServedCountriesOnly": true,
       "localClocks": true
     },
     "canaryUrl": "https://rastreo.coordinadora.com/",
@@ -9614,7 +9615,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "copa-courier": {
     "displayName": "Copa Airlines Courier",
@@ -10732,6 +10738,47 @@
       }
     ],
     "detectionRules": []
+  },
+  "dayone": {
+    "displayName": "DayOne",
+    "color": "#f68020",
+    "aliases": [
+      "Dayone",
+      "Day One",
+      "Day One Track",
+      "DayOneTrack",
+      "Dayone Tracking"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dayonetrack.com/",
+    "trackingUrlTemplate": "https://www.dayonetrack.com/track?trackNo={trackingNumber}",
+    "trackingSearchUrl": "https://www.dayonetrack.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "dayonetrack.com",
+          "www.dayonetrack.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "trackNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^DOT\\d{16}$",
+        "confidence": "high"
+      }
+    ]
   },
   "dayton-freight": {
     "displayName": "Dayton Freight",
@@ -20269,6 +20316,10 @@
       },
       {
         "pattern": "^MMXQP\\d{9}[ENR]$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^DOMC\\d{9}R$",
         "confidence": "high"
       },
       {

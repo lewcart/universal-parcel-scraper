@@ -1,0 +1,17 @@
+{
+  "carrier": "dayone",
+  "records": [
+    {
+      "number": "DOT0000000000000017",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-22",
+      "expect": {
+        "carrier": "dayone",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of a DayOne parcel the app tracked and DayOne's tracker answered: DOT and sixteen digits."
+    }
+  ]
+}

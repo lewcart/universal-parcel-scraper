@@ -267,3 +267,14 @@ describe('wave eight Australian courier rules', () => {
     }
   });
 });
+
+describe('Chinese fulfilment warehouse numbers', () => {
+  it('names DayOne for DOT and sixteen digits, and only that layout', () => {
+    for (const number of ['DOT0000000000000017', 'DOT1000000000000017', 'dot 0000 0000 0000 0017']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'dayone', confidence: 'high' });
+    }
+    for (const number of ['DOT000000000000001', 'DOT00000000000000017', 'DOT000000000000001A', 'DOC0000000000000017']) {
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('dayone');
+    }
+  });
+});

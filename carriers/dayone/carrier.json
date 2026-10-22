@@ -1,0 +1,55 @@
+{
+  "id": "dayone",
+  "displayName": "DayOne",
+  "aliases": [
+    "Dayone",
+    "Day One",
+    "Day One Track",
+    "DayOneTrack",
+    "Dayone Tracking"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#f68020"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.dayonetrack.com/track?trackNo={trackingNumber}",
+    "searchUrl": "https://www.dayonetrack.com/",
+    "canaryUrl": "https://www.dayonetrack.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "dayonetrack.com",
+        "www.dayonetrack.com"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "trackNo"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "dayone-1",
+      "pattern": "^DOT\\d{16}$",
+      "confidence": "high"
+    }
+  ]
+}

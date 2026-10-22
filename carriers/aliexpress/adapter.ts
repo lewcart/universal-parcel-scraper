@@ -21,6 +21,7 @@
  * one neither feed knows is inconclusive, not missing.
  */
 import { lookupBudget, recognizeFromLookup, type AdapterFactory, type LookupBudget, type TrackingContext } from '../../core/adapter/index.js';
+import { detectCarrierMatch } from '../../core/detection/detect.js';
 import { normalizeTrackingNumber } from '../../core/detection/normalize.js';
 import { validTrackingNumber } from '../../core/detection/valid.js';
 import { ChallengeError, IndeterminateError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -87,6 +88,15 @@ function comparableIdentifier(value: unknown): string {
  * one. `copyRealMailNo` is the machine-readable field; `realMailNo` is display
  * prose that sometimes wraps the same identifier in a sentence.
  */
+/**
+ * One of Cainiao's own numbers (`CNG`, `CNFR…HD`, `DOFR…HD`), which names no
+ * partner: Cainiao gives its `CNG` number beside an Ecoscooting `CNPRT` reference.
+ */
+function cainiaoOwnNumber(number: string): boolean {
+  const detected = detectCarrierMatch(number);
+  return detected.confidence === 'high' && detected.carrier === 'aliexpress';
+}
+
 function cainiaoHandoffNumber(trackingModule: JsonObject): string {
   const direct = normalizeTrackingNumber(text(trackingModule.copyRealMailNo));
   if (/^(?=.*\d)[A-Z0-9]{8,30}$/.test(direct)) {
@@ -291,7 +301,7 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
       ? {}
       : { expected_delivery_from: expectedFrom }),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
-    ...(handoff && comparableIdentifier(handoff) !== requested ? { delivery_tracking_number: handoff } : {}),
+    ...(handoff && comparableIdentifier(handoff) !== requested && !cainiaoOwnNumber(handoff) ? { delivery_tracking_number: handoff } : {}),
     ...(destination ? { destination_country_name: destination } : {}),
     events,
   };

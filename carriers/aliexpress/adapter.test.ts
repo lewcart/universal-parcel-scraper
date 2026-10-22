@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { normalizeCarrierResult, type CarrierResult } from '../../core/result/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { adapter, CainiaoTracker, fetchCainiao, parseCainiaoTrackingResponse } from './adapter.js';
@@ -422,6 +423,15 @@ describe('Cainiao projection', () => {
     expect(parseCainiaoTrackingResponse({ module: [{
       mailNo: 'LP00000000000001', copyRealMailNo, detailList: [],
     }] }, 'LP00000000000001')).not.toHaveProperty('delivery_tracking_number');
+  });
+
+  it('names no partner for a number of Cainiao’s own, so an Ecoscooting reference hands over to Ecoscooting', () => {
+    const reference = 'CNPRT00000001234000000001';
+    const result = parseCainiaoTrackingResponse({ module: [{
+      mailNo: reference, copyRealMailNo: 'CNG12345678901234', destCountry: 'Portugal', latestTrace: { actionCode: 'LH_ARRIVE' }, detailList: [],
+    }] }, reference);
+    expect(result).not.toHaveProperty('delivery_tracking_number');
+    expect(deliveryHandoff('aliexpress', reference, result)).toEqual({ carrier: 'ecoscooting', number: reference, basis: 'reference' });
   });
 
   it('stages the legs between the linehaul and the local partner, and keeps every action code', () => {

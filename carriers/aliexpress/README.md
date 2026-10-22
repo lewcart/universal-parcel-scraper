@@ -48,7 +48,9 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
 - The partner number comes from `copyRealMailNo`; only when that is missing or malformed is it
   extracted from the display prose in `realMailNo`. It is returned as `delivery_tracking_number`,
   with `destCountry` as `destination_country_name`. A reference equal to the queried number
-  is omitted so it cannot create a handoff back to the same identifier. Cainiao can follow the
+  is omitted so it cannot create a handoff back to the same identifier, and so is one of
+  Cainiao's own numbers, such as the `CNG` number it gives beside an Ecoscooting `CNPRT`
+  reference: it names no partner, and would hide Ecoscooting's hand-off. Cainiao can follow the
   country with the recipient's town after a comma; only the part before the comma is read.
 - The host decides whether to hand off to the partner; see [`docs/ROUTING.md`](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md).
   Checksum-valid `L…CH` numbers keep a Swiss Post confirmation probe unless Cainiao names another

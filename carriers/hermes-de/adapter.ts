@@ -1,6 +1,7 @@
 
 import { DateTime } from 'luxon';
 import { lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { isValidHermesParcelNumber } from '../../core/detection/index.js';
 import { InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { firstOccurrence } from '../../core/time/index.js';
@@ -74,13 +75,22 @@ function parcelShop(parcel: Record<string, unknown>, latest: { metadata?: Milest
   return [name, clean(address.street, 120), town].filter(Boolean).join('\n');
 }
 
-export function parseHermesGermanyResponse(payload: unknown, trackingNumber: string): CarrierResult {
+/**
+ * A 14-digit number failing the barcode check digit is no Hermes barcode but a
+ * reference, which the search resolves to its parcel as the tracking page does.
+ * With `references`, that one parcel answers and names its own barcode.
+ */
+export function parseHermesGermanyResponse(payload: unknown, trackingNumber: string, { references = false } = {}): CarrierResult {
   const requested = normalizeHermesGermanyNumber(trackingNumber);
   if (!Array.isArray(payload) || !payload.every(isRecord)) {
     throw new SchemaError(CARRIER, 'Hermes Germany returned an invalid tracking response');
   }
   if (!payload.length) throw new HermesGermanyTrackingError();
   const parcels = payload.filter((entry) => entry.barcode === requested);
+  const barcode = payload.length === 1 && typeof payload[0]!.barcode === 'string' ? payload[0]!.barcode : '';
+  const reference = references && !parcels.length && /^\d{14}$/.test(requested) && !isValidHermesParcelNumber(requested)
+    && /^(?=.*\d)[A-Z0-9]{8,20}$/.test(barcode);
+  if (reference) parcels.push(payload[0]!);
   if (parcels.length !== 1) throw new SchemaError(CARRIER, 'Hermes Germany returned a different or ambiguous shipment');
   const progress = parcels[0]!.parcelProgress;
   if (!Array.isArray(progress) || !progress.length || progress.length > 500) {
@@ -159,6 +169,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
       expected_delivery: null,
       timezone: 'Europe/Berlin',
       ...(sender ? { sender_name: sender } : {}),
+      ...(reference ? { canonical_tracking_number: barcode } : {}),
       events: events.slice(0, 100).map(({ event }) => event),
     };
   }
@@ -176,6 +187,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
     ...(sender ? { sender_name: sender } : {}),
     ...(deliveredAt && status === 'delivered' ? { delivered_at: deliveredAt } : {}),
     ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
+    ...(reference ? { canonical_tracking_number: barcode } : {}),
     events: events.slice(0, 100).map(({ event }) => event),
   };
 }
@@ -195,7 +207,8 @@ export class HermesGermanyTracker {
     this.#userAgent = userAgentOf(userAgent);
   }
 
-  async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
+  /** `references` takes a reference's parcel; recognition, which claims the number, asks for the barcode itself. */
+  async fetch(trackingNumber: string, context: TrackingContext = {}, references = false): Promise<CarrierResult> {
     const number = normalizeHermesGermanyNumber(trackingNumber);
     const budget = lookupBudget(context, this.timeoutMs);
     const { response, bytes } = await fetchBounded(`${API}${encodeURIComponent(number)}`, {
@@ -216,7 +229,7 @@ export class HermesGermanyTracker {
     });
     if (response.status === 404) throw new HermesGermanyTrackingError();
     if (!response.ok) throw new UpstreamHttpError(PROVIDER, response.status);
-    return parseHermesGermanyResponse(parseJsonBytes(bytes, PROVIDER), number);
+    return parseHermesGermanyResponse(parseJsonBytes(bytes, PROVIDER), number, { references });
   }
 }
 
@@ -225,7 +238,7 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: 'hermes-de',
     steps: ['direct'],
-    track: (input, context) => tracker.fetch(input.number, context),
+    track: (input, context) => tracker.fetch(input.number, context, true),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context)),
   };
 };

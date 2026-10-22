@@ -81,6 +81,24 @@ describe('Hermes Germany', () => {
     ] }], NUMBER)).toMatchObject({ status: 'unknown' });
   });
 
+  it('answers a reference with the one parcel the search resolves it to, under that parcel\'s barcode', () => {
+    // A synthetic reference failing the barcode check digit, and a synthetic barcode passing it.
+    const reference = '60000000000001';
+    const barcode = '01234567890128';
+    const payload = () => [{ barcode, parcelProgress: [
+      { parcelStatus: 'PARCELSHOP_DROP_OFF', timestamp: '2026-09-02T09:00:00Z' },
+      { parcelStatus: 'PARCELSHOP_COLLECTED_BY_DRIVER', timestamp: '2026-09-02T15:00:00Z' },
+    ] }];
+    expect(parseHermesGermanyResponse(payload(), reference, { references: true })).toMatchObject({
+      current_stage: 'accepted', canonical_tracking_number: barcode,
+    });
+    // Recognition asks for the barcode itself, a barcode asked must be the one answering, and two parcels are ambiguous.
+    expect(() => parseHermesGermanyResponse(payload(), reference)).toThrow('different');
+    expect(() => parseHermesGermanyResponse(payload(), '01234567890135', { references: true })).toThrow('different');
+    expect(() => parseHermesGermanyResponse([...payload(), ...payload()], reference, { references: true })).toThrow('ambiguous');
+    expect(parseHermesGermanyResponse(payload(), barcode).canonical_tracking_number).toBeUndefined();
+  });
+
   it('exposes sender and keeps unknown latest as unknown, not an error', () => {
     const result = parseHermesGermanyResponse(delivered(), NUMBER);
     expect(result).toMatchObject({ sender_name: 'Example Webshop GmbH', delivered_at: '2026-09-03T09:00:00.000Z' });
@@ -243,6 +261,16 @@ describe('Hermes Germany', () => {
     await expect(new HermesGermanyTracker().fetch(NUMBER)).rejects.toMatchObject({
       status, name: status === 404 ? 'HermesGermanyTrackingError' : 'UpstreamHttpError',
     });
+  });
+
+  it('takes a reference\'s parcel when tracking, not when recognizing', async () => {
+    const reply = () => new Response(JSON.stringify([{ barcode: '01234567890128', parcelProgress: [
+      { parcelStatus: 'PARCELSHOP_DROP_OFF', timestamp: '2026-09-02T09:00:00Z' },
+    ] }]), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply());
+    const hermes = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
+    await expect(hermes.track({ number: '60000000000001' }, {})).resolves.toMatchObject({ canonical_tracking_number: '01234567890128' });
+    await expect(hermes.recognize!('60000000000001')).rejects.toMatchObject({ kind: 'schema' });
   });
 
   it('answers a number Hermes does not issue without a request', async () => {

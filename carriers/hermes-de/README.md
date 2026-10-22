@@ -14,9 +14,13 @@ service the public page calls. Hermes Einrichtungs-Service (furniture) is
    stays an upstream error.
 
 The response must contain exactly one parcel whose `barcode` equals the
-requested number. Exact `(time, parcelStatus)` duplicates are dropped, and rows
-are sorted newest first. Timestamps are read with their own offset (falling
-back to `Europe/Berlin`) and stored as UTC.
+requested number. A 14-digit number that fails the barcode check digit is a
+reference instead, which the search resolves to its parcel as the tracking page
+does: tracking takes that one parcel and names its barcode as
+`canonical_tracking_number`. Recognition still needs the barcode itself, since a
+reference proves no ownership of the number. Exact `(time, parcelStatus)`
+duplicates are dropped, and rows are sorted newest first. Timestamps are read
+with their own offset (falling back to `Europe/Berlin`) and stored as UTC.
 
 ## Notes
 

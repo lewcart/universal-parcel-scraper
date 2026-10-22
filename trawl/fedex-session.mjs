@@ -4,6 +4,11 @@ const PAGE = 'https://www.fedex.com/fedextrack/';
 const API = 'https://api.fedex.com/track/v2/shipments';
 const MAX_BODY = 2_000_000;
 
+// The browser tier succeeds even when its captured tracking API returns 403.
+// Its ordinary failure log cannot describe these refusals. Keep this separate
+// from the reply, and log only fixed labels, counts and elapsed times.
+const reportRefusal = fields => console.warn(JSON.stringify({ level: 'warn', event: 'fedex.api-refusal', ...fields }));
+
 export function fedexSessionNumber(url, capture = {}) {
   let page;
   try { page = new URL(url); } catch { return null; }
@@ -25,11 +30,12 @@ async function bounded(promise, ms, message) {
 
 export class FedExSessions {
   #sessions = new WeakMap();
-  #attempted = new WeakMap();
-  constructor({ idleMs = 30 * 60_000, maxAgeMs = 2 * 60 * 60_000, closeMs = 3_000 } = {}) {
+  #activity = new WeakMap();
+  constructor({ idleMs = 30 * 60_000, maxAgeMs = 2 * 60 * 60_000, closeMs = 3_000, onRefusal = reportRefusal } = {}) {
     this.idleMs = idleMs;
     this.maxAgeMs = maxAgeMs;
     this.closeMs = closeMs;
+    this.onRefusal = onRefusal;
   }
 
   preferred(entries, domain) {
@@ -43,8 +49,8 @@ export class FedExSessions {
     // The pool otherwise sticks to the first browser that visited a domain,
     // including rejected attempts. A later lookup may try another available
     // browser; there is no extra request or retry inside this lookup.
-    return entries.reduce((best, entry) => (this.#attempted.get(entry.browser) ?? 0)
-      < (this.#attempted.get(best.browser) ?? 0) ? entry : best);
+    return entries.reduce((best, entry) => (this.#activity.get(entry.browser)?.at ?? 0)
+      < (this.#activity.get(best.browser)?.at ?? 0) ? entry : best);
   }
 
   async #discard(browser, session, replace) {
@@ -77,7 +83,9 @@ export class FedExSessions {
     // The pool serializes leases; this also protects against accidental direct
     // callers sharing a browser while one lookup is still in flight.
     if (session?.busy) return failure('FedEx browser session is busy');
-    this.#attempted.set(browser, Date.now());
+    const previous = this.#activity.get(browser);
+    const activity = { at: started, lookups: (previous?.lookups ?? 0) + 1, successAt: previous?.successAt };
+    this.#activity.set(browser, activity);
     if (session && (Date.now() - session.created >= this.maxAgeMs || session.page.isClosed())) {
       await this.#discard(browser, session, handle.requestBrowserReplacement);
       session = undefined;
@@ -95,6 +103,18 @@ export class FedExSessions {
       const result = await bounded(this.#lookup({ number, session, browser, started, maxTimeout, installPolicy,
         replace: handle.requestBrowserReplacement, onCreated: handle.noteTemporaryContext }),
         Math.max(0, maxTimeout - (Date.now() - started)), 'FedEx lookup budget exhausted');
+      if (session.verified) activity.successAt = Date.now();
+      const rejected = result.capturedResponses.find(entry => [401, 403].includes(entry.status));
+      if (rejected) {
+        try {
+          this.onRefusal({ host: 'api.fedex.com', tier: [2, 3, 4].includes(tier) ? tier : undefined,
+            browser: Number.isSafeInteger(handle.id) && handle.id >= 0 && handle.id < 1024 ? handle.id : undefined,
+            statusCode: rejected.status, cause: rejected.error === 'fedex-edge-denial' ? 'edge' : 'api',
+            session: reused ? 'reused' : 'new', sessionAgeMs: Math.max(0, started - session.created),
+            idleMs: previous ? Math.max(0, started - previous.at) : null, browserLookups: activity.lookups,
+            sinceSuccessMs: activity.successAt === undefined ? null : Math.max(0, started - activity.successAt) });
+        } catch { /* Diagnostics must not change tracking or cleanup. */ }
+      }
       if (!session.verified) await this.#discard(browser, session, handle.requestBrowserReplacement);
       return { tier, status: 'success', statusCode: 200, durationMs: Date.now() - started,
         effectiveUrl: url, ...result, cookies: [], reason: reused ? 'fedex-session-reused' : 'fedex-session-new' };

@@ -61,7 +61,7 @@ function fixture(replies = [], settings = {}) {
     };
     return context;
   };
-  const sessions = settings.sessions ?? new FedExSessions(settings);
+  const sessions = settings.sessions ?? new FedExSessions({ onRefusal: () => {}, ...settings });
   const handle = { browser, requestBrowserReplacement: reason => replacements.push(reason) };
   const run = (number = NUMBER, options = {}) => sessions.run({ url: url(number), handle, tier: 3,
     maxTimeout: 1000, capture, installPolicy: async () => { policies++; }, ...options });
@@ -138,6 +138,39 @@ test('classifies an edge denial while retaining only safe response headers', asy
     },
     error: 'fedex-edge-denial',
   });
+  await f.close();
+});
+
+test('refusal diagnostics distinguish a new browser from a reused verified session without live data', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const reports = [];
+  const f = fixture([{ status: 403 }, {}, { status: 401 }, { status: 403 }], { onRefusal: fields => reports.push(fields) });
+  await f.run();
+  t.mock.timers.tick(10);
+  await f.run();
+  t.mock.timers.tick(20);
+  await f.run(OTHER);
+  t.mock.timers.tick(30);
+  await f.run();
+  assert.deepEqual(reports, [
+    { host: 'api.fedex.com', tier: 3, browser: undefined, statusCode: 403, cause: 'api', session: 'new',
+      sessionAgeMs: 0, idleMs: null, browserLookups: 1, sinceSuccessMs: null },
+    { host: 'api.fedex.com', tier: 3, browser: undefined, statusCode: 401, cause: 'api', session: 'reused',
+      sessionAgeMs: 20, idleMs: 20, browserLookups: 3, sinceSuccessMs: 20 },
+    { host: 'api.fedex.com', tier: 3, browser: undefined, statusCode: 403, cause: 'api', session: 'new',
+      sessionAgeMs: 0, idleMs: 30, browserLookups: 4, sinceSuccessMs: 50 },
+  ]);
+  assert.ok(!JSON.stringify(reports).includes(NUMBER));
+  assert.ok(!JSON.stringify(reports).includes(OTHER));
+  await f.close();
+});
+
+test('refusal reporting cannot turn a captured refusal into a different failure', async () => {
+  const f = fixture([{ status: 403 }], { onRefusal: () => { throw new Error('logging unavailable'); } });
+  const result = await f.run();
+  assert.equal(result.status, 'success');
+  assert.equal(result.capturedResponses[0].status, 403);
+  assert.equal(f.contexts[0].closed, true);
   await f.close();
 });
 

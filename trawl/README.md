@@ -81,6 +81,10 @@ carriers put the parcel number; `LOG_LEVEL=info` turns that log on. Each tier th
 blocked or times out logs a `tier.failure` warning with the page's host, its status, the page's HTTP status and
 the error it caught: the error's name and the first line of its message, up to 200 characters,
 without URLs or query strings and with runs that could be identifiers masked.
+FedEx's captured API refusals leave the browser tier successful. A separate
+`fedex.api-refusal` warning records the API status, browser slot, session reuse,
+session age, time since the browser's previous lookup and verified lookup, and
+lookup count on that browser. It contains no parcel identifier, response body or cookie.
 
 TRAWL drops a reply that reaches its request deadline. The image ends its own waits and
 TRAWL's CAPTCHA solvers 2.5 seconds before it, so a page behind an unsolved widget and

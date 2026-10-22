@@ -1339,6 +1339,14 @@ describe('ParcelsApp result parsing', () => {
       '2026-07-07T04:00:00.000Z',
       '2026-07-06T06:00:00.000Z',
     ]);
+    // With no place around them, their wording places them: AliExpress's own receipt by the
+    // local delivery company has the digits of "Container reception" at -05:00.
+    const unplaced = [
+      { date: '2026-07-10T05:55:00Z', status: 'Container reception', carrier: 0 },
+      { date: '2026-07-10T02:02:00Z', status: 'Destination customs. Released', carrier: 0 },
+    ];
+    expect(parseParcelsAppResponse({ carriers: ['MailAmericas', 'Cainiao'], originCode: 'CN', destinationCode: 'CO', states: unplaced }, number,
+      identity()).events?.map((scan) => scan.time)).toEqual(['2026-07-10T10:55:00.000Z', '2026-07-10T07:02:00.000Z']);
   });
 
   it('reads a town of the state a country\'s code also names in that state, not the country', () => {

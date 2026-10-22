@@ -270,7 +270,8 @@ step exists for future protocol changes.
   country" on the destination's. On a parcel from China to Colombia, the Tax ID checks
   were dated up to six hours after ParcelsApp first returned them, and come before that
   moment only on China's clock; the scans in Colombia matched Cainiao's import customs to
-  the minute. EMS dates its scans at the destination's office of exchange ("Arrived at
+  the minute, and "Container reception" AliExpress's own receipt by the local delivery
+  company, which states its offset. EMS dates its scans at the destination's office of exchange ("Arrived at
   destination import office" to "Departed from destination import office", its holds and
   import customs between) on the destination's clock, as it dates its origin leg on the
   origin's: on a parcel from the UK to South Africa they have the digits of the South

@@ -255,7 +255,9 @@ const CAINIAO_LAST_MILE = [
  * logged with the label, were dated up to six hours after ParcelsApp first
  * returned them on a parcel to Colombia, and come before that moment only on
  * China's clock, the parcel's origin (2026-10-16). Its scans in the
- * destination matched Cainiao's import customs to the minute on Colombia's.
+ * destination matched Cainiao's import customs to the minute on Colombia's,
+ * and its "Container reception" AliExpress's own receipt by the local
+ * delivery company, which states its offset.
  *
  * EMS's scans at the destination's office of exchange, from its arrival to its
  * departure, are on the destination's clock, as its origin leg is on the
@@ -301,7 +303,7 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
   ['mailamericas', [
     { wording: /^(?:order created|tax id|origin warehouse)\.|^transit to destination country\. (?:on the way to the airport|origin customs|flight)$/i,
       zone: ORIGIN },
-    { wording: /^(?:arrived at destination country|destination customs|wi\s*[–-]\s*intermediate warehouse|receiving destination mail|received in destination office|delivery (?:branch|office)|finished)\.|^delivered\b/i,
+    { wording: /^(?:arrived at destination country|destination customs|wi\s*[–-]\s*intermediate warehouse|receiving destination mail|received in destination office|delivery (?:branch|office)|finished)\.|^delivered\b|^container reception$/i,
       zone: DESTINATION },
   ]],
   ['4pxexpress', [

@@ -227,6 +227,13 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^delivery scheduled during the day[.!]?$/i.test(value)) return 'out_for_delivery';
   // Latvijas Pasts' acceptance at a post office, which ParcelsApp follows with the office's name.
   if (/^item posted \/ received from customer\b/i.test(value)) return 'accepted';
+  // Its export steps after that, as ParcelsApp relays them: the logistics centre, the outward office of
+  // exchange holding the item for dispatch, and the dispatch before the item leaves Latvia.
+  if (/^received at the logistics cent(?:er|re)[.!]?$|^item held at outward office of exchange[.!]?$|^sending the package[.!]?$/i.test(value)) return 'in_transit';
+  // ECMS's pre-alert, in English then Chinese: the parcel has yet to reach its origin warehouse.
+  if (/^virtual manifest has been received[.!]?(?:\s*发货预报已收到[，,]?\s*正在等待货物到达我们的始发站仓库[。.]?)?$/iu.test(value)) return 'registered';
+  // InPost's refusal at the door (LMD.9006), as InPost's own map reads it.
+  if (/^acceptance refusal[.!]?$/i.test(value)) return 'failed_attempt';
   // A postal item accepted abroad as the receiving post's map reads the UPU event (Canada Post's 4000), and
   // Deutsche Post's posting at a retail outlet, "in der Filiale eingeliefert" in German.
   if (/^international item mailed in originating country[.!]?$/i.test(value)) return 'accepted';

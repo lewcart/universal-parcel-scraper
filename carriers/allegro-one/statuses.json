@@ -20,6 +20,7 @@
     {"wording": "Parcel has been released for delivery", "language": "en", "stage": "out_for_delivery", "confirmedBy": "live", "note": "Also before a locker delivery."},
     {"wording": "No space in the parcel locker", "language": "en", "stage": "failed_attempt", "confirmedBy": "live", "note": "The courier found the locker full and took the parcel back."},
     {"wording": "Destination pick-up point is not available", "language": "en", "stage": "failed_attempt", "confirmedBy": "live", "note": "Polish: \"Wybrany punkt docelowy jest niedostępny\". The courier takes the parcel back to the branch and tries again."},
+    {"wording": "Recipient has refused to accept", "language": "en", "stage": "failed_attempt", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "After the parcel was released for delivery; the parcel seen with it was delivered later, so the refusal ended an attempt, not the delivery."},
     {"wording": "Notice", "language": "en", "stage": "failed_attempt", "confirmedBy": "live", "note": "Polish: \"Awizo\". Nobody took the parcel at the door and a notice was left."},
     {"wording": "Parcel is waiting for an alternative point indication", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "The recipient is asked to choose another point."},
     {"wording": "Parcel is awaiting pick-up", "language": "en", "stage": "ready_for_pickup", "confirmedBy": "live"},

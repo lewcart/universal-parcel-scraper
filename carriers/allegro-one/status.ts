@@ -33,6 +33,8 @@ export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
   'No space in the parcel locker': 'failed_attempt',
   // The courier could not leave the parcel at the chosen point and takes it back.
   'Destination pick-up point is not available': 'failed_attempt',
+  // The recipient turned the parcel away at the door; the parcel seen with it was delivered later.
+  'Recipient has refused to accept': 'failed_attempt',
   // "Awizo": nobody took the parcel at the door and a notice was left.
   Notice: 'failed_attempt',
   // The recipient is asked to choose another point.

@@ -186,6 +186,14 @@ describe('status map answers', () => {
     expect(answer('swiss-post', 'PARCEL.*.1.502', 'Picked up')).toEqual(mapped('accepted'));
     expect(answer('swiss-post', 'PARCEL.*.1.2000', 'Delivered over counter')).toEqual(mapped('delivered'));
     expect(answer('swiss-post', 'PARCEL.*.1.9999', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('swiss-post', 'PARCEL.*.6144.4100', 'Delivery failed')).toEqual(mapped('failed_attempt'));
+    expect(answer('swiss-post', 'PARCEL.*.6144.1400', 'Arrival in special delivery')).toEqual(mapped('in_transit'));
+    expect(answer('swiss-post', 'PARCEL.*.6144.1300', 'Sorting - forwarding')).toEqual(mapped('in_transit'));
+  });
+
+  it("answers SFC's origin clearance and Allegro One's refusal at the door by their wording", () => {
+    expect(answer('sfc', null, 'shipment started the customs clearance process at origin')).toEqual(mapped('customs'));
+    expect(answer('allegro-one', null, 'recipient has refused to accept')).toEqual(mapped('failed_attempt'));
   });
 
   it("answers Cainiao's action codes, and the wording the queue holds without one", () => {
@@ -600,6 +608,10 @@ describe("universal providers' answers", () => {
 
   it("close the aggregators' whole scans no shared rule reads, and nothing like them", () => {
     for (const [wording, stage] of [
+      // Latvijas Pasts' export steps, ECMS's pre-alert and InPost's refusal at the door, as ParcelsApp and Ship24 relay them.
+      ['Received at the logistics center', 'in_transit'], ['Item held at outward office of exchange', 'in_transit'], ['Sending the package', 'in_transit'],
+      ['Virtual Manifest has been received. 发货预报已收到，正在等待货物到达我们的始发站仓库', 'registered'], ['Virtual Manifest has been received', 'registered'],
+      ['Acceptance refusal', 'failed_attempt'],
       ['Warehouse receipt.', 'accepted'], ['Received by warehouse', 'accepted'], ['Package received and scanned at warehouse', 'accepted'],
       ["We've got it", 'accepted'], ['Received at Evri', 'accepted'], ['Received by our network', 'accepted'], ['Checked in at origin hub', 'accepted'], ['Parcel received and processing', 'accepted'], ['Acceptance, Sent To Spain', 'accepted'],
       ['China Post has received the mail', 'accepted'], ['Envío recogido en origen', 'accepted'],
@@ -705,6 +717,9 @@ describe("universal providers' answers", () => {
       ['Item received by the Brazilian Post', 'in_transit'], ["Need to inform recipient's CPF/CNPJ", 'customs'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
+    for (const wording of ['Sending the package to the sender', 'Item held at outward office of exchange for inspection', 'Virtual Manifest pending']) {
+      expect(answer('unknown', null, wording), wording).toEqual(unknown);
+    }
     for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
       'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling', 'Order confirmed., pending',
       'Przesyłka w oddziale', 'Przesyłka w oddziale FedEx czeka na odbiór', 'Your order has been shipped from the distribution center to the store',

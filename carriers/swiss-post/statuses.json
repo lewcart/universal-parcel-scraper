@@ -450,6 +450,23 @@
       "firstSeen": "2026-09-10"
     },
     {
+      "code": "1300",
+      "wording": "Sorting - forwarding",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22"
+    },
+    {
+      "code": "1400",
+      "wording": "Arrival in special delivery",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "After a failed delivery, before the sorting and loading for the next round."
+    },
+    {
       "code": "2000",
       "wording": "Delivered over counter",
       "language": "en",
@@ -532,6 +549,15 @@
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08"
+    },
+    {
+      "code": "4100",
+      "wording": "Delivery failed",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "After the loading into the delivery vehicle, before another round."
     },
     {
       "code": "4600",

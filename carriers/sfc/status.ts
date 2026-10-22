@@ -19,6 +19,8 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['arrive at international airport', 'in_transit'],
   ['flight departure from international airport to abroad', 'in_transit'],
   ['arrived at destination airport', 'in_transit'],
+  // Export clearance in China, after the parcel left SFC's warehouse.
+  ['shipment started the customs clearance process at origin', 'customs'],
   ['start import customs clearance', 'customs'],
   ['collected from airport terminal', 'in_transit'],
   ['shipment ready for onward transportation to local delivery hub', 'in_transit'],

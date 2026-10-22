@@ -88,6 +88,9 @@ export const EVENT_STAGE_BY_CODE: Record<string, Stage> = {
   '1204': 'in_transit',
   '1213': 'in_transit',
   '1218': 'in_transit',
+  // Sorted and sent on, and its arrival at a special delivery base, between two delivery rounds.
+  '1300': 'in_transit',
+  '1400': 'in_transit',
   // Handed to the recipient at a post office counter.
   '2000': 'delivered',
   // A pickup notice like 910: the item waits at a post office for collection.
@@ -101,6 +104,8 @@ export const EVENT_STAGE_BY_CODE: Record<string, Stage> = {
   '4000': 'delivered',
   '4001': 'delivered',
   '4020': 'in_transit',
+  // After the item was loaded into the delivery vehicle; a later round follows.
+  '4100': 'failed_attempt',
   '4600': 'delivered',
 };
 

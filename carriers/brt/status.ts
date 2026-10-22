@@ -1,4 +1,7 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
+import { statusMap as chronopost } from '../chronopost/status.js';
+import { statusMap as dpd } from '../dpd/status.js';
 
 const labels: Record<string, ClassifiedStatus> = {
   'SHIPPING INFO SENT TO BRT': { status: 'pending', stage: 'registered' },
@@ -21,3 +24,23 @@ export function classifyBrtStatus(label: string): ClassifiedStatus | undefined {
   const key = label.toUpperCase().trim();
   return Object.hasOwn(labels, key) ? labels[key] : undefined;
 }
+
+/** In the DPD leg that brought a parcel to BRT, the scans whose stage the scans before them decide (`stagedDpdLeg`). */
+export const DPD_INTAKE: ReadonlySet<string> = new Set(['PARCEL_HANDED', 'ORI']);
+export const DPD_TRANSIT: ReadonlySet<string> = new Set(['IN_TRANSIT', 'SPL', 'AT_DELIVERY_CENTER']);
+
+const DPD_LEG_TRANSIT = 'In the DPD leg before BRT it moves the parcel only once DPD has taken it in; before that it names no movement of its own.';
+
+/**
+ * What the map says about one scan. BRT's own scans carry no code. A scan with a code comes from
+ * the leg of the partner that brought the parcel to BRT and reads that partner's map. In DPD's leg
+ * the hand-over and the depot's intake always get a stage, which the scans before them decide.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? chronopost.stage(code, wording) ?? dpd.stage(code, wording) : classifyBrtStatus(wording)?.stage),
+  gaps: [
+    ...chronopost.gaps,
+    ...dpd.gaps.flatMap((gap) => (gap.code === undefined || DPD_INTAKE.has(gap.code) ? []
+      : [{ ...gap, note: DPD_TRANSIT.has(gap.code) ? DPD_LEG_TRANSIT : gap.note }])),
+  ],
+};

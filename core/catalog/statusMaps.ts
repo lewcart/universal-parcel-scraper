@@ -67,6 +67,7 @@ import { statusMap as bosta } from '../../carriers/bosta/status.js';
 import { statusMap as boxNow } from '../../carriers/box-now/status.js';
 import { statusMap as bpost } from '../../carriers/bpost/status.js';
 import { statusMap as bringerParcel } from '../../carriers/bringer-parcel/status.js';
+import { statusMap as brt } from '../../carriers/brt/status.js';
 import { statusMap as bulgarianPosts } from '../../carriers/bulgarian-posts/status.js';
 import { statusMap as burdDelivery } from '../../carriers/burd-delivery/status.js';
 import { statusMap as bussgods } from '../../carriers/bussgods/status.js';
@@ -184,6 +185,7 @@ import { statusMap as fargoCourier } from '../../carriers/fargo-courier/status.j
 import { statusMap as fargoUz } from '../../carriers/fargo-uz/status.js';
 import { statusMap as fastdrop } from '../../carriers/fastdrop/status.js';
 import { statusMap as fastfrate } from '../../carriers/fastfrate/status.js';
+import { statusMap as fedex } from '../../carriers/fedex/status.js';
 import { statusMap as fedexFreight } from '../../carriers/fedex-freight/status.js';
 import { statusMap as fedexPl } from '../../carriers/fedex-pl/status.js';
 import { statusMap as fermopoint } from '../../carriers/fermopoint/status.js';
@@ -329,6 +331,7 @@ import { statusMap as mngKargo } from '../../carriers/mng-kargo/status.js';
 import { statusMap as mongolInfinityPost } from '../../carriers/mongol-infinity-post/status.js';
 import { statusMap as morningGlobal } from '../../carriers/morning-global/status.js';
 import { statusMap as mrlGlobal } from '../../carriers/mrl-global/status.js';
+import { statusMap as mrw } from '../../carriers/mrw/status.js';
 import { statusMap as mtscn } from '../../carriers/mtscn/status.js';
 import { statusMap as mylerz } from '../../carriers/mylerz/status.js';
 import { statusMap as nacex } from '../../carriers/nacex/status.js';
@@ -560,7 +563,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'apple-express': appleExpress, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'atlantic-courier': atlanticCourier, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'best-overnite-express': bestOverniteExpress, 'better-trucks': betterTrucks, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, blueex, bombino,
-  bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, bpost, 'bringer-parcel': bringerParcel, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
+  bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, bpost, 'bringer-parcel': bringerParcel, brt, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
   byhd, c3x, cacesa, 'canada-post': canadaPost, cargus, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, 'citylink-express': citylinkExpress, citymail,
@@ -578,7 +581,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   envialia, 'eparcel-kr': eparcelKr, 'epost-global': epostGlobal, equick, estes, 'estes-forwarding': estesForwarding, eurodis, 'euroexpress-ba': euroexpressBa,
   'evdemo-lojistik': evdemoLojistik, evri, evropat, ewe, exelot,
   'exline-kz': exlineKz, exmate, 'express-one': expressOne, 'fan-courier': fanCourier, 'fargo-courier': fargoCourier, 'fargo-uz': fargoUz, fastdrop,
-  fastfrate, 'fedex-freight': fedexFreight, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery, 'first-line': firstLine,
+  fastfrate, fedex, 'fedex-freight': fedexFreight, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery, 'first-line': firstLine,
   'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
   fleetex, fleetoptics, flippost, followmont, 'forward-air': forwardAir, 'forza-delivery': forzaDelivery, 'four-px': fourPx, foxpost, 'franch-express': franchExpress, fukuyama, gaash, gati, gdex,
@@ -600,7 +603,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
   'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, 'maruti-air': marutiAir, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,
   'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
-  'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mtscn, mylerz, nacex, naqel, nationex,
+  'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mrw, mtscn, mylerz, nacex, naqel, nationex,
   'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,
   northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,

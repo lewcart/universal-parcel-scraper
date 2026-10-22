@@ -4,12 +4,11 @@ import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/e
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { calendarDay, firstOccurrence, regionHasTown, townKey } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
-import { classifyMrwStatus } from './status.js';
+import { classifyMrwStatus, MRW_NEUTRAL_STATUS } from './status.js';
 
 const ORIGIN = 'https://www.mrw.es';
 const SUMMARY_HEADERS = 'Número de albarán|Fecha|Hora|Estado envío|Histórico de envío';
 const HISTORY_HEADERS = 'Fecha|Hora|Estado envío|Ubicación';
-const NEUTRAL = 'Actualización de seguimiento';
 
 /** A clock with its hour zero-padded: the summary writes "1:59" where the history writes "01:59". */
 function paddedHour(value: string): string {
@@ -199,7 +198,7 @@ export function parseMrwHistory(html: string, raw: string, summary: MrwSummary):
     if (seen.has(key)) continue;
     seen.add(key);
     const mapped = classifyMrwStatus(rawStatus);
-    events.push({ description: mapped ? rawStatus : NEUTRAL,
+    events.push({ description: mapped ? rawStatus : MRW_NEUTRAL_STATUS,
       ...(mapped ? { provider_status: rawStatus, stage: mapped.stage } : {}),
       ...clock, ...(location ? { location } : {}) });
   }

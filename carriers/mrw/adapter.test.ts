@@ -6,7 +6,8 @@ import { resultTimezone } from '../../core/time/result.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { MrwTracker, adapter } from './adapter.js';
 import { normalizeMrwNumber, parseMrwBootstrap, parseMrwHistory, parseMrwSummary } from './parser.js';
-import { classifyMrwStatus } from './status.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { classifyMrwStatus, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { InvalidInputError } from '../../core/errors/index.js';
 
@@ -83,6 +84,11 @@ describe('MRW anonymous tracking', () => {
     expect(result.events?.[0]!.description).toBe('Actualización de seguimiento');
     expect(result.events?.[0]!.provider_time_text).toBe('31/02/2026 19:29');
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC_RECIPIENT');
+    // Its status map leaves the label out on purpose and gives the other scans the parser's stage.
+    expect(statusMap.gaps.map((gap) => gap.wording)).toEqual([normalizeStatusWording(result.events![0]!.description ?? '')]);
+    for (const event of result.events!) {
+      expect(statusMap.stage(null, normalizeStatusWording(event.description ?? '')), event.description).toBe(event.stage);
+    }
   });
 
   it('skips the per-parcel scans and keeps hub labels', () => {

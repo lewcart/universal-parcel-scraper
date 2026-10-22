@@ -539,6 +539,38 @@ describe('status map answers', () => {
     }
   });
 
+  it("answers BRT by its labels, and the leg of the partner that brought the parcel by that partner's map", () => {
+    expect(answer('brt', null, 'ARRIVED AT DEPOT')).toEqual(mapped('in_transit'));
+    expect(answer('brt', null, 'TURMOIL')).toEqual(mapped('exception'));
+    expect(answer('brt', null, 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('brt', null, 'Your parcel is on its way')).toEqual(unknown);
+    expect(answer('brt', 'HUI', 'Your parcel arrived at our hub')).toEqual(mapped('in_transit'));
+    expect(answer('brt', 'DB', "Colis déposé par l'expéditeur")).toEqual(mapped('accepted'));
+    expect(answer('brt', 'SM', 'Destinataire informé par SMS ou mail')).toEqual(gap);
+    expect(answer('brt', 'SPE', 'Any wording at all')).toEqual(gap);
+    // DPD's transit wording moves the parcel once DPD has it, and its intake always gets a stage.
+    expect(answer('brt', 'IN_TRANSIT', 'Your parcel is on its way')).toEqual({
+      kind: 'intentional_gap',
+      note: 'In the DPD leg before BRT it moves the parcel only once DPD has taken it in; before that it names no movement of its own.',
+    });
+    expect(answer('brt', 'PARCEL_HANDED', 'Parcel handed to DPD')).toEqual(unknown);
+    expect(answer('brt', 'ORI', 'Your parcel arrived at our depot')).toEqual(unknown);
+  });
+
+  it("answers MRW by its Spanish and Portuguese labels, and leaves its label for a status it does not know out on purpose", () => {
+    expect(answer('mrw', null, 'Envío en reparto')).toEqual(mapped('out_for_delivery'));
+    expect(answer('mrw', null, 'Envio entregue')).toEqual(mapped('delivered'));
+    expect(answer('mrw', null, 'Actualización de seguimiento')).toEqual(gap);
+    expect(answer('mrw', null, 'Envío retenido')).toEqual(unknown);
+  });
+
+  it('answers FedEx by its wording, as the parser reads a scan whose code it does not know', () => {
+    expect(answer('fedex', null, 'In FedEx possession — At FedEx location')).toEqual(mapped('accepted'));
+    expect(answer('fedex', null, 'On FedEx vehicle for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('fedex', null, 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('fedex', null, 'Shipment arriving On-Time')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

@@ -9,7 +9,8 @@ import {
   parseFedExTrackingHtml,
   parseFedExTrackingResponse,
 } from './adapter.js';
-import { FEDEX_CODE_STAGE, fedexStage, fedexStatus } from './status.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { FEDEX_CODE_STAGE, fedexStage, fedexStatus, statusMap } from './status.js';
 
 // 999999999999 and 999999999998 are made-up numbers in FedEx's published
 // format. No real shipment, recipient, signatory or session value appears in
@@ -251,6 +252,21 @@ describe('FedEx structured response', () => {
       scan('2026-02-30', '00:00:00', '', 'Shipment information sent to FedEx', 'OC'),
     ]).events?.map(({ time, local_time }) => [time, local_time]))
       .toEqual([['2026-09-11T00:00:00+09:00', undefined], [undefined, undefined], [undefined, undefined]]);
+  });
+
+  it('gives a scan whose code the map does not know the stage its status map gives the scan\'s wording', () => {
+    const scans = [
+      ['2026-06-08', 'XX', 'Delivered', 'Left at front door'],
+      ['2026-06-07', 'XX', 'In FedEx possession', 'At FedEx location'],
+      ['2026-06-06', 'XX', 'Arrived at FedEx location', ''],
+      ['2026-06-05', 'XX', 'Wording FedEx has not used before', ''],
+      ['2026-06-04', 'XX', 'Shipment information sent to FedEx', ''],
+    ] as const;
+    const events = parseFedExTrackingResponse(groundEconomyFixture(scans, DELIVERED_NUMBER), DELIVERED_NUMBER).events!;
+    expect(events.map((event) => event.stage)).toEqual(['delivered', 'accepted', 'accepted', undefined, 'registered']);
+    for (const event of events) {
+      expect(statusMap.stage(null, normalizeStatusWording(event.description ?? '')), event.description).toBe(event.stage);
+    }
   });
 
   it('keeps the recipient, shipper and service blocks out of the result', () => {

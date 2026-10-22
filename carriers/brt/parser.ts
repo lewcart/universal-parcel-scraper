@@ -8,7 +8,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { CarrierId } from '../../generated/catalog.js';
 import { calendarDay, countryCode, countryTimeZone, isoTime, sharedClockZone } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
-import { classifyBrtStatus } from './status.js';
+import { classifyBrtStatus, DPD_INTAKE, DPD_TRANSIT } from './status.js';
 
 export function normalizeBrtNumber(raw: string): string {
   const number = raw.replace(/\s/g, '').toUpperCase();
@@ -337,9 +337,6 @@ export function withOriginLeg(result: CarrierResult, partner: CarrierResult): Ca
  * DPD had already staged the parcel past it. The scans worded as moving it on are transit once
  * DPD has it; SPL, worded so, also comes before the origin depot, and stays unstaged there.
  */
-const DPD_INTAKE = new Set(['PARCEL_HANDED', 'ORI']);
-const DPD_TRANSIT = new Set(['IN_TRANSIT', 'SPL', 'AT_DELIVERY_CENTER']);
-
 export function stagedDpdLeg(result: CarrierResult): CarrierResult {
   if (!result.events?.length) return result;
   let taken = false;

@@ -5,7 +5,8 @@ import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { normalizeCarrierResult, type CarrierEvent, type CarrierResult } from '../../core/result/index.js';
 import { BrtTracker, adapter, type BrtOriginLookup } from './adapter.js';
 import { brtOriginPartner, normalizeBrtNumber, parseBrt, stagedDpdLeg, withOriginLeg } from './parser.js';
-import { classifyBrtStatus } from './status.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { classifyBrtStatus, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { IndeterminateError, InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
 
@@ -487,6 +488,15 @@ describe('BRT origin legs', () => {
       coded('SPL', 'Your parcel is on its way', '2026-01-12T09:00:00Z')));
     expect(early.events!.map(event => event.stage)).toEqual(['accepted', undefined]);
     expect(stagedDpdLeg({ status: 'in_transit', events: [] })).toEqual({ status: 'in_transit', events: [] });
+  });
+
+  it("gives BRT's own scans the stage its status map gives their label", () => {
+    const events = parseBrt(html, NUMBER).events!;
+    expect(events.some((event) => event.stage === 'delivered')).toBe(true);
+    for (const event of events) {
+      expect(event.provider_code).toBeUndefined();
+      expect(statusMap.stage(null, normalizeStatusWording(event.description ?? '')), event.description).toBe(event.stage);
+    }
   });
 
   it('keeps only partner scans surely before a wall clock, and leaves a shipment without a dated leg as it was', () => {

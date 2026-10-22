@@ -36,7 +36,10 @@ the whole group with each milestone once, at its newest date and without a
 place. Without its answer BRT's stands; recognition reads BRT alone. DPD's
 map leaves its hand-over, depot intake and transit scans unstaged, because an
 origin depot can follow an import's customs. Before BRT's hand-over they are the
-acceptance and transit, unless DPD staged the parcel past acceptance first.
+acceptance and transit, unless DPD staged the parcel past acceptance first. The status map
+answers a partner's scan, which has a code, by that partner's map. It leaves the transit
+scans DPD had before it took the parcel in out on purpose, and has no answer for the
+hand-over and intake, whose stage the scans before them decide.
 
 BRT also sends parcels abroad through the DPD network. For a shipment of one
 parcel that started at one of BRT's depots and names no delivering depot in

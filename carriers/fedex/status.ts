@@ -22,6 +22,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /** Package and scan codes, uppercased, to the product stage. */
 export const FEDEX_CODE_STAGE: Readonly<Record<string, Stage>> = {
@@ -135,3 +136,9 @@ export function fedexStatus(code: string, text: string, hasEvents = false): Carr
   // Unrecognized wording only means "moving" once the shipment has scans.
   return hasEvents ? 'in_transit' : 'unknown';
 }
+
+/**
+ * What the map says about one scan. FedEx's scans keep no code, so their wording stages them, as
+ * it stages a scan whose code the map does not know.
+ */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => fedexStage(wording) ?? undefined, gaps: [] };

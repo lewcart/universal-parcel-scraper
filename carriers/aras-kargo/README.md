@@ -19,9 +19,10 @@ No key, account or CAPTCHA is needed.
 
 ## Numbers
 
-Every number the tracker knew has thirteen digits; a fourteen-digit number from a complaint came
-back not found. The adapter refuses any other shape without a request. Thirteen digits are shared
-by several posts and couriers, so no rule claims them and the user picks Aras Kargo.
+Every number the tracker knew has thirteen digits starting with 60 or 65; a fourteen-digit number
+from a complaint came back not found. The adapter refuses any other shape without a request.
+Thirteen digits are shared by several posts and couriers, so a low rule offers Aras Kargo for
+those prefixes and recognition asks it first when the number is looked up from Turkey.
 
 ## Notes
 
@@ -44,8 +45,7 @@ by several posts and couriers, so no rule claims them and the user picks Aras Ka
   latest scan.
 - Names, the signatory, the delivery code, the identity check, invoice and payment details,
   every free-text note and the SMS tab are never read.
-- Recognition runs the whole lookup. No detection rule offers Aras Kargo, so recognition is not
-  asked until one does.
+- Recognition runs the whole lookup.
 
 ## Links
 

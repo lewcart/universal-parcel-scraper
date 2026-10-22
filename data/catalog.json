@@ -6951,7 +6951,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^6[05]\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "arrow-xl": {
     "displayName": "ArrowXL",

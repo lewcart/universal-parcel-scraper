@@ -20,7 +20,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "Publicly reported domestic parcel. Korea Post's tracker returns its history. Thirteen digits stay a suggestion shared with other carriers."
@@ -118,7 +119,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "A Korea Post domestic tracking link archived by the Wayback Machine. Korea Post's tracker returns its parcel history from label printing to delivery."

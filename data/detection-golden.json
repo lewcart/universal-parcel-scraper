@@ -45272,14 +45272,16 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
     ],
     "asked": [
       "imile",
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -45593,11 +45595,13 @@
       "correos-chile",
       "yunda",
       "korea-post",
+      "aras-kargo",
       "fedex-pl"
     ],
     "asked": [
       "fedex-pl",
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -45639,11 +45643,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45655,14 +45661,16 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
     ],
     "asked": [
       "imile",
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -45770,6 +45778,7 @@
       "correos-chile",
       "yunda",
       "korea-post",
+      "aras-kargo",
       "fedex-pl"
     ],
     "preferred": [
@@ -45778,7 +45787,8 @@
     "asked": [
       "imile",
       "fedex-pl",
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -45791,7 +45801,8 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
@@ -45799,7 +45810,8 @@
     "asked": [
       "imile",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45811,11 +45823,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45827,11 +45841,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45843,11 +45859,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45859,11 +45877,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45875,11 +45895,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45890,10 +45912,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -45905,11 +45929,13 @@
       "ukrposhta",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -45920,10 +45946,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -45936,12 +45964,14 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "aras-kargo",
       "fedex-pl"
     ],
     "asked": [
       "fedex-pl",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45953,11 +45983,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -45968,10 +46000,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -46011,7 +46045,8 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
@@ -46019,7 +46054,8 @@
     "asked": [
       "imile",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46032,7 +46068,8 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
@@ -46040,7 +46077,8 @@
     "asked": [
       "imile",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46054,6 +46092,7 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "aras-kargo",
       "fedex-pl"
     ],
     "preferred": [
@@ -46063,7 +46102,8 @@
       "imile",
       "fedex-pl",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46081,11 +46121,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46098,7 +46140,8 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
@@ -46106,7 +46149,8 @@
     "asked": [
       "imile",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46118,11 +46162,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46133,10 +46179,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -46147,10 +46195,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -46188,14 +46238,16 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
     ],
     "asked": [
       "imile",
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -46207,14 +46259,16 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
     ],
     "asked": [
       "imile",
-      "la-poste"
+      "la-poste",
+      "aras-kargo"
     ]
   },
   {
@@ -46227,7 +46281,8 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "preferred": [
       "imile"
@@ -46235,7 +46290,8 @@
     "asked": [
       "imile",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46268,11 +46324,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46284,11 +46342,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -46300,11 +46360,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -48316,11 +48378,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -48333,12 +48397,14 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "ukrposhta",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -48350,11 +48416,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {
@@ -48366,11 +48434,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "aras-kargo"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "aras-kargo"
     ]
   },
   {

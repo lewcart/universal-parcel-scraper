@@ -1467,6 +1467,19 @@
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by six carriers; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{13} starting with 60 or 65",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "ukrposhta",
+      "yunda",
+      "aras-kargo"
+    ],
+    "reason": "Aras Kargo's numbers are thirteen digits starting with 60 or 65, so its low rule joins the carriers sharing this shape; recognition asks it first from Turkey and settles the carrier."
+  },
+  {
     "shape": "9{13} starting with 2 to 6, outside 250, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
@@ -1476,6 +1489,18 @@
       "yunda"
     ],
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by five carriers; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "9{13} starting with 60 or 65, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "korea-post",
+      "la-poste",
+      "ukrposhta",
+      "yunda",
+      "aras-kargo"
+    ],
+    "reason": "Aras Kargo's numbers are thirteen digits starting with 60 or 65, so its low rule joins the carriers sharing this shape; recognition asks it first from Turkey and settles the carrier."
   },
   {
     "shape": "9{20} SSCC under Poczta Polska's GS1 prefix 5900773",
@@ -2604,6 +2629,18 @@
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by five carriers; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{13} starting with 60 or 65 that fails the Ukrposhta check",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "aras-kargo"
+    ],
+    "reason": "Aras Kargo's numbers are thirteen digits starting with 60 or 65, so its low rule joins the carriers sharing this shape; recognition asks it first from Turkey and settles the carrier."
+  },
+  {
     "shape": "9{13} starting with 2 to 6, outside 250, that fails the Ukrposhta check, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
@@ -2614,27 +2651,40 @@
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by four carriers; the number stays a low-confidence suggestion."
   },
   {
-    "shape": "6, a month, a day and a year from 24, then six digits, that fail the Ukrposhta check",
+    "shape": "9{13} starting with 60 or 65 that fails the Ukrposhta check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "aras-kargo"
+    ],
+    "reason": "Aras Kargo's numbers are thirteen digits starting with 60 or 65, so its low rule joins the carriers sharing this shape; recognition asks it first from Turkey and settles the carrier."
+  },
+  {
+    "shape": "6, a month from January to September, a day and a year from 24, then six digits, that fail the Ukrposhta check",
     "carriers": [
       "correos-chile",
       "delhivery",
       "imile",
       "korea-post",
       "la-poste",
-      "yunda"
+      "yunda",
+      "aras-kargo"
     ],
-    "reason": "iMile's dated waybills sit inside the thirteen-digit space Korea Post's domestic parcels and four other carriers' counters share; the date does not establish ownership, so the number stays a low-confidence suggestion."
+    "reason": "iMile's dated waybills sit inside the thirteen-digit space Korea Post's domestic parcels and four other carriers' counters share; the date does not establish ownership, so the number stays a low-confidence suggestion. Aras Kargo's thirteen-digit numbers start with 60 or 65, so its low rule joins them there; recognition asks it first from Turkey."
   },
   {
-    "shape": "6, a month, a day and a year from 24, then six digits, that fail the Ukrposhta check, ending 7, 8 or 9",
+    "shape": "6, a month from January to September, a day and a year from 24, then six digits, that fail the Ukrposhta check, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
       "imile",
       "korea-post",
       "la-poste",
-      "yunda"
+      "yunda",
+      "aras-kargo"
     ],
-    "reason": "iMile's dated waybills sit inside the thirteen-digit space Korea Post's domestic parcels and three other carriers' counters share; the date does not establish ownership, so the number stays a low-confidence suggestion."
+    "reason": "iMile's dated waybills sit inside the thirteen-digit space Korea Post's domestic parcels and three other carriers' counters share; the date does not establish ownership, so the number stays a low-confidence suggestion. Aras Kargo's thirteen-digit numbers start with 60 or 65, so its low rule joins them there; recognition asks it first from Turkey."
   },
   {
     "shape": "Twelve digits that pass the GLS check",
@@ -4582,6 +4632,19 @@
     "reason": "Without hyphens an Ozon posting number is thirteen digits, a length these carriers share; the hyphenated print selects Ozon's high-confidence rule."
   },
   {
+    "shape": "eight digits, four digits and one digit joined by hyphens, starting with 60 or 65",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "ozon-logistics",
+      "yunda",
+      "aras-kargo"
+    ],
+    "reason": "Aras Kargo's numbers are thirteen digits starting with 60 or 65, so its low rule joins the carriers sharing this shape; recognition asks it first from Turkey and settles the carrier."
+  },
+  {
     "shape": "eight digits starting 0, four digits and one digit joined by hyphens",
     "carriers": [
       "correos-chile",
@@ -5278,6 +5341,19 @@
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
   },
   {
+    "shape": "^6[05]\\d{11}$ passing FedEx Poland's GS1 check",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "fedex-pl",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "aras-kargo"
+    ],
+    "reason": "Aras Kargo's numbers are thirteen digits starting with 60 or 65, so its low rule joins the carriers sharing this shape; recognition asks it first from Turkey and settles the carrier."
+  },
+  {
     "shape": "^\\d{13}$, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
@@ -5287,6 +5363,18 @@
       "yunda"
     ],
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
+  },
+  {
+    "shape": "^6[05]\\d{11}$ passing FedEx Poland's GS1 check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "fedex-pl",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "aras-kargo"
+    ],
+    "reason": "Aras Kargo's numbers are thirteen digits starting with 60 or 65, so its low rule joins the carriers sharing this shape; recognition asks it first from Turkey and settles the carrier."
   },
   {
     "shape": "^\\d{13}$",
@@ -5302,16 +5390,31 @@
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
   },
   {
-    "shape": "^\\d{13}$, ending 7, 8 or 9",
+    "shape": "^6[05]\\d{11}$ dated by iMile and passing FedEx Poland's GS1 check",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "fedex-pl",
+      "imile",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "aras-kargo"
+    ],
+    "reason": "Aras Kargo's numbers are thirteen digits starting with 60 or 65, so its low rule joins the carriers sharing this shape; recognition asks it first from Turkey and settles the carrier."
+  },
+  {
+    "shape": "^6[05]\\d{11}$ dated by iMile and passing FedEx Poland's GS1 check, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
       "fedex-pl",
       "imile",
       "korea-post",
       "la-poste",
-      "yunda"
+      "yunda",
+      "aras-kargo"
     ],
-    "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
+    "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier. Aras Kargo's thirteen-digit numbers start with 60 or 65, so its low rule joins them there; recognition asks it first from Turkey."
   },
   {
     "shape": "^\\d{13}$",

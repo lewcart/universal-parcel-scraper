@@ -55,7 +55,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup on ACI's e-commerce tracker shows this Korea Post registered number with ACI's pickup in New York, the flight to Incheon and customs clearance in Korea."
@@ -81,7 +82,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -107,7 +109,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -132,7 +135,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -158,7 +162,8 @@
           "ukrposhta",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -183,7 +188,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -210,6 +216,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "aras-kargo",
           "fedex-pl"
         ]
       },

@@ -218,7 +218,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "GSI Express's own tracker shows this Korea Post registered number as the waybill of a GSI parcel in an archived lookup."
@@ -244,7 +245,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup on GSI Express's own tracker shows this Korea Post registered number with the GSI receipt, air waybill and customs clearance."
@@ -270,7 +272,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on GSI Express's own tracker, which returns it as the waybill of a GSI parcel."
@@ -296,7 +299,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "aras-kargo"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on GSI Express's own tracker, which returns it as the waybill of a GSI parcel."

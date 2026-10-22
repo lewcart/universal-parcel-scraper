@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../app.js';
-import { parseTrackingInput } from '../../core/detection/index.js';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { ArasKargoTracker, adapter, arasTrackingUrl } from './adapter.js';
@@ -79,6 +80,17 @@ describe('Aras Kargo direct tracking', () => {
       expect(() => normalizeArasNumber(number), number).toThrow(InvalidInputError);
     }
     expect(arasTrackingUrl(NUMBER)).toBe(`${ORIGIN}/mainpage.aspx?code=${NUMBER}`);
+  });
+
+  it('is offered for thirteen digits starting with 60 or 65, and asked first from Turkey', () => {
+    // Synthetic numbers of the prefixes every number the tracker knew carries.
+    for (const number of ['6000000000001', '6500000000001']) {
+      expect(detectCarrierMatch(number).candidates, number).toContain('aras-kargo');
+      expect(recognitionAskedCarriers(number, { countryHint: 'TR' })[0], number).toBe('aras-kargo');
+    }
+    for (const number of ['6100000000001', '9900000000001', '65000000000012']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('aras-kargo');
+    }
   });
 
   it('reports a parcel absent only on the notice for that number', () => {

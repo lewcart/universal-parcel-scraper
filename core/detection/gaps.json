@@ -294,9 +294,9 @@
   },
   {
     "carrier": "aras-kargo",
-    "pattern": "^6[05]\\d{11,12}$",
+    "pattern": "^6[05]\\d{12}$",
     "kind": "by_design",
-    "reason": "Aras Kargo numbers are plain digits; thirteen digits are shared by several posts and couriers."
+    "reason": "Aras Kargo's tracker knows thirteen digits only; a fourteen-digit number from a complaint came back not found."
   },
   {
     "carrier": "arrow-xl",

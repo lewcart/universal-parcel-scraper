@@ -6953,7 +6953,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^6[05]\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "arrow-xl": {
     "displayName": "ArrowXL",
@@ -32914,7 +32919,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "apple-express": ["apple-express-1"],
   "aramex-au": ["aramex-au-1"],
   "aramex-nz": ["aramex-nz-1","aramex-nz-2"],
-  "aras-kargo": [],
+  "aras-kargo": ["aras-kargo-1"],
   "arrow-xl": [],
   "asyad-express": [],
   "atlantic-courier": [],

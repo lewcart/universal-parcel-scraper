@@ -21,6 +21,8 @@ export function ciblexTrackingUrl(raw: string): string {
 function scanTime(date: string, clock: string): { time?: string; local_time?: string; provider_time_text?: string } {
   const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(date);
   const day = match && calendarDay(Number(match[3]), Number(match[2]), Number(match[1]));
+  // A scan dated by its day alone keeps that day.
+  if (day && !clock) return { local_time: day };
   if (day && /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(clock)) {
     const local = `${day}T${clock.length === 5 ? `${clock}:00` : clock}`;
     const parsed = zonedTime(`${date} ${clock}`, clock.length === 8 ? 'dd/MM/yyyy HH:mm:ss' : 'dd/MM/yyyy HH:mm', 'Europe/Paris');

@@ -39,7 +39,8 @@ The summary status sets the current stage once the parcel is delivered or return
 return that has not reached its sender; the newest movement does otherwise. The English
 tracker keeps some summary statuses in Turkish.
 
-Clocks are Turkish wall time without an offset, so they stay local. The estimated delivery day
+Clocks are Turkish wall time without an offset, so they stay local, and a movement dated by its
+day alone keeps that day. The estimated delivery day
 is kept while the parcel moves, unless a movement is newer. A parcel delivered to its branch
 for collection names that branch as its pickup point.
 

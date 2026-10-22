@@ -12,7 +12,7 @@ describe('Yurtiçi Kargo live retrieval', () => {
     expect(answer).toMatchObject({ carrier: 'yurtici-kargo', source: 'yurtici-kargo', attempts: [{ source: 'yurtici-kargo', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
     expect(answer.result.events.every(event => event.time === undefined
-      && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(event.local_time)))).toBe(true);
+      && /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2})?$/.test(String(event.local_time)))).toBe(true);
     await expect(direct().recognize!(number)).resolves.toMatchObject({ known: true });
   });
 

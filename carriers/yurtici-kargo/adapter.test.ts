@@ -135,6 +135,11 @@ describe('Yurtiçi Kargo HTTP adapter', () => {
       ['2026-03-03T08:14:00', 'in_transit'], ['2026-03-02T10:30:00', 'accepted'],
     ]);
     expect(read.events![0]!.description).toBe('Teslim edilemedi. (Alıcıya adreste ulaşılamadığından, adrese bilgi notu bırakılmıştır.)');
+    // A movement dated by its day alone keeps that day, which becomes the last update when it is the newest.
+    const dayOnly = parseYurtici(moving, [...turkish.slice(0, 3), { ...turkish[3]!, EventDate: '3 Mart 2026 Salı' }], RETURNING, search(RETURNING));
+    expect(dayOnly.events![0]).toMatchObject({ local_time: '2026-03-03', stage: 'failed_attempt' });
+    expect(dayOnly.events![0]!.provider_time_text).toBeUndefined();
+    expect(dayOnly.last_update_local).toBe('2026-03-03');
     // A parcel whose movements are not listed yet keeps its shipment date as a summary.
     expect(parseYurtici(moving, [], RETURNING, search(RETURNING))).toMatchObject({ current_stage: 'accepted', summary_only: true,
       last_update_local: '2026-03-02T10:30:00', expected_delivery: '2026-03-03' });

@@ -308,7 +308,8 @@ type ScanClock = Pick<CarrierEvent, 'time'> & { local_time?: string; provider_ti
  * A scan's clock. UPS sends the same scan twice: a UTC pair (`gmtDate` /
  * `gmtTime`) and a local pair with a `gmtOffset`. Either becomes an
  * offset-carrying ISO string, so no zone is ever guessed. A local pair without
- * an offset stays a `local_time`, other text stays as UPS wrote it, and a scan
+ * an offset stays a `local_time`, a scan UPS dates by its day alone, as it does
+ * some drop-offs, keeps that day, other text stays as UPS wrote it, and a scan
  * with no clock at all, like some label scans, gets none.
  */
 function activityClock(activity: JsonObject): ScanClock {
@@ -328,6 +329,8 @@ function activityClock(activity: JsonObject): ScanClock {
     const offset = cleanScalar(activity.gmtOffset);
     return /^[+-]\d{2}:\d{2}$/.test(offset) ? { time: `${local}${offset}` } : { local_time: local };
   }
+  const day = dateMatch && !localTime ? calendarDay(Number(dateMatch[3]), Number(dateMatch[1]), Number(dateMatch[2])) : null;
+  if (day) return { local_time: day };
   const raw = clean(`${localDate} ${localTime}`);
   return raw ? { provider_time_text: raw } : {};
 }

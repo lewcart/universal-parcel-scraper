@@ -95,7 +95,8 @@ rendered status, after that wait.
   code; "Label Created", "On the Way", "Out for Delivery" and "Delivered" get their stage from
   the map, other banners none. Coded scans' wording is never read without its code.
 - Scan times are built from the UTC pair UPS sends, or the local pair plus its explicit
-  offset. A local pair without an offset stays `local_time` and other text
+  offset. A local pair without an offset stays `local_time`, a scan dated by its day alone,
+  as some drop-offs are, keeps that day as `local_time`, and other text stays
   `provider_time_text`; no zone is guessed. Some label scans come with no clock and get none.
 - The scheduled delivery date has no year. The adapter picks the year that puts it within
   the last week or in the future.

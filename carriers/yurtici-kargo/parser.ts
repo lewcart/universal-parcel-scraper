@@ -162,15 +162,16 @@ function movementsOf(payload: unknown): Scan[] {
     const description = reason && reason !== wording ? `${wording} (${reason})` : wording;
     const written = writtenDate(row.EventDate);
     const text = clean(row.EventDate, 64);
-    if (!written?.clock && !text) throw new SchemaError(PROVIDER, 'Yurtiçi Kargo returned a movement without a date');
+    if (!written && !text) throw new SchemaError(PROVIDER, 'Yurtiçi Kargo returned a movement without a date');
     const location = place(row.Title);
-    const clock = written?.clock ? { local_time: written.clock } : { provider_time_text: text };
-    const event: CarrierEvent = { ...clock, description, ...(location ? { location } : {}),
+    // A movement dated by its day alone keeps that day.
+    const local = written?.clock ?? written?.day ?? null;
+    const event: CarrierEvent = { ...(local ? { local_time: local } : { provider_time_text: text }), description, ...(location ? { location } : {}),
       ...(stage ? { stage, stage_source: 'carrier_map' } : {}) };
     const key = JSON.stringify(event);
     if (seen.has(key)) continue;
     seen.add(key);
-    scans.push({ event, local: written?.clock ?? null });
+    scans.push({ event, local });
   }
   return scans.reverse();
 }

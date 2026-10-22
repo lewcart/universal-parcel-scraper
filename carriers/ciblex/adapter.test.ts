@@ -143,7 +143,7 @@ describe('Ciblex response normalization', () => {
   });
 
   it('retains unresolved newest clocks and unknown statuses without borrowing older delivery', () => {
-    for (const [day, time] of [['31/02/2026', '09:00'], ['23/01/2026', '24:00'], ['23/01/2026', '09:99'], ['23/01/2026', ''], ['', '']] as const) {
+    for (const [day, time] of [['31/02/2026', '09:00'], ['23/01/2026', '24:00'], ['23/01/2026', '09:99'], ['31/02/2026', ''], ['', '']] as const) {
       const rows: Row[] = [[day, time, 'Statut provider nouveau', 'PRIVATE ADDRESS'], ['22/01/2026', '09:00', 'Colis Livré', '']];
       const result = parseCiblexTrackingHtml(trackingPage({ rows }), TEST_TRACKING_NUMBER);
       expect(result.status).toBe('unknown'); expect(result.current_stage).toBeUndefined(); expect(result.last_update).toBeNull();
@@ -151,6 +151,10 @@ describe('Ciblex response normalization', () => {
       expect(result.events?.[0]!.stage).toBeUndefined(); expect(result.events?.[1]!.stage).toBe('delivered');
       expect(JSON.stringify(result)).not.toContain('PRIVATE ADDRESS');
     }
+    // A scan dated by its day alone keeps that day, and still borrows no older delivery.
+    const dayOnly = parseCiblexTrackingHtml(trackingPage({ rows: [['23/01/2026', '', 'Statut provider nouveau', ''], ['22/01/2026', '09:00', 'Colis Livré', '']] }), TEST_TRACKING_NUMBER);
+    expect(dayOnly).toMatchObject({ status: 'unknown', last_update: null, last_update_local: '2026-01-23' });
+    expect(dayOnly.events?.[0]).toMatchObject({ local_time: '2026-01-23' }); expect(dayOnly.events?.[0]!.provider_time_text).toBeUndefined();
     const knownTime: Row[] = [['23/01/2026', '09:00', 'Statut provider nouveau', ''], ['22/01/2026', '09:00', 'Colis Livré', '']];
     expect(parseCiblexTrackingHtml(trackingPage({ rows: knownTime }), TEST_TRACKING_NUMBER).status).toBe('unknown');
   });

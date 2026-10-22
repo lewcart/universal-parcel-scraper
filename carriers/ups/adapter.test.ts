@@ -303,16 +303,18 @@ describe('UPS structured response', () => {
       { actCode: 'AR', activityScan: 'Arrived at Facility', date: '08/04/2026', time: '12:05 P.M.', gmtOffset: '+02:00' },
       { actCode: 'DP', activityScan: 'Departed from Facility', date: '08/04/2026', time: '12:41 A.M.' },
       { actCode: 'XD', activityScan: 'Drop-Off', date: '08/03/2026' },
+      { actCode: 'XD', activityScan: 'Drop-Off', date: '02/30/2026' },
       { actCode: 'MP', activityScan: 'Shipper created a label, UPS has not received the package yet. ' },
     ]), TRACKING_NUMBER, TODAY);
     expect(result.events?.map(({ time, local_time, provider_time_text }) => ({ time, local_time, provider_time_text }))).toEqual([
       { time: '2026-08-04T12:05:00+02:00', local_time: undefined, provider_time_text: undefined },
       { time: undefined, local_time: '2026-08-04T00:41:00', provider_time_text: undefined },
-      { time: undefined, local_time: undefined, provider_time_text: '08/03/2026' },
+      { time: undefined, local_time: '2026-08-03', provider_time_text: undefined },
+      { time: undefined, local_time: undefined, provider_time_text: '02/30/2026' },
       { time: undefined, local_time: undefined, provider_time_text: undefined },
     ]);
     expect(result.events?.every((event) => !('time' in event) || event.time)).toBe(true);
-    expect(resolveResult(result).events.map((event) => event.instant)).toEqual(['2026-08-04T12:05:00+02:00', null, null, null]);
+    expect(resolveResult(result).events.map((event) => event.instant)).toEqual(['2026-08-04T12:05:00+02:00', null, null, null, null]);
 
     const labelOnly = parseUPSTrackingResponse(withScans([
       { actCode: 'MP', activityScan: 'Shipper created a label, UPS has not received the package yet. ' },

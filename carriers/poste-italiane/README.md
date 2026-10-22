@@ -55,6 +55,9 @@ Italiane for a number issued abroad.
 - Poste's own scans are instants. Its catalog clock is Rome's for the providers: Ship24 relays
   SDA's distribution-center scans as wall clocks without an offset, and they read on that clock
   as the same moments Poste's own copies give.
+- [SDA's site](https://www.sda.it/) says its courier services moved to Poste Italiane, so a
+  link on sda.it names Poste, and its old shipment links carry the waybill as
+  `tracing.letteraVettura`. DHL names SDA as its partner in Italy.
 - Partners abroad hand Poste Italiane parcels under a DHL Parcel Connect plate, `JJD` and
   twenty-one digits, and link to Poste's tracker with it, as PPL does. The adapter takes those
   plates for that hand-off. DHL issues them, so no detection rule names Poste for them.

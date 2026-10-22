@@ -254,6 +254,22 @@ describe('delivery partners that look up only their own references', () => {
     for (const number of [plate, '990001A000001', 'LF123456785DE']) expect(await outcome(number)).not.toBe('invalid_input');
     expect(fetcher).toHaveBeenCalled();
   });
+
+  it('asks DHL Express only about its waybills and pieces, never about DHL Paket’s postal number', async () => {
+    expect(deliveryHandoff('dhl', 'CX123456785DE', { delivery_carrier: 'dhl-express' })).toBeNull();
+    expect(deliveryHandoff('dhl', 'CX123456785DE', { delivery_carrier: 'dhl-express', delivery_tracking_number: '1234567891' }))
+      .toEqual({ carrier: 'dhl-express', number: '1234567891', basis: 'partner' });
+    expect(hasDirectHandoffAdapter('dhl-express', 'JD014600000000000001')).toBe(true);
+    for (const number of ['1234567890', 'CX123456785DE']) expect(hasDirectHandoffAdapter('dhl-express', number)).toBe(false);
+    // The check mirrors the adapter, which refuses any other reference before a request.
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('offline'));
+    vi.stubGlobal('fetch', fetcher);
+    const registry = new AdapterRegistry(REGISTRY, { fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    const error = await (async () => registry.for('dhl-express')!.track({ number: 'CX123456785DE', postcode: null }, { budgetMs: 2_000 }))()
+      .catch((caught: unknown) => caught);
+    expect(carrierErrorKind(error)).toBe('invalid_input');
+    expect(fetcher).not.toHaveBeenCalled();
+  });
 });
 
 describe('a partner number another tracker also knows', () => {

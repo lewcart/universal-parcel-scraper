@@ -59,6 +59,21 @@
         "mydhl.express.dhl"
       ],
       "fragment": "^/results\\?id=(\\d{10})(?:&|$)"
+    },
+    {
+      "domains": [
+        "logistics.dhl"
+      ],
+      "pathPattern": "/tracking-express\\.html$",
+      "params": [
+        "tracking-id"
+      ],
+      "ownNumbersOnly": true
+    },
+    {
+      "domains": [
+        "dhlexpress.pl"
+      ]
     }
   ],
   "detection": [

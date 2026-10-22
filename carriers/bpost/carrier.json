@@ -67,7 +67,25 @@
       "offset_timestamps"
     ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "bpost.be"
+      ],
+      "params": [
+        "itemCodes"
+      ]
+    },
+    {
+      "domains": [
+        "track.bpost.cloud"
+      ],
+      "pathPattern": "^/etr/light/performSearch\\.do$",
+      "params": [
+        "itemCodes"
+      ]
+    }
+  ],
   "detection": [
     {
       "id": "bpost-numeric-prefix",

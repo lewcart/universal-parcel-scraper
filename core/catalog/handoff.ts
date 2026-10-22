@@ -4,7 +4,7 @@ import { activeRequirements, AUTOMATIC_CARRIER_IDS, carrierAdapter, requiredRequ
 import { CARRIER_DEFINITIONS } from './definitions.js';
 import { carrierIdsFromPartnerLinks, nationalPostCandidate } from './hints.js';
 import { followsPartnerNumbers } from './partners.js';
-import { detectCarrierMatch, isValidS10TrackingNumber, supportsSwissPostHandoff } from '../detection/index.js';
+import { detectCarrierMatch, isValidDhlExpressWaybill, isValidS10TrackingNumber, supportsSwissPostHandoff } from '../detection/index.js';
 import { isAnotherPostItemAtChronopost } from '../detection/chronopost.js';
 import { isPosteItalianeLookup } from '../detection/posteItaliane.js';
 import { countryCode } from '../time/index.js';
@@ -19,6 +19,17 @@ export interface DeliveryHandoff {
 // about a partner's number only fails, however often the hand-off is retried.
 const REFERENCES_LOOKED_UP: Readonly<Record<string, (number: string) => boolean>> = {
   'poste-italiane': isPosteItalianeLookup,
+  // DHL Express tracks its waybills and the piece identifiers on its labels.
+  'dhl-express': (number) => isValidDhlExpressWaybill(number) || /^J?JD01\d{16}$/.test(number),
+};
+
+// DHL Paket's international parcels, its `C` postal numbers, go to the partner
+// DHL names for their destination, not always that country's post: DHL Express
+// in Poland and Switzerland, PostNord in Finland, Itella in Lithuania and
+// Latvia, Meest in Ukraine. Null where the partner does not look up DHL's
+// number; DHL's arrival scan then links the one that delivers.
+const DHL_PARCEL_PARTNERS: Readonly<Record<string, CarrierId | null>> = {
+  CH: null, FI: 'postnord', LT: null, LV: null, PL: null, UA: 'meest',
 };
 
 export function hasDirectHandoffAdapter(carrier: string, number: string): boolean {
@@ -61,7 +72,9 @@ export function deliveryHandoff(carrier: string, number: string, result: Carrier
     // country it is more likely the sender.
     const hint = countryHint?.trim().toUpperCase();
     const looked = destination === undefined && hint && /^[A-Z]{2}$/.test(hint) && hint !== reference.slice(-2) ? hint : undefined;
-    target = nationalPostCandidate(destination ?? looked);
+    const country = countryCode(destination ?? looked);
+    target = carrier === 'dhl' && /^C[A-Z]\d{9}DE$/.test(reference) && country && Object.hasOwn(DHL_PARCEL_PARTNERS, country)
+      ? DHL_PARCEL_PARTNERS[country] ?? undefined : nationalPostCandidate(destination ?? looked);
     if (target === 'japan-post' && reference.startsWith('U')) target = undefined;
     if (target) basis = 'destination';
   }

@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import type { CarrierResult } from '../../core/result/index.js';
+import { countryCode } from '../../core/time/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import { DHLSessionError, DHLTracker, dhlTrackingUrl, normalizeDHLTrackingNumber, parseDHLTrackingResponse } from './adapter.js';
 
@@ -46,6 +47,14 @@ describe('DHL public tracking normalization', () => {
     ['https://service.post.ch/ekp-web/ui/entry/search/' + NUMBER, 'swiss-post'],
     ['https://www.posti.fi/en/tracking', 'posti'],
     ['https://tools.usps.com/go/TrackConfirmAction', 'usps'],
+    ['https://www.logistics.dhl/it-it/home/tracking/tracking-express.html?submit=1&tracking-id=' + NUMBER, 'dhl-express'],
+    ['https://www.dhlexpress.pl', 'dhl-express'],
+    ['http://www.bpost.be', 'bpost'],
+    ['https://track.bpost.cloud/etr/light/performSearch.do?searchByItemCode=true&itemCodes=' + NUMBER, 'bpost'],
+    ['https://www.sda.it', 'poste-italiane'],
+    ['https://www.logistics.dhl/it-it/home.html', undefined],
+    // Landmark Global's portal on bpost's tracker serves every postal partner.
+    ['https://track.bpost.cloud/btr/web/#/lmg/search?lang=en&itemCodes=' + NUMBER, undefined],
     ['https://www.post.ch.evil.example', undefined],
     ['https://www.post.ch@evil.example', undefined],
     ['https://example.test/?next=https://www.post.ch', undefined],
@@ -136,6 +145,36 @@ describe('DHL public tracking normalization', () => {
   ])('proposes an S10 item bound for %s to that country’s post only when it has one', (zielland, expected) => {
     const result = parseDHLTrackingResponse(shipment({ zielland }), NUMBER);
     expect(deliveryHandoff('dhl', NUMBER, result)).toEqual(expected);
+  });
+
+  // DHL Paket's international parcels go to the partner DHL names for their
+  // destination; Deutsche Post's letter-post items to that country's post.
+  const PARCEL = 'CX123456785DE';
+  function parcel(zielland: string, arrival?: string) {
+    const payload = shipment({ zielland });
+    payload.sendungen[0]!.id = PARCEL;
+    if (arrival) payload.sendungen[0]!.sendungsdetails.sendungsverlauf.events.push({ datum: '2026-08-11T10:00:00+02:00',
+      status: `The shipment has arrived in the destination country/destination area. (Homepage / online shipment tracking: ${arrival})` });
+    return parseDHLTrackingResponse(payload, PARCEL);
+  }
+  it.each([
+    ['Italy', 'poste-italiane'], ['Finland', 'postnord'], ['Ukraine', 'meest'],
+    ['Poland', null], ['Switzerland', null], ['Lithuania', null], ['Latvia', null],
+  ])('proposes a parcel bound for %s to the partner DHL names there, when it looks up DHL’s number', (zielland, partner) => {
+    expect(deliveryHandoff('dhl', PARCEL, parcel(zielland))).toEqual(partner && { carrier: partner, number: PARCEL, basis: 'destination' });
+    expect(deliveryHandoff('dhl', PARCEL, { status: 'in_transit' }, countryCode(zielland))?.carrier ?? null).toBe(partner);
+  });
+
+  it.each([['Poland', 'poczta-polska'], ['Switzerland', 'swiss-post']])('proposes a letter-post item bound for %s to its post', (zielland, post) => {
+    expect(deliveryHandoff('dhl', NUMBER, parseDHLTrackingResponse(shipment({ zielland }), NUMBER))?.carrier).toBe(post);
+  });
+
+  it('follows the partner the arrival scan links, and names DHL Express without asking it about DHL’s number', () => {
+    expect(deliveryHandoff('dhl', PARCEL, parcel('Switzerland', 'http://www.post.ch')))
+      .toEqual({ carrier: 'swiss-post', number: PARCEL, basis: 'partner' });
+    const express = parcel('Italy', `https://www.logistics.dhl/it-it/home/tracking/tracking-express.html?submit=1&tracking-id=${PARCEL}`);
+    expect(express.delivery_carrier).toBe('dhl-express');
+    expect(deliveryHandoff('dhl', PARCEL, express)).toBeNull();
   });
 
   it('leaves the destination out when DHL names none', () => {

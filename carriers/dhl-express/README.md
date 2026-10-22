@@ -17,6 +17,14 @@ them by inference, as DHL Paket's plates use other prefixes. Typed with its
 numbers stay DHL Paket's licence plates, and the adapter reads any `(J)JD01`
 piece when DHL Express is named.
 
+Links to MyDHL+, to the Express tracking page on logistics.dhl and to
+dhlexpress.pl, DHL Express Poland's site, name DHL Express. The logistics.dhl
+page also takes DHL Paket's numbers: DHL's arrival scan links it with the
+parcel's postal number when DHL Express delivers a DHL Paket parcel, as in
+Italy, so the link names DHL Express only for an Express waybill or piece.
+The adapter refuses other numbers without a request, so a hand-off never asks
+it about another carrier's number.
+
 ## Retrieval
 
 `direct` asks the mobile guest API for one waybill. Before it reads an empty

@@ -74,6 +74,14 @@
         "poste.it"
       ],
       "fragment": "risultati-spedizioni/([^/?#]+)"
+    },
+    {
+      "domains": [
+        "sda.it"
+      ],
+      "params": [
+        "tracing.letteraVettura"
+      ]
     }
   ],
   "detection": [

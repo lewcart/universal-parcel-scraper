@@ -93,7 +93,17 @@ once.
 - A single unambiguous link to a known carrier portal in an arrival event (such
   as Swiss Post) becomes `delivery_carrier`; the host confirms the shipment
   through that carrier before switching. Lookalike hosts and userinfo URLs are
-  ignored.
+  ignored. DHL Express's tracking page names DHL Express, which tracks its own
+  waybills only, so it is not asked about DHL's number; DHL's tracker keeps the
+  Express scans to the delivery.
+- Without such a link, a `C` postal number, DHL Paket's international parcel,
+  is proposed to the partner DHL's
+  [country pages](https://www.dhl.de/de/privatkunden/pakete-versenden/weltweit-versenden/land/polen.html)
+  name, which is not always the destination's post: PostNord in Finland and
+  Meest in Ukraine. DHL Express in Poland and Switzerland and Itella in
+  Lithuania and Latvia do not look up DHL's number, so no one is asked there
+  until the arrival scan links the partner. Deutsche Post's letter-post items
+  go to the destination's post.
 - `zielland`, the destination country DHL names in English, becomes
   `destination_country`, or `destination_country_name` when the name maps to no
   ISO code. Nothing else of the delivery address is read.

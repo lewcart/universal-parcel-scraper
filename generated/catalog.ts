@@ -2324,7 +2324,25 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://track.bpost.cloud/",
     "trackingUrlTemplate": "https://track.bpost.cloud/",
     "trackingSearchUrl": "https://track.bpost.cloud/",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "bpost.be"
+        ],
+        "params": [
+          "itemCodes"
+        ]
+      },
+      {
+        "domains": [
+          "track.bpost.cloud"
+        ],
+        "pathPattern": "^/etr/light/performSearch\\.do$",
+        "params": [
+          "itemCodes"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^(?:3232\\d{14}|(?:3232|3299)\\d{20})$",
@@ -2784,6 +2802,14 @@ export const CARRIER_CATALOG = {
           "poste.it"
         ],
         "fragment": "risultati-spedizioni/([^/?#]+)"
+      },
+      {
+        "domains": [
+          "sda.it"
+        ],
+        "params": [
+          "tracing.letteraVettura"
+        ]
       }
     ],
     "detectionRules": [
@@ -11040,6 +11066,21 @@ export const CARRIER_CATALOG = {
           "mydhl.express.dhl"
         ],
         "fragment": "^/results\\?id=(\\d{10})(?:&|$)"
+      },
+      {
+        "domains": [
+          "logistics.dhl"
+        ],
+        "pathPattern": "/tracking-express\\.html$",
+        "params": [
+          "tracking-id"
+        ],
+        "ownNumbersOnly": true
+      },
+      {
+        "domains": [
+          "dhlexpress.pl"
+        ]
       }
     ],
     "detectionRules": [

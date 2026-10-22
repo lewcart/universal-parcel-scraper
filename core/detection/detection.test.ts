@@ -460,6 +460,27 @@ describe('carrier links limited to some pages of their host', () => {
     expect(parseTrackingInput(`${other}TESTA1`)).toEqual(parseTrackingInput(`https://example.test${pathname}${search}`));
     expect(parseTrackingInput(`${other}TESTA1`).carrier).not.toBe(carrier);
   });
+
+  it('reads DHL Express waybills on its tracking page, and leaves DHL Paket its own numbers there', () => {
+    const page = 'https://www.logistics.dhl/it-it/home/tracking/tracking-express.html?submit=1&tracking-id=';
+    expect(parseTrackingInput(`${page}1234567891`)).toMatchObject({
+      trackingNumber: '1234567891', carrier: 'dhl-express', confidence: 'high', source: 'link',
+    });
+    expect(parseTrackingInput(`${page}CX123456785DE`)).toMatchObject({
+      trackingNumber: 'CX123456785DE', carrier: 'dhl', confidence: 'high', source: 'link',
+    });
+    const other = 'https://www.logistics.dhl/it-it/home/tracking.html?tracking-id=1234567891';
+    expect(parseTrackingInput(other)).toEqual(parseTrackingInput('https://example.test/it-it/home/tracking.html?tracking-id=1234567891'));
+  });
+});
+
+describe('delivering partners\' links', () => {
+  it.each([
+    ['bpost', 'https://track.bpost.cloud/etr/light/performSearch.do?searchByItemCode=true&itemCodes='],
+    ['poste-italiane', 'https://www.sda.it/wps/portal/Servizi_online/dettaglio-spedizione?locale=it&tracing.letteraVettura='],
+  ])('%s %s', (carrier, page) => {
+    expect(parseTrackingInput(`${page}TESTA1`)).toMatchObject({ trackingNumber: 'TESTA1', carrier, confidence: 'high', source: 'link' });
+  });
 });
 
 describe('checksum rejections', () => {

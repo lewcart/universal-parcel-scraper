@@ -10,6 +10,7 @@ import { classifySeurStatus, seurStatusGroup } from './status.js';
 import fixture from './fixtures/history.json' with { type: 'json' };
 import statuses from './statuses.json' with { type: 'json' };
 import { InvalidInputError } from '../../core/errors/index.js';
+import { universalCarrierHints } from '../../providers/shared/hints.js';
 
 const NUMBER = '9900002';
 const copy = () => structuredClone(fixture);
@@ -67,7 +68,7 @@ describe('SEUR simplified anonymous tracking', () => {
   });
 
   it('requires exact identity, nonempty single-piece history and the supported numeric shapes', () => {
-    for (const n of ['9900002', '99000000000002', '990000000000000000002', '9900000000000000000002']) expect(normalizeSeurNumber(n)).toBe(n);
+    for (const n of ['9900002', '990000000002', '99000000000002', '990000000000000000002', '9900000000000000000002']) expect(normalizeSeurNumber(n)).toBe(n);
     expect(normalizeSeurNumber('990 0002')).toBe(NUMBER);
     for (const n of ['', '123', '99000002', 'AA9900002', NUMBER + '?', NUMBER + '/']) expect(() => normalizeSeurNumber(n)).toThrow(InvalidInputError);
     for (const bad of [{ ...fixture, identificador_busqueda: '9900003' }, { ...fixture, identificador_busqueda: fixture.clave_envio },
@@ -88,6 +89,17 @@ describe('SEUR simplified anonymous tracking', () => {
     expect(await adapter(environment(vi.fn<typeof fetch>().mockResolvedValue(response(body)))).recognize!(reference))
       .toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-23T13:13:05' });
     expect(() => parseSeur({ ...body, identificador_busqueda: body.clave_envio }, reference)).toThrowError(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('confirms twelve digits a provider names SEUR for, which recognition never asks it about', async () => {
+    // Synthetic: twelve digits fit many carriers' rules, none of them SEUR's.
+    const number = '990000000002';
+    expect(universalCarrierHints(['Seur'], number).discovered_carrier).toBe('seur');
+    expect(detectCarrierMatch(number).candidates).not.toContain('seur');
+    expect(recognitionCandidates(number, { countryHint: 'ES' }).map(({ carrier }) => carrier)).not.toContain('seur');
+    const body = { ...copy(), identificador_busqueda: number };
+    const result = await adapter(environment(vi.fn<typeof fetch>().mockResolvedValue(response(body)))).track({ number });
+    expect(result.status).toBe('delivered');
   });
 
   it('keeps absent, recent and out-of-range lookup errors inconclusive', () => {

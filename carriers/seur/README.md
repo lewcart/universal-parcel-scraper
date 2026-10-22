@@ -1,8 +1,8 @@
 # SEUR
 
 Tracks single-piece shipments through SEUR's public simplified lookup, by SEUR's
-numbers or by a sender's twenty-two-digit reference. Other references and
-multi-piece shipments use universal providers.
+numbers, by a sender's twenty-two-digit reference or by twelve digits a provider
+names SEUR for. Other references and multi-piece shipments use universal providers.
 
 ## How it works
 
@@ -37,6 +37,10 @@ shipment key. SEUR reuses it: about a third of random seven-digit numbers find a
 shipment. Tracking accepts it, but recognition only asks SEUR for its fourteen, twenty-one
 and twenty-two-digit numbers, so a seven-digit hit never files someone else's number under
 SEUR.
+
+Universal providers name SEUR for some twelve-digit numbers, which its lookup also finds.
+Tracking accepts them so the lookup can confirm the provider's naming. Twelve digits fit many
+carriers' rules, so no rule suggests SEUR for them and recognition never asks it.
 
 The no-history error also covers recent or out-of-range identifiers and remains
 inconclusive, with the reason `portal_not_found` so a consumer can tell it from

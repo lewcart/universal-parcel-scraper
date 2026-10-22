@@ -7,8 +7,9 @@ import { classifySeurStatus } from './status.js';
 
 export function normalizeSeurNumber(raw: string): string {
   const number = raw.replace(/\s/g, '');
-  // Twenty-two digits is a sender's reference, which the lookup also finds.
-  if (!/^(?:\d{7}|\d{14}|\d{21}|\d{22})$/.test(number)) throw new InvalidInputError('SEUR', 'SEUR requires a seven, fourteen, twenty-one or twenty-two digit identifier');
+  // Twenty-two digits is a sender's reference, which the lookup also finds, as
+  // it finds twelve digits a provider names SEUR for.
+  if (!/^(?:\d{7}|\d{12}|\d{14}|\d{21}|\d{22})$/.test(number)) throw new InvalidInputError('SEUR', 'SEUR requires a seven, twelve, fourteen, twenty-one or twenty-two digit identifier');
   return number;
 }
 

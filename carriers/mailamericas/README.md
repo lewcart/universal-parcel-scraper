@@ -61,7 +61,8 @@ Tracked through the lookup its tracking page makes.
 
 ## Limitations
 
-- No weight, and no instant for the scans that keep `local_time`.
+- No weight. Node lookups date the scans that keep `local_time` on a deduced zone, the
+  destination's for a scan without a place ([clocks](../../places/README.md#clocks)).
 - The tracker also answers some senders' own references, which no rule claims.
 - The tracker files some AliExpress parcels for Mexico under AliExpress's `LP` reference and
   answers their `MMXQP` number with that record. Nothing in the reply names the number asked,

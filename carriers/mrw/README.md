@@ -43,10 +43,11 @@ map link marks a point in every row of that history, including later rows that
 show it without the link. An office of its town hands a point its parcels, so a
 point in the town of an office of the same history takes that office's zone,
 unless the town's offices disagree. Rows without an office label and the
-summary, which names no office, keep wall clocks too. The newest row's instant is the last
-update, and the delivery's when it delivered. Only visible office labels are
-retained from history rows; PointCorner map addresses and coordinates are
-excluded.
+summary, which names no office, keep wall clocks too. Node lookups date them on a deduced
+zone: the office town's, else the nearest row's ([clocks](../../places/README.md#clocks)).
+The newest row's instant is the last update, and the delivery's when it
+delivered. Only visible office labels are retained from history rows;
+PointCorner map addresses and coordinates are excluded.
 
 The adapter queries www.mrw.es, which words statuses in Spanish. www.mrw.pt renders
 the same history in Portuguese; the status map reads both, so relayed Portuguese

@@ -28,7 +28,9 @@ permissions:
   contents: read
 # Pushes run one at a time and in order; a queued push gives way to a newer
 # one, which contains it. Dispatched releases queue apart from pushes, so a
-# push never cancels a queued release.
+# push never cancels a queued release. No run waits for npm to list what it
+# published while it holds its place: npm can take an hour, and every push
+# behind it would wait as long.
 concurrency:
   group: release-${{ github.event_name }}
   cancel-in-progress: false
@@ -84,9 +86,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    outputs:
-      version: ${{ steps.plan.outputs.version }}
-      notify: ${{ steps.plan.outputs.notify }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -102,37 +101,25 @@ jobs:
       - name: Plan the prerelease
         id: plan
         run: node scripts/prerelease.mjs
+      # npm accepts a publish before it serves the version, sometimes an hour
+      # later. Until then the next plan compares with the newest version npm
+      # lists, and a rerun plans this version again, which npm then refuses as
+      # already published.
       - name: Publish npm prerelease with provenance
         if: ${{ steps.plan.outputs.publish == 'true' }}
         env:
           PRERELEASE_VERSION: ${{ steps.plan.outputs.version }}
         run: |
           npm version "$PRERELEASE_VERSION" --no-git-tag-version
-          npm publish --tag next --access public --provenance --ignore-scripts
-  # npm accepts a publish before it serves the version, sometimes an hour later.
-  # The run holds its place until then, so the next plan finds the version. The
-  # wait is a job of its own: a run cancelled while it waits still shows that
-  # the publish passed.
-  listed:
-    name: npm lists the prerelease
-    needs: prerelease
-    if: ${{ needs.prerelease.outputs.notify == 'true' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 100
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: 26
-          package-manager-cache: false
-      - name: Wait until npm lists the version
-        env:
-          PUBLISHED_VERSION: ${{ needs.prerelease.outputs.version }}
-        run: node scripts/prerelease.mjs --await "$PUBLISHED_VERSION"
+          if ! npm publish --tag next --access public --provenance --ignore-scripts 2> publish.log; then
+            cat publish.log >&2
+            if grep -q 'cannot publish over the previously published version' publish.log; then
+              echo "npm already has $PRERELEASE_VERSION."
+              exit 0
+            fi
+            exit 1
+          fi
+          cat publish.log >&2
   publish:
     needs: checks
     if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -142,9 +129,11 @@ jobs:
       group: release-npm
       cancel-in-progress: false
     permissions:
-      contents: write
+      contents: read
       packages: write
       id-token: write
+    outputs:
+      notify: ${{ steps.npm.outputs.notify }}
     env:
       RELEASE_VERSION: ${{ inputs.version }}
       GH_TOKEN: ${{ github.token }}
@@ -187,18 +176,41 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository }}-trawl:${{ inputs.version }}
+      - name: Publish npm package with provenance
+        if: ${{ steps.npm.outputs.publish == 'true' }}
+        run: npm publish --provenance --access public --ignore-scripts
+  # Outside the npm lock, so that the pushes behind it publish while npm takes
+  # its time to list the version.
+  tag:
+    name: Tag the release once npm lists it
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    permissions:
+      contents: write
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 26
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      # Before the tag, so that a rerun after a failure here still passes the identity check.
+      - name: Wait until npm lists the version
+        if: ${{ needs.publish.outputs.notify == 'true' }}
+        run: node scripts/prerelease.mjs --await "$RELEASE_VERSION"
+      - run: npm ci --ignore-scripts && npm run build && npm pack --ignore-scripts
       - name: Include matching TRAWL source
         if: ${{ inputs.publish_trawl }}
         run: |
           gh api repos/germondai/trawl/tarball/5e9a58e1b5932255d5e7545a7cf88f336df3bb2c > trawl-upstream-source.tar.gz
           git archive --format=tar.gz --prefix=universal-parcel-scraper/ HEAD trawl > trawl-patch-source.tar.gz
-      - name: Publish npm package with provenance
-        if: ${{ steps.npm.outputs.publish == 'true' }}
-        run: npm publish --provenance --access public --ignore-scripts
-      # Before the tag, so that a rerun after a failure here still passes the identity check.
-      - name: Wait until npm lists the version
-        if: ${{ steps.npm.outputs.notify == 'true' }}
-        run: node scripts/prerelease.mjs --await "$RELEASE_VERSION"
       - name: Tag and publish GitHub release
         run: |
           git tag "v$RELEASE_VERSION"

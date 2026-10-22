@@ -196,6 +196,7 @@ describe('status map answers', () => {
     expect(answer('swiss-post', 'PARCEL.*.6144.4100', 'Delivery failed')).toEqual(mapped('failed_attempt'));
     expect(answer('swiss-post', 'PARCEL.*.6144.1400', 'Arrival in special delivery')).toEqual(mapped('in_transit'));
     expect(answer('swiss-post', 'PARCEL.*.6144.1300', 'Sorting - forwarding')).toEqual(mapped('in_transit'));
+    expect(answer('swiss-post', 'PARCEL.*.1.9400', 'Consignment poste restante in post office and ready for collection')).toEqual(mapped('ready_for_pickup'));
   });
 
   it("answers SFC's origin clearance and Allegro One's refusal at the door by their wording", () => {

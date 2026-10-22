@@ -377,6 +377,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // SEUR pickup point, a collection carried out, and its English "Has been put into storage". A bare "Item
   // received" names no receiver and stays unread.
   if (/^item received by royal mail$|\btaken over by one of our operators\b|\bwe've received your (?:parcel|package|item) at the parcel ?shop\b|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:was|has been) dropped off at (?:the |a )?parcel ?shop$|^(?![^,]*\b(?:recipient|consignee|receiver|customer|addressee|buyer|pick ?up point|parcel ?shop|locker|destination)\b)[a-z][\w&' -]{0,40} has received the goods(?:, [^,]{1,40}){0,2}\.?$|^the shipment has been deposited at a seur pickup point$|^(?:the |your )?collection (?:has been |was )?(?:carried out|completed)$|^已入库|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:has been |was )?put into storage$/.test(text)) return 'accepted';
+  // The sender's drop-off at a parcel shop in German, which names the shop and its address before the verb:
+  // "Die Sendung wurde vom Absender im PaketShop <shop>, <address> abgegeben".
+  if (/^die sendung wurde vom absender (?:im|in der|in einem|in einer) (?:[\w-]+ )?(?:paketshop|parcelshop|filiale)\b(?!.*\bnicht\b).*\babgegeben$/.test(text)) return 'accepted';
   // DPD Poland's scans as ParcelsApp words them: the sender's drop-off at a pickup point, and the pickup
   // point handing the parcel to DPD's courier, not a delivery round.
   if (/^sending the (?:package|parcel) at the pick ?up point$|^handing over the (?:package|parcel) to the courier$/.test(text)) return 'accepted';

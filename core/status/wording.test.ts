@@ -341,12 +341,17 @@ describe('classifyWording', () => {
     for (const wording of [
       'Drop-Off', 'Pickup Scan', 'Pick-up scan', 'Shipment pickup',
       'The UPS Access Point™ location has prepared the package for return to UPS or pickup by UPS.',
-    ]) expect(classifyWording(wording)).toEqual({ stage: 'accepted', source: 'wording:language' });
+      'Die Sendung wurde vom Absender im PaketShop Beispielkiosk, Musterstraße 1, Musterstadt abgegeben.',
+      'Die Sendung wurde vom Absender im Hermes PaketShop abgegeben',
+    ]) expect(classifyWording(wording, 'pending')).toEqual({ stage: 'accepted', source: 'wording:language' });
     // Recipient-side pickup wording must not be read as the carrier accepting the parcel.
     expect(wordingStage('Ready for pickup')).toBe('ready_for_pickup');
     expect(wordingStage('Drop-off point closed, delivery attempt failed')).toBe('failed_attempt');
     // Only the bare scan label is the sender's hand-in; a parcel left at the recipient's pickup shop is not.
     expect(wordingStage('Your parcel has been dropped off at your chosen pickup shop')).not.toBe('accepted');
+    // Nor is a parcel the courier left at a shop for the recipient, or a drop-off still to come.
+    expect(wordingStage('Die Sendung wurde im PaketShop abgegeben')).not.toBe('accepted');
+    expect(wordingStage('Die Sendung wurde vom Absender im PaketShop noch nicht abgegeben')).not.toBe('accepted');
   });
 
   it('maps facility scans, handovers and notices that carry no milestone of their own', () => {

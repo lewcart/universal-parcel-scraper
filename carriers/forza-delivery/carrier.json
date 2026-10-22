@@ -23,8 +23,10 @@
     "adapter": "forza-delivery",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "browser"
     ],
+    "browser": true,
     "recognition": {
       "rank": 633
     },

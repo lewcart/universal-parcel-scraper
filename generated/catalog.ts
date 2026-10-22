@@ -14399,7 +14399,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "forza-delivery",
       "recognitionRank": 633,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://rastreo.forzadelivery.com/",
     "trackingUrlTemplate": "https://rastreo.forzadelivery.com/{trackingNumber}",

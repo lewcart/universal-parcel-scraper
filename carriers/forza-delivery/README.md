@@ -13,6 +13,11 @@ Tracked through the lookup its tracking page makes.
    `GuideNumber`, and an empty reference and phone. It needs no cookie, token, key or browser.
 2. `retry`: one more try after a lookup that fails to connect or hangs. The first try gets half
    of the budget.
+3. `browser`: after a challenge, an optional private Playwright browser at
+   `FORZA_DELIVERY_BROWSER_WS_ENDPOINT` opens the official page and posts the same guest
+   request from that browser's network. Its bounded reply goes through the same identity and
+   history parser. Configure a browser on a network Forza accepts; another browser on the
+   refused network does not establish access. The original challenge remains in telemetry.
 
 - The reply nests three strings of JSON: ASP.NET's `d`, the relay's `Data`, and its `PayLoad`,
   the method's answer. The answer's `ObjectValue.IdResult` is 202 with the order and its
@@ -25,7 +30,8 @@ Tracked through the lookup its tracking page makes.
   is no answer.
 - The order must be the guía asked. The tracker reads the digits as a number, so leading zeros
   name the same guía.
-- Recognition makes the same request. An order without milestones is a known guía.
+- HTTP recognition makes only the direct request and network retry, even when browser recovery
+  is configured. An order without milestones is a known guía.
 
 ## Notes
 
@@ -50,7 +56,8 @@ Tracked through the lookup its tracking page makes.
 - Older guías keep their order without milestones, which is no history.
 - No delivery estimate, location, weight, service name or delivery instant.
 - Forza's load balancer refuses requests from some networks, such as a data centre in Germany,
-  with a bare 403 page, which is a challenge.
+  with a bare 403 page, which is a challenge. Browser recovery is opt-in; enabled universal
+  providers remain available when it is absent or fails, and can complete the local-clock history.
 - Only `FD` guías. The tracker reads bare digits as a reference, which can name several guías,
   so the adapter does not send them.
 
@@ -71,4 +78,5 @@ address works with or without the prefix. It shows the guía only after the reCA
 ## Testing
 
 `npm run test:carriers:live -- carriers/forza-delivery`, with `FORZA_DELIVERY_TRACKING_NUMBER`
-and optionally `FORZA_DELIVERY_UNKNOWN_NUMBER` set outside the repository.
+and optionally `FORZA_DELIVERY_UNKNOWN_NUMBER` set outside the repository. Set
+`FORZA_DELIVERY_BROWSER_WS_ENDPOINT` outside the repository to exercise private browser recovery.

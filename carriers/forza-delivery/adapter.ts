@@ -1,33 +1,27 @@
 import { accepted, recognizeFromLookup, type AdapterFactory, type Recognition, type TrackingContext } from '../../core/adapter/index.js';
-import { NoHistoryError, TransportError } from '../../core/errors/index.js';
+import { carrierErrorKind, NoHistoryError, TransportError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { FORZA_MAX_BYTES, normalizeForzaNumber, parseForzaReply, PROVIDER } from './parser.js';
+import { fetchForzaInBrowser } from './browser.js';
+import { FORZA_API, forzaLookupBody } from './request.js';
 
-/** The ASP.NET page method the tracking page on rastreo.forzadelivery.com posts its lookups to. */
-export const FORZA_API = 'https://rastreo.forzadelivery.com/fd2/Home.aspx/API';
-const METHOD = 'GetNewDeliveryTracking';
+export { FORZA_API, forzaLookupBody } from './request.js';
 const REDIRECTS = [301, 302, 303, 307, 308];
 // A missing route is not a missing guía.
 const GONE = [404, 410];
 
-/**
- * The body the page sends for a guía typed in: the method's path and its
- * parameters as a string of JSON, with the FD series apart from the digits
- * and no reference or recipient phone.
- */
-export function forzaLookupBody(number: string): string {
-  return JSON.stringify({ path: `Tracking/${METHOD}`, data: JSON.stringify({ Method: METHOD,
-    Params: { GuideSerie: 'FD', GuideNumber: number.slice(2), TicketNumber: '', NirPhone: 0, Phone: 0 } }) });
-}
-
 export class ForzaTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; browserWsEndpoint?: string | null } = {}) {}
 
-  async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
+  fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
+    return this.lookup(raw, context, true);
+  }
+
+  private async lookup(raw: string, context: TrackingContext, allowBrowser: boolean): Promise<CarrierResult> {
     const number = normalizeForzaNumber(raw);
     const read = async (signal: AbortSignal, timeoutMs: number): Promise<CarrierResult> => {
       const { response, bytes } = await fetchBounded(FORZA_API, { method: 'POST', signal, headers: {
@@ -46,13 +40,15 @@ export class ForzaTracker {
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
       { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
       networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
+      { id: 'browser', enabled: allowBrowser && Boolean(this.options.browserWsEndpoint), recovers: error => carrierErrorKind(error) === 'challenge',
+        run: ({ signal, remainingMs }) => fetchForzaInBrowser(number, this.options.browserWsEndpoint!, signal, remainingMs) },
     ]);
   }
 
   /** Known when the tracker has the guía, even an older one it keeps without its milestones. */
   async recognize(number: string, context: TrackingContext = {}): Promise<Recognition> {
     try {
-      return await recognizeFromLookup(() => this.fetch(number, context), () => accepted(() => normalizeForzaNumber(number)));
+      return await recognizeFromLookup(() => this.lookup(number, context, false), () => accepted(() => normalizeForzaNumber(number)));
     } catch (error) {
       if (error instanceof NoHistoryError) return { known: true, lastActivityAt: null };
       throw error;
@@ -61,9 +57,10 @@ export class ForzaTracker {
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new ForzaTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  const tracker = new ForzaTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent,
+    browserWsEndpoint: environment.env.FORZA_DELIVERY_BROWSER_WS_ENDPOINT?.trim() || null });
   return {
-    id: 'forza-delivery', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'forza-delivery', recordsSteps: true, steps: ['direct', 'retry', 'browser'],
     track: (input, context) => tracker.fetch(input.number, context),
     recognize: (number, context) => tracker.recognize(number, context),
   };

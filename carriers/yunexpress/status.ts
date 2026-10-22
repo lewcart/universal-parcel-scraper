@@ -16,6 +16,7 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   ['Start Customs Clearence', { status: 'in_transit', stage: 'customs' }],
   ['Collected at Cargo Terminal', { status: 'in_transit', stage: 'in_transit' }],
   ['Clearance processing completed - Import', { status: 'in_transit', stage: 'in_transit' }],
+  ['Customs released - Import', { status: 'in_transit', stage: 'in_transit' }],
   ['Customs inspection - Import', { status: 'in_transit', stage: 'customs' }],
   ['In clearance processing - Import', { status: 'in_transit', stage: 'customs' }],
   ['Arrived at the warehouse of Customs Broker', { status: 'in_transit', stage: 'customs' }],

@@ -30,6 +30,15 @@
       "confirmedBy": "live"
     },
     {
+      "code": "SW189",
+      "wording": "EL ENVÍO ESTÁ EN TRÁNSITO. PRÓXIMAMENTE LLEGARÁ A LAS INSTALACIONES DE DESTINO.",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "LO001's wording and group, between the registration and the delivery round."
+    },
+    {
       "code": "LD221",
       "wording": "EL ENVÍO HA LLEGADO A LA ADUANA DE DESTINO. INICIAMOS LOS TRÁMITES DE DESPACHO ADUANERO.",
       "language": "es",

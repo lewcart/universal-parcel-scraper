@@ -10,6 +10,8 @@
     {"wording": "The parcel is dispatched from the transit center to the next destination", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "快件从转运中心发往下一站", "stage": "in_transit", "language": "zh", "confirmedBy": "live"},
     {"wording": "Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "The tracker gives its customer service number after \"please call\", which the adapter drops."},
-    {"wording": "Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Spaced as the tracker writes it. The customer service number after \"please call\" is dropped."}
+    {"wording": "Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Spaced as the tracker writes it. The customer service number after \"please call\" is dropped."},
+    {"wording": "The building was closed when we arrived. We'll try again.", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "Right after the parcel went out for delivery; the transit centre then dispatches it again."},
+    {"wording": "We couldn't deliver - the address details appear to be incorrect. Please update your delivery address.", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "Right after the parcel went out for delivery: the round's outcome, with the recipient asked to correct the address."}
   ]
 }

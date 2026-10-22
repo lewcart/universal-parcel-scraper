@@ -21,6 +21,9 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map(([
   ['快件从转运中心发往下一站', 'in_transit'],
   ['Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.', 'out_for_delivery'],
   ['Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.', 'delivered'],
+  // The delivery round's outcome when it fails: the shared rules would read a closed building as transit.
+  ["The building was closed when we arrived. We'll try again.", 'failed_attempt'],
+  ["We couldn't deliver - the address details appear to be incorrect. Please update your delivery address.", 'failed_attempt'],
 ] as const).map(([wording, stage]) => [key(wording), stage]));
 
 /** The stage the map gives a scan's wording. */

@@ -16,6 +16,14 @@
       "firstSeen": "2026-09-28"
     },
     {
+      "wording": "Customs released - Import",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The release after an import inspection: the customs stage ends."
+    },
+    {
       "wording": "Collected at Cargo Terminal",
       "stage": "in_transit",
       "language": "en",

@@ -200,7 +200,7 @@ describe('UPS tracking normalization', () => {
     expect(result).toMatchObject({
       status: 'delivered',
       last_status_text: 'Delivered',
-      last_update: '2026-08-04T12:38:28+00:00',
+      last_update: '2026-08-04T14:38:28+02:00',
     });
 
     const unavailable = apiPayload();

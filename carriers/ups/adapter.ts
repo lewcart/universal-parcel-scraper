@@ -1,5 +1,6 @@
 
 import { load } from 'cheerio';
+import { DateTime, FixedOffsetZone } from 'luxon';
 import makeFetchCookie from 'fetch-cookie';
 import { CookieJar } from 'tough-cookie';
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
@@ -321,30 +322,45 @@ function text(value: unknown, maxLength?: number): string {
 
 type ScanClock = Pick<CarrierEvent, 'time'> & { local_time?: string; provider_time_text?: string };
 
+/** UPS's offset of a scan's place, in minutes. */
+function statedOffset(activity: JsonObject): number | null {
+  const offset = /^([+-])(0\d|1[0-4]):([0-5]\d)$/.exec(cleanScalar(activity.gmtOffset));
+  return offset ? (offset[1] === '-' ? -1 : 1) * (Number(offset[2]) * 60 + Number(offset[3])) : null;
+}
+
 /**
  * A scan's clock. UPS sends the same scan twice: a UTC pair (`gmtDate` /
- * `gmtTime`) and a local pair with a `gmtOffset`. Either becomes an
- * offset-carrying ISO string, so no zone is ever guessed. A local pair without
- * an offset stays a `local_time`, a scan UPS dates by its day alone, as it does
- * some drop-offs, keeps that day, other text stays as UPS wrote it, and a scan
- * with no clock at all, like some label scans, gets none.
+ * `gmtTime`) and a local pair with a `gmtOffset`. The UTC pair's instant, to
+ * the second, is written on that offset when the local pair reads the same
+ * minute on it, so the scan keeps its place's clock; otherwise it stays in
+ * UTC. A zero offset is written as UTC was, `+00:00`. Without the UTC pair,
+ * the local pair and its offset become the time, and no zone is ever guessed.
+ * A local pair without an offset stays a `local_time`, a scan UPS dates by
+ * its day alone, as it does some drop-offs, keeps that day, other text stays
+ * as UPS wrote it, and a scan with no clock at all, like some label scans,
+ * gets none.
  */
 function activityClock(activity: JsonObject): ScanClock {
-  const gmtDate = cleanScalar(activity.gmtDate);
-  const gmtTime = cleanScalar(activity.gmtTime);
-  if (/^\d{8}$/.test(gmtDate) && /^\d{2}:\d{2}:\d{2}$/.test(gmtTime)) {
-    return { time: `${gmtDate.slice(0, 4)}-${gmtDate.slice(4, 6)}-${gmtDate.slice(6, 8)}T${gmtTime}+00:00` };
-  }
   const localDate = cleanScalar(activity.date);
   const localTime = cleanScalar(activity.time);
   const dateMatch = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(localDate);
   const timeMatch = /^(\d{1,2}):([0-5]\d)\s*([AP])\.?M\.?$/i.exec(localTime);
   const hour = Number(timeMatch?.[1]);
-  if (dateMatch && timeMatch && hour >= 1 && hour <= 12) {
-    const hours = String(hour % 12 + (timeMatch[3]!.toUpperCase() === 'P' ? 12 : 0)).padStart(2, '0');
-    const local = `${dateMatch[3]}-${dateMatch[1]}-${dateMatch[2]}T${hours}:${timeMatch[2]}:00`;
-    const offset = cleanScalar(activity.gmtOffset);
-    return /^[+-]\d{2}:\d{2}$/.test(offset) ? { time: `${local}${offset}` } : { local_time: local };
+  const local = dateMatch && timeMatch && hour >= 1 && hour <= 12
+    ? `${dateMatch[3]}-${dateMatch[1]}-${dateMatch[2]}T${String(hour % 12 + (timeMatch[3]!.toUpperCase() === 'P' ? 12 : 0)).padStart(2, '0')}:${timeMatch[2]}:00`
+    : null;
+  const offset = statedOffset(activity);
+  const gmtDate = cleanScalar(activity.gmtDate);
+  const gmtTime = cleanScalar(activity.gmtTime);
+  if (/^\d{8}$/.test(gmtDate) && /^\d{2}:\d{2}:\d{2}$/.test(gmtTime)) {
+    const utc = `${gmtDate.slice(0, 4)}-${gmtDate.slice(4, 6)}-${gmtDate.slice(6, 8)}T${gmtTime}`;
+    const shown = offset ? DateTime.fromISO(utc, { zone: 'utc' }).setZone(FixedOffsetZone.instance(offset)) : null;
+    return { time: shown?.isValid && shown.toFormat("yyyy-MM-dd'T'HH:mm':00'") === local
+      ? shown.toISO({ suppressMilliseconds: true }) : `${utc}+00:00` };
+  }
+  if (local) {
+    const stated = cleanScalar(activity.gmtOffset);
+    return /^[+-]\d{2}:\d{2}$/.test(stated) ? { time: `${local}${stated}` } : { local_time: local };
   }
   const day = dateMatch && !localTime ? calendarDay(Number(dateMatch[3]), Number(dateMatch[1]), Number(dateMatch[2])) : null;
   if (day) return { local_time: day };

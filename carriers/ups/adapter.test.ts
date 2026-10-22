@@ -141,34 +141,52 @@ describe('UPS structured response', () => {
     }
   });
 
-  it('projects the scan history and prefers the UTC pair for each scan', () => {
+  it('projects the scan history, each scan on its place\'s clock to the second', () => {
     const result = parseUPSTrackingResponse(fixture(), TRACKING_NUMBER, TODAY);
     expect(result).toMatchObject({
       status: 'out_for_delivery',
       current_stage: 'out_for_delivery',
       current_stage_source: 'carrier_map',
       last_status_text: 'Out For Delivery Today',
-      last_update: '2026-08-04T07:12:04+00:00',
+      last_update: '2026-08-04T09:12:04+02:00',
       expected_delivery: '2026-08-04',
       destination_country: 'CH',
     });
     const mapped = { stage_source: 'carrier_map' };
     expect(result.events).toEqual([
       {
-        time: '2026-08-04T07:12:04+00:00', location: 'ZUERICH, CH', description: 'Out For Delivery Today',
+        time: '2026-08-04T09:12:04+02:00', location: 'ZUERICH, CH', description: 'Out For Delivery Today',
         provider_code: 'OT', stage: 'out_for_delivery', ...mapped,
       },
       {
-        time: '2026-08-04T03:03:51+00:00', location: 'ZUERICH, CH', description: 'Arrived at Facility',
+        time: '2026-08-04T05:03:51+02:00', location: 'ZUERICH, CH', description: 'Arrived at Facility',
         provider_code: 'AR', stage: 'in_transit', ...mapped,
       },
       {
-        time: '2026-08-03T21:41:10+00:00',
+        time: '2026-08-03T23:41:10+02:00',
         location: 'KOELN, DE',
         description: 'Departed from Facility — Your package is on the way',
         provider_code: 'DP', stage: 'in_transit', ...mapped,
       },
     ]);
+  });
+
+  it('keeps a scan in UTC unless its local reading agrees with the stated offset', () => {
+    const clocked = (date: string, time: string, gmtTime: string, gmtOffset: string) => ({
+      actCode: 'AR', activityScan: 'Arrived at Facility', location: 'EXAMPLE CITY, US',
+      date, time, gmtDate: '20260804', gmtTime, gmtOffset,
+    });
+    const times = parseUPSTrackingResponse(withScans([
+      clocked('08/03/2026', '11:05 P.M.', '04:05:09', '-05:00'),
+      // The local reading is another minute than the UTC pair on the offset.
+      clocked('08/04/2026', '9:00 A.M.', '04:05:09', '+02:00'),
+      clocked('08/04/2026', '4:05 A.M.', '04:05:09', '+00:00'),
+      clocked('08/04/2026', '9:35 A.M.', '04:05:09', '+05:30'),
+    ]), TRACKING_NUMBER, TODAY).events?.map((event) => event.time);
+    expect(times).toEqual(['2026-08-03T23:05:09-05:00', '2026-08-04T04:05:09+00:00', '2026-08-04T04:05:09+00:00',
+      '2026-08-04T09:35:09+05:30']);
+    // The instant is the UTC pair's, so a scan stored in UTC is the same scan.
+    expect(new Set(times!.map((time) => Date.parse(time!)))).toEqual(new Set([Date.parse('2026-08-04T04:05:09Z')]));
   });
 
   it('lets the newest scan code outrank the progress token', () => {

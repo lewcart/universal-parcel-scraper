@@ -97,10 +97,13 @@ rendered status, after that wait.
   bar classified label-created parcels as out for delivery. The banner's one event has no
   code; "Label Created", "On the Way", "Out for Delivery" and "Delivered" get their stage from
   the map, other banners none. Coded scans' wording is never read without its code.
-- Scan times are built from the UTC pair UPS sends, or the local pair plus its explicit
-  offset. A local pair without an offset stays `local_time`, a scan dated by its day alone,
-  as some drop-offs are, keeps that day as `local_time`, and other text stays
-  `provider_time_text`; no zone is guessed. Some label scans come with no clock and get none.
+- Each scan comes as a UTC pair and a local pair with the place's `gmtOffset`. The time is the
+  UTC pair's instant, to the second, written on that offset when the local pair reads the same
+  minute on it, so a consumer reads the scan's day where it happened; otherwise, or at a zero
+  offset, it stays `+00:00`. Without the UTC pair the local pair and its offset are the time.
+  A local pair without an offset stays `local_time`, a scan dated by its day alone, as some
+  drop-offs are, keeps that day as `local_time`, and other text stays `provider_time_text`;
+  no zone is guessed. Some label scans come with no clock and get none.
 - The scheduled delivery date has no year. The adapter picks the year that puts it within
   the last week or in the future.
 - The canary URL is a static PDF so the canary itself is not challenged.

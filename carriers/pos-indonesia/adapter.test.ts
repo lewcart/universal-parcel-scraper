@@ -288,9 +288,10 @@ describe('Pos Indonesia tracking adapter', () => {
   it('is asked about waybills, which detection only suggests, and reads its links', () => {
     expect(detectCarrierMatch(DOMESTIC)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['pos-indonesia'] });
     expect(recognitionAskedCarriers(DOMESTIC)).toContain('pos-indonesia');
-    // No rule claims eleven-digit barcodes or S10 codes ending ID for it.
+    // No rule claims eleven-digit barcodes for it; an S10 code ending ID only suggests it.
     expect(recognitionAskedCarriers('15900000001')).not.toContain('pos-indonesia');
-    expect(recognitionAskedCarriers(ABROAD)).not.toContain('pos-indonesia');
+    expect(detectCarrierMatch(ABROAD)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionAskedCarriers(ABROAD)[0]).toBe('pos-indonesia');
     for (const link of [`https://www.posindonesia.co.id/id/tracking/${DOMESTIC}`, `https://www.posindonesia.co.id/en/tracking/${DOMESTIC}`,
       `https://www.posindonesia.co.id/id/tracking?resi=${DOMESTIC}`]) {
       expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: DOMESTIC, carrier: 'pos-indonesia', source: 'link' });

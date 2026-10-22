@@ -52,7 +52,8 @@ out of the country. Tracked through the lookup its tracking page makes.
 ## Numbers
 
 International items carry UPU S10 numbers, and items SPL sends abroad end in `SA`; generic postal
-detection offers them. The tracker also answers items from abroad under their origin post's
+detection keeps them, and a code ending `SA` only suggests Saudi Post, which recognition asks
+first. The tracker also answers items from abroad under their origin post's
 numbers, so mail a provider reports as bound for Saudi Arabia is looked up here by its S10 number.
 Archived lookups on SPL's tracker also show `CRDSAL` and ten digits, which `saudi-post-1` claims;
 no other carrier uses the prefix. Other six-letter prefixes appear with the same ten digits, one

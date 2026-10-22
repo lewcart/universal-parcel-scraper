@@ -17,8 +17,7 @@ tracking page makes.
   empty list is the page's "not found".
 - A reply that is not JSON or not a list is a schema error, and a block page, even with HTTP 200,
   a challenge. WordPress's `0` with HTTP 400, a 404, a 410 or a redirect is a moved route, a 429
-  a rate limit. Recognition makes the same request. No detection rule offers Kyrgyz Post, so
-  preflight does not ask it.
+  a rate limit. Recognition makes the same request.
 
 ## Notes
 
@@ -46,8 +45,9 @@ tracking page makes.
 ## Numbers
 
 Kyrgyz Post handles UPU S10 numbers; items it sends end in `KG`. Its tracking page gives an
-inbound Singapore Post item as its example. Generic postal detection handles S10 numbers, so
-Kyrgyz Post has no rule of its own. The samples and their sources are in
+inbound Singapore Post item as its example. Generic postal detection keeps S10 numbers, and a
+code ending `KG` only suggests Kyrgyz Post, which recognition asks first. The samples and their
+sources are in
 [`numbers.json`](numbers.json).
 
 ## Links

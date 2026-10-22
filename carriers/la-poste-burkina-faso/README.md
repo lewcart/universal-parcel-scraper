@@ -42,7 +42,8 @@ through the IPS Web Tracking page its tracking help page links to.
 
 La Poste Burkina Faso, the national post formerly named SONAPOST, gives letters, parcels and
 EMS items UPU S10 numbers ending in `BF`. Its tracking help page quotes this layout. Generic
-postal detection handles these numbers, so no rule for La Poste Burkina Faso claims them. The
+postal detection keeps these numbers, and a code ending `BF` only suggests La Poste Burkina
+Faso, which recognition asks first. The
 adapter takes S10 codes from any post with a valid check digit; anything else is invalid
 without a request.
 

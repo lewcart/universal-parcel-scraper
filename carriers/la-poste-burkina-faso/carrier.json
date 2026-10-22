@@ -82,5 +82,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "la-poste-burkina-faso-s10",
+      "pattern": "^[A-Z]{2}\\d{9}BF$",
+      "confidence": "low",
+      "checksum": "s10",
+      "preferred": true
+    }
+  ]
 }

@@ -101,6 +101,13 @@
       "id": "pos-indonesia-1",
       "pattern": "^P\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{7}$",
       "confidence": "low"
+    },
+    {
+      "id": "pos-indonesia-s10",
+      "pattern": "^[A-Z]{2}\\d{9}ID$",
+      "confidence": "low",
+      "checksum": "s10",
+      "preferred": true
     }
   ]
 }

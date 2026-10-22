@@ -17,8 +17,7 @@ lookup its tracking page makes.
   404 or a redirect is a moved route.
 - The entry must name the whole requested code, as `idNacional`, `idInternacional` or both. A
   not-found entry for another post's code names none; the reply then answers the one code sent.
-- Recognition makes the same request. No detection rule offers Correo Uruguayo, so preflight
-  does not ask it.
+- Recognition makes the same request.
 
 ## Notes
 
@@ -57,10 +56,11 @@ lookup its tracking page makes.
 Correo Uruguayo's tracker asks for the full thirteen-character code: two letters, nine digits
 and two letters, the UPU S10 layout. Domestic items carry it too and end in UY, as archived
 lookups show; inbound items keep the origin post's number, and the post assigns a new one
-when an inbound purchase arrives without a valid code. Generic postal detection handles the
-layout, so Correo Uruguayo adds no rule of its own. Mail from abroad reaches Correo Uruguayo when
-a caller names it, a provider names it, or a result gives Uruguay as the destination of an S10
-item. The samples and their sources are in [`numbers.json`](numbers.json).
+when an inbound purchase arrives without a valid code. Generic postal detection keeps the
+layout, and a code ending `UY` only suggests Correo Uruguayo, which recognition asks first.
+Mail from abroad reaches Correo Uruguayo when a caller names it, a provider names it, or a
+result gives Uruguay as the destination of an S10 item. The samples and their sources are in
+[`numbers.json`](numbers.json).
 
 ## Links
 

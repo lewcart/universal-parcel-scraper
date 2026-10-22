@@ -75,5 +75,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "correo-uruguayo-s10",
+      "pattern": "^[A-Z]{2}\\d{9}UY$",
+      "confidence": "low",
+      "checksum": "s10",
+      "preferred": true
+    }
+  ]
 }

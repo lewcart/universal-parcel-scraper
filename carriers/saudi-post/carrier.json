@@ -84,6 +84,13 @@
       "id": "saudi-post-1",
       "pattern": "^CRDSAL\\d{10}$",
       "confidence": "high"
+    },
+    {
+      "id": "saudi-post-s10",
+      "pattern": "^[A-Z]{2}\\d{9}SA$",
+      "confidence": "low",
+      "checksum": "s10",
+      "preferred": true
     }
   ]
 }

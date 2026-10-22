@@ -251,9 +251,9 @@ describe('Correo Uruguayo tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith(CORREO_URUGUAYO_API))).toBe(true);
   });
 
-  it('leaves Uruguayan S10 codes with the postal fallback, which does not ask it, and opens its tracking links', () => {
+  it('leaves Uruguayan S10 codes with the postal fallback, which asks it first, and opens its tracking links', () => {
     expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers(DELIVERED)).not.toContain('correo-uruguayo');
+    expect(recognitionAskedCarriers(DELIVERED)[0]).toBe('correo-uruguayo');
     const link = `https://ahiva.correo.com.uy/servicioConsultaTntIps-web/SeguimientoJSNuevo?codigoPieza=${DELIVERED}`;
     expect(parseTrackingInput(link)).toMatchObject({ trackingNumber: DELIVERED, carrier: 'correo-uruguayo', source: 'link' });
   });

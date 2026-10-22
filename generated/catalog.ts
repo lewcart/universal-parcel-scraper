@@ -9691,7 +9691,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}UY$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "correos-bolivia": {
     "displayName": "Correos de Bolivia",
@@ -18759,7 +18766,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}KG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "l-post": {
     "displayName": "L-POST",
@@ -18836,7 +18850,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BF$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "la-poste-ci": {
     "displayName": "La Poste de Côte d'Ivoire",
@@ -22443,6 +22464,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^(?:RGL|PAR)\\d{8}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}PK$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -23818,6 +23845,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^P\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{7}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}ID$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -25921,6 +25954,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^CRDSAL\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SA$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -32594,7 +32633,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "copa-courier": ["copa-courier-1"],
   "corre": [],
   "correo-argentino": ["correo-argentino-s10"],
-  "correo-uruguayo": [],
+  "correo-uruguayo": ["correo-uruguayo-s10"],
   "correos-bolivia": [],
   "correos-cuba": [],
   "correos-de-mexico": ["correos-de-mexico-s10"],
@@ -32827,9 +32866,9 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "kunyoung": [],
   "kwick-box": [],
   "kyoungdong": [],
-  "kyrgyz-post": [],
+  "kyrgyz-post": ["kyrgyz-post-s10"],
   "l-post": ["l-post-1"],
-  "la-poste-burkina-faso": [],
+  "la-poste-burkina-faso": ["la-poste-burkina-faso-s10"],
   "la-poste-ci": [],
   "la-poste-senegal": [],
   "la-poste-tunisienne": [],
@@ -32922,7 +32961,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "packli-punkt": [],
   "packlink": ["packlink-1"],
   "packs": [],
-  "pakistan-post": ["pakistan-post-1"],
+  "pakistan-post": ["pakistan-post-1","pakistan-post-s10"],
   "palletways": [],
   "pandu-logistics": [],
   "pannon-xp": ["pannon-xp-1"],
@@ -32955,7 +32994,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pmm": [],
   "polaris-transport": ["polaris-transport-1"],
   "pony-express": [],
-  "pos-indonesia": ["pos-indonesia-1"],
+  "pos-indonesia": ["pos-indonesia-1","pos-indonesia-s10"],
   "post-haste": [],
   "post-luxembourg": ["post-luxembourg-s10"],
   "posta-faroe": [],
@@ -33010,7 +33049,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sameday": ["sameday-1","sameday-2"],
   "sapx-express": [],
   "sat-ukraine": [],
-  "saudi-post": ["saudi-post-1"],
+  "saudi-post": ["saudi-post-1","saudi-post-s10"],
   "sbs-sokuhai": [],
   "scg-express": ["scg-express-1"],
   "seino": [],

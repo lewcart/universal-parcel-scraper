@@ -200,9 +200,9 @@ describe('Kyrgyz Post tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url) === KYRGYZ_POST_LOOKUP)).toBe(true);
   });
 
-  it('leaves S10 codes with the postal fallback, which preflight does not ask Kyrgyz Post about', () => {
+  it('leaves S10 codes with the postal fallback, which asks Kyrgyz Post first about the ones it issues', () => {
     expect(detectCarrierMatch(OUTBOUND)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers(OUTBOUND)).not.toContain('kyrgyz-post');
+    expect(recognitionAskedCarriers(OUTBOUND)[0]).toBe('kyrgyz-post');
   });
 });
 

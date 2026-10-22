@@ -106,6 +106,17 @@ describe('S10-shaped numbers', () => {
     expect(recognitionAskedCarriers('HC123456789AR')).not.toContain('correo-argentino');
   });
 
+  it('asks the national posts first about the S10 numbers they issue without selecting them', () => {
+    const posts = { PK: 'pakistan-post', SA: 'saudi-post', UY: 'correo-uruguayo', KG: 'kyrgyz-post', BF: 'la-poste-burkina-faso', ID: 'pos-indonesia' };
+    for (const [country, post] of Object.entries(posts)) {
+      expect(detectCarrierMatch(`rr 123 456 785 ${country}`), country).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+      expect(recognitionCandidates(`RR123456785${country}`)[0], country).toEqual({ carrier: post, needsInput: null, preferred: true });
+      // A failing check digit or another post's suffix does not suggest it.
+      expect(recognitionAskedCarriers(`RR123456789${country}`), country).not.toContain(post);
+      expect(recognitionAskedCarriers('RR123456785AR'), country).not.toContain(post);
+    }
+  });
+
   it('asks Australia Post and Ukrposhta first about the numbers they issue without selecting them', () => {
     expect(detectCarrierMatch('rr 123 456 785 au')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     expect(recognitionCandidates('rr 123 456 785 au')).toEqual([

@@ -76,5 +76,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "kyrgyz-post-s10",
+      "pattern": "^[A-Z]{2}\\d{9}KG$",
+      "confidence": "low",
+      "checksum": "s10",
+      "preferred": true
+    }
+  ]
 }

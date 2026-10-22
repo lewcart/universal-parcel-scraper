@@ -13,6 +13,7 @@
  * ASCII-apostrophe delivered variant was observed live on 2026-09-11.
  */
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /** Collapse whitespace and lower-case with the Italian locale, as the map expects. */
 export function normalizePosteItalianeWording(value: unknown): string {
@@ -36,6 +37,8 @@ export function classifyPosteItalianeStatus(rawWording: unknown): ClassifiedStat
       ? { status: 'exception', stage: 'failed_attempt' }
       : { status: 'in_transit', stage: 'in_transit' };
   }
+  // A round that failed, with the working day the next one starts from: not that coming round.
+  if (value.startsWith('non è stato possibile effettuare la consegna')) return { status: 'exception', stage: 'failed_attempt' };
   if (value.startsWith('in restituzione al mittente')) return { status: 'exception', stage: 'returned' };
   // Registered mail held at a post office from the date the line gives.
   if (value.startsWith('la spedizione sarà disponibile per il ritiro')) return { status: 'out_for_delivery', stage: 'ready_for_pickup' };
@@ -60,3 +63,9 @@ export function classifyPosteItalianeStatus(rawWording: unknown): ClassifiedStat
       return undefined;
   }
 }
+
+/** What the map says about one scan: DoveQuando's wording carries no code. */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => classifyPosteItalianeStatus(wording)?.stage,
+  gaps: [],
+};

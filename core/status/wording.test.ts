@@ -61,6 +61,8 @@ describe('classifyWording', () => {
       'Absence. Attempted delivery.',
       '<User not at home>',
       'Unsuccessful delivery. Reason : Absence of addressee Result :',
+      // Poste Italiane's failed round, which names the day the next one starts from.
+      'Non è stato possibile effettuare la consegna. La spedizione sarà in consegna il primo giorno lavorativo utile a partire dal 2026-01-01 00:00',
       // Poste Italiane's locker failure as a universal provider relays it in English.
       'Delivery not successful due to locker not available. The shipment will be delivered on the next business day.',
       "We're sorry but we were unable to complete your delivery. Please continue to check your tracking for real time updates",
@@ -350,7 +352,7 @@ describe('classifyWording', () => {
   it('maps facility scans, handovers and notices that carry no milestone of their own', () => {
     for (const wording of [
       'At local carrier facility', 'Left origin facility', 'Parcel is leaving airport', 'Item Dispatched', 'Delay',
-      'Received by local delivery company', 'Received by logistics company', 'Delivery option requested',
+      'Received by local delivery company', 'Received by logistics company', 'Delivery option requested', 'Cambio disposizioni di consegna',
       'The notification for delivery has been sent to the recipient',
       'Item handed over to delivery partner', 'Item distributed', 'The shipment item has been loaded.',
       'Your package has been loaded onto a vehicle',

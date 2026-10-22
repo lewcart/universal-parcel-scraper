@@ -98,6 +98,8 @@ Italiane for a number issued abroad.
 - Stages come from Italian `statoLavorazione` wording. Both the typographic and the ASCII
   apostrophe are accepted (`e' stata consegnata` appears live). Unmapped wording gets no
   stage rather than a regex catch-all guess; the sync records it for review.
+- A failed round that names the day the next one starts from is a failed attempt, not that
+  coming round.
 - Customs release wording maps to `in_transit`.
 - A post-office scan names its office, which becomes the event location; the office's
   address, postcode and hours are not kept. Other scans keep `luogo` only when it is a town

@@ -69,6 +69,12 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   ['Accepted at Carrier\'s Facility', { status: 'in_transit', stage: 'in_transit' }],
   ['Arrived at Carrier\'s Facility', { status: 'in_transit', stage: 'in_transit' }],
   ['Departed Carrier\'s Facility', { status: 'in_transit', stage: 'in_transit' }],
+  // Ecoscooting's last mile after the hand-over to it, read as its own codes are: the
+  // delivery carrier's acceptance is a hand-over between carriers.
+  ['Your shipment has arrived at sorting center', { status: 'in_transit', stage: 'in_transit' }],
+  ['Your shipment has been processed at sorting center and ready for shipping', { status: 'in_transit', stage: 'in_transit' }],
+  ['Your shipment has been accepted by delivery carrier', { status: 'in_transit', stage: 'in_transit' }],
+  ['Your shipment is out for delivery', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   // GLS keeps the parcel at its depot after the parcel box it was due in was full.
   ['The parcel is being stored in the GLS parcel center. It could not be delivered as the parcel box was occupied.', { status: 'exception', stage: 'failed_attempt' }],
 ];
@@ -77,11 +83,13 @@ const FAILED_ATTEMPT: ClassifiedStatus = { status: 'exception', stage: 'failed_a
 
 /**
  * Partner lines that carry a place or a reason after fixed words, by their
- * `normalizeStatusWording` form: GOFO's missed delivery with its type, and an
- * Australian courier's transfer to a depot after it left a card.
+ * `normalizeStatusWording` form: GOFO's missed delivery with its type,
+ * Ecoscooting's with its reason in brackets, and an Australian courier's
+ * transfer to a depot after it left a card.
  */
 const PATTERNS: ReadonlyArray<readonly [RegExp, ClassifiedStatus]> = [
   [/^delivery failed, type: ?recipient absent or delivery location inaccessible\b/, FAILED_ATTEMPT],
+  [/^your shipment delivery attempt failed(?: \[[^\]]{1,200}\])?$/, FAILED_ATTEMPT],
   [/^\d+ items? (?:has|have) been transferred to \S.* card left$/, FAILED_ATTEMPT],
 ];
 

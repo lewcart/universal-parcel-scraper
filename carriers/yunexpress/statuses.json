@@ -483,6 +483,46 @@
       "note": "Relayed from an Australian courier after a missed delivery: the card left names the depot that now holds the parcel. Matched on its fixed words; the courier's page wraps CARD LEFT in a link the adapter drops."
     },
     {
+      "wording": "Your shipment has arrived at sorting center",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Relayed from Ecoscooting after Delivered to local carrier: its sorting centre's intake."
+    },
+    {
+      "wording": "Your shipment has been processed at sorting center and ready for shipping",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Relayed from Ecoscooting: its sorting centre's dispatch."
+    },
+    {
+      "wording": "Your shipment has been accepted by delivery carrier",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Relayed from Ecoscooting after its sorting scans: a hand-over between carriers, as Ecoscooting's own code reads it, not the parcel's acceptance."
+    },
+    {
+      "wording": "Your shipment is out for delivery",
+      "stage": "out_for_delivery",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Relayed from Ecoscooting."
+    },
+    {
+      "wording": "Your shipment delivery attempt failed [<reason>]",
+      "stage": "failed_attempt",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Relayed from Ecoscooting, with the reason in brackets; matched on its fixed words. A wrong address seen there goes on to another round."
+    },
+    {
       "code": "10",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",

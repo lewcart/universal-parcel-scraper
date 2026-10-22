@@ -104,6 +104,13 @@ describe('status map answers', () => {
     expect(answer('yunexpress', null, '1 item has been transferred to Example (synthville) CARD LEFT')).toEqual(mapped('failed_attempt'));
     expect(answer('yunexpress', null, "1 item has been transferred to Example (synthville) <b><a href='/Contact?tracNum=CP000000000001'>CARD LEFT</a></b>"))
       .toEqual(mapped('failed_attempt'));
+    // Ecoscooting's last mile as the feed relays it: its acceptance is a hand-over, its missed round carries a reason.
+    expect(answer('yunexpress', null, 'Your shipment has been accepted by delivery carrier')).toEqual(mapped('in_transit'));
+    expect(answer('yunexpress', null, 'Your shipment has been processed at sorting center and ready for shipping')).toEqual(mapped('in_transit'));
+    expect(answer('yunexpress', null, 'Your shipment is out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('yunexpress', null, 'Your shipment delivery attempt failed [Recipient address unknown/incorrect]')).toEqual(mapped('failed_attempt'));
+    expect(answer('yunexpress', null, 'Your shipment delivery attempt failed')).toEqual(mapped('failed_attempt'));
+    expect(answer('yunexpress', null, 'Your shipment delivery attempt failed [Example] and was returned')).toEqual(unknown);
     expect(answer('four-px', 'FPX_O_IR', 'Order information has been transmitted to DPD.')).toEqual(mapped('registered'));
     expect(answer('four-px', 'FPX_O_IR', 'Order information has been transmitted to Example Post.')).toEqual(mapped('registered'));
     expect(answer('j-and-t-au', null, 'Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.')).toEqual(mapped('out_for_delivery'));
@@ -194,6 +201,13 @@ describe('status map answers', () => {
   it("answers SFC's origin clearance and Allegro One's refusal at the door by their wording", () => {
     expect(answer('sfc', null, 'shipment started the customs clearance process at origin')).toEqual(mapped('customs'));
     expect(answer('allegro-one', null, 'recipient has refused to accept')).toEqual(mapped('failed_attempt'));
+  });
+
+  it("answers Poste Italiane's wording, its failed round with the next day before the round it announces", () => {
+    expect(answer('poste-italiane', null, 'non è stato possibile effettuare la consegna. la spedizione sarà in consegna il primo giorno lavorativo utile a partire dal 2026-01-01 00:00'))
+      .toEqual(mapped('failed_attempt'));
+    expect(answer('poste-italiane', null, 'la spedizione è in consegna')).toEqual(mapped('out_for_delivery'));
+    expect(answer('poste-italiane', null, 'la spedizione è stata consegnata')).toEqual(mapped('delivered'));
   });
 
   it("answers Cainiao's action codes, and the wording the queue holds without one", () => {
@@ -715,6 +729,7 @@ describe("universal providers' answers", () => {
       ['Item posted', 'accepted'], ['Item in transfer - please wait', 'in_transit'],
       ['Item received at the export unit in the country of origin', 'in_transit'],
       ['Item received by the Brazilian Post', 'in_transit'], ["Need to inform recipient's CPF/CNPJ", 'customs'],
+      ['Cambio disposizioni di consegna', 'in_transit'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
     for (const wording of ['Sending the package to the sender', 'Item held at outward office of exchange for inspection', 'Virtual Manifest pending']) {

@@ -3229,7 +3229,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BNI|BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BNI|BYS|CUB|GWD|LTN|MPX|NZC|QSP|QSS|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -9775,6 +9775,30 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "correos-costa-rica": {
+    "displayName": "Correos de Costa Rica",
+    "color": "#003057",
+    "aliases": [
+      "Correos de Costa Rica S.A.",
+      "Correos Costa Rica",
+      "Costa Rica Post",
+      "CorreosCR",
+      "Pymexpress"
+    ],
+    "countries": [
+      "CR"
+    ],
+    "selectable": true,
+    "timezone": "America/Costa_Rica",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://sucursal.correos.go.cr/web/rastreo",
+    "trackingSearchUrl": "https://sucursal.correos.go.cr/web/rastreo",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "correos-cuba": {
     "displayName": "Correos de Cuba",
     "color": "#001ca8",
@@ -13890,6 +13914,33 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "fercam": {
+    "displayName": "FERCAM",
+    "color": "#5a6770",
+    "aliases": [
+      "Fercam S.p.A.",
+      "FERCAM Logistics & Transport",
+      "DACHSER & FERCAM Italia"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://dachser.fercam.it/en-it/dachser-fercam-italia-shipment-tracking-707.html",
+    "trackingSearchUrl": "https://dachser.fercam.it/en-it/dachser-fercam-italia-shipment-tracking-707.html",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^O\\d{10}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "fermopoint": {
     "displayName": "Fermopoint",
     "color": "#dc0032",
@@ -14960,6 +15011,39 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "gig-logistics": {
+    "displayName": "GIG Logistics",
+    "color": "#cf343a",
+    "aliases": [
+      "GIGL",
+      "GIG Logistics Technologies Limited",
+      "GIGGo"
+    ],
+    "countries": [
+      "NG"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Lagos",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://giglogistics.com/track-shipment/",
+    "trackingUrlTemplate": "https://giglogistics.com/track-shipment/?waybill={trackingNumber}",
+    "trackingSearchUrl": "https://giglogistics.com/track-shipment/",
+    "linkRules": [
+      {
+        "domains": [
+          "giglogistics.com"
+        ],
+        "pathPattern": "^/track-shipment/?$",
+        "params": [
+          "waybill"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "globalpost": {
     "displayName": "GlobalPost",
@@ -16982,6 +17066,27 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "inposdom": {
+    "displayName": "INPOSDOM",
+    "color": "#012a7e",
+    "aliases": [
+      "Instituto Postal Dominicano",
+      "Dominican Postal Institute"
+    ],
+    "countries": [
+      "DO"
+    ],
+    "selectable": true,
+    "timezone": "America/Santo_Domingo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://inposdomtech.com/Inposoft/cliente/",
+    "trackingSearchUrl": "https://inposdomtech.com/Inposoft/cliente/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "instabox": {
     "displayName": "Instabox",
@@ -26273,6 +26378,43 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "sendle": {
+    "displayName": "Sendle",
+    "color": "#f0703f",
+    "aliases": [
+      "Sendle Pty Ltd"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.sendle.com/",
+    "trackingUrlTemplate": "https://www.sendle.com/tracking?ref={trackingNumber}",
+    "trackingSearchUrl": "https://www.sendle.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "sendle.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "ref"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^QSS\\d{9}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
+  },
   "serpost": {
     "displayName": "Serpost",
     "color": "#00308a",
@@ -29777,6 +29919,31 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "trunkrs": {
+    "displayName": "Trunkrs",
+    "color": "#220c4a",
+    "countries": [
+      "NL",
+      "BE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://parcel.trunkrs.nl/",
+    "trackingSearchUrl": "https://parcel.trunkrs.nl/",
+    "linkRules": [
+      {
+        "domains": [
+          "parcel.trunkrs.nl"
+        ],
+        "path": "^/(?!barcode/)([A-Za-z0-9]{5,40})/[^/?#]+/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "tsjy": {
     "displayName": "TSJY",
     "color": "#4042e2",
@@ -31919,6 +32086,7 @@ export const CARRIER_IDS = [
   "correo-argentino",
   "correo-uruguayo",
   "correos-bolivia",
+  "correos-costa-rica",
   "correos-cuba",
   "correos-de-mexico",
   "correos-el-salvador",
@@ -32021,6 +32189,7 @@ export const CARRIER_IDS = [
   "fastfrate",
   "fedex-freight",
   "fedex-pl",
+  "fercam",
   "fermopoint",
   "fg-delivery",
   "first-delivery-tn",
@@ -32050,6 +32219,7 @@ export const CARRIER_IDS = [
   "ghana-post",
   "ghn",
   "ghtk",
+  "gig-logistics",
   "globalpost",
   "gls-at",
   "gls-es",
@@ -32102,6 +32272,7 @@ export const CARRIER_IDS = [
   "ilyang-logis",
   "imile",
   "indah-logistik",
+  "inposdom",
   "instabox",
   "integral-pack",
   "intelcom",
@@ -32340,6 +32511,7 @@ export const CARRIER_IDS = [
   "seko",
   "sendex",
   "sending",
+  "sendle",
   "serpost",
   "servientrega",
   "seven-eleven-tw",
@@ -32429,6 +32601,7 @@ export const CARRIER_IDS = [
   "transmission",
   "transport-rdl",
   "trendyol-express",
+  "trunkrs",
   "tsjy",
   "tst-cf-express",
   "tufesa",
@@ -32705,6 +32878,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "correo-argentino": ["correo-argentino-s10"],
   "correo-uruguayo": ["correo-uruguayo-s10"],
   "correos-bolivia": [],
+  "correos-costa-rica": [],
   "correos-cuba": [],
   "correos-de-mexico": ["correos-de-mexico-s10"],
   "correos-el-salvador": [],
@@ -32807,6 +32981,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fastfrate": [],
   "fedex-freight": [],
   "fedex-pl": ["fedex-pl-1"],
+  "fercam": ["fercam-1"],
   "fermopoint": ["fermopoint-1"],
   "fg-delivery": ["fg-delivery-fgd","fg-delivery-1"],
   "first-delivery-tn": [],
@@ -32836,6 +33011,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ghana-post": [],
   "ghn": [],
   "ghtk": ["ghtk-1"],
+  "gig-logistics": [],
   "globalpost": ["globalpost-1"],
   "gls-at": ["gls-at-1"],
   "gls-es": ["gls-es-1"],
@@ -32888,6 +33064,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ilyang-logis": [],
   "imile": ["imile-3","imile-1","imile-2"],
   "indah-logistik": ["indah-logistik-1"],
+  "inposdom": [],
   "instabox": [],
   "integral-pack": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
@@ -33126,6 +33303,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "seko": [],
   "sendex": [],
   "sending": [],
+  "sendle": ["sendle-1"],
   "serpost": ["serpost-s10"],
   "servientrega": [],
   "seven-eleven-tw": [],
@@ -33215,6 +33393,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "transmission": ["transmission-1"],
   "transport-rdl": [],
   "trendyol-express": [],
+  "trunkrs": [],
   "tsjy": ["tsjy-1"],
   "tst-cf-express": [],
   "tufesa": [],

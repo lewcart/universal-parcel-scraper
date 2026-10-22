@@ -5502,5 +5502,21 @@
       "tnt-it"
     ],
     "reason": "qwintry numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^O\\d{10}$",
+    "carriers": [
+      "fercam",
+      "gls-it"
+    ],
+    "reason": "GLS Italy's low-confidence rule takes any letter and ten digits, so it overlaps FERCAM's O, year and eight digits; both stay suggestions."
+  },
+  {
+    "shape": "^QSS\\d{9}$",
+    "carriers": [
+      "colis-prive",
+      "sendle"
+    ],
+    "reason": "Colis Privé's low-confidence rule takes any twelve letters and digits; Sendle's own QSS prefix is preferred."
   }
 ]

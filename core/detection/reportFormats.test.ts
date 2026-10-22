@@ -161,6 +161,33 @@ describe('evidence-backed tracking formats', () => {
     expect(parseTrackingInput('https://www.smartposti.lv/pakas-meklesana')?.source).not.toBe('link');
   });
 
+  it('suggests Sendle first for QSS and nine digits, which Purolator leaves to it', () => {
+    const match = detectCarrierMatch('QSS000000001');
+    expect(match).toMatchObject({ confidence: 'low', preferred: ['sendle'] });
+    expect(match.candidates).not.toContain('purolator');
+    for (const number of ['QSS00000001', 'QSS0000000001', 'QS000000001']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('sendle');
+    }
+    expect(detectCarrierMatch('QSA000000001')).toMatchObject({ carrier: 'purolator', confidence: 'high' });
+  });
+
+  it('suggests FERCAM for the letter O, the year and eight digits', () => {
+    expect(detectCarrierMatch('O2500000001').candidates).toContain('fercam');
+    for (const number of ['02500000001', 'O250000001', 'O25000000001', 'Q2500000001']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('fercam');
+    }
+  });
+
+  it('reads Trunkrs, GIG Logistics and Sendle tracking links', () => {
+    expect(parseTrackingInput('https://parcel.trunkrs.nl/400000001/0000AA'))
+      .toMatchObject({ trackingNumber: '400000001', carrier: 'trunkrs', source: 'link' });
+    expect(parseTrackingInput('https://parcel.trunkrs.nl/barcode/400000001')?.carrier).not.toBe('trunkrs');
+    expect(parseTrackingInput('https://giglogistics.com/track-shipment/?waybill=1000000001'))
+      .toMatchObject({ trackingNumber: '1000000001', carrier: 'gig-logistics', source: 'link' });
+    expect(parseTrackingInput('https://www.sendle.com/tracking?ref=QSS000000001'))
+      .toMatchObject({ trackingNumber: 'QSS000000001', carrier: 'sendle', source: 'link' });
+  });
+
   it('suggests Ukrposhta for a thirteen-digit domestic barcode among the carriers sharing that length', () => {
     const match = detectCarrierMatch('0500000000003');
     expect(match).toMatchObject({ carrier: 'unknown', confidence: 'low' });

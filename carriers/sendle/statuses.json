@@ -1,0 +1,47 @@
+{
+  "carrier": "sendle",
+  "entries": [
+    {
+      "wording": "Order received",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "Status label of the tracking page."
+    },
+    {
+      "wording": "Booked",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "Status label of the tracking page for a booked label."
+    },
+    {
+      "wording": "In transit",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "Status label of the tracking page."
+    },
+    {
+      "wording": "Delivered",
+      "stage": "delivered",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "Status label of the tracking page."
+    },
+    {
+      "wording": "Cancelled",
+      "stage": "exception",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "The page explains it as an order the sender cancelled."
+    },
+    {
+      "wording": "Returned",
+      "stage": "returned",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "The page explains it as a parcel on its way back to the sender."
+    }
+  ]
+}

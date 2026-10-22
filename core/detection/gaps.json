@@ -1549,6 +1549,12 @@
     "reason": "GHTK's order number alone is nine or ten digits, a length many carriers print, so nothing in it points to GHTK."
   },
   {
+    "carrier": "gig-logistics",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "GIG Logistics does not document its waybill layout, and ten digits are shared with many carriers, so the shape cannot name GIG Logistics."
+  },
+  {
     "carrier": "globalpost",
     "pattern": "^SDC\\d{15}$",
     "kind": "by_design",
@@ -3257,6 +3263,12 @@
     "reason": "Twelve digits are shared by many carriers and nothing in the number points to Sending."
   },
   {
+    "carrier": "sendle",
+    "pattern": "^QS\\d{6}$",
+    "kind": "by_design",
+    "reason": "Sendle's order numbers are a short counter that other carriers' rules share; the QSS tracking number under the label's barcode names Sendle."
+  },
+  {
     "carrier": "servientrega",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -3823,6 +3835,12 @@
     "pattern": "^\\d{16}$",
     "kind": "by_design",
     "reason": "Sixteen digits are shared by several carriers and two prefixes seen in a handful of reports are too few to claim for Trendyol Express."
+  },
+  {
+    "carrier": "trunkrs",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Trunkrs does not document its nine-digit numbers, and nine digits are shared with TNT and other carriers, so the shape cannot name Trunkrs."
   },
   {
     "carrier": "tst-cf-express",

@@ -1,0 +1,51 @@
+{
+  "id": "sendle",
+  "displayName": "Sendle",
+  "aliases": [
+    "Sendle Pty Ltd"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#f0703f"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.sendle.com/tracking?ref={trackingNumber}",
+    "searchUrl": "https://www.sendle.com/tracking",
+    "canaryUrl": "https://www.sendle.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "sendle.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "ref"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "sendle-1",
+      "pattern": "^QSS\\d{9}$",
+      "confidence": "low",
+      "preferred": true
+    }
+  ]
+}

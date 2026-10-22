@@ -13,6 +13,7 @@ const observed: Record<string, { group: string; wording: string; mapped: Classif
   LC003: { group: 'EN REPARTO', wording: 'EL ENVÍO ESTÁ EN REPARTO.', mapped: { status: 'out_for_delivery', stage: 'out_for_delivery' } },
   LI300: { group: 'EN DEMORA', wording: 'EL ENVÍO HA SUFRIDO UN RETRASO Y ES POSIBLE QUE SE DEMORE LA ENTREGA. DISCULPA LAS MOLESTIAS.', mapped: null },
   LI582: { group: 'EN DEMORA', wording: 'EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA. DISCULPA LAS MOLESTIAS.', mapped: null },
+  LI557: { group: 'EN DEMORA', wording: 'EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA. DISCULPA LAS MOLESTIAS.', mapped: null },
   // Recorded after the day's delivery round, which starts again the next day.
   LI521: { group: 'EN INCIDENCIA', wording: 'EL ENVÍO NO SE HA ENTREGADO PORQUE LA DIRECCIÓN DE ENTREGA ESTÁ INCOMPLETA O ERRÓNEA.', mapped: { status: 'exception', stage: 'failed_attempt' } },
   LI523: { group: 'EN INCIDENCIA', wording: 'EL ENVÍO NO SE HA ENTREGADO POR AUSENCIA O CIERRE. SE PUEDE REPROGRAMAR UNA NUEVA ENTREGA.', mapped: { status: 'exception', stage: 'failed_attempt' } },
@@ -56,5 +57,5 @@ export function seurStatusGroup(code: string): string | undefined {
 /** What the map says about one scan, read with the group SEUR sends with its code. */
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => (code ? classifySeurStatus(code, seurStatusGroup(code) ?? '', wording)?.stage : undefined),
-  gaps: ['LI300', 'LI582'].map((code) => ({ code, note: 'A delay notice, not a movement: the parcel keeps the stage it had.' })),
+  gaps: ['LI300', 'LI582', 'LI557'].map((code) => ({ code, note: 'A delay notice, not a movement: the parcel keeps the stage it had.' })),
 };

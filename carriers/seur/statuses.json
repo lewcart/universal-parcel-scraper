@@ -84,6 +84,15 @@
       "note": "A delay notice in the EN DEMORA group, read like LI300. The parcel seen with it moved on to an agreed delivery day."
     },
     {
+      "code": "LI557",
+      "wording": "EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA. DISCULPA LAS MOLESTIAS.",
+      "language": "es",
+      "confirmedBy": "live",
+      "unmapped": true,
+      "firstSeen": "2026-10-22",
+      "note": "LI582's wording under another code, read like it. The parcel seen with it moved on from the origin's receipt to an agreed delivery day."
+    },
+    {
       "code": "LI511",
       "wording": "EL ENVÍO ESTÁ PENDIENTE DE LLEGAR A DESTINO. EN CUANTO SE RECIBA, ACTUALIZAREMOS LA SITUACIÓN.",
       "language": "es",

@@ -35,8 +35,8 @@ describe('SEUR simplified anonymous tracking', () => {
     }
   });
 
-  it('keeps the stage a parcel had through either delay notice', () => {
-    for (const code of ['LI300', 'LI582']) {
+  it('keeps the stage a parcel had through each delay notice', () => {
+    for (const code of ['LI300', 'LI582', 'LI557']) {
       const body = copy();
       const delay = { fecha: '2026-01-24T10:00:00Z', cod_situacion: code, grupo_situacion: 'EN DEMORA',
         descripcion_situacion: statuses.entries.find(entry => entry.code === code)!.wording };

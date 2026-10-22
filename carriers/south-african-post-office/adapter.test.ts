@@ -255,6 +255,8 @@ describe('South African Post Office status vocabulary', () => {
     expect(southAfricanPostStage('First Notification to recipient', 'At Office')).toEqual({ stage: 'ready_for_pickup', source: 'carrier_map' });
     // Customs handing the item back is a clearance, not a return.
     expect(southAfricanPostStage('Returned from Customs', 'In Transit')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    // The release in the tracker's own words, though they read as a hand-over to customs.
+    expect(southAfricanPostStage('Handed over to customs authority for final delivery', 'In Transit')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
     for (const wording of ['constructor', 'toString', 'Delivered - Sample Office']) expect(southAfricanPostCommentStage(wording), wording).toBeUndefined();
     expect(statusMap.stage('7', 'delivered')).toBeUndefined();
     expect(southAfricanPostStage('', '')).toBeNull();

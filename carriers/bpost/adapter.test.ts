@@ -130,6 +130,10 @@ describe('bpost direct history', () => {
     expect(classifyBpostStatus('Awaiting presentation to Customs')?.stage).toBe('customs');
     for (const wording of ['No extra costs', 'Departure to distribution network']) expect(classifyBpostStatus(wording)?.stage).toBe('in_transit');
     expect(classifyBpostStatus('Item delivered in mailbox')).toEqual({ status: 'delivered', stage: 'delivered' });
+    // A partner abroad that could not deliver, then its notice to the addressee.
+    for (const wording of ['Out for delivery - delivery not possible', 'Shipment presented without success. Addressee is informed.']) {
+      expect(classifyBpostStatus(wording)?.stage).toBe('failed_attempt');
+    }
     for (const wording of ['__proto__', 'constructor', 'Delivery expected']) expect(classifyBpostStatus(wording)).toBeUndefined();
   });
 

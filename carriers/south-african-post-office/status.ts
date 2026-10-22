@@ -24,6 +24,9 @@ export const SOUTH_AFRICAN_POST_COMMENTS: Readonly<Record<string, Stage>> = {
   'Awaiting proof of purchase/value from addressee': 'customs',
   // Customs handed the item back to the post: cleared.
   'Returned from Customs': 'in_transit',
+  // The same release in the tracker's words: the origin post and UPU's copy call the scan at
+  // that minute a release from customs, and the item is dispatched from the mail centre next.
+  'Handed over to customs authority for final delivery': 'in_transit',
   // A notice to collect the item at the office.
   'First Notification to recipient': 'ready_for_pickup',
   Delivered: 'delivered',

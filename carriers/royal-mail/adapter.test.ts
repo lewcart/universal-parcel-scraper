@@ -176,6 +176,21 @@ describe('Royal Mail structured response', () => {
     expect(statusMap.stage('EVNCE', 'collected from your customer service point')).toBeUndefined();
   });
 
+  it('dates a delivery the delivery office records at its Customer Service Point', () => {
+    const result = parseRoyalMailTrackingResponse({ mailPieces: {
+      mailPieceId: DELIVERED_NUMBER,
+      summary: { statusCategory: 'Delivered', statusDescription: 'Delivered', lastEventCode: 'EVNFS', lastEventDateTime: '2026-01-20T06:43:15+00:00' },
+      events: [
+        { eventCode: 'EVNFS', eventName: '**Delivery Scan Recorded at Customer Service Point**', eventDateTime: '2026-01-20T06:43:15+00:00', locationName: 'Example DO' },
+        { eventCode: 'EVIMC', eventName: '**Item Received**', eventDateTime: '2026-01-19T22:32:00+00:00', locationName: 'Example MC' },
+      ],
+    } }, DELIVERED_NUMBER);
+    expect(result.events?.map(event => [event.stage, event.stage_source])).toEqual([
+      ['delivered', 'carrier_map'], ['in_transit', 'carrier_map'],
+    ]);
+    expect(result.delivered_at).toBe('2026-01-20T06:43:15Z');
+  });
+
   it('places an international journey by its codes and names the destination', () => {
     const result = parseRoyalMailTrackingResponse({ mailPieces: {
       mailPieceId: DELIVERED_NUMBER,

@@ -13,6 +13,10 @@ const WORDINGS: Record<string, ClassifiedStatus> = {
   'Item available at the bbox locker': { status: 'in_transit', stage: 'ready_for_pickup' },
   'Item available at the parcel locker': { status: 'in_transit', stage: 'ready_for_pickup' },
   "The postman's delivery round for your item has started": { status: 'out_for_delivery', stage: 'out_for_delivery' },
+  // A delivery abroad that did not happen, as bpost words the partner's attempt: CTT's own
+  // "delivery not achieved" comes at the same minute, then the item waits at a pick-up point.
+  'Out for delivery - delivery not possible': { status: 'exception', stage: 'failed_attempt' },
+  'Shipment presented without success. Addressee is informed.': { status: 'exception', stage: 'failed_attempt' },
   'Your shipment has arrived at the postal operator of the country of destination and will be delivered in the coming days': { status: 'in_transit', stage: 'in_transit' },
   'Your item has been sorted': { status: 'in_transit', stage: 'in_transit' },
   'Item is ready for transport': { status: 'in_transit', stage: 'in_transit' },

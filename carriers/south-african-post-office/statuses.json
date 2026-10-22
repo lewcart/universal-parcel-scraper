@@ -49,6 +49,7 @@
     {"wording": "Detention Notice", "stage": "customs", "language": "en", "confirmedBy": "live", "note": "A scan type, shown with the comment Awaiting proof of purchase/value from addressee."},
     {"wording": "Awaiting proof of purchase/value from addressee", "stage": "customs", "language": "en", "confirmedBy": "live", "note": "Customs holds the item until the addressee sends an invoice."},
     {"wording": "Returned from Customs", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Customs handed the item back to the post, which delivered it."},
+    {"wording": "Handed over to customs authority for final delivery", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Despite its words, the release: the origin post and UPU's copy call the scan at the same minute a release from customs, and the mail centre dispatches the item next."},
     {"wording": "Delivered/Collected", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "A scan type, for a delivery and for a collection at the office."},
     {"wording": "Delivered to :", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Followed by the name of the person who took the item, which is not kept."}
   ]

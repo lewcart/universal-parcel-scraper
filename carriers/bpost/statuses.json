@@ -16,6 +16,22 @@
       "firstSeen": "2026-09-28"
     },
     {
+      "wording": "Out for delivery - delivery not possible",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The delivering partner abroad could not deliver: CTT's own scan at the same minute says the delivery was not achieved, and the item then waits at a pick-up point."
+    },
+    {
+      "wording": "Shipment presented without success. Addressee is informed.",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The notice of the same attempt, an hour later, before the item is available at a pick-up point."
+    },
+    {
       "wording": "Item on it's way to bbox locker",
       "language": "en",
       "stage": "in_transit",

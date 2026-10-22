@@ -50,6 +50,9 @@ const EVENT_STAGES = new Map<string, Stage>([
   // Customer Service Point waits for its recipient, who can also book a redelivery.
   ['EVNAR', 'failed_attempt'],
   ['EVNDA', 'ready_for_pickup'],
+  // A delivery office's own delivery, to a business or a box that collects there: the summary
+  // turns delivered with this scan as the last event.
+  ['EVNFS', 'delivered'],
   ['EVCAD', 'accepted'],
   ['EVPPA', 'accepted'],
   ['LOPPA', 'accepted'],

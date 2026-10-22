@@ -46,15 +46,16 @@ const TRACKING_STATUS: Record<string, ClassifiedStatus> = {
 };
 
 /**
- * Codes that change where the parcel goes, not how far it got. LMD.3013
- * ("Paczka przekierowana") comes straight after creation as well as later,
- * so it keeps the stage of the event before it.
+ * Codes that say nothing of how far the parcel got, so they keep the stage of
+ * the event before it. LMD.3013 ("Paczka przekierowana") changes where it goes
+ * and comes straight after creation as well as later; INF.9001 ("Possible
+ * delivery delay") is a notice between two moves.
  */
-const DESTINATION_CHANGES = new Set(['LMD.3013']);
+const STAGE_KEEPERS = new Set(['LMD.3013', 'INF.9001']);
 
-/** Whether an InPost hub status code only changes the parcel's destination. */
-export function isInpostDestinationChange(code: string): boolean {
-  return DESTINATION_CHANGES.has(code);
+/** Whether an InPost hub status code keeps the stage the parcel had before it. */
+export function keepsInpostStage(code: string): boolean {
+  return STAGE_KEEPERS.has(code);
 }
 
 /** The stage and status for an InPost hub status code, or undefined when unmapped. */

@@ -329,6 +329,15 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-21",
       "note": "Seen seconds after EVNSC, just before a booked redelivery's round; it could as well be the recipient's own collection, so it gets no stage."
+    },
+    {
+      "code": "EVNFS",
+      "wording": "Delivery Scan Recorded at Customer Service Point",
+      "language": "en",
+      "stage": "delivered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Recorded at a delivery office; the summary turns delivered with this scan as its last event."
     }
   ]
 }

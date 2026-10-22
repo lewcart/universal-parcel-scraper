@@ -170,6 +170,16 @@ describe('InPost response parsing', () => {
     expect(alone.events?.[0]?.stage).toBeUndefined();
   });
 
+  it('keeps the stage a parcel had through a delay notice', () => {
+    const moving = { status: 'MMD.1004', statusTitle: 'On the way', datetime: '2026-05-04T13:00:00+02:00' };
+    const delay = { status: 'INF.9001', statusTitle: 'Possible delivery delay', datetime: '2026-05-07T08:00:00+02:00' };
+    const result = parseInpostTrackingResponse(parcel({
+      status: 'INF.9001', statusTitle: 'Possible delivery delay', trackingDetails: [delay, moving],
+    }), TRACKING_NUMBER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Possible delivery delay' });
+    expect(result.events?.map((event) => event.stage)).toEqual(['in_transit', 'in_transit']);
+  });
+
   it('rewords a scan stored in Polish in place, matched by its stage and place', () => {
     // The hub's Polish and English replies carry the same codes, clocks and places.
     const policy = sameInstantIdentityPolicy('inpost', { supportsScanMatching: true });

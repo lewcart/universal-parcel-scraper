@@ -5,7 +5,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { classifyInpostStatus, isInpostDestinationChange } from './status.js';
+import { classifyInpostStatus, keepsInpostStage } from './status.js';
 import { needsInpostPickup, parseInpostPickup } from './pickup.js';
 import { inpostClock } from './clock.js';
 import { INPOST_UK_NUMBER } from './number.js';
@@ -100,10 +100,10 @@ export function parseInpostTrackingResponse(payload: unknown, trackingNumber: st
     });
   });
   parsed.sort((left, right) => right.timestamp - left.timestamp || left.index - right.index);
-  // A redirect keeps the stage the parcel had before it.
+  // A redirect or a delay notice keeps the stage the parcel had before it.
   let before: ClassifiedStatus | undefined;
   for (const entry of [...parsed].reverse()) {
-    if (!entry.classified && isInpostDestinationChange(entry.code) && before) {
+    if (!entry.classified && keepsInpostStage(entry.code) && before) {
       entry.classified = before;
       entry.event.stage = before.stage;
     }
@@ -111,7 +111,7 @@ export function parseInpostTrackingResponse(payload: unknown, trackingNumber: st
   }
   const events = parsed.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event);
   const current = classified
-    ?? (isInpostDestinationChange(code) ? parsed.find((entry) => entry.classified)?.classified : undefined);
+    ?? (keepsInpostStage(code) ? parsed.find((entry) => entry.classified)?.classified : undefined);
   // Of the destination only the country code is sent; the origin country feeds no field.
   const country = isRecord(payload.destination) ? payload.destination.countryCode : undefined;
   const destination = typeof country === 'string' && /^[A-Z]{2}$/.test(country) ? { destination_country: country } : {};

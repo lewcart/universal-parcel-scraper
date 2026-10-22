@@ -21,8 +21,10 @@ export class WanbTracker {
 
   async direct(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeWanbNumber(raw);
+    // Node's fetch sends `Accept-Language: *` unless told otherwise, and the
+    // tracker fails on it with HTTP 500, often after several seconds.
     const { bytes } = await fetchBounded(`${API}?TrackingNumber=${number}`, { signal: context.signal,
-      headers: { Accept: 'application/json', 'User-Agent': userAgentOf(this.environment.userAgent) } },
+      headers: { Accept: 'application/json', 'Accept-Language': 'en', 'User-Agent': userAgentOf(this.environment.userAgent) } },
     { provider: PROVIDER, timeoutMs: Math.max(1, Math.floor(context.budgetMs ?? 5000)), maxBytes: MAX_BYTES, fetcher: this.environment.fetcher });
     return this.parse(decodeText(bytes), number);
   }

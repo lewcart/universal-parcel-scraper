@@ -46,6 +46,13 @@ describe('WanbExpress', () => {
     await expect(carrier.track({ number }, { budgetMs: 8000 })).resolves.toMatchObject({ current_stage: 'delivered' });
   });
 
+  it('names a language, since the tracker fails on fetch\'s default wildcard', async () => {
+    const fetcher = vi.fn<typeof fetch>(async () => reply(challenge));
+    const carrier = adapter({ env: {}, fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER });
+    await expect(carrier.recognize!(number)).rejects.toMatchObject({ kind: 'challenge' });
+    expect(new Headers(fetcher.mock.calls[0]![1]?.headers).get('accept-language')).toBe('en');
+  });
+
   it('retains a verification failure when neither browser service is configured', async () => {
     const carrier = adapter({ env: {}, fetcher: async () => reply(challenge), trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER });
     await expect(carrier.recognizeWithBrowser!(number, {})).rejects.toMatchObject({ kind: 'challenge' });

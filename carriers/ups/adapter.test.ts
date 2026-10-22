@@ -732,6 +732,31 @@ describe('UPS captured response sequence', () => {
     expect(held.fetcher).toHaveBeenCalledTimes(1);
   });
 
+  it.each([
+    ['tiers', { error: 'Max tier reached without success', timings: [{ tier: 2, status: 'blocked' }, { tier: 3, status: 'blocked' }] }],
+    ['deadline', { error: 'Scrape deadline exceeded', timings: [{ tier: 2, status: 'blocked' }] }],
+  ])('rests the browser service after Akamai blocks the page until the %s run out', async (name, reply) => {
+    const endpoint = `${TRAWL_URL}/blocked-${name}`;
+    const blocked = vi.fn<typeof fetch>().mockResolvedValue(Response.json(reply, { status: 500 }));
+    const failed = new UPSTracker({ trawl: new TrawlClient(endpoint, blocked), fetcher: blocked });
+    await expect(failed.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', status: 500 });
+    const held = browser([capture()], {}, endpoint);
+    await expect(held.tracker.fetch(TRACKING_NUMBER)).rejects.toBeInstanceOf(UPSStatusHeldError);
+    expect(held.fetcher).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['another failure', { error: 'Browser pool exhausted' }],
+    ['a tier that failed otherwise', { error: 'Max tier reached without success', timings: [{ tier: 2, status: 'blocked' }, { tier: 3, status: 'error' }] }],
+  ])('does not rest the browser service after %s', async (name, reply) => {
+    const endpoint = `${TRAWL_URL}/unblocked-${name.replaceAll(' ', '-')}`;
+    const failing = vi.fn<typeof fetch>().mockResolvedValue(Response.json(reply, { status: 500 }));
+    await expect(new UPSTracker({ trawl: new TrawlClient(endpoint, failing), fetcher: failing }).fetch(TRACKING_NUMBER))
+      .rejects.toMatchObject({ status: 500 });
+    const next = browser([capture()], {}, endpoint);
+    await expect(next.tracker.fetch(TRACKING_NUMBER)).resolves.toMatchObject({ tracking_source: 'structured-web-response' });
+  });
+
   it.each([429, 502, 503])('does not rest the browser service after HTTP %i', async (status) => {
     const endpoint = `${TRAWL_URL}/not-held-${status}`;
     await expect(browser([capture(status, '')], {}, endpoint).tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ status });

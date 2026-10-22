@@ -31,8 +31,10 @@ const SETTLE_TIMEOUT_MS = 15_000;
 const MAX_CAPTURED = 20;
 // UPS's status call answers HTTP 500 in bursts. During one, the browser's call failed again
 // for every lookup that followed within a minute and nearly every one within five, while
-// lookups after a longer pause were answered. After a 500 the browser rests that long, and
-// the caller's next source answers meanwhile.
+// lookups after a longer pause were answered. Akamai's blocks, which keep the browser on its
+// interstitial, come in bursts too: 84% of the lookups within five minutes of one were
+// blocked, against 3% otherwise. After either the browser rests that long, and the caller's
+// next source answers meanwhile.
 export const STATUS_HOLD_MS = 5 * 60_000;
 // Provider strings are short; the rendered page's whole text is not, and the
 // identity check reads all of it, so it passes its own limit to `clean`.
@@ -73,21 +75,35 @@ export class UPSUnavailableError extends IndeterminateError {
 
 /**
  * The browser step, skipped while UPS's status call would likely answer HTTP 500
- * again: inconclusive, so another source may answer.
+ * again, or Akamai block the page again: inconclusive, so another source may answer.
  */
 export class UPSStatusHeldError extends IndeterminateError {
   constructor(readonly heldMs: number) {
-    super('UPS', `UPS's status call answered HTTP 500 moments ago; the browser waits ${Math.ceil(heldMs / 1_000)} s more`);
+    super('UPS', `UPS's tracking failed in the browser moments ago; the browser waits ${Math.ceil(heldMs / 1_000)} s more`);
     this.name = 'UPSStatusHeldError';
   }
 }
 
 /**
- * When the status call last answered HTTP 500, by browser service. Every
- * tracker in the process that uses the service shares it, as a host's several
- * registries do; a restart forgets it.
+ * When the status call last answered HTTP 500, or Akamai last blocked the
+ * page, by browser service. Every tracker in the process that uses the service
+ * shares it, as a host's several registries do; a restart forgets it.
  */
 const statusFailedAt = new Map<string, number>();
+
+/**
+ * Whether the browser service's HTTP 500 says its last browser tier stayed
+ * blocked, as on Akamai's interstitial, until the tiers or the deadline ran
+ * out. An excerpt cut short still shows the status.
+ */
+function trawlBlocked(error: unknown): boolean {
+  if (!(error instanceof UpstreamHttpError) || error.status !== 500) return false;
+  const excerpt = error.diagnostics?.body_excerpt ?? '';
+  let reply: unknown;
+  try { reply = JSON.parse(excerpt); } catch { return /"status"\s*:\s*"blocked"/.test(excerpt); }
+  const last: unknown = isRecord(reply) && Array.isArray(reply.timings) ? reply.timings.at(-1) : undefined;
+  return isRecord(last) && (last.tier === 2 || last.tier === 3) && last.status === 'blocked';
+}
 
 /** How long the browser service still rests after a 500, or 0. */
 function statusHeldMs(trawl: TrawlClient): number {
@@ -620,21 +636,27 @@ export class UPSTracker {
    * validated in the page. The page the browser rendered is the last resort.
    */
   async #trawlResult(trawl: TrawlClient, number: string, timeoutMs: number, signal: AbortSignal): Promise<CarrierResult> {
-    const page = await trawl.scrape({
-      url: upsTrackingUrl(number),
-      skipHttp: true,
-      maxTier: 3,
-      maxTimeout: timeoutMs,
-      captureResponses: [STATUS_API],
-      settleTimeout: SETTLE_TIMEOUT_MS,
-    }, {
-      provider: TRAWL_PROVIDER,
-      timeoutMs,
-      maxBytes: MAX_BYTES,
-      fetcher: this.#fetcher,
-      signal,
-      captureWindow: 'last',
-    });
+    let page;
+    try {
+      page = await trawl.scrape({
+        url: upsTrackingUrl(number),
+        skipHttp: true,
+        maxTier: 3,
+        maxTimeout: timeoutMs,
+        captureResponses: [STATUS_API],
+        settleTimeout: SETTLE_TIMEOUT_MS,
+      }, {
+        provider: TRAWL_PROVIDER,
+        timeoutMs,
+        maxBytes: MAX_BYTES,
+        fetcher: this.#fetcher,
+        signal,
+        captureWindow: 'last',
+      });
+    } catch (error) {
+      if (trawlBlocked(error)) statusFailedAt.set(trawl.endpoint.href, Date.now());
+      throw error;
+    }
     // The last matching response is authoritative. An earlier success cannot
     // answer after the page's retry was refused or returned invalid data.
     const entry = page.capturedResponses.filter((capture) => capture.url === STATUS_API).slice(-MAX_CAPTURED).at(-1);

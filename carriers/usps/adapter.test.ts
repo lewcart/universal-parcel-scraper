@@ -62,6 +62,8 @@ describe('USPS status vocabulary', () => {
     expect(uspsStage('Out for Delivery')).toBe('out_for_delivery');
     expect(uspsStage('Notice Left')).toBe('failed_attempt');
     expect(uspsStage('Pre-Shipment')).toBe('registered');
+    // A label printed at the counter, dated by its day alone; the scan of the item that follows is the acceptance.
+    expect(uspsStage('Shipping Label Printed at Post Office')).toBe('registered');
     expect(uspsStage('Available for Pickup')).toBe('ready_for_pickup');
     // The delivering post office's arrival comes before the delivery round; a held parcel waits for collection.
     expect(uspsStage('Arrived at Post Office')).toBe('in_transit');

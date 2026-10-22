@@ -26,8 +26,9 @@ const OUT_FOR_DELIVERY_TERMS = ['out for delivery'];
 // The delivering post office's arrival ("Arrived at Post Office") comes before the delivery round, so it is transit;
 // a parcel waits there for its recipient only once it is held.
 const READY_FOR_PICKUP_TERMS = ['available for pickup', 'available for pick-up', 'pickup', 'pick up', 'held at post office'];
+// A label printed at the counter is dated by its day alone; the item's acceptance is the scan of it that follows.
 const REGISTERED_TERMS = [
-  'pre-shipment', 'preshipment', 'shipping label created', 'label created',
+  'pre-shipment', 'preshipment', 'shipping label created', 'label created', 'shipping label printed',
   'acceptance pending', 'usps awaiting item', 'awaiting item', 'order received',
 ];
 // A facility arrival ("Arrived at USPS Facility") follows acceptance: it is transit.

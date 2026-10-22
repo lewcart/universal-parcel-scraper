@@ -12,6 +12,8 @@ const SCANS: Readonly<Record<string, Stage>> = {
   'Print ACSConnect/WebTools label': 'registered',
   'Print take delivery status': 'registered',
   'Pick-up from sender': 'accepted',
+  // The same collection, worded short: the parcel's first scan, before its departure.
+  'Pick-up': 'accepted',
   'Departure to destination': 'in_transit',
   'Transit from HUB': 'in_transit',
   'Arrival-departure from HUB': 'in_transit',

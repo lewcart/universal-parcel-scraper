@@ -62,6 +62,8 @@ const EVENT_STATUS: Record<string, ClassifiedStatus> = {
   'ADV0000V': { status: 'in_transit', stage: 'accepted' },
   'H01R390V': { status: 'exception', stage: 'failed_attempt' },
   'H01R420V': { status: 'exception', stage: 'failed_attempt' },
+  // Recorded straight after the parcel went out for delivery.
+  'H01R424V': { status: 'exception', stage: 'failed_attempt' },
   // Held at the office for the recipient to collect: observed live.
   'G01L020V': { status: 'out_for_delivery', stage: 'ready_for_pickup' },
   // The pickup window closed: the parcel goes back to the sender.

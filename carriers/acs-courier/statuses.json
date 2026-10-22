@@ -4,6 +4,7 @@
     {"wording": "Print ACSConnect/WebTools label", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "The sender printed the label with ACS's shipping software; the parcel is not with ACS yet."},
     {"wording": "Print take delivery status", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "The branch printed its list of parcels to collect from the sender."},
     {"wording": "Pick-up from sender", "stage": "accepted", "language": "en", "confirmedBy": "live"},
+    {"wording": "Pick-up", "stage": "accepted", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "The courier's collection worded short: the parcel's first scan, followed by its departure."},
     {"wording": "Departure to destination", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "A prefix: the wording names the destination branch after it, and the scan's place is the branch the parcel leaves."},
     {"wording": "Transit from HUB", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Arrival-departure from HUB", "stage": "in_transit", "language": "en", "confirmedBy": "live"},

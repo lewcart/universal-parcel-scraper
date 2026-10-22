@@ -267,6 +267,7 @@ describe('ACS Courier status vocabulary', () => {
     }
     expect(statusMapAnswer({ carrier: 'acs-courier', providerCode: null, description: 'Departure to destination EXAMPLE 2' }))
       .toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'acs-courier', providerCode: null, description: 'Pick-up' })).toEqual({ kind: 'mapped', stage: 'accepted' });
     expect(statusMapAnswer({ carrier: 'acs-courier', providerCode: null, description: 'SENT NOTIFICATION' })).toMatchObject({ kind: 'intentional_gap' });
     expect(statusMapAnswer({ carrier: 'acs-courier', providerCode: '400', description: 'Out for delivery' })).toMatchObject({ kind: 'intentional_gap' });
     expect(statusMapAnswer({ carrier: 'acs-courier', providerCode: '8', description: 'In Transit' })).toEqual({ kind: 'mapped', stage: 'in_transit' });

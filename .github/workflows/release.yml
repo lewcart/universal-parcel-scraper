@@ -50,14 +50,20 @@ jobs:
     # workflow, so this waits for each one's pushed or dispatched runs on this
     # commit: one that passed lets the release go on, and once all have
     # finished without passing, the release stops. After rerunning either,
-    # rerun this workflow's failed jobs.
+    # rerun this workflow's failed jobs. GitHub's list of a workflow's runs for
+    # a commit sometimes leaves a run out for good, so the repository's list of
+    # runs for the commit is read as well.
     steps:
       - run: |
           started=$SECONDS
           for workflow in ci.yml secrets.yml; do
             while true; do
-              state=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$workflow/runs?head_sha=$GITHUB_SHA&per_page=100" --jq '
-                [.workflow_runs[] | select(.event == "push" or .event == "workflow_dispatch")]
+              state=$({
+                gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$workflow/runs?head_sha=$GITHUB_SHA&per_page=100" --jq '.workflow_runs[]'
+                gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&per_page=100" \
+                  --jq ".workflow_runs[] | select(.path == \".github/workflows/$workflow\")"
+              } | jq -rs '
+                unique_by(.id) | [.[] | select(.event == "push" or .event == "workflow_dispatch")]
                 | if any(.conclusion == "success") then "passed"
                   elif length == 0 then "missing"
                   elif any(.status != "completed") then "running"

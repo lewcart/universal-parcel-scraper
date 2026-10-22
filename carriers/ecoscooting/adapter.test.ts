@@ -303,11 +303,19 @@ describe('Ecoscooting direct retrieval', () => {
     expect(normalizeCarrierResult(parseEcoscooting(listed(), shein))).toMatchObject({ status: 'delivered', delivered_at: '2026-01-04T19:00:00Z' });
     const ownScan = listed(); ownScan.statuses[1].mailNo = NUMBER;
     expect(parseEcoscooting(ownScan, shein)).toMatchObject({ status: 'delivered' });
-    // The listing must name the SHEIN number beside an 18-digit label, and scans that label.
+    // In Portugal the label is a CN reference, and an announced parcel is listed without scans.
+    const portugal = () => { const value = portugalFixture(); value.packageParam.outOrderId = shein; return value; };
+    const fromPortugal = parseEcoscooting(portugal(), shein);
+    expect(fromPortugal).toMatchObject({ status: 'delivered' });
+    expect(JSON.stringify(fromPortugal)).not.toContain(PORTUGAL_NUMBER);
+    const announced = portugal(); announced.statuses = [];
+    expect(() => parseEcoscooting(announced, shein)).toThrow(NoHistoryError);
+    // The listing must name the SHEIN number beside one of Ecoscooting's labels, and scans that label.
     const otherOrder = listed(); otherOrder.packageParam.outOrderId = 'C26010100000002';
     const shortLabel = listed(); shortLabel.packageParam.trackingNumber = NUMBER.slice(1);
+    const foreignLabel = portugal(); foreignLabel.packageParam.trackingNumber = 'CNFRA00000000000000000001';
     const otherScan = listed(); otherScan.statuses[1].mailNo = OTHER;
-    for (const value of [otherOrder, shortLabel, otherScan]) expect(() => parseEcoscooting(value, shein)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    for (const value of [otherOrder, shortLabel, foreignLabel, otherScan]) expect(() => parseEcoscooting(value, shein)).toThrow(expect.objectContaining({ kind: 'schema' }));
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(listed())));
     const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
     const result = await instance.track({ number: shein });
@@ -317,10 +325,12 @@ describe('Ecoscooting direct retrieval', () => {
     expect(JSON.stringify(result)).not.toContain(NUMBER);
     expect(JSON.parse(new URLSearchParams(String(fetcher.mock.lastCall?.[1]?.body)).get('logistics_interface')!).mailNo).toBe(shein);
     await expect(instance.recognize!(shein)).resolves.toMatchObject({ known: true });
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    fetcher.mockImplementationOnce(async () => new Response(JSON.stringify(announced)));
+    await expect(instance.recognize!(shein)).resolves.toEqual({ known: true, lastActivityAt: null });
+    expect(fetcher).toHaveBeenCalledTimes(3);
     // A date SHEIN cannot have issued is refused before any request.
     for (const number of ['C26130100000001', 'D26010100000001']) await expect(instance.track({ number })).rejects.toThrow(InvalidInputError);
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher).toHaveBeenCalledTimes(3);
   });
   it('sends one fresh anonymous form using exact public client configuration and identity', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(fixture())));

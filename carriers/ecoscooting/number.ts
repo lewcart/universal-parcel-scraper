@@ -18,13 +18,18 @@ export function ecoscootingReference(raw: string): string {
   return WITHOUT_CN.test(number) ? `CN${number}` : number;
 }
 
+/** An 18-digit label or a `CNESP`/`CNPRT` reference, the numbers Ecoscooting issues. */
+export function isEcoscootingLabel(number: string): boolean {
+  return REFERENCE.test(number);
+}
+
 /**
  * A number as Ecoscooting's gateway matches it: an 18-digit label, a
  * `CNESP`/`CNPRT` reference, or the SHEIN package number its label was made for.
  */
 export function ecoscootingRequestNumber(raw: string): string {
   const number = ecoscootingReference(raw);
-  if (!REFERENCE.test(number) && !isSheinPackageNumber(number)) {
+  if (!isEcoscootingLabel(number) && !isSheinPackageNumber(number)) {
     throw new InvalidInputError('Ecoscooting', 'Ecoscooting requires a numeric, CNESP or CNPRT parcel reference, or a SHEIN package number');
   }
   return number;

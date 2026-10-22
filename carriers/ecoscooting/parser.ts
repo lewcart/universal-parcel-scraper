@@ -4,7 +4,7 @@ import { epochMillisTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { isSheinPackageNumber } from '../../core/detection/shein.js';
-import { ecoscootingRequestNumber } from './number.js';
+import { ecoscootingRequestNumber, isEcoscootingLabel } from './number.js';
 import { ecoscootingStatus } from './status.js';
 
 const DELIVERED = 'Your shipment has been delivered successfully';
@@ -36,10 +36,11 @@ export function parseEcoscooting(payload: unknown, rawNumber: string): CarrierRe
     payload.errorMsg === 'query logisticOrder by mailNo error' ? { reason: 'portal_not_found' } : {});
   if (!isRecord(payload.packageParam)) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a different parcel');
   // A SHEIN package number is the shop's order: the listing names it beside
-  // Ecoscooting's own 18-digit label, which the parcel then goes by.
+  // Ecoscooting's own label, 18 digits in Spain or a `CN` reference in
+  // Portugal, which the parcel then goes by.
   const listed = payload.packageParam;
   const label = isSheinPackageNumber(number) && listed.outOrderId === number && typeof listed.trackingNumber === 'string'
-    && /^\d{18}$/.test(listed.trackingNumber) ? listed.trackingNumber : number;
+    && isEcoscootingLabel(listed.trackingNumber) ? listed.trackingNumber : number;
   if (listed.trackingNumber !== label) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a different parcel');
   if (!Array.isArray(payload.statuses) || payload.statuses.length > 500 || !payload.statuses.every(isRecord)) throw new SchemaError('Ecoscooting');
   // A parcel announced to Ecoscooting but not yet handed over is listed without scans.

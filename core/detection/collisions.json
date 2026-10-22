@@ -543,6 +543,24 @@
     "reason": "The Pakistani issuer suffix suggests Pakistan Post but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}MZ with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "corre",
+      "intl-post"
+    ],
+    "reason": "The Mozambican issuer suffix suggests CORRE but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
+    "shape": "EA9{9}VN with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "ems-vietnam",
+      "intl-post"
+    ],
+    "reason": "The Vietnamese EMS series suggests EMS Vietnam but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}SA with a valid S10 check digit",
     "carriers": [
       "chronopost",

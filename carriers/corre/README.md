@@ -19,8 +19,8 @@ itself through its national lookup on corremz.com.
   time the search took; only that page is not found. A page without either is a changed reply.
   A code that is not thirteen characters long gets a refusal, which is invalid input.
 - A 404, a 410 or a redirect is a moved route, and a firewall page is a challenge.
-- Recognition makes the same request. No detection rule offers CORRE, so preflight does not ask
-  it.
+- Recognition makes the same request. A code ending `MZ` with a valid check digit suggests
+  CORRE, so preflight asks it first.
 
 ## Notes
 
@@ -47,8 +47,9 @@ itself through its national lookup on corremz.com.
 ## Numbers
 
 CORRE's EMS and postal items carry UPU S10 numbers ending in `MZ`. Generic postal detection
-handles these numbers, so no rule for CORRE claims them. The samples and their sources are in
-[`numbers.json`](numbers.json).
+keeps these numbers, since the issuer of an S10 code does not establish who delivers it;
+`corre-s10` only suggests CORRE, which recognition asks first. The samples and their sources are
+in [`numbers.json`](numbers.json).
 
 ## Links
 

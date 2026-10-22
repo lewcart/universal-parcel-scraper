@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -266,6 +267,12 @@ describe('EMS Vietnam numbers', () => {
     for (const number of [DELIVERED, IN_TRANSIT, POSTAL]) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'intl-post' });
     }
+  });
+
+  it('is asked first about E-series items only', () => {
+    expect(recognitionAskedCarriers(DELIVERED)[0]).toBe('ems-vietnam');
+    expect(recognitionAskedCarriers(IN_TRANSIT)[0]).toBe('ems-vietnam');
+    expect(recognitionAskedCarriers(POSTAL)).not.toContain('ems-vietnam');
   });
 });
 

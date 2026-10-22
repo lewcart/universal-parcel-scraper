@@ -49,8 +49,9 @@ through the lookup its tracking page makes.
 ## Numbers
 
 EMS Vietnam items carry UPU S10 numbers ending in VN, as in the tracking page's own examples
-and archived lookups. Generic postal detection already recognises them, and the national post
-shares the suffix, so no rule names EMS Vietnam. The samples and their sources are in
+and archived lookups. Generic postal detection keeps them, and the national post shares the
+suffix. `ems-vietnam-s10` only suggests EMS Vietnam for the E series, which recognition asks it
+about first; the national post's other series never ask it. The samples and their sources are in
 [`numbers.json`](numbers.json).
 
 ## Links

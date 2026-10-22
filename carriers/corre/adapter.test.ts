@@ -197,9 +197,9 @@ describe('CORRE tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith(CORRE_TRACKER))).toBe(true);
   });
 
-  it('leaves Mozambican S10 codes with the postal fallback, which does not ask it, and reads the lookup’s links', () => {
+  it('leaves Mozambican S10 codes with the postal fallback, which asks it first, and reads the lookup’s links', () => {
     expect(detectCarrierMatch(RECEIVED)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers(RECEIVED)).not.toContain('corre');
+    expect(recognitionAskedCarriers(RECEIVED)[0]).toBe('corre');
     for (const path of ['tracktrace', 'trace']) {
       expect(parseTrackingInput(`https://www.corremz.com/cgi-bin/${path}.cgi?OBJ=${RECEIVED}`))
         .toMatchObject({ trackingNumber: RECEIVED, carrier: 'corre', source: 'link' });

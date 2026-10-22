@@ -108,13 +108,21 @@ describe('S10-shaped numbers', () => {
 
   it('asks the national posts first about the S10 numbers they issue without selecting them', () => {
     const posts = { PK: 'pakistan-post', SA: 'saudi-post', UY: 'correo-uruguayo', KG: 'kyrgyz-post', BF: 'la-poste-burkina-faso', ID: 'pos-indonesia',
-      CO: '4-72', SN: 'la-poste-senegal' };
+      CO: '4-72', SN: 'la-poste-senegal', MZ: 'corre' };
     for (const [country, post] of Object.entries(posts)) {
       expect(detectCarrierMatch(`rr 123 456 785 ${country}`), country).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
       expect(recognitionCandidates(`RR123456785${country}`)[0], country).toEqual({ carrier: post, needsInput: null, preferred: true });
       // A failing check digit or another post's suffix does not suggest it.
       expect(recognitionAskedCarriers(`RR123456789${country}`), country).not.toContain(post);
       expect(recognitionAskedCarriers('RR123456785AR'), country).not.toContain(post);
+    }
+  });
+
+  it('asks EMS Vietnam first about the EMS items Vietnam issues, not the national post’s other items', () => {
+    expect(detectCarrierMatch('ee 123 456 785 vn')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionCandidates('EE123456785VN')[0]).toEqual({ carrier: 'ems-vietnam', needsInput: null, preferred: true });
+    for (const number of ['EE123456789VN', 'RR123456785VN', 'CC123456785VN']) {
+      expect(recognitionAskedCarriers(number), number).not.toContain('ems-vietnam');
     }
   });
 

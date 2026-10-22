@@ -9689,7 +9689,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "correo-argentino": {
     "displayName": "Correo Argentino",
@@ -12832,7 +12839,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^E[A-Z]\\d{9}VN$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "energia-tk": {
     "displayName": "TK Energia",
@@ -32955,7 +32969,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "connect-couriers": [],
   "coordinadora": [],
   "copa-courier": ["copa-courier-1"],
-  "corre": [],
+  "corre": ["corre-s10"],
   "correo-argentino": ["correo-argentino-s10"],
   "correo-uruguayo": ["correo-uruguayo-s10"],
   "correos-bolivia": [],
@@ -33033,7 +33047,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "elta": ["elta-s10"],
   "emile": ["emile-1","emile-2"],
   "emirates-post": [],
-  "ems-vietnam": [],
+  "ems-vietnam": ["ems-vietnam-s10"],
   "energia-tk": [],
   "energo": ["energo-1"],
   "envia-colombia": [],

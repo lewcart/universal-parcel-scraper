@@ -102,5 +102,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "ems-vietnam-s10",
+      "pattern": "^E[A-Z]\\d{9}VN$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

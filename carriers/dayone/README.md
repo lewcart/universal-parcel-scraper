@@ -33,6 +33,7 @@ when the first fails to connect or hangs.
 - The destination post's manifest, relayed after the parcel moved, is no step back.
 - `channel_hawbcode`, the network's number, becomes `delivery_tracking_number`. Nothing names
   the network, so the hand-off decides who is asked: for an S10 number, the destination's post.
+  A parcel handed to YunExpress has one scan here, and its YunExpress number carries the rest.
 - The tracker's unknown-number answer is a not-found. Its "Parameter error" is a schema
   failure and any other refusal is inconclusive. Redirects, 404s and browser checks are never
   read as a missing parcel.

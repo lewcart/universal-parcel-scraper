@@ -302,6 +302,24 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-19",
       "note": "The pickup shop took the parcel over; relayed from DPD."
+    },
+    {
+      "code": "FPX_M_PT",
+      "wording": "Pending transportation",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "After the departure from the origin facility, before the hand-over to the airline."
+    },
+    {
+      "code": "FPX_D_DFD",
+      "wording": "Out from national sorting center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "After import clearance, the day before the last mile's out-for-delivery scan."
     }
   ]
 }

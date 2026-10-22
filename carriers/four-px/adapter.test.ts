@@ -158,6 +158,8 @@ describe('4PX result projection', () => {
     ['FPX_D_FD', 'Delivery attempt unsuccessful', 'exception', 'failed_attempt', 'carrier_map'],
     ['FPX_F_ST', 'Shipment in transit', 'in_transit', 'in_transit', 'carrier_map'],
     ['FPX_D_AOPC', 'Arrive in transit center', 'in_transit', 'in_transit', 'carrier_map'],
+    ['FPX_M_PT', 'Pending transportation', 'in_transit', 'in_transit', 'carrier_map'],
+    ['FPX_D_DFD', 'Out from national sorting center', 'in_transit', 'in_transit', 'carrier_map'],
     ['FPX_C_SPQS', '4px received shipment.', 'in_transit', 'accepted', 'carrier_map'],
     ['FPX_O_IR', 'Waybill generated', 'pending', 'registered', 'carrier_map'],
     ['FPX_O_IR', 'Waybill generated for EM000000000001CA', 'pending', 'registered', 'carrier_map'],

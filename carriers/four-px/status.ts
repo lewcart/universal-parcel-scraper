@@ -15,6 +15,7 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['FPX_C_AAF', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_C_ADFF', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_F_ST', { status: 'in_transit', stage: 'in_transit' }],
+  ['FPX_M_PT', { status: 'in_transit', stage: 'in_transit' }], // Left the origin facility, awaiting the line haul.
   ['FPX_M_HA', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_M_DFOA', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_M_ATA', { status: 'in_transit', stage: 'in_transit' }],
@@ -24,6 +25,7 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['FPX_D_AOPC', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_D_STPP', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_D_HQ', { status: 'in_transit', stage: 'in_transit' }],
+  ['FPX_D_DFD', { status: 'in_transit', stage: 'in_transit' }], // Left the destination's national sorting centre.
   ['FPX_O_RR', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_M_IT', { status: 'in_transit', stage: 'in_transit' }],
 ]);

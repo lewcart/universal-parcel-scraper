@@ -54,6 +54,8 @@ export const DHLINK_LAST_LEGS: readonly { readonly carrier: string; readonly num
   { carrier: 'swiftx', number: /^SWX\d{18}$/ },
   // GOFO's US waybills: GFUS and fourteen digits, the layout `gofo-1` claims.
   { carrier: 'gofo', number: /^GFUS\d{14}$/ },
+  // DPD Switzerland's parcel numbers: fourteen digits from its depots 0600 to 0619.
+  { carrier: 'dpd', number: /^06[01]\d{11}$/ },
 ];
 
 /** A number DHLink's tracker can be asked for; anything else is not sent. */

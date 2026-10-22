@@ -54,7 +54,9 @@ page makes.
   the delivered count is then not trusted.
 - The reply gives the last leg's number (`lastTurnNo`) but no partner, so the partner comes from
   the number's whole layout in an explicit table: `SWX` and eighteen digits is SwiftX, `GFUS`
-  and fourteen digits is GOFO. Other numbers give no hand-off.
+  and fourteen digits is GOFO, and fourteen digits from depots 0600 to 0619 is DPD
+  Switzerland. Other numbers give no hand-off; parcels USPS or a post delivers give no
+  last-leg number.
 - Places lose postcodes, placeholders and the destination code one feed appends to Chinese
   places. Wordings lose US ZIP codes, British and Canadian postcodes, and contact or signature
   details a post appends. The order id, the DHLink number and the feeds' and rows' ids are

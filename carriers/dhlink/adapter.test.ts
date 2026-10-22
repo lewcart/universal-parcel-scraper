@@ -194,14 +194,15 @@ describe('DHLink HTTP adapter', () => {
   });
 
   it('hands over only through the table, with the whole number in the partner’s layout', () => {
-    expect(DHLINK_LAST_LEGS.map((leg) => [leg.carrier, leg.number.source])).toEqual([['swiftx', '^SWX\\d{18}$'], ['gofo', '^GFUS\\d{14}$']]);
+    expect(DHLINK_LAST_LEGS.map((leg) => [leg.carrier, leg.number.source])).toEqual([['swiftx', '^SWX\\d{18}$'], ['gofo', '^GFUS\\d{14}$'], ['dpd', '^06[01]\\d{11}$']]);
     const handoff = (number: unknown) => {
       const result = parseDhlink(changed('swiftx-at-warehouse', (parcel) => { parcel.lastTurnNo = number; }), WAREHOUSE, LATER);
       return [result.delivery_carrier ?? null, result.delivery_tracking_number ?? null];
     };
     expect(handoff('swx 9900 0000 0000 0000 01')).toEqual(['swiftx', 'SWX990000000000000001']);
     expect(handoff('gfus 9900 0000 0000 01')).toEqual(['gofo', 'GFUS99000000000001']);
-    for (const number of ['SWX99000000000000001', 'SWX9900000000000000011', 'XSWX990000000000000001', '9400100000000000000001',
+    expect(handoff('0619 0000 0000 01')).toEqual(['dpd', '06190000000001']);
+    for (const number of ['06200000000001', '0600000000001', '060000000000001', 'SWX99000000000000001', 'SWX9900000000000000011', 'XSWX990000000000000001', '9400100000000000000001',
       'GFUS9900000000001', 'GFUS990000000000011', 'GF9900000000001', 'GFFR99000000000001', WAREHOUSE, '', null]) {
       expect(handoff(number), String(number)).toEqual([null, null]);
     }

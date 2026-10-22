@@ -9,7 +9,7 @@ import hubList from './hubs.json' with { type: 'json' };
 import { nameKey, nameKeys } from './names.mjs';
 import { mainZone, pointZone, regionZone } from './zones.js';
 
-export { dateLocalClocks, type ZoneBasis } from './clocks.js';
+export { carrierHomeZone, dateLocalClocks, type ZoneBasis } from './clocks.js';
 
 /** Where a scan happened, as precisely as its free-text location allows. */
 export interface EventPlace {

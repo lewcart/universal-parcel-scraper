@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { CarrierEvent } from '../core/result/index.js';
-import { airportTimeZone, dateLocalClocks, locatePlace, placeTimeZone } from './index.js';
+import { airportTimeZone, carrierHomeZone, dateLocalClocks, locatePlace, placeTimeZone } from './index.js';
 
 vi.setConfig({ testTimeout: 30_000 });
 
@@ -75,6 +75,15 @@ describe('dateLocalClocks', () => {
     // A catalog zone of UTC says the feed mixes clocks: the home is the carrier's first country.
     expect(dated(dateLocalClocks('china-post', { events: [scan] }).events![0]))
       .toEqual(['2026-03-02T11:00:00+08:00', 'Asia/Shanghai', 'carrier']);
+  });
+
+  it('gives a carrier’s home clock: the zone its result declares, its catalog zone, or with UTC there its first country’s', () => {
+    expect(carrierHomeZone('seur')).toBe('Europe/Madrid');
+    expect(carrierHomeZone('usps')).toBe('America/New_York');
+    expect(carrierHomeZone('china-post')).toBe('Asia/Shanghai');
+    expect(carrierHomeZone('usps', { timezone: 'America/Chicago' })).toBe('America/Chicago');
+    expect(carrierHomeZone('usps', { timezone: 'Not/AZone' })).toBe('America/New_York');
+    expect(carrierHomeZone('unknown')).toBeNull();
   });
 
   it('reads a wall clock the clocks repeat as its first occurrence', () => {

@@ -34,8 +34,14 @@ const walled = (event: CarrierEvent): boolean => !text(event.time) && WALL_CLOCK
 type Definition = { countries?: readonly string[]; timezone?: string };
 const definition = (carrier: string): Definition | undefined => (CARRIER_DEFINITIONS as Record<string, Definition | undefined>)[carrier];
 
-/** The carrier's home clock: its catalog zone, or with UTC there, its first country's. */
-function homeZone(carrier: string, declared: string): string | null {
+/**
+ * The carrier's home clock: the zone its result declares, else its catalog
+ * zone, or with UTC there, its first country's. A host can start a scan the
+ * carrier dates by its day alone at midnight there. Null for a carrier the
+ * catalog places nowhere.
+ */
+export function carrierHomeZone(carrier: string, result: Pick<CarrierResult, 'timezone'> = {}): string | null {
+  const declared = text(result.timezone);
   if (declared && IANAZone.isValidZone(declared)) return declared;
   const { timezone, countries = [] } = definition(carrier) ?? {};
   if (timezone && timezone !== 'UTC' && IANAZone.isValidZone(timezone)) return timezone;
@@ -88,7 +94,7 @@ export function dateLocalClocks(carrier: string, result: CarrierResult): Carrier
     return null;
   };
   const destination = destinationZone(carrier, text(result.destination_country).toUpperCase());
-  const home = homeZone(carrier, text(result.timezone));
+  const home = carrierHomeZone(carrier, result);
   const zoneAt = (at: number): { zone: string; basis: ZoneBasis } | null => {
     const place = places[at];
     if (placed[at]) return { zone: placed[at], basis: 'place' };

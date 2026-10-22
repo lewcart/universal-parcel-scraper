@@ -105,7 +105,9 @@ from the nearest scan that has a place; else from the parcel's destination, when
 delivers there; else from the carrier's home clock: its catalog zone, or with UTC there, its
 first country's. The scan keeps `local_time` and gains `time`, `time_zone` and
 `time_zone_basis` (`place`, `neighbour`, `destination` or `carrier`). Node lookups through
-`trackCarrier()` and `createTracker()` apply it to a carrier's own answer.
+`trackCarrier()` and `createTracker()` apply it to a carrier's own answer. Scans dated by their
+day alone keep it; `carrierHomeZone(carrier, result)` gives the home clock a host can start
+such a day on.
 
 A deduced zone can be wrong near a border between zones, or for a carrier that keeps one clock
 everywhere. A zone the carrier states, or one learned by comparing its clocks with copies that

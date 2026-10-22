@@ -303,6 +303,7 @@
   "./places": {
     "values": [
       "airportTimeZone",
+      "carrierHomeZone",
       "dateLocalClocks",
       "locatePlace",
       "placeTimeZone",

@@ -33,6 +33,9 @@ const WORDINGS: Record<string, ClassifiedStatus> = {
   'Arrival at facilities': { status: 'in_transit', stage: 'in_transit' },
   'Item has passed a checkpoint': { status: 'in_transit', stage: 'in_transit' },
   'Landmark Global (bpost) has received the item': { status: 'in_transit', stage: 'accepted' },
+  // The sender's drop-off, then bpost's acceptance of it a day later.
+  'Drop off item by the customer': { status: 'in_transit', stage: 'accepted' },
+  'Item accepted after deposit by sender': { status: 'in_transit', stage: 'accepted' },
   'Confirmation of preparation of the shipment received': { status: 'pending', stage: 'registered' },
   'Item is announced / Landmark Global (bpost) received the information': { status: 'pending', stage: 'registered' },
 };

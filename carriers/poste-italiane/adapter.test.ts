@@ -178,7 +178,7 @@ describe('Poste Italiane response parsing', () => {
       ['la spedizione è stata consegna', 'delivered', '2026-01-04T00:00:00.000Z'],
       ['la spedizione è in consegna', 'out_for_delivery', '2026-01-03T00:00:00.000Z'],
       ['la spedizione è in transito pr', 'in_transit', '2026-01-02T00:00:00.000Z'],
-      ['la spedizione è stata presa in', 'registered', '2026-01-01T00:00:00.000Z'],
+      ['la spedizione è stata presa in', 'accepted', '2026-01-01T00:00:00.000Z'],
     ]);
   });
 
@@ -277,7 +277,7 @@ describe('Poste Italiane response parsing', () => {
     expect(result.events?.map((event) => [event.stage, event.location, event.time])).toEqual([
       ['ready_for_pickup', 'PROVA CENTRO', '2026-01-03T08:00:00.000Z'],
       ['in_transit', 'CENTRO DI PROVA', '2026-01-02T21:30:00.000Z'],
-      ['registered', 'PROVA 99', '2026-01-01T10:00:00.000Z'],
+      ['accepted', 'PROVA 99', '2026-01-01T10:00:00.000Z'],
     ]);
     const serialized = JSON.stringify(result);
     for (const secret of ['VIA DI PROVA', '00000', '9999', '08:20', 'frazionario']) expect(serialized).not.toContain(secret);
@@ -340,7 +340,7 @@ describe('Poste Italiane response parsing', () => {
     }), TRACKING_NUMBER);
     expect(result.events?.map((event) => [event.stage, event.location])).toEqual([
       ['in_transit', ''],
-      ['registered', 'UFFICIO DI PROVA'],
+      ['accepted', 'UFFICIO DI PROVA'],
     ]);
     const serialized = JSON.stringify(result);
     for (const secret of ['VIA DI PROVA', '00000', '99999', '08:20', 'Test Depot']) expect(serialized).not.toContain(secret);

@@ -222,6 +222,8 @@ describe('status map answers', () => {
     expect(answer('bpost', null, "item on it's way to {{bboxrebrand}}")).toEqual(mapped('in_transit'));
     expect(answer('bpost', null, 'item available at the {{bboxrebrand}}')).toEqual(mapped('ready_for_pickup'));
     expect(answer('bpost', null, 'Item delivered')).toEqual(mapped('delivered'));
+    expect(answer('bpost', null, 'drop off item by the customer')).toEqual(mapped('accepted'));
+    expect(answer('bpost', null, 'item accepted after deposit by sender')).toEqual(mapped('accepted'));
     expect(answer('bpost', null, 'Synthetic scan')).toEqual(unknown);
     expect(answer('bpost', 'ZZ', 'Item delivered')).toEqual(unknown);
   });
@@ -232,6 +234,11 @@ describe('status map answers', () => {
     expect(answer('poste-italiane', null, 'la spedizione è in consegna')).toEqual(mapped('out_for_delivery'));
     expect(answer('poste-italiane', null, 'la spedizione è stata consegnata')).toEqual(mapped('delivered'));
     expect(answer('poste-italiane', null, 'cambio disposizioni di consegna')).toEqual(mapped('in_transit'));
+    expect(answer('poste-italiane', null, "la spedizione è stata presa in carico da un nostro operatore presso l'ufficio postale")).toEqual(mapped('accepted'));
+    expect(answer('poste-italiane', null, 'la spedizione è stata presa in carico da un nostro operatore presso il domicilio del mittente')).toEqual(mapped('accepted'));
+    expect(answer('poste-italiane', null, 'da un nostro operatore presso l’ufficio postale')).toEqual(mapped('accepted'));
+    expect(answer('poste-italiane', null, 'la spedizione è stata presa in carico')).toEqual(mapped('registered'));
+    expect(answer('poste-italiane', null, 'a seguito di acquisto da poste.it')).toEqual(mapped('registered'));
   });
 
   it("answers Cainiao's action codes, and the wording the queue holds without one", () => {

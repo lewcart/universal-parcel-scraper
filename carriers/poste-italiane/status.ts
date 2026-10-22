@@ -24,11 +24,13 @@ export function normalizePosteItalianeWording(value: unknown): string {
 export function classifyPosteItalianeStatus(rawWording: unknown): ClassifiedStatus | undefined {
   const value = normalizePosteItalianeWording(rawWording);
   if (!value) return undefined;
-  // Dropped off at a Punto Poste: the parcel itself is in Poste's hands.
-  if (value.startsWith('la spedizione è stata presa in carico presso il punto poste')) return { status: 'in_transit', stage: 'accepted' };
+  // Dropped off at a Punto Poste, or taken in by one of Poste's operators at a post office counter or
+  // from the sender's home, also on its own line: the parcel itself is in Poste's hands.
+  if (value.startsWith('la spedizione è stata presa in carico presso il punto poste')
+    || value.startsWith('la spedizione è stata presa in carico da un nostro operatore')
+    || value.startsWith('da un nostro operatore presso')) return { status: 'in_transit', stage: 'accepted' };
+  // A purchase on poste.it, and the bare line, which names no intake.
   if (value.startsWith('la spedizione è stata presa in carico')
-    || value.startsWith('da un nostro operatore presso l’ufficio postale')
-    || value.startsWith('da un nostro operatore presso l\'ufficio postale')
     || value === 'a seguito di acquisto da poste.it') return { status: 'pending', stage: 'registered' };
   if (value.startsWith('la spedizione è in transito')
     || value.startsWith('completata la fase di verifica per lo svincolo')

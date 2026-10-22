@@ -143,6 +143,21 @@
       "firstSeen": "2026-09-28"
     },
     {
+      "wording": "Drop off item by the customer",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-21",
+      "note": "The sender's drop-off, before bpost's acceptance of it."
+    },
+    {
+      "wording": "Item accepted after deposit by sender",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22"
+    },
+    {
       "wording": "Confirmation of preparation of the shipment received",
       "language": "en",
       "stage": "registered",

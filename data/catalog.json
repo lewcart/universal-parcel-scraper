@@ -1274,11 +1274,6 @@
         "confidence": "low"
       },
       {
-        "pattern": "^Z[ACS]\\d{11}$",
-        "confidence": "low",
-        "checksum": "colissimo"
-      },
-      {
         "pattern": "^(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}FR$",
         "confidence": "high",
         "checksum": "s10"
@@ -4575,18 +4570,15 @@
       },
       {
         "pattern": "^ZS\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       },
       {
         "pattern": "^ZC\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       },
       {
         "pattern": "^ZA\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       }
     ]
   },

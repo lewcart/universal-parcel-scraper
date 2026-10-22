@@ -92047,32 +92047,18 @@
   },
   {
     "input": "ZA10000000001",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "china-post",
+    "confidence": "high",
     "candidates": [
-      "china-post"
-    ],
-    "preferred": [
-      "china-post"
-    ],
-    "asked": [
       "china-post"
     ]
   },
   {
     "input": "ZA10000000009",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "china-post",
+    "confidence": "high",
     "candidates": [
-      "china-post",
-      "la-poste"
-    ],
-    "preferred": [
       "china-post"
-    ],
-    "asked": [
-      "china-post",
-      "la-poste"
     ]
   },
   {
@@ -92127,15 +92113,9 @@
   },
   {
     "input": "ZC10000000001",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "china-post",
+    "confidence": "high",
     "candidates": [
-      "china-post"
-    ],
-    "preferred": [
-      "china-post"
-    ],
-    "asked": [
       "china-post"
     ]
   },
@@ -92299,15 +92279,9 @@
   },
   {
     "input": "ZS10000000001",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "china-post",
+    "confidence": "high",
     "candidates": [
-      "china-post"
-    ],
-    "preferred": [
-      "china-post"
-    ],
-    "asked": [
       "china-post"
     ]
   },

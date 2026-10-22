@@ -97,15 +97,11 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     }
   });
 
-  it('suggests China Post for ZS, ZC and ZA numbers, and La Poste after it only when its key holds', () => {
-    // La Poste's thirteen-character numbers end in a GS1 key; China Post's do not.
-    for (const number of ['ZS00000000001', 'ZC00000000001', 'ZA00000000001']) {
-      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['china-post'] });
-      expect(recognitionAskedCarriers(number)).toEqual(['china-post']);
-    }
-    for (const number of ['ZS00000000000', 'ZC00000000000', 'ZA00000000000']) {
-      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['china-post', 'la-poste'] });
-      expect(recognitionAskedCarriers(number)).toEqual(['china-post', 'la-poste']);
+  it('selects China Post for ZS, ZC and ZA numbers with eleven digits, even when they close La Poste\'s key', () => {
+    // The second set closes La Poste's GS1 key by chance; no La Poste number uses these prefixes.
+    for (const number of ['ZS00000000001', 'ZC00000000001', 'ZA00000000001', 'zs 0000 0000 001', 'ZS00000000000', 'ZC00000000000', 'ZA00000000000']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'china-post', confidence: 'high', candidates: ['china-post'] });
+      expect(recognitionAskedCarriers(number)).toEqual([]);
     }
     // Other Z prefixes and other lengths keep La Poste's broad rule alone, or nothing.
     for (const number of ['ZT00000000001', 'ZB00000000001', 'AZ00000000001', 'CZ00000000001']) {

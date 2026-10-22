@@ -1276,11 +1276,6 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
-        "pattern": "^Z[ACS]\\d{11}$",
-        "confidence": "low",
-        "checksum": "colissimo"
-      },
-      {
         "pattern": "^(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}FR$",
         "confidence": "high",
         "checksum": "s10"
@@ -4577,18 +4572,15 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^ZS\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       },
       {
         "pattern": "^ZC\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       },
       {
         "pattern": "^ZA\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       }
     ]
   },
@@ -32405,7 +32397,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-fr": ["dpd-fr-1","dpd-fr-4","dpd-fr-3","dpd-fr-2"],
   "mondial-relay": ["mondial-relay-1","mondial-relay-2"],
   "relais-colis": ["relais-colis-1","relais-colis-2","relais-colis-3"],
-  "la-poste": ["la-poste-1","la-poste-4","la-poste-5","la-poste-6","la-poste-7","la-poste-2","la-poste-8","la-poste-3"],
+  "la-poste": ["la-poste-1","la-poste-4","la-poste-5","la-poste-6","la-poste-7","la-poste-2","la-poste-3"],
   "chronopost": ["chronopost-1","chronopost-own-suffix","chronopost-2","chronopost-3"],
   "gls-fr": ["gls-fr-1","gls-fr-2","gls-fr-3","gls-fr-4"],
   "colis-prive": ["colis-prive-1","colis-prive-2"],

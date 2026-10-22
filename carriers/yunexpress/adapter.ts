@@ -7,7 +7,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, S
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
-import { explicitOffsetTime, EXPLICIT_OFFSET_PATTERN } from '../../core/time/index.js';
+import { explicitOffsetTime, EXPLICIT_OFFSET_PATTERN, firstOccurrence } from '../../core/time/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { clean, type TrawlClient, type TrawlScrapeResponse } from '../../core/transport/index.js';
 import { withLocalBrowser } from '../../core/transport/localBrowser.js';
@@ -38,6 +38,34 @@ function eventClock(raw: string, offset?: string): Pick<CarrierEvent, 'time'> & 
   if (!parsed.isValid) throw new SchemaError('YunExpress', 'YunExpress returned an invalid scan time');
   const iso = parsed.toISO({ suppressMilliseconds: true, includeOffset: Boolean(offset) });
   return offset ? { time: iso } : { local_time: iso };
+}
+
+const wording = (event: CarrierEvent) => (event.description ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+const IN_CHINA = /(?:^|[\s,])(?:CN|China)$/i;
+const ORIGIN_ZONE = 'Asia/Shanghai';
+
+/**
+ * Dates the rows without a place that China's leg holds, up to the flight
+ * out, on China's clock when the nearest row with a place, the older one
+ * first, is in China. A departure stated as the latest scan carries +08:00,
+ * and read on the destination's clock the flight would land hours too soon.
+ * Events are newest first.
+ */
+function dateOriginLeg(events: CarrierEvent[]): CarrierEvent[] {
+  const arrival = events.map(wording).lastIndexOf('international flight has arrived');
+  const start = events.findIndex((event, at) => at > arrival
+    && (IN_CHINA.test(event.location ?? '') || wording(event) === 'international flight has departed'));
+  if (start < 0) return events;
+  const placed = (at: number) => events[at]?.location ?? '';
+  return events.map((event, at) => {
+    if (at < start || event.location || !event.local_time || event.time) return event;
+    let place = '';
+    for (let older = at + 1; !place && older < events.length; older += 1) place = placed(older);
+    for (let newer = at - 1; !place && newer >= start; newer -= 1) place = placed(newer);
+    if (!IN_CHINA.test(place)) return event;
+    const time = firstOccurrence(DateTime.fromISO(event.local_time, { zone: ORIGIN_ZONE })).toISO({ suppressMilliseconds: true })!;
+    return { ...event, time, time_zone: ORIGIN_ZONE, time_zone_basis: 'neighbour' };
+  });
 }
 
 /**
@@ -126,7 +154,8 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   if (Array.isArray(info.TrackEventDetails) && info.TrackEventDetails.length > scans) {
     throw new IndeterminateError('YunExpress', 'YunExpress returned incomplete parcel history');
   }
-  const latest = events[0]!;
+  const dated = dateOriginLeg(events);
+  const latest = dated[0]!;
   const classified = current;
   const deliveryNumber = clean(info.TrackingNumber, 64).toUpperCase();
   const handoff = deliveryNumber !== number && /^[A-Z0-9]{4,40}$/.test(deliveryNumber) ? deliveryNumber : '';
@@ -137,7 +166,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     last_status_text: latest.description, last_update: latest.time ?? null,
     ...(classified?.stage === 'delivered' && decider?.time ? { delivered_at: decider.time } : {}),
     ...(handoff ? { delivery_tracking_number: handoff, ...(partner ? { delivery_carrier: partner } : {}) } : {}),
-    ...(/^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}), events: events.slice(0, 100) };
+    ...(/^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}), events: dated.slice(0, 100) };
 }
 
 /** A later captured reply is final; never silently reuse an earlier success. */

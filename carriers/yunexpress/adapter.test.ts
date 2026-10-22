@@ -130,6 +130,43 @@ describe('YunExpress captured response projection', () => {
     expect(result.events?.some((event) => !event.description)).toBe(false);
   });
 
+  // Rows newest first: 4 the flight's arrival, 5 its departure, 6 the export clearance,
+  // 7 to 12 the origin leg's facilities, 13 the order data.
+  const placing = (places: Record<number, string>) => {
+    const payload = fixture();
+    const rows = payload.ResultList[0].TrackData.ProcessGroupList.flatMap((group: { ProcessDetailList: { ProcessContent: string }[] }) => group.ProcessDetailList);
+    for (const [at, place] of Object.entries(places)) {
+      const row = rows[Number(at)]!;
+      row.ProcessContent = `${row.ProcessContent.split('----')[0]}${place ? `----${place}` : ''}`;
+    }
+    return payload;
+  };
+
+  it("dates the rows without a place on China's leg on China's clock, up to the flight out", () => {
+    const china = Object.fromEntries([7, 8, 9, 10, 11, 12].map((at) => [at, 'Mainland China, CN']));
+    const result = parse(placing({ ...china, 4: 'ES', 5: '', 6: '', 13: '' }), NUMBER);
+    for (const [at, time] of [[5, '2026-03-15T13:39:00+08:00'], [6, '2026-03-14T13:39:00+08:00'], [13, '2026-03-07T13:39:00+08:00']] as const) {
+      expect(result.events?.[at]).toMatchObject({ time, local_time: time.slice(0, 19), time_zone: 'Asia/Shanghai', time_zone_basis: 'neighbour' });
+    }
+    for (const at of [1, 2, 3, 4, 7, 12]) expect(result.events?.[at]!.time).toBeUndefined();
+  });
+
+  it("leaves a row without a place to the facade when its nearest placed row is abroad or it follows the flight out", () => {
+    const china = Object.fromEntries([7, 10, 11, 12].map((at) => [at, 'Mainland China, CN']));
+    // A sender's row abroad inside China's leg lends China's clock to nothing.
+    const abroad = parse(placing({ ...china, 9: 'Sample Town', 8: '', 5: '', 6: '' }), NUMBER);
+    expect(abroad.events?.[8]!.time).toBeUndefined();
+    expect(abroad.events?.[6]!.time).toBe('2026-03-14T13:39:00+08:00');
+    // With no arrival row, the rows after the departure are the destination's.
+    const payload = placing({ ...china, 1: '', 2: '', 3: '', 4: '', 5: '', 6: '' });
+    payload.ResultList[0].TrackData.ProcessGroupList[4].ProcessDetailList[0].ProcessContent = 'Arrived at sort facility';
+    const landed = parse(payload, NUMBER);
+    for (const at of [1, 2, 3, 4]) expect(landed.events?.[at]!.time).toBeUndefined();
+    expect(landed.events?.[5]!.time).toBe('2026-03-15T13:39:00+08:00');
+    // A history without China's leg keeps every wall clock.
+    expect(parse(placing({ 5: '', 6: '', 13: '' }), NUMBER).events?.filter((event) => event.time)).toHaveLength(1);
+  });
+
   it("keeps a partner link's text and drops its markup and the number it holds", () => {
     const payload = fixture();
     const rows = payload.ResultList[0].TrackData.ProcessGroupList.flatMap((group: { ProcessDetailList: unknown[] }) => group.ProcessDetailList);

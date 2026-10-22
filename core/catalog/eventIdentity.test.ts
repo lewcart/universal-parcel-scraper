@@ -286,6 +286,23 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
   });
 
+  it('lets a YunExpress row read on China’s clock take over the row stored on another zone, by wall clock, place and wording', () => {
+    expect(sameInstantIdentityPolicy('yunexpress')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('yunexpress', { supportsScanMatching: true });
+    expect(policy).toMatchObject({
+      sourceCarrierId: 'yunexpress', storedSources: ['yunexpress'], requireProviderCode: false, matchEachScan: true, matchWallClock: true,
+    });
+    const stored = { stage: 'in_transit', description: 'International flight has departed', location: '', providerCode: '' };
+    const incoming = { ...stored, description: ' international flight  has departed' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(stored, incoming)).toBe(true);
+    for (const different of [
+      { ...stored, description: 'Clearence processing completed - Export' },
+      { ...stored, location: 'Mainland China, CN' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+
   it('lets a ZTO International scan read on Shanghai’s clock take over the row stored on another zone, by wall clock, place, wording and code', () => {
     expect(sameInstantIdentityPolicy('zto-international')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('zto-international', { supportsScanMatching: true });

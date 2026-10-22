@@ -17,7 +17,13 @@ An interactive verification remains a challenge and falls back to the providers.
 
 The response's latest-event record supplies an offset for that exact scan.
 Earlier scans often contain only local wall clocks, retained as `local_time`
-in portal order. Storage timezone fields never supply scan offsets. The
+in portal order. Storage timezone fields never supply scan offsets. China's
+rows name only the country, so a row without a place on China's leg, up to the
+flight out, is dated on China's clock when the nearest row with a place, the
+older one first, is in China: a departure given as the latest scan carries
++08:00, and read on the destination's clock the flight would land hours too
+soon. [`identity.ts`](identity.ts) lets such a row take over the one an app
+stored for its wall clock under another offset, with the same place and wording. The
 reply is inconclusive when its latest summary does not match the first scan.
 A shorter projection than the returned raw history is incomplete. An older row
 with a place but no wording is skipped. Each row joins wording and place with

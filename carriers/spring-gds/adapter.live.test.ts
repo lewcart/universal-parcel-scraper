@@ -7,8 +7,11 @@ import { fetchPostNL } from './adapter.js';
 // A validly shaped Dutch S10 number that was never issued: PostNL answers with
 // an item that has no events and says the barcode was not found.
 const POSTNL_WRONG_NUMBER = 'LT000000000NL';
-// A 3S barcode PostNL did not issue: the item says the barcode was incorrect.
-const POSTNL_FOREIGN_BARCODE = '3SXXYY0000001';
+// A 3S barcode in the layout the endpoint reads that PostNL never issued: the item
+// says the barcode was not found or incorrect.
+const POSTNL_FOREIGN_BARCODE = '3SQZQZ123456789';
+// The endpoint calls every thirteen-character 3S barcode incorrect, PostNL's own included.
+const POSTNL_SHORT_BARCODE = '3SQZQZ1234567';
 // A private parcel, as a consumer stored it (see this folder's README).
 const number = (process.env.SPRING_GDS_TRACKING_NUMBER ?? '').trim();
 
@@ -30,6 +33,13 @@ describe('PostNL live tracking', () => {
     const limited = await answer.then(() => null, (error: unknown) => error instanceof UpstreamHttpError && error.status === 429 ? error : null);
     if (limited) return context.skip('PostNL answered HTTP 429 to this network: the not-found mapping remains unverified');
     await expect(answer).rejects.toMatchObject({ name: 'NotFoundError', status: 404 });
+  });
+
+  it('leaves a thirteen-character 3S barcode inconclusive', async (context) => {
+    const answer = fetchPostNL(POSTNL_SHORT_BARCODE);
+    const limited = await answer.then(() => null, (error: unknown) => error instanceof UpstreamHttpError && error.status === 429 ? error : null);
+    if (limited) return context.skip('PostNL answered HTTP 429 to this network: the incorrect-barcode reading remains unverified');
+    await expect(answer).rejects.toMatchObject({ kind: 'indeterminate' });
   });
 
   it.runIf(Boolean(number))('returns the history of a parcel dispatched through a consumer router', async () => {

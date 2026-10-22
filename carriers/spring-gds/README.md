@@ -16,9 +16,10 @@ native catalog all carry it; everything user-facing says PostNL.
      only when it carries a short, valid `Retry-After`. Both calls share a cancellable
      deadline; other errors are not retried.
    - Unknown barcode: an ordinary item with no events and "barcode was not found" in
-     `message`, or "barcode was incorrect" for a 3S barcode PostNL did not issue, such as
-     DHL eCommerce's. Those phrases are the only part of `message` read; the rest is provider
-     prose that must not reach an error or log.
+     `message`. "Barcode was incorrect" means the same only for a 15-character `3S` barcode
+     with a four-letter customer code, the layout the endpoint reads, where it marks a code
+     PostNL did not issue, such as DHL eCommerce's. Those phrases are the only part of
+     `message` read; the rest is provider prose that must not reach an error or log.
    - An empty history without that message is inconclusive. Duplicate matching identities
      are refused. HTTP 404/410 means the endpoint is unavailable, not the parcel missing.
 
@@ -75,8 +76,8 @@ native catalog all carry it; everything user-facing says PostNL.
 
 - No delivery estimate: the endpoint publishes none, so `expected_delivery` is always null.
 - The endpoint answers "The shipment barcode was incorrect." for 13-character `3S` barcodes,
-  which are PostNL's, and for 15-character ones without a four-letter customer code. The
-  lookup then stays inconclusive.
+  which are PostNL's (Parcel EU among them), and for 15-character ones without a four-letter
+  customer code. The lookup then stays inconclusive.
 - The tracking endpoint enforces a per-minute call quota shared beyond one client, so a
   lookup can meet HTTP 429 at a low request rate. The replay after its one-second
   `Retry-After` can meet the same quota; the lookup then fails as a rate limit.

@@ -36,9 +36,13 @@ const MAX_TOKEN_LENGTH = 16_384;
 // Visitor tokens last a day (`expires_in: 86400`); one is renewed this long before it expires.
 const MAX_TOKEN_LIFETIME_MS = 86_400_000;
 const TOKEN_RENEWAL_MARGIN_MS = 5 * 60_000;
-// A barcode PostNL holds no shipment under: "not found", or "incorrect" for a 3S barcode
-// it did not issue, such as DHL eCommerce's.
-const NOT_FOUND_MESSAGE = /barcode was (?:not found|incorrect)/i;
+// A barcode PostNL holds no shipment under. "Incorrect" says the same only for a
+// fifteen-character 3S barcode with a four-letter customer code, the layout the endpoint
+// reads: there it marks a code PostNL did not issue, such as DHL eCommerce's. The endpoint
+// calls every thirteen-character 3S barcode incorrect, PostNL's own Parcel EU ones included.
+const NOT_FOUND_MESSAGE = /barcode was not found/i;
+const INCORRECT_MESSAGE = /barcode was incorrect/i;
+const READABLE_3S = /^3S[A-Z]{4}\d{9}$/;
 // PostNL's own records (the pre-advice, the shipper's data) name no country and
 // keep Amsterdam time. See this folder's README for the evidence.
 const HOME_ZONE = 'Europe/Amsterdam';
@@ -141,7 +145,8 @@ export function parsePostNLTrackingResponse(value: unknown, trackingNumber: stri
     throw new SchemaError(PROVIDER, 'PostNL returned an invalid tracking event');
   }
   if (rawEvents.length > 500) throw new SchemaError(PROVIDER, 'PostNL returned excessive tracking history');
-  if (rawEvents.length === 0 && NOT_FOUND_MESSAGE.test(text(item.message))) {
+  const message = text(item.message);
+  if (rawEvents.length === 0 && (NOT_FOUND_MESSAGE.test(message) || (INCORRECT_MESSAGE.test(message) && READABLE_3S.test(requested)))) {
     // The rest of `message` can carry provider prose; only the recognized
     // phrase is used, and none of it reaches the error.
     throw new NotFoundError(PROVIDER);

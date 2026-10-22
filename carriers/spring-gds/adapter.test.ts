@@ -353,12 +353,16 @@ describe('PostNL ambiguity and clock safety', () => {
     expect(result.events?.[0]?.provider_code).toBe(expected);
   });
 
-  it('reads a 3S barcode PostNL calls incorrect as one it does not hold', () => {
-    const synthetic = '3SXXYY0000001';
-    const value = { status: 'success', data: { items: [{ item: synthetic, message: 'The shipment barcode was incorrect.', events: [] }] } };
-    expect(() => parsePostNLTrackingResponse(value, synthetic)).toThrow(expect.objectContaining({ kind: 'not_found' }));
-    value.data.items[0]!.message = 'Synthetic note';
-    expect(() => parsePostNLTrackingResponse(value, synthetic)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  it('reads incorrect as not found only for a 3S layout the endpoint reads', () => {
+    const response = (item: string, message: string) => ({ status: 'success', data: { items: [{ item, message, events: [] as unknown[] }] } });
+    const fifteen = '3SABCD123456789';
+    expect(() => parsePostNLTrackingResponse(response(fifteen, 'The shipment barcode was incorrect.'), fifteen)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    expect(() => parsePostNLTrackingResponse(response(fifteen, 'Synthetic note'), fifteen)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    // Parcel EU barcodes are thirteen characters, and the endpoint calls all of them incorrect.
+    for (const unreadable of ['3SABCD1234567', '3SABC123456789']) {
+      expect(() => parsePostNLTrackingResponse(response(unreadable, 'The shipment barcode was incorrect.'), unreadable)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+      expect(() => parsePostNLTrackingResponse(response(unreadable, 'The shipment barcode was not found.'), unreadable)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    }
   });
 
   it('refuses duplicate matching identities and an echo with empty history', () => {

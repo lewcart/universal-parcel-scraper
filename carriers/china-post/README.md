@@ -39,6 +39,13 @@ scan's number. It retains only state labels, scan codes and local clocks. The
 web preview always sets `history_truncated`; phone and account dialogs are not
 completed. HTTP recognition continues to use the app alone.
 
+The character prompt is read one glyph at a time after removing coloured
+interference lines; a whole-line read can omit required clicks. Other prompt
+layouts retain the whole-line reader. The background matcher stays separate,
+and the carrier must accept the ordered clicks before any preview is used.
+Failed browser tiers distinguish unreadable prompts from unmatched positions
+without retaining puzzle images, text or tokens.
+
 China Post's EMS app (Android package `com.kun.ems`) looks up guests through
 `https://ec.ems.com.cn/ect-web` without an account, cookie, CAPTCHA or browser,
 and the China Post app hands tracking to the same backend. A lookup makes two

@@ -146,7 +146,9 @@ export async function runChinaPostBrowser({ url, handle, tier, maxTimeout, captu
           const challenge = JSON.parse(imageBody.toString('utf8'))?.data;
           await page.locator('.text-verify').waitFor({ timeout: remaining(5000) });
           phase = 'characters';
-          const points = await solveCharacters(challenge, operationSignal, remaining(24000));
+          const points = await solveCharacters(challenge, operationSignal, remaining(24000), stage => {
+            if (stage === 'prompt' || stage === 'positions') phase = `characters-${stage}`;
+          });
           if (!points?.length || points.length > 4 || points.some(point => !Number.isFinite(point?.x) || !Number.isFinite(point?.y)
             || point.x < 0 || point.y < 0 || point.x >= challenge.backgroundImageWidth || point.y >= challenge.backgroundImageHeight)) return result();
           phase = 'submit';

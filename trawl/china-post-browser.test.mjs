@@ -101,6 +101,22 @@ test('preserves rejections and bounds body reads', async () => {
     assert.ok(r.status !== 200 || r.truncated); assert.equal(r.body, null);
   }
 });
+test('distinguishes prompt and position failures without retaining solver data', async () => {
+  for (const stage of ['prompt', 'positions']) {
+    const f = fixture();
+    f.options.solveCharacters = async (_challenge, _signal, _timeout, report) => { report(stage); return null; };
+    const result = await runChinaPostBrowser(f.options);
+    assert.equal(result.reason, `china-post-characters-${stage}`);
+    assert.equal(result.status, 'error');
+    assert.equal(result.capturedResponses.length, 0);
+    assert.equal(f.state.closed, 1);
+  }
+  const f = fixture();
+  f.options.solveCharacters = async (_challenge, _signal, _timeout, report) => { report('PRIVATE'); return null; };
+  const result = await runChinaPostBrowser(f.options);
+  assert.equal(result.reason, 'china-post-characters');
+  assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
+});
 test('ends stalled work, aborts OCR and closes late contexts', async () => {
   const f = fixture(); let signal;
   f.options.solveCharacters = async (_challenge, s) => { signal = s; return new Promise(() => {}); };

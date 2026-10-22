@@ -27,7 +27,7 @@ function readTargets(image, signal, timeoutMs) {
 }
 
 /** Disposable offline OCR; the carrier verifies the resulting ordered clicks. */
-export async function solveChinaPostCharacters(challenge, signal, timeoutMs) {
+export async function solveChinaPostCharacters(challenge, signal, timeoutMs, report) {
   const started = Date.now();
   const decode = value => typeof value === 'string' && /^data:image\/(?:png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(value)
     ? value.split(',')[1] : null;
@@ -35,8 +35,10 @@ export async function solveChinaPostCharacters(challenge, signal, timeoutMs) {
   const width = challenge?.backgroundImageWidth, height = challenge?.backgroundImageHeight;
   if (!template || !image || template.length > 100_000 || image.length > 1_400_000
     || !Number.isInteger(width) || !Number.isInteger(height) || width < 1 || width > 600 || height < 1 || height > 400) return null;
+  report?.('prompt');
   const targets = await readTargets(template, signal, timeoutMs);
   if (typeof targets !== 'string' || !/^[\u3400-\u9fff]{2,4}$/.test(targets)) return null;
+  report?.('positions');
   return solveZtoCharacters({ targets, image, region: { x: 0, y: 0, width, height } }, signal,
     Math.max(0, timeoutMs - (Date.now() - started)));
 }

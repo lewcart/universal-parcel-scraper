@@ -1,14 +1,17 @@
 
 import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { runSteps } from '../../core/runner/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { StepRecorder } from '../../core/telemetry/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { classifyInpostStatus, keepsInpostStage } from './status.js';
 import { needsInpostPickup, parseInpostPickup } from './pickup.js';
 import { inpostClock } from './clock.js';
 import { INPOST_UK_NUMBER } from './number.js';
+import { parseInpostShipxSummary } from './shipx.js';
 
 // Protocol provenance:
 // - Prior art (structure + vocabulary, verified independently below, MIT):
@@ -17,7 +20,8 @@ import { INPOST_UK_NUMBER } from './number.js';
 //   Two public surfaces exist: the ShipX tracking endpoint
 //   (api-shipx-pl.easypack24.net, keyless) and the inposteasy.com
 //   per-country hubs below. ShipX can enrich a hub-confirmed collection
-//   with its pickup point; its smaller coverage never replaces hub history.
+//   with its pickup point or confirm current state after a parcel-specific
+//   hub failure; its smaller coverage never replaces hub history.
 // - Unknown or expired numbers return an identity-bound NOT_FOUND problem,
 //   optionally JSON-encoded inside the tracking-error wrapper's detail field.
 // - The public cross-border status vocabulary lives in status.ts.
@@ -53,6 +57,16 @@ function isNotFoundProblem(payload: unknown, trackingNumber: string): boolean {
   } catch {
     return false;
   }
+}
+
+function isHubTrackingFailure(error: unknown, number: string): boolean {
+  if (!(error instanceof UpstreamHttpError) || error.status !== 500
+    || error.retryAfterMs || error.diagnostics?.body_read !== 'complete') return false;
+  try {
+    const problem: unknown = JSON.parse(error.diagnostics.body_excerpt ?? '');
+    return isRecord(problem) && problem.type === '/errors/external/tracking-error'
+      && problem.status === 500 && problem.instance === `/api/tracking/${number}`;
+  } catch { return false; }
 }
 
 export function parseInpostTrackingResponse(payload: unknown, trackingNumber: string): CarrierResult {
@@ -142,11 +156,13 @@ export class InpostTracker {
   readonly timeoutMs: number;
   readonly fetcher: typeof fetch | undefined;
   private readonly userAgent: string;
+  private readonly recorder: StepRecorder | undefined;
 
-  constructor(options: { timeoutMs?: number; fetcher?: typeof fetch; userAgent?: string } = {}) {
+  constructor(options: { timeoutMs?: number; fetcher?: typeof fetch; userAgent?: string; recorder?: StepRecorder } = {}) {
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.fetcher = options.fetcher;
     this.userAgent = userAgentOf(options.userAgent);
+    this.recorder = options.recorder;
     if (!Number.isFinite(this.timeoutMs) || this.timeoutMs <= 0) {
       throw new TypeError('InPost timeout must be positive');
     }
@@ -155,6 +171,31 @@ export class InpostTracker {
   async fetch(rawTrackingNumber: string, context: TrackingContext = {}, enrich = true): Promise<CarrierResult> {
     const trackingNumber = normalizeInpostTrackingNumber(rawTrackingNumber);
     // The default budget covers the request, the pause and the one transient retry.
+    const budget = lookupBudget(context, 2 * this.timeoutMs + TRANSIENT_RETRY_DELAY_MS);
+    return runSteps({ carrier: 'inpost', budgetMs: budget.remainingMs(), signal: budget.signal, recorder: this.recorder }, [{
+      id: 'direct',
+      run: ({ signal, remainingMs }) => this.fetchHub(trackingNumber, { signal, budgetMs: remainingMs }, enrich),
+    }, {
+      id: 'shipx',
+      // Recognition and UK layouts keep the hub's broader scope.
+      enabled: enrich && /^\d{24}$/.test(trackingNumber),
+      recovers: error => isHubTrackingFailure(error, trackingNumber),
+      run: async ({ signal, remainingMs, previousError }) => {
+        const { response, bytes } = await fetchBounded(`${PICKUP_ENDPOINT}/${trackingNumber}`, {
+          signal, headers: { Accept: 'application/json', 'User-Agent': this.userAgent },
+        }, { provider: 'InPost ShipX', timeoutMs: Math.min(this.timeoutMs, remainingMs), maxBytes: MAX_RESPONSE_BYTES,
+          allowHttpStatuses: [404], fetcher: this.fetcher });
+        // ShipX's narrower coverage cannot turn a failed hub into a parcel negative.
+        if (response.status === 404) throw previousError;
+        const result = parseInpostShipxSummary(parseJsonBytes(bytes, 'InPost ShipX'), trackingNumber);
+        if (!result) throw previousError;
+        signal.throwIfAborted();
+        return result;
+      },
+    }]);
+  }
+
+  private async fetchHub(trackingNumber: string, context: TrackingContext, enrich: boolean): Promise<CarrierResult> {
     const budget = lookupBudget(context, 2 * this.timeoutMs + TRANSIENT_RETRY_DELAY_MS);
     // The hub words every parcel in Polish, whatever its country or Accept-Language,
     // unless the query names a language.
@@ -197,10 +238,11 @@ export class InpostTracker {
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new InpostTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
+  const tracker = new InpostTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent, recorder: environment.recorder });
   return {
     id: 'inpost',
-    steps: ['direct'],
+    steps: ['direct', 'shipx'],
+    recordsSteps: true,
     track: (input, context) => tracker.fetch(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context, false), () => accepted(() => normalizeInpostTrackingNumber(number))),
   };

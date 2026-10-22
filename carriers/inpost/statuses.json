@@ -24,6 +24,17 @@
     { "code": "EOL.1003", "language": "en", "stage": "delivered", "confirmedBy": "prior-art", "firstSeen": "2026-08-31", "note": "" },
     { "code": "EOL.9001", "language": "en", "stage": "failed_attempt", "confirmedBy": "prior-art", "firstSeen": "2026-08-31", "note": "" },
     { "code": "RTS.1001", "language": "en", "wording": "On the way back to the Sender", "stage": "returned", "confirmedBy": "live", "firstSeen": "2026-08-31", "note": "Return to sender." },
-    { "code": "RTS.1002", "language": "en", "wording": "Returned to Sender", "stage": "returned", "confirmedBy": "live", "firstSeen": "2026-08-31", "note": "Return to sender." }
+    { "code": "RTS.1002", "language": "en", "wording": "Returned to Sender", "stage": "returned", "confirmedBy": "live", "firstSeen": "2026-08-31", "note": "Return to sender." },
+    { "code": "created", "language": "en", "wording": "Shipment created", "stage": "registered", "confirmedBy": "official-doc", "note": "ShipX public status vocabulary: parcel created but not ready for shipment." },
+    { "code": "collected_from_sender", "language": "en", "wording": "Collected from the sender", "stage": "accepted", "confirmedBy": "official-doc", "note": "ShipX: courier collected the parcel from the sender." },
+    { "code": "adopted_at_source_branch", "language": "en", "wording": "Received at the logistics centre", "stage": "in_transit", "confirmedBy": "official-doc", "note": "ShipX: received at a logistics centre." },
+    { "code": "adopted_at_sorting_center", "language": "en", "wording": "Received at the sorting centre", "stage": "in_transit", "confirmedBy": "official-doc", "note": "ShipX: waiting at the sorting facility for onward transfer." },
+    { "code": "out_for_delivery", "language": "en", "wording": "Handed over for delivery", "stage": "out_for_delivery", "confirmedBy": "official-doc", "note": "ShipX: handed over for delivery." },
+    { "code": "out_for_delivery_to_address", "language": "en", "wording": "Handed to the delivery courier", "stage": "out_for_delivery", "confirmedBy": "official-doc", "note": "ShipX: handed to a courier for delivery to the indicated address." },
+    { "code": "ready_to_pickup", "language": "en", "wording": "Ready for collection", "stage": "ready_for_pickup", "confirmedBy": "official-doc", "note": "ShipX: placed in the collection locker." },
+    { "code": "delivered", "language": "en", "wording": "Delivered", "stage": "delivered", "confirmedBy": "official-doc", "note": "ShipX: the parcel's journey to the recipient has ended." },
+    { "code": "returned_to_sender", "language": "en", "wording": "Returning to the sender", "stage": "returned", "confirmedBy": "official-doc", "note": "ShipX: the parcel has set off on its way back to the sender." },
+    { "code": "pickup_reminder_sent_address", "language": "en", "wording": "Delivery attempted; recipient unavailable", "stage": "failed_attempt", "confirmedBy": "official-doc", "note": "ShipX: the courier did not find the recipient at the address; this is not a locker collection reminder." },
+    { "code": "rejected_by_receiver", "language": "en", "wording": "Recipient refused the parcel", "stage": "failed_attempt", "confirmedBy": "official-doc", "note": "ShipX: the recipient refused to accept the parcel." }
   ]
 }

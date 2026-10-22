@@ -25,7 +25,8 @@
     "mode": "automatic",
     "adapter": "inpost",
     "steps": [
-      "direct"
+      "direct",
+      "shipx"
     ],
     "recognition": {
       "rank": 820

@@ -13,7 +13,13 @@ GB). Tracked through the keyless `inposteasy.com` hub API; no postcode or link n
      requested shipment, directly or inside the tracking-error wrapper. An unrecognized
      404 stays inconclusive. Long-expired numbers also return not-found.
    - Transient HTTP failures get one retry within the lookup budget. Other failures keep
-     their HTTP status, retry window and bounded diagnostics. HTTP 500 stays inconclusive.
+     their HTTP status, retry window and bounded diagnostics.
+2. `shipx`: a parcel-specific hub tracking error with HTTP 500 can query the keyless Polish
+   ShipX route for a 24-digit number. The whole identifier, an InPost courier or locker
+   service, and a current status matching the newest explicitly dated scan are required.
+   It returns a status-only answer, marked `summary_only`, so a fuller provider history
+   remains eligible. Unknown statuses and ShipX absence leave the hub failure inconclusive;
+   generic outages, rate limits and definite hub negatives never start this step.
 
 ## Notes
 
@@ -53,7 +59,12 @@ GB). Tracked through the keyless `inposteasy.com` hub API; no postcode or link n
   progress and a scan clock no older than the hub's. It must identify a locker or
   public pickup service. Delivered parcels require actual collection evidence;
   planned destinations, door deliveries and returns have no point. ShipX history
-  never replaces hub history, and its absence or failure leaves that history usable.
+  never replaces hub history: its wording, places and clocks can differ and create
+  duplicate scans. The status-only fallback uses the actual scan clock, never
+  `updated_at` or the forecast. A delivery reminder at an address means an unsuccessful
+  delivery attempt, not a parcel ready for collection. Its
+  [status vocabulary](https://dokumentacja-inpost.atlassian.net/wiki/spaces/PL/pages/18153478/Statuses)
+  defines these distinctions. ShipX failure leaves a healthy hub history usable.
   Recognition uses the hub alone.
 
 ## Limitations

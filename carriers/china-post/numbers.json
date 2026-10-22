@@ -299,8 +299,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "china-post",
-          "la-poste"
+          "china-post"
         ]
       },
       "note": "Made-up number in the shape of a ZS number, which China Post's app service knows behind a contact phone's last four digits."
@@ -315,8 +314,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "china-post",
-          "la-poste"
+          "china-post"
         ]
       },
       "note": "Made-up number in the shape of a ZC number, which China Post's app service knows behind a contact phone's last four digits."
@@ -331,11 +329,26 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "china-post"
+        ]
+      },
+      "note": "Made-up number in the shape of a ZA number, which China Post's app service knows behind a contact phone's last four digits."
+    },
+    {
+      "number": "ZA10000000009",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-22",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
           "china-post",
           "la-poste"
         ]
       },
-      "note": "Made-up number in the shape of a ZA number, which China Post's app service knows behind a contact phone's last four digits."
+      "note": "Made-up ZA number whose last digit happens to close La Poste's GS1 key, as about one China Post number in ten does; China Post stays first."
     }
   ]
 }

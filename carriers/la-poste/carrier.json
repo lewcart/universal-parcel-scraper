@@ -107,8 +107,14 @@
     },
     {
       "id": "la-poste-2",
-      "pattern": "^[A-Z0-9]{2}\\d{11}$",
+      "pattern": "^(?!Z[ACS])[A-Z0-9]{2}\\d{11}$",
       "confidence": "low"
+    },
+    {
+      "id": "la-poste-8",
+      "pattern": "^Z[ACS]\\d{11}$",
+      "confidence": "low",
+      "checksum": "colissimo"
     },
     {
       "id": "la-poste-3",

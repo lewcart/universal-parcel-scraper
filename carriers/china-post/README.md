@@ -9,9 +9,10 @@ request. `ZS`, `ZC` and `ZA` numbers with eleven digits are China Post's too,
 and the adapter takes them. The app asks for a contact phone's last four digits;
 the optional TRAWL browser instead reads the anonymous web preview after
 character verification. No public sample is known, so detection only suggests
-China Post for them (`china-post-zs`, `china-post-zc`, `china-post-za`), ahead
-of La Poste's rule for any two characters and eleven digits, and recognition
-asks China Post. The service
+China Post for them (`china-post-zs`, `china-post-zc`, `china-post-za`), and
+recognition asks China Post. La Poste is suggested after it only when the last
+digit closes La Poste's GS1 key, which every La Poste number of that length
+carries and China Post's do not. The service
 asks for the phone digits only about an item it holds, so that request makes the
 number known. Source selection is covered in
 [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md);

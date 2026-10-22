@@ -91589,6 +91589,20 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "china-post"
+    ],
+    "preferred": [
+      "china-post"
+    ],
+    "asked": [
+      "china-post"
+    ]
+  },
+  {
+    "input": "ZA10000000009",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
       "china-post",
       "la-poste"
     ],
@@ -91655,15 +91669,13 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "china-post",
-      "la-poste"
+      "china-post"
     ],
     "preferred": [
       "china-post"
     ],
     "asked": [
-      "china-post",
-      "la-poste"
+      "china-post"
     ]
   },
   {
@@ -91829,15 +91841,13 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "china-post",
-      "la-poste"
+      "china-post"
     ],
     "preferred": [
       "china-post"
     ],
     "asked": [
-      "china-post",
-      "la-poste"
+      "china-post"
     ]
   },
   {

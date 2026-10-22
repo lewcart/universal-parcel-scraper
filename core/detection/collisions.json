@@ -202,12 +202,12 @@
     "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps China Post CN numbers; the country-specific high-confidence rule decides."
   },
   {
-    "shape": "ZS9{11}",
+    "shape": "ZA9{11} closing La Poste's GS1 key",
     "carriers": [
       "china-post",
       "la-poste"
     ],
-    "reason": "La Poste's low-confidence rule accepts any two characters and eleven digits; China Post's preferred ZS, ZC and ZA rules come first, and neither selects a carrier."
+    "reason": "La Poste's low-confidence rule takes ZS, ZC and ZA numbers only when they close its GS1 key, as about one China Post number in ten does by chance; China Post's preferred rules come first, and neither selects a carrier."
   },
   {
     "shape": "AA9{9}AA",

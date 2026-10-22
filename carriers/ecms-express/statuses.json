@@ -1,7 +1,7 @@
 {
   "carrier": "ecms-express",
   "entries": [
-    {"wording": "Virtual Manifest has been received by carrier", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The sender's manifest reached ECMS before the parcel; the tracker API sends it as EVENT_101 or EVENT_104."},
+    {"code": "EVENT_101", "wording": "Virtual Manifest has been received by carrier", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The sender's manifest reached ECMS before the parcel; the tracker API sends it as EVENT_101 or EVENT_104."},
     {"code": "S07N700", "wording": "Shipment info confirmed", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in the tracker API reply."},
     {"code": "EVENT_227", "wording": "Documents and information required for clearance have been received by the carrier.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The consignee supplied the clearance documents; the consignee page appends a line about shipping within days of receiving the parcel and ID."},
     {"wording": "ID information has been reviewed and verified", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The consignee's ID for import clearance was checked, before the parcel reached ECMS."},
@@ -18,8 +18,8 @@
     {"code": "EVENT_311", "wording": "Shipment is tendering to third party carrier for final delivery.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Hand-over to the last-mile carrier, whose own number may then appear."},
     {"code": "EVENT_10303", "wording": "Local carrier has accepted package for final delivery", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
     {"code": "EVENT_228", "wording": "Shipment is in Transit within the carrier‘s network", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Last-mile carrier movement relayed by ECMS; the apostrophe is a left single quotation mark."},
-    {"wording": "Shipment is out for delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
-    {"wording": "Shipment delivered to customer", "stage": "delivered", "language": "en", "confirmedBy": "portal"},
+    {"code": "EVENT_302", "wording": "Shipment is out for delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
+    {"code": "EVENT_301", "wording": "Shipment delivered to customer", "stage": "delivered", "language": "en", "confirmedBy": "portal"},
     {"wording": "发货预报已收到，正在等待货物到达我们的始发站仓库", "stage": "registered", "language": "zh", "confirmedBy": "portal", "note": "Chinese text of the manifest event; Amazon shipments prefix it with the seller name Amazon."},
     {"wording": "货物已进入清关流程", "stage": "customs", "language": "zh", "confirmedBy": "portal"},
     {"wording": "货物已清关放行", "stage": "in_transit", "language": "zh", "confirmedBy": "portal", "note": "Chinese text of the cleared event."},

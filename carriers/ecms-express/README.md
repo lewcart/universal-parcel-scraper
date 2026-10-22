@@ -1,27 +1,33 @@
 # ECMS Express
 
-ECMS Express parcels use enabled universal providers. There is no dedicated adapter: the
-tracker's lookup answers only after a picture CAPTCHA, an arithmetic question asked again for
-every lookup, and the older consignee and oms trackers no longer answer.
+The guest tracker returns parcel history and relayed last-mile scans through
+`POST /brige/getTarcking` on `www.ecmsglobal.com`. Each request needs a fresh,
+single-use sign: open `/brige/math/captcha/get/base64`, solve the arithmetic PNG,
+then submit its answer to `/brige/math/captcha/check`.
 
-## Numbers
+The adapter uses the shared local OCR model with ECMS's image geometry and a
+digit/plus/minus alphabet. It requires the optional `sharp` and `onnxruntime-web`
+dependencies. One fresh challenge can recover an unreadable or rejected answer,
+within the caller's budget. Repeated refusal stays a challenge, allowing enabled
+universal providers to handle the miss. No browser, account or saved sign is needed.
 
-ECMS tracking ids are sixteen characters: a two-letter family (EC, ES, AP or AX), letters
-that name the lane or origin airport, and a serial, as three letters and eleven digits, four
-letters and ten digits, or five letters and nine digits. ECMS's own tracker shows all of these
-families, and no other carrier's numbers take that shape, so one high-confidence rule claims
-them. Last-mile numbers the tracker shows after hand-over, such as USPS or YTO ones, stay with
-their own carriers.
+The response must repeat the complete ECMS identifier in its shipment summary
+and every scan. The parser keeps the full event sequence, status codes, locations
+and a named delivery partner. A partner reference is retained only from that
+partner's relayed scans when they agree. Merchant references and payment links
+are discarded.
 
-## Links
+`operatorTime` encodes a facility wall clock as UTC components. Every scan retains
+that wall clock; nonzero `timeZone` offsets remain exactly as supplied, including
+fixed standard offsets in summer. Zero is also used on unzoned partner scans,
+so it does not establish UTC. The API's ingestion clock is not a scan timestamp.
 
-The tracking page reads the number from `orderNumber` on
-`ecmsglobal.com/<locale>/tracking.html`, which the home page form builds, and asks an
-arithmetic question before it shows the history. The consignee tracker at
-`consignee.ecmsglobal.com/brige/showtracking` and the `oms/showtracking` page read it from
-`trackingno`, and older `showtracking.html` pages read `order_number`.
+The former consignee and OMS trackers no longer supply guest history. The ESE
+customer event API requires login, and freight tracking uses different references.
 
-## Testing
+Run the live tests with `ECMS_EXPRESS_TRACKING_NUMBER` and optionally
+`ECMS_EXPRESS_UNKNOWN_NUMBER` from an environment file outside the repository:
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+```sh
+npm run test:carriers:live -- carriers/ecms-express/adapter.live.test.ts
+```

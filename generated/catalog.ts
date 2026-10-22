@@ -12406,7 +12406,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ecms-express",
+      "localClocks": true
     },
     "canaryUrl": "https://www.ecmsglobal.com/en-us/tracking.html",
     "trackingUrlTemplate": "https://www.ecmsglobal.com/en-us/tracking.html?orderNumber={trackingNumber}",

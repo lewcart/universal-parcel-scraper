@@ -27,18 +27,48 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ecms-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://www.ecmsglobal.com/en-us/tracking.html?orderNumber={trackingNumber}",
     "searchUrl": "https://www.ecmsglobal.com/en-us/tracking.html",
     "canaryUrl": "https://www.ecmsglobal.com/en-us/tracking.html",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivery_partner"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivery_partner",
+      "destination_country",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "merchant_reference",
+      "payment_links"
+    ],
+    "unavailable": [
+      "eta",
+      "weight"
+    ]
   },
   "links": [
     {

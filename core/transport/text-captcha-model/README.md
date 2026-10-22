@@ -9,3 +9,7 @@ grayscale input and decodes its CTC output. `characters.json` retains the blank,
 Latin-letter and digit labels at their original indices from `CHARSET_OLD`.
 An output outside that alphabet is unreadable, rather than forced to a Latin character.
 This model does not solve reCAPTCHA or locate ordered Chinese-character clicks.
+
+ECMS uses a separate `arithmetic-characters.json` alphabet from the same upstream
+indices: digits, plus and minus. Its profile crops off the fixed equals-sign
+column before inference. Other profiles retain their own geometry and alphabet.

@@ -124,6 +124,19 @@ describe('status map answers', () => {
     // HuaHan's scan 17TRACK relays without its code, and JS Express's partners' steps after the import release.
     expect(answer('huahan', null, 'Data processed')).toEqual(mapped('in_transit'));
     expect(answer('huahan', 'ZZ', 'Data processed')).toEqual(unknown);
+    // The destination carrier's scans under IA or without a code; its record of a redirection moves nothing.
+    expect(answer('huahan', 'IA', 'In Transit, Shipment remained at sorting hub')).toEqual(mapped('in_transit'));
+    expect(answer('huahan', null, 'We will pick up your parcel from the sender soon.')).toEqual(mapped('registered'));
+    expect(answer('huahan', null, 'The courier will deliver the parcel soon. Additional details are available in the SAMEDAY app, email or SMS.'))
+      .toEqual(mapped('out_for_delivery'));
+    expect(answer('huahan', null, 'The parcel was redirected. As soon as it is in the couriers possession, it will be processed as requested.')).toEqual(gap);
+    expect(answer('huahan', 'ZZ', 'In Transit')).toEqual(unknown);
+    // USPS's steps after JS Express hands the parcel over; USPS's record of the label moves nothing.
+    expect(answer('js-express', null, 'Accepted at USPS Origin Facility')).toEqual(mapped('in_transit'));
+    expect(answer('js-express', null, 'Arrived at Post Office')).toEqual(mapped('in_transit'));
+    expect(answer('js-express', null, 'Shipping Label Created, USPS Awaiting Item')).toEqual(gap);
+    expect(answer('dhlink', null, 'Departed Destination Hub')).toEqual(mapped('in_transit'));
+    expect(answer('sfc', null, 'Delivery notice')).toEqual(gap);
     expect(answer('js-express', null, 'Prepared for last mile handover')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'The cargo tally in the supervised warehouse is in progress.')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'Domestic allocation has begun')).toEqual(mapped('in_transit'));
@@ -472,6 +485,9 @@ describe("universal providers' answers", () => {
     // Chronopost's notice to the recipient, relayed as it is, is no scan.
     expect(answer('unknown', null, 'Destinataire informé par SMS ou mail')).toEqual(gap);
     expect(answer('unknown', 'SM', 'Destinataire informé par SMS ou mail')).toEqual(unknown);
+    // Nor is a bare delivery estimate, or a note that the recipient's details changed.
+    expect(answer('unknown', null, 'Estimated delivery')).toEqual(gap);
+    expect(answer('unknown', null, 'Recipient information updated')).toEqual(gap);
   });
 
   it("answer by the providers' own reading, not the generic classifier's keyword rules", () => {
@@ -652,6 +668,7 @@ describe("universal providers' answers", () => {
       ['The package is in the local warehouse. We will come back with details about the delivery', 'in_transit'],
       ['The parcel has been delivered to the pick-up point. A courier will pick it up soon and take it to storage', 'accepted'],
       ['The parcel has been delivered to the pick-up point', 'ready_for_pickup'],
+      ['Delivered at DHL ServicePoint', 'ready_for_pickup'], ['Delivered to DHL ServicePoint', 'ready_for_pickup'],
       ['SF Express has received your package, we sincerely protect your expectations, and will not let you down. If you have any questions, please contact courier Example at 10000000000.', 'accepted'],
       ['The shipment has been received at the SEUR facilities of origin', 'accepted'],
       ['Parcel was dropped off at the locker', 'accepted'], ['Parcel was dropped off at the parcel shop', 'accepted'],
@@ -690,8 +707,9 @@ describe("universal providers' answers", () => {
     }
   });
 
-  it("leave out only Chronopost's notice to the recipient on purpose", () => {
-    expect(universal.gaps.map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail']);
+  it("leave out only Chronopost's notice, a bare delivery estimate and a recipient update on purpose", () => {
+    expect(universal.gaps.map((gap) => gap.wording))
+      .toEqual(['destinataire informé par sms ou mail', 'estimated delivery', 'recipient information updated']);
   });
 });
 

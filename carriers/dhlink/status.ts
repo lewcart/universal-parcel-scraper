@@ -65,6 +65,11 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['departed gofo regional hub', 'in_transit'],
   ['in transit to next facility', 'in_transit'],
   ['arrived at gofo delivery station', 'in_transit'],
+  // A US line's trucking between its origin and destination hubs, before the last-mile carrier picks the parcel up.
+  ['arrived at origin hub', 'in_transit'],
+  ['departed origin hub', 'in_transit'],
+  ['arrived at destination hub', 'in_transit'],
+  ['departed destination hub', 'in_transit'],
   // China Post hands the dispatch to the airline after taking the parcel.
   ['handed over to airlines', 'in_transit'],
   ['item presented to customs', 'customs'],

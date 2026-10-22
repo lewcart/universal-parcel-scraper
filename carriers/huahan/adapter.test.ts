@@ -138,7 +138,7 @@ describe('HuaHan guest tracking', () => {
     expect(result.events!.map(event => event.stage)).toEqual(['delivered', 'out_for_delivery', 'in_transit',
       'in_transit', 'in_transit', 'customs', 'in_transit', 'in_transit', 'in_transit']);
     expect(result.events!.filter(event => event.stage_source === 'carrier_map').map(event => event.provider_code))
-      .toEqual(['CC', 'CB', 'YG', 'LD', 'QG', 'QF', 'BG', 'GG']);
+      .toEqual(['CC', 'CB', 'IA', 'YG', 'LD', 'QG', 'QF', 'BG', 'GG']);
   });
 
   it('keeps pickup-point arrival distinct from delivery to the recipient', () => {

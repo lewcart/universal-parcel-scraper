@@ -74,5 +74,8 @@ export const statusMap: CarrierStatusMap = {
   gaps: [{
     wording: 'estimated time of international flight departure',
     note: 'The departure SFC expects for the flight, written before it: no scan, so the adapter drops the row.',
+  }, {
+    wording: 'delivery notice',
+    note: "Written at the same instant as the departure from SFC's warehouse: it names no step of its own.",
   }],
 };

@@ -107,6 +107,8 @@ export const EVENT_STAGE_BY_CODE: Record<string, Stage> = {
   // After the item was loaded into the delivery vehicle; a later round follows.
   '4100': 'failed_attempt',
   '4600': 'delivered',
+  // Held at a post office for the recipient to collect, as poste restante.
+  '9400': 'ready_for_pickup',
 };
 
 /** The shipment status implied by the newest event's stage. */

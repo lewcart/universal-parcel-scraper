@@ -566,6 +566,15 @@
       "firstSeen": "2026-09-12"
     },
     {
+      "code": "9400",
+      "wording": "Consignment poste restante in post office and ready for collection",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The newest scan of a parcel waiting at a post office; unmapped, it left the stage to the shipment summary's failed delivery."
+    },
+    {
       "code": "9112",
       "wording": "Enquiry initiated",
       "language": "en",

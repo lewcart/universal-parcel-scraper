@@ -83,6 +83,7 @@ describe('Swiss Post historical event codes', () => {
     ['3700', 'The recipient has refused delivery', 'exception'],
     ['3800', 'Delivered to the mailbox/letter box', 'delivered'],
     ['4020', 'Forwarding abroad', 'in_transit'],
+    ['9400', 'Consignment poste restante in post office and ready for collection', 'ready_for_pickup'],
   ])('classifies scan %s from its code for letters and parcels alike', (code, description, stage) => {
     expect(EVENT_STAGE_BY_CODE[code]).toBe(stage);
     for (const eventCode of [`LETTER.*.90.${code}`, `LETTER.*.93.${code}`, `PARCEL.*.2.${code}`]) {
@@ -101,6 +102,15 @@ describe('Swiss Post historical event codes', () => {
     expect(swissPostEventStage('LETTER.*.93.9112')).toBeUndefined();
     expect(swissPostEventStage('LETTER.*.90.1800')).toBeUndefined();
     expect(swissPostEventStage('PARCEL.*.1.9224')).toBeUndefined();
+  });
+
+  it('reads a parcel held at a post office after a refusal as ready for collection, not as the summary\'s failed delivery', () => {
+    const result = parseSwissPostShipment({ globalStatus: 'NOT_DELIVERED' }, [
+      { eventCode: 'PARCEL.*.1.3700', timestamp: '2026-09-08T10:55:00+02:00' },
+      { eventCode: 'PARCEL.*.1.1001', timestamp: '2026-09-10T16:34:21+02:00' },
+      { eventCode: 'PARCEL.*.1.9400', timestamp: '2026-09-10T16:34:29+02:00' },
+    ]);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup' });
   });
 
   it('never takes a stage from a revoked scan', () => {

@@ -1,5 +1,5 @@
 import { accepted, lookupBudget, recognizeFromLookup, type AdapterEnvironment, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { BudgetExceededError, carrierErrorKind } from '../../core/errors/index.js';
+import { BudgetExceededError, carrierErrorKind, NoHistoryError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { recoverableByDefault, runSteps } from '../../core/runner/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
@@ -37,8 +37,9 @@ export class ChinaPostTracker {
       signal: context.signal, recorder: this.options.recorder }, [
       { id: 'direct', run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: remainingMs }).catch(error => failed(error, signal)) },
       { id: 'trawl', enabled: !!this.options.trawl,
-        // The public web preview is anonymous even when the app asks for phone digits.
-        recovers: error => carrierErrorKind(error) === 'input_required'
+        // The app can also give "no information" for mail the web preview holds.
+        // Neither answer prevents the anonymous site from checking the number.
+        recovers: error => error instanceof NoHistoryError || carrierErrorKind(error) === 'input_required'
           || (carrierErrorKind(error) !== 'indeterminate' && recoverableByDefault(error)),
         run: async ({ signal, remainingMs }) => {
           const timeoutMs = Math.max(1, Math.floor(remainingMs - 2500));

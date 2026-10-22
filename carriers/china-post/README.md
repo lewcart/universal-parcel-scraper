@@ -130,7 +130,8 @@ sender (711) reads "已退回".
 - "暂无物流信息" (no logistics information) answers unknown, unscanned and
   expired numbers alike, and also real registered (`R…CN`) and `U…CN`
   letter-post items this backend does not serve. It is no history, inconclusive
-  and never not found, in tracking and recognition alike.
+  and never not found. Tracking with TRAWL also asks the anonymous web preview
+  after this answer; HTTP recognition stays inconclusive without opening a browser.
 - Without TRAWL, a request for the phone digits ends as `input_required`.
 - Full history needs a signed-in account: `subjection/v2` answers guests with
   "请登录后再查询" (sign in first), and the web channels ask for a user token.

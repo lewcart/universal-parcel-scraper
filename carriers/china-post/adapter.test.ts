@@ -213,7 +213,11 @@ describe('China Post adapter', () => {
     await expect(instance(transport()).track({ number: NUMBER }, { budgetMs: 0 })).rejects.toMatchObject({ kind: 'budget' });
   });
 
-  it('recovers the app phone gate through the anonymous preview and keeps its provenance', async () => {
+  it.each([
+    ['phone gate', [() => json('{"code":"000000","info":2}')], 'input_required'],
+    ['empty check', [() => json('{"code":"000000","info":3}')], 'indeterminate'],
+    ['empty trace', [open, () => json('{"code":"000000","info":null}')], 'indeterminate'],
+  ] as const)('recovers the app %s through the anonymous preview and keeps its provenance', async (_name, replies, reason) => {
     const number = 'ZS00000000001';
     const browserFetcher = vi.fn<typeof fetch>(async (_url, init) => {
       expect(init?.signal).toBeInstanceOf(AbortSignal);
@@ -225,12 +229,34 @@ describe('China Post adapter', () => {
       }] }));
     });
     const step = vi.fn(), lookup = vi.fn();
-    const carrier = adapter({ fetcher: transport(() => json('{"code":"000000","info":2}')), env: {}, recorder: { step, lookup },
+    const carrier = adapter({ fetcher: transport(...replies), env: {}, recorder: { step, lookup },
       trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null });
     await expect(carrier.track({ number })).resolves.toMatchObject({ current_stage: 'in_transit', history_truncated: true });
-    expect(step.mock.calls.map(([row]) => [row.step, row.outcome])).toEqual([['direct', 'input_required'], ['trawl', 'ok']]);
-    expect(step.mock.calls[1]![0]).toMatchObject({ fallbackFrom: 'direct', fallbackReason: 'input_required' });
+    expect(step.mock.calls.map(([row]) => [row.step, row.outcome])).toEqual([['direct', reason], ['trawl', 'ok']]);
+    expect(step.mock.calls[1]![0]).toMatchObject({ fallbackFrom: 'direct', fallbackReason: reason,
+      fallbackErrorType: reason === 'indeterminate' ? 'NoHistoryError' : 'InputRequiredError' });
     expect(lookup).toHaveBeenCalledWith(expect.objectContaining({ finalStep: 'trawl', outcome: 'ok' }));
+  });
+
+  it('keeps an empty browser answer inconclusive after an empty app answer', async () => {
+    const number = 'ZS00000000001';
+    const browserFetcher = vi.fn<typeof fetch>(async () => json(JSON.stringify({ tier: 3, status: 'success', statusCode: 200,
+      html: '', capturedResponses: [{ url: CHINA_POST_WEB_FLAG, status: 200, trackingNumberSubmitted: number, headers: {},
+        body: JSON.stringify({ success: false, reason: 'empty' }) }] })));
+    const carrier = adapter({ fetcher: transport(() => json('{"code":"000000","info":3}')), env: {}, recorder: NOOP_RECORDER,
+      trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null });
+    await expect(carrier.track({ number })).rejects.toMatchObject({ kind: 'indeterminate', name: 'NoHistoryError' });
+    expect(browserFetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not send other inconclusive app failures to the browser', async () => {
+    for (const reply of [() => json(text('trace-not-opened')), () => json('{"code":"500","msg":"busy"}', 500)]) {
+      const browserFetcher = vi.fn<typeof fetch>();
+      const carrier = adapter({ fetcher: transport(open, reply), env: {}, recorder: NOOP_RECORDER,
+        trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null });
+      await expect(carrier.track({ number: NUMBER })).rejects.toMatchObject({ kind: 'indeterminate' });
+      expect(browserFetcher).not.toHaveBeenCalled();
+    }
   });
 
   it('keeps HTTP recognition out of the browser even when the app asks for phone digits', async () => {
@@ -238,6 +264,14 @@ describe('China Post adapter', () => {
     const carrier = adapter({ fetcher: transport(() => json('{"code":"000000","info":2}')), env: {}, recorder: NOOP_RECORDER,
       trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null });
     await expect(carrier.recognize!('ZS00000000001')).resolves.toMatchObject({ known: true });
+    expect(browserFetcher).not.toHaveBeenCalled();
+  });
+
+  it('keeps an empty HTTP recognition inconclusive without opening the browser', async () => {
+    const browserFetcher = vi.fn<typeof fetch>();
+    const carrier = adapter({ fetcher: transport(() => json('{"code":"000000","info":3}')), env: {}, recorder: NOOP_RECORDER,
+      trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null });
+    await expect(carrier.recognize!('ZS00000000001')).rejects.toMatchObject({ kind: 'indeterminate', name: 'NoHistoryError' });
     expect(browserFetcher).not.toHaveBeenCalled();
   });
 

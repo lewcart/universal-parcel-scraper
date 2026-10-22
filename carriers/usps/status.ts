@@ -13,6 +13,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const RETURNED_TERMS = ['return to sender', 'returned to sender', 'returning to sender'];
 const FAILED_ATTEMPT_TERMS = [
@@ -77,3 +78,6 @@ export function uspsStatus(text: string, hasEvents = false): CarrierStatus {
   // Unrecognized wording only means "moving" once the shipment has scans.
   return hasEvents ? 'in_transit' : 'unknown';
 }
+
+/** What the map says about one scan: USPS's scans carry no code, and their wording alone stages them. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => uspsStage(wording) ?? undefined, gaps: [] };

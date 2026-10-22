@@ -13,6 +13,8 @@
     {"code": "5", "wording": "Dispatch Signed for", "language": "en", "stage": "delivered", "confirmedBy": "live", "note": "A delivery in ZTO's network in Cambodia, without the station the line names."},
     {"code": "15", "wording": "Delivered", "language": "en", "stage": "delivered", "confirmedBy": "live", "note": "Signed for with the pickup code a parcel station gave the recipient."},
     {"code": "16", "wording": "Received on the recipient's behalf", "language": "en", "stage": "ready_for_pickup", "confirmedBy": "live", "note": "The adapter's wording: the English line says Delivered, and the Chinese line names who took the parcel in, a parcel station in the histories seen. The collection follows as code 15."},
+    {"code": "30", "wording": "The order has been reviewed", "language": "en", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "The first row of an export to Europe, two days before the warehouse received the parcel."},
+    {"code": "100", "wording": "Arrival at inward office of exchange.", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "A row copied from the last-mile carrier abroad; the copy seen matched its out-for-delivery scan, read on ZTO's words alone."},
     {"code": "150", "wording": "Parcel entered the warehouse", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "The overseas warehouse, in the United States, Japan, Korea or Hong Kong, received the parcel."},
     {"code": "180", "wording": "Packed into shipping bag", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
     {"code": "190", "wording": "Parcel left the warehouse", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
@@ -28,6 +30,9 @@
     {"code": "360", "wording": "Import customs in progress.", "language": "en", "stage": "customs", "confirmedBy": "live"},
     {"code": "370", "wording": "clearance finish", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
     {"code": "371", "wording": "clearance finish", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The Chinese line adds that the parcel enters domestic transport."},
-    {"code": "373", "wording": "Customs inspection", "language": "en", "stage": "customs", "confirmedBy": "live", "note": "Chinese customs picked the parcel for inspection."}
+    {"code": "373", "wording": "Customs inspection", "language": "en", "stage": "customs", "confirmedBy": "live", "note": "Chinese customs picked the parcel for inspection."},
+    {"code": "375", "wording": "clearance completed, customs", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "The destination's import clearance, finished, as the last-mile carrier abroad reports it."},
+    {"code": "415", "wording": "Express shipment / transshipment", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "After the warehouse's receipt and when the last-mile carrier abroad passes the parcel on."},
+    {"code": "-581", "wording": "Parcel with exceptions", "language": "en", "stage": "exception", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "A problem the row does not name, after the last mile's delivery round."}
   ]
 }

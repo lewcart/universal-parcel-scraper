@@ -3,7 +3,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { calendarDay, explicitOffsetTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { classifySeurStatus } from './status.js';
+import { classifySeurStatus, isSeurDelay } from './status.js';
 
 export function normalizeSeurNumber(raw: string): string {
   const number = raw.replace(/\s/g, '');
@@ -75,14 +75,23 @@ export function parseSeur(value: unknown, raw: string): CarrierResult {
     return { description: mapped?.status === 'delivered' ? 'Delivered' : label, provider_status: label,
       provider_group: group, provider_code: code, ...(mapped ? { stage: mapped.stage } : {}), ...scanTime(row.fecha) };
   });
+  const delay = (event: CarrierEvent) => isSeurDelay(event.provider_code!, String(event.provider_group), String(event.provider_status));
+  // Oldest first: a delay notice keeps the stage of the scan before it.
+  let previous: string | undefined;
+  for (const event of [...events].reverse()) {
+    if (!delay(event)) previous = event.stage ?? previous;
+    else if (previous) Object.assign(event, { stage: previous, stage_source: 'none' });
+  }
   // The official widget consumes situaciones[0]; unresolved clocks retain that position.
+  // Its status is the newest scan's other than a delay notice.
   const latest = events[0]!;
-  const mapped = classifySeurStatus(latest.provider_code!, String(latest.provider_group), String(latest.provider_status));
+  const current = events.find((event) => !delay(event));
+  const mapped = current && classifySeurStatus(current.provider_code!, String(current.provider_group), String(current.provider_status));
   const weight = value.peso;
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
     last_status_text: latest.description, last_update: latest.time ?? null,
     ...(latest.local_time ? { last_update_local: latest.local_time } : {}),
-    ...(mapped?.status === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),
+    ...(mapped?.status === 'delivered' && current?.time ? { delivered_at: current.time } : {}),
     ...(typeof weight === 'number' && Number.isFinite(weight) && weight > 0 && weight <= 100_000 ? { weight_kg: weight } : {}),
     events: events.slice(0, 100) };
 }

@@ -169,6 +169,7 @@ import { statusMap as estesForwarding } from '../../carriers/estes-forwarding/st
 import { statusMap as eurodis } from '../../carriers/eurodis/status.js';
 import { statusMap as euroexpressBa } from '../../carriers/euroexpress-ba/status.js';
 import { statusMap as evdemoLojistik } from '../../carriers/evdemo-lojistik/status.js';
+import { statusMap as evri } from '../../carriers/evri/status.js';
 import { statusMap as evropat } from '../../carriers/evropat/status.js';
 import { statusMap as ewe } from '../../carriers/ewe/status.js';
 import { statusMap as exelot } from '../../carriers/exelot/status.js';
@@ -425,6 +426,7 @@ import { statusMap as sendex } from '../../carriers/sendex/status.js';
 import { statusMap as sending } from '../../carriers/sending/status.js';
 import { statusMap as serpost } from '../../carriers/serpost/status.js';
 import { statusMap as servientrega } from '../../carriers/servientrega/status.js';
+import { statusMap as seur } from '../../carriers/seur/status.js';
 import { statusMap as sfExpress } from '../../carriers/sf-express/status.js';
 import { statusMap as sfc } from '../../carriers/sfc/status.js';
 import { statusMap as shadowfax } from '../../carriers/shadowfax/status.js';
@@ -509,6 +511,7 @@ import { statusMap as upaya } from '../../carriers/upaya/status.js';
 import { statusMap as ups } from '../../carriers/ups/status.js';
 import { statusMap as urbano } from '../../carriers/urbano/status.js';
 import { statusMap as urvaam } from '../../carriers/urvaam/status.js';
+import { statusMap as usps } from '../../carriers/usps/status.js';
 import { statusMap as uzbekistanPost } from '../../carriers/uzbekistan-post/status.js';
 import { statusMap as valmo } from '../../carriers/valmo/status.js';
 import { statusMap as vaspExpresso } from '../../carriers/vasp-expresso/status.js';
@@ -569,7 +572,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'early-bird': earlyBird, 'easy-mail': easyMail,
   econt, ecourier, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia,
   envialia, 'eparcel-kr': eparcelKr, 'epost-global': epostGlobal, equick, estes, 'estes-forwarding': estesForwarding, eurodis, 'euroexpress-ba': euroexpressBa,
-  'evdemo-lojistik': evdemoLojistik, evropat, ewe, exelot,
+  'evdemo-lojistik': evdemoLojistik, evri, evropat, ewe, exelot,
   'exline-kz': exlineKz, exmate, 'express-one': expressOne, 'fan-courier': fanCourier, 'fargo-courier': fargoCourier, 'fargo-uz': fargoUz, fastdrop,
   fastfrate, 'fedex-freight': fedexFreight, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery, 'first-line': firstLine,
   'flash-express': flashExpress,
@@ -610,7 +613,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech,
   rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
-  'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sending, serpost, servientrega, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket,
+  'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket,
   'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'skroutz-last-mile': skroutzLastMile,
   skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
   'slovak-parcel-service': slovakParcelService,
@@ -622,7 +625,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'thailand-post': thailandPost, thhy, tiki, tipsa, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,
   trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
   'ubi-smart-parcel': ubiSmartParcel,
-  'united-delivery-service': unitedDeliveryService, upaya, ups, urbano, urvaam,
+  'united-delivery-service': unitedDeliveryService, upaya, ups, urbano, urvaam, usps,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, 'viettel-post': viettelPost,
   vimenpaq, 'vinted-go': vintedGo, vozovoz, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl,
   yanwen, 'ycs-logistics': ycsLogistics, 'yilong-logistics': yilongLogistics, yto, yunexpress, zto, 'zto-international': ztoInternational,

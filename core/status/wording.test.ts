@@ -61,6 +61,8 @@ describe('classifyWording', () => {
       'Absence. Attempted delivery.',
       '<User not at home>',
       'Unsuccessful delivery. Reason : Absence of addressee Result :',
+      // Poste Italiane's locker failure as a universal provider relays it in English.
+      'Delivery not successful due to locker not available. The shipment will be delivered on the next business day.',
       "We're sorry but we were unable to complete your delivery. Please continue to check your tracking for real time updates",
       'The driver tried to deliver the package, but the business was closed. We will reattempt up to 3 times. Contact us with any access or delivery instructions',
       'Business closed. Please provide hours',

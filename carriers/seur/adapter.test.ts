@@ -25,7 +25,7 @@ describe('SEUR simplified anonymous tracking', () => {
       last_update: null, last_update_local: '2026-01-23T13:13:05', weight_kg: 1.2 });
     expect(result.delivered_at).toBeUndefined();
     expect(result.events).toHaveLength(6);
-    expect(result.events?.map(e => e.stage)).toEqual(['delivered', 'out_for_delivery', 'exception', 'in_transit', 'accepted', 'registered']);
+    expect(result.events?.map(e => e.stage)).toEqual(['delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'accepted', 'registered']);
     expect(result.events?.[0]).toMatchObject({ provider_code: 'LL020', provider_status: 'EL ENVÍO HA SIDO ENTREGADO A UN VECINO.', local_time: '2026-01-23T13:13:05' });
     expect(result.events?.every(e => e.time === undefined)).toBe(true);
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
@@ -35,14 +35,27 @@ describe('SEUR simplified anonymous tracking', () => {
     }
   });
 
-  it('reads both delay notices as exceptions', () => {
+  it('keeps the stage a parcel had through either delay notice', () => {
     for (const code of ['LI300', 'LI582']) {
       const body = copy();
-      body.situaciones = [{ fecha: '2026-01-24T10:00:00Z', cod_situacion: code, grupo_situacion: 'EN DEMORA',
-        descripcion_situacion: statuses.entries.find(entry => entry.code === code)!.wording }] as typeof body.situaciones;
-      expect(parseSeur(body, NUMBER)).toMatchObject({ status: 'exception', current_stage: 'exception' });
-      expect(parseSeur(body, NUMBER).events?.[0]).toMatchObject({ provider_code: code, stage: 'exception' });
+      const delay = { fecha: '2026-01-24T10:00:00Z', cod_situacion: code, grupo_situacion: 'EN DEMORA',
+        descripcion_situacion: statuses.entries.find(entry => entry.code === code)!.wording };
+      body.situaciones = [delay, ...body.situaciones.slice(3)] as typeof body.situaciones;
+      const result = parseSeur(body, NUMBER);
+      expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update_local: '2026-01-24T10:00:00' });
+      expect(result.events?.[0]).toMatchObject({ provider_code: code, stage: 'in_transit', stage_source: 'none' });
+      // A delay before any staged scan has no stage to keep.
+      body.situaciones = [delay] as typeof body.situaciones;
+      expect(parseSeur(body, NUMBER)).toMatchObject({ status: 'unknown' });
+      expect(parseSeur(body, NUMBER).events?.[0]?.stage).toBeUndefined();
     }
+  });
+
+  it('reads a parcel pending arrival at its destination as in transit', () => {
+    const body = copy();
+    body.situaciones = [{ fecha: '2026-01-24T10:00:00Z', cod_situacion: 'LI511', grupo_situacion: 'EN DEMORA',
+      descripcion_situacion: statuses.entries.find(entry => entry.code === 'LI511')!.wording }, ...body.situaciones.slice(4)] as typeof body.situaciones;
+    expect(parseSeur(body, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
   });
 
   it('stages pickup points, failed attempts, agreed days and customs', () => {

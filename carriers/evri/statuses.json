@@ -130,6 +130,14 @@
       "note": "Synthetic semantic boundary; not observed in the live reference."
     },
     {
+      "wording": "Departed Origin Country",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "After export customs and before the arrival in the destination country."
+    },
+    {
       "wording": "Arrived In Country",
       "language": "en",
       "stage": "in_transit",

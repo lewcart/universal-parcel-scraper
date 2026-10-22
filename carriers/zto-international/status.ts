@@ -2,9 +2,10 @@ import { classifyWording, type ClassifiedWording, type Stage } from '../../core/
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /**
- * The stage of each scan code ZTO International's tracker sends. Codes below
- * 100 are ZTO's own network, at home and abroad; codes from 150 are ZTO
- * International's warehouses, line hauls and customs.
+ * The stage of each scan code ZTO International's tracker sends. Codes up to
+ * 16 are ZTO's own network, at home and abroad; codes from 150 are ZTO
+ * International's warehouses, line hauls and customs. On an export to Europe,
+ * codes 100, 375 and 415 copy the last-mile carrier's scans.
  */
 const CODES = new Map<string, Stage>([
   ['1', 'accepted'],
@@ -17,6 +18,10 @@ const CODES = new Map<string, Stage>([
   // Taken in by a parcel station or a neighbour for the recipient; the page
   // calls it delivered, but the collection follows as code 15.
   ['16', 'ready_for_pickup'],
+  // The order checked before the overseas warehouse receives the parcel.
+  ['30', 'registered'],
+  // Copied from the last-mile carrier abroad, as an arrival.
+  ['100', 'in_transit'],
   // The overseas warehouse received the parcel: the first scan of an import.
   ['150', 'accepted'],
   ['180', 'in_transit'],
@@ -35,6 +40,11 @@ const CODES = new Map<string, Stage>([
   ['370', 'in_transit'],
   ['371', 'in_transit'],
   ['373', 'customs'],
+  // The destination's import clearance, finished.
+  ['375', 'in_transit'],
+  // A hand-over in the warehouse or to the last-mile carrier abroad.
+  ['415', 'in_transit'],
+  ['-581', 'exception'],
 ]);
 
 /** A scan's stage by its code, or by its wording when the code is new. */

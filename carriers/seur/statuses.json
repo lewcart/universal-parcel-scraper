@@ -71,16 +71,26 @@
       "code": "LI300",
       "wording": "EL ENVÍO HA SUFRIDO UN RETRASO Y ES POSIBLE QUE SE DEMORE LA ENTREGA. DISCULPA LAS MOLESTIAS.",
       "language": "es",
-      "stage": "exception",
-      "confirmedBy": "live"
+      "confirmedBy": "live",
+      "unmapped": true,
+      "note": "A delay notice in the EN DEMORA group, not a movement: the row keeps the stage of the one before it."
     },
     {
       "code": "LI582",
       "wording": "EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA. DISCULPA LAS MOLESTIAS.",
       "language": "es",
-      "stage": "exception",
       "confirmedBy": "live",
-      "note": "A delay notice in the EN DEMORA group, read like LI300."
+      "unmapped": true,
+      "note": "A delay notice in the EN DEMORA group, read like LI300. The parcel seen with it moved on to an agreed delivery day."
+    },
+    {
+      "code": "LI511",
+      "wording": "EL ENVÍO ESTÁ PENDIENTE DE LLEGAR A DESTINO. EN CUANTO SE RECIBA, ACTUALIZAREMOS LA SITUACIÓN.",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "In the EN DEMORA group, but it says where the parcel is: between the origin's receipt and the transit to the destination's facility."
     },
     {
       "code": "LC003",

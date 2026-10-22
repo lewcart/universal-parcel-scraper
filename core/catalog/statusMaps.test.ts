@@ -464,6 +464,24 @@ describe('status map answers', () => {
     expect(answer(carrier, 'DLO', 'Delivered')).toEqual(unknown);
   });
 
+  it('answers SEUR by its code and wording, and leaves its delay notices to the scans around them', () => {
+    expect(answer('seur', 'LI521', 'el envío no se ha entregado porque la dirección de entrega está incompleta o errónea.')).toEqual(mapped('failed_attempt'));
+    expect(answer('seur', 'LI511', 'el envío está pendiente de llegar a destino. en cuanto se reciba, actualizaremos la situación.')).toEqual(mapped('in_transit'));
+    expect(answer('seur', 'LI582', 'el envío ha sufrido un retraso provocando una posible demora en la entrega. disculpa las molestias.')).toEqual(gap);
+    expect(answer('seur', 'LI300', 'Any wording at all')).toEqual(gap);
+    expect(answer('seur', 'LI521', 'el envío está entregado.')).toEqual(unknown);
+  });
+
+  it('answers USPS and Evri by their wording, and ZTO International by its code', () => {
+    expect(answer('usps', null, 'shipping label printed at post office')).toEqual(mapped('registered'));
+    expect(answer('usps', null, 'arrived at post office')).toEqual(mapped('in_transit'));
+    expect(answer('evri', null, 'departed origin country')).toEqual(mapped('in_transit'));
+    expect(answer('evri', null, 'departed')).toEqual(unknown);
+    for (const [code, stage] of [['30', 'registered'], ['100', 'in_transit'], ['375', 'in_transit'], ['415', 'in_transit'], ['-581', 'exception']] as const) {
+      expect(answer('zto-international', code, 'Any wording at all'), code).toEqual(mapped(stage));
+    }
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });
@@ -478,6 +496,8 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', null, 'Clearance processing complete at EXAMPLE GATEWAY - USA')).toEqual(mapped('in_transit'));
     expect(answer('unknown', null, "  Colis en préparation chez l'expéditeur ")).toEqual(mapped('registered'));
     expect(answer('unknown', null, 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('unknown', null, 'Delivery not successful due to locker not available. The shipment will be delivered on the next business day.'))
+      .toEqual(mapped('failed_attempt'));
     // Wording no rule reads, and a delivery still to come, stay open as gaps.
     expect(answer('unknown', null, 'Estado interno 99')).toEqual(unknown);
     expect(answer('unknown', null, 'Will be delivered tomorrow')).toEqual(unknown);

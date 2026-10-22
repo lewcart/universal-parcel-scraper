@@ -8,6 +8,9 @@ import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { classifyCttExpressStatus } from './status.js';
 
+/** A reply that carries an error in place of the shipment. */
+export class CttExpressErrorReply extends IndeterminateError {}
+
 export function normalizeCttExpressNumber(raw: string): string {
   const number = raw.replace(/[\s.-]/g, '');
   if (!isCttExpressTrackingNumber(number)) throw new InvalidInputError('CTT Express', 'CTT Express requires a Spanish shipment or single-package tracking number');
@@ -32,7 +35,7 @@ export function parseCttExpress(payload: unknown, number: string): CarrierResult
   if (!isRecord(payload)) throw new SchemaError('CTT Express');
   // An upstream Invalid token reply can precede successful anonymous retrieval.
   // No error signature has established a reliable parcel-negative response.
-  if (payload.error != null) throw new IndeterminateError('CTT Express', 'CTT Express returned an inconclusive tracking response');
+  if (payload.error != null) throw new CttExpressErrorReply('CTT Express', 'CTT Express returned an inconclusive tracking response');
   const data = payload.data;
   if (!isRecord(data) || data.shipping_code !== requested || !isRecord(data.shipping_history)) {
     throw new SchemaError('CTT Express', 'CTT Express returned a different or incomplete shipment');

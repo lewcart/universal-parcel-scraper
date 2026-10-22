@@ -73,7 +73,30 @@ describe('CTT Express direct tracking', () => {
     }
     const fetcher = vi.fn(async () => json({ error: 'Invalid token.' })) as unknown as typeof fetch;
     await expect(new CttExpressTracker({ fetcher }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
-    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    ['an error reply', () => json({ error: 'Invalid token.' })],
+    ['a body that is not JSON', () => new Response('<html></html>', { headers: { 'Content-Type': 'text/html' } })],
+  ])('reads once more after %s, recording the retry', async (_name, failure) => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(failure()).mockResolvedValueOnce(json(fixture));
+    const steps: unknown[] = [];
+    const tracker = new CttExpressTracker({ fetcher, recorder: { step: (event) => { steps.push(event); }, lookup() {} } });
+    await expect(tracker.fetch(NUMBER)).resolves.toMatchObject({ current_stage: 'ready_for_pickup' });
+    expect(steps).toMatchObject([{ step: 'direct', outcome: expect.not.stringMatching(/^ok$/) }, { step: 'retry', outcome: 'ok', fallbackFrom: 'direct' }]);
+  });
+
+  it('keeps an unreadable body a schema failure and reads a definite answer once', async () => {
+    const unreadable = vi.fn<typeof fetch>(async () => new Response('<html></html>'));
+    await expect(new CttExpressTracker({ fetcher: unreadable }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
+    expect(unreadable).toHaveBeenCalledTimes(2);
+    const multi = vi.fn<typeof fetch>(async () => json({ ...fixture, data: { ...fixture.data, item_count: 2 } }));
+    await expect(new CttExpressTracker({ fetcher: multi }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    const other = vi.fn<typeof fetch>(async () => json({ ...fixture, data: { ...fixture.data, shipping_code: OTHER } }));
+    await expect(new CttExpressTracker({ fetcher: other }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
+    expect(multi).toHaveBeenCalledTimes(1);
+    expect(other).toHaveBeenCalledTimes(1);
   });
 
   it('requires complete bounded supported scan rows and preserves unknown codes', () => {
@@ -315,7 +338,9 @@ describe('CTT Express direct tracking', () => {
     const active = new CttExpressTracker({ fetcher: waiting }).fetch(NUMBER, { signal: controller.signal });
     controller.abort();
     await expect(active).rejects.toMatchObject({ kind: 'transport' });
+    expect(waiting).toHaveBeenCalledTimes(1);
+    // The first read times out at half the budget and the retry takes the rest.
     await expect(new CttExpressTracker({ fetcher: waiting }).fetch(NUMBER, { budgetMs: 20 })).rejects.toMatchObject({ kind: 'transport' });
-    expect(waiting).toHaveBeenCalledTimes(2);
+    expect(waiting).toHaveBeenCalledTimes(3);
   });
 });

@@ -7,15 +7,50 @@
  * applies (`classifyEvent`: their own vocabulary around the shared language
  * rules). A stage a provider declares and a UPU event code it maps are
  * `carrier_map`, so their scans never reach the app's review. Wording no rule
- * reads has no stage. Chronopost's notice to the recipient, a bare delivery
- * estimate, a note that the recipient's details changed, Cainiao's forecast
- * to the last-mile carrier and SEUR's delay notice, none of them a scan, are
- * left out on purpose.
+ * reads has no stage. Notices that are not scans, detail lines and headings,
+ * and scans whose wording alone cannot settle a step are left out on purpose,
+ * each with the reason.
  */
 import { CHRONOPOST_NOTIFICATION } from '../carriers/chronopost/status.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../core/status/statusMap.js';
 import { subStatusStage } from './seventeentrack/status.js';
 import { classifyEvent } from './shared/result.js';
+
+/** Relayed wording that names no step of its own, and why: the app's review closes it as left out. */
+const NO_STEP: ReadonlyArray<readonly [wording: string, note: string]> = [
+  // Notices the providers drop before they reach a history (`isNotice`), seen before they did.
+  ['a preferred drop-off location was booked for the shipment', "ParcelsApp's note of a drop-off place the recipient booked: not a scan."],
+  ['track sendcloud shipment by tapping the button', "ParcelsApp's prompt to track on Sendcloud's site: not a scan."],
+  ['shipment parameters updated', "Postal Ninja's note that the shipment's details changed: not a scan."],
+  ['tracking number must contain only capital letters and digits. please check that tracking number is correct.',
+    "ParcelsApp's check of the number's characters: not a scan."],
+  // MailAmericas' tax ID checks (its SM codes, left out of its own map), as ParcelsApp relays them.
+  ['tax id. form received', "MailAmericas' tax ID check as ParcelsApp relays it: the parcel moves on whatever it says."],
+  ['tax id. address not found', "MailAmericas' tax ID check as ParcelsApp relays it: the parcel moves on whatever it says."],
+  // Detail lines that sit beside different scans, headings, and a code relayed without its wording.
+  ['keine weiteren details erforderlich', 'A German detail line that sits beside different scans: no step of its own.'],
+  ['filiale / agentur', 'A German detail line that sits beside different scans: no step of its own.'],
+  ['packstation', 'A detail line naming a Packstation, before the parcel was collected: no step of its own.'],
+  ['vereinfachte zustellung', 'A detail line naming a simplified delivery, beside loading and unloading scans: no step of its own.'],
+  ['benachrichtigt', 'A German note that someone was notified, without saying of what: no step of its own.'],
+  ['in progress', 'A heading that names no step.'],
+  ['update on your parcel', 'A heading that names no step.'],
+  ['110', "A bare code relayed in place of a scan's wording: it names no step."],
+  // Scans whose wording alone cannot settle the step: who received the parcel, which side shipped or
+  // released it, whether a driver collects or delivers, or which forwarder's warehouse scanned it.
+  ['item received', 'A bare receipt that names no receiver: ParcelsApp reads it by its place, the wording alone cannot.'],
+  ['received.', 'A bare receipt that names no receiver: a store, a centre or a carrier.'],
+  ['shipped', "A dispatch that does not say whether the seller or a carrier sent the parcel on."],
+  ['released', 'A release that does not say from customs or from a hold.'],
+  ['driver assigned', 'A driver assigned, to a collection or to a delivery round: the wording does not say which.'],
+  ['parcel is with the driver', 'A parcel with a driver, collected or out for delivery: the wording does not say which.'],
+  ['not received from retailer', 'A hand-over from the retailer that has not happened: no step was taken.'],
+  ['pickup document attached', 'A document attached to a collection, before or after it: no step of its own.'],
+  ['delivery branch. rescheduling', 'A delivery rescheduled at the branch, before a new round or a collection: the wording does not say which.'],
+  ['parcel to be taken to a yodel store', "A Yodel store hand-over that can be the sender's drop-off or a parcel sent for collection."],
+  ['barcode scanning', "A Shenzhen forwarder's warehouse scan that First Line reads as its intake and PFC Express as transit: the wording names neither."],
+  ['packaged', "A forwarder's packing, or a seller's: the wording does not say whose."],
+];
 
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => {
@@ -37,5 +72,5 @@ export const statusMap: CarrierStatusMap = {
   }, {
     wording: 'en demora - el envío ha sufrido un retraso provocando una posible demora en la entrega.',
     note: "SEUR's delay notice as Ship24 relays it, group before wording: not a scan, so it keeps the stage the parcel already had.",
-  }],
+  }, ...NO_STEP.map(([wording, note]) => ({ wording, note }))],
 };

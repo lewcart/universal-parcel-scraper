@@ -367,6 +367,13 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^courier pick up$/.test(text)) return 'accepted';
   // A Chinese forwarder's collection from the sender, as ParcelsApp relays it.
   if (/^shipment pick ?up$/.test(text)) return 'accepted';
+  // Nova Poshta's English as providers relay it: the shipment registered, then its departure from the branch,
+  // numbered or not.
+  if (/^registered and being prepared$/.test(text)) return 'registered';
+  if (/^left the branch(?: \d{1,3})?$/.test(text)) return 'in_transit';
+  // TNT Italy's departure from the origin depot, and the US Postal Service's hand-off to the international
+  // gateway after customs.
+  if (/^la spedizione (?:e'|e) regolarmente partita$|^tendered to (?:the )?international gateway$/.test(text)) return 'in_transit';
   // InPost UK's scans as Ship24 relays them: the sender's drop-off in a locker or at a store, then a hub's
   // outbound scan.
   if (/^parcel stored by (?:the )?customer$/.test(text)) return 'accepted';
@@ -385,6 +392,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^item received by royal mail$|\btaken over by one of our operators\b|\bwe've received your (?:parcel|package|item) at the parcel ?shop\b|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:was|has been) dropped off at (?:the |a )?parcel ?shop$|^(?![^,]*\b(?:recipient|consignee|receiver|customer|addressee|buyer|pick ?up point|parcel ?shop|locker|destination)\b)[a-z][\w&' -]{0,40} has received the goods(?:, [^,]{1,40}){0,2}\.?$|^the shipment has been deposited at a seur pickup point$|^(?:the |your )?collection (?:has been |was )?(?:carried out|completed)$|^已入库|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:has been |was )?put into storage$/.test(text)) return 'accepted';
   // Poste Italiane's drop-off at a Punto Poste in English ("presa in carico presso il Punto Poste").
   if (/^(?:the )?shipment has been taken over at the post office point$/.test(text)) return 'accepted';
+  // TNT Italy's drop-off at a FedEx Location, awaiting the courier, as providers relay it.
+  if (/^spedizione affidata a una fedex location\b/.test(text)) return 'accepted';
   // The sender's drop-off at a parcel shop in German, which names the shop and its address before the verb:
   // "Die Sendung wurde vom Absender im PaketShop <shop>, <address> abgegeben".
   if (/^die sendung wurde vom absender (?:im|in der|in einem|in einer) (?:[\w-]+ )?(?:paketshop|parcelshop|filiale)\b(?!.*\bnicht\b).*\babgegeben$/.test(text)) return 'accepted';

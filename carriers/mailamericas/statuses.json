@@ -5,6 +5,7 @@
     {"code": "SM-1", "wording": "Tax ID: TN Validation OK", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "A check of the buyer's tax ID, logged with the label. The parcel moves on whatever it says."},
     {"code": "SM-2", "wording": "Tax ID: Incorrect Buyer ID", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "The same check failing; the page then asks the buyer for the ID. The parcel still moved on in the histories seen."},
     {"code": "SM-4", "wording": "Tax ID: TAX ID OK", "language": "en", "confirmedBy": "live", "unmapped": true},
+    {"code": "SM-9", "wording": "Buyer info: Form Received", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "The buyer's details form, logged again every half hour while the parcel moves on, before and after the last-mile carrier's receipt."},
     {"code": "WH-1", "wording": "Origin warehouse: Received at Origin Warehouse", "language": "en", "stage": "accepted", "confirmedBy": "live"},
     {"code": "WH-2", "wording": "Origin warehouse: Dispatched", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
     {"code": "WH-3", "wording": "Origin warehouse: Processed", "language": "en", "stage": "in_transit", "confirmedBy": "live"},

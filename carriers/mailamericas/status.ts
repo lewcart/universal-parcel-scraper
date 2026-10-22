@@ -70,6 +70,7 @@ export const statusMap: CarrierStatusMap = {
     { code: 'SM-1', note: 'A check of the buyer\'s tax ID at order creation; the parcel moves on whatever it says.' },
     { code: 'SM-2', note: 'A check of the buyer\'s tax ID at order creation; the parcel moves on whatever it says.' },
     { code: 'SM-4', note: 'A check of the buyer\'s tax ID; the parcel moves on whatever it says.' },
+    { code: 'SM-9', note: 'The buyer\'s details form received, logged again every half hour while the parcel moves on; it moves nothing.' },
     { code: 'AD-4', note: 'The import duty recorded as paid, which can come while the parcel is still at the origin warehouse; it moves nothing.' },
     { code: 'AV-1', note: 'A notice that adds information to the history; it moves nothing.' },
   ],

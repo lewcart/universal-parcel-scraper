@@ -48,7 +48,8 @@ Tracked through the lookup its tracking page makes.
   `last_update_local` has its wall clock.
 - A scan's description is its leg, as the page heads it, then its own line, such as
   `Destination customs: Released`. The `code` (`AD-3`) stages it; the code's letters name the
-  leg. Tax ID checks, notices and a duty recorded as paid move nothing and have no stage.
+  leg. Tax ID checks and the buyer's details form, notices and a duty recorded as paid move nothing
+  and have no stage.
 - The page swaps some codes' wording for friendlier labels from `/api/tracking-labels`. The
   adapter keeps the scan's own wording and makes no second request.
 - The summary's `status` decides a delivery, a return or a claim. A parcel retained at origin or

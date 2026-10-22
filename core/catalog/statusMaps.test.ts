@@ -217,6 +217,12 @@ describe('status map answers', () => {
     expect(answer('posta-slovenije', 'EMC', 'Departure from outward OE')).toEqual(mapped('in_transit'));
   });
 
+  it("answers MailAmericas by its codes, and leaves its tax ID checks and the buyer's form out on purpose", () => {
+    expect(answer('mailamericas', 'LM-2', 'Delivery office: In distribution')).toEqual(mapped('out_for_delivery'));
+    for (const code of ['SM-1', 'SM-2', 'SM-4', 'SM-9']) expect(answer('mailamericas', code, 'Synthetic notice'), code).toEqual(gap);
+    expect(answer('mailamericas', null, 'Buyer info: Form Received')).toEqual(unknown);
+  });
+
   it("answers bpost by its English wording, a locker placeholder the parser fills included", () => {
     expect(answer('bpost', null, 'Item available at the bbox locker')).toEqual(mapped('ready_for_pickup'));
     expect(answer('bpost', null, "item on it's way to {{bboxrebrand}}")).toEqual(mapped('in_transit'));
@@ -663,9 +669,10 @@ describe("universal providers' answers", () => {
       ['USPS in possession of item, EXAMPLE, ST 00000', 'accepted'], ['inventory in a warehouse', 'in_transit'], ['hand over to airline', 'in_transit'],
       ['new delivery, flexible delivery arrangement', 'in_transit'], ['in lavorazione', 'in_transit'], ['uscita centro postale', 'in_transit'],
       ['Your order has been shipped from 2) Example Center', 'in_transit']] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
-    for (const wording of ["in paack's distribution centre", 'girildi', 'order triggered by recipient: forward', 'Released']) {
+    for (const wording of ["in paack's distribution centre", 'girildi', 'order triggered by recipient: forward']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
+    expect(answer('unknown', null, 'Released')).toEqual(gap);
   });
 
   it("read An Post's relayed sentences as its trace codes stage them", () => {
@@ -804,34 +811,48 @@ describe("universal providers' answers", () => {
       'Parcel received by the recipient']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
-    for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
-      'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling', 'Order confirmed., pending',
+    for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Order confirmed., pending',
       'Przesyłka w oddziale', 'Przesyłka w oddziale FedEx czeka na odbiór', 'Your order has been shipped from the distribution center to the store',
       'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen',
       'Order Closed', 'Center', 'Dispatch task assigned', 'Received at origin warehouse pending', 'In viaggio verso il centro', 'Confirmation of preparation', 'Expecting your parcel back', 'Parcel received by relay point',
       'Item posted abroad', 'Item in transfer', 'Item received by the Brazilian Post at the counter', "Need to inform recipient's address",
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub', 'Shipment despatched to transshipment hub of Example',
       'Delivery has been made at the destination port of Example', '目的港已提货待清关', 'Received by our network partner in Example', 'Checked in at origin hub of Example', 'Parcel shipped to Example', 'The shipment was left at a drop-off location for the courier', 'Order information has been sent',
-      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store',
+      'Received. Your order has been received by the store', 'Package finished at the store',
       'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Dirección entrega incompleta y teléfono', 'Leave the return processing center', 'Cause of problem',
-      'Rescheduled delivery', 'Parcel handed to the recipient', 'Parcel handed over to the recipient', 'Handed over to your neighbour', 'Pickup document attached', 'Pickup completed', 'Pickup scheduled',
+      'Rescheduled delivery', 'Parcel handed to the recipient', 'Parcel handed over to the recipient', 'Handed over to your neighbour', 'Pickup completed', 'Pickup scheduled',
       'Order registered by the recipient', 'We will come back with details about the delivery', 'The package is in the local warehouse for collection',
       'Courier collection complete', 'Collection complete from sender',
       'Export scan pending', 'Awaiting export scan', 'Received in warehouse Example', 'Item deposited',
       'Parcel was dropped off at the locker by the courier', 'International shipment release pending', 'Package is received at a station',
-      // Detail lines, a store hand-over that is a drop-off or a collection, and headings with no step of their own.
-      'Keine weiteren Details erforderlich', 'Filiale / Agentur', 'Parcel to be taken to a Yodel Store',
-      'Received at Example Store', 'In progress', 'Update on your parcel', 'Your order has been shipped from Example center to the store']) {
+      // A store receipt that is a drop-off or a collection, and a retailer's order sent to its store.
+      'Received at Example Store', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });
 
-  it("leave out only Chronopost's notice, a bare delivery estimate, a recipient update, Cainiao's forecast and SEUR's delay on purpose", () => {
-    expect(universal.gaps.map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail', 'estimated delivery',
+  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's and BRT's scans as their carriers read them", () => {
+    for (const [wording, stage] of [['Registered and being prepared', 'registered'], ['Left the branch 12', 'in_transit'],
+      ["La spedizione e' regolarmente partita", 'in_transit'], ['Spedizione affidata a una FedEx Location in attesa di ritiro del corriere', 'accepted'],
+      ['Tendered to International Gateway.', 'in_transit'], ['TURMOIL', 'exception']] as const) {
+      expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
+    }
+    expect(answer('unknown', null, 'Left the branch office of the recipient')).toEqual(unknown);
+  });
+
+  it('leave out notices, detail lines, headings and scans whose wording cannot settle a step, each with its reason', () => {
+    expect(universal.gaps.slice(0, 5).map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail', 'estimated delivery',
       'recipient information updated', 'last-mile delivery forecast',
       'en demora - el envío ha sufrido un retraso provocando una posible demora en la entrega.']);
     expect(answer('unknown', null, 'EN DEMORA - EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA.')).toEqual(gap);
     expect(answer('unknown', null, 'Last-mile delivery forecast')).toEqual(gap);
+    for (const wording of ['Shipment parameters updated', 'Tax ID. Form received', 'Keine weiteren Details erforderlich', 'Filiale / Agentur',
+      'Benachrichtigt', 'In progress', 'Update on your parcel', '110', 'Item received', 'Received.', 'Shipped', 'Driver assigned',
+      'Parcel is with the driver', 'Not received from retailer', 'Pickup document attached', 'Delivery branch. Rescheduling',
+      'Parcel to be taken to a Yodel Store', 'Barcode scanning', 'Packaged']) expect(answer('unknown', null, wording), wording).toEqual(gap);
+    // Only the whole wording: a receipt that names its receiver, or another number, is not left out.
+    for (const wording of ['Item received by Royal Mail']) expect(answer('unknown', null, wording), wording).toEqual(mapped('accepted'));
+    for (const wording of ['111', 'Received at Example Store']) expect(answer('unknown', null, wording), wording).toEqual(unknown);
   });
 });
 

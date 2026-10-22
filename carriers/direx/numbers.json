@@ -307,7 +307,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Direx's own API documentation uses this item number in the request examples of its tracking and manifest endpoints."

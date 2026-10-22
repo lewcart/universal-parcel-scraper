@@ -26,9 +26,10 @@ own failure kinds. Recognition uses the same lookup.
 
 ACS numbers are ten digits, as Trustpilot reviews and an aggregator page show, so other inputs
 are invalid without a request. On every number seen, the last digit is the first
-nine modulo 7, as on DHL Express waybills; the adapter does not enforce it. Ten digits are
-shared with several carriers, so no detection rule claims them and preflight does not ask this
-adapter.
+nine modulo 7, as on DHL Express waybills and Geniki Taxydromiki vouchers; the adapter does not
+enforce it. Ten digits are shared with several carriers, so `acs-courier-1` only suggests ACS
+for ten plain digits whose check holds, and recognition asks it first for a lookup from Greece or
+Cyprus.
 
 ## Notes
 

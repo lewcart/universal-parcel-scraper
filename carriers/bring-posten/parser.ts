@@ -8,14 +8,14 @@ import { isRecord } from '../../core/types.js';
 import { bringStatus, bringWording } from './status.js';
 
 /**
- * A parcel or consignment number, or a Norwegian S10. The tracker also takes a
- * parcel's SSCC with its 00 application identifier and answers for the
- * 18-digit parcel number, which is what gets asked.
+ * A parcel or consignment number, or an S10, Norwegian or from abroad. The
+ * tracker also takes a parcel's SSCC with its 00 application identifier and
+ * answers for the 18-digit parcel number, which is what gets asked.
  */
 export function normalizeBringNumber(raw: string): string {
   const typed = normalizeTrackingNumber(raw);
   const number = /^00\d{18}$/.test(typed) ? typed.slice(2) : typed;
-  if (!/^\d{17,18}$/.test(number) && !(/^[A-Z]{2}\d{9}NO$/.test(number) && isValidS10TrackingNumber(number))) {
+  if (!/^\d{17,18}$/.test(number) && !(/^[A-Z]{2}\d{9}[A-Z]{2}$/.test(number) && isValidS10TrackingNumber(number))) {
     throw new InvalidInputError('Bring', 'Bring requires a parcel or consignment tracking number');
   }
   return number;
@@ -50,6 +50,9 @@ function selectParcel(consignment: Record<string, unknown>, pieces: unknown[], n
     throw new IndeterminateError('Bring', 'No complete single-piece consignment');
   }
   if (consignment.numberOfConsignmentItems === 1 && pieces.length === 1 && !consignment.domain.isMultiParcel) return pieces[0];
+  // Mail from abroad is its own consignment: the reply counts no items and names the piece by the same number.
+  if (consignment.numberOfConsignmentItems === 0 && pieces.length === 1 && !consignment.domain.isMultiParcel
+    && consignment.consignmentId === number && isRecord(pieces[0]) && pieces[0].packageNumber === number) return pieces[0];
   const named = pieces.filter(piece => isRecord(piece) && piece.packageNumber === number);
   if (consignment.consignmentId === number || named.length !== 1 || pieces.length < 2
     || consignment.numberOfConsignmentItems !== pieces.length) throw new IndeterminateError('Bring', 'No complete single-piece consignment');

@@ -63,7 +63,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Published integration example, not a real shipment. The source attributes it to DHL, which stays one candidate among several."

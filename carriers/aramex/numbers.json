@@ -111,7 +111,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Public report explicitly identifies a separate Aramex Global Shopper shipment from the UK to South Africa. The general portal was not independently confirmed; the numeric shape does not identify Aramex."
@@ -138,7 +140,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Public report explicitly identifies a separate Aramex Global Shopper shipment from the UK to South Africa. The general portal was not independently confirmed; the numeric shape does not identify Aramex."
@@ -228,7 +232,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Ten-digit Shop and Ship waybill from a review of Aramex. Aramex's tracker returns its history."
@@ -320,7 +326,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Ten-digit waybill to Morocco from a review of Aramex; its last scan reports a processing problem. Aramex's tracker returns its history."
@@ -412,7 +420,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Ten-digit e-commerce waybill to the UAE from a review of Aramex. Aramex's tracker returns its history."

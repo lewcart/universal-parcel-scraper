@@ -24,7 +24,9 @@
           "relais-colis",
           "tipsa",
           "estafeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "An archived lookup on FedEx Freight's own tracking app carries this PRO with the FedEx Freight qualifier; the capture holds only the loading shell, so the history was not visible."

@@ -25,7 +25,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "An archived lookup on HCT's own tracker; the opened capture shows this ten-digit number with its scans from arrival at the first branch to delivery."
@@ -54,7 +56,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "An archived lookup address on HCT's own site whose no parameter is the Base64 form of this ten-digit number; the capture is a redirect to the home page, so no history is visible and the capture was not opened."
@@ -83,7 +87,9 @@
           "tipsa",
           "estafeta",
           "packeta",
+          "acs-courier",
           "dhl-ecommerce-es",
+          "geniki-taxydromiki",
           "gls-es"
         ]
       },
@@ -113,7 +119,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "The tracking example in the README of an open-source PHP library for HCT's mobile tracking endpoint; not checked against HCT's tracker."
@@ -142,7 +150,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A comment on track.tw's HCT page gives it as the number of a parcel sent a week earlier and not yet delivered. HCT's tracker lists its scans from the first branch to delivery."
@@ -171,7 +181,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A comment on track.tw's HCT page gives it as a number the tracker would not show. HCT's tracker lists the pickup it was issued for, and a later pickup under the same number."

@@ -49,6 +49,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "bosta": 951,
   "box-now": 250,
   "bpost": 810,
+  "bring-posten": 205,
   "bringer-parcel": 639,
   "brt": 860,
   "bulgarian-posts": 915,

@@ -52,7 +52,9 @@
           "relais-colis",
           "tipsa",
           "estafeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."
@@ -192,7 +194,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."

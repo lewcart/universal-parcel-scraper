@@ -1771,6 +1771,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1823,6 +1824,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1843,6 +1845,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1863,6 +1866,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1883,6 +1887,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1903,6 +1908,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1950,6 +1956,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1973,6 +1980,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1996,6 +2004,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2019,6 +2028,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2042,6 +2052,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2065,6 +2076,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2088,6 +2100,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2111,6 +2124,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2134,6 +2148,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2157,6 +2172,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2180,6 +2196,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2203,6 +2220,7 @@
     ],
     "asked": [
       "early-bird",
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -2223,6 +2241,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -5712,13 +5731,17 @@
       "relais-colis",
       "tipsa",
       "estafeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
       "dhl-ecommerce-es"
     ]
@@ -7542,13 +7565,17 @@
       "relais-colis",
       "tipsa",
       "estafeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
       "dhl-ecommerce-es"
     ]
@@ -8042,13 +8069,17 @@
       "relais-colis",
       "tipsa",
       "estafeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
       "dhl-ecommerce-es"
     ]
@@ -10925,7 +10956,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -10933,9 +10966,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -12254,7 +12288,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -12262,9 +12298,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -13042,7 +13079,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -13050,9 +13089,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -13613,7 +13653,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -13621,9 +13663,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -13686,7 +13729,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -13694,9 +13739,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -14325,7 +14371,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -14333,9 +14381,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -17170,7 +17219,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -17178,9 +17229,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -17470,7 +17522,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -17478,9 +17532,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -17738,7 +17793,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -17746,9 +17803,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -17956,7 +18014,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -17964,9 +18024,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -19538,7 +19599,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -19546,9 +19609,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -19861,7 +19925,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -19869,9 +19935,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -20377,7 +20444,9 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "acs-courier",
       "dhl-ecommerce-es",
+      "geniki-taxydromiki",
       "gls-es"
     ],
     "preferred": [
@@ -20385,9 +20454,10 @@
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -21445,16 +21515,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -22017,16 +22090,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -23040,16 +23116,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -24238,16 +24317,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -24458,16 +24540,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -24666,16 +24751,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -24943,16 +25031,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -25248,16 +25339,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -25643,16 +25737,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -25872,16 +25969,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -26158,16 +26258,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -26239,16 +26342,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -26951,16 +27057,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -27058,16 +27167,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -27355,16 +27467,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -27395,16 +27510,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -27476,16 +27594,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -29249,16 +29370,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -29924,16 +30048,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -29988,16 +30115,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -30036,16 +30166,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -30737,16 +30870,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -30858,16 +30994,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -30947,16 +31086,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -30995,16 +31137,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -32407,16 +32552,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -33063,16 +33211,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -33106,16 +33257,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -33750,16 +33904,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -34527,6 +34684,9 @@
     ],
     "preferred": [
       "bring-posten"
+    ],
+    "asked": [
+      "bring-posten"
     ]
   },
   {
@@ -34539,6 +34699,9 @@
       "ecoscooting"
     ],
     "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
       "bring-posten"
     ]
   },
@@ -34569,6 +34732,9 @@
     ],
     "preferred": [
       "bring-posten"
+    ],
+    "asked": [
+      "bring-posten"
     ]
   },
   {
@@ -34581,6 +34747,9 @@
       "ecoscooting"
     ],
     "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
       "bring-posten"
     ]
   },
@@ -34643,6 +34812,9 @@
     ],
     "preferred": [
       "bring-posten"
+    ],
+    "asked": [
+      "bring-posten"
     ]
   },
   {
@@ -34655,6 +34827,9 @@
       "ecoscooting"
     ],
     "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
       "bring-posten"
     ]
   },
@@ -34669,6 +34844,9 @@
     ],
     "preferred": [
       "bring-posten"
+    ],
+    "asked": [
+      "bring-posten"
     ]
   },
   {
@@ -34681,6 +34859,9 @@
       "ecoscooting"
     ],
     "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
       "bring-posten"
     ]
   },
@@ -34885,6 +35066,9 @@
     ],
     "preferred": [
       "bring-posten"
+    ],
+    "asked": [
+      "bring-posten"
     ]
   },
   {
@@ -34897,6 +35081,9 @@
       "ecoscooting"
     ],
     "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
       "bring-posten"
     ]
   },
@@ -34911,6 +35098,9 @@
     ],
     "preferred": [
       "bring-posten"
+    ],
+    "asked": [
+      "bring-posten"
     ]
   },
   {
@@ -34924,6 +35114,9 @@
     ],
     "preferred": [
       "bring-posten"
+    ],
+    "asked": [
+      "bring-posten"
     ]
   },
   {
@@ -34936,6 +35129,9 @@
       "ecoscooting"
     ],
     "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
       "bring-posten"
     ]
   },
@@ -34974,6 +35170,9 @@
     ],
     "preferred": [
       "bring-posten"
+    ],
+    "asked": [
+      "bring-posten"
     ]
   },
   {
@@ -34986,6 +35185,9 @@
       "ecoscooting"
     ],
     "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
       "bring-posten"
     ]
   },
@@ -35177,16 +35379,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -36369,16 +36574,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -36473,16 +36681,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -37805,16 +38016,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -38254,16 +38468,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -39345,16 +39562,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -39833,16 +40053,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -40493,16 +40716,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41108,16 +41334,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41436,16 +41665,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41663,16 +41895,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41687,16 +41922,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41779,16 +42017,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41834,16 +42075,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41858,16 +42102,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41882,16 +42129,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -41906,16 +42156,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -43691,16 +43944,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -46067,16 +46323,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -46450,16 +46709,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -47081,16 +47343,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -47137,16 +47402,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -47695,16 +47963,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -48375,16 +48646,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -48399,16 +48673,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -48433,16 +48710,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -48589,16 +48869,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -48975,16 +49258,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -49074,16 +49360,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -49203,16 +49492,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -49309,16 +49601,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -50473,6 +50768,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "colis-prive",
       "dhl-ecommerce"
     ]
@@ -50490,6 +50786,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "colis-prive",
       "dhl-ecommerce"
     ]
@@ -50507,6 +50804,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "colis-prive",
       "dhl-ecommerce"
     ]
@@ -50524,6 +50822,7 @@
       "bring-posten"
     ],
     "asked": [
+      "bring-posten",
       "colis-prive",
       "dhl-ecommerce"
     ]
@@ -51016,16 +51315,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51040,16 +51342,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51064,16 +51369,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51088,16 +51396,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51112,16 +51423,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51431,16 +51745,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51482,16 +51799,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51652,16 +51972,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51829,16 +52152,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -51926,16 +52252,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -52319,16 +52648,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -52627,16 +52959,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -52763,16 +53098,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -52896,16 +53234,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -53342,16 +53683,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -54289,16 +54633,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -54357,16 +54704,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -54718,16 +55068,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -55278,16 +55631,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -55593,16 +55949,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -55752,16 +56111,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -56081,16 +56443,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -57505,16 +57870,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -57936,16 +58304,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -58397,16 +58768,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -58619,16 +58993,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -59967,16 +60344,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -59991,16 +60371,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -60086,16 +60469,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -60110,16 +60496,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -60177,16 +60566,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -60502,16 +60894,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -60555,16 +60950,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -60963,16 +61361,19 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "acs-courier",
+      "dhl-ecommerce-es",
+      "geniki-taxydromiki"
     ],
     "preferred": [
       "dhl-express"
     ],
     "asked": [
       "dhl-express",
+      "acs-courier",
+      "geniki-taxydromiki",
       "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
+      "packeta"
     ]
   },
   {
@@ -67018,6 +67419,14 @@
     "asked": [
       "ptt",
       "chronopost"
+    ]
+  },
+  {
+    "input": "CP087828583DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
     ]
   },
   {

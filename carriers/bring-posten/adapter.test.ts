@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
-import { BringTracker } from './adapter.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, BringTracker } from './adapter.js';
 import { normalizeBringNumber, parseBring } from './parser.js';
 import { bringStatus } from './status.js';
 import { InvalidInputError } from '../../core/errors/index.js';
@@ -230,10 +231,33 @@ describe('Bring bounded anonymous retrieval', () => {
   it.each([[404, 'indeterminate'], [410, 'indeterminate'], [403, 'challenge'], [429, 'rate_limited'], [503, 'maintenance']])('preserves HTTP %s semantics', async (status, kind) => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response('Unavailable', { status: Number(status) }));
     await expect(new BringTracker({ fetcher }).fetch(NUMBER)).rejects.toMatchObject({ kind }); expect(fetcher).toHaveBeenCalledOnce();
+    await expect(new BringTracker({ fetcher }).fetch(NUMBER)).rejects.not.toMatchObject({ reason: 'portal_not_found' });
+  });
+
+  it('marks the portal\'s own not-found answer, which stays inconclusive', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json({ error: 'No shipments found', errorState: 'NOT_FOUND' }, { status: 404 }));
+    await expect(new BringTracker({ fetcher }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+  });
+
+  it('asks about S10 mail from abroad and recognizes the numbers its lookup takes', async () => {
+    // Mail from abroad is its own consignment, which counts no items.
+    const value = payload(); parcel(value).packageNumber = 'RR000000005DE';
+    Object.assign(value.consignmentWithDomainAsync, { consignmentId: 'RR000000005DE', numberOfConsignmentItems: 0 });
+    const other = structuredClone(value); parcel(other).packageNumber = 'RR000000019DE';
+    expect(() => parseBring(other, 'RR000000005DE')).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+    const fetcher = vi.fn<typeof fetch>(async () => Response.json(value));
+    const tracker = adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+    await expect(tracker.track({ number: 'RR000000005DE' }, {})).resolves.toMatchObject({ status: 'delivered' });
+    expect(String(fetcher.mock.calls[0]![0])).toBe('https://sporing.bring.no/sporing/json/RR000000005DE?lang=en');
+    await expect(tracker.recognize!('RR000000005DE', {})).resolves.toMatchObject({ known: true, lastActivityAt: '2026-01-06T11:00:00.000Z' });
+    fetcher.mockClear();
+    await expect(tracker.recognize!('RR000000004DE', {})).resolves.toEqual({ known: false }); expect(fetcher).not.toHaveBeenCalled();
+    fetcher.mockImplementation(async () => Response.json({ error: 'No shipments found', errorState: 'NOT_FOUND' }, { status: 404 }));
+    await expect(tracker.recognize!('370000000000000001', {})).rejects.toMatchObject({ reason: 'portal_not_found' });
   });
 
   it('validates inputs, response bytes, cancellation and malformed JSON', async () => {
-    for (const number of ['123', 'RR000000006NO', 'RR000000005CN', `${NUMBER}&secret=value`]) expect(() => normalizeBringNumber(number)).toThrow(InvalidInputError);
+    for (const number of ['123', 'RR000000006NO', 'RR000000004CN', `${NUMBER}&secret=value`]) expect(() => normalizeBringNumber(number)).toThrow(InvalidInputError);
     expect(normalizeBringNumber('rr 000000005 no')).toBe('RR000000005NO');
     const fetcher = vi.fn<typeof fetch>();
     await expect(new BringTracker({ fetcher }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow(); expect(fetcher).not.toHaveBeenCalled();

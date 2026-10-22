@@ -140,7 +140,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "An archived lookup on TCI Express's tracker shows this docket with its status, booking details and transhipment history."

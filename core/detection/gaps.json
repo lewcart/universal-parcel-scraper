@@ -102,12 +102,6 @@
     "reason": "ACI hands e-commerce parcels to Korea Post for delivery in Korea, whose rule suggests these thirteen-digit registered numbers."
   },
   {
-    "carrier": "acs-courier",
-    "pattern": "^\\d{10}$",
-    "kind": "by_design",
-    "reason": "Ten digits are shared by several carriers and nothing in the number points to ACS Courier."
-  },
-  {
     "carrier": "aex-paraguay",
     "pattern": "^A\\d{9}$",
     "kind": "collision",
@@ -1541,12 +1535,6 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Ten bare digits are printed by many carriers, so GEL Sendungsnummern stay unclaimed."
-  },
-  {
-    "carrier": "geniki-taxydromiki",
-    "pattern": "^\\d{10}$",
-    "kind": "by_design",
-    "reason": "Ten digits are shared by several carriers and nothing in the number points to Geniki Taxydromiki."
   },
   {
     "carrier": "ghn",

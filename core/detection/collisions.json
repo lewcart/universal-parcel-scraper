@@ -1234,9 +1234,26 @@
       "relais-colis",
       "tipsa",
       "dhl-express",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "acs-courier",
+      "geniki-taxydromiki"
     ],
-    "reason": "10-digit numbers are shared by several carriers; the number stays a low-confidence suggestion."
+    "reason": "10-digit numbers are shared by several carriers; the number stays a low-confidence suggestion. ACS Courier and Geniki Taxydromiki numbers pass the same modulo-7 check as DHL Express waybills."
+  },
+  {
+    "shape": "Ten plain digits starting 0 that pass the modulo-7 check",
+    "carriers": [
+      "dhl",
+      "estafeta",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "dhl-express",
+      "dhl-ecommerce-es",
+      "acs-courier",
+      "geniki-taxydromiki"
+    ],
+    "reason": "ACS Courier and Geniki Taxydromiki numbers are ten plain digits that pass the same check as DHL Express waybills. Packeta prints no leading zero. The number stays a low-confidence suggestion."
   },
   {
     "shape": "Ten digits starting 0 that pass the DHL Express waybill check",
@@ -4885,9 +4902,11 @@
       "mondial-relay",
       "packeta",
       "relais-colis",
-      "tipsa"
+      "tipsa",
+      "acs-courier",
+      "geniki-taxydromiki"
     ],
-    "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept. A passing waybill check prioritizes DHL Express but does not establish it; direct tracking must confirm the carrier."
+    "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept. A passing modulo-7 check prioritizes DHL Express, ACS Courier and Geniki Taxydromiki but does not establish any of them; direct tracking must confirm the carrier."
   },
   {
     "shape": "Ten digits starting 1, with separators Packeta does not print, that fail the DHL Express waybill check",

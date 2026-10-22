@@ -72,5 +72,13 @@
       "path": "^/(?:en/)?track/([^/?#]+)/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "geniki-taxydromiki-1",
+      "pattern": "^\\d{10}$",
+      "rawPattern": "^\\d{10}$",
+      "confidence": "low",
+      "checksum": "mod7"
+    }
+  ]
 }

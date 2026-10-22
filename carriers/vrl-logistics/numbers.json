@@ -129,7 +129,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "An archived lookup on VRL's LR tracking page shows this LR with booking details, a cancelled delivery run and the later delivery."

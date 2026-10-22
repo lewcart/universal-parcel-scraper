@@ -4719,6 +4719,7 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "bring-posten",
+      "recognitionRank": 205,
       "localClocks": true
     },
     "canaryUrl": "https://sporing.bring.no/sporing/",
@@ -5736,7 +5737,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$",
+        "checksum": "mod7"
+      }
+    ]
   },
   "aeropost": {
     "displayName": "Aeropost",
@@ -14767,7 +14775,14 @@
         "path": "^/(?:en/)?track/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$",
+        "checksum": "mod7"
+      }
+    ]
   },
   "geodis-pl": {
     "displayName": "GEODIS Poland",

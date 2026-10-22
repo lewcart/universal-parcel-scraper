@@ -4721,6 +4721,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "bring-posten",
+      "recognitionRank": 205,
       "localClocks": true
     },
     "canaryUrl": "https://sporing.bring.no/sporing/",
@@ -5738,7 +5739,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$",
+        "checksum": "mod7"
+      }
+    ]
   },
   "aeropost": {
     "displayName": "Aeropost",
@@ -14769,7 +14777,14 @@ export const CARRIER_CATALOG = {
         "path": "^/(?:en/)?track/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$",
+        "checksum": "mod7"
+      }
+    ]
   },
   "geodis-pl": {
     "displayName": "GEODIS Poland",
@@ -32489,7 +32504,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ab-courier": [],
   "abf-freight": [],
   "aci-express-kr": [],
-  "acs-courier": [],
+  "acs-courier": ["acs-courier-1"],
   "aeropost": ["aeropost-1"],
   "aex-paraguay": [],
   "afghan-post": [],
@@ -32715,7 +32730,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gebrueder-weiss": [],
   "geis": [],
   "gel-express": [],
-  "geniki-taxydromiki": [],
+  "geniki-taxydromiki": ["geniki-taxydromiki-1"],
   "geodis-pl": ["geodis-pl-1"],
   "ghana-post": [],
   "ghn": [],

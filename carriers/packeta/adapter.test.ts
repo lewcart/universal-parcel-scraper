@@ -397,7 +397,7 @@ describe('Packeta bare packet IDs', () => {
   it('keeps a checksum-backed carrier among the carriers asked', () => {
     const waybill = '1234567891';
     expect(isValidDhlExpressWaybill(waybill)).toBe(true);
-    expect(recognitionAskedCarriers(waybill)).toEqual(['dhl-express', 'relais-colis', 'packeta', 'dhl-ecommerce-es']);
+    expect(recognitionAskedCarriers(waybill)).toEqual(['dhl-express', 'acs-courier', 'geniki-taxydromiki', 'relais-colis', 'packeta']);
     expect(recognitionAskedCarriers(BARE)).toEqual(['relais-colis', 'packeta', 'dhl-ecommerce-es']);
   });
 

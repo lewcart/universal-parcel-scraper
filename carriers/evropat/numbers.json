@@ -25,7 +25,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Sample result link for Evropat in the README of an open-source tracker that queries Evropat's own tracking service. Evropat's tracking lookup answers it as a delivered waybill."

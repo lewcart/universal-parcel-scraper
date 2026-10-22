@@ -54,8 +54,8 @@ const CATALOG_NAMES = new Set([
 // Pasts, Slovenská pošta and Lietuvos paštas date a scan abroad on its
 // country's clock when that country keeps one zone, and their own on theirs.
 // Česká pošta dates its rows to the day, and ELTA's clocks name no zone.
-// PostNord's carry offsets. The host also checks adapter availability and
-// required inputs before making a request.
+// PostNord's and Bring's carry offsets. The host also checks adapter
+// availability and required inputs before making a request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AT', 'austrian-post'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
   ['BE', 'bpost'], ['BG', 'bulgarian-posts'], ['BR', 'correios-br'], ['BY', 'belpost'], ['CA', 'canada-post'],
@@ -64,9 +64,9 @@ const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['GB', 'royal-mail'], ['GR', 'elta'], ['HR', 'hrvatska-posta'], ['IE', 'an-post'], ['IS', 'posturinn'],
   ['IT', 'poste-italiane'], ['JO', 'jordan-post'], ['JP', 'japan-post'], ['KE', 'posta-kenya'], ['LT', 'lietuvos-pastas'],
   ['LV', 'latvijas-pasts'], ['MA', 'barid-al-maghrib'], ['MK', 'posta-north-macedonia'], ['NL', 'spring-gds'],
-  ['PH', 'phlpost'], ['PL', 'poczta-polska'], ['PT', 'ctt'], ['RO', 'posta-romana'], ['SA', 'saudi-post'],
-  ['SE', 'postnord'], ['SK', 'slovenska-posta'], ['SV', 'correos-el-salvador'], ['UA', 'ukrposhta'], ['US', 'usps'],
-  ['UY', 'correo-uruguayo'], ['UZ', 'uzbekistan-post'], ['ZA', 'south-african-post-office'],
+  ['NO', 'bring-posten'], ['PH', 'phlpost'], ['PL', 'poczta-polska'], ['PT', 'ctt'], ['RO', 'posta-romana'],
+  ['SA', 'saudi-post'], ['SE', 'postnord'], ['SK', 'slovenska-posta'], ['SV', 'correos-el-salvador'], ['UA', 'ukrposhta'],
+  ['US', 'usps'], ['UY', 'correo-uruguayo'], ['UZ', 'uzbekistan-post'], ['ZA', 'south-african-post-office'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });
 // Deprecated codes carry their successor's name, so fold them into it ("FX" is France).

@@ -464,8 +464,11 @@ describe('carrier links limited to some pages of their host', () => {
 
 describe('checksum rejections', () => {
   it('names the rule whose failed checksum kept its carrier out of the suggestions', () => {
-    expect(checksumRejections('1234567890')).toEqual([{ carrier: 'dhl-express', rule: 'dhl-express-waybill', checksum: 'dhl-express' }]);
-    expect(checksumRejections('1 234 567-890')).toEqual(checksumRejections('1234567890'));
+    const waybill = { carrier: 'dhl-express', rule: 'dhl-express-waybill', checksum: 'dhl-express' };
+    expect(checksumRejections('1234567890')).toEqual([{ carrier: 'acs-courier', rule: 'acs-courier-1', checksum: 'mod7' }, waybill,
+      { carrier: 'geniki-taxydromiki', rule: 'geniki-taxydromiki-1', checksum: 'mod7' }]);
+    // ACS and Geniki Taxydromiki print ten plain digits.
+    expect(checksumRejections('1 234 567-890')).toEqual([waybill]);
     expect(checksumRejections('1234567891')).toEqual([]);
     expect(checksumRejections('RA123456789CH')).toContainEqual({ carrier: 'swiss-post', rule: 'swiss-post-1', checksum: 's10' });
     expect(checksumRejections('RA123456785CH')).toEqual([]);
@@ -501,7 +504,7 @@ describe('checksum rejections', () => {
   it('lists every failed check, including those another carrier\'s match hides', () => {
     // For the callers whose carrier's adapter applies the check itself.
     expect(checksumFailures('250123456789010')).toContainEqual({ carrier: 'dpd', rule: 'dpd-3', checksum: 'dpd' });
-    expect(checksumFailures('1 234 567-890')).toEqual(checksumRejections('1234567890'));
+    expect(checksumFailures('1 234 567-890')).toEqual(checksumRejections('1 234 567-890'));
     expect(checksumFailures('1234567891')).toEqual([]);
     expect(checksumFailures('')).toEqual([]);
     for (const number of ['1234567890', '123456789012', '123456789013', '123456789012345', '250123456789010', 'RA123456789CH']) {

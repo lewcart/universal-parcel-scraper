@@ -66,7 +66,7 @@ describe('national postal lookup candidates', () => {
     ['HR', 'hrvatska-posta'], ['Croatia', 'hrvatska-posta'], ['CZ', 'ceska-posta'], ['Czechia', 'ceska-posta'],
     ['GR', 'elta'], ['Greece', 'elta'], ['LV', 'latvijas-pasts'], ['Latvia', 'latvijas-pasts'],
     ['LT', 'lietuvos-pastas'], ['Lithuania', 'lietuvos-pastas'], ['SK', 'slovenska-posta'], ['Slovakia', 'slovenska-posta'],
-    ['DK', 'postnord'], ['Denmark', 'postnord'],
+    ['DK', 'postnord'], ['Denmark', 'postnord'], ['NO', 'bring-posten'], ['Norway', 'bring-posten'],
     ['BR', 'correios-br'], ['Brazil', 'correios-br'],
     ['IT', 'poste-italiane'], ['Italy', 'poste-italiane'],
   ])('suggests one operator for destination %s', (country, expected) => {

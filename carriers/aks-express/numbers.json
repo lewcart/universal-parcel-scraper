@@ -25,7 +25,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "An archived reply of AKS's own tracking API for this number; it shows a VIP order created in Beograd and then cancelled."

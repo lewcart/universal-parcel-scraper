@@ -517,6 +517,25 @@
         ]
       },
       "note": "A Posten tracking link archived by the Wayback Machine. Bring's tracker returns the consignment's history."
+    },
+    {
+      "number": "CP087828583DE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260209100629/https://sporing.bring.no/sporing/CP087828583DE",
+        "date": "2026-02-09",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "A German parcel to Norway, looked up on Bring's tracker, as an archived address shows. Bring's tracker answers for it under the same number, through to the delivery."
     }
   ]
 }

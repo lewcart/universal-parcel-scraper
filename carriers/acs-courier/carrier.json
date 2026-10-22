@@ -96,5 +96,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "acs-courier-1",
+      "pattern": "^\\d{10}$",
+      "rawPattern": "^\\d{10}$",
+      "confidence": "low",
+      "checksum": "mod7"
+    }
+  ]
 }

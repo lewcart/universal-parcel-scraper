@@ -112,6 +112,7 @@ describe('continental shipment candidates', () => {
       const detected = detectCarrierMatch(number);
       expect(detected).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['bring-posten'] });
       expect(detected.candidates.length).toBeGreaterThan(1);
+      expect(recognitionAskedCarriers(number)[0]).toBe('bring-posten');
     }
     for (const number of ['370000000000000005', '371000000000000001', '70000000000000004', '71000000000000000']) {
       expect(detectCarrierMatch(number).candidates).not.toContain('bring-posten');
@@ -122,6 +123,20 @@ describe('continental shipment candidates', () => {
       .toMatchObject({ trackingNumber: '00370000000000000004', carrier: 'bring-posten', source: 'link' });
     expect(parseTrackingInput('https://sporing.posten.no/sporing/70000000000000003'))
       .toMatchObject({ trackingNumber: '70000000000000003', carrier: 'bring-posten', source: 'link' });
+    expect(parseTrackingInput('https://sporing.bring.no/sporing/RR000000005DE'))
+      .toMatchObject({ trackingNumber: 'RR000000005DE', carrier: 'bring-posten', source: 'link' });
+  });
+
+  it('suggests ACS and Geniki Taxydromiki for ten digits whose modulo-7 check holds, first from Greece', () => {
+    const detected = detectCarrierMatch('1000000002');
+    expect(detected).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detected.candidates).toEqual(expect.arrayContaining(['acs-courier', 'geniki-taxydromiki', 'dhl-express']));
+    expect(recognitionAskedCarriers('1000000002', { countryHint: 'GR' })).toEqual(expect.arrayContaining(['acs-courier', 'geniki-taxydromiki']));
+    expect(recognitionAskedCarriers('1000000002', { countryHint: 'CY' })).toContain('acs-courier');
+    for (const number of ['1000000001', '100000002', '10000000002', 'A100000002']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('acs-courier');
+      expect(detectCarrierMatch(number).candidates).not.toContain('geniki-taxydromiki');
+    }
   });
 
   it('reads the national posts\' links in each language and in their older layouts', () => {

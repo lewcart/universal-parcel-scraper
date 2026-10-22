@@ -1,8 +1,9 @@
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { IndeterminateError, SchemaError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
+import { isRecord } from '../../core/types.js';
 import { normalizeBringNumber, parseBring } from './parser.js';
 
 export class BringTracker {
@@ -16,10 +17,14 @@ export class BringTracker {
       const { response, bytes } = await fetchBounded(`https://sporing.bring.no/sporing/json/${number}?lang=en`,
         { signal, headers: { Accept: 'application/json', 'User-Agent': userAgentOf(this.options.userAgent) } }, { provider: 'Bring',
           timeoutMs: Math.max(1, Math.floor(remainingMs)), maxBytes: 1_000_000, allowHttpStatuses: [404, 410], fetcher: this.options.fetcher });
-      // The consumer's negative response does not identify the requested parcel.
-      if (response.status === 404 || response.status === 410) throw new IndeterminateError('Bring', 'No identity-bound parcel history');
       let payload: unknown;
-      try { payload = JSON.parse(decodeText(bytes)); } catch { throw new SchemaError('Bring'); }
+      try { payload = JSON.parse(decodeText(bytes)); } catch { payload = undefined; }
+      // The consumer's negative response does not identify the requested parcel.
+      if (response.status === 404 || response.status === 410) {
+        throw new IndeterminateError('Bring', 'No identity-bound parcel history',
+          isRecord(payload) && payload.errorState === 'NOT_FOUND' ? { reason: 'portal_not_found' } : undefined);
+      }
+      if (payload === undefined) throw new SchemaError('Bring');
       return parseBring(payload, raw);
     } }]);
   }
@@ -27,5 +32,6 @@ export class BringTracker {
 
 export const adapter: AdapterFactory = environment => {
   const tracker = new BringTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
-  return { id: 'bring-posten', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context) };
+  return { id: 'bring-posten', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeBringNumber(number))) };
 };

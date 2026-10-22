@@ -60,7 +60,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "The archived Chilexpress tracking page shows this transport order. Ten digits."
@@ -327,7 +329,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
@@ -387,7 +391,9 @@
           "tipsa",
           "estafeta",
           "packeta",
+          "acs-courier",
           "dhl-ecommerce-es",
+          "geniki-taxydromiki",
           "gls-es"
         ]
       },

@@ -14,9 +14,11 @@ tracking page on `taxydromiki.com`.
 ## Numbers
 
 Every voucher seen has ten digits: in public reports, in lookups archived from the tracker and
-in its replies. Ten digits are shared with several carriers, so no rule claims them and the user
-picks Geniki Taxydromiki. The adapter refuses any other shape without a request; the tracker
-itself answers any text with not found.
+in its replies. On every one, the last digit is the first nine modulo 7, as on ACS numbers and
+DHL Express waybills. Ten digits are shared with several carriers, so `geniki-taxydromiki-1`
+only suggests Geniki Taxydromiki for ten plain digits whose check holds, and recognition asks
+it first for a lookup from Greece. The adapter refuses any other shape without a request; the
+tracker itself answers any text with not found.
 
 ## Notes
 

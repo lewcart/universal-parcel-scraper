@@ -1,21 +1,26 @@
 # Bring / Posten Norway
 
-Tracks consignments, their pieces and Norwegian S10 postal parcels through the
-current anonymous consumer service. A consignment number with several pieces is
-inconclusive; each piece's own number still tracks that piece.
+Tracks consignments, their pieces and S10 postal items, Norwegian or from
+abroad, through the current anonymous consumer service. A consignment number
+with several pieces is inconclusive; each piece's own number still tracks that
+piece. Mail from abroad reaches Bring when a caller names it, a provider names
+it, or a result gives Norway as the destination of an S10 item.
 
 Norwegian S10 numbers select Bring. Parcel SSCCs starting 370 or 373, with or
 without their 00 identifier, and 17-digit consignment numbers starting 70 are
 suggested with Bring first when their GS1 check digit passes; other carriers
-share these lengths. Links from the Posten and Bring tracking sites resolve to
-Bring, and a link naming one piece of a consignment tracks that piece.
+share these lengths, so recognition asks Bring through the same lookup. Links
+from the Posten and Bring tracking sites resolve to Bring, and a link naming one
+piece of a consignment tracks that piece.
 
 ## How it works
 
 One bounded GET reads the JSON route published by the
 [consumer portal](https://sporing.bring.no/sporing/). The consignment or parcel
 identifier must match exactly. A parcel's SSCC typed with its 00 identifier is
-asked as the 18-digit parcel number, which the result reports. This route is
+asked as the 18-digit parcel number, which the result reports. An item from
+abroad is its own consignment: the reply counts no items and names the piece
+by the number asked. This route is
 separate from the authenticated
 [developer API](https://developer.bring.com/api/tracking/).
 
@@ -44,7 +49,9 @@ so the adapter does not read it.
 
 Status wording comes from public event and cause codes. Free-text descriptions,
 addresses, pickup codes and proof images are excluded. Weight and dimensions have
-explicit units. The consumer's unbound negative response remains inconclusive.
+explicit units. The consumer's negative response does not name the number, so
+it remains inconclusive; the portal's not-found answer carries the reason
+`portal_not_found`, so a consumer can tell it from an outage.
 
 ## Live test
 

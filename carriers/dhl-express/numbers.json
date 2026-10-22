@@ -20,7 +20,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A provider's reply for a DHL Express waybill, published as sample data with its scans. DHL has since issued the waybill to another shipment."
@@ -47,7 +49,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Publicly reported DHL Express waybill. DHL Express's mobile tracking returned its delivered history from the United Kingdom to the United States."
@@ -72,7 +76,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Reviewer gives this as the tracking number of an Apple delivery in Portugal on DHL Express's review page. It passes the waybill check; DHL's trackers hold no record of it."
@@ -99,7 +105,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Publicly reported DHL Express waybill. DHL Express's mobile tracking returned its delivered history from the United States to Canada, with three failed attempts."
@@ -122,7 +130,9 @@
           "tipsa",
           "estafeta",
           "packeta",
+          "acs-courier",
           "dhl-ecommerce-es",
+          "geniki-taxydromiki",
           "gls-es"
         ]
       },
@@ -146,7 +156,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Official documentation example, not a real shipment."
@@ -170,7 +182,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified."
@@ -197,7 +211,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "Posted in a review of DHL Freight Sweden, a network without an adapter. The ten digits are also the DHL Express shape."
@@ -227,7 +243,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment from Finland to the United States, with only its shipment information received."
@@ -257,7 +275,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from the United States to Canada."
@@ -287,7 +307,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from Estonia to Germany."
@@ -317,7 +339,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from Germany to the United Kingdom."
@@ -347,7 +371,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from Finland to the United States."
@@ -377,7 +403,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from Taiwan to the Netherlands after a long customs hold."
@@ -407,7 +435,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered within Germany."
@@ -437,7 +467,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from the United States to Canada."
@@ -467,7 +499,9 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "acs-courier",
+          "dhl-ecommerce-es",
+          "geniki-taxydromiki"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from Italy to Belgium."
@@ -497,7 +531,9 @@
           "tipsa",
           "estafeta",
           "packeta",
+          "acs-courier",
           "dhl-ecommerce-es",
+          "geniki-taxydromiki",
           "gls-es"
         ]
       },
@@ -528,7 +564,9 @@
           "tipsa",
           "estafeta",
           "packeta",
+          "acs-courier",
           "dhl-ecommerce-es",
+          "geniki-taxydromiki",
           "gls-es"
         ]
       },

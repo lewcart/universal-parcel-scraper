@@ -298,7 +298,7 @@ describe('USPS lookup steps', () => {
       .toThrowError(expect.objectContaining({ kind: 'challenge', reason: undefined }));
   });
 
-  it('reads once more after the verification interstitial and stops after a second one', async () => {
+  it('reads up to twice more after the verification interstitial and stops after a third one', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE))
       .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
     const step = vi.fn();
@@ -307,10 +307,14 @@ describe('USPS lookup steps', () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(step).toHaveBeenNthCalledWith(2, expect.objectContaining({ step: 'trawl', outcome: 'ok',
       fallbackError: expect.objectContaining({ reason: 'interstitial_page' }) }));
+    fetcher.mockReset().mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE)).mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE))
+      .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+    expect((await new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+    expect(fetcher).toHaveBeenCalledTimes(3);
     fetcher.mockReset().mockImplementation(async () => trawlReply(INTERSTITIAL_PAGE));
     await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ kind: 'challenge', reason: 'interstitial_page' });
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher).toHaveBeenCalledTimes(3);
   });
 
   it('keeps a titled or worded page without the tracker an unrepeated challenge', () => {

@@ -75,10 +75,11 @@ Parsing, in order:
 - The package path is loaded directly because the legacy query route can return only
   the global header. A recognizable header-only reply, or the tracking page's head
   captured before its body, gets one more browser read within the same budget;
-  telemetry retains the first failure. So does the bot check's blank
-  interstitial, an untitled page holding only its script, which the browser can capture
-  before the script reloads into the tracking page. Other challenges, identity errors
-  and rate limits are not repeated. Pasted legacy query links remain supported.
+  telemetry retains the first failure. The bot check's blank interstitial, an untitled
+  page holding only its script, which the browser can capture before the script reloads
+  into the tracking page, gets up to two more: a second read stays on it about as often as
+  a first one. Other challenges, identity errors and rate limits are not repeated. Pasted
+  legacy query links remain supported.
 
 ## Mobile API leads
 

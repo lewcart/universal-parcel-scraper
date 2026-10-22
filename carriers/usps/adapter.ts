@@ -23,7 +23,7 @@ import { uspsStage, uspsStatus } from './status.js';
  */
 const TRACKING_BASE = 'https://tools.usps.com/tracking/';
 const MAX_BYTES = 10_000_000;
-// The browser's time for both reads; with the transport allowance a lookup ends within a
+// The browser's time for every read; with the transport allowance a lookup ends within a
 // minute. Answers the page gives come well inside it.
 const DEFAULT_TIMEOUT_MS = 45_000;
 const MAX_EVENTS_TO_RETURN = 100;
@@ -283,6 +283,10 @@ export class USPSTracker {
     }, [
       { id: 'trawl', run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
       { id: 'trawl', recovers: error => error instanceof ChallengeError && RECOVERABLE_PAGES.has(error.reason ?? ''),
+        run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
+      // A second read stays on the interstitial about as often as a first one, so
+      // a third read passes as often as the second.
+      { id: 'trawl', recovers: error => error instanceof ChallengeError && error.reason === 'interstitial_page',
         run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
     ]);
     // A typed routing barcode opens with the recipient's ZIP code. The package

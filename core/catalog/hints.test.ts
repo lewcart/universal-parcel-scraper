@@ -138,6 +138,10 @@ describe('delivery partner evidence', () => {
     ['', 'https://www.dhl.com/gb-en/home/our-divisions.html', undefined],
     ['', 'https://www.dhl.com/gb-en/ecommerce/uk/about/privacy-notice.html', undefined],
     ['DHL eCommerce', 'https://www.dhl.com/gb-en/home/our-divisions/parcel.html', 'dhl-ecommerce'],
+    // FedEx's worldwide tracking link is FedEx's, unless it holds FedEx Poland's thirteen digits.
+    ['', 'https://www.fedex.com/fedextrack/?trknbr=999999999999', 'fedex'],
+    ['', 'https://www.fedex.com/fedextrack/', 'fedex'],
+    ['', 'https://www.fedex.com/fedextrack/?trknbr=6230000000005', 'fedex-pl'],
   ])('resolves name %s and URL %s without guessing', (name, url, expected) => {
     expect(carrierIdFromPartner(name, url)).toBe(expected);
   });

@@ -345,6 +345,20 @@ describe('FedEx Poland domestic numbers', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('fedex-pl');
     }
   });
+
+  it('names FedEx Poland for thirteen digits in a fedex.com tracking link, which FedEx\'s worldwide tracker refuses', () => {
+    for (const url of [
+      'https://www.fedex.com/fedextrack/?trknbr=6230000000005',
+      'https://www.fedex.com/apps/fedextrack/index.html?action=track&tracknumbers=6230000000005&cntry_code=pl',
+      'https://www.fedex.com/wtrk/track/?trknbr=7230000000004',
+      'https://www.fedex.com/fedextrack/?tracknumbers=6230000000005,6010000000003',
+    ]) {
+      expect(parseTrackingInput(url), url).toMatchObject({ carrier: 'fedex-pl', confidence: 'high', source: 'link' });
+    }
+    for (const url of ['https://www.fedex.com/fedextrack/?trknbr=999999999999', 'https://www.fedex.com/fedextrack/?trknbr=62300000000005']) {
+      expect(parseTrackingInput(url).carrier, url).not.toBe('fedex-pl');
+    }
+  });
 });
 
 describe('Nova Global and ShipEntegra numbers', () => {

@@ -63,7 +63,8 @@ The domestic tracking app opens one shipment at
 FedEx page that embeds it, `fedex.com/pl-pl/online/domestic-tracking.html`. Archived lookups
 on the former tracker use
 `poland.fedex.com/domestic-shipping/pub/tracktrace.do?packageId={number}`. All are read for
-FedEx Poland.
+FedEx Poland. So is a FedEx worldwide tracking link (`fedex.com/fedextrack/?trknbr=`, or
+`tracknumbers=`) that holds thirteen digits, since that tracker refuses them.
 
 ## Testing
 

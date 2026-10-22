@@ -202,16 +202,24 @@ export function brandTimeZones(name: string): string[] {
 /**
  * Known portal hosts only. This identifies a lookup hint; it never follows the
  * URL. With `byPath`, a rule limited to some paths of its host covers only
- * those paths.
+ * those paths, and one there that reads the link's number from its query names
+ * the carrier: FedEx's worldwide tracking link holds FedEx Poland's thirteen digits.
  */
 function carriersFromUrl(raw: string, byPath: boolean): string[] {
   let url: URL;
-  try { url = new URL(raw); } catch { return []; }
+  let query: string;
+  try { url = new URL(raw); query = decodeURIComponent(url.search.slice(1)); } catch { return []; }
   if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) return [];
   // Arrival notices also use the Swiss Post homepage instead of its tracking subdomain.
   if (['post.ch', 'www.post.ch'].includes(url.hostname)) return ['swiss-post'];
-  return [...new Set(TRACKING_LINK_RULES.filter((rule) => rule.domains.some((domain) => matchesDomain(url.hostname, domain))
-    && (!byPath || !rule.pathPattern || rule.pathPattern.test(url.pathname))).map((rule) => rule.carrier))];
+  const rules = TRACKING_LINK_RULES.filter((rule) => rule.domains.some((domain) => matchesDomain(url.hostname, domain))
+    && (!byPath || !rule.pathPattern || rule.pathPattern.test(url.pathname)));
+  if (!byPath) return [...new Set(rules.map((rule) => rule.carrier))];
+  // A rule that reads its number from the query covers a link without one only when no other rule does.
+  const reading = rules.filter((rule) => rule.query?.test(query));
+  const others = rules.filter((rule) => !rule.query);
+  const covering = reading.length ? reading : others.length ? others : rules;
+  return [...new Set(covering.map((rule) => rule.carrier))];
 }
 
 /**

@@ -84,8 +84,9 @@ export function parseTrackingInput(raw: string): TrackingInputMatch {
         candidate.domains.some((domain) => matchesDomain(url.hostname.toLowerCase(), domain))
         && (!candidate.pathPattern || candidate.pathPattern.test(url.pathname)),
       );
+      // The longer matching domain comes first, then a rule bound to a path on it.
       const specificity = (rule: TrackingLinkRule) => Math.max(...rule.domains.filter((domain) => matchesDomain(url.hostname.toLowerCase(), domain)).map((domain) => domain.length));
-      rules.sort((a, b) => specificity(b) - specificity(a));
+      rules.sort((a, b) => specificity(b) - specificity(a) || Number(Boolean(b.pathPattern)) - Number(Boolean(a.pathPattern)));
       for (const firstRule of rules) {
         const trackingNumber = numberFromRule(url, firstRule);
         if (trackingNumber) {

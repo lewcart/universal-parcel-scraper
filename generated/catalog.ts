@@ -13751,6 +13751,13 @@ export const CARRIER_CATALOG = {
       },
       {
         "domains": [
+          "fedex.com"
+        ],
+        "pathPattern": "^/(?:(?:apps/)?fedextrack|wtrk/track)(?:/|$)",
+        "query": "(?:^|&)(?:trknbr|tracknumbers)=(\\d{13})(?=[&,|]|$)"
+      },
+      {
+        "domains": [
           "poland.fedex.com"
         ],
         "pathPattern": "^/domestic-shipping/pub/tracktrace\\.do$",

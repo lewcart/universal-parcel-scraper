@@ -8746,7 +8746,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^[BD][A-Z]\\d{10}[A-Z]$",
+        "pattern": "^(?:[BD][A-Z]|N[BPR])\\d{10}[A-Z]$",
         "confidence": "high"
       },
       {

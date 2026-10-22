@@ -20,8 +20,9 @@ same lookup.
 ## Numbers
 
 Domestic items carry two letters, ten digits and a letter: `DR` for parcels and Balíkovna
-parcels, `BA`, `BB`, `BX` and others for registered and valuable items. `ceska-posta-1` claims a
-`B` or `D` prefix in that layout; the adapter takes any prefix. Nothing published explains the
+parcels, `BA`, `BB`, `BX` and others for registered and valuable items. Lookups archived from
+Track & Trace also show `NB`, `NP` and `NR` items. `ceska-posta-1` claims a `B` or `D` prefix and
+those three in that layout; the adapter takes any prefix. Nothing published explains the
 trailing letter, so no check is applied. The adapter also takes S10 codes with a valid check
 digit, from any country; anything else is invalid without a request.
 

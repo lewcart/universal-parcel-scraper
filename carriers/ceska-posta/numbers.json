@@ -232,6 +232,63 @@
         "confidence": "high"
       },
       "note": "A Dutch tracked letter to Czechia, looked up on Česká pošta's Track & Trace, as an archived address shows. Česká pošta's tracker answers for it under the same number, through to the delivery."
+    },
+    {
+      "number": "NB2561006627B",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20261016130426/https://www.postaonline.cz/trackandtrace/-/zasilka/cislo?parcelNumbers=NB2561006627B",
+        "date": "2026-10-16",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "ceska-posta",
+        "confidence": "high"
+      },
+      "note": "A domestic item looked up on Česká pošta's Track & Trace, as an archived address shows. Česká pošta's service answers for it under the same number with the sender's electronic data."
+    },
+    {
+      "number": "NR0204445819Y",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260620152728/https://www.postaonline.cz/trackandtrace/-/zasilka/cislo?parcelNumbers=NR0204445819Y",
+        "date": "2026-06-20",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "ceska-posta",
+        "confidence": "high"
+      },
+      "note": "A domestic item looked up on Česká pošta's Track & Trace, as an archived address shows. Česká pošta's service answers for it under the same number, through to its return to the sender."
+    },
+    {
+      "number": "NP7160701789M",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251023035859/https://www.postaonline.cz/trackandtrace/-/zasilka/cislo?parcelNumbers=NP7160701789M",
+        "date": "2025-10-23",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "ceska-posta",
+        "confidence": "high"
+      },
+      "note": "A domestic item looked up on Česká pošta's Track & Trace, as an archived address shows. Česká pošta's service no longer keeps it."
     }
   ]
 }

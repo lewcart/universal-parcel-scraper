@@ -233,6 +233,12 @@ describe('Česká pošta tracking adapter', () => {
 
   it('claims its domestic numbers and is asked about Czech S10 codes, which detection leaves with the postal fallback', () => {
     expect(detectCarrierMatch(RETURNED)).toMatchObject({ carrier: 'ceska-posta', confidence: 'high' });
+    for (const prefix of ['NB', 'NP', 'NR']) {
+      expect(detectCarrierMatch(`${prefix}9000000002U`)).toMatchObject({ carrier: 'ceska-posta', confidence: 'high' });
+    }
+    for (const prefix of ['NA', 'RR', 'LF']) {
+      expect(detectCarrierMatch(`${prefix}9000000002U`).candidates).not.toContain('ceska-posta');
+    }
     expect(detectCarrierMatch(COLLECTED)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     expect(recognitionAskedCarriers(COLLECTED)).toContain('ceska-posta');
     expect(recognitionAskedCarriers('RR900000018CZ')).not.toContain('ceska-posta');

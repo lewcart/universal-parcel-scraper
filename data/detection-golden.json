@@ -79728,6 +79728,14 @@
     ]
   },
   {
+    "input": "NB2561006627B",
+    "carrier": "ceska-posta",
+    "confidence": "high",
+    "candidates": [
+      "ceska-posta"
+    ]
+  },
+  {
     "input": "NC969823125BR",
     "carrier": "correios-br",
     "confidence": "high",
@@ -80260,11 +80268,27 @@
     ]
   },
   {
+    "input": "NP7160701789M",
+    "carrier": "ceska-posta",
+    "confidence": "high",
+    "candidates": [
+      "ceska-posta"
+    ]
+  },
+  {
     "input": "NP989065909JB",
     "carrier": "chronopost",
     "confidence": "high",
     "candidates": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "NR0204445819Y",
+    "carrier": "ceska-posta",
+    "confidence": "high",
+    "candidates": [
+      "ceska-posta"
     ]
   },
   {

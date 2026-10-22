@@ -185,7 +185,7 @@ describe('carrier names reported by universal providers', () => {
     ['DHL Freight Active Tracing', 'dhl-freight'],
     // Brands their network's tracker answers for.
     ['StarTrack', 'australia-post'], ['Star Track Express', 'australia-post'], ['Homerr', 'vinted-go'],
-    ['InPost Spain', 'mondial-relay'], ['InPost España', 'mondial-relay'],
+    ['InPost Spain', 'mondial-relay'], ['InPost España', 'mondial-relay'], ['InPost (ES)', 'mondial-relay'],
   ])('maps %s, a carrier followed by its own country included', (name, expected) => {
     expect(carrierIdFromName(name)).toBe(expected);
   });
@@ -203,6 +203,8 @@ describe('carrier names reported by universal providers', () => {
     'Bpost Netherlands', 'Aramex Jordan',
     // No network there, two networks there, a worldwide network, a network on another clock.
     'DPD (NL)', 'Hermes (DE)', 'DHL (PL)', 'GLS (LI)',
+    // InPost's own hub and Mondial Relay's network both deliver as InPost in Portugal.
+    'InPost (PT)',
     // DPD's networks share one lookup, and a provider's country for its parcel can be another's.
     'DPD (BE)', 'DPD (DE)', 'DPD (CH)',
   ])('does not guess a carrier from %s', (name) => {

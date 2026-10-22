@@ -1111,7 +1111,8 @@ export const CARRIER_CATALOG = {
     "color": "#ef3026",
     "aliases": [
       "InPost Spain",
-      "InPost España"
+      "InPost España",
+      "InPost (ES)"
     ],
     "countries": [
       "FR",

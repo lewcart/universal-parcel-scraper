@@ -353,6 +353,14 @@ describe('PostNL ambiguity and clock safety', () => {
     expect(result.events?.[0]?.provider_code).toBe(expected);
   });
 
+  it('reads a 3S barcode PostNL calls incorrect as one it does not hold', () => {
+    const synthetic = '3SXXYY0000001';
+    const value = { status: 'success', data: { items: [{ item: synthetic, message: 'The shipment barcode was incorrect.', events: [] }] } };
+    expect(() => parsePostNLTrackingResponse(value, synthetic)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    value.data.items[0]!.message = 'Synthetic note';
+    expect(() => parsePostNLTrackingResponse(value, synthetic)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+
   it('refuses duplicate matching identities and an echo with empty history', () => {
     const value = payload([{ category: 'Processing' }]);
     value.data.items.push(value.data.items[0]!);

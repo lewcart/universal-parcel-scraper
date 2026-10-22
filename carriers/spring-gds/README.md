@@ -16,8 +16,9 @@ native catalog all carry it; everything user-facing says PostNL.
      only when it carries a short, valid `Retry-After`. Both calls share a cancellable
      deadline; other errors are not retried.
    - Unknown barcode: an ordinary item with no events and "barcode was not found" in
-     `message`. That phrase is the only part of `message` read; the rest is provider prose
-     that must not reach an error or log.
+     `message`, or "barcode was incorrect" for a 3S barcode PostNL did not issue, such as
+     DHL eCommerce's. Those phrases are the only part of `message` read; the rest is provider
+     prose that must not reach an error or log.
    - An empty history without that message is inconclusive. Duplicate matching identities
      are refused. HTTP 404/410 means the endpoint is unavailable, not the parcel missing.
 

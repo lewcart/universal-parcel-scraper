@@ -36,7 +36,9 @@ const MAX_TOKEN_LENGTH = 16_384;
 // Visitor tokens last a day (`expires_in: 86400`); one is renewed this long before it expires.
 const MAX_TOKEN_LIFETIME_MS = 86_400_000;
 const TOKEN_RENEWAL_MARGIN_MS = 5 * 60_000;
-const NOT_FOUND_MESSAGE = /barcode was not found/i;
+// A barcode PostNL holds no shipment under: "not found", or "incorrect" for a 3S barcode
+// it did not issue, such as DHL eCommerce's.
+const NOT_FOUND_MESSAGE = /barcode was (?:not found|incorrect)/i;
 // PostNL's own records (the pre-advice, the shipper's data) name no country and
 // keep Amsterdam time. See this folder's README for the evidence.
 const HOME_ZONE = 'Europe/Amsterdam';

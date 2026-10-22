@@ -216,7 +216,7 @@ describe('Posta Kenya tracking adapter', () => {
     expect(fetcher).not.toHaveBeenCalled();
     expect(normalizePostaKenyaNumber(' ee-000-000-005 ke ')).toBe(DELIVERED);
     expect(() => parsePostaKenyaResult(page('delivered'), 'EE000000004KE')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
-    // A lookup could tell known from unknown, but no rule offers the carrier to recognition.
+    // A lookup tells known from unknown, but it is slower than recognition's budget.
     expect(carrier(fetcher).recognize).toBeUndefined();
   });
 

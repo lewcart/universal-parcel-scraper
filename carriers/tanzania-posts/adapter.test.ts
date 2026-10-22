@@ -193,7 +193,7 @@ describe('Tanzania Posts Corporation tracking adapter', () => {
     expect(normalizeTanzaniaPostsNumber(' ee-000-000-005 tz ')).toBe(DELIVERED);
     expect(normalizeTanzaniaPostsNumber('CP000000005DE')).toBe('CP000000005DE');
     expect(() => parseTanzaniaPostsReply(reply(fixture('delivered.html')), 'EE000000004TZ')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
-    // A lookup tells known from unknown, but no rule offers the carrier to recognition.
+    // A lookup tells known from unknown, but it is slower than recognition's budget.
     expect(carrier(fetcher).recognize).toBeUndefined();
   });
 

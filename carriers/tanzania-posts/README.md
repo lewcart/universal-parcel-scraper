@@ -38,9 +38,9 @@ domestic tracker, the Posta Tracking System.
   took delivery with their phone number and identity document. None of it is read, and neither
   are the origin, the destination's office, the item's kind and the delivery day. The weight
   and the destination's country are kept.
-- Recognition is not declared: the lookup tells a known item from an unknown one, but no
-  detection rule offers Tanzania Posts Corporation for a number, so recognition would never ask
-  it.
+- Recognition is not declared: the lookup tells a known item from an unknown one, but it takes
+  longer than recognition's budget, so no detection rule offers Tanzania Posts Corporation for a
+  number.
 
 ## Limitations
 

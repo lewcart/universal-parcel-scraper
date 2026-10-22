@@ -13,7 +13,9 @@ needs handling that this image's solvers do not provide; its
 ## Sessions
 
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
-per pooled browser and discards it on expiry, mismatch or failure. Australia Post,
+per pooled browser and discards it on expiry, mismatch or failure. TRAWL's named sessions do not
+replace it: FedEx's API refuses the tracking call a kept session page makes for a tracking URL,
+and the untrusted input of a session eval never sends one. Australia Post,
 DHL Express, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta and ZTO use fresh contexts.
 SF Express solves GeeTest's slider locally and asks for at most two other puzzles when it
 cannot read one.

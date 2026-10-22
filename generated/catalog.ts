@@ -2483,7 +2483,8 @@ export const CARRIER_CATALOG = {
       "SmartPosti",
       "Smartpost Itella",
       "Itella SmartPOST",
-      "Itella Estonia"
+      "Itella Estonia",
+      "Itella"
     ],
     "countries": [
       "FI",
@@ -2520,9 +2521,10 @@ export const CARRIER_CATALOG = {
       {
         "domains": [
           "smartposti.ee",
-          "smartposti.lt"
+          "smartposti.lt",
+          "smartposti.lv"
         ],
-        "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas)/([^/?#]+)(?:/[0-9]+)?/?$"
+        "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas|pakas-meklesana)/([^/?#]+)(?:/[0-9]+)?/?$"
       }
     ],
     "detectionRules": [
@@ -15067,11 +15069,14 @@ export const CARRIER_CATALOG = {
     "aliases": [
       "GLS España",
       "ASM Transporte Urgente",
-      "General Logistics Systems Spain"
+      "General Logistics Systems Spain",
+      "GLS Portugal",
+      "General Logistics Systems Portugal"
     ],
     "countries": [
       "ES",
-      "AD"
+      "AD",
+      "PT"
     ],
     "selectable": true,
     "timezone": "Europe/Madrid",
@@ -15098,7 +15103,8 @@ export const CARRIER_CATALOG = {
     "linkRules": [
       {
         "domains": [
-          "mygls.gls-spain.es"
+          "mygls.gls-spain.es",
+          "mygls.gls-portugal.pt"
         ],
         "pathPattern": "^/e/?$",
         "params": [
@@ -15107,7 +15113,8 @@ export const CARRIER_CATALOG = {
       },
       {
         "domains": [
-          "mygls.gls-spain.es"
+          "mygls.gls-spain.es",
+          "mygls.gls-portugal.pt"
         ],
         "path": "^/e/([A-Za-z0-9]{5,40})/[^/?#]+(?:/[a-z]{2})?/?$"
       },
@@ -15116,7 +15123,7 @@ export const CARRIER_CATALOG = {
           "gls-group.com",
           "gls-group.eu"
         ],
-        "pathPattern": "^/ES/",
+        "pathPattern": "^/(?:ES|PT)/",
         "params": [
           "match",
           "parcelNumber",

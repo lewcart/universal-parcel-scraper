@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../app.js';
+import { carrierIdFromName } from '../../core/catalog/hints.js';
 import { parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { adapter, GLS_SPAIN_ENDPOINT, GLS_SPAIN_SIGNING_SECRET, GLSSpainTracker, glsSpainLookupBody, glsSpainSignature } from './adapter.js';
@@ -216,6 +217,14 @@ describe('GLS Spain direct tracking', () => {
       `https://mygls.gls-spain.es/e/${NUMBER}/9999-999/es`]) {
       expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: NUMBER, carrier: 'gls-es', source: 'link' });
     }
+  });
+
+  it('takes GLS Portugal\'s shipments, links and name, which the same service answers', () => {
+    for (const link of [`https://mygls.gls-portugal.pt/e/${NUMBER}/9999-999/pt`, `https://mygls.gls-portugal.pt/e/?codigo=${NUMBER}`,
+      `https://gls-group.com/PT/pt/receber-envios/seguir-envio/?match=${NUMBER}`]) {
+      expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: NUMBER, carrier: 'gls-es', source: 'link' });
+    }
+    expect(carrierIdFromName('GLS Portugal')).toBe('gls-es');
   });
 
   it('signs one lookup with the number and postcode, the host agent and no session', async () => {

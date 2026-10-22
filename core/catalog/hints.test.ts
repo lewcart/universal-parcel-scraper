@@ -28,6 +28,10 @@ describe('brand networks', () => {
     expect(carrierIdFromName('South Africa Post Office')).toBe('south-african-post-office');
     // Universal providers name Z-Leading after its Chinese name.
     expect(carrierIdFromName('Zhongling')).toBe('z-leading');
+    // DHL names SmartPosti, Posti's Baltic parcel network, by its former name.
+    expect(carrierIdFromName('Itella')).toBe('posti');
+    // GLS Portugal's shipments are GLS Spain's service's.
+    expect(carrierIdFromName('GLS Portugal')).toBe('gls-es');
     // China Post's express service trades as China EMS; the cooperative's EMS stays its own.
     expect(carrierIdFromName('China EMS')).toBe('china-post');
     expect(carrierIdFromName('EMS')).toBe('ems');

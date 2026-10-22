@@ -4,12 +4,15 @@
   "aliases": [
     "GLS España",
     "ASM Transporte Urgente",
-    "General Logistics Systems Spain"
+    "General Logistics Systems Spain",
+    "GLS Portugal",
+    "General Logistics Systems Portugal"
   ],
   "region": {
     "countries": [
       "ES",
-      "AD"
+      "AD",
+      "PT"
     ]
   },
   "brand": {
@@ -105,7 +108,8 @@
   "links": [
     {
       "domains": [
-        "mygls.gls-spain.es"
+        "mygls.gls-spain.es",
+        "mygls.gls-portugal.pt"
       ],
       "pathPattern": "^/e/?$",
       "params": [
@@ -114,7 +118,8 @@
     },
     {
       "domains": [
-        "mygls.gls-spain.es"
+        "mygls.gls-spain.es",
+        "mygls.gls-portugal.pt"
       ],
       "path": "^/e/([A-Za-z0-9]{5,40})/[^/?#]+(?:/[a-z]{2})?/?$"
     },
@@ -123,7 +128,7 @@
         "gls-group.com",
         "gls-group.eu"
       ],
-      "pathPattern": "^/ES/",
+      "pathPattern": "^/(?:ES|PT)/",
       "params": [
         "match",
         "parcelNumber",

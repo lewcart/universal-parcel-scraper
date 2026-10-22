@@ -2,7 +2,9 @@
 
 GLS Spain's shipments, tracked by number and delivery postcode through the service behind
 its tracking page, mygls.gls-spain.es. The same service answers GLS Portugal's shipments with
-a Portuguese postcode.
+a Portuguese postcode, and GLS Portugal's tracking page, mygls.gls-portugal.pt, is the same
+app, so GLS Portugal is this carrier too: its name, Portugal and its links lead here. A
+carrier of its own on Lisbon's clock would also split the clock the GLS networks share.
 
 ## How it works
 
@@ -61,7 +63,8 @@ for the delivery postcode too, and a page given the number alone ignores it. The
 `mygls.gls-spain.es/e/{number}/{postcode}/es`, and notifications link to
 `mygls.gls-spain.es/e/{number}/{postcode}`. Only the number is read from these links, from
 older `mygls.gls-spain.es/e/?codigo={number}` links, which now land on a not-found page, and
-from the group tracker's `?match=`.
+from the group tracker's `?match=`. GLS Portugal's links take the same forms on
+`mygls.gls-portugal.pt` and the group tracker's Portuguese pages.
 
 ## Limitations
 

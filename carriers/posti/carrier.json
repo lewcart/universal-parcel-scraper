@@ -5,7 +5,8 @@
     "SmartPosti",
     "Smartpost Itella",
     "Itella SmartPOST",
-    "Itella Estonia"
+    "Itella Estonia",
+    "Itella"
   ],
   "region": {
     "countries": [
@@ -88,9 +89,10 @@
     {
       "domains": [
         "smartposti.ee",
-        "smartposti.lt"
+        "smartposti.lt",
+        "smartposti.lv"
       ],
-      "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas)/([^/?#]+)(?:/[0-9]+)?/?$"
+      "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas|pakas-meklesana)/([^/?#]+)(?:/[0-9]+)?/?$"
     }
   ],
   "detection": [

@@ -11,8 +11,9 @@ Posti the first carrier asked when its check digit passes; other carriers share
 twenty digits, so it stays a suggestion.
 Foreign-issued numbers are reached through a `posti.fi` link, an explicit pick or routing.
 SmartPosti, formerly Itella SmartPOST, is Posti's parcel brand in Estonia, Latvia and
-Lithuania. Its sites run Posti's tracker on the same numbers, so its names and its
-`smartposti.ee` and `smartposti.lt` tracking links lead here.
+Lithuania. Its sites run Posti's tracker on the same numbers, so its names, Itella among
+them, and its `smartposti.ee`, `smartposti.lt` and `smartposti.lv` tracking links lead here.
+DHL names Itella as its partner in Lithuania and Latvia.
 
 ## How it works
 

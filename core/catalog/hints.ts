@@ -7,7 +7,10 @@ import type { CarrierId } from '../../generated/catalog.js';
 export { carrierBrand };
 
 // Accents fold to their letter, so "Turkiye" reads as the catalog's "Türkiye".
-const key = (name: string) => name.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+// Letters of every script and digits; Latin letters outside a–z drop out. A name
+// in another script keys on its own letters, never on its Latin part alone.
+const key = (name: string) => name.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase()
+  .replace(/[^\p{L}0-9]/gu, '').replace(/(?![a-z])\p{Script=Latin}/gu, '');
 
 // These brands have several regional/service adapters.
 const AMBIGUOUS_BRANDS = ['dhl', 'dpd', 'gls', 'hermes', 'gofo', 'post'];

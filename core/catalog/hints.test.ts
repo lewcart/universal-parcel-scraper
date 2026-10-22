@@ -220,6 +220,15 @@ describe('carrier names reported by universal providers', () => {
     expect(carrierIdFromName('La Poste du Senegal')).toBe('la-poste-senegal');
   });
 
+  it('reads a name in another script by its own letters, never by its Latin part alone', () => {
+    expect(carrierIdFromName('中领国际')).toBe('z-leading');
+    expect(carrierIdFromName('中華郵政')).toBe('chunghwa-post');
+    expect(carrierIdFromName('CJ대한통운')).toBe('cj-logistics');
+    // "ТММ Express" and "ΕΛΤΑ Courier" are aliases; their Latin words name no carrier.
+    for (const name of ['Express', 'Courier', 'CJ', '5', '示例国际物流', 'Пример Доставка']) expect(carrierIdFromName(name)).toBeUndefined();
+    for (const name of ['示例国际物流', 'Пример Доставка', 'Express']) expect(isKnownCarrierName(name)).toBe(false);
+  });
+
   it.each(['Example Parcel Co', 'Example Express Italy', 'Postexample Courier'])('treats %s as new', (name) => {
     expect(isKnownCarrierName(name)).toBe(false);
   });

@@ -31,7 +31,10 @@ Tracked through the lookup its mobile tracking page makes.
   and the desktop tracker on `www.ztoglobal.com` for a slider. The tracking page's own lookup
   asks for neither.
 - Each scan's `time` is a wall clock with no zone, kept in `local_time`. ZTO runs on Shanghai's
-  clock, but its warehouses and networks abroad may keep their own.
+  clock, but its warehouses and networks abroad may keep their own. ZTO names the warehouse or
+  country of an origin leg abroad and no place on its own leg in China. When nothing up to the
+  first departure (flight, ship or line-haul) names a place, those scans are dated on Shanghai's
+  clock; otherwise they would borrow the destination's zone across the flight.
 - A scan's description is its English line without the place in brackets that opens it; a
   scan without English keeps its Chinese line. Both lose the clauses naming a courier, scanner,
   picker, signer, operator, collection point, bag or phone. The place is the station a delivery
@@ -48,9 +51,10 @@ Tracked through the lookup its mobile tracking page makes.
 
 ## Limitations
 
-- No ETA, weight, service, sender, recipient or proof of delivery. Node lookups date scans on a
-  deduced zone ([clocks](../../places/README.md#clocks)), which can be Shanghai's for a scan in
-  a warehouse abroad.
+- No ETA, weight, service, sender, recipient or proof of delivery. Node lookups date the other
+  scans on a deduced zone ([clocks](../../places/README.md#clocks)), which can be Shanghai's for
+  a scan in a warehouse abroad. Whether ZTO's scans abroad are on local clocks or on Shanghai's
+  is unknown: no source gives them an instant.
 - A waybill the tracker does not know cannot be told apart from a request it could not read.
 
 ## Numbers

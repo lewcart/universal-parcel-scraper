@@ -107,6 +107,29 @@ describe('ZTO International HTTP adapter', () => {
     expect(result.events!.at(-1)!.stage_source).not.toBe('carrier_map');
   });
 
+  it('dates an origin leg that names no place on Shanghai\'s clock, and one abroad on the deduced zone', async () => {
+    const scan = (time: string, status: string, message: string, messageEng: string) => ({ time, status, message, messageEng, timeStr: null });
+    const china = changed('in-transit', (waybill) => {
+      waybill.tracks = [
+        scan('2026-06-05 14:08:56', '100', '【Sample City01】派件中', 'Arrival at inward office of exchange.'),
+        scan('2026-06-03 22:24:00', '230', '干线航班落地', 'Flight arrived'),
+        scan('2026-06-02 14:19:00', '220', '干线航班起飞', 'Flight take off'),
+        scan('2026-06-01 19:21:31', '150', '进行处理：订单已操作入库', 'Parcel entered the warehouse'),
+      ];
+    });
+    const result = parseZtoInternational(china, IN_TRANSIT);
+    expect(result.events!.map((event) => [event.provider_code, event.time ?? null, event.local_time, event.time_zone_basis ?? null])).toEqual([
+      ['100', null, '2026-06-05T14:08:56', null],
+      ['230', null, '2026-06-03T22:24:00', null],
+      ['220', '2026-06-02T14:19:00+08:00', '2026-06-02T14:19:00', 'carrier'],
+      ['150', '2026-06-01T19:21:31+08:00', '2026-06-01T19:21:31', 'carrier'],
+    ]);
+    expect(result.last_update).toBeNull();
+    // A leg abroad names its warehouse or country, and the scans keep the zone their places give.
+    const abroad = parseZtoInternational(fixture('in-transit'), IN_TRANSIT);
+    expect(abroad.events!.every((event) => event.time === undefined)).toBe(true);
+  });
+
   it('reads the bare reply, which an unknown waybill and an unread request share, as inconclusive', async () => {
     for (const body of [fixture('not-found'), { success: true, data: [] }, { success: true, data: null }]) {
       expect(() => parseZtoInternational(body, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));

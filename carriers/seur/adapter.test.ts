@@ -71,6 +71,19 @@ describe('SEUR simplified anonymous tracking', () => {
     expect(parseSeur(body, NUMBER)).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered' });
   });
 
+  it('reads a delivery held by customs for its invoice through the codes SEUR scans it with', () => {
+    const scan = (code: string, fecha: string) => ({ fecha, cod_situacion: code, grupo_situacion: seurStatusGroup(code)!,
+      descripcion_situacion: statuses.entries.find(entry => entry.code === code)!.wording });
+    const body = copy();
+    body.situaciones = [scan('LL001', '2026-01-24T18:15:00Z'), scan('LC001', '2026-01-24T15:54:00Z'), scan('LI580', '2026-01-24T12:54:08Z'),
+      scan('LI717', '2026-01-24T10:42:56Z'), scan('LT859', '2026-01-22T23:08:15Z'), scan('SC999', '2026-01-22T23:05:10Z')] as typeof body.situaciones;
+    const result = parseSeur(body, NUMBER);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered' });
+    expect(result.events?.map(e => e.stage)).toEqual(['delivered', 'out_for_delivery', 'customs', 'exception', 'in_transit', 'registered']);
+    body.situaciones = body.situaciones.slice(3);
+    expect(parseSeur(body, NUMBER)).toMatchObject({ status: 'exception', current_stage: 'exception' });
+  });
+
   it('reads an incomplete or wrong address after the delivery round as a failed attempt', () => {
     const scan = (code: string, fecha: string) => ({ fecha, cod_situacion: code, grupo_situacion: seurStatusGroup(code)!,
       descripcion_situacion: statuses.entries.find(entry => entry.code === code)!.wording });

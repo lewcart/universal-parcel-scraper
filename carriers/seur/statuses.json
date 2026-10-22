@@ -9,6 +9,15 @@
       "confirmedBy": "live"
     },
     {
+      "code": "SC999",
+      "wording": "EL ENVÍO HA SIDO REGISTRADO.",
+      "language": "es",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Its group was not kept: SX010's, with the same wording, is assumed."
+    },
+    {
       "code": "SX001",
       "wording": "EL ENVÍO HA SIDO RECEPCIONADO EN LAS INSTALACIONES DE ORIGEN DE SEUR. COMIENZA EL TRÁNSITO A DESTINO",
       "language": "es",
@@ -53,6 +62,15 @@
       "language": "es",
       "stage": "customs",
       "confirmedBy": "live"
+    },
+    {
+      "code": "LI580",
+      "wording": "EL ENVÍO ESTÁ EN GESTIÓN POR LA ADUANA. TRAMITANDO DESPACHO ADUANERO.",
+      "language": "es",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Its group is the one a provider relayed with the scan."
     },
     {
       "code": "LD223",
@@ -118,6 +136,15 @@
       "confirmedBy": "live"
     },
     {
+      "code": "LC001",
+      "wording": "EL ENVÍO ESTÁ EN REPARTO.",
+      "language": "es",
+      "stage": "out_for_delivery",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Its group is the one a provider relayed with the scan."
+    },
+    {
       "code": "LI521",
       "wording": "EL ENVÍO NO SE HA ENTREGADO PORQUE LA DIRECCIÓN DE ENTREGA ESTÁ INCOMPLETA O ERRÓNEA.",
       "language": "es",
@@ -141,6 +168,24 @@
       "confirmedBy": "live"
     },
     {
+      "code": "LI573",
+      "wording": "EL ENVÍO NO HA SIDO DEPOSITADO EN EL LOCKER SELECCIONADO. SE DEBE ELEGIR OTRO PUNTO SEUR PICKUP.",
+      "language": "es",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The recipient has to pick another point."
+    },
+    {
+      "code": "LI717",
+      "wording": "INCIDENCIA EN ADUANAS: FALTA FACTURA. CONTACTA CON SEUR DESDE EL ÁREA DE SOPORTE.",
+      "language": "es",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Customs holds the parcel until the recipient sends the invoice. Its group is the one a provider relayed with the scan."
+    },
+    {
       "code": "LI530",
       "wording": "EL ENVÍO ESTÁ DISPONIBLE PARA RECOGER EN EL PUNTO SEUR PICKUP.",
       "language": "es",
@@ -153,6 +198,15 @@
       "language": "es",
       "stage": "delivered",
       "confirmedBy": "live"
+    },
+    {
+      "code": "LL001",
+      "wording": "EL ENVÍO ESTÁ ENTREGADO.",
+      "language": "es",
+      "stage": "delivered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "Its group was not kept: LL003's, with the same wording, is assumed."
     },
     {
       "code": "LL010",

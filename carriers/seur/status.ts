@@ -7,9 +7,11 @@ const exception: ClassifiedStatus = { status: 'exception', stage: 'exception' };
 
 // A null reading is a delay notice, not a movement: the scan keeps the stage of the one before it.
 const observed: Record<string, { group: string; wording: string; mapped: ClassifiedStatus | null }> = {
+  LL001: { group: 'ENTREGADO', wording: 'EL ENVÍO ESTÁ ENTREGADO.', mapped: delivered },
   LL003: { group: 'ENTREGADO', wording: 'EL ENVÍO ESTÁ ENTREGADO.', mapped: delivered },
   LL010: { group: 'ENTREGADO', wording: 'EL DESTINATARIO HA RETIRADO EL ENVÍO DE LA TIENDA SEUR PICKUP SELECCIONADA.', mapped: delivered },
   LL020: { group: 'ENTREGADO', wording: 'EL ENVÍO HA SIDO ENTREGADO A UN VECINO.', mapped: delivered },
+  LC001: { group: 'EN REPARTO', wording: 'EL ENVÍO ESTÁ EN REPARTO.', mapped: { status: 'out_for_delivery', stage: 'out_for_delivery' } },
   LC003: { group: 'EN REPARTO', wording: 'EL ENVÍO ESTÁ EN REPARTO.', mapped: { status: 'out_for_delivery', stage: 'out_for_delivery' } },
   LI300: { group: 'EN DEMORA', wording: 'EL ENVÍO HA SUFRIDO UN RETRASO Y ES POSIBLE QUE SE DEMORE LA ENTREGA. DISCULPA LAS MOLESTIAS.', mapped: null },
   LI582: { group: 'EN DEMORA', wording: 'EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA. DISCULPA LAS MOLESTIAS.', mapped: null },
@@ -18,6 +20,9 @@ const observed: Record<string, { group: string; wording: string; mapped: Classif
   LI521: { group: 'EN INCIDENCIA', wording: 'EL ENVÍO NO SE HA ENTREGADO PORQUE LA DIRECCIÓN DE ENTREGA ESTÁ INCOMPLETA O ERRÓNEA.', mapped: { status: 'exception', stage: 'failed_attempt' } },
   LI523: { group: 'EN INCIDENCIA', wording: 'EL ENVÍO NO SE HA ENTREGADO POR AUSENCIA O CIERRE. SE PUEDE REPROGRAMAR UNA NUEVA ENTREGA.', mapped: { status: 'exception', stage: 'failed_attempt' } },
   LI524: { group: 'EN INCIDENCIA', wording: 'EL ENVÍO NO SE HA ENTREGADO PORQUE NO ES LA DIRECCIÓN ACTUAL DEL DESTINATARIO.', mapped: exception },
+  // The recipient has to act: pick another point, or send customs the invoice.
+  LI573: { group: 'EN INCIDENCIA', wording: 'EL ENVÍO NO HA SIDO DEPOSITADO EN EL LOCKER SELECCIONADO. SE DEBE ELEGIR OTRO PUNTO SEUR PICKUP.', mapped: exception },
+  LI717: { group: 'EN INCIDENCIA', wording: 'INCIDENCIA EN ADUANAS: FALTA FACTURA. CONTACTA CON SEUR DESDE EL ÁREA DE SOPORTE.', mapped: exception },
   LI530: { group: 'ENTREGA EN TIENDA', wording: 'EL ENVÍO ESTÁ DISPONIBLE PARA RECOGER EN EL PUNTO SEUR PICKUP.', mapped: { status: 'in_transit', stage: 'ready_for_pickup' } },
   // Pending arrival at the destination's facility: in the delay group, but it says where the parcel is.
   LI511: { group: 'EN DEMORA', wording: 'EL ENVÍO ESTÁ PENDIENTE DE LLEGAR A DESTINO. EN CUANTO SE RECIBA, ACTUALIZAREMOS LA SITUACIÓN.', mapped: inTransit },
@@ -29,10 +34,12 @@ const observed: Record<string, { group: string; wording: string; mapped: Classif
   LJ100: { group: 'EN TRÁNSITO', wording: 'EL ENVÍO SERÁ ENTREGADO EN LA FECHA CONCERTADA. ACTUALIZAREMOS LA SITUACIÓN.', mapped: inTransit },
   LJ105: { group: 'EN TRÁNSITO', wording: 'LOS DATOS DEL ENVÍO HAN SIDO MODIFICADOS Y SE ENTREGARÁ EN UN PUNTO SEUR PICKUP.', mapped: inTransit },
   LD221: { group: 'EN ADUANAS', wording: 'EL ENVÍO HA LLEGADO A LA ADUANA DE DESTINO. INICIAMOS LOS TRÁMITES DE DESPACHO ADUANERO.', mapped: { status: 'in_transit', stage: 'customs' } },
+  LI580: { group: 'EN ADUANAS', wording: 'EL ENVÍO ESTÁ EN GESTIÓN POR LA ADUANA. TRAMITANDO DESPACHO ADUANERO.', mapped: { status: 'in_transit', stage: 'customs' } },
   // Cleared and about to go out for delivery.
   LD223: { group: 'EN ADUANAS', wording: 'LA MERCANCÍA HA SIDO DESPACHADA Y PRÓXIMAMENTE SALDRÁ A REPARTO.', mapped: inTransit },
   SX001: { group: 'EN TRÁNSITO', wording: 'EL ENVÍO HA SIDO RECEPCIONADO EN LAS INSTALACIONES DE ORIGEN DE SEUR. COMIENZA EL TRÁNSITO A DESTINO', mapped: { status: 'in_transit', stage: 'accepted' } },
   SX010: { group: 'NOTIFICADO', wording: 'EL ENVÍO HA SIDO REGISTRADO.', mapped: { status: 'pending', stage: 'registered' } },
+  SC999: { group: 'NOTIFICADO', wording: 'EL ENVÍO HA SIDO REGISTRADO.', mapped: { status: 'pending', stage: 'registered' } },
 };
 
 function entry(code: string, group: string, wording: string) {

@@ -3062,7 +3062,7 @@
       "ecoscooting",
       "helthjem"
     ],
-    "reason": "Helthjem's own SSCCs written without their 00 identifier also fit Bring's 370 rule and the broad bpost and Ecoscooting shapes. Helthjem and Bring are both listed first, and recognition asks Helthjem."
+    "reason": "Helthjem's own SSCCs written without their 00 identifier also fit Bring's 370 rule and the broad bpost and Ecoscooting shapes. Helthjem issues every SSCC under its GS1 company prefix, so the prefix selects Helthjem."
   },
   {
     "shape": "9{17} starting with 70 that passes the GS1 check",
@@ -3094,7 +3094,7 @@
       "swiss-post-cargo",
       "usps"
     ],
-    "reason": "Helthjem's own SSCCs typed with their 00 identifier also fit Bring's and PostNord's SSCC rules and the broad Swiss Post Cargo, NZ Post and USPS candidates. Helthjem and Bring are both listed first, and recognition asks Helthjem."
+    "reason": "Helthjem's own SSCCs typed with their 00 identifier also fit Bring's and PostNord's SSCC rules and the broad Swiss Post Cargo, NZ Post and USPS candidates. Helthjem issues every SSCC under its GS1 company prefix, so the prefix selects Helthjem."
   },
   {
     "shape": "9{20} starting with 0005712696 or 0005715127 that passes the SSCC check",

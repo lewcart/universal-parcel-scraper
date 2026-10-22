@@ -97,15 +97,13 @@
     {
       "id": "helthjem-1",
       "pattern": "^37072476\\d{10}$",
-      "confidence": "low",
-      "preferred": true,
+      "confidence": "high",
       "checksum": "gs1"
     },
     {
       "id": "helthjem-2",
       "pattern": "^0037072476\\d{10}$",
-      "confidence": "low",
-      "preferred": true,
+      "confidence": "high",
       "checksum": "sscc"
     }
   ]

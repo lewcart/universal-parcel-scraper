@@ -24,8 +24,9 @@ form. The adapter checks the GS1 check digit and takes nothing else without a re
 short codes, one character, a dash and five letters or digits, are not taken.
 
 Helthjem issues SSCCs under its own GS1 company prefix, `7072476`: archived lookups of several
-shops' parcels share one serial sequence. `helthjem-1` and `helthjem-2` suggest Helthjem for SSCCs
-under that prefix, and preflight asks it. Bring's broader rule for Norwegian SSCCs also fits them.
+shops' parcels share one serial sequence, and Helthjem's tracker answers for them. `helthjem-1` and
+`helthjem-2` therefore select Helthjem for SSCCs under that prefix, though Bring's broader rule for
+Norwegian SSCCs also fits them.
 An SSCC under another prefix, such as a shop's own, names whoever issued it, so no rule offers
 Helthjem for it, and nor does a rule cover the shipment number.
 

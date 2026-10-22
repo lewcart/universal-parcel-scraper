@@ -15986,15 +15986,13 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^37072476\\d{10}$",
-        "confidence": "low",
-        "checksum": "gs1",
-        "preferred": true
+        "confidence": "high",
+        "checksum": "gs1"
       },
       {
         "pattern": "^0037072476\\d{10}$",
-        "confidence": "low",
-        "checksum": "sscc",
-        "preferred": true
+        "confidence": "high",
+        "checksum": "sscc"
       }
     ]
   },

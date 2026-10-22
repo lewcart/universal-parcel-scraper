@@ -1778,94 +1778,34 @@
   },
   {
     "input": "00370724762415449269",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "usps",
-      "nz-post"
-    ],
-    "preferred": [
-      "bring-posten",
       "helthjem"
-    ],
-    "asked": [
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "nz-post"
     ]
   },
   {
     "input": "00370724762895252120",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "usps",
-      "nz-post"
-    ],
-    "preferred": [
-      "bring-posten",
       "helthjem"
-    ],
-    "asked": [
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "nz-post"
     ]
   },
   {
     "input": "00370724763174567744",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "usps",
-      "nz-post"
-    ],
-    "preferred": [
-      "bring-posten",
       "helthjem"
-    ],
-    "asked": [
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "nz-post"
     ]
   },
   {
     "input": "00370724763556781546",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "usps",
-      "nz-post"
-    ],
-    "preferred": [
-      "bring-posten",
       "helthjem"
-    ],
-    "asked": [
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "nz-post"
     ]
   },
   {
@@ -34646,109 +34586,49 @@
   },
   {
     "input": "370724762256293441",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724762415288240",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724762866178565",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724763060278426",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724763559618351",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724763572871481",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },

@@ -267,10 +267,13 @@ describe('Helthjem tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url) === HELTHJEM_ENDPOINT)).toBe(true);
   });
 
-  it('suggests Helthjem for SSCCs under its own GS1 prefix and asks it first', () => {
+  it('selects Helthjem for SSCCs under its own GS1 prefix whose check digit holds', () => {
+    const wrongKey = `${DELIVERED.slice(0, -1)}${(Number(DELIVERED.at(-1)) + 1) % 10}`;
     for (const number of [DELIVERED, `00${DELIVERED}`]) {
-      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: expect.arrayContaining(['helthjem']) });
-      expect(recognitionAskedCarriers(number)[0]).toBe('helthjem');
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'helthjem', confidence: 'high' });
+    }
+    for (const number of [wrongKey, `00${wrongKey}`]) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('helthjem');
     }
     expect(recognitionAskedCarriers('370724769990000015')).not.toContain('helthjem');
     expect(recognitionAskedCarriers('373332539990000017')).not.toContain('helthjem');

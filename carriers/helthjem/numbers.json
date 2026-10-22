@@ -15,14 +15,8 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "bpost",
-          "ecoscooting"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -40,14 +34,8 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "bpost",
-          "ecoscooting"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -65,14 +53,8 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "bpost",
-          "ecoscooting"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -90,14 +72,8 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "bpost",
-          "ecoscooting"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -115,14 +91,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "bpost",
-          "ecoscooting"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; Helthjem's tracking service answers for it."
     },
@@ -140,14 +110,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "bpost",
-          "ecoscooting"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; Helthjem's tracking service answers for it."
     },
@@ -215,16 +179,8 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "swiss-post-cargo",
-          "postnord",
-          "usps",
-          "nz-post"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -242,16 +198,8 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "swiss-post-cargo",
-          "postnord",
-          "usps",
-          "nz-post"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -269,16 +217,8 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "swiss-post-cargo",
-          "postnord",
-          "usps",
-          "nz-post"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -296,16 +236,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "bring-posten",
-          "helthjem",
-          "swiss-post-cargo",
-          "postnord",
-          "usps",
-          "nz-post"
-        ]
+        "carrier": "helthjem",
+        "confidence": "high"
       },
       "note": "Looked up on Helthjem's own tracker, as an archived address shows; Helthjem's tracking service answers for it."
     }

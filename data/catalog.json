@@ -2864,6 +2864,11 @@
         "confidence": "low"
       },
       {
+        "pattern": "^GF\\d{11}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
         "pattern": "^\\d{12}$",
         "confidence": "low",
         "checksum": "poste-italiane"

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NotFoundError, SchemaError, InvalidInputError } from '../../core/errors/index.js';
 import {
@@ -64,6 +65,15 @@ describe('Poste Italiane tracking normalization', () => {
     expect(posteItalianeTrackingUrl(TRACKING_NUMBER)).toBe(
       'https://www.poste.it/cerca/index.html#/risultati-spedizioni/RA00000000001',
     );
+  });
+
+  it('suggests Poste first for GF and eleven digits, a Poste Delivery Express parcel its tracker follows', () => {
+    expect(detectCarrierMatch('GF00000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['poste-italiane'] });
+    expect(recognitionAskedCarriers('GF00000000001')[0]).toBe('poste-italiane');
+    expect(normalizePosteItalianeTrackingNumber('gf 00000000001')).toBe('GF00000000001');
+    for (const raw of ['GF0000000001', 'GF000000000001', 'GX00000000001']) {
+      expect(detectCarrierMatch(raw).candidates, raw).not.toContain('poste-italiane');
+    }
   });
 
   it('claims Business Internazionale Plus codes and the plate wrapping a code, and nothing near them', () => {

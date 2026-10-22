@@ -69,6 +69,9 @@ Italiane for a number issued abroad.
   Aggregators can read the `JJ` as DHL's.
 - Complaints against Poste Italiane quote `JF` and eleven digits for parcels sent through
   MyPoste and Poste Delivery Web, and Poste's tracker names them Promo Pacco.
+- Poste's tracker follows `GF` and eleven digits as Poste Delivery Express parcels from their
+  acceptance at a post office. One parcel shows the shape and no public sample is known, so it
+  only suggests Poste Italiane (`poste-italiane-gf`), ahead of La Poste's thirteen characters.
 - PROMOPACCO PLUS parcels carry `F`, three digits, `D` and eight digits. Poste's tracker
   follows them, but no public sample is known, so the shape only suggests Poste Italiane
   (`poste-italiane-promopacco`) and recognition asks it.

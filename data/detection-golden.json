@@ -72709,6 +72709,22 @@
     "candidates": []
   },
   {
+    "input": "GF00000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poste-italiane",
+      "la-poste"
+    ],
+    "preferred": [
+      "poste-italiane"
+    ],
+    "asked": [
+      "poste-italiane",
+      "la-poste"
+    ]
+  },
+  {
     "input": "GF6547710773248",
     "carrier": "unknown",
     "confidence": "low",

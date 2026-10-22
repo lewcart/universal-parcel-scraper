@@ -150,6 +150,12 @@
       "confidence": "low"
     },
     {
+      "id": "poste-italiane-gf",
+      "pattern": "^GF\\d{11}$",
+      "confidence": "low",
+      "preferred": true
+    },
+    {
       "id": "poste-italiane-registered",
       "pattern": "^\\d{12}$",
       "confidence": "low",

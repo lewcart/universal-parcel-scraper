@@ -50,18 +50,22 @@ jobs:
     # workflow, so this waits for each one's pushed or dispatched runs on this
     # commit: one that passed lets the release go on, and once all have
     # finished without passing, the release stops. After rerunning either,
-    # rerun this workflow's failed jobs. GitHub's list of a workflow's runs for
-    # a commit sometimes leaves a run out for good, so the repository's list of
-    # runs for the commit is read as well.
+    # rerun this workflow's failed jobs. GitHub's lists of runs sometimes come
+    # back empty, so three lists are read, each workflow gets its own ten
+    # minutes to appear, and once its run has been seen an empty answer only
+    # means waiting longer.
     steps:
       - run: |
           started=$SECONDS
           for workflow in ci.yml secrets.yml; do
+            seen=false since=$SECONDS
             while true; do
               state=$({
                 gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$workflow/runs?head_sha=$GITHUB_SHA&per_page=100" --jq '.workflow_runs[]'
                 gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&per_page=100" \
                   --jq ".workflow_runs[] | select(.path == \".github/workflows/$workflow\")"
+                gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$workflow/runs?branch=$GITHUB_REF_NAME&per_page=100" \
+                  --jq ".workflow_runs[] | select(.head_sha == \"$GITHUB_SHA\")"
               } | jq -rs '
                 unique_by(.id) | [.[] | select(.event == "push" or .event == "workflow_dispatch")]
                 | if any(.conclusion == "success") then "passed"
@@ -72,7 +76,8 @@ jobs:
               case "$state" in
                 passed) echo "$workflow passed on $GITHUB_SHA."; break ;;
                 failed) echo "::error::$workflow failed on $GITHUB_SHA, so nothing is published."; exit 1 ;;
-                missing) if [ "$elapsed" -ge 600 ]; then
+                running) seen=true ;;
+                missing) if [ "$seen" = false ] && [ $((SECONDS - since)) -ge 600 ]; then
                     echo "::error::$workflow has not run on $GITHUB_SHA. Dispatch it on this ref, then rerun this job."; exit 1
                   fi ;;
               esac

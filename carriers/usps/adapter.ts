@@ -136,15 +136,17 @@ function parseTimelineRow(description: string, dateText: string, location: strin
   const date = DATE_PATTERN.exec(dateText)?.[0];
   const time = TIME_PATTERN.exec(dateText)?.[0];
   // UTC is only a parsing frame here. An unresolved location gets an offset-free
-  // local_time, never a made-up UTC scan or another facility's timezone.
+  // local_time, never a made-up UTC scan or another facility's timezone. A step
+  // USPS dates by its day alone, as it does pre-shipment info, keeps that day.
   const local = date && time ? DateTime.fromFormat(
     `${date.replace(/,\s*/, ' ')} ${time.replace(/\./g, '').replace(/\s*([ap])m/i, ' $1m')}`,
     time.split(':').length === 3 ? 'MMMM d yyyy h:mm:ss a' : 'MMMM d yyyy h:mm a',
     { locale: 'en-US', zone: 'UTC' },
   ) : null;
+  const day = date && !time ? DateTime.fromFormat(date.replace(/,\s*/, ' '), 'MMMM d yyyy', { locale: 'en-US', zone: 'UTC' }) : null;
+  const wall = local?.isValid ? local.toFormat("yyyy-MM-dd'T'HH:mm:ss") : day?.isValid ? day.toISODate() : null;
   return {
-    ...(at ? { time: at.iso } : local?.isValid ? { local_time: local.toFormat("yyyy-MM-dd'T'HH:mm:ss") } : {}),
-    ...(!at && !local?.isValid ? { raw_time: dateText } : {}),
+    ...(at ? { time: at.iso } : wall ? { local_time: wall } : { raw_time: dateText }),
     ...(location ? { location: location.slice(0, 250) } : {}),
     description: stage === 'delivered' ? 'Delivered' : description,
     ...(stage ? { stage } : {}),

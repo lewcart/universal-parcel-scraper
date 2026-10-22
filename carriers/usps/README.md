@@ -62,8 +62,8 @@ Parsing, in order:
 - Scan times are facility-local. The state in the location maps to a zone (multi-zone states
   use their majority zone); a facility without a comma names its state before its kind, as in
   `EXAMPLE CITY NY DISTRIBUTION CENTER`. With no resolvable state the event keeps an offset-free
-  `local_time`, or `raw_time` for date-only text, and the page's newest-first order is kept
-  rather than re-sorted.
+  `local_time`, and the page's newest-first order is kept rather than re-sorted. A step USPS
+  dates by its day alone, as it does pre-shipment info, keeps that day as `local_time`.
 - Delivered lines are rewritten to "Delivered" because USPS names the signatory.
 - "Available for Pickup" and "Arrived at Post Office" are stage `ready_for_pickup` but result
   status `out_for_delivery`.

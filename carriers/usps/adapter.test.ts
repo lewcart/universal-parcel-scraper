@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { parseTrackingInput } from '../../core/detection/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
+import { dateLocalClocks } from '../../places/index.js';
 import { normalizeUSPSNumber, parseUSPSTrackingHtml, USPSTracker, uspsTrackingUrl } from './adapter.js';
 import { uspsStage, uspsStatus } from './status.js';
 
@@ -125,12 +126,23 @@ describe('USPS rendered page', () => {
     expect(unnamed.events?.[0]).toMatchObject({ local_time: '2025-03-14T12:17:00' });
   });
 
-  it('preserves a date-only update without inventing a clock time', () => {
+  it('keeps the day of a date-only update without inventing a clock time', () => {
     const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('March 14, 2025 12:17 PM', 'March 14, 2025'), DELIVERED_NUMBER);
-    expect(result.events?.[0]).toMatchObject({ description: 'Delivered', raw_time: 'March 14, 2025' });
+    expect(result.events?.[0]).toMatchObject({ description: 'Delivered', local_time: '2025-03-14' });
     expect(result.events?.[0]!.time).toBeUndefined();
-    expect(result.events?.[0]!.local_time).toBeUndefined();
-    expect(result.last_update).toBeNull();
+    expect(result.events?.[0]!.raw_time).toBeUndefined();
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2025-03-14' });
+    // Local-clock dating gives a day no instant.
+    expect(dateLocalClocks('usps', result).events?.[0]).toEqual(result.events?.[0]);
+    // Pre-shipment info comes dated by its day alone, without a place.
+    const announced = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('March 14, 2025 12:17 PM', 'March 14, 2025')
+      .replace(/(<p class="tb-status-detail">)[^<]*/, '$1Pre-Shipment Info Sent to USPS, USPS Awaiting Item')
+      .replace(/(<p class="tb-location">)[^<]*/, '$1'), DELIVERED_NUMBER);
+    expect(announced.events?.[0]).toEqual({ description: 'Pre-Shipment Info Sent to USPS, USPS Awaiting Item', stage: 'registered',
+      local_time: '2025-03-14' });
+    // A date that is no day keeps its text.
+    expect(parseUSPSTrackingHtml(TIMELINE_PAGE.replace('March 14, 2025 12:17 PM', 'February 30, 2025'), DELIVERED_NUMBER).events?.[0])
+      .toMatchObject({ raw_time: 'February 30, 2025' });
   });
 
   it('reads a clock time with seconds on the state\'s zone', () => {

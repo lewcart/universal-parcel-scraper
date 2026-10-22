@@ -28,6 +28,9 @@ describe('brand networks', () => {
     expect(carrierIdFromName('South Africa Post Office')).toBe('south-african-post-office');
     // Universal providers name Z-Leading after its Chinese name.
     expect(carrierIdFromName('Zhongling')).toBe('z-leading');
+    // China Post's express service trades as China EMS; the cooperative's EMS stays its own.
+    expect(carrierIdFromName('China EMS')).toBe('china-post');
+    expect(carrierIdFromName('EMS')).toBe('ems');
     expect(brandCarrierIds('DPD UK')).toEqual([]);
     expect(brandCarrierIds('Swiss Post')).toEqual([]);
   });

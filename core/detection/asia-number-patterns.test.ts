@@ -111,6 +111,21 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     }
   });
 
+  it('names China Post for its own numbers in an ems.com.cn link', () => {
+    for (const url of [
+      'https://www.ems.com.cn/mailtracking/e_you_jian_cha_xun.html?mailNum=ZS00000000001',
+      'http://www.ems.com.cn/qcgzOutQueryAction.do?reqCode=gotoSearchE&mailNum=RR123456785CN',
+      'http://www.ems.com.cn/english.html?TrackingNumber=EE123456785CN',
+    ]) {
+      expect(parseTrackingInput(url), url).toMatchObject({ carrier: 'china-post', confidence: 'high', source: 'link' });
+    }
+    // China Post's tracker takes only its own numbers, so any other is detected on its own.
+    expect(parseTrackingInput('http://www.ems.com.cn/english.html?TrackingNumber=EE123456785FR'))
+      .toMatchObject({ carrier: 'la-poste', source: 'link' });
+    expect(parseTrackingInput('http://www.ems.com.cn/mailtracking/e_you_jian_cha_xun.html?mailNum=1000000000001').carrier)
+      .not.toBe('china-post');
+  });
+
   it('gives each forwarder\'s YQ code to the carrier of its prefix alone', () => {
     // Forwarders on one Chinese platform share the YQ ending and ten digits; the customer prefix names the forwarder.
     const owners = { JSEJY0000000001YQ: 'js-express', WNBZZ0000000001YQ: 'wanbexpress', FEISH0000000001YQ: '17feia',

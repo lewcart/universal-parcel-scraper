@@ -17,6 +17,11 @@ number known. Source selection is covered in
 [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md);
 provider results are in [COVERAGE.md](../../providers/COVERAGE.md).
 
+A link to `ems.com.cn` names China Post for one of its own numbers in `mailNum`, the
+parameter its tracking pages have long used, or in `TrackingNumber`; any other number
+there is detected on its own, as the adapter takes only China Post's. China Post's
+express service is also known as China EMS.
+
 ## How it works
 
 The web tracker on www.ems.com.cn sits behind a web application firewall and a

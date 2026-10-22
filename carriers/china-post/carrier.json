@@ -1,7 +1,9 @@
 {
   "id": "china-post",
   "displayName": "China Post",
-  "aliases": [],
+  "aliases": [
+    "China EMS"
+  ],
   "region": {
     "countries": [
       "CN"
@@ -67,7 +69,18 @@
       "offset_timestamps"
     ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "ems.com.cn"
+      ],
+      "params": [
+        "mailNum",
+        "TrackingNumber"
+      ],
+      "ownNumbersOnly": true
+    }
+  ],
   "detection": [
     {
       "id": "china-post-1",

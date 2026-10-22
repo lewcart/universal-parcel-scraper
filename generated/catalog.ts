@@ -4510,6 +4510,9 @@ export const CARRIER_CATALOG = {
   "china-post": {
     "displayName": "China Post",
     "color": "#006d46",
+    "aliases": [
+      "China EMS"
+    ],
     "countries": [
       "CN"
     ],
@@ -4525,7 +4528,18 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://ec.ems.com.cn/ect-web/mail/getGisTraces/checkMail",
     "trackingUrlTemplate": "https://www.ems.com.cn/mailtracking/you_jian_cha_xun.html",
     "trackingSearchUrl": "https://www.ems.com.cn/mailtracking/you_jian_cha_xun.html",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "ems.com.cn"
+        ],
+        "params": [
+          "mailNum",
+          "TrackingNumber"
+        ],
+        "ownNumbersOnly": true
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^[A-Z]{2}\\d{9}CN$",

@@ -113,7 +113,9 @@ describe('classifyWording', () => {
       'We have received a notification from your shipper that they are preparing an item for you. The tracking information will be updated when the parcel is handed over to PostNord.',
       'Shipper generated a new shipment label, but the shipment has not been handed over to Aramex, yet. Shipment will be updated once collected from shipper and received in Aramex offices',
       'The package data was sent to OnTrac, but we have yet to receive the package from the sender. Tracking will update once it arrives. Please contact the sender for more information',
-    ]) expect(classifyWording(wording)).toEqual({ stage: 'registered', source: 'wording:language' });
+      // Lietuvos paštas' label, as aggregators relay it for a parcel filed under no carrier.
+      'The label for the parcel has been created',
+    ]) expect(classifyWording(wording, 'pending')).toEqual({ stage: 'registered', source: 'wording:language' });
     // The carrier itself taking the parcel is still acceptance.
     expect(wordingStage('The parcel was handed over to GLS.')).toBe('accepted');
     // A handover that has not happened is not, with or without "yet".
@@ -358,6 +360,7 @@ describe('classifyWording', () => {
     for (const wording of [
       'At local carrier facility', 'Left origin facility', 'Parcel is leaving airport', 'Item Dispatched', 'Delay',
       'Received by local delivery company', 'Received by logistics company', 'Delivery option requested', 'Cambio disposizioni di consegna',
+      'The parcel is at the distribution center', 'Your package is now at the distribution centre',
       'The notification for delivery has been sent to the recipient',
       'Item handed over to delivery partner', 'Item distributed', 'The shipment item has been loaded.',
       'Your package has been loaded onto a vehicle',

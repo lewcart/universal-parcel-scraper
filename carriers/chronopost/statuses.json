@@ -287,6 +287,15 @@
       "language": "fr"
     },
     {
+      "code": "AN",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Chronopost trackSkybillV2; code mapping requires matching wording. The sender called off the hand-over, so Chronopost never had the parcel. A new preparation scan can follow it.",
+      "wording": "Remise du colis annulée par l'expéditeur",
+      "language": "fr"
+    },
+    {
       "code": "RB",
       "stage": "in_transit",
       "confirmedBy": "live",

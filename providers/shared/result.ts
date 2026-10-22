@@ -230,6 +230,9 @@ function providerWordingStage(description: string): Stage | undefined {
   // Its export steps after that, as ParcelsApp relays them: the logistics centre, the outward office of
   // exchange holding the item for dispatch, and the dispatch before the item leaves Latvia.
   if (/^received at the logistics cent(?:er|re)[.!]?$|^item held at outward office of exchange[.!]?$|^sending the package[.!]?$/i.test(value)) return 'in_transit';
+  // Lietuvos paštas' acceptance (ACCEPTED in its own map) as ParcelsApp relays it. The shared rules leave a
+  // bare receipt unread, since it names no receiver.
+  if (/^parcel received[.!]?$/i.test(value)) return 'accepted';
   // ECMS's pre-alert, in English then Chinese: the parcel has yet to reach its origin warehouse.
   if (/^virtual manifest has been received[.!]?(?:\s*发货预报已收到[，,]?\s*正在等待货物到达我们的始发站仓库[。.]?)?$/iu.test(value)) return 'registered';
   // InPost's refusal at the door (LMD.9006), as InPost's own map reads it.

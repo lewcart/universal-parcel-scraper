@@ -175,6 +175,7 @@ describe('status map answers', () => {
     expect(answer('chronopost', 'DC', 'Colis livré')).toEqual(unknown);
     expect(answer('chronopost', 'TA', 'Colis en cours de livraison')).toEqual(mapped('out_for_delivery'));
     expect(answer('chronopost', 'RB', 'Colis en cours de livraison au point de retrait')).toEqual(mapped('in_transit'));
+    expect(answer('chronopost', 'AN', "Remise du colis annulée par l'expéditeur")).toEqual(mapped('exception'));
     expect(answer('chronopost', 'AB', 'Colis mis à disposition au point de retrait')).toEqual(mapped('ready_for_pickup'));
     expect(answer('chronopost', 'TA', 'Colis en cours de livraison par le livreur')).toEqual(mapped('out_for_delivery'));
     expect(answer('chronopost', 'TA', 'Livraison effectuée')).toEqual(unknown);
@@ -210,6 +211,10 @@ describe('status map answers', () => {
     expect(answer('dpd-de', 'LHI', 'Your parcel is on its way')).toEqual(mapped('in_transit'));
     expect(answer('dpd-de', 'MSDLX', "We couldn't send a notification with your delivery details")).toEqual(gap);
     expect(answer('seur', 'LT859', 'EL ENVÍO ESTÁ EN TRÁNSITO INTERNACIONAL. PRÓXIMAMENTE LLEGARÁ A LAS INSTALACIONES DE DESTINO.')).toEqual(mapped('in_transit'));
+  });
+
+  it("answers Pošta Slovenije's departure from its outward office of exchange by its UPU code", () => {
+    expect(answer('posta-slovenije', 'EMC', 'Departure from outward OE')).toEqual(mapped('in_transit'));
   });
 
   it("answers Poste Italiane's wording, its failed round with the next day before the round it announces", () => {
@@ -636,6 +641,8 @@ describe("universal providers' answers", () => {
       ['Received at the logistics center', 'in_transit'], ['Item held at outward office of exchange', 'in_transit'], ['Sending the package', 'in_transit'],
       ['Virtual Manifest has been received. 发货预报已收到，正在等待货物到达我们的始发站仓库', 'registered'], ['Virtual Manifest has been received', 'registered'],
       ['Acceptance refusal', 'failed_attempt'],
+      // Lietuvos paštas' acceptance, a bare receipt the shared rules leave unread.
+      ['Parcel received', 'accepted'],
       ['Warehouse receipt.', 'accepted'], ['Received by warehouse', 'accepted'], ['Package received and scanned at warehouse', 'accepted'],
       ["We've got it", 'accepted'], ['Received at Evri', 'accepted'], ['Received by our network', 'accepted'], ['Checked in at origin hub', 'accepted'], ['Parcel received and processing', 'accepted'], ['Acceptance, Sent To Spain', 'accepted'],
       ['China Post has received the mail', 'accepted'], ['Envío recogido en origen', 'accepted'],
@@ -742,7 +749,8 @@ describe("universal providers' answers", () => {
       ['Cambio disposizioni di consegna', 'in_transit'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
-    for (const wording of ['Sending the package to the sender', 'Item held at outward office of exchange for inspection', 'Virtual Manifest pending']) {
+    for (const wording of ['Sending the package to the sender', 'Item held at outward office of exchange for inspection', 'Virtual Manifest pending',
+      'Parcel received by the recipient']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
     for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',

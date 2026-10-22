@@ -53,6 +53,8 @@ const OBSERVED: ReadonlyArray<readonly [code: string, label: string, stage: Chro
   // The parcel starts back to the sender. Like other returns under way it stays nonterminal:
   // the return's own scans follow, and its delivery is the return's (see the parser).
   [RETURN_CODE, RETURN_LABEL, 'exception'],
+  // The sender called off the hand-over: Chronopost never had the parcel. A new preparation scan can follow.
+  ['AN', "Remise du colis annulée par l'expéditeur", 'exception'],
 ];
 
 const observed = new Map<string, Map<string, ChronopostStage>>();

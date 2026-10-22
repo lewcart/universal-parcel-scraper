@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const WORDINGS: Record<string, ClassifiedStatus> = {
   'Item delivered': { status: 'delivered', stage: 'delivered' },
@@ -39,3 +40,14 @@ const WORDINGS: Record<string, ClassifiedStatus> = {
 export function classifyBpostStatus(description: string): ClassifiedStatus | undefined {
   return Object.hasOwn(WORDINGS, description) ? WORDINGS[description] : undefined;
 }
+
+const STAGE_BY_WORDING = new Map(Object.entries(WORDINGS).map(([wording, { stage }]) => [normalizeStatusWording(wording), stage]));
+
+/**
+ * What the map says about one scan by its English wording, the only key a scan has. Wording
+ * that still holds bpost's locker placeholder reads as the parser reads a locker of unknown brand.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? undefined : STAGE_BY_WORDING.get(wording.replaceAll('{{bboxrebrand}}', 'parcel locker'))),
+  gaps: [],
+};

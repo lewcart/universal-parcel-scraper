@@ -54,6 +54,8 @@ export function classifyPosteItalianeStatus(rawWording: unknown): ClassifiedStat
     case 'all\'estero':
     case 'presso il paese estero in data':
     case 'in data':
+    // A change to the delivery instructions: the parcel carries on.
+    case 'cambio disposizioni di consegna':
       return { status: 'in_transit', stage: 'in_transit' };
     case 'sono in corso delle verifiche sulla spedizione. contatta assistenza':
       return { status: 'exception', stage: 'failed_attempt' };

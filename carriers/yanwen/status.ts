@@ -32,6 +32,7 @@ const WORDING = new Map<string, ClassifiedStatus>([
   // parcel leaves China; a partner's acceptance follows Yanwen's own pickup
   // scan, so it is a handover rather than the parcel's acceptance.
   ['Pre-Shipment, USPS Awaiting Item', { status: 'pending', stage: 'registered' }],
+  ['Shipment information received', { status: 'pending', stage: 'registered' }],
   ['Registered parcel data, parcel not dispatched yet', { status: 'pending', stage: 'registered' }],
   ['Shipping information received. Your parcel is on its way to UniUni for delivery to you', { status: 'pending', stage: 'registered' }],
   ['Votre Colissimo va bientôt nous être confié ! Il est en cours de préparation chez votre expéditeur.', { status: 'pending', stage: 'registered' }],

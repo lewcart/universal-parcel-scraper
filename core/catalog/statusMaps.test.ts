@@ -217,11 +217,21 @@ describe('status map answers', () => {
     expect(answer('posta-slovenije', 'EMC', 'Departure from outward OE')).toEqual(mapped('in_transit'));
   });
 
+  it("answers bpost by its English wording, a locker placeholder the parser fills included", () => {
+    expect(answer('bpost', null, 'Item available at the bbox locker')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('bpost', null, "item on it's way to {{bboxrebrand}}")).toEqual(mapped('in_transit'));
+    expect(answer('bpost', null, 'item available at the {{bboxrebrand}}')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('bpost', null, 'Item delivered')).toEqual(mapped('delivered'));
+    expect(answer('bpost', null, 'Synthetic scan')).toEqual(unknown);
+    expect(answer('bpost', 'ZZ', 'Item delivered')).toEqual(unknown);
+  });
+
   it("answers Poste Italiane's wording, its failed round with the next day before the round it announces", () => {
     expect(answer('poste-italiane', null, 'non è stato possibile effettuare la consegna. la spedizione sarà in consegna il primo giorno lavorativo utile a partire dal 2026-01-01 00:00'))
       .toEqual(mapped('failed_attempt'));
     expect(answer('poste-italiane', null, 'la spedizione è in consegna')).toEqual(mapped('out_for_delivery'));
     expect(answer('poste-italiane', null, 'la spedizione è stata consegnata')).toEqual(mapped('delivered'));
+    expect(answer('poste-italiane', null, 'cambio disposizioni di consegna')).toEqual(mapped('in_transit'));
   });
 
   it("answers Cainiao's action codes, and the wording the queue holds without one", () => {
@@ -455,8 +465,8 @@ describe('status map answers', () => {
     expect(answer('yanwen', null, '【EXAMPLE】Arrived.')).toEqual(mapped('in_transit'));
     expect(answer('yanwen', 'LM40', 'Synthetic last-mile wording')).toEqual(mapped('delivered'));
     expect(answer('yanwen', 'XX10', 'Delivered.')).toEqual(mapped('delivered'));
-    // A partner's line whose place in the timeline decides between registration and intake.
-    expect(answer('yanwen', null, 'Shipment information received')).toEqual(unknown);
+    // Written before Yanwen's pickup scan.
+    expect(answer('yanwen', null, 'Shipment information received')).toEqual(mapped('registered'));
     expect(answer('yanwen', 'XX10', 'Synthetic scan')).toEqual(unknown);
   });
 
@@ -478,10 +488,12 @@ describe('status map answers', () => {
     expect(answer('tipsa', null, 'Ausente')).toEqual(mapped('failed_attempt'));
     expect(answer('tipsa', null, 'ENTREGADO')).toEqual(mapped('delivered'));
     expect(answer('tipsa', null, 'EL ENVÍO ESTÁ EN REPARTO.')).toEqual(mapped('out_for_delivery'));
-    // Labels whose step TIPSA's history does not settle stay open.
-    for (const wording of ['FALTAN DATOS / DATOS INCORRECTOS', 'PENDIENTE DE RECOGER EN TIPSA', 'DISPONIBLE', 'PENDIENTE DE LLEGADA']) {
-      expect(answer('tipsa', null, wording), wording).toEqual(unknown);
-    }
+    // A round missed for the address's data, a wait for arrival and the agency's hold after a missed round.
+    expect(answer('tipsa', null, 'Faltan Datos / Datos incorrectos')).toEqual(mapped('failed_attempt'));
+    expect(answer('tipsa', null, 'Pendiente de llegada')).toEqual(mapped('in_transit'));
+    expect(answer('tipsa', null, 'DISPONIBLE')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('tipsa', null, 'Pendiente de recoger en Tipsa')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('tipsa', null, 'Pendiente de recoger en Example')).toEqual(unknown);
     expect(answer('tipsa', 'ZZ', 'ENTREGADO')).toEqual(unknown);
   });
 
@@ -768,18 +780,19 @@ describe("universal providers' answers", () => {
       'Courier collection complete', 'Collection complete from sender',
       'Export scan pending', 'Awaiting export scan', 'Received in warehouse Example', 'Item deposited',
       'Parcel was dropped off at the locker by the courier', 'International shipment release pending', 'Package is received at a station',
-      // A forecast sent to the last-mile carrier, detail lines, a store hand-over that is a drop-off or a
-      // collection, and headings with no step of their own.
-      'Last-mile delivery forecast', 'Keine weiteren Details erforderlich', 'Filiale / Agentur', 'Parcel to be taken to a Yodel Store',
+      // Detail lines, a store hand-over that is a drop-off or a collection, and headings with no step of their own.
+      'Keine weiteren Details erforderlich', 'Filiale / Agentur', 'Parcel to be taken to a Yodel Store',
       'Received at Example Store', 'In progress', 'Update on your parcel', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });
 
-  it("leave out only Chronopost's notice, a bare delivery estimate, a recipient update and SEUR's delay on purpose", () => {
+  it("leave out only Chronopost's notice, a bare delivery estimate, a recipient update, Cainiao's forecast and SEUR's delay on purpose", () => {
     expect(universal.gaps.map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail', 'estimated delivery',
-      'recipient information updated', 'en demora - el envío ha sufrido un retraso provocando una posible demora en la entrega.']);
+      'recipient information updated', 'last-mile delivery forecast',
+      'en demora - el envío ha sufrido un retraso provocando una posible demora en la entrega.']);
     expect(answer('unknown', null, 'EN DEMORA - EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA.')).toEqual(gap);
+    expect(answer('unknown', null, 'Last-mile delivery forecast')).toEqual(gap);
   });
 });
 

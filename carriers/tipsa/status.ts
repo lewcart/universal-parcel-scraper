@@ -12,6 +12,13 @@ const LABELS = new Map<string, ClassifiedStatus>([
   ['LEIDO EN DESTINO', { status: 'in_transit', stage: 'in_transit' }],
   ['REPARTO', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['AUSENTE', { status: 'exception', stage: 'failed_attempt' }],
+  // Data missing from or wrong in the address, noted on the round before another one.
+  ['FALTAN DATOS / DATOS INCORRECTOS', { status: 'exception', stage: 'failed_attempt' }],
+  // Between hub scans, before the destination agency reads the parcel.
+  ['PENDIENTE DE LLEGADA', { status: 'in_transit', stage: 'in_transit' }],
+  // Held at the agency after a missed round, both lines at the same minute.
+  ['DISPONIBLE', { status: 'out_for_delivery', stage: 'ready_for_pickup' }],
+  ['PENDIENTE DE RECOGER EN TIPSA', { status: 'out_for_delivery', stage: 'ready_for_pickup' }],
   ['ENTREGADO', { status: 'delivered', stage: 'delivered' }],
 ]);
 

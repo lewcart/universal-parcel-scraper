@@ -7,6 +7,10 @@
     { "wording": "LECTURA EN AGENCIA DESTINO", "language": "es", "stage": "in_transit", "confirmedBy": "live", "note": "Followed by the destination agency's name." },
     { "wording": "REPARTO", "language": "es", "stage": "out_for_delivery", "confirmedBy": "live" },
     { "wording": "Ausente", "language": "es", "stage": "failed_attempt", "confirmedBy": "live" },
+    { "wording": "Faltan Datos / Datos incorrectos", "language": "es", "stage": "failed_attempt", "confirmedBy": "live", "note": "Noted on the round, before another one." },
+    { "wording": "Pendiente de llegada", "language": "es", "stage": "in_transit", "confirmedBy": "live", "note": "Between hub scans." },
+    { "wording": "DISPONIBLE", "language": "es", "stage": "ready_for_pickup", "confirmedBy": "live", "note": "Held at the agency after a missed round." },
+    { "wording": "Pendiente de recoger en Tipsa", "language": "es", "stage": "ready_for_pickup", "confirmedBy": "live", "note": "Held at the agency after a missed round." },
     { "wording": "ENTREGADO", "language": "es", "stage": "delivered", "confirmedBy": "live" }
   ]
 }

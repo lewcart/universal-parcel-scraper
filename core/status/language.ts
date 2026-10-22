@@ -328,8 +328,10 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^(?:(?:the |your |a |new )?(?:shipment|parcel|package|consignment|order|envoi|colis|expedition|commande|sendung|paket|auftrag|spedizione|pacco|ordine|envio|paquete|pedido|encomenda|przesylka|paczka|zamowienie|gonderi|kargo|siparis) )(?:(?:has been|was|a ete|wurde|e stat[oa]|ha sido|fue|foi|zostal[ao]?) )?(?:created|creee?s?|erstellt|angelegt|creat[oa]|cread[oa]|criad[oa]|utworzon[aey]|olusturuldu)$/.test(text)) return 'registered';
   // An order placed with the seller, before any shipment.
   if (/^(?:the |your |an? |new )?order (?:has been |was )?placed$/.test(text)) return 'registered';
-  // The carrier recorded the shipment, after a "notified" label: "Notificado - El envío ha sido registrado".
-  if (/^(?:notificado )?(?:el |la |su |tu )?(?:envio|paquete|pedido|encomienda) (?:ha sido|fue) registrad[oa]$/.test(text)) return 'registered';
+  // The carrier recorded the shipment, in Spanish after a "notified" label ("Notificado - El envío ha sido
+  // registrado") and in English.
+  if (/^(?:notificado )?(?:el |la |su |tu )?(?:envio|paquete|pedido|encomienda) (?:ha sido|fue) registrad[oa]$/.test(text)
+    || /^(?:the |your )?(?:shipment|parcel|package) (?:has been|was) registered$/.test(text)) return 'registered';
 
   // A completed clearance or release moves the parcel on; holds, inspections,
   // submissions and clearance still pending or negated stay with customs.
@@ -365,6 +367,10 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^courier pick up$/.test(text)) return 'accepted';
   // A Chinese forwarder's collection from the sender, as ParcelsApp relays it.
   if (/^shipment pick ?up$/.test(text)) return 'accepted';
+  // InPost UK's scans as Ship24 relays them: the sender's drop-off in a locker or at a store, then a hub's
+  // outbound scan.
+  if (/^parcel stored by (?:the )?customer$/.test(text)) return 'accepted';
+  if (/^scan out hub$/.test(text)) return 'in_transit';
   if (/^(?:received in office|export to foreign provider)$/.test(text)) return 'in_transit';
   // Sent on to another country: "Sent abroad".
   if (/^(?:(?:the )?(?:shipment|parcel|package|item) )?(?:(?:has been|was) )?(?:sent|dispatched|forwarded) abroad$/.test(text)) return 'in_transit';
@@ -377,6 +383,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // SEUR pickup point, a collection carried out, and its English "Has been put into storage". A bare "Item
   // received" names no receiver and stays unread.
   if (/^item received by royal mail$|\btaken over by one of our operators\b|\bwe've received your (?:parcel|package|item) at the parcel ?shop\b|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:was|has been) dropped off at (?:the |a )?parcel ?shop$|^(?![^,]*\b(?:recipient|consignee|receiver|customer|addressee|buyer|pick ?up point|parcel ?shop|locker|destination)\b)[a-z][\w&' -]{0,40} has received the goods(?:, [^,]{1,40}){0,2}\.?$|^the shipment has been deposited at a seur pickup point$|^(?:the |your )?collection (?:has been |was )?(?:carried out|completed)$|^已入库|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:has been |was )?put into storage$/.test(text)) return 'accepted';
+  // Poste Italiane's drop-off at a Punto Poste in English ("presa in carico presso il Punto Poste").
+  if (/^(?:the )?shipment has been taken over at the post office point$/.test(text)) return 'accepted';
   // The sender's drop-off at a parcel shop in German, which names the shop and its address before the verb:
   // "Die Sendung wurde vom Absender im PaketShop <shop>, <address> abgegeben".
   if (/^die sendung wurde vom absender (?:im|in der|in einem|in einer) (?:[\w-]+ )?(?:paketshop|parcelshop|filiale)\b(?!.*\bnicht\b).*\babgegeben$/.test(text)) return 'accepted';

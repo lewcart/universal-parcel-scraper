@@ -339,8 +339,9 @@ describe('CTT Express direct tracking', () => {
     controller.abort();
     await expect(active).rejects.toMatchObject({ kind: 'transport' });
     expect(waiting).toHaveBeenCalledTimes(1);
-    // The first read times out at half the budget and the retry takes the rest.
-    await expect(new CttExpressTracker({ fetcher: waiting }).fetch(NUMBER, { budgetMs: 20 })).rejects.toMatchObject({ kind: 'transport' });
+    // The first read times out at half the budget and the retry takes the rest. A slow runner
+    // can fire the first timer late enough to leave the retry nothing of a few milliseconds.
+    await expect(new CttExpressTracker({ fetcher: waiting }).fetch(NUMBER, { budgetMs: 400 })).rejects.toMatchObject({ kind: 'transport' });
     expect(waiting).toHaveBeenCalledTimes(3);
   });
 });

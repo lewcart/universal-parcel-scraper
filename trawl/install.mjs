@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dhlPolandNativeSources } from '/app/packages/tiers/src/utils/dhl-poland-native.mjs';
 import { fastRecaptchaAudio } from '/app/packages/tiers/src/utils/recaptcha-audio.mjs';
 import { logTierFailures } from '/app/apps/api/src/tier-failure-log.mjs';
+import { trawlLicense } from '/app/packages/tiers/src/utils/license.mjs';
 
 // Every caller of the reCAPTCHA solver stops once Google blocks or refuses its audio.
 const solverPath = '/app/packages/tiers/src/solvers/recaptcha.ts';
@@ -114,3 +115,6 @@ const tierFailureSources = logTierFailures(Object.fromEntries(Object.entries(tie
   .map(([file, path]) => [file, readFileSync(path, 'utf8')])));
 for (const [file, path] of Object.entries(tierFailurePaths)) writeFileSync(path, tierFailureSources[file]);
 
+// TRAWL's LICENSE, from the AGPL-3.0 text Debian ships.
+mkdirSync('/usr/share/licenses/trawl', { recursive: true });
+writeFileSync('/usr/share/licenses/trawl/LICENSE', trawlLicense(readFileSync('/usr/share/common-licenses/AGPL-3.0', 'utf8')));

@@ -32,6 +32,8 @@ cross-border e-commerce parcels from China. Tracked through the lookup its track
   the customs clearance and the hand-over to a local company. Scans print a wall clock to the
   second without a zone. China keeps one zone, so a scan the map lists is an instant on Beijing
   time. A wording the map does not list comes from another leg and keeps its wall clock.
+  [LinHan's](../linhan/README.md) tracker, the same system, writes its rows abroad on Beijing
+  time too, but no CTTYEX row abroad has yet come beside a clock that tells its zone.
 - The tracker has no codes. [`status.ts`](status.ts) stages the scans by their wording; others go
   through the shared wording rules. The newest staged scan decides the parcel's stage, and the
   summary's status only when no scan has one: a status such as "运输途中" (in transit) says less

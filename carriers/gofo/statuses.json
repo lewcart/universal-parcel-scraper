@@ -9,6 +9,15 @@
       "confirmedBy": "live"
     },
     {
+      "code": "802",
+      "wording": "Pickup Exception, GOFO has not Received the Package from the Warehouse yet.",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "GOFO has not received the parcel from the sender's warehouse yet."
+    },
+    {
       "code": "202",
       "wording": "Arrived at GOFO Regional Hub",
       "language": "en",

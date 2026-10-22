@@ -20,6 +20,7 @@ const EVENT_STATUS: Record<string, ClassifiedStatus> = {
   'A090000V': { status: 'pending', stage: 'registered' },
   'X010000V': { status: 'pending', stage: 'registered' },
   'A010000V': { status: 'in_transit', stage: 'accepted' },
+  'A010AA0V': { status: 'in_transit', stage: 'accepted' },
   'P040000V': { status: 'in_transit', stage: 'in_transit' },
   'P100000V': { status: 'in_transit', stage: 'in_transit' },
   'P110000V': { status: 'in_transit', stage: 'in_transit' },

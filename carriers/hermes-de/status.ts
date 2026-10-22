@@ -30,8 +30,9 @@ export const STATUSES: Record<string, Milestone> = {
   ANNOUNCED: milestone('registered', 'pending', 'Shipment announced to Hermes'),
   ORDER_INFO_RECEIVED: milestone('registered', 'pending', 'Shipment announced to Hermes'),
   PREANNOUNCED: milestone('registered', 'pending', 'Shipment announced to Hermes'),
-  PARCELSHOP_DROP_OFF: milestone('registered', 'pending', 'Dropped off at a ParcelShop'),
   ATG_OUT_OF_WAREHOUSE: milestone('registered', 'pending', 'Sender preparing handover to Hermes'),
+  // The sender's drop-off at a ParcelShop, which takes the parcel in for Hermes.
+  PARCELSHOP_DROP_OFF: milestone('accepted', 'in_transit', 'Dropped off at a ParcelShop'),
   HANDED_OVER: milestone('accepted', 'in_transit', 'Shipment handed to Hermes'),
   HANDED_OVER_TO_HERMES: milestone('accepted', 'in_transit', 'Shipment handed to Hermes'),
   TAKEN_OVER_BY_HERMES: milestone('accepted', 'in_transit', 'Shipment collected by Hermes'),

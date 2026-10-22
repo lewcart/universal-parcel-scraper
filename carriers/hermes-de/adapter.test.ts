@@ -57,6 +57,7 @@ describe('Hermes Germany', () => {
 
   it.each([
     ['ATG_OUT_OF_WAREHOUSE', 'registered'],
+    ['PARCELSHOP_DROP_OFF', 'accepted'],
     ['RETURN_TO_SENDER', 'returned'],
     ['RETURN_DELIVERED_TO_SENDER', 'returned'],
     ['RETOURE_DELIVERED', 'returned'],

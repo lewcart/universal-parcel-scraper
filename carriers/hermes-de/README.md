@@ -30,6 +30,9 @@ with their own offset (falling back to `Europe/Berlin`) and stored as UTC.
 - Stages come from the `parcelStatus` enum, no carrier wording rules. The enum
   is stable, and wording would only add a chance to be wrong. The enum was read
   from the carrier's public bundle `gcp-prd.my-deliveries.de/tnt/bundle/tnt-bundle-v2.js`.
+- The sender's drop-off at a ParcelShop (`PARCELSHOP_DROP_OFF`) reads as accepted,
+  like a drop-off at another network's parcel shop: the shop takes the parcel in
+  for Hermes. The driver's collection from the shop follows it.
 - A row with an unknown code carries no stage of its own: the shared wording
   classifier reads its text. As the newest row, with nothing saying delivered,
   it reports the shipment as `unknown` with the history intact. Defaulting to

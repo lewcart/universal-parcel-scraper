@@ -85,6 +85,7 @@ describe('status map answers', () => {
     expect(answer('ups', 'PC', 'RFID Confirmed Pickup')).toEqual(mapped('accepted'));
     expect(answer('gofo', '414', 'In Transit to Next Facility')).toEqual(mapped('in_transit'));
     expect(answer('gofo', '810', 'In Transit to Next Facility')).toEqual(mapped('in_transit'));
+    expect(answer('gofo', '802', 'Pickup Exception, GOFO has not Received the Package from the Warehouse yet.')).toEqual(mapped('registered'));
     expect(answer('gofo', '205', 'Delivered, In Mailbox')).toEqual(mapped('delivered'));
     expect(answer('gofo', '205', 'Synthetic scan')).toEqual(unknown);
     expect(answer('aliexpress', 'GTMS_ORDER_INFO_UPDATE', 'Delivery details updated')).toEqual(gap);
@@ -272,6 +273,7 @@ describe('status map answers', () => {
     expect(answer('correos-spain', 'G01L020V', 'A disposición del destinatario')).toEqual(mapped('ready_for_pickup'));
     expect(answer('correos-spain', null, 'A disposición del destinatario')).toEqual(mapped('ready_for_pickup'));
     expect(answer('correos-spain', 'A010000V', 'Admitido.')).toEqual(mapped('accepted'));
+    expect(answer('correos-spain', 'A010AA0V', 'Accepted')).toEqual(mapped('accepted'));
     // Origin customs holds the parcel; a completed customs processing puts it back in transit.
     expect(answer('correos-spain', 'B170000V', 'En aduana de origen')).toEqual(mapped('customs'));
     expect(answer('correos-spain', 'E510000V', 'Finalizada tramitación aduanera')).toEqual(mapped('in_transit'));

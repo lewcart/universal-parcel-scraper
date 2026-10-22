@@ -26,10 +26,10 @@
     },
     {
       "code": "PARCELSHOP_DROP_OFF",
-      "stage": "registered",
+      "stage": "accepted",
       "confirmedBy": "official-doc",
       "firstSeen": "2026-09-08",
-      "note": "Dropped off at a ParcelShop"
+      "note": "The sender's drop-off at a ParcelShop, which takes the parcel in for Hermes, as other networks' parcel-shop drop-offs read."
     },
     {
       "code": "ATG_OUT_OF_WAREHOUSE",

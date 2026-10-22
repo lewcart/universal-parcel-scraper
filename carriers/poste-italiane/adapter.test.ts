@@ -12,6 +12,8 @@ import {
 } from './adapter.js';
 import { trackingLocationCountry, trackingPlace } from '../../places/trackingLocation.js';
 import { classifyPosteItalianeStatus } from './status.js';
+import { TrawlClient } from '../../core/transport/trawl.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 
 // All identifiers and timestamps below are synthetic. Italian status wordings
 // reuse the vendor's fixed texts confirmed against a real parcel by the
@@ -444,6 +446,68 @@ describe('Poste Italiane response parsing', () => {
 });
 
 describe('PosteItalianeTracker fetch', () => {
+  const gate = { id: 2, tipo: 'error', descrizione: 'CAPTCHA required' };
+  const endpoint = 'https://www.poste.it/online/dovequando/DQ-REST/ricercasemplice';
+  const capture = (payload: unknown, status = 200, url = endpoint) => ({ url, status, body: JSON.stringify(payload),
+    headers: { 'content-type': 'application/json' }, base64Encoded: false, truncated: false, error: null });
+  const browser = (captures: ReturnType<typeof capture>[]) => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response({ tier: 3, statusCode: 200, html: '', capturedResponses: captures }));
+    return { fetcher, trawl: new TrawlClient('http://browser.test', fetcher) };
+  };
+
+  it('recovers only a challenge, retaining full history and recovery telemetry in one budget', async () => {
+    const service = browser([capture(gate, 400), capture(parcel())]);
+    const step = vi.fn();
+    const tracker = new PosteItalianeTracker({ fetcher: async () => response(gate, 400), trawl: service.trawl,
+      recorder: { lookup() {}, step } });
+    expect(await tracker.fetch(TRACKING_NUMBER, { budgetMs: 20_000 })).toEqual(parsePosteItalianeTrackingResponse(parcel(), TRACKING_NUMBER));
+    expect(step.mock.calls.map(([row]) => [row.step, row.outcome, row.fallbackReason])).toEqual([
+      ['direct', 'challenge', null], ['trawl', 'ok', 'challenge'],
+    ]);
+    const request = JSON.parse(String(service.fetcher.mock.calls[0]![1]?.body));
+    expect(request).toMatchObject({ url: posteItalianeTrackingUrl(TRACKING_NUMBER), skipHttp: true,
+      maxTier: 3, captureResponses: [endpoint] });
+    expect(request.maxTimeout).toBeLessThan(20_000);
+  });
+
+  it('keeps HTTP recognition, definite answers, rate limits and schema failures out of the browser', async () => {
+    const service = browser([capture(parcel())]);
+    const carrier = adapter({ fetcher: async () => response(gate, 400), trawl: service.trawl,
+      recorder: NOOP_RECORDER, env: {}, browserExecutablePath: null });
+    await expect(carrier.recognize!(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    for (const reply of [response(parcel()), response(parcel({ esitoRicerca: '1' })), response({}, 429), response({}, 503), response({})]) {
+      await new PosteItalianeTracker({ fetcher: async () => reply, trawl: service.trawl }).fetch(TRACKING_NUMBER).catch(() => {});
+    }
+    expect(service.fetcher).not.toHaveBeenCalled();
+  });
+
+  it('preserves final browser failures and rejects mismatched or incomplete captures', async () => {
+    const cases: [ReturnType<typeof capture>[], string][] = [
+      [[capture(gate, 400)], 'challenge'], [[capture({}, 429)], 'rate_limited'],
+      [[capture(parcel({ idTracciatura: 'RA00000000002' }))], 'schema'],
+      [[capture(parcel(), 200, endpoint + '/other')], 'challenge'],
+      [[{ ...capture(parcel()), truncated: true }], 'transport'],
+      [[capture(parcel()), capture(gate, 400)], 'challenge'],
+      [[capture(parcel({ esitoRicerca: '1' }))], 'not_found'],
+    ];
+    for (const [captures, kind] of cases) {
+      const service = browser(captures);
+      await expect(new PosteItalianeTracker({ fetcher: async () => response(gate, 400), trawl: service.trawl })
+        .fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind });
+    }
+  });
+
+  it('does not launch recovery without enough time or after cancellation', async () => {
+    const service = browser([capture(parcel())]);
+    const controller = new AbortController();
+    await expect(new PosteItalianeTracker({ fetcher: async () => response(gate, 400), trawl: service.trawl })
+      .fetch(TRACKING_NUMBER, { budgetMs: 7000 })).rejects.toMatchObject({ kind: 'challenge' });
+    const fetcher = vi.fn<typeof fetch>(async () => { controller.abort(); return response(gate, 400); });
+    await expect(new PosteItalianeTracker({ fetcher, trawl: service.trawl })
+      .fetch(TRACKING_NUMBER, { signal: controller.signal })).rejects.toBeDefined();
+    expect(service.fetcher).not.toHaveBeenCalled();
+  });
+
   it('keeps recognition failures distinct from explicit native negatives and meaningful status summaries', async () => {
     const environment = (fetcher: typeof fetch) => ({ fetcher, env: {}, trawl: null, browserExecutablePath: null,
       recorder: { step() {}, lookup() {} } });

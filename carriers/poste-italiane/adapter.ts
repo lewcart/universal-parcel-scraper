@@ -1,11 +1,14 @@
 
 import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { isPosteItalianeLookup } from '../../core/detection/posteItaliane.js';
-import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { clean, fetchBounded, parseJsonBytes, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { runSteps } from '../../core/runner/index.js';
+import type { StepRecorder } from '../../core/telemetry/index.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
 import { classifyPosteItalianeStatus } from './status.js';
 
 // Protocol provenance:
@@ -241,7 +244,7 @@ export class PosteItalianeTracker {
   readonly fetcher: typeof fetch | undefined;
   private readonly userAgent: string;
 
-  constructor(options: { timeoutMs?: number; fetcher?: typeof fetch; userAgent?: string } = {}) {
+  constructor(private readonly options: { timeoutMs?: number; fetcher?: typeof fetch; userAgent?: string; trawl?: TrawlClient | null; recorder?: StepRecorder } = {}) {
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.fetcher = options.fetcher;
     if (!Number.isFinite(this.timeoutMs) || this.timeoutMs <= 0) {
@@ -252,6 +255,18 @@ export class PosteItalianeTracker {
 
   async fetch(rawTrackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const trackingNumber = normalizePosteItalianeTrackingNumber(rawTrackingNumber);
+    return runSteps({ carrier: 'poste-italiane', signal: context.signal, recorder: this.options.recorder,
+      budgetMs: context.budgetMs ?? (this.options.trawl ? 45_000 : 2 * this.timeoutMs + TRANSIENT_RETRY_DELAY_MS) }, [
+      { id: 'direct', run: ({ signal, remainingMs }) => this.direct(trackingNumber, { signal, budgetMs: remainingMs }) },
+      { id: 'trawl', enabled: !!this.options.trawl, recovers: error => error instanceof ChallengeError,
+        run: ({ signal, remainingMs, previousError }) => {
+          if (remainingMs < 8000) throw previousError;
+          return this.browser(trackingNumber, signal, remainingMs);
+        } },
+    ]);
+  }
+
+  private async direct(trackingNumber: string, context: TrackingContext): Promise<CarrierResult> {
     // The default budget covers the request, the pause and the one transient retry.
     const budget = lookupBudget(context, 2 * this.timeoutMs + TRANSIENT_RETRY_DELAY_MS);
     const { response, bytes } = await fetchBounded(TRACKING_ENDPOINT, {
@@ -286,14 +301,40 @@ export class PosteItalianeTracker {
     if (!response.ok) throw new UpstreamHttpError('Poste Italiane tracking', response.status);
     return parsePosteItalianeTrackingResponse(parseJsonBytes(bytes, 'Poste Italiane tracking'), trackingNumber);
   }
+
+  private async browser(number: string, signal: AbortSignal, remainingMs: number): Promise<CarrierResult> {
+    const timeoutMs = Math.floor(remainingMs - 2000);
+    const page = await this.options.trawl!.scrape({ url: posteItalianeTrackingUrl(number), skipHttp: true, maxTier: 3,
+      captureResponses: [TRACKING_ENDPOINT], maxTimeout: timeoutMs, settleTimeout: timeoutMs },
+    { provider: 'Poste Italiane', timeoutMs, signal, requireSolved: false, captureWindow: 'last', maxBytes: 6 * MAX_RESPONSE_BYTES });
+    signal.throwIfAborted();
+    const responses = page.capturedResponses.filter(row => row.url === TRACKING_ENDPOINT);
+    const response = responses.at(-1);
+    if (!response || responses.length > 10) throw new ChallengeError('Poste Italiane', 'Poste Italiane returned no matching browser response');
+    if (response.status === 429) throw new RateLimitedError('Poste Italiane');
+    const bytes = new TextEncoder().encode(response.body ?? '');
+    if ([401, 403].includes(response.status) || (response.status === 400 && captchaRequired(bytes))) {
+      throw new ChallengeError('Poste Italiane', 'Poste Italiane still requires verification');
+    }
+    if (response.status >= 400) throw new UpstreamHttpError('Poste Italiane', response.status);
+    if (response.status !== 200 || response.error || response.truncated || response.base64Encoded || !response.body) {
+      throw new TransportError('Poste Italiane', 'Poste Italiane returned an incomplete browser response');
+    }
+    if (bytes.length > MAX_RESPONSE_BYTES) throw new SchemaError('Poste Italiane', 'Poste Italiane returned excessive browser data');
+    return parsePosteItalianeTrackingResponse(parseJsonBytes(bytes, 'Poste Italiane'), number);
+  }
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new PosteItalianeTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
+  const options = { fetcher: environment.fetcher, userAgent: environment.userAgent, recorder: environment.recorder };
+  const tracker = new PosteItalianeTracker({ ...options, trawl: environment.trawl });
+  // Cheap recognition never opens a browser or spends the shared audio allowance.
+  const recognition = new PosteItalianeTracker(options);
   return {
     id: 'poste-italiane',
-    steps: ['direct'],
+    recordsSteps: true,
+    steps: ['direct', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizePosteItalianeTrackingNumber(number))),
+    recognize: (number, context) => recognizeFromLookup(() => recognition.fetch(number, context), () => accepted(() => normalizePosteItalianeTrackingNumber(number))),
   };
 };

@@ -42,6 +42,10 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   }
   if (carrierPage && asendiaBrowserNumber(url, capture)) return await runAsendiaBrowser(carrierRun)
   if (carrierPage && dhlExpressBrowserNumber(url, capture)) return await runDhlExpressBrowser(carrierRun)
+  if (carrierPage && posteItalianeBrowserNumber(url, capture)) {
+    return await runPosteItalianeBrowser({ ...carrierRun, signal: budget.signal,
+      solveCaptcha: (page, timeout, signal) => solveDhlPolandNative(page, timeout, AbortSignal.any([budget.signal, signal])) })
+  }
   if (carrierPage && ztoBrowserNumber(url, capture)) return await runZtoBrowser({ ...carrierRun, signal: budget.signal })
   if (carrierPage && chinaPostBrowserNumber(url, capture)) return await runChinaPostBrowser({ ...carrierRun, signal: budget.signal })
   if (carrierPage && sfExpressSessionNumber(url, capture)) {
@@ -75,6 +79,7 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
     + 'import { dhlPolandBrowserNumber, runDhlPolandBrowser } from "../utils/dhl-poland-browser.mjs"\n'
     + 'import { asendiaBrowserNumber, runAsendiaBrowser } from "../utils/asendia-browser.mjs"\n'
     + 'import { dhlExpressBrowserNumber, runDhlExpressBrowser } from "../utils/dhl-express-browser.mjs"\n'
+    + 'import { posteItalianeBrowserNumber, runPosteItalianeBrowser } from "../utils/poste-italiane-browser.mjs"\n'
     + 'import { ztoBrowserNumber, runZtoBrowser } from "../utils/zto-browser.mjs"\n'
     + 'import { chinaPostBrowserNumber, runChinaPostBrowser } from "../utils/china-post-browser.mjs"\n'
     + 'import { australiaPostBrowserRequest, runAustraliaPostBrowser } from "../utils/australia-post-browser.mjs"\n'

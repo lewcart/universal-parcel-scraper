@@ -2816,7 +2816,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "poste-italiane",
-      "recognitionRank": 900
+      "recognitionRank": 900,
+      "browser": true
     },
     "canaryUrl": "https://www.poste.it/",
     "trackingUrlTemplate": "https://www.poste.it/cerca/index.html#/risultati-spedizioni/{trackingNumber}",

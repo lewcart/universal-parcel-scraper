@@ -21,8 +21,10 @@
   "tracking": {
     "mode": "automatic",
     "adapter": "poste-italiane",
+    "browser": true,
     "steps": [
-      "direct"
+      "direct",
+      "trawl"
     ],
     "recognition": {
       "rank": 900

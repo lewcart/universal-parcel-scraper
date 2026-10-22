@@ -43,6 +43,12 @@ Italiane for a number issued abroad.
      address, the service answers HTTP 400 with an error envelope asking for a CAPTCHA: a
      challenge. Other non-200 replies remain upstream errors.
    - Missing or unusable history is a schema failure. Unrecognized empty envelopes remain inconclusive.
+2. `trawl`, only after a challenge: the official page opens in a fresh browser context.
+   TRAWL solves its reCAPTCHA checkbox/audio challenge and observes the page retrying the
+   same lookup with its issued token. The final response must name the whole requested
+   identifier and passes through the same history parser. An unsolved or rejected challenge
+   remains a failure, allowing enabled providers to recover. HTTP recognition uses only `direct`.
+   Both steps share the caller's budget; browser recovery needs at least eight seconds left.
 
 ## Notes
 
@@ -118,7 +124,8 @@ Italiane for a number issued abroad.
   sharing an instant the later one is newer.
 - Sender, recipient, address, signature, weight, dimensions and pickup office are never read;
   a test asserts it.
-- Not used: scraping `poste.it/cerca`. It is a JavaScript app and its HTML carries no history.
+- Browser recovery captures the tracking API, without rendered recipient details or verification
+  tokens. It needs the Poste Italiane helper in the optional TRAWL image.
 
 ## Limitations
 

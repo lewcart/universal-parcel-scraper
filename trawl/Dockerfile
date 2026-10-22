@@ -28,6 +28,7 @@ COPY recaptcha-audio.mjs /app/packages/tiers/src/utils/recaptcha-audio.mjs
 COPY dhl-poland-native.mjs /app/packages/tiers/src/utils/dhl-poland-native.mjs
 COPY dhl-poland-browser.mjs /app/packages/tiers/src/utils/dhl-poland-browser.mjs
 COPY dhl-express-browser.mjs /app/packages/tiers/src/utils/dhl-express-browser.mjs
+COPY poste-italiane-browser.mjs /app/packages/tiers/src/utils/poste-italiane-browser.mjs
 COPY sf-express-session.mjs /app/packages/tiers/src/utils/sf-express-session.mjs
 COPY sf-express-gap.mjs /app/packages/tiers/src/utils/sf-express-gap.mjs
 COPY zto-browser.mjs /app/packages/tiers/src/utils/zto-browser.mjs

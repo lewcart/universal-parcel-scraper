@@ -12771,10 +12771,13 @@ export const CARRIER_CATALOG = {
       "AE"
     ],
     "selectable": true,
-    "timezone": "Asia/Dubai",
+    "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "emirates-post",
+      "browserRecognitionRank": 100,
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.emiratespost.ae/",
     "trackingUrlTemplate": "https://www.emiratespost.ae/all-services/track-a-package/step-two?q={trackingNumber}",
@@ -12801,7 +12804,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "ems-vietnam": {
     "displayName": "EMS Vietnam",
@@ -33046,7 +33056,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ekart": ["ekart-ecommerce","ekart-merchant"],
   "elta": ["elta-s10"],
   "emile": ["emile-1","emile-2"],
-  "emirates-post": [],
+  "emirates-post": ["emirates-post-s10"],
   "ems-vietnam": ["ems-vietnam-s10"],
   "energia-tk": [],
   "energo": ["energo-1"],

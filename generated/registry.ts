@@ -178,6 +178,7 @@ import { adapter as egyptPost } from '../carriers/egypt-post/adapter.js';
 import { adapter as ekart } from '../carriers/ekart/adapter.js';
 import { adapter as elta } from '../carriers/elta/adapter.js';
 import { adapter as emile } from '../carriers/emile/adapter.js';
+import { adapter as emiratesPost } from '../carriers/emirates-post/adapter.js';
 import { adapter as ems } from '../carriers/ems/adapter.js';
 import { adapter as emsVietnam } from '../carriers/ems-vietnam/adapter.js';
 import { adapter as energiaTk } from '../carriers/energia-tk/adapter.js';
@@ -789,6 +790,7 @@ export const REGISTRY: RegistryDefinition = {
     "ekart": ekart,
     "elta": elta,
     "emile": emile,
+    "emirates-post": emiratesPost,
     "ems": ems,
     "ems-vietnam": emsVietnam,
     "energia-tk": energiaTk,
@@ -1445,7 +1447,7 @@ export const REGISTRY: RegistryDefinition = {
     "ekart": "ekart",
     "elta": "elta",
     "emile": "emile",
-    "emirates-post": "universal",
+    "emirates-post": "emirates-post",
     "ems": "ems",
     "ems-vietnam": "ems-vietnam",
     "energia-tk": "energia-tk",

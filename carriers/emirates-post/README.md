@@ -1,30 +1,33 @@
 # Emirates Post
 
-Emirates Post parcels use enabled universal providers. There is no dedicated adapter.
+Tracks postal S10 items, including inbound mail, and thirteen-digit domestic items through
+the official public tracker. An identifier is confirmed only by a matching tracking reply.
 
-## Numbers
+## How it works
 
-Emirates Post's international items carry UPU S10 numbers ending `AE`, which generic postal
-detection offers. Domestic items use thirteen digits, a shape many carriers share, so no rule
-claims them. Archived lookups on the tracker show both layouts.
+1. `trawl`: opens the single-item `all-services/track-a-package/step-two?q=` page. The browser
+   clears Cloudflare's managed challenge; the page's server-rendered Next.js data carries the
+   history. Both the page query and its one result must name the whole requested identifier.
 
-## Links
+Requires the optional TRAWL service. Recognition through this path is browser-only and opt-in.
+The own-country S10 rule offers a candidate; shared domestic digits remain unclaimed without
+an explicit carrier or tracking link. Verification and rate limits stay distinct from the
+page's explicit not-found response. Enabled universal providers remain available.
 
-The tracker opens one item at `emiratespost.ae/all-services/track-a-package/step-two` with the
-number in `q`. The earlier tracker at `/Portal/Track` took it in `TrackingNumber`.
+## Notes
 
-## Why there is no adapter
+The page's order is retained across offices with different clocks. Naive timestamps keep their
+wall clock; an explicitly named UAE city also gets a deduced Dubai instant with its place basis.
+Foreign and unidentified offices keep local time. An offset the source states is preserved.
+Sender, receiver, contact details, reference fields and event links are omitted.
 
-The tracker page carries the item's history in its own HTML, with no key or sign-in. Outside the
-UAE, Cloudflare answers every request for the site and its API hosts with an HTTP 403 challenge
-page. A browser passes it on its own; UAE networks get the page directly. Emirates Post's Android
-app (`ae.emiratespost.retailapp`) reads
-`GET box.emiratespost.ae/services/pobox/shipping/api/Tracking/Guest/TrackAwbDetails` with a key
-the server hands only to installs that pass Firebase App Check, and Cloudflare refuses that
-lookup without it from every network, the UAE's included. So Emirates Post stays on universal
-providers.
+The Android app (`ae.emiratespost.retailapp`) has a guest `TrackAwbDetails` route on
+`box.emiratespost.ae`. Its configuration requires Firebase App Check before it issues a key;
+that install state is not needed for the anonymous browser page. The documented business
+tracking API requires customer credentials.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Set `FLARESOLVERR_URL`, `EMIRATES_POST_TRACKING_NUMBER` and optionally
+`EMIRATES_POST_UNKNOWN_NUMBER`, then run
+`npm run test:carriers:live -- carriers/emirates-post`.

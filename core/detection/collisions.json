@@ -552,6 +552,15 @@
     "reason": "The Mozambican issuer suffix suggests CORRE but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}AE with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "emirates-post",
+      "intl-post"
+    ],
+    "reason": "The UAE issuer suffix offers Emirates Post for opt-in browser confirmation. It does not establish the delivering carrier; the postal fallback stays selected until a direct lookup confirms it."
+  },
+  {
     "shape": "EA9{9}VN with a valid S10 check digit",
     "carriers": [
       "chronopost",

@@ -12769,10 +12769,13 @@
       "AE"
     ],
     "selectable": true,
-    "timezone": "Asia/Dubai",
+    "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "emirates-post",
+      "browserRecognitionRank": 100,
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.emiratespost.ae/",
     "trackingUrlTemplate": "https://www.emiratespost.ae/all-services/track-a-package/step-two?q={trackingNumber}",
@@ -12799,7 +12802,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "ems-vietnam": {
     "displayName": "EMS Vietnam",

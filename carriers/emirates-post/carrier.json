@@ -14,21 +14,55 @@
     "color": "#004a98"
   },
   "selectable": true,
-  "timezone": "Asia/Dubai",
+  "timezone": "UTC",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "emirates-post",
+    "steps": [
+      "trawl"
+    ],
+    "browserRecognition": {
+      "rank": 100
+    },
+    "localClocks": true,
+    "browser": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://www.emiratespost.ae/all-services/track-a-package/step-two?q={trackingNumber}",
     "searchUrl": "https://www.emiratespost.ae/all-services/track-a-package",
     "canaryUrl": "https://www.emiratespost.ae/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "sender_details",
+      "recipient_details",
+      "contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code"
+    ],
+    "discarded": [
+      "sender_details",
+      "recipient_details",
+      "contact_details",
+      "tracking_reference",
+      "event_links"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {
@@ -52,5 +86,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "emirates-post-s10",
+      "pattern": "^[A-Z]{2}\\d{9}AE$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

@@ -6,12 +6,12 @@ import { classifyWording, languageStageStatus, type Stage } from '../../core/sta
 import { countryCode, isoTime } from '../../core/time/index.js';
 import { clean, textFromHtml } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { LINHAN_NOT_FOUND, linhanChinaStep, linhanMappedStage, linhanStage } from './status.js';
+import { LINHAN_NOT_FOUND, linhanMappedStage, linhanStage } from './status.js';
 
 export const PROVIDER = 'LinHan International';
 // One parcel's reply is a few kilobytes.
 export const LINHAN_MAX_BYTES = 256 * 1024;
-/** LinHan's own steps are in China; the tracker prints their wall clocks without a zone. */
+/** The tracker prints every row's wall clock on Beijing time without a zone, abroad too. */
 export const LINHAN_ZONE = 'Asia/Shanghai';
 
 // LHGJ, eight digits and CD.
@@ -159,11 +159,10 @@ export function parseLinhan(payload: unknown, raw: string): CarrierResult {
     if (seen.has(key)) continue;
     seen.add(key);
     const staged = linhanStage(description);
-    // China keeps one zone, so LinHan's own steps there are instants on Beijing time.
-    // Rows abroad could be on the destination's clock or the tracker's, and keep their wall clocks.
-    const time = !location && linhanChinaStep(description) ? isoTime(local, LINHAN_ZONE)?.iso : undefined;
+    // A German row has come before its wall clock's instant in Berlin, so the rows abroad are on Beijing time too.
+    // China keeps one offset all year: every valid wall clock is an instant there.
     events.push({
-      ...(time ? { time } : { local_time: local }),
+      time: isoTime(local, LINHAN_ZONE)!.iso,
       ...(location ? { location } : {}),
       description,
       ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
@@ -171,7 +170,7 @@ export function parseLinhan(payload: unknown, raw: string): CarrierResult {
   }
   if (!events.length) throw new NoHistoryError(PROVIDER);
 
-  // The tracker's order stands: the rows abroad keep wall clocks of unknown zone.
+  // The tracker's order stands.
   const newest = events[0]!;
   // The newest staged scan decides; the summary's status only when no scan has a stage.
   const scanned = events.find((event) => event.stage);
@@ -182,8 +181,7 @@ export function parseLinhan(payload: unknown, raw: string): CarrierResult {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: scanned?.stage_source ?? 'carrier_map' } : {}),
     last_status_text: newest.description!,
-    last_update: newest.time ?? null,
-    ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
+    last_update: newest.time!,
     expected_delivery: null,
     ...(country ? { destination_country: country } : destination ? { destination_country_name: destination } : {}),
     events: events.slice(0, MAX_EVENTS),

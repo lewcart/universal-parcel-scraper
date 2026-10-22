@@ -18,6 +18,7 @@ import { sameInstantIdentityPolicy as inpost } from '../../carriers/inpost/ident
 import { sameInstantIdentityPolicy as jdLogistics } from '../../carriers/jd-logistics/identity.js';
 import { sameInstantIdentityPolicy as laPoste } from '../../carriers/la-poste/identity.js';
 import { sameInstantIdentityPolicy as lbcExpress } from '../../carriers/lbc-express/identity.js';
+import { sameInstantIdentityPolicy as linhan } from '../../carriers/linhan/identity.js';
 import { sameInstantIdentityPolicy as mondialRelay } from '../../carriers/mondial-relay/identity.js';
 import { sameInstantIdentityPolicy as mrw } from '../../carriers/mrw/identity.js';
 import { sameInstantIdentityPolicy as nzPost } from '../../carriers/nz-post/identity.js';
@@ -72,7 +73,7 @@ export interface SameInstantIdentityPolicy {
 }
 
 const policies: ReadonlyMap<string, SameInstantIdentityPolicy> = new Map(
-  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, dhlEcommerce, dhlExpress, dpd, dpdFrance, hermesGermany, indiaPost, inpost, jdLogistics, laPoste, lbcExpress, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, ups, swissPost, yanwen, universal].map((policy) => [policy.sourceCarrierId, policy]),
+  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, dhlEcommerce, dhlExpress, dpd, dpdFrance, hermesGermany, indiaPost, inpost, jdLogistics, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, ups, swissPost, yanwen, universal].map((policy) => [policy.sourceCarrierId, policy]),
 );
 
 /** Unlisted sources cannot identify a reworded scan by its instant alone. */

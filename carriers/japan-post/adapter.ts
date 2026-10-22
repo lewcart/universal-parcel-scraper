@@ -2,7 +2,7 @@ import { returnedTrackingNumber } from '../../core/detection/returned.js';
 
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -235,5 +235,10 @@ export class JapanPostTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new JapanPostTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
-  return { id: 'japan-post', steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context) };
+  return {
+    id: 'japan-post', steps: ['direct'],
+    track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+      () => accepted(() => normalizeJapanPostNumber(number))),
+  };
 };

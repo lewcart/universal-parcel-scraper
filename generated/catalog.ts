@@ -3964,6 +3964,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "japan-post",
+      "recognitionRank": 4,
+      "recognitionPattern": "^\\d{12}$",
       "localClocks": true
     },
     "canaryUrl": "https://trackings.post.japanpost.jp/services/srv/search",

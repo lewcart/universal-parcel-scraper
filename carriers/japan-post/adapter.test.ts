@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, JapanPostTracker, normalizeJapanPostNumber, parse } from './adapter.js';
@@ -373,6 +374,17 @@ describe('Japan Post retrieval', () => {
       return new Response(fixture());
     });
     await expect(new JapanPostTracker({ fetcher: slow }).fetch(NUMBER, { budgetMs: 20.5 })).rejects.toMatchObject({ kind: 'transport' });
+  });
+
+  it('is asked first about twelve digits passing mod 7 from Japan, and recognizes from the same lookup', async () => {
+    // Synthetic: the first eleven digits leave 4 divided by seven.
+    expect(recognitionAskedCarriers('100000000004', { countryHint: 'JP' })[0]).toBe('japan-post');
+    expect(recognitionAskedCarriers('100000000005', { countryHint: 'JP' })).not.toContain('japan-post');
+    const answering = (body: string) => adapter({ fetcher: vi.fn<typeof fetch>().mockResolvedValue(new Response(body)),
+      trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
+    await expect(answering(fixture('domestic')).recognize!('000000000005')).resolves.toMatchObject({ known: true });
+    await expect(answering(fixture('absent')).recognize!(NUMBER)).resolves.toEqual({ known: false });
+    await expect(answering(fixture()).recognize!('UL000000005JP')).resolves.toEqual({ known: false });
   });
 
   it('enforces the streaming response byte limit', async () => {

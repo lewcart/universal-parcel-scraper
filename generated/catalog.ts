@@ -3710,7 +3710,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "correos-chile",
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://t.17track.net/",
     "trackingUrlTemplate": "https://www.correos.cl/seguimiento-en-linea",

@@ -18,9 +18,11 @@
     "mode": "automatic",
     "adapter": "correos-chile",
     "steps": [
-      "direct"
+      "direct",
+      "browser"
     ],
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

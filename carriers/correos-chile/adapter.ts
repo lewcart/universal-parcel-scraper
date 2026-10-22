@@ -5,6 +5,8 @@ import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded } from '../../core/transport/index.js';
 import { normalizeCorreosChileNumber, parseCorreosChileBootstrap, parseCorreosChileTracking } from './parser.js';
+import { fetchCorreosChileInBrowser } from './browser.js';
+import { answerCorreosChileText } from './text-model.js';
 
 const PAGE = 'https://www.correos.cl/seguimiento-en-linea';
 const ORIGIN = 'https://www.correos.cl';
@@ -28,11 +30,12 @@ function anonymousSession(response: Response): string {
 }
 
 export class CorreosChileTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder;
+    browserWsEndpoint?: string | null; textModelUrl?: string | null } = {}) {}
 
   fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeCorreosChileNumber(raw);
-    const budgetMs = context.budgetMs ?? 15_000;
+    const budgetMs = context.budgetMs ?? (this.options.browserWsEndpoint ? 45_000 : 15_000);
     return runSteps({ carrier: 'correos-chile', budgetMs, signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [{ id: 'direct', run: async ({ signal, remainingMs }) => {
       const deadline = performance.now() + remainingMs;
@@ -42,14 +45,15 @@ export class CorreosChileTracker {
         if (left <= 0) throw new BudgetExceededError('Correos de Chile', budgetMs);
         const result = await fetchBounded(url, { ...init, signal }, {
           provider: 'Correos de Chile', timeoutMs: Math.max(1, Math.floor(left)), maxBytes,
-          redirect: 'manual', allowHttpStatuses: [302, 404, 410], fetcher: this.options.fetcher,
+          redirect: 'manual', allowHttpStatuses: [302, 403, 404, 410], fetcher: this.options.fetcher,
         });
         if (performance.now() >= deadline) throw new BudgetExceededError('Correos de Chile', budgetMs);
         signal.throwIfAborted();
         // Radware's bot manager answers with a 302 page that sends the browser to
         // its validation host, signed with its rdwr marker.
-        if (result.response.status === 302 && /validate\.perfdrive\.com|<center>rdwr<\/center>/i.test(decodeText(result.bytes))) {
-          throw new ChallengeError('Correos de Chile', 'Tracking page redirected to a bot check');
+        if (result.response.status === 403 || (result.response.status === 302
+          && /validate\.perfdrive\.com|<center>rdwr<\/center>/i.test(decodeText(result.bytes)))) {
+          throw new ChallengeError('Correos de Chile', 'Tracking page requires browser verification');
         }
         if (result.response.status !== 200) {
           throw new IndeterminateError('Correos de Chile', 'Anonymous tracking resource is unavailable');
@@ -77,11 +81,22 @@ export class CorreosChileTracker {
       try { payload = JSON.parse(text); }
       catch { throw new SchemaError('Correos de Chile', 'Tracking resource returned invalid JSON'); }
       return parseCorreosChileTracking(payload, number);
-    } }]);
+    } }, {
+      id: 'browser', enabled: Boolean(this.options.browserWsEndpoint),
+      recovers: error => error instanceof ChallengeError,
+      run: ({ signal, remainingMs, previousError }) => {
+        if (remainingMs < 10_000) throw previousError instanceof Error ? previousError : new ChallengeError('Correos de Chile');
+        return fetchCorreosChileInBrowser(number, this.options.browserWsEndpoint!, signal, Math.min(60_000, remainingMs),
+          this.options.textModelUrl ? (heading, question, stopped, timeout) => answerCorreosChileText(
+            this.options.textModelUrl!, heading, question, stopped, timeout, this.options.fetcher) : undefined);
+      },
+    }]);
   }
 }
 
 export const adapter: AdapterFactory = environment => {
-  const tracker = new CorreosChileTracker({ fetcher: environment.fetcher, recorder: environment.recorder });
-  return { id: 'correos-chile', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context) };
+  const tracker = new CorreosChileTracker({ fetcher: environment.fetcher, recorder: environment.recorder,
+    browserWsEndpoint: environment.env.CORREOS_CHILE_BROWSER_WS_ENDPOINT?.trim() || null,
+    textModelUrl: environment.env.CORREOS_CHILE_TEXT_MODEL_URL?.trim() || null });
+  return { id: 'correos-chile', recordsSteps: true, steps: ['direct', 'browser'], track: (input, context) => tracker.fetch(input.number, context) };
 };

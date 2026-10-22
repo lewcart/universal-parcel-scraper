@@ -28,10 +28,22 @@ history expired, so it remains inconclusive.
 Its not-found notice carries the reason `portal_not_found`, so a consumer can
 tell the carrier's answer from an outage.
 
-The page can return a browser challenge instead of an anonymous session, or
-redirect to Radware's bot check; both are reported as challenges. Servers abroad
-can be refused by the site even from a browser, so the adapter has no browser
-step.
+The page can return a browser challenge or redirect to Radware's bot check.
+Set `CORREOS_CHILE_BROWSER_WS_ENDPOINT` to a private Playwright Chromium service
+to enable challenge recovery. It opens a fresh context, selects the offered
+hCaptcha text challenge, and submits the normal verification and tracking forms.
+The page's separate reCAPTCHA check still runs. A refused network or unsupported
+challenge remains a failure for enabled provider fallback. Browser recovery does
+not enable HTTP recognition.
+
+Exact arithmetic and string questions are answered locally. Other questions
+need `CORREOS_CHILE_TEXT_MODEL_URL`, a private OpenAI-compatible chat-completions
+endpoint. Only the question is sent, without parcel data, tokens or browser state.
+The optional [model Dockerfile](text-model/Dockerfile) serves a pinned,
+Apache-licensed Qwen model with llama.cpp; build it from this repository and keep
+port 8080 on a private network. Point the setting at `/v1/chat/completions`.
+Allow two CPU cores and 2 GB of memory. Both services are optional; rejected
+answers retain fallback, and direct history can be shorter than provider history.
 
 The official mobile app reads the same shipment detail, with no session, key or
 bot check, from `GET https://appmovil.correos.cl/api/tracking/tracking_code/{number}/list_status`.

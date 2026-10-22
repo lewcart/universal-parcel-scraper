@@ -14,10 +14,8 @@ export const ZTO_INTERNATIONAL_MAX_BYTES = 512 * 1024;
 // 771 and eleven digits: ZTO's own pattern for its international waybills.
 const NUMBER = /^771\d{11}$/;
 const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
-// ZTO works on Shanghai's clock; a scan's clock is checked in it.
+// ZTO dates every scan on Shanghai's clock, abroad too.
 const HOME_ZONE = 'Asia/Shanghai';
-// A waybill's departure from its origin: by air, by sea, by road.
-const DEPARTURES = new Set(['220', '221', '222']);
 // The image code the page asks for when the tracker refuses a lookup.
 const CHALLENGE_CODES = new Set(['19001', '19002', '50003', '60005']);
 // The English line of a parcel taken in for the recipient says "Delivered".
@@ -104,27 +102,15 @@ function projectRow(row: unknown, number: string): CarrierEvent | null {
   const location = placeOf(chinese);
   const staged = ztoInternationalStage(code, description);
   return {
+    time: homeClock(local_time).toISO({ suppressMilliseconds: true })!,
     local_time,
+    time_zone: HOME_ZONE,
+    time_zone_basis: 'carrier',
     description,
     ...(location ? { location } : {}),
     ...(code ? { provider_code: code } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };
-}
-
-/**
- * ZTO names the warehouse or country of an origin leg abroad ("[美国]", "[日本]") and no place on
- * its own leg in China. Unplaced, that leg's scans would borrow a zone from the destination's,
- * across the flight. So when nothing up to the first departure names a place, those scans are
- * dated on Shanghai's clock and keep their wall clock. `events` are newest first.
- */
-function dateHomeLeg(events: CarrierEvent[]): CarrierEvent[] {
-  let departure = -1;
-  events.forEach((event, index) => { if (DEPARTURES.has(event.provider_code ?? '')) departure = index; });
-  if (departure < 0 || events.slice(departure).some((event) => event.location)) return events;
-  return events.map((event, index) => index < departure ? event : {
-    ...event, time: homeClock(event.local_time!).toISO({ suppressMilliseconds: true })!, time_zone: HOME_ZONE, time_zone_basis: 'carrier',
-  });
 }
 
 /** The tracker's refusal: an image code is a challenge, anything else is inconclusive. */
@@ -171,18 +157,17 @@ export function parseZtoInternational(payload: unknown, raw: string): CarrierRes
   }
   if (!events.length) throw new NoHistoryError(PROVIDER, 'ZTO International has no scans for the waybill yet');
 
-  const dated = dateHomeLeg(events);
-  const newest = dated[0]!;
-  const current = dated.find((event) => event.stage);
+  const newest = events[0]!;
+  const current = events.find((event) => event.stage);
   const stage = current?.stage as Stage | undefined;
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
     last_status_text: newest.description!,
-    last_update: newest.time ?? null,
+    last_update: newest.time!,
     last_update_local: newest.local_time!,
     expected_delivery: null,
-    events: dated.slice(0, MAX_EVENTS),
-    ...(dated.length > MAX_EVENTS ? { history_truncated: true } : {}),
+    events: events.slice(0, MAX_EVENTS),
+    ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };
 }

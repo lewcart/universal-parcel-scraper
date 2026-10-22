@@ -187,6 +187,8 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository }}-trawl:${{ inputs.version }}
+          # TRAWL's own image names its upstream commit; this one names ours.
+          labels: org.opencontainers.image.revision=${{ github.sha }}
       - name: Publish npm package with provenance
         if: ${{ steps.npm.outputs.publish == 'true' }}
         run: npm publish --provenance --access public --ignore-scripts

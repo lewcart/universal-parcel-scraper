@@ -18,6 +18,8 @@ test('Coolify installs every Dockerfile source with identical bytes and build st
   assert.ok(rendered.includes(dockerfile.slice(dockerfile.lastIndexOf('\nRUN ') + 5).trim()));
   assert.ok(rendered.includes(dockerfile.slice(0, copies[0].index).trimEnd()));
   assert.ok(rendered.includes('mkdirSync(dirname(path),{recursive:true})'));
+  const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8', cwd: new URL('.', import.meta.url) }).trim();
+  assert.match(rendered, new RegExp(`^LABEL org\\.opencontainers\\.image\\.revision="${head}(-dirty)?"$`, 'm'));
   // Coolify embeds the Dockerfile in one base64 SSH argument. Leave room for
   // its wrapper beneath Linux's 128 KiB per-argument limit.
   assert.ok(Buffer.byteLength(Buffer.from(rendered).toString('base64')) < 100_000);

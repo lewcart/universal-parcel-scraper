@@ -64,6 +64,11 @@ the site can require fresh verification for each action.
 docker build -t universal-parcel-scraper-trawl trawl
 ```
 
+A host that keeps a Dockerfile without its build context, such as Coolify, takes the output of
+`node trawl/render-coolify.mjs` instead: the same image with its sources embedded. It labels
+the image `org.opencontainers.image.revision` with the commit it was rendered from, followed by
+`-dirty` when the sources differ from that commit.
+
 Keep the service on a private network. Pass its URL as `trawlUrl` to the library, or as
 `FLARESOLVERR_URL` to the CLI and the HTTP server. `TRACKING_CHROMIUM_PATH` enables the
 separate local Chromium transport.

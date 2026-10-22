@@ -16,10 +16,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "c-chez-vous"
-        ]
+        "confidence": "none"
       },
       "note": "A customer posted this code under TufesaPack's own post about tracking; TufesaPack replied, but the reply is not visible without login."
     },
@@ -38,10 +35,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "c-chez-vous"
-        ]
+        "confidence": "none"
       },
       "note": "A customer posted this code under TufesaPack's own post about tracking; TufesaPack replied, but the reply is not visible without login."
     },

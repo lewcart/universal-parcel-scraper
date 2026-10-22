@@ -57,7 +57,8 @@ describe('French carrier number candidates', () => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['c-chez-vous'] });
       expect(recognitionAskedCarriers(number)).toEqual(['c-chez-vous']);
     }
-    for (const number of ['ABC123EF34', 'ABCD12EF345', 'HVABCD1234']) {
+    // Four letters and six digits are other carriers' consignments: Team Global Express's, New Zealand Couriers' senders'.
+    for (const number of ['ABC123EF34', 'ABCD12EF345', 'HVABCD1234', 'ABCD123456']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('c-chez-vous');
     }
   });

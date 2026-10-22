@@ -24,7 +24,9 @@ Accepted references, uppercased with spaces removed:
 
 - Detection names C chez vous for four letters, two digits and four letters or digits only at
   low confidence, so recognition asks the order page. Other carriers' generated numbers, such
-  as Hovership's, fall inside that shape.
+  as Hovership's, fall inside that shape. The page's example ends in letters, and four letters
+  followed by six digits are other carriers' consignment numbers, so a reference ending in four
+  digits is left out.
 - The order reference alone opens the page, so it is a credential: never log it, quote it in
   an issue or commit a real one.
 - The reference is checked against both the embedded `package_number` and the one printed in

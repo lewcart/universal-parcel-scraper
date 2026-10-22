@@ -64289,13 +64289,8 @@
   {
     "input": "BBQA791960",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "BBSIPA00031503",
@@ -65356,13 +65351,8 @@
   {
     "input": "CAFG690126",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CAT228172",
@@ -65642,13 +65632,8 @@
   {
     "input": "CCPM000188",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CD009466316IE",
@@ -70406,13 +70391,8 @@
   {
     "input": "EGGS100149",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "EGGSBX00000100149001",
@@ -75071,13 +75051,8 @@
   {
     "input": "JBHR336676",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "JBP200038",
@@ -79676,13 +79651,8 @@
   {
     "input": "MPXL509571",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "MRK0824B2LP5041691",
@@ -82949,24 +82919,14 @@
   {
     "input": "QMOC279920",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "QOBR 386452",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "QPPWT9",
@@ -88620,24 +88580,14 @@
   {
     "input": "TGFL003384",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "TGGE107152",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "c-chez-vous"
-    ],
-    "asked": [
-      "c-chez-vous"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "TGR1CS30226931",

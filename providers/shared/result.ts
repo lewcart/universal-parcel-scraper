@@ -250,6 +250,8 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^customer information manifested[.!]?$/i.test(value)) return 'registered';
   if (/^checked in at origin hub[.!]?$|^parcel received and processing[.!]?$/i.test(value)) return 'accepted';
   if (/^parcel shipped[.!]?$|^(?:airline|flight) delay(?:ed)?[.!]?$/i.test(value)) return 'in_transit';
+  // Quantium Solutions' hub steps, which aggregators relay for SingPost's cross-border parcels, as its own map reads them.
+  if (/^shipment (?:under processing at origin hub|despatched to (?:transshipment hub|overseas)|received at (?:transshipment hub|delivery branch))[.!]?$/i.test(value)) return 'in_transit';
   // A bare "parcel handed" is a hand-over to a carrier, which 17TRACK files as a pickup.
   if (/^parcel handed[.!]?$/i.test(value)) return 'accepted';
   if (/^warehouse receipt[.!]?$|^(?:package |parcel )?received by (?:the )?warehouse[.!]?$|^received in warehouse[.!]?$|^(?:package|parcel) (?:bulk )?received(?: (?:and|&) scanned)? at (?:the )?warehouse[.!]?$|^we['’]ve got it[.!]?$|^received at evri[.!]?$|^received by our network[.!]?$|^acceptance, sent to [a-z ]+$|^china post has received the mail\b|^envio recogido en origen[.!]?$|^first parcel scan along poste italiane['’]s logistic network\b|已收寄|^仓库收货$|^rfid confirmed pick-?up$|^usps in possession of (?:the )?item\b/i.test(value)) return 'accepted';

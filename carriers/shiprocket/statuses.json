@@ -35,6 +35,7 @@
     {"wording": "CUSTOM CLEARED OVERSEAS", "stage": "customs", "language": "en", "confirmedBy": "portal"},
     {"wording": "Acceptance at Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The destination's carrier receives the parcel from ShiprocketX."},
     {"wording": "Received by carrier", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The destination's carrier receives the parcel from ShiprocketX."},
+    {"wording": "Send item to domestic location (Inb)", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination post's IPS event 35: the item sent on within the destination country."},
     {"wording": "Customer has made payment or Provided ID/Tax information", "stage": "customs", "language": "en", "confirmedBy": "portal"}
   ]
 }

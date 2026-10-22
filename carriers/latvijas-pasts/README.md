@@ -19,7 +19,9 @@ The reply does not repeat the number: it answers for the one number the request 
 without history comes back with the notice "No information received on the tracking of the postal
 item. Please, try again!", and only that notice is a missing item. A code the service rejects as
 "entered incorrectly" is invalid input. Another notice, an empty history, a block page, HTTP
-errors and malformed replies keep their own failure kinds. Recognition uses the same lookup.
+errors and malformed replies keep their own failure kinds. While the site is closed, every page,
+the service included, answers HTTP 403 with "Temporary closed for technical reason.": that is
+maintenance, not a challenge. Recognition uses the same lookup.
 
 ## Numbers
 

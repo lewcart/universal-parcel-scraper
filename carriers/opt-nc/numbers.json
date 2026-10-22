@@ -76,7 +76,7 @@
         "service": "inbound international"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
       "note": "OPT-NC's own parcel SDK tests its tracker crawler on this parcel from Slovenia, asserting eight events in Nouméa up to delivery; OPT-NC's Docker Hub API image uses it as its example too."

@@ -140,6 +140,23 @@ describe('Croatian S10 items', () => {
   });
 });
 
+describe('Slovenian S10 items', () => {
+  it.each(['CA123456785SI', 'EE123456785SI', 'LZ123456785SI', 'RA123456785SI'])('names Pošta Slovenije, which tracks %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'posta-slovenije', confidence: 'high', candidates: ['posta-slovenije'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  it('leaves its other items to international mail and asks it about them', () => {
+    expect(detectCarrierMatch('UA123456785SI')).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+    expect(recognitionAskedCarriers('UA123456785SI')[0]).toBe('posta-slovenije');
+  });
+
+  it('names nobody for a failed check digit or another issuer', () => {
+    expect(detectCarrierMatch('RA123456784SI').candidates).not.toContain('posta-slovenije');
+    expect(detectCarrierMatch('RA123456785SK').candidates).not.toContain('posta-slovenije');
+  });
+});
+
 describe('Italian S10 items', () => {
   it.each(['CE123456785IT', 'CP123456785IT', 'EE123456785IT', 'LC123456785IT', 'RN123456785IT'])('names Poste Italiane, which tracks %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'poste-italiane', confidence: 'high', candidates: ['poste-italiane'] });

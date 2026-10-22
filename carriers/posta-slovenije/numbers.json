@@ -13,7 +13,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
       "note": "Pošta Slovenije's own tracking-service page uses it as the example of a tracking link; not a real shipment."
@@ -32,7 +32,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
       "note": "Pošta Slovenije's own tracker, archived by the Wayback Machine, shows its history: a registered item leaving the Ljubljana exchange office in October 2009."
@@ -51,7 +51,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
       "note": "ParcelPanel's Slovenia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -70,10 +70,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Slovenia Post page offered it as a sample to try. Pošta Slovenije's own tracking returns its history; detection selects the generic postal carrier."
+      "note": "ParcelPanel's Slovenia Post page offered it as a sample to try. Pošta Slovenije's own tracking returns its history."
     },
     {
       "number": "CF369007664SI",
@@ -89,10 +89,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Slovenia Post page offered it as a sample to try. Pošta Slovenije's own tracking returns its history; detection selects the generic postal carrier."
+      "note": "ParcelPanel's Slovenia Post page offered it as a sample to try. Pošta Slovenije's own tracking returns its history."
     },
     {
       "number": "CF369340877SI",
@@ -108,10 +108,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Slovenia Post page offered it as a sample to try. Pošta Slovenije's own tracking returns its history; detection selects the generic postal carrier."
+      "note": "ParcelPanel's Slovenia Post page offered it as a sample to try. Pošta Slovenije's own tracking returns its history."
     },
     {
       "number": "LH013496345SI",
@@ -127,7 +127,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
       "note": "ParcelPanel's Slovenia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -146,10 +146,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-slovenije",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Slovenia Post page offered it as a sample to try. Pošta Slovenije's own tracking returns its history; detection selects the generic postal carrier."
+      "note": "ParcelPanel's Slovenia Post page offered it as a sample to try. Pošta Slovenije's own tracking returns its history."
     }
   ]
 }

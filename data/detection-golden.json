@@ -65763,14 +65763,10 @@
   },
   {
     "input": "CA107308006SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {
@@ -66576,38 +66572,26 @@
   },
   {
     "input": "CF369007664SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {
     "input": "CF369200778SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {
     "input": "CF369340877SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {
@@ -66808,14 +66792,10 @@
   },
   {
     "input": "CH843029136SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {
@@ -69017,14 +68997,10 @@
   },
   {
     "input": "CZ000000014SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {
@@ -77818,14 +77794,10 @@
   },
   {
     "input": "LB027432089SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {
@@ -78127,14 +78099,10 @@
   },
   {
     "input": "LH013496345SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {
@@ -86176,14 +86144,10 @@
   },
   {
     "input": "RR304372014SI",
-    "carrier": "intl-post",
+    "carrier": "posta-slovenije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-slovenije",
-      "chronopost"
+      "posta-slovenije"
     ]
   },
   {

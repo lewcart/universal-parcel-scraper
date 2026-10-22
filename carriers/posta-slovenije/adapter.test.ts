@@ -304,9 +304,10 @@ describe('Pošta Slovenije tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith(POSTA_SLOVENIJE_ENDPOINT))).toBe(true);
   });
 
-  it('is asked about Slovenian S10 codes, which detection leaves with the postal fallback', () => {
-    expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers(DELIVERED)).toContain('posta-slovenije');
+  it('is named for its own items and asked about its other Slovenian S10 codes', () => {
+    expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'posta-slovenije', confidence: 'high' });
+    expect(detectCarrierMatch('UA123456785SI')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionAskedCarriers('UA123456785SI')).toContain('posta-slovenije');
     expect(recognitionAskedCarriers('CF900000018SI')).not.toContain('posta-slovenije');
     expect(recognitionAskedCarriers('RR000000014DE')).not.toContain('posta-slovenije');
   });

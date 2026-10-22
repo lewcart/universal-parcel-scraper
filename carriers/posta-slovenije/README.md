@@ -21,9 +21,12 @@ their own failure kinds. Recognition uses the same lookup.
 ## Numbers
 
 The adapter takes UPU S10 codes with a valid check digit and treats anything else as invalid
-without a request. A code ending `SI` is Pošta Slovenije's, but the issuer of an S10 code does not
-establish who delivers it, so detection keeps such codes with the generic postal carrier, and the
-low-confidence `posta-slovenije-s10` rule makes preflight ask Pošta Slovenije about them.
+without a request. Detection names Pošta Slovenije for the EMS, parcel, registered and
+tracked-letter items it issues: `C`, `E`, `L` or `R` first, `SI` last and a passing check digit.
+Its tracker follows them abroad with the destination post's scans, as Slovenská pošta's follows
+its own. Its other `SI` codes stay with the generic postal carrier, since the issuer of an S10
+code does not establish who delivers it, and the low-confidence `posta-slovenije-s10` rule makes
+preflight ask Pošta Slovenije about them.
 
 ## Notes
 

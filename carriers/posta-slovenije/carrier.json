@@ -80,6 +80,12 @@
   ],
   "detection": [
     {
+      "id": "posta-slovenije-own",
+      "pattern": "^[CELR][A-Z]\\d{9}SI$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "posta-slovenije-s10",
       "pattern": "^[A-Z]{2}\\d{9}SI$",
       "confidence": "low",

@@ -283,6 +283,16 @@ describe('Australia Post barcodes', () => {
     expect(detectCarrierMatch(number).candidates).not.toContain('australia-post');
   });
 
+  it('suggests Australia Post alone for R and twenty-four digits, and asks it', () => {
+    expect(detectCarrierMatch('R000000000000000000000001')).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['australia-post'], preferred: [],
+    });
+    expect(recognitionAskedCarriers('R000000000000000000000001')).toEqual(['australia-post']);
+    for (const number of ['R00000000000000000000001', 'R0000000000000000000000001', 'RR00000000000000000000001', 'S000000000000000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? []).not.toContain('australia-post');
+    }
+  });
+
   it('suggests Australia Post for a 22-digit prepaid barcode only when its GS1 check passes', () => {
     expect(detectCarrierMatch('0208061234567890123456')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch('0208061234567890123456').candidates).toContain('australia-post');

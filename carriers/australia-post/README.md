@@ -55,6 +55,9 @@ every outgoing request unless the consumer sets `tracePropagationTargets: []`. T
     in a GS1 check digit. Other carriers' rules take any 22 digits; the passing check digit moves
     Australia Post ahead of them in recognition. TIPSA stays first for a barcode in its layout, and
     CTT Express's prefix selects CTT Express outright.
+  - `R` and twenty-four digits, an ID Australia Post's tracker lists as a domestic Parcel Post
+    article. Nothing published describes it and it carries no known check digit, so recognition
+    asks Australia Post to confirm it.
   - Any other Australian-issued postal number, which Australia Post is asked about first. No
     public registered or letter-post item has shown that its tracker reads them.
 - All-digit consignments have no rule: other carriers' rules take those lengths, and no check

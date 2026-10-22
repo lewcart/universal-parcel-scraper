@@ -4397,6 +4397,10 @@
         "checksum": "gs1"
       },
       {
+        "pattern": "^R\\d{24}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^[CEL][A-Z]\\d{9}AU$",
         "confidence": "high",
         "checksum": "s10"

@@ -29,9 +29,10 @@ Pickup availability remains distinct from parcel delivery. Confirmed notificatio
 recipient-choice notices, a chosen pickup point among them, are omitted from shipment
 history, so a delivered message cannot become a parcel-delivery milestone. A notice-only
 response is inconclusive.
-Summary status comes from the selected item's current status. A drop-off by the sender, even
-after the day's last collection, reads as accepted. Customs clearance and a hold for a
-booked delivery are not exceptions. The sender the portal names, usually the shop, the
+Summary status comes from the selected item's current status. EN_ROUTE's heading, "The shipment
+item is under transportation", labels every milestone of the code, so under it the newest scan
+names the stage. A drop-off by the sender, even after the day's last collection, reads as
+accepted. Customs clearance and a hold for a booked delivery are not exceptions. The sender the portal names, usually the shop, the
 destination country and the shipment's `serviceName` are kept. Recipient names and addresses,
 sender references, delivery instructions and proof data are excluded.
 

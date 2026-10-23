@@ -4,6 +4,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { explicitOffsetTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import type { ClassifiedStatus } from '../../core/status/index.js';
 import { classifyPostnordStatus, isPostnordAdministrativeEvent } from './status.js';
 
 export function normalizePostnordNumber(raw: string): string {
@@ -13,6 +14,9 @@ export function normalizePostnordNumber(raw: string): string {
   }
   return number;
 }
+
+/** The milestones EN_ROUTE covers, from the sender's drop-off to the delivery in progress. */
+const EN_ROUTE_STAGES = new Set(['accepted', 'in_transit', 'customs', 'out_for_delivery']);
 
 /**
  * The scan that made the parcel available at its service point, while it waits
@@ -55,7 +59,7 @@ export function parsePostnord(payload: unknown, number: string): CarrierResult {
   if (!isRecord(item.status) || !clean(item.status.code, 64) || !Array.isArray(item.events) || item.events.length > 500) {
     throw new SchemaError('PostNord');
   }
-  const scans: { event: CarrierEvent; timestamp: number }[] = [];
+  const scans: { event: CarrierEvent; timestamp: number; mapped?: ClassifiedStatus }[] = [];
   const seen = new Set<string>();
   for (const raw of item.events) {
     if (!isRecord(raw)) throw new SchemaError('PostNord', 'PostNord returned an incomplete scan row');
@@ -73,7 +77,7 @@ export function parsePostnord(payload: unknown, number: string): CarrierResult {
     if (seen.has(key)) continue;
     seen.add(key);
     const mapped = classifyPostnordStatus(code, description);
-    scans.push({ timestamp: time.timestamp, event: { time: time.iso, description, provider_code: code,
+    scans.push({ timestamp: time.timestamp, mapped, event: { time: time.iso, description, provider_code: code,
       ...(location ? { location } : {}), ...(mapped ? { stage: mapped.stage } : {}) } });
   }
   if (!scans.length) throw new IndeterminateError('PostNord', 'PostNord returned no shipment history');
@@ -81,8 +85,14 @@ export function parsePostnord(payload: unknown, number: string): CarrierResult {
   // Compare instants rather than ISO text so mixed offsets stay in order.
   scans.sort((a, b) => b.timestamp - a.timestamp);
   const events = scans.map((scan) => scan.event);
+  const code = clean(item.status.code, 64);
   const header = clean(item.status.header, 500);
-  const mapped = classifyPostnordStatus(clean(item.status.code, 64), header);
+  // EN_ROUTE's heading, "The shipment item is under transportation", labels every
+  // milestone of the code, a drop-off by the sender among them: the newest scan
+  // names the milestone.
+  const newest = code === 'EN_ROUTE' && header.replace(/\.$/, '') === 'The shipment item is under transportation'
+    && scans[0]!.mapped && EN_ROUTE_STAGES.has(scans[0]!.mapped.stage) ? scans[0]!.mapped : undefined;
+  const mapped = newest ?? classifyPostnordStatus(code, header);
   const measurements = Array.isArray(item.measurements) ? item.measurements.filter(isRecord) : [];
   const measured = (name: string, units: string[]) => {
     const values = measurements.filter((measurement) => measurement.name === name && typeof measurement.value === 'number'
@@ -99,7 +109,7 @@ export function parsePostnord(payload: unknown, number: string): CarrierResult {
   const pickup = pickupScan ? pickupPoint(payload.servicePoint, pickupScan.location ?? '') : '';
   const service = clean(payload.serviceName, 80);
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
-    last_status_text: header || events[0]!.description, last_update: events[0]!.time,
+    last_status_text: (newest ? '' : header) || events[0]!.description, last_update: events[0]!.time,
     expected_delivery: null, ...(delivery?.time ? { delivered_at: delivery.time } : {}),
     ...(sender ? { sender_name: sender } : {}), ...(pickup ? { pickup_point: pickup } : {}), ...(service ? { service_name: service } : {}),
     ...(typeof country === 'string' && /^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}),

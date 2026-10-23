@@ -78,6 +78,24 @@ describe('PostNord direct tracking', () => {
     expect(parsePostnord(value, NUMBER)).not.toHaveProperty('destination_country');
   });
 
+  it('takes the milestone of the newest scan under EN_ROUTE\'s heading', () => {
+    // Live shape: the heading stays the same while the status description names the drop-off.
+    const dropped = payload();
+    dropped.items[0].status = { code: 'EN_ROUTE', header: 'The shipment item is under transportation',
+      description: 'The shipment item has been dropped off by sender.' };
+    dropped.items[0].events = [payload().items[0].events[0],
+      { ...payload().items[0].events[1], eventDescription: 'The shipment item has been dropped off by sender.', location: { countryCode: 'PL' } }];
+    expect(parsePostnord(dropped, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'accepted',
+      last_status_text: 'The shipment item has been dropped off by sender.' });
+    // A later scan of the parcel moving moves the summary with it.
+    dropped.items[0].events.push({ ...payload().items[0].events[1], eventTime: '2026-01-03T10:00:00.000Z', status: 'OTHER' });
+    expect(parsePostnord(dropped, NUMBER)).toMatchObject({ current_stage: 'in_transit', last_status_text: 'The shipment item is under transportation.' });
+    // A scan outside EN_ROUTE's milestones leaves the summary to the code.
+    const ready = payload(); ready.items[0].events.splice(4, 2);
+    ready.items[0].status = { code: 'EN_ROUTE', header: 'The shipment item is under transportation' };
+    expect(parsePostnord(ready, NUMBER)).toMatchObject({ current_stage: 'in_transit', last_status_text: 'The shipment item is under transportation' });
+  });
+
   it('rejects missing, mismatched, ambiguous and group identities', () => {
     const wrongShipment = payload(); wrongShipment.shipmentId = OTHER_NUMBER;
     const wrongSelected = payload(); wrongSelected.actualReturnedId = OTHER_NUMBER;

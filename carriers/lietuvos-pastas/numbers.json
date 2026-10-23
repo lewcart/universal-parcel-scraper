@@ -141,7 +141,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "lietuvos-pastas",
         "confidence": "high"
       },
       "note": "Looked up on LP Express's own tracker, as an archived address shows; the capture was not opened."
@@ -160,7 +160,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "lietuvos-pastas",
         "confidence": "high"
       },
       "note": "Lietuvos paštas's own tracking service reply, archived by the Wayback Machine, shows the parcel posted at a parcel locker and collected from it."
@@ -179,7 +179,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "lietuvos-pastas",
         "confidence": "high"
       },
       "note": "Lietuvos paštas's own tracking service reply, archived by the Wayback Machine, shows the parcel collected from the sender's parcel locker and at a sorting centre."

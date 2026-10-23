@@ -110,6 +110,12 @@
   ],
   "detection": [
     {
+      "id": "lietuvos-pastas-own",
+      "pattern": "^[CE][A-Z]\\d{9}LT$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "lietuvos-pastas-1",
       "pattern": "^(?:CC|CH|HC)\\d{9}LT$",
       "confidence": "low"

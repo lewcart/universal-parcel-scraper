@@ -67277,25 +67277,17 @@
   },
   {
     "input": "CC928806445LT",
-    "carrier": "intl-post",
+    "carrier": "lietuvos-pastas",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost",
       "lietuvos-pastas"
     ]
   },
   {
     "input": "CC929125681LT",
-    "carrier": "intl-post",
+    "carrier": "lietuvos-pastas",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost",
       "lietuvos-pastas"
     ]
   },
@@ -71174,14 +71166,10 @@
   },
   {
     "input": "EB830326759LT",
-    "carrier": "intl-post",
+    "carrier": "lietuvos-pastas",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {

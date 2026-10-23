@@ -29,6 +29,11 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   ['The package left sorting center', { status: 'in_transit', stage: 'in_transit' }],
   ['Arrived at GOFO Regional Destination Facility', { status: 'in_transit', stage: 'in_transit' }],
   ['The driver is out for delivery', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
+  // GOFO's own scans in the US, read as its codes are: the vehicle is the line haul between its facilities.
+  ['Arrived at GOFO Regional Hub', { status: 'in_transit', stage: 'in_transit' }],
+  ['Loaded on Vehicle', { status: 'in_transit', stage: 'in_transit' }],
+  ['Arrived at GOFO Delivery Station', { status: 'in_transit', stage: 'in_transit' }],
+  ['Out for Delivery', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['Departure from the international sorting center', { status: 'in_transit', stage: 'in_transit' }],
   ['Shipment in transit to DHL', { status: 'in_transit', stage: 'in_transit' }],
   ['Shipment is in transit to carrier', { status: 'in_transit', stage: 'in_transit' }],

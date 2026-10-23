@@ -57,6 +57,8 @@ describe('YunExpress captured response projection', () => {
     expect(yunExpressStatus('Package accepted at courier partner')).toEqual({ status: 'in_transit', stage: 'in_transit' });
     expect(yunExpressStatus('Arrived at GOFO Regional Destination Facility')?.stage).toBe('in_transit');
     expect(yunExpressStatus('The driver is out for delivery')?.stage).toBe('out_for_delivery');
+    expect(['Arrived at GOFO Regional Hub', 'Loaded on Vehicle', 'Arrived at GOFO Delivery Station', 'Out for Delivery']
+      .map((wording) => yunExpressStatus(wording)?.stage)).toEqual(['in_transit', 'in_transit', 'in_transit', 'out_for_delivery']);
     // Yuntrack's capitals and spacing vary; the wording does not.
     expect(yunExpressStatus('arrived at  SORT facility ')?.stage).toBe('in_transit');
     expect(yunExpressStatus('Delivered')).toBeUndefined();

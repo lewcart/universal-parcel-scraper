@@ -137,6 +137,38 @@
       "firstSeen": "2026-10-04"
     },
     {
+      "wording": "Arrived at GOFO Regional Hub",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "Relayed from GOFO in the US, as GOFO reads its own scan."
+    },
+    {
+      "wording": "Loaded on Vehicle",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "Relayed from GOFO: loaded for the line haul between its facilities, before its delivery station."
+    },
+    {
+      "wording": "Arrived at GOFO Delivery Station",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "Relayed from GOFO in the US, as GOFO reads its own scan."
+    },
+    {
+      "wording": "Out for Delivery",
+      "stage": "out_for_delivery",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "Relayed from GOFO in the US, as GOFO reads its own scan."
+    },
+    {
       "code": "50",
       "wording": "Delivered by Mailbox",
       "stage": "delivered",

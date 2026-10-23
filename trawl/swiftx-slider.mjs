@@ -17,21 +17,30 @@ export function locateSwiftxSlider(challenge, signal, timeoutMs) {
     const stop = () => { invalid = true; child.kill('SIGKILL'); };
     const timer = setTimeout(stop, Math.min(4000, timeoutMs));
     signal.addEventListener('abort', stop, { once: true });
-    child.stdout.on('data', data => { output += data.toString(); if (output.length > 128) stop(); });
+    child.stdout.on('data', data => { output += data.toString(); if (output.length > 512) stop(); });
     child.stdin.on('error', () => {});
     child.on('error', () => { invalid = true; });
     child.on('close', code => {
       clearTimeout(timer); signal.removeEventListener('abort', stop); active--;
       try {
         const answer = !invalid && code === 0 ? JSON.parse(output) : null;
-        const maximum = challenge.type === 'CONCAT' ? challenge.backgroundImageWidth
+        if (challenge.type === 'ICON_CLICK') {
+          const points = answer?.points;
+          resolve(Array.isArray(points) && Number.isInteger(challenge.clickCount) && challenge.clickCount >= 2
+            && challenge.clickCount <= 6 && points.length === challenge.clickCount
+            && points.every(point => Number.isInteger(point?.x) && Number.isInteger(point?.y)
+              && point.x > 0 && point.x < challenge.backgroundImageWidth && point.y > 0 && point.y < challenge.backgroundImageHeight)
+            ? { points: points.map(({ x, y }) => ({ x, y })) } : null);
+          return;
+        }
+        const maximum = ['CONCAT', 'ROTATE'].includes(challenge.type) ? challenge.backgroundImageWidth
           : challenge.backgroundImageWidth - challenge.templateImageWidth;
         resolve(Number.isInteger(answer?.x) && answer.x >= 0 && answer.x < maximum ? answer : null);
       } catch { resolve(null); }
     });
     if (signal.aborted) stop();
     else child.stdin.end(JSON.stringify(Object.fromEntries(['type', 'backgroundImage', 'templateImage',
-      'backgroundImageWidth', 'backgroundImageHeight', 'templateImageWidth', 'templateImageHeight', 'concatTopHeight']
+      'backgroundImageWidth', 'backgroundImageHeight', 'templateImageWidth', 'templateImageHeight', 'concatTopHeight', 'clickCount']
       .map(key => [key, challenge[key]]))));
   });
 }
@@ -58,19 +67,28 @@ export function swiftxSliderGeometry({ number, challenge }) {
   const images = [...dialog.querySelectorAll('img')];
   const background = images.find(image => image.src === challenge.backgroundImage);
   const template = images.find(image => image.src === challenge.templateImage);
+  if (!background?.complete || !background.naturalWidth) return null;
+  const bg = background.getBoundingClientRect();
+  if (bg.width < 100 || bg.height <= 0 || background.naturalWidth !== challenge.backgroundImageWidth
+    || background.naturalHeight !== challenge.backgroundImageHeight) return null;
+  if (challenge.type === 'ICON_CLICK') {
+    if (!template?.complete || template.naturalWidth !== challenge.templateImageWidth
+      || template.naturalHeight !== challenge.templateImageHeight) return null;
+    return { x: bg.x, y: bg.y, scaleX: bg.width / background.naturalWidth,
+      scaleY: bg.height / background.naturalHeight, width: bg.width, height: bg.height };
+  }
   const knob = [...dialog.querySelectorAll('button')].find(button => button.style.width === '44px'
     && button.style.height === '44px' && !button.disabled);
-  if (!background?.complete || !background.naturalWidth || !knob) return null;
-  const bg = background.getBoundingClientRect(), handle = knob.getBoundingClientRect();
-  if (bg.width < 100 || handle.width !== 44 || background.naturalWidth !== challenge.backgroundImageWidth
-    || background.naturalHeight !== challenge.backgroundImageHeight) return null;
+  if (!knob) return null;
+  const handle = knob.getBoundingClientRect();
+  if (handle.width !== 44) return null;
   let maxImage = bg.width;
-  if (challenge.type === 'SLIDER') {
+  if (['SLIDER', 'ROTATE'].includes(challenge.type)) {
     if (!template?.complete || !template.naturalWidth || template.naturalWidth !== challenge.templateImageWidth
       || template.naturalHeight !== challenge.templateImageHeight) return null;
     const piece = template.getBoundingClientRect();
     if (piece.width <= 0 || piece.width >= bg.width) return null;
-    maxImage -= piece.width;
+    if (challenge.type === 'SLIDER') maxImage -= piece.width;
   } else if (challenge.type === 'CONCAT') {
     if (![...dialog.querySelectorAll('div')].some(element => element.style.backgroundImage.includes(challenge.backgroundImage)
       && Math.abs(element.getBoundingClientRect().height - challenge.concatTopHeight * bg.width / background.naturalWidth) <= 1)) return null;
@@ -85,6 +103,17 @@ export function swiftxSliderDrag(geometry, plan) {
   const distance = plan.x * geometry.scale * geometry.maxKnob / geometry.maxImage;
   return Number.isFinite(distance) && distance >= 8 && distance <= geometry.maxKnob
     ? { x: geometry.x, y: geometry.y, distance } : null;
+}
+
+export function swiftxIconClicks(geometry, plan, count) {
+  if (!geometry || !Number.isInteger(count) || count < 2 || count > 6 || !Array.isArray(plan?.points)
+    || plan.points.length !== count || !['x', 'y', 'scaleX', 'scaleY', 'width', 'height'].every(key => Number.isFinite(geometry[key]))
+    || geometry.scaleX <= 0 || geometry.scaleY <= 0 || geometry.width <= 0 || geometry.height <= 0) return null;
+  const points = plan.points.map(point => ({ x: point?.x * geometry.scaleX, y: point?.y * geometry.scaleY }));
+  if (points.some(point => !Number.isFinite(point.x) || !Number.isFinite(point.y)
+    || point.x <= 0 || point.x >= geometry.width || point.y <= 0 || point.y >= geometry.height)
+    || new Set(points.map(point => `${point.x},${point.y}`)).size !== count) return null;
+  return points.map(point => ({ x: geometry.x + point.x, y: geometry.y + point.y }));
 }
 
 /** Observe before navigation; only the official UI obtains and submits verification. */
@@ -155,13 +184,22 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
       if (attempted >= 2 || remaining() < 3500) break;
       seen = generation; attempted++;
       const challenge = current;
-      const plan = ['SLIDER', 'CONCAT'].includes(challenge.type) ? await solve(challenge, signal, remaining()) : null;
+      const plan = await solve(challenge, signal, remaining());
       if (disposed || signal.aborted || remaining() < 2000 || current !== challenge) continue;
       const geometry = plan && await page.evaluate(swiftxSliderGeometry, { number, challenge });
       const drag = swiftxSliderDrag(geometry, plan);
-      if (!drag) {
+      const clicks = challenge.type === 'ICON_CLICK' && swiftxIconClicks(geometry, plan, challenge.clickCount);
+      if (!drag && !clicks) {
         if (attempted >= 2 || remaining() < 5000) break;
         await page.getByRole('dialog').locator('button').first().evaluate(button => button.click());
+        continue;
+      }
+      if (clicks) {
+        for (const point of clicks) {
+          if (disposed || signal.aborted || remaining() < 1000 || current !== challenge
+            || !await page.evaluate(swiftxSliderGeometry, { number, challenge })) break;
+          await page.mouse.click(point.x, point.y);
+        }
         continue;
       }
       await page.mouse.move(drag.x, drag.y);

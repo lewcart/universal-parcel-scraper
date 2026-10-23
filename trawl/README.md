@@ -52,8 +52,9 @@ the number and postcode in its outgoing request.
 UPS binds the browser POST to one tracking ID and retains the latest bounded
 response sequence, including refusals after the body extraction budget is spent.
 SwiftX's page clears Cloudflare's managed challenge and offers a slider when Turnstile
-cannot complete. Its scoped helper locates readable cutouts or image seams offline and uses the page's
-pointer handler, with at most two puzzles; verification tokens stay in that context.
+cannot complete. Its scoped helper matches cutouts, image seams, circular rotations and
+ordered icons offline, rejecting ambiguous matches. It uses the page's pointer handlers,
+with at most two puzzles; verification tokens stay in that context.
 The page then posts one GraphQL query; the helper keeps
 the decoded reply only for the query naming the whole number in the page's address.
 

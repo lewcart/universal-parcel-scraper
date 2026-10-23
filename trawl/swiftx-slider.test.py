@@ -38,7 +38,95 @@ def puzzle(positions=(150,)):
                 templateImageWidth=tile_width, templateImageHeight=height)
 
 
+def icon_puzzle(duplicate=False):
+    glyphs = []
+    for index in range(3):
+        glyph = np.zeros((60, 60), np.uint8)
+        if index == 0:
+            cv2.circle(glyph, (30, 30), 18, 255, -1)
+        elif index == 1:
+            cv2.fillPoly(glyph, [np.array([[30, 10], [10, 48], [50, 48]])], 255)
+        else:
+            cv2.rectangle(glyph, (24, 10), (36, 50), 255, -1)
+            cv2.rectangle(glyph, (10, 24), (50, 36), 255, -1)
+        glyphs.append(glyph)
+    template = np.full((60, 180, 4), 60, np.uint8)
+    template[:, :, 3] = np.concatenate(glyphs, axis=1)
+    background = np.full((240, 480, 3), 40, np.uint8)
+    positions = [(340, 120), (80, 70), (220, 170)]
+    for index, (x, y) in enumerate(positions):
+        mask = cv2.warpAffine(glyphs[index], cv2.getRotationMatrix2D((30, 30), 15 * index, 1), (60, 60))
+        region = background[y - 30:y + 30, x - 30:x + 30]
+        region[mask > 128] = [(255, 120, 0), (0, 210, 255), (230, 0, 230)][index]
+    if duplicate:
+        background[20:80, 250:310][glyphs[0] > 128] = (255, 120, 0)
+    return dict(type='ICON_CLICK', backgroundImage=png(background), templateImage=png(template),
+                backgroundImageWidth=480, backgroundImageHeight=240,
+                templateImageWidth=180, templateImageHeight=60, clickCount=3), positions
+
+
 class SliderTests(unittest.TestCase):
+    def test_rotation_seam_and_uniform_ambiguity(self):
+        height, width, radius = 360, 600, 90
+        yy, xx = np.mgrid[:height, :width]
+        angle = np.arctan2(yy - height / 2, xx - width / 2)
+        original = np.stack((120 + 80 * np.sin(angle * 3 + .8), 120 + 80 * np.cos(angle * 2),
+                             120 + 80 * np.sin(angle * 5)), axis=2).astype(np.uint8)
+        mask = np.zeros((height, 200), np.uint8)
+        cv2.circle(mask, (100, height // 2), radius, 255, -1)
+        template = np.dstack((original[:, 200:400], mask))
+        template = cv2.warpAffine(template, cv2.getRotationMatrix2D((100, height / 2), -120, 1), (200, height))
+        background = original.copy()
+        cv2.circle(background, (width // 2, height // 2), radius, (0, 0, 0), -1)
+        data = dict(type='ROTATE', backgroundImage=png(background), templateImage=png(template),
+                    backgroundImageWidth=width, backgroundImageHeight=height,
+                    templateImageWidth=200, templateImageHeight=height)
+        self.assertAlmostEqual(slider.locate(data)['x'], 400, delta=4)
+        background[:] = 80
+        template[:, :, :3] = 80
+        data.update(backgroundImage=png(background), templateImage=png(template))
+        self.assertIsNone(slider.locate(data))
+
+    def test_ordered_rotated_icons(self):
+        data, expected = icon_puzzle()
+        actual = slider.locate(data)
+        self.assertIsNotNone(actual)
+        for point, (x, y) in zip(actual['points'], expected):
+            self.assertAlmostEqual(point['x'], x, delta=4)
+            self.assertAlmostEqual(point['y'], y, delta=5)
+
+    def test_icon_ambiguity_and_shape_changes(self):
+        data, _ = icon_puzzle(duplicate=True)
+        self.assertIsNone(slider.locate(data))
+        data, _ = icon_puzzle()
+        for changed in (dict(data, clickCount=0), dict(data, clickCount=7),
+                        dict(data, templateImageWidth=181), dict(data, backgroundImageWidth=479)):
+            self.assertIsNone(slider.locate(changed))
+
+    def test_icons_touching_a_differently_coloured_photograph(self):
+        data, expected = icon_puzzle()
+        background = slider.decode(data['backgroundImage'])
+        # A saturated nearby shape joins the icon under a single saturation
+        # mask. Its different hue must not become part of the icon's contour.
+        cv2.rectangle(background, (365, 100), (470, 145), (0, 100, 190), -1)
+        data['backgroundImage'] = png(background)
+        actual = slider.locate(data)
+        self.assertIsNotNone(actual)
+        self.assertAlmostEqual(actual['points'][0]['x'], expected[0][0], delta=4)
+
+    def test_photograph_texture_disambiguates_a_faded_cutout(self):
+        data = puzzle((150,))
+        tile = slider.decode(data['templateImage'])
+        rng = np.random.default_rng(9)
+        original = rng.integers(30, 200, (180, 320, 3), dtype=np.uint8)
+        mask = tile[:, :, 3] > 220
+        tile[:, :, :3] = original[:, 150:214]
+        background = original.copy()
+        region = background[:, 150:214]
+        region[mask] = (region[mask] * .65 + 55).astype(np.uint8)
+        data.update(backgroundImage=png(background), templateImage=png(tile))
+        self.assertAlmostEqual(slider.locate(data)['x'], 150, delta=1)
+
     def test_joined_image(self):
         width, height, top = 320, 180, 90
         x = np.arange(width)

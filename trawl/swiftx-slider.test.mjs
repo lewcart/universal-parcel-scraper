@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { attachSwiftxSlider, locateSwiftxSlider, swiftxSliderDrag } from './swiftx-slider.mjs';
+import { attachSwiftxSlider, locateSwiftxSlider, swiftxSliderDrag, swiftxIconClicks } from './swiftx-slider.mjs';
 
 const API = 'https://swiftx-express.com/api/graphql';
 const NUMBER = 'SWX000000000000000001';
@@ -21,18 +21,52 @@ const verifyQuery = (id = 'SYNTHETIC_A', bindingDigest = digest) => ({ query: 'm
 function fixture(options = {}) {
   const page = new EventEmitter();
   let refreshes = 0, moves = 0, downs = 0, ups = 0;
+  const clicks = [];
   const geometry = { x: 30, y: 100, scale: 320 / 600, maxKnob: 276, maxImage: 261 };
-  page.evaluate = async () => geometry;
+  page.evaluate = async () => options.geometry ?? geometry;
   page.getByRole = () => ({ locator: () => ({ first: () => ({ evaluate: async () => { refreshes++; await options.refresh?.(); } }) }) });
   page.mouse = { move: async () => { moves++; await options.move?.(); }, down: async () => { downs++; }, up: async () => { ups++; await options.up?.(); } };
+  page.mouse.click = async (x, y) => { clicks.push({ x, y }); await options.click?.(clicks.length); };
   const controller = attachSwiftxSlider(page, NUMBER, { solve: async () => null, ...options });
   const respond = async (payload, request = imageQuery, { status = 200, headers = {}, read, url = API } = {}) => {
     page.emit('response', { url: () => url, status: () => status, headers: () => ({ 'content-type': 'application/json', ...headers }),
       request: () => ({ method: () => 'POST', postDataJSON: () => request }), body: read ?? (async () => Buffer.from(JSON.stringify({ data: payload }))) });
     await tick();
   };
-  return { page, controller, respond, stats: () => ({ refreshes, moves, downs, ups }) };
+  return { page, controller, respond, clicks, stats: () => ({ refreshes, moves, downs, ups }) };
 }
+
+test('maps each icon through the rendered image and refuses incomplete or repeated answers', () => {
+  const geometry = { x: 20, y: 50, width: 300, height: 180, scaleX: .5, scaleY: .5 };
+  const plan = { points: [{ x: 80, y: 200 }, { x: 440, y: 60 }] };
+  assert.deepEqual(swiftxIconClicks(geometry, plan, 2), [{ x: 60, y: 150 }, { x: 240, y: 80 }]);
+  for (const points of [[], [plan.points[0]], [plan.points[0], plan.points[0]], [{ x: 600, y: 50 }, plan.points[1]],
+    [{ x: 80, y: NaN }, plan.points[1]]]) assert.equal(swiftxIconClicks(geometry, { points }, 2), null);
+});
+
+test('clicks the ordered icons through the official UI and requires bound verification', async () => {
+  let f;
+  const puzzle = { ...challenge('SYNTHETIC_A', 'ICON_CLICK'), clickCount: 2 };
+  f = fixture({ geometry: { x: 20, y: 50, width: 300, height: 180, scaleX: .5, scaleY: .5 },
+    solve: async () => ({ points: [{ x: 80, y: 200 }, { x: 440, y: 60 }] }),
+    click: async count => { if (count === 2) await f.respond({ verifyOfficialTrackingSlider: { success: true, sliderToken: 'SYNTHETIC_TOKEN' } }, verifyQuery()); } });
+  await f.respond({ getOfficialTrackingSliderCaptcha: puzzle });
+  await f.controller.prepare(6000);
+  assert.deepEqual(f.clicks, [{ x: 60, y: 150 }, { x: 240, y: 80 }]);
+  assert.equal(f.stats().downs, 0);
+  f.controller.dispose();
+});
+
+test('stops an icon sequence when the caller cancels between clicks', async () => {
+  const stopped = new AbortController();
+  const f = fixture({ signal: stopped.signal,
+    geometry: { x: 20, y: 50, width: 300, height: 180, scaleX: .5, scaleY: .5 },
+    solve: async () => ({ points: [{ x: 80, y: 200 }, { x: 440, y: 60 }] }), click: () => stopped.abort() });
+  await f.respond({ getOfficialTrackingSliderCaptcha: { ...challenge('SYNTHETIC_A', 'ICON_CLICK'), clickCount: 2 } });
+  await f.controller.prepare(6000);
+  assert.equal(f.clicks.length, 1);
+  f.controller.dispose();
+});
 
 test('maps native puzzle displacement through the page’s scaled slider geometry', () => {
   const drag = swiftxSliderDrag({ x: 30, y: 100, scale: .5, maxKnob: 256, maxImage: 245 }, { x: 245 });
@@ -46,7 +80,7 @@ test('does not start image analysis after cancellation', async () => {
   assert.equal(await locateSwiftxSlider(challenge(), stopped.signal, 4000), null);
 });
 
-test('refreshes an unreadable or unsupported puzzle only once', async () => {
+test('refreshes an unreadable puzzle only once', async () => {
   let f;
   f = fixture({ refresh: () => f.respond({ getOfficialTrackingSliderCaptcha: challenge('SYNTHETIC_B', 'ROTATE') }) });
   await f.respond({ getOfficialTrackingSliderCaptcha: challenge() });

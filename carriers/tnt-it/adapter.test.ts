@@ -155,12 +155,19 @@ describe('TNT Italy HTTP adapter', () => {
 
   it('rejects numbers TNT Italy does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['ZZ0000000', 'ZZ000000001', 'Z000000001', '1200000001', 'ZZ00000001-5', `ZZ${'0'.repeat(70)}`]) {
+    for (const number of ['ZZ0000000', 'ZZ0000000012', 'Z000000001', '1200000001', 'ZZ00000001-15', `ZZ${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
     expect(normalizeTntItalyNumber(' zz-0000 0001 ')).toBe(DELIVERED);
+  });
+
+  it('drops the check digit a label prints after the waybill', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')));
+    await expect(carrier(fetcher).track({ number: `${DELIVERED}-5` })).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(String(fetcher.mock.calls[0]![1]!.body)).toBe(`wt=1&consigNos=${DELIVERED}`);
+    expect(normalizeTntItalyNumber(`${DELIVERED}5`)).toBe(DELIVERED);
   });
 
   it('sends a read that failed to reach tnt.it once more', async () => {

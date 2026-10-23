@@ -54,8 +54,25 @@
     ],
     "unavailable": []
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "tnt.com"
+      ],
+      "pathPattern": "^/express/[a-z]{2}_[a-z]{2}/site/shipping-tools/tracking\\.html$",
+      "params": [
+        "cons"
+      ],
+      "ownNumbersOnly": true
+    }
+  ],
   "detection": [
+    {
+      "id": "tnt-upu",
+      "pattern": "^GE\\d{9}WW$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
     {
       "id": "tnt-1",
       "pattern": "^\\d{9}$",

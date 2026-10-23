@@ -16,6 +16,7 @@ import { NOEST_LAYOUT, noestRequestNumber } from '../../carriers/noest/number.js
 import { normalizePackManNumber } from '../../carriers/pack-man/number.js';
 import { PAPERFLY_LAYOUT, paperflyRequestNumber } from '../../carriers/paperfly/number.js';
 import { normalizeCourierGuyNumber } from '../../carriers/the-courier-guy/number.js';
+import { normalizeTntItalyNumber } from '../../carriers/tnt-it/number.js';
 import { ZR_EXPRESS_LAYOUT, zrExpressRequestNumber } from '../../carriers/zr-express/number.js';
 import { postlogisticsIdentifier } from '../../carriers/postlogistics/number.js';
 import { normalizeUpayaNumber, UPAYA_LAYOUT } from '../../carriers/upaya/number.js';
@@ -59,6 +60,10 @@ export function trackingNumberForLink(carrierId: CarrierId, raw: string): string
   // Paperfly's page finds a number only with the hyphens between its parts.
   if (carrierId === 'paperfly' && PAPERFLY_LAYOUT.test(normalized)) return paperflyRequestNumber(normalized);
   if (carrierId === 'gofo-fr') return regionalGofoRequestNumber(normalized);
+  // tnt.com's page takes a consignment's nine digits, without the GE and WW a label can print around them.
+  if (carrierId === 'tnt' && /^GE\d{9}WW$/.test(normalized)) return normalized.slice(2, 11);
+  // tnt.it's tracker finds a waybill only without the check digit its label prints after a dash.
+  if (carrierId === 'tnt-it' && /^[A-Z]{2}\d{9}$/.test(normalized)) return normalizeTntItalyNumber(normalized);
   // Upaya's page finds a code only in capitals with the hyphen before its last seven digits.
   if (carrierId === 'upaya' && UPAYA_LAYOUT.test(normalized)) return normalizeUpayaNumber(normalized);
   // Flip Post prints its waybills with dashes, and its tracking API finds one only with them, so a

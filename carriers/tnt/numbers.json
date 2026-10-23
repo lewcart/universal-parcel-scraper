@@ -196,6 +196,32 @@
         ]
       },
       "note": "A TNT consignment number looked up on tnt.com and listed in the Wayback Machine's capture index. TNT's tracking returned its delivered history."
+    },
+    {
+      "number": "GE100312111WW",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://express.tnt.com/expresswebservices-website/docs/ExpressConnect%20Shipping%20Integration%20Guide%20v3.7.pdf"
+      },
+      "expect": {
+        "carrier": "tnt",
+        "confidence": "high"
+      },
+      "note": "The consignment number example in ExpressConnect's guide, not a real shipment: nine digits between the UPU-style letters GE and WW."
+    },
+    {
+      "number": "GE123456789WW",
+      "role": "negative",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.tnt.it/tracking/instructions/tracking_online.pdf"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "tnt.it's example of an international consignment with its letters, not a real shipment. Its digits fail the modulus 11 check, so no rule claims it."
     }
   ]
 }

@@ -21,10 +21,12 @@ export function normalizeTntFranceNumber(raw: string): string {
   return number;
 }
 
+/** A consignment's nine digits; a label can print them between the UPU-style letters GE and WW. */
 export function normalizeTntExpressNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!/^\d{9}$/.test(number)) throw new InvalidInputError(EXPRESS_PROVIDER, 'TNT direct tracking requires a 9-digit consignment or a 16-digit TNT France consignment');
-  return number;
+  const consignment = /^GE(\d{9})WW$/.exec(number)?.[1] ?? number;
+  if (!/^\d{9}$/.test(consignment)) throw new InvalidInputError(EXPRESS_PROVIDER, 'TNT direct tracking requires a 9-digit consignment or a 16-digit TNT France consignment');
+  return consignment;
 }
 
 async function fetchTnt(url: URL, accept: string, provider: string, context: TrackingContext, options: { fetcher?: typeof fetch; timeoutMs?: number; userAgent?: string }) {
@@ -200,6 +202,6 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: 'tnt', steps: ['direct'], track: (input, context) => lookup(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => lookup(number, context),
-      () => /^(?:\d{9}|\d{16})$/.test(normalizeTrackingNumber(number))),
+      () => /^(?:\d{9}|\d{16}|GE\d{9}WW)$/.test(normalizeTrackingNumber(number))),
   };
 };

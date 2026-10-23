@@ -80,6 +80,13 @@
       "id": "tnt-it-1",
       "pattern": "^[A-Z]{2}\\d{8}$",
       "confidence": "low"
+    },
+    {
+      "id": "tnt-it-check",
+      "pattern": "^[A-Z]{2}\\d{9}$",
+      "rawPattern": "^[A-Z]{2} ?\\d{8} ?- ?\\d$",
+      "confidence": "low",
+      "preferred": true
     }
   ]
 }

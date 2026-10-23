@@ -92,6 +92,22 @@
         ]
       },
       "note": "A public complaint to TNT gives it as the waybill of a delayed delivery. The tracker no longer knows it."
+    },
+    {
+      "number": "ZZ00000001-7",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-10-23",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt-it",
+          "gls-it"
+        ]
+      },
+      "note": "Made-up waybill typed with the check digit its label prints after a dash, in the layout tnt.it's tracking guide gives."
     }
   ]
 }

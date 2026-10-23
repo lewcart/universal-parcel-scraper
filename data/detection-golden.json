@@ -73963,6 +73963,20 @@
     ]
   },
   {
+    "input": "GE100312111WW",
+    "carrier": "tnt",
+    "confidence": "high",
+    "candidates": [
+      "tnt"
+    ]
+  },
+  {
+    "input": "GE123456789WW",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "GEO/KU9907603812489",
     "carrier": "unknown",
     "confidence": "none",
@@ -93583,6 +93597,22 @@
       "colis-prive",
       "aramex-au",
       "aramex-nz"
+    ]
+  },
+  {
+    "input": "ZZ00000001-7",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it",
+      "gls-it"
+    ],
+    "preferred": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it",
+      "gls-it"
     ]
   },
   {

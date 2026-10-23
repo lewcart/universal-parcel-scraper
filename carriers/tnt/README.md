@@ -11,6 +11,8 @@ postcode or account is required.
 
 - 9 digits: `https://www.tnt.com/api/v3/shipment?con={number}&searchType=CON&locale=en_GB&channel=OPENTRACK`.
   A `notFound` entry for the number is a clean not-found, which recognition uses.
+- `GE`, 9 digits and `WW`: the same request for the 9 digits. ExpressConnect's guide and
+  tnt.it's tracking guide print consignments this way, with or without the letters.
 - 16 digits: the national consignment detail page on tnt.fr. tnt.com rejects these
   numbers, so they are never sent there.
 
@@ -20,6 +22,11 @@ postcode or account is required.
   [ExpressConnect's Appendix I](https://express.tnt.com/expresswebservices-website/docs/ExpressConnect%20Shipping%20Integration%20Guide%20v3.7.pdf).
   A passing check prioritizes a candidate without confirming a shipment. The
   international checks do not apply to French national references.
+- Detection names TNT for `GE`, 9 digits and `WW` when the 9 digits pass the modulus 11
+  check. `WW` is no country, so no post issues the code. A country code in place of `WW`,
+  as ExpressConnect's examples also print, stays with the generic postal carrier: posts
+  issue `G` series codes too.
+- A tnt.com tracking link names TNT for the consignment in its `cons` parameter.
 - tnt.com lists every consignment that carried the number, since numbers are reused.
   Only consignments whose own number matches are read, and the one with the most recent
   scan is the parcel. References, signatories and addresses are not kept, except the

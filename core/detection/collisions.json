@@ -406,6 +406,22 @@
     "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Poczta Polska PL numbers; the country-specific high-confidence rule decides."
   },
   {
+    "shape": "GE9{9}WW",
+    "carriers": [
+      "chronopost",
+      "tnt"
+    ],
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps TNT consignments printed between GE and WW; TNT's high-confidence rule decides."
+  },
+  {
+    "shape": "AA9{8}-9",
+    "carriers": [
+      "gls-it",
+      "tnt-it"
+    ],
+    "reason": "A TNT Italy waybill typed with the check digit its label prints after a dash has GLS Italy's two letters and nine digits once the dash is dropped. TNT Italy is offered first only for the typed dash; recognition confirms the carrier."
+  },
+  {
     "shape": "AA9{9}IT with a valid S10 check digit",
     "carriers": [
       "chronopost",

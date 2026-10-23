@@ -1,18 +1,18 @@
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { zonedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { xmlDocument, type XmlNode } from '../../core/transport/xml.js';
+import { normalizeTntItalyNumber } from './number.js';
 import { tntItalyStage } from './status.js';
+
+export { normalizeTntItalyNumber };
 
 export const PROVIDER = 'TNT Italy';
 // A reply is padded with blanks to some tens of kilobytes.
 export const TNT_ITALY_MAX_BYTES = 512 * 1024;
-// A national waybill: the branch's two letters and eight digits, without the
-// single check digit a label prints after a dash.
-const NUMBER = /^[A-Z]{2}\d{8}$/;
 // Every scan is at an Italian depot.
 const ZONE = 'Europe/Rome';
 // The reply names its DTD by a relative path; only that declaration is dropped before parsing.
@@ -26,13 +26,6 @@ const FEDEX = '40000';
 const MAX_SHIPMENTS = 20;
 const MAX_ROWS = 300;
 const MAX_EVENTS = 100;
-
-/** A national waybill for tnt.it's tracker; anything else is not one TNT Italy issues. */
-export function normalizeTntItalyNumber(raw: string): string {
-  const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'TNT Italy national waybills are two letters and eight digits');
-  return number;
-}
 
 function children(node: XmlNode, name: string): XmlNode[] {
   return node.children.filter((child) => child.name === name && !child.uri);

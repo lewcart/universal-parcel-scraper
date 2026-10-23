@@ -55,6 +55,11 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('cdl', '1000000010')).toBe('100000001-0');
     expect(trackingNumberForLink('cdl', '100000001-0')).toBe('100000001-0');
     expect(trackingNumberForLink('cdl', 'CDL00000000001')).toBe('CDL00000000001');
+    // tnt.it finds a waybill without the check digit its label prints after a dash, tnt.com a consignment without GE and WW.
+    expect(trackingNumberForLink('tnt-it', 'ZZ00000001-7')).toBe('ZZ00000001');
+    expect(trackingNumberForLink('tnt-it', 'ZZ00000001')).toBe('ZZ00000001');
+    expect(trackingNumberForLink('tnt', 'GE123456785WW')).toBe('123456785');
+    expect(trackingNumberForLink('tnt', '123456785')).toBe('123456785');
     // Pack-Man's page finds a voucher only with the hyphen after its letter.
     expect(trackingNumberForLink('pack-man', 'A00000017')).toBe('A-00000017');
     expect(trackingNumberForLink('pack-man', 'a-00000017')).toBe('A-00000017');

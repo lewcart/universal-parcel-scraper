@@ -39,7 +39,8 @@ consignments belong to [TNT](../tnt/README.md). Tracked through the lookup its t
 
 - No expected delivery: the reply's due date comes back empty.
 - A parcel released from storage under a new waybill is not followed to that waybill.
-- The tracker also takes a parcel's 15-digit reference, which the adapter does not.
+- The tracker also takes a parcel's 15-digit reference (NCOL), which the adapter does not: the
+  reply names only the waybill, so it cannot show that the parcel is the one asked.
 - OnTrac's high-confidence rule claims numbers starting `LA`, `LE`, `LH`, `LI`, `LN` or `LX`, so
   waybills from TNT Italy branches with those letters reach this adapter only when filed under
   TNT Italy.
@@ -51,7 +52,10 @@ A national waybill is two identifying letters and eight digits, as the tracking 
 tracking guide give it. Labels add a check digit after a dash, which the guide says to leave out.
 tnt.it publishes no list of branch letters, so `tnt-it-1` offers any two letters and eight digits
 as a low-confidence candidate and recognition asks the tracker. DHL eCommerce Spain, Swiss Post
-Cargo and Prompt Xpress numbers share that shape. The samples and their sources are in
+Cargo and Prompt Xpress numbers share that shape. Normalization drops the dash, which leaves a
+GLS Italy shape, so `tnt-it-check` offers TNT Italy first only when the check digit is typed after
+a dash, and the adapter and the tracking link drop the check digit. TNT does not publish how it is
+computed. The samples and their sources are in
 [`numbers.json`](numbers.json).
 
 ## Testing

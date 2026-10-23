@@ -129,6 +129,9 @@ describe('TNT international public tracking', () => {
     expect(() => parseTntExpressResponse(missing('100000002'), EXPRESS_NUMBER)).toThrow('invalid tracking response');
     expect(() => parseTntExpressResponse({ error: 'unavailable' }, EXPRESS_NUMBER)).toThrow('invalid tracking response');
     expect(() => normalizeTntExpressNumber('1000000000000001')).toThrow('9-digit');
+    // A label can print the consignment between GE and WW; tnt.com is asked for its nine digits.
+    expect(normalizeTntExpressNumber('ge 123456785 ww')).toBe('123456785');
+    expect(() => normalizeTntExpressNumber('GE123456785GB')).toThrow('9-digit');
   });
 
   it('keeps delivery, partial delivery and unfamiliar codes apart', () => {

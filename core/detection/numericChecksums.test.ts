@@ -37,6 +37,24 @@ describe('numeric checksum candidates', () => {
     expect(detectCarrierMatch('1234567890123456').candidates).toContain('tnt');
   });
 
+  it('names TNT for a consignment between GE and WW whose digits pass the modulus 11 check', () => {
+    expect(detectCarrierMatch('GE 123456785 WW')).toMatchObject({ carrier: 'tnt', confidence: 'high', candidates: ['tnt'] });
+    expect(detectCarrierMatch('GE123456784WW')).toMatchObject({ carrier: 'unknown', confidence: 'none' });
+    // A country code in place of WW stays postal: posts issue G series codes too.
+    expect(detectCarrierMatch('GE123456785GB').candidates).not.toContain('tnt');
+  });
+
+  it('offers TNT Italy first for a waybill typed with the check digit its label prints after a dash', () => {
+    for (const number of ['ZZ00000001-7', 'zz 00000001 - 7']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['tnt-it'] });
+      expect(detectCarrierMatch(number).candidates).toEqual(expect.arrayContaining(['tnt-it', 'gls-it']));
+      expect(recognitionAskedCarriers(number)[0]).toBe('tnt-it');
+    }
+    // Without the dash the same characters are a GLS Italy number.
+    expect(detectCarrierMatch('ZZ000000017').candidates).not.toContain('tnt-it');
+    expect(detectCarrierMatch('ZZ00000001-17').candidates).not.toContain('tnt-it');
+  });
+
   it('prefers FedEx for fifteen-digit Ground numbers that end in their GS1 check', () => {
     expect(detectCarrierMatch('449044304137821')).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['fedex'] });
     expect(detectCarrierMatch('449 044 304 137 821').candidates[0]).toBe('fedex');

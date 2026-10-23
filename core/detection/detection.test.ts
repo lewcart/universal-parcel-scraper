@@ -519,6 +519,18 @@ describe('carrier links limited to some pages of their host', () => {
     const other = 'https://www.logistics.dhl/it-it/home/tracking.html?tracking-id=1234567891';
     expect(parseTrackingInput(other)).toEqual(parseTrackingInput('https://example.test/it-it/home/tracking.html?tracking-id=1234567891'));
   });
+
+  it('reads TNT consignments on tnt.com tracking pages, and leaves other numbers there to detection', () => {
+    for (const page of [
+      'https://www.tnt.com/express/it_it/site/shipping-tools/tracking.html?searchType=con&cons=',
+      'https://www.tnt.com/express/en_gb/site/shipping-tools/tracking.html?respCountry=gb&respLang=en&searchType=CON&cons=',
+    ]) {
+      for (const number of ['123456785', 'GE123456785WW']) {
+        expect(parseTrackingInput(`${page}${number}`)).toMatchObject({ trackingNumber: number, carrier: 'tnt', confidence: 'high', source: 'link' });
+      }
+      expect(parseTrackingInput(`${page}123456789`).carrier).not.toBe('tnt');
+    }
+  });
 });
 
 describe('delivering partners\' links', () => {

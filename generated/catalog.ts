@@ -2037,7 +2037,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -4906,8 +4906,24 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.tnt.fr/public/suivi_colis/recherche/index.do",
     "trackingUrlTemplate": "https://www.tnt.com/express/en_gb/site/shipping-tools/tracking.html?searchType=con&cons={trackingNumber}",
     "trackingSearchUrl": "https://www.tnt.com/express/en_gb/site/shipping-tools/tracking.html",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "tnt.com"
+        ],
+        "pathPattern": "^/express/[a-z]{2}_[a-z]{2}/site/shipping-tools/tracking\\.html$",
+        "params": [
+          "cons"
+        ],
+        "ownNumbersOnly": true
+      }
+    ],
     "detectionRules": [
+      {
+        "pattern": "^GE\\d{9}WW$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
       {
         "pattern": "^\\d{9}$",
         "confidence": "low",
@@ -29636,6 +29652,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^[A-Z]{2}\\d{8}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}$",
+        "confidence": "low",
+        "rawPattern": "^[A-Z]{2} ?\\d{8} ?- ?\\d$",
+        "preferred": true
       }
     ]
   },
@@ -33045,7 +33067,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "poczta-polska": ["poczta-polska-1","poczta-polska-barcode","poczta-polska-sscc","poczta-polska-2","poczta-polska-own","poczta-polska-s10"],
   "bring-posten": ["bring-posten-1","bring-posten-2","bring-posten-3","bring-posten-4"],
   "aramex": ["aramex-1"],
-  "tnt": ["tnt-1","tnt-2"],
+  "tnt": ["tnt-upu","tnt-1","tnt-2"],
   "correos-spain": ["correos-spain-1","correos-spain-2","correos-spain-3","correos-spain-4"],
   "yanwen": ["yanwen-1","yanwen-2","yanwen-3"],
   "the-courier-guy": ["the-courier-guy-1","the-courier-guy-2"],
@@ -33670,7 +33692,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tiki": [],
   "tirupati-courier": [],
   "tmm-express": [],
-  "tnt-it": ["tnt-it-1"],
+  "tnt-it": ["tnt-it-1","tnt-it-check"],
   "today-kr": [],
   "toptrans": [],
   "torrestir": ["torrestir-1"],

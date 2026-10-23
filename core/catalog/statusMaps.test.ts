@@ -831,13 +831,14 @@ describe("universal providers' answers", () => {
     }
   });
 
-  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's, BRT's, nox's and Vinted Go's scans as their carriers read them", () => {
+  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's, BRT's, nox's, Vinted Go's and MeiHoo Pegasus's scans as their carriers read them", () => {
     for (const [wording, stage] of [['Registered and being prepared', 'registered'], ['Left the branch 12', 'in_transit'],
       ['Collo von der nox Niederlassung weiterverladen. Sendung weiterverladen', 'in_transit'],
       ['Collo is reloaded by the nox branch. Consignment reloaded', 'in_transit'],
       ["La spedizione e' regolarmente partita", 'in_transit'], ['Spedizione affidata a una FedEx Location in attesa di ritiro del corriere', 'accepted'],
       ['Tendered to International Gateway.', 'in_transit'], ['Attempted but unfinished drop off at locker', 'registered'],
-      ['Received by partner carrier', 'in_transit'], ['TURMOIL', 'exception']] as const) {
+      ['Received by partner carrier', 'in_transit'], ['Operation center is processing package information', 'registered'],
+      ['Preparing to leave Hong Kong operation center', 'in_transit'], ['TURMOIL', 'exception']] as const) {
       expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     }
     expect(answer('unknown', null, 'Left the branch office of the recipient')).toEqual(unknown);

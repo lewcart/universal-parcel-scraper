@@ -387,6 +387,10 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // A partner network taking the parcel over mid-journey, as ParcelsApp relays it between a post's export
   // scans and the destination's freight scans.
   if (/^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:(?:has been|was) )?received by (?:the |a |our )?partner carrier$/.test(text)) return 'in_transit';
+  // MeiHoo Pegasus's scans at its operation centre, as 17TRACK relays them after the order: the centre handling
+  // the package's data, which does not say it has the parcel, then the parcel about to leave the centre.
+  if (/^operation cent(?:er|re) is processing (?:the )?(?:package|parcel|shipment) information$/.test(text)) return 'registered';
+  if (/^preparing to leave (?:the )?(?:[a-z]+ ){0,3}operation cent(?:er|re)$/.test(text)) return 'in_transit';
   if (/^(?:received in office|export to foreign provider)$/.test(text)) return 'in_transit';
   // Sent on to another country: "Sent abroad".
   if (/^(?:(?:the )?(?:shipment|parcel|package|item) )?(?:(?:has been|was) )?(?:sent|dispatched|forwarded) abroad$/.test(text)) return 'in_transit';

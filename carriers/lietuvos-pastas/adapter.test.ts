@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
@@ -89,7 +90,7 @@ describe('Lietuvos paštas tracking adapter', () => {
   it('reads a row from abroad as that country’s wall clock, and names the country in English', () => {
     const result = parseLietuvosPastas(JSON.parse(text('abroad')), ABROAD);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-07-03T19:20:00+02:00',
-      last_status_text: 'The parcel is sent from the distribution center of the recipient\'s (or transit) country' });
+      last_status_text: 'The parcel is sent from the distribution center of the recipient\'s (or transit) country', destination_country: 'SI' });
     expect(result.pickup_point).toBeUndefined();
     expect(rows(result)).toEqual([
       ['2026-07-03T19:20:00+02:00', 'DEPARTED_RECEIVER_LC', 'in_transit', 'carrier_map', 'Slovenia'],
@@ -113,6 +114,20 @@ describe('Lietuvos paštas tracking adapter', () => {
       for (const row of events.slice(4)) Object.assign(row, { countryCode: 'LV', location: 'Rīga' });
     }), ABROAD);
     expect(rows(near)[0]).toEqual(['2026-07-03T19:20:00+03:00', 'DEPARTED_RECEIVER_LC', 'in_transit', 'carrier_map', 'Rīga']);
+  });
+
+  it('names the country an item sent abroad reached last, whose post is asked for the rest', () => {
+    // A transit country's centre comes before the recipient's.
+    const reached = parseLietuvosPastas(edited('abroad', (_payload, events) => {
+      Object.assign(events[4]!, { countryCode: 'DE', location: 'Vokietija' });
+      Object.assign(events[5]!, { publicEventType: 'RECEIVED_RECEIVER_LC', eventDate: '2026-07-05T09:00:00+03:00', countryCode: 'GB', location: 'Jungtinė Karalystė' });
+    }), ABROAD);
+    expect(reached.destination_country).toBe('GB');
+    expect(deliveryHandoff('lietuvos-pastas', ABROAD, reached, 'PL')).toEqual({ carrier: 'royal-mail', number: ABROAD, basis: 'destination' });
+    // Until then the export names no country, and the country the item is looked up from stands in.
+    const exported = parseLietuvosPastas(edited('abroad', (_payload, events) => { events.splice(4); }), ABROAD);
+    expect(exported.destination_country).toBeUndefined();
+    expect(deliveryHandoff('lietuvos-pastas', ABROAD, exported, 'PL')).toEqual({ carrier: 'poczta-polska', number: ABROAD, basis: 'destination' });
   });
 
   it('reads a parcel sent back as returned, without the return label’s mail, a pickup point or a door address', () => {

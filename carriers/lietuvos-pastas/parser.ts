@@ -20,6 +20,8 @@ const CODE = /^[A-Z][A-Z0-9_]{1,63}$/;
 const GUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 // The answer for a number the service does not know.
 const NO_MAIL = '00000000-0000-0000-0000-000000000000';
+// The sorting centre of the recipient's country, or of a transit country before it.
+const RECEIVER_CENTRE: ReadonlySet<string> = new Set(['RECEIVED_RECEIVER_LC', 'DEPARTED_RECEIVER_LC']);
 const STAMP = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d{1,9})?(Z|[+-]\d{2}:\d{2})$/;
 // A mail the page leaves out: the label for a customer return, not this parcel's journey.
 const RETURN_MAIL = 'return';
@@ -98,6 +100,7 @@ function placeOf(value: unknown, country: string | null): Place {
 
 interface Row {
   readonly code: string;
+  readonly country: string | null;
   readonly clock: Clock;
   readonly text: string;
   readonly place: Place;
@@ -111,7 +114,7 @@ function rowOf(value: unknown, index: number): Row {
   const country = /^[A-Z]{2}$/.test(raw) ? countryCode(raw) : null;
   const clock = clockOf(value.eventDate, country);
   if (!CODE.test(code) || !clock) throw new SchemaError(PROVIDER, 'Lietuvos paštas returned a row without a type or clock');
-  return { code, clock, text: clean(value.publicEventText, 300), place: placeOf(value.location, country), index };
+  return { code, country, clock, text: clean(value.publicEventText, 300), place: placeOf(value.location, country), index };
 }
 
 /**
@@ -192,6 +195,8 @@ export function parseLietuvosPastas(payload: unknown, rawNumber: string): Carrie
     }
   }
   const newest = events[0]!;
+  // An item sent abroad reaches the recipient's country last: its post delivers the rest.
+  const destination = scans.find(scan => RECEIVER_CENTRE.has(scan.row.code) && scan.row.country && scan.row.country !== HOME)?.row.country;
 
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
@@ -202,6 +207,7 @@ export function parseLietuvosPastas(payload: unknown, rawNumber: string): Carrie
     expected_delivery: null,
     ...(stage === 'delivered' && decider.event.time ? { delivered_at: decider.event.time } : {}),
     ...(point ? { pickup_point: point } : {}),
+    ...(destination ? { destination_country: destination } : {}),
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };

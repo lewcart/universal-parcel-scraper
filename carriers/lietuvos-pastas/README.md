@@ -38,6 +38,12 @@ Mail from abroad reaches Lietuvos paštas when a caller names it, a provider nam
 gives Lithuania as the destination of an S10 item. The service knows such items under the sending
 post's code.
 
+Mail sent abroad usually gets no further rows after the export. When the service relays the
+arrival at a sorting centre on the recipient's side, the adapter gives that country as the
+destination, so the handover asks its post for the rest. The service says such a centre can also
+be a transit country's, which comes earlier, so the newest one is taken. Before such a row a
+consumer's lookup country stands in.
+
 ## Notes
 
 Each row carries a public event type, English wording, a clock, a country and often a place. The

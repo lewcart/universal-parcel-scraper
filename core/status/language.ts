@@ -399,6 +399,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // change the receiver asked for, carried out, and a wrong company or receiver name holding the delivery.
   if (/^as requested, (?:the )?(?:ups my choice®? )?delivery change (?:was|has been) completed$|^(?:the )?(?:delivery )?address (?:was|has been) changed as (?:the )?(?:receiver|recipient) requested$/.test(text)) return 'in_transit';
   if (/^the company or receiver name is incorrect\. this will delay delivery\b/.test(text)) return 'exception';
+  // ePost Global's row a minute after the shipping data, as providers relay it, read as its own map reads it:
+  // the label, not a scan.
+  if (/^shipment in transit to (?:the )?epost global processing cent(?:er|re)$/.test(text)) return 'registered';
   if (/^(?:received in office|export to foreign provider)$/.test(text)) return 'in_transit';
   // Sent on to another country: "Sent abroad".
   if (/^(?:(?:the )?(?:shipment|parcel|package|item) )?(?:(?:has been|was) )?(?:sent|dispatched|forwarded) abroad$/.test(text)) return 'in_transit';

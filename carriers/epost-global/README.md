@@ -26,6 +26,9 @@ Tracked through the lookup its tracking page makes.
 - Rows ePost Global relays from its partner keep the partner's code, so codes collide: the map
   reads the wording. ePost Global's own wording comes first; a receipt after the parcel moved on
   is in transit, and a partner's announcement after shipping is no step back.
+- "Shipment in Transit to the ePost Global Processing Center" follows the shipping data by a
+  minute on every parcel that has it: it is the label, not a scan. The shared wording rules read
+  a universal provider's copy of it the same way.
 - A processing center's receipt and shipping scans are on the center's own clock, as PostNL's
   label times for the same parcels show, so they take the zone of the center's state. A state
   split between zones gives none. Every other row keeps its wall clock: the data rows carry no

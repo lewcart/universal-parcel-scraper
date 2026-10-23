@@ -69,8 +69,8 @@ describe('DPD Netherlands guest tracking', () => {
     expect(result.events?.map(event => event.provider_code)).toEqual([
       'PARCEL_HANDED', 'AVAILABLE_FOR_COLLECTION', 'AT_DELIVERY_CENTER', 'IN_TRANSIT',
     ]);
-    expect(result).toMatchObject({ status: 'in_transit', last_update: '2026-07-24T14:09:37+02:00' });
-    expect(result.current_stage).toBeUndefined();
+    // Handed over again after it reached the pickup point, the parcel is moving, not newly accepted.
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-07-24T14:09:37+02:00' });
   });
 
   it('returns every declared capability across the fixtures', async () => {

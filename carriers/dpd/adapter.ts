@@ -518,6 +518,8 @@ export function parseDPDTrackingApi(
     else previous = (event.stage as Stage | undefined) ?? classifyWording(event.description ?? '').stage;
   }
   const summary = events.find((event) => !NOTICE_SCANS.has(event.provider_code ?? ''));
+  // As the summary, a hand-over read as in transit names the stage: its wording alone reads as acceptance.
+  const currentStage = stage ?? (summary?.provider_code === 'PARCEL_HANDED' && summary.stage === 'in_transit' ? 'in_transit' : null);
   const statusText = summary?.description || apiDescription(currentDescription)
     || 'Tracking information received';
   const status = apiStatus(currentDescription, statusText, events.length > 0);
@@ -542,7 +544,7 @@ export function parseDPDTrackingApi(
   // and `product`, which holds the recipient's delivery preference.
   const result: CarrierResult = {
     status,
-    ...(stage ? { current_stage: stage } : {}),
+    ...(currentStage ? { current_stage: currentStage } : {}),
     last_status_text: statusText,
     last_update: events[0]?.time || apiEventTime(
       zone,

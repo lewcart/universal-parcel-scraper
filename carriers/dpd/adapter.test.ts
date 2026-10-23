@@ -528,12 +528,14 @@ describe('DPD unverified guest payload', () => {
       ],
     }, TRACKING_NUMBER, false);
     const abroad = milestones('2026-10-23T18:47:42');
-    expect(abroad).toMatchObject({ status: 'in_transit', last_status_text: 'Parcel handed to DPD' });
+    expect(abroad).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Parcel handed to DPD' });
     expect(abroad.events?.map((event) => [event.provider_code, event.stage])).toEqual([
       ['PARCEL_HANDED', 'in_transit'], ['IN_TRANSIT', undefined],
     ]);
     // Before the parcel moves, it is left to its wording.
-    expect(milestones('2026-10-22T15:15:58').events?.map((event) => [event.provider_code, event.stage])).toEqual([
+    const accepted = milestones('2026-10-22T15:15:58');
+    expect(accepted.current_stage).toBeUndefined();
+    expect(accepted.events?.map((event) => [event.provider_code, event.stage])).toEqual([
       ['IN_TRANSIT', undefined], ['PARCEL_HANDED', undefined],
     ]);
   });

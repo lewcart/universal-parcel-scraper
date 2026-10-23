@@ -65,7 +65,9 @@ signal.
   exchange inside DPD's systems seen before the parcel reached the origin depot.
 - When DPD's unit in another country takes the parcel, the group's history
   dates `PARCEL_HANDED` anew, after the parcel's later milestones. Dated after
-  one of them, it is that hand-off between units and reads as in transit.
+  one of them, it is that hand-off between units and reads as in transit, as
+  does the parcel's current stage while it is the newest milestone: its label
+  alone would read as acceptance.
 - A proof-of-delivery bookkeeping entry is omitted when the actual delivery
   scan exists, so it cannot shift the delivery time. Delivery estimates are
   omitted after completion or an exception.

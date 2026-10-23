@@ -27,7 +27,7 @@ function fixture(options = {}) {
   page.getByRole = () => ({ locator: () => ({ first: () => ({ evaluate: async () => { refreshes++; await options.refresh?.(); } }) }) });
   page.mouse = { move: async () => { moves++; await options.move?.(); }, down: async () => { downs++; }, up: async () => { ups++; await options.up?.(); } };
   page.mouse.click = async (x, y) => { clicks.push({ x, y }); await options.click?.(clicks.length); };
-  const controller = attachSwiftxSlider(page, NUMBER, { solve: async () => null, ...options });
+  const controller = attachSwiftxSlider(page, NUMBER, { solve: async () => null, onVerification: () => {}, ...options });
   const respond = async (payload, request = imageQuery, { status = 200, headers = {}, read, url = API } = {}) => {
     page.emit('response', { url: () => url, status: () => status, headers: () => ({ 'content-type': 'application/json', ...headers }),
       request: () => ({ method: () => 'POST', postDataJSON: () => request }), body: read ?? (async () => Buffer.from(JSON.stringify({ data: payload }))) });
@@ -42,6 +42,66 @@ test('maps each icon through the rendered image and refuses incomplete or repeat
   assert.deepEqual(swiftxIconClicks(geometry, plan, 2), [{ x: 60, y: 150 }, { x: 240, y: 80 }]);
   for (const points of [[], [plan.points[0]], [plan.points[0], plan.points[0]], [{ x: 600, y: 50 }, plan.points[1]],
     [{ x: 80, y: NaN }, plan.points[1]]]) assert.equal(swiftxIconClicks(geometry, { points }, 2), null);
+});
+
+test('reports bound image verification once without its number, digest, images or token', async () => {
+  const reports = []; let f, requested = false;
+  f = fixture({ onVerification: row => reports.push(row), solve: async () => ({ x: 200 }),
+    up: () => f.respond({ verifyOfficialTrackingSlider: { success: true, sliderToken: 'PRIVATE_TOKEN' } }, verifyQuery()) });
+  await f.respond({ getOfficialTrackingSliderCaptcha: challenge() });
+  await f.controller.prepare(6000, () => requested);
+  requested = true;
+  f.controller.dispose(); f.controller.dispose();
+  assert.equal(reports.length, 1);
+  const { durationMs, ...row } = reports[0];
+  assert.ok(Number.isInteger(durationMs) && durationMs >= 0);
+  assert.deepEqual(row, { host: 'swiftx-express.com', puzzleType: 'SLIDER', outcome: 'verified', prepared: true,
+    attempts: 1, generations: 1, verified: true, trackingRequested: true, pendingReads: 0,
+    cancelled: false, timedOut: false });
+  for (const value of [NUMBER, digest, 'PRIVATE_TOKEN', 'SYNTHETIC_A', 'data:image']) assert.equal(JSON.stringify(reports).includes(value), false);
+});
+
+test('distinguishes unresolved analysis, missing geometry and an unsupported puzzle without logging its data', async () => {
+  for (const mode of ['analysis', 'geometry', 'unsupported']) {
+    const reports = []; let f;
+    f = fixture({ onVerification: row => reports.push(row),
+      solve: async () => mode === 'geometry' ? { x: 200 } : null,
+      refresh: () => f.respond({ getOfficialTrackingSliderCaptcha: challenge('SYNTHETIC_B', 'ROTATE') }) });
+    if (mode === 'geometry') f.page.evaluate = async () => null;
+    await f.respond({ getOfficialTrackingSliderCaptcha: challenge('PRIVATE_CAPTCHA', mode === 'unsupported' ? 'PRIVATE_TYPE' : 'SLIDER') });
+    await f.controller.prepare(mode === 'unsupported' ? 0 : 8000);
+    f.controller.dispose();
+    assert.equal(reports.length, 1);
+    assert.equal(reports[0].outcome, { analysis: 'analysis_unresolved', geometry: 'geometry_unavailable', unsupported: 'invalid_challenge' }[mode]);
+    assert.equal(reports[0].puzzleType, mode === 'unsupported' ? 'other' : 'ROTATE');
+    assert.equal(reports[0].attempts, mode === 'unsupported' ? 0 : 2);
+    assert.equal(reports[0].verified, false);
+    assert.equal(JSON.stringify(reports).includes('PRIVATE'), false);
+  }
+});
+
+test('reports an unobserved page check safely, leaves clear lookups quiet and closes despite reporter failure', async t => {
+  const logs = []; t.mock.method(console, 'warn', value => logs.push(JSON.parse(value)));
+  const page = new EventEmitter(), controller = attachSwiftxSlider(page, NUMBER);
+  await controller.prepare(0); controller.dispose(); controller.dispose();
+  assert.equal(logs.length, 1);
+  assert.equal(logs[0].event, 'swiftx.verification');
+  assert.equal(logs[0].puzzleType, 'none'); assert.equal(logs[0].outcome, 'not_seen');
+  assert.equal(logs[0].attempts, 0); assert.equal(logs[0].trackingRequested, false);
+  assert.equal(JSON.stringify(logs).includes(NUMBER), false);
+  const reports = [], clear = fixture({ onVerification: row => reports.push(row) });
+  await clear.controller.prepare(0, () => true); clear.controller.dispose();
+  assert.deepEqual(reports, []);
+  const unprepared = fixture({ onVerification: row => reports.push(row) });
+  unprepared.controller.dispose(); assert.deepEqual(reports, []);
+  const earlyImage = fixture({ onVerification: row => reports.push(row) });
+  await earlyImage.respond({ getOfficialTrackingSliderCaptcha: challenge() });
+  earlyImage.controller.dispose();
+  assert.equal(reports[0].prepared, false); assert.equal(reports[0].trackingRequested, null);
+  const failed = fixture({ onVerification: () => { throw new Error('PRIVATE'); } });
+  await failed.controller.prepare(0);
+  failed.controller.dispose();
+  assert.equal(failed.page.listenerCount('response'), 0); assert.equal(failed.page.listenerCount('close'), 0);
 });
 
 test('clicks the ordered icons through the official UI and requires bound verification', async () => {

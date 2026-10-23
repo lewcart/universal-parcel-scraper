@@ -26,6 +26,9 @@ cannot read one.
 ZTO solves Dingxiang's slider and ordered-character challenge locally, with at most two
 concurrent offline OCR workers. Each worker ends with its request and retains no images.
 Verification failures and the public tracker's incomplete history still need enabled providers.
+SwiftX emits a `swiftx.verification` warning for an observed image challenge or
+an unresolved prepared page, using fixed puzzle types, outcome labels and counts.
+It retains no images, answers, tracking identifiers or verification tokens.
 China Post reads its ordered-character prompt offline, submits the anonymous preview form
 and retains only scan state labels and local clocks. If the entry form fails to load,
 it reloads the official page once before sending any tracking request. An identified

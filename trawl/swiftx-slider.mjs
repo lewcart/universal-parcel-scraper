@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const API = 'https://swiftx-express.com/api/graphql';
 const MAX_IMAGE = 1_500_000;
 let active = 0;
+const reportVerification = fields => console.warn(JSON.stringify({ level: 'warn', event: 'swiftx.verification', ...fields }));
 
 /** Disposable image analysis, with no number, session or verification token. */
 export function locateSwiftxSlider(challenge, signal, timeoutMs) {
@@ -117,12 +118,14 @@ export function swiftxIconClicks(geometry, plan, count) {
 }
 
 /** Observe before navigation; only the official UI obtains and submits verification. */
-export function attachSwiftxSlider(page, number, { signal: parent, solve = locateSwiftxSlider } = {}) {
+export function attachSwiftxSlider(page, number, { signal: parent, solve = locateSwiftxSlider, onVerification = reportVerification } = {}) {
   const stopped = new AbortController();
   const signal = parent ? AbortSignal.any([parent, stopped.signal]) : stopped.signal;
   const digest = createHash('sha256').update(number).digest('hex');
   let current, generation = 0, verified = false, refusal, disposed = false, reads = 0;
   let deadline = 0, attempted = 0, seen = 0, running, hasRequest = () => false, onRefusal;
+  const started = Date.now();
+  let sawImage = false, prepared = false, puzzleType = 'none', outcome = 'not_seen';
   const remaining = () => Math.max(0, deadline - Date.now());
   const refused = value => { refusal = value; onRefusal?.(value); };
   const pending = new Set();
@@ -137,9 +140,10 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
     const verification = /\bverifyOfficialTrackingSlider\b/.test(query) && current
       && request.variables?.input?.captchaId === current.captchaId && request.variables?.input?.bindingDigest === digest;
     if (!image && !verification) return;
+    if (image) { sawImage = true; outcome = 'image_unreadable'; }
     const status = response.status(), headers = response.headers();
     if (status !== 200) {
-      if (status >= 400) refused({ status, retryAfter: headers['retry-after'] });
+      if (status >= 400) { outcome = 'http_refused'; refused({ status, retryAfter: headers['retry-after'] }); }
       return;
     }
     const length = Number(headers['content-length'] ?? 0);
@@ -151,17 +155,20 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
       try { payload = JSON.parse(body.toString('utf8'))?.data; } catch { return; }
       if (image) {
         const challenge = payload?.getOfficialTrackingSliderCaptcha;
-        if (challenge?.errorCode === 'SLIDER_FETCH_RATE_LIMITED') refused({ status: 429 });
+        puzzleType = ['SLIDER', 'ROTATE', 'CONCAT', 'ICON_CLICK'].includes(challenge?.type) ? challenge.type : 'other';
+        outcome = 'invalid_challenge';
+        if (challenge?.errorCode === 'SLIDER_FETCH_RATE_LIMITED') { outcome = 'rate_limited'; refused({ status: 429 }); }
         if (validChallenge(challenge)) {
           current = Object.fromEntries(['captchaId', 'type', 'backgroundImage', 'templateImage', 'backgroundImageWidth',
             'backgroundImageHeight', 'templateImageWidth', 'templateImageHeight', 'concatTopHeight', 'clickCount']
             .map(key => [key, challenge[key]]));
-          generation++; verified = false; startDrive();
+          generation++; verified = false; outcome = 'received'; startDrive();
         }
       } else {
         const result = payload?.verifyOfficialTrackingSlider;
         // The issued token is consumed by the page's callback and never returned.
         verified = result?.success === true && typeof result.sliderToken === 'string' && result.sliderToken.length > 0;
+        outcome = verified ? 'verified' : 'verification_refused';
       }
     }).catch(() => {}).finally(() => pending.delete(read));
     pending.add(read);
@@ -170,11 +177,19 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
     if (disposed) return;
     disposed = true; stopped.abort(); current = undefined;
     page.off('response', onResponse); page.off('close', dispose);
+    // Fixed labels distinguish page checks from image analysis and carrier
+    // refusal. Never include the challenge, answer, digest or tracking number.
+    try {
+      const trackingRequested = prepared ? Boolean(hasRequest()) : null;
+      if (sawImage || (prepared && !trackingRequested)) onVerification({ host: 'swiftx-express.com', puzzleType, outcome, prepared,
+        attempts: attempted, generations: generation, verified, trackingRequested, pendingReads: pending.size,
+        cancelled: parent?.aborted === true, timedOut: deadline > 0 && remaining() === 0, durationMs: Date.now() - started });
+    } catch { /* Diagnostics cannot affect cleanup or tracking. */ }
   };
   page.on('response', onResponse); page.on('close', dispose);
   function startDrive() {
     if (!running && current && remaining() > 3500 && !disposed && !signal.aborted && !refusal) {
-      running = drive().catch(() => {}).finally(() => { running = undefined; });
+      running = drive().catch(() => { if (!disposed && !signal.aborted) outcome = 'automation_error'; }).finally(() => { running = undefined; });
     }
   }
   async function drive() {
@@ -190,10 +205,12 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
       const drag = swiftxSliderDrag(geometry, plan);
       const clicks = challenge.type === 'ICON_CLICK' && swiftxIconClicks(geometry, plan, challenge.clickCount);
       if (!drag && !clicks) {
+        outcome = !plan ? 'analysis_unresolved' : !geometry ? 'geometry_unavailable' : 'plan_rejected';
         if (attempted >= 2 || remaining() < 5000) break;
         await page.getByRole('dialog').locator('button').first().evaluate(button => button.click());
         continue;
       }
+      outcome = 'input_started';
       if (clicks) {
         for (const point of clicks) {
           if (disposed || signal.aborted || remaining() < 1000 || current !== challenge
@@ -215,6 +232,7 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
   }
   return { dispose,
     async prepare(budgetMs, requested = () => false, retainRefusal) {
+      prepared = true;
       deadline = Date.now() + Math.max(0, budgetMs - 1000);
       hasRequest = requested; onRefusal = retainRefusal;
       if (refusal) { onRefusal?.(refusal); return refusal; }

@@ -364,6 +364,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "seko": 854,
   "sendex": 794,
   "sending": 891,
+  "sendle": 64,
   "serpost": 893,
   "servientrega": 979,
   "seur": 870,

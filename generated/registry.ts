@@ -234,6 +234,7 @@ import { adapter as geis } from '../carriers/geis/adapter.js';
 import { adapter as genikiTaxydromiki } from '../carriers/geniki-taxydromiki/adapter.js';
 import { adapter as geodis } from '../carriers/geodis/adapter.js';
 import { adapter as geodisPl } from '../carriers/geodis-pl/adapter.js';
+import { adapter as gigLogistics } from '../carriers/gig-logistics/adapter.js';
 import { adapter as globalpost } from '../carriers/globalpost/adapter.js';
 import { adapter as glsCh } from '../carriers/gls-ch/adapter.js';
 import { adapter as glsDe } from '../carriers/gls-de/adapter.js';
@@ -483,6 +484,7 @@ import { adapter as seino } from '../carriers/seino/adapter.js';
 import { adapter as seko } from '../carriers/seko/adapter.js';
 import { adapter as sendex } from '../carriers/sendex/adapter.js';
 import { adapter as sending } from '../carriers/sending/adapter.js';
+import { adapter as sendle } from '../carriers/sendle/adapter.js';
 import { adapter as serpost } from '../carriers/serpost/adapter.js';
 import { adapter as servientrega } from '../carriers/servientrega/adapter.js';
 import { adapter as seur } from '../carriers/seur/adapter.js';
@@ -848,6 +850,7 @@ export const REGISTRY: RegistryDefinition = {
     "geniki-taxydromiki": genikiTaxydromiki,
     "geodis": geodis,
     "geodis-pl": geodisPl,
+    "gig-logistics": gigLogistics,
     "globalpost": globalpost,
     "gls-ch": glsCh,
     "gls-de": glsDe,
@@ -1097,6 +1100,7 @@ export const REGISTRY: RegistryDefinition = {
     "seko": seko,
     "sendex": sendex,
     "sending": sending,
+    "sendle": sendle,
     "serpost": serpost,
     "servientrega": servientrega,
     "seur": seur,
@@ -1518,7 +1522,7 @@ export const REGISTRY: RegistryDefinition = {
     "ghana-post": "universal",
     "ghn": "universal",
     "ghtk": "universal",
-    "gig-logistics": "universal",
+    "gig-logistics": "gig-logistics",
     "globalpost": "globalpost",
     "gls-at": "gls-de",
     "gls-ch": "gls-ch",
@@ -1848,7 +1852,7 @@ export const REGISTRY: RegistryDefinition = {
     "seko": "seko",
     "sendex": "sendex",
     "sending": "sending",
-    "sendle": "universal",
+    "sendle": "sendle",
     "serpost": "serpost",
     "servientrega": "servientrega",
     "seur": "seur",

@@ -211,6 +211,7 @@ import { statusMap as gebruederWeiss } from '../../carriers/gebrueder-weiss/stat
 import { statusMap as geis } from '../../carriers/geis/status.js';
 import { statusMap as geodisPl } from '../../carriers/geodis-pl/status.js';
 import { statusMap as geniki } from '../../carriers/geniki-taxydromiki/status.js';
+import { statusMap as gigLogistics } from '../../carriers/gig-logistics/status.js';
 import { statusMap as glsEs } from '../../carriers/gls-es/status.js';
 import { statusMap as glsIt } from '../../carriers/gls-it/status.js';
 import { statusMap as goExpress } from '../../carriers/go-express/status.js';
@@ -431,6 +432,7 @@ import { statusMap as saudiPost } from '../../carriers/saudi-post/status.js';
 import { statusMap as seino } from '../../carriers/seino/status.js';
 import { statusMap as seko } from '../../carriers/seko/status.js';
 import { statusMap as sendex } from '../../carriers/sendex/status.js';
+import { statusMap as sendle } from '../../carriers/sendle/status.js';
 import { statusMap as sending } from '../../carriers/sending/status.js';
 import { statusMap as serpost } from '../../carriers/serpost/status.js';
 import { statusMap as servientrega } from '../../carriers/servientrega/status.js';
@@ -586,7 +588,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
   fleetex, fleetoptics, flippost, followmont, 'forward-air': forwardAir, 'forza-delivery': forzaDelivery, 'four-px': fourPx, foxpost, 'franch-express': franchExpress, fukuyama, gaash, gati, gdex,
-  'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
+  'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gig-logistics': gigLogistics, 'gls-es': glsEs, 'gls-it': glsIt,
   globalpost, 'gms-worldwide': gmsWorldwide, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
   'grand-slam-express': grandSlamExpress, 'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, 'gtl-goto': gtlGoto, guatex, gzyl,
   hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress,
@@ -621,7 +623,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech,
   rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
-  'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket,
+  'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sendle, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket,
   'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'skroutz-last-mile': skroutzLastMile,
   skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
   'slovak-parcel-service': slovakParcelService,

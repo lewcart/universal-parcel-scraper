@@ -15152,7 +15152,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Lagos",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gig-logistics",
+      "localClocks": true
     },
     "canaryUrl": "https://giglogistics.com/track-shipment/",
     "trackingUrlTemplate": "https://giglogistics.com/track-shipment/?waybill={trackingNumber}",
@@ -26525,7 +26526,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sendle",
+      "recognitionRank": 64,
+      "localClocks": true
     },
     "canaryUrl": "https://www.sendle.com/",
     "trackingUrlTemplate": "https://www.sendle.com/tracking?ref={trackingNumber}",

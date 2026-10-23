@@ -212,6 +212,50 @@
         ]
       },
       "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker finds two road shipments for it. Its GS1 company prefix, 4043366, is a German manufacturer's, so the SSCC names the shipper."
+    },
+    {
+      "number": "DEFRG406638007",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240611120745/https://www.dbschenker.com/app/tracking-public/?refNumber=DEFRG406638007&refType=Stt&origin=booking-details&originId=240611-002260&language_region=en-US_US",
+        "date": "2024-06-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dsv"
+        ]
+      },
+      "note": "An archived link to DB Schenker's public tracking page asks for it as an STT. Its first two letters are a country code."
+    },
+    {
+      "number": "FRAMI900007038",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240322161136/https://www.dbschenker.com/app/tracking-public/?refNumber=FRAMI900007038&refType=Stt&language_region=de-DE_DE",
+        "date": "2024-03-22",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dsv"
+        ]
+      },
+      "note": "An archived link to DB Schenker's public tracking page asks for it as an STT. Its first two letters are a country code."
     }
   ]
 }

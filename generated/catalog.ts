@@ -12271,7 +12271,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^(?:AL|AT|BA|BE|BG|CH|CY|CZ|DE|DK|EE|ES|FI|FR|GB|GR|HR|HU|IE|IS|IT|LI|LT|LU|LV|MD|ME|MK|MT|NL|NO|PL|PT|RO|RS|SE|SI|SK|TR|UA)[A-Z]{3}\\d{9}$",
+        "confidence": "low"
+      }
+    ]
   },
   "dx": {
     "displayName": "DX",
@@ -33171,7 +33176,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dragon-star-curier": [],
   "drop2shop": ["drop2shop-1"],
   "dropp": [],
-  "dsv": [],
+  "dsv": ["dsv-stt"],
   "dx": ["dx-1"],
   "dynalogic": [],
   "early-bird": ["early-bird-1"],

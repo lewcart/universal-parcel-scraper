@@ -305,7 +305,7 @@ describe('DSV tracking adapter', () => {
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
   });
 
-  it('routes a shipment filed under DSV to the adapter, which detection never offers and recognition never asks', async () => {
+  it('routes a shipment filed under DSV to the adapter, which detection never names and recognition never asks', async () => {
     const fetcher = routes('search-road', null, 'statuses-road');
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: BOOKING, carrier: 'dsv' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'dsv', source: 'dsv', result: { current_stage: 'accepted' } });
@@ -365,6 +365,16 @@ describe('DSV former DB Schenker tracker', () => {
     await expect(createTracker({ fetcher: routed, providers: [], env: {} }).track({ number: STT, carrier: 'dsv' }))
       .resolves.toMatchObject({ carrier: 'dsv', source: 'dsv', result: { current_stage: 'failed_attempt' } });
     expect(routed).toHaveBeenCalledTimes(3);
+  });
+
+  it('is offered with low confidence for a long STT under a European country code, and for no other layout', () => {
+    for (const number of ['FRABC123456789', 'DEXYZ000000001']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dsv'] });
+      expect(dsvSchenkerRoute(number)).toBe('stt');
+    }
+    for (const number of ['CNABC123456789', 'FRABC12345678', 'FRABC1234567890', 'FRAB1123456789']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('dsv');
+    }
   });
 
   it('asks the former tracker only for an STT or a package SSCC', async () => {

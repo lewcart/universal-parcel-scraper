@@ -80,5 +80,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "dsv-stt",
+      "pattern": "^(?:AL|AT|BA|BE|BG|CH|CY|CZ|DE|DK|EE|ES|FI|FR|GB|GR|HR|HU|IE|IS|IT|LI|LT|LU|LV|MD|ME|MK|MT|NL|NO|PL|PT|RO|RS|SE|SI|SK|TR|UA)[A-Z]{3}\\d{9}$",
+      "confidence": "low"
+    }
+  ]
 }

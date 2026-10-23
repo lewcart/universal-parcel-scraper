@@ -108,10 +108,13 @@ export function parseDHLTrackingResponse(payload: unknown, trackingNumber: strin
   });
   if (matches.length !== 1) throw new SchemaError(PROVIDER, 'DHL did not return one matching shipment');
   const shipment = matches[0]!;
-  if (shipment.plzBenoetigt === true || shipment.versandDatumBenoetigt === true) {
-    throw new InputRequiredError(PROVIDER, 'a postcode or shipping date', 'DHL requires additional verification on its tracking website');
-  }
   const missing = isRecord(shipment.sendungNichtGefunden) ? shipment.sendungNichtGefunden : {};
+  if (shipment.plzBenoetigt === true || shipment.versandDatumBenoetigt === true) {
+    // DHL asks the recipient's postcode to show a parcel it holds; a record it also calls not found names none.
+    const held = shipment.plzBenoetigt === true && !Object.values(missing).some((flag) => flag === true);
+    throw new InputRequiredError(PROVIDER, 'a postcode or shipping date', 'DHL requires additional verification on its tracking website',
+      held ? { reason: 'parcel_found' } : undefined);
+  }
   // DHL Paket's tracker answered that it holds no Paket shipment under the number. Another DHL
   // service may still know it, so it stays inconclusive, but it is an answer, not an outage.
   if (missing.keineDhlPaketSendung === true || missing.sendungsnummerNichtSuchbar === true) {
@@ -303,8 +306,8 @@ export class DHLTracker {
   /**
    * Whether DHL Paket knows the number, over HTTP alone: the direct session,
    * renewed as for a lookup, and never the browser. DHL's explicit no-data
-   * answer is unknown; a rejected session, another DHL service or a postcode
-   * request stays inconclusive.
+   * answer is unknown; a postcode request for a parcel DHL holds is known; a
+   * rejected session or another DHL service stays inconclusive.
    */
   async recognizes(trackingNumber: string, context: TrackingContext = {}): Promise<Recognition> {
     return takeTurn(this.serialize, 'dhl', context, (left) => {

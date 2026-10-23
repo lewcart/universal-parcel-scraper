@@ -222,6 +222,13 @@ describe('DHL public tracking normalization', () => {
 
   it('does not silently treat other DHL services or required verification as unannounced', () => {
     expect(() => parseDHLTrackingResponse({ sendungen: [{ id: NUMBER, plzBenoetigt: true }] }, NUMBER)).toThrow('verification');
+    // A postcode request is a parcel DHL holds, unless the record also says DHL has none.
+    expect(() => parseDHLTrackingResponse({ sendungen: [{ id: NUMBER, plzBenoetigt: true, sendungNichtGefunden: { keineDatenVerfuegbar: false } }] }, NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'input_required', reason: 'parcel_found' }));
+    for (const shipment of [{ plzBenoetigt: true, sendungNichtGefunden: { keineDhlPaketSendung: true } }, { versandDatumBenoetigt: true }]) {
+      expect(() => parseDHLTrackingResponse({ sendungen: [{ id: NUMBER, ...shipment }] }, NUMBER))
+        .toThrow(expect.objectContaining({ kind: 'input_required', reason: undefined }));
+    }
     expect(() => parseDHLTrackingResponse({ sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDhlPaketSendung: true } }] }, NUMBER)).toThrow('own tracking website');
     for (const missing of [{ keineDhlPaketSendung: true, keineDatenVerfuegbar: true }, { sendungsnummerNichtSuchbar: true }]) {
       expect(() => parseDHLTrackingResponse({ sendungen: [{ id: NUMBER, sendungNichtGefunden: missing }] }, NUMBER))
@@ -403,13 +410,15 @@ describe('DHL sessions and browser fallback', () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
-  it('recognizes a parcel DHL has scanned and not one it has no data for', async () => {
+  it('recognizes a parcel DHL has scanned or holds behind a postcode, and not one it has no data for', async () => {
     vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()))
-      .mockResolvedValueOnce(Response.json({ sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDatenVerfuegbar: true } }] }));
+      .mockResolvedValueOnce(Response.json({ sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDatenVerfuegbar: true } }] }))
+      .mockResolvedValueOnce(Response.json({ sendungen: [{ id: NUMBER, plzBenoetigt: true }] }));
     const tracker = new DHLTracker({ trawl: null });
     expect(await tracker.recognizes(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-08-10T16:30:00.000Z' });
     expect(await tracker.recognizes(NUMBER)).toEqual({ known: false, lastActivityAt: null });
+    expect(await tracker.recognizes(NUMBER)).toEqual({ known: true, lastActivityAt: null });
   });
 
   it('keeps recognition inconclusive without opening the browser', async () => {

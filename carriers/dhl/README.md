@@ -120,7 +120,9 @@ once.
 
 - Shipments that need a postcode or shipping date on DHL's site, and numbers
   belonging to another DHL service, are explicit errors, not "not yet
-  announced". When DHL Paket says it holds no Paket shipment under the number,
+  announced". A postcode request on a record with no "not found" flag carries the
+  reason `parcel_found`: DHL holds the parcel, so recognition counts the number as
+  known. When DHL Paket says it holds no Paket shipment under the number,
   the inconclusive error carries the reason `portal_not_found`, so a consumer
   can tell DHL's answer from an outage.
 - No weight, dimensions, sender or pickup-point data is read.

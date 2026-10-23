@@ -7,6 +7,10 @@ const CODES = new Map<string, Stage>([
   ['P-145', 'exception'], ['P-175', 'in_transit'], ['P-8', 'in_transit'],
   ['P-51', 'ready_for_pickup'], ['P-14', 'out_for_delivery'],
   ['P-53', 'delivered'], ['CLC12', 'delivered'],
+  // An item announced before the counter takes it, then the inbound leg at the destination: arrival
+  // in its country, import customs, the onward dispatch and the delivery depot holding it.
+  ['CLC0', 'registered'], ['CLC55', 'in_transit'],
+  ['P-10', 'in_transit'], ['P-78', 'customs'], ['P-65', 'in_transit'], ['P-143', 'in_transit'],
 ]);
 
 export function emiratesPostStage(code: string, description: string): ClassifiedWording | null {

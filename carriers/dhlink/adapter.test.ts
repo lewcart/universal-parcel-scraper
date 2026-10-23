@@ -330,6 +330,8 @@ describe('DHLink status vocabulary', () => {
     // The hand-over to the US partner is no delivery.
     expect(statusMapAnswer({ carrier: 'dhlink', providerCode: null, description: '货物已交UPS/USPS/Fedex,The goods have been delivered to UPS/USPS/Fedex' }))
       .toEqual({ kind: 'mapped', stage: 'in_transit' });
+    // Nor is the collection at the destination port.
+    expect(dhlinkStage('', '', '目的港已提货 Delivery has been made at the destination port')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
     expect(statusMapAnswer({ carrier: 'dhlink', providerCode: 'SYNTHETIC', description: 'Synthetic note' })).toEqual({ kind: 'unknown' });
     expect(statusMapAnswer({ carrier: 'dhlink', providerCode: 'J014', description: 'Shipment has delivered at …' })).toEqual({ kind: 'mapped', stage: 'delivered' });
   });

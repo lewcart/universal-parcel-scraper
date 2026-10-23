@@ -53,6 +53,7 @@
     {"wording": "送交出口海关", "stage": "customs", "language": "zh", "confirmedBy": "live", "note": "Presented to export customs."},
     {"wording": "出口海关/放行", "stage": "in_transit", "language": "zh", "confirmedBy": "live", "note": "Released by export customs; transit resumes."},
     {"wording": "到达寄达地", "stage": "in_transit", "language": "zh", "confirmedBy": "live", "note": "Arrived in the destination country."},
+    {"wording": "目的港已提货 Delivery has been made at the destination port", "stage": "in_transit", "language": "zh", "confirmedBy": "live", "note": "Collected at the destination port after import clearance, before the destination's own scans; the English says a delivery, which it is not."},
     {"wording": "到达寄达地处理中心", "stage": "in_transit", "language": "zh", "confirmedBy": "live", "note": "Arrived at the destination's processing centre."},
     {"wording": "离开【GB】处理中心", "stage": "in_transit", "language": "zh", "confirmedBy": "live", "note": "Left the destination's processing centre."},
     {"wording": "【GB】安排投递", "stage": "out_for_delivery", "language": "zh", "confirmedBy": "live", "note": "Out for delivery abroad; any country."},

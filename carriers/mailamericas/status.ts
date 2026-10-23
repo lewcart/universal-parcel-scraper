@@ -51,9 +51,10 @@ export function mailamericasMappedStage(code: string): Stage | undefined {
   return CODES.get(code.toUpperCase());
 }
 
-// Tax ID checks (SM), notices (AV) and the record of a prepaid duty (AD-4,
-// seen while the parcel was still at the origin warehouse) move nothing.
-const NOTICE = /^(?:SM-|AV-|AD-4$)/i;
+// Tax ID checks (SM), notices (AV), the record of a prepaid duty (AD-4,
+// seen while the parcel was still at the origin warehouse) and a delivery
+// moved to a later round (LM-11) move nothing.
+const NOTICE = /^(?:SM-|AV-|AD-4$|LM-11$)/i;
 
 /** A scan's stage: its code, else the shared wording rules, else nothing. */
 export function mailamericasStage(code: string, wording: string): ClassifiedWording | null {
@@ -73,5 +74,6 @@ export const statusMap: CarrierStatusMap = {
     { code: 'SM-9', note: 'The buyer\'s details form received, logged again every half hour while the parcel moves on; it moves nothing.' },
     { code: 'AD-4', note: 'The import duty recorded as paid, which can come while the parcel is still at the origin warehouse; it moves nothing.' },
     { code: 'AV-1', note: 'A notice that adds information to the history; it moves nothing.' },
+    { code: 'LM-11', note: 'The delivery moved to a later round, logged after a round or beside the next one, which can deliver; it names no attempt and moves nothing.' },
   ],
 };

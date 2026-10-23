@@ -93,6 +93,8 @@ const PATTERNS: readonly (readonly [RegExp, Stage])[] = [
   [/已出口直封$/, 'in_transit'],
   [/^出口海关\/放行$/, 'in_transit'],
   [/^到达寄达地(?:处理中心)?$/, 'in_transit'],
+  // Collected at the destination port after import clearance, though its English says a delivery was made.
+  [/^目的港已提货/, 'in_transit'],
   [/^离开【[^】]*】处理中心$/, 'in_transit'],
   [/^送交出口海关$/, 'customs'],
   [/安排投递$/, 'out_for_delivery'],

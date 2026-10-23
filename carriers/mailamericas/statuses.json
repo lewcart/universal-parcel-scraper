@@ -40,6 +40,7 @@
     {"code": "LM-5", "wording": "Delivery office: Returned for failed delivery", "language": "en", "stage": "returned", "confirmedBy": "live"},
     {"code": "LM-7", "wording": "Delivery office: Recipient Absent", "language": "en", "stage": "failed_attempt", "confirmedBy": "live"},
     {"code": "LM-9", "wording": "Delivery office: Wrong delivery address", "language": "en", "stage": "failed_attempt", "confirmedBy": "live", "note": "The parcel went out again and was delivered in the history seen."},
+    {"code": "LM-11", "wording": "Delivery office: Rescheduling", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "After a round with the postman, and again beside the next round, which delivered the parcel; it names no attempt."},
     {"code": "PF-1", "wording": "Finished: Delivered", "language": "en", "stage": "delivered", "confirmedBy": "live"},
     {"code": "PF-2", "wording": "Finished: Delivered to return address", "language": "en", "stage": "returned", "confirmedBy": "live", "note": "The summary's status reads returned."},
     {"code": "RT-1", "wording": "Return-Destruction: Received at return Warehouse", "language": "en", "stage": "returned", "confirmedBy": "live", "note": "The summary's status reads returned."},

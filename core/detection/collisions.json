@@ -1201,6 +1201,15 @@
     "carriers": [
       "bpost",
       "ecoscooting",
+      "poczta-polska"
+    ],
+    "reason": "An SSCC under Poczta Polska's GS1 prefix with a valid check digit is its barcode without the 00, which bpost and Ecoscooting match broadly; Poczta Polska is preferred and recognition asks it first."
+  },
+  {
+    "shape": "9{18}",
+    "carriers": [
+      "bpost",
+      "ecoscooting",
       "paack"
     ],
     "reason": "Paack's preferred rule takes 5340 and fourteen digits, which bpost and Ecoscooting match broadly; Paack comes first, and none is selected."

@@ -4752,6 +4752,12 @@ export const CARRIER_CATALOG = {
         "preferred": true
       },
       {
+        "pattern": "^\\d5900773\\d{10}$",
+        "confidence": "low",
+        "checksum": "gs1",
+        "preferred": true
+      },
+      {
         "pattern": "^PX\\d{10}$",
         "confidence": "high"
       },
@@ -33031,7 +33037,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ninja-van": ["ninja-van-1","ninja-van-2","ninja-van-3"],
   "china-post": ["china-post-1","china-post-zs","china-post-zc","china-post-za"],
   "packeta": ["packeta-1","packeta-packet-id"],
-  "poczta-polska": ["poczta-polska-1","poczta-polska-barcode","poczta-polska-2","poczta-polska-s10"],
+  "poczta-polska": ["poczta-polska-1","poczta-polska-barcode","poczta-polska-sscc","poczta-polska-2","poczta-polska-s10"],
   "bring-posten": ["bring-posten-1","bring-posten-2","bring-posten-3","bring-posten-4"],
   "aramex": ["aramex-1"],
   "tnt": ["tnt-1","tnt-2"],

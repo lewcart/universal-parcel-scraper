@@ -12,14 +12,16 @@ Poczta Polska.
 The adapter reads public widget configuration from eMonitoring, then requests
 one parcel's history. No account or browser is required. Both returned parcel
 identifiers must match. A 19-digit reference receives the same check digit that
-the official widget appends before lookup.
+the official widget appends before lookup. Eighteen digits are the barcode's SSCC
+without the GS1 application identifier `00` that labels print apart, so the
+adapter puts it back; the service answers that parcel only under the whole barcode.
 
 Local detection checks complete numeric barcodes against the
 [widget's check-digit calculation](https://emonitoring.poczta-polska.pl/widget/widget.tracking.min.js).
-Only 20-digit barcodes under Poczta Polska's GS1 prefix `5900773` are
-prioritized; other SSCCs belong to their shippers. Passing checks prioritize a
-candidate without confirming a shipment. Shorter
-aliases have no check digit to validate and remain shape-based suggestions.
+Only barcodes under Poczta Polska's GS1 prefix `5900773` are prioritized, with
+or without their `00`; other SSCCs belong to their shippers. Passing checks
+prioritize a candidate without confirming a shipment. Shorter aliases have no
+check digit to validate and remain shape-based suggestions.
 
 ## Notes
 

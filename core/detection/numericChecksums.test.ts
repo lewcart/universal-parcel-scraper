@@ -77,6 +77,15 @@ describe('numeric checksum candidates', () => {
     expect(detectCarrierMatch('12345678901234567890').preferred).not.toContain('poczta-polska');
     expect(detectCarrierMatch('1234567890123456789').candidates).toContain('poczta-polska');
     expect(detectCarrierMatch('PX1234567890')).toMatchObject({ carrier: 'poczta-polska', confidence: 'high' });
+    // The same barcode without its 00 is asked of Poczta Polska first; a wrong check digit or another
+    // company prefix in 18 digits is not.
+    for (const number of ['159007731234567899', '059007730000000007']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['poczta-polska'] });
+      expect(recognitionAskedCarriers(number)[0]).toBe('poczta-polska');
+    }
+    for (const number of ['159007731234567898', '159007741234567898']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('poczta-polska');
+    }
   });
 
   it('suggests DHL for twelve digits that end in the Identcode check, and asks it first, without assigning it', () => {

@@ -9,9 +9,12 @@ import { classifyPocztaPolskaStatus, settlesPocztaPolskaDuty, startsPocztaPolska
 
 export function normalizePocztaPolskaNumber(raw: string): string {
   const number = raw.toUpperCase().replace(/\s/g, '');
-  if (!/^(?:\d{19,20}|PX\d{10})$/.test(number) && !isValidS10TrackingNumber(number)) {
+  if (!/^(?:\d{18,20}|PX\d{10})$/.test(number) && !isValidS10TrackingNumber(number)) {
     throw new InvalidInputError('poczta-polska', 'Poczta Polska requires a parcel barcode or valid postal tracking number');
   }
+  // Eighteen digits are the barcode's SSCC without its GS1 application identifier 00, which the
+  // label prints apart. The service knows the parcel only under the whole barcode.
+  if (number.length === 18) return `00${number}`;
   if (number.length !== 19) return number;
   // The official widget appends the GS1 check digit to a 19-digit reference
   // before submitting it. The JSON service itself does not resolve that alias.

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { normalizeCarrierResult, type CarrierEvent, type CarrierResult } from '../../core/result/index.js';
 import { BrtTracker, adapter, type BrtOriginLookup } from './adapter.js';
-import { brtOriginPartner, normalizeBrtNumber, parseBrt, stagedDpdLeg, withOriginLeg } from './parser.js';
+import { brtOriginPartner, normalizeBrtNumber, parseBrt, partnerShipment, stagedDpdLeg, withOriginLeg } from './parser.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { classifyBrtStatus, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
@@ -530,6 +530,55 @@ describe('BRT origin legs', () => {
     const controller = new AbortController();
     dpd.mockImplementationOnce(async () => { controller.abort(); throw new Error('aborted'); });
     await expect(tracker(page('DPD SAMPLE (990)')).fetch(NUMBER, { signal: controller.signal })).rejects.toBeInstanceOf(Error);
+  });
+
+  it('takes a partner\'s answer for a BRTcode BRT has not processed only when it shows the parcel bound for Italy', () => {
+    const placed = (location: string) => partnerShipment(partner({ ...scan('Sample transit', '2026-01-13T15:58:00+01:00'), location },
+      scan('Sample preparation', '2026-01-12T07:45:00+01:00')));
+    for (const location of ['Sample Town - IT (depot 82)', 'Sample Town - IT', 'Sample Town, IT', 'Italy']) {
+      expect(placed(location), location).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Sample transit',
+        destination_country: 'IT', events: [expect.objectContaining({ location }), expect.anything()] });
+    }
+    const bound = partnerShipment({ ...partner(scan('Sample preparation', '2026-01-12T07:45:00+01:00')), destination_country: 'IT',
+      delivery_carrier: 'dpd-de', delivery_tracking_number: OTHER });
+    expect(bound).toMatchObject({ destination_country: 'IT', last_update: '2026-01-12T07:45:00+01:00' });
+    expect(bound).not.toHaveProperty('delivery_carrier');
+    expect(bound).not.toHaveProperty('delivery_tracking_number');
+    expect(bound).not.toHaveProperty('history_truncated');
+    // A scan elsewhere, a place without a country, another destination or no scan proves nothing.
+    for (const location of ['Sample Town - FR (depot 82)', 'Sample Town, DE', 'SAMPLE ITALIA HUB', 'Sample IT Town', '']) expect(placed(location), location).toBeNull();
+    expect(partnerShipment({ ...partner(scan('Sample transit', '2026-01-13T15:58:00+01:00')), destination_country: 'FR' })).toBeNull();
+    expect(partnerShipment({ status: 'in_transit', destination_country: 'IT', events: [] })).toBeNull();
+  });
+
+  it('asks Chronopost, then DPD, about a BRTcode BRT has not processed, and keeps BRT\'s answer when neither shows Italy', async () => {
+    const italian = partner({ ...scan('Sample transit', '2026-01-13T15:58:00+01:00'), location: 'Sample Town - IT (depot 82)' });
+    const elsewhere = partner({ ...scan('Sample transit', '2026-01-13T15:58:00+01:00'), location: 'Sample Town - FR' });
+    const chronopost = vi.fn<BrtOriginLookup>(async () => italian);
+    const dpd = vi.fn<BrtOriginLookup>(async () => elsewhere);
+    const tracker = (origins = { chronopost, dpd }) => new BrtTracker({ fetcher: vi.fn<typeof fetch>().mockResolvedValue(response(notFoundPage)), origins });
+    expect(await tracker().fetch(NUMBER, { budgetMs: 10_000 })).toEqual(partnerShipment(italian));
+    expect(chronopost.mock.calls[0]![0]).toBe(NUMBER);
+    expect(chronopost.mock.calls[0]![1].budgetMs).toBeLessThan(10_000);
+    expect(dpd).not.toHaveBeenCalled();
+    chronopost.mockRejectedValueOnce(new IndeterminateError('Chronopost', 'Sample outage'));
+    dpd.mockResolvedValueOnce(partner({ ...scan('Sample transit', '2026-01-13T15:58:00+01:00'), location: 'Sample Town, IT' }));
+    expect(await tracker().fetch(NUMBER)).toMatchObject({ destination_country: 'IT', events: [expect.objectContaining({ location: 'Sample Town, IT' })] });
+    chronopost.mockResolvedValueOnce(elsewhere);
+    await expect(tracker().fetch(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found', provider: 'BRT' });
+    expect(dpd).toHaveBeenCalledTimes(2);
+    // Shipment numbers, a tracker without partners and BRT's other answers ask no one.
+    chronopost.mockClear();
+    await expect(tracker().fetch(SHIPMENT)).rejects.toMatchObject({ reason: 'portal_not_found' });
+    await expect(new BrtTracker({ fetcher: vi.fn<typeof fetch>().mockResolvedValue(response(notFoundPage)) }).fetch(NUMBER))
+      .rejects.toMatchObject({ reason: 'portal_not_found' });
+    await expect(new BrtTracker({ fetcher: vi.fn<typeof fetch>().mockResolvedValue(response(negative())), origins: { chronopost, dpd } }).fetch(NUMBER))
+      .rejects.toMatchObject({ kind: 'not_found' });
+    expect(chronopost).not.toHaveBeenCalled();
+    // The caller's cancellation still ends the lookup.
+    const controller = new AbortController();
+    chronopost.mockImplementationOnce(async () => { controller.abort(); throw new Error('aborted'); });
+    await expect(tracker().fetch(NUMBER, { signal: controller.signal })).rejects.not.toMatchObject({ reason: 'portal_not_found' });
   });
 
   it('wires Chronopost to its own endpoint for tracking, and recognizes from BRT alone', async () => {

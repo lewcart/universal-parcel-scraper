@@ -330,6 +330,23 @@ export function withOriginLeg(result: CarrierResult, partner: CarrierResult): Ca
   return { ...merged, ...Object.fromEntries(STATUS_FIELDS.flatMap((field) => partner[field] === undefined ? [] : [[field, partner[field]]])) };
 }
 
+// A place in Italy as the partners write it: Chronopost's "Town - IT (depot 82)", DPD's "Town, IT".
+const ITALIAN_PLACE = /(?:^|, | - )(?:IT|Italy|Italia)(?: \(depot \d{1,6}\))?$/;
+
+/**
+ * A partner's answer for a BRTcode BRT has not processed yet, standing for
+ * BRT's own when it shows the parcel bound for Italy, where the DPD group's
+ * network is BRT: an Italian destination or a scan placed in Italy. Otherwise
+ * null, and none of its scans are BRT's.
+ */
+export function partnerShipment(partner: CarrierResult): CarrierResult | null {
+  const events = partner.events ?? [];
+  if (!events.length || (partner.destination_country !== 'IT'
+    && !events.some((event) => ITALIAN_PLACE.test(event.location ?? '')))) return null;
+  return { ...Object.fromEntries(STATUS_FIELDS.flatMap((field) => partner[field] === undefined ? [] : [[field, partner[field]]])),
+    destination_country: 'IT', events: events.slice(0, 100) };
+}
+
 /**
  * DPD's scans that its own map leaves without a stage (carriers/dpd): there an origin depot's
  * intake can follow an import's customs. In the leg that brought a parcel to BRT, all of it

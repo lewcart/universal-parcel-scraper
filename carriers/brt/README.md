@@ -41,6 +41,13 @@ answers a partner's scan, which has a code, by that partner's map. It leaves the
 scans DPD had before it took the parcel in out on purpose, and has no answer for the
 hand-over and intake, whose stage the scans before them decide.
 
+Until BRT has processed such a BRTcode it answers TIS0564 and names no partner.
+Tracking then asks Chronopost, then DPD, under the same code. BRT is the DPD
+group's network in Italy, so a partner's answer stands for BRT's only when it
+shows the parcel bound for Italy: an Italian destination or a scan placed in
+Italy. Otherwise BRT's inconclusive answer stands and none of the partner's
+scans become BRT's. DPD's guest answer, which names no places, seldom shows it.
+
 BRT also sends parcels abroad through the DPD network. For a shipment of one
 parcel that started at one of BRT's depots and names no delivering depot in
 Italy, the detail gives the parcel's DPD number ("Parcel number dpd"). Once the
@@ -96,7 +103,7 @@ shipment number it has not found with its TIS0564 error, "Shipment not found or
 still being processed", and the parcel search gives the same sentence without the
 code. It also answers a shipment not processed yet and a parcel ID older than the
 search reaches, so these exact replies stay inconclusive with the reason
-`portal_not_found`. A shipment shown with an empty scan table is a `NoHistoryError`.
+`portal_not_found`, unless a partner shows a BRTcode bound for Italy. A shipment shown with an empty scan table is a `NoHistoryError`.
 Empty replies, redirects and generic HTTP errors remain inconclusive.
 
 Links to the shipment pages (`/vas/sped_…`) and the root of vas.brt.it name

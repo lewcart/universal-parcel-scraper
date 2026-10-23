@@ -6,7 +6,7 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { ChronopostTracker } from '../chronopost/adapter.js';
 import { DPDTracker } from '../dpd/adapter.js';
-import { brtOriginPartner, brtParcelListPath, normalizeBrtNumber, parseBrt, stagedDpdLeg, withOriginLeg, type BrtOriginPartner } from './parser.js';
+import { brtOriginPartner, brtParcelListPath, normalizeBrtNumber, parseBrt, partnerShipment, stagedDpdLeg, withOriginLeg, type BrtOriginPartner } from './parser.js';
 
 const BASE = 'https://vas.brt.it/vas/';
 /** The time kept for BRT's own answer when a partner's lookup runs out. */
@@ -64,7 +64,29 @@ export class BrtTracker {
       const detail = await page(`${BASE}sped_det_show.hsm?lang=en`, { referer: 'sped_numspe_par.htm', ChiSono: number,
         ClienteMittente: '', DataInizio: '', DataFine: '', RicercaChiSono: 'Ricerca', lang: 'en' });
       return parseBrt(detail, number, await page(new URL(brtParcelListPath(detail, number), BASE).href));
-    } }]);
+    } }, {
+      id: 'partner',
+      // A BRTcode BRT has not processed names no partner yet. Chronopost or the
+      // DPD network may already carry the parcel under it; an answer that does
+      // not show it bound for Italy leaves BRT's inconclusive one.
+      enabled: number.length === 14 && Boolean(this.options.origins?.chronopost || this.options.origins?.dpd),
+      recovers: (error) => error instanceof IndeterminateError && error.reason === 'portal_not_found',
+      run: async ({ signal, remainingMs, previousError }) => {
+        const deadline = performance.now() + remainingMs;
+        for (const partner of ['chronopost', 'dpd'] as const) {
+          const lookup = this.options.origins?.[partner];
+          const budget = Math.floor(deadline - performance.now());
+          if (!lookup || budget <= 0) continue;
+          const answer = await lookup(number, { signal, budgetMs: budget }).catch(() => {
+            context.signal?.throwIfAborted();
+            return null;
+          });
+          const shipment = answer && partnerShipment(answer);
+          if (shipment) return shipment;
+        }
+        throw previousError;
+      },
+    }]);
   }
 }
 
@@ -79,6 +101,6 @@ export const adapter: AdapterFactory = environment => {
     chronopost: (number, context) => chronopost.fetch(number, context),
     dpd: (number, context) => dpd.fetch(number, '', context).then(stagedDpdLeg),
   } });
-  return { id: 'brt', recordsSteps: true, steps: ['direct'], track: (input, context) => tracking.fetch(input.number, context),
+  return { id: 'brt', recordsSteps: true, steps: ['direct', 'partner'], track: (input, context) => tracking.fetch(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeBrtNumber(number))) };
 };

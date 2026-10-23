@@ -28734,6 +28734,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^STR(?:TD\\d{9}|TD\\d{16,17}|CA\\d{13})$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^STSH[A-Z]{2}\\d{11}$",
+        "confidence": "low"
       }
     ]
   },
@@ -33760,7 +33764,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "starken": [],
   "starlinks": ["starlinks-1"],
   "steadfast": ["steadfast-1"],
-  "straightship": ["straightship-1"],
+  "straightship": ["straightship-1","straightship-2"],
   "sundarban-courier": [],
   "surat-kargo": [],
   "swiftx": ["swiftx-1"],

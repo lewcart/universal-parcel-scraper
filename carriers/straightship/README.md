@@ -49,9 +49,10 @@ Ontario. Tracked through its tracking page's own lookup.
 ## Numbers
 
 Straightship numbers start with `STRTD` or `STRCA` followed by digits; `straightship-1` claims
-the lengths archived lookups show, and the adapter takes those. A client's own `STSHYW` layout
-was seen once and stays unclaimed. The samples and their sources are in
-[`numbers.json`](numbers.json).
+the lengths archived lookups show. Its tracker also holds parcels under `STSH`, two letters and
+eleven digits. One archived lookup shows that layout and Colis Privé's rule takes the same
+characters, so `straightship-2` only offers Straightship and recognition asks its tracker. The
+adapter takes both layouts. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

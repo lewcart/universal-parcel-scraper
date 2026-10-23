@@ -81,6 +81,11 @@
       "id": "straightship-1",
       "pattern": "^STR(?:TD\\d{9}|TD\\d{16,17}|CA\\d{13})$",
       "confidence": "high"
+    },
+    {
+      "id": "straightship-2",
+      "pattern": "^STSH[A-Z]{2}\\d{11}$",
+      "confidence": "low"
     }
   ]
 }

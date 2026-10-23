@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
@@ -192,14 +193,14 @@ describe('Straightship HTTP adapter', () => {
       .mockResolvedValueOnce(page(fixture('not-found')));
     await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: '2026-10-18T08:02:55.000Z' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
-    await expect(carrier(fetcher).recognize!('STSHYW00000000000')).resolves.toEqual({ known: false });
+    await expect(carrier(fetcher).recognize!('STSH0000000000000')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
   it('rejects numbers Straightship does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
     for (const number of ['STRTD00000000', 'STRTD0000000000', 'STRTD000000000000000000', 'STRCA000000000000', 'STRCA00000000000000',
-      'STSHYW00000000000', 'STRXX000000000', 'STRTD00000000A', 'STRTD000000000%', `STRTD${'0'.repeat(60)}`]) {
+      'STSHYW0000000000', 'STSH0000000000000', 'STRXX000000000', 'STRTD00000000A', 'STRTD000000000%', `STRTD${'0'.repeat(60)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
@@ -246,6 +247,21 @@ describe('Straightship numbers', () => {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'straightship', confidence: 'high' });
       expect(normalizeStraightshipNumber(number)).toBe(number);
     }
+  });
+
+  it('offers Straightship for STSH, two letters and eleven digits, and names it once its tracker knows the parcel', async () => {
+    const number = 'STSHAB12345678901';
+    expect(detectCarrierMatch('stsh ab 1234 5678 901')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(number).candidates).toContain('straightship');
+    expect(recognitionAskedCarriers(number)[0]).toBe('straightship');
+    expect(normalizeStraightshipNumber(number)).toBe(number);
+    for (const other of ['STSHAB1234567890', 'STSHAB123456789012', 'STSH1234567890123', 'STSHA123456789012']) {
+      expect(detectCarrierMatch(other).candidates, other).not.toContain('straightship');
+    }
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => page(fixture('in-transit').replaceAll(IN_TRANSIT, number)));
+    await expect(createTracker({ fetcher, providers: [], env: {} }).recognize(number, { budgetMs: 3000 }))
+      .resolves.toMatchObject({ carrier: 'straightship' });
+    expect(String(fetcher.mock.calls[0]?.[0])).toBe(straightshipTrackingUrl(number));
   });
 });
 

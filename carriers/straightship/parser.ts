@@ -12,8 +12,8 @@ export const PROVIDER = 'Straightship';
 // A page is about 10 kB; a long history of delivery attempts doubles it.
 export const STRAIGHTSHIP_MAX_BYTES = 512 * 1024;
 // STRTD and nine, sixteen or seventeen digits, or STRCA and thirteen, as
-// `straightship-1` claims them.
-const NUMBER = /^STR(?:TD\d{9}|TD\d{16,17}|CA\d{13})$/;
+// `straightship-1` claims them, or STSH, two letters and eleven digits, as `straightship-2` offers them.
+const NUMBER = /^(?:STR(?:TD\d{9}|TD\d{16,17}|CA\d{13})|STSH[A-Z]{2}\d{11})$/;
 const CLOCK = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 // The note under the history: "All timestamps are shown in Coordinated Universal Time (UTC)."
 const UTC_NOTE = /\btimestamps are shown in (?:Coordinated Universal Time|UTC)\b/i;
@@ -29,7 +29,7 @@ const MAX_EVENTS = 100;
 /** A Straightship number in capitals; anything else is not one Straightship issues. */
 export function normalizeStraightshipNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'Straightship numbers are STRTD or STRCA and digits');
+  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'Straightship numbers are STRTD, STRCA or STSH and digits');
   return number;
 }
 

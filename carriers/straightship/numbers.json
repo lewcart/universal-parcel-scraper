@@ -189,7 +189,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "straightship"
         ]
       },
       "note": "An opened capture of Straightship's own tracker shows this parcel's information created under client code SS01."

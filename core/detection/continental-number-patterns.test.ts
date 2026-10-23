@@ -537,7 +537,7 @@ describe('wave seven courier rules', () => {
     for (const number of ['STRTD000000001', 'STRTD0000000000000001', 'STRTD00000000000000001', 'STRCA0000000000001']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'straightship', confidence: 'high', candidates: ['straightship'] });
     }
-    for (const number of ['STRTD00000001', 'STRTD000000000001', 'STRCA000000000001', 'STSHYW00000000001']) {
+    for (const number of ['STRTD00000001', 'STRTD000000000001', 'STRCA000000000001', 'STSH0000000000000']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('straightship');
     }
   });

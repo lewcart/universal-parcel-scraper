@@ -31,7 +31,8 @@ numbers `shouwu-1` offers.
   and Delivered. It decides the stage, as on the page. The page explains Preparing as a parcel
   at the warehouse and In Transit as anything from the handover to delivery in the destination
   country, so the newest staged scan refines a status within what it covers. A status without
-  scans is a summary. Scans have no code; their wording is staged by the shared rules.
+  scans is a summary. Scans have no code; the status map stages the wording seen on them, such as
+  a handover to a carrier as in transit, and the shared rules stage the rest.
 - `traceTime` is epoch seconds, which the page shows in the visitor's zone without naming one,
   so each scan keeps its instant. The page reads the first ten digits, so the adapter reads
   milliseconds as the same second.

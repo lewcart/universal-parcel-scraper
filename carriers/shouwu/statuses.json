@@ -32,6 +32,20 @@
       "language": "en",
       "confirmedBy": "bundle",
       "note": "A parcel's traceStatus, which the page labels Delivered."
+    },
+    {
+      "wording": "Shipment information received",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "An order scan, the first a parcel gets, before Shouwu has it."
+    },
+    {
+      "wording": "Carrier received the shipment",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "A handover scan of trace type TRACE_TYPE_TAIL. The page's In Transit status starts at the handover to a carrier, and the parcel's status was In Transit with it."
     }
   ]
 }

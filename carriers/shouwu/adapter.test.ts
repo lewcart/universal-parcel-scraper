@@ -104,6 +104,10 @@ describe('Shouwu International HTTP adapter', () => {
       .toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', current_stage_source: 'wording:language' });
     expect(staged('TRACE_STATUS_ON_THE_WAY', [trace(1775990469, 'Departed from origin airport')]))
       .toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map' });
+    // The handover to a carrier starts In Transit; the order scan before it is the registration.
+    expect(staged('TRACE_STATUS_ON_THE_WAY', [trace(1776361152, 'Carrier received the shipment'), trace(1776353952, 'Shipment information received')]))
+      .toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
+        events: [{ stage: 'in_transit', stage_source: 'carrier_map' }, { stage: 'registered', stage_source: 'carrier_map' }] });
     expect(staged('TRACE_STATUS_READY', [trace(1775813445, '已入库')]))
       .toMatchObject({ status: 'in_transit', current_stage: 'accepted', current_stage_source: 'wording:language' });
     expect(staged('TRACE_STATUS_READY', [trace(1775990469, 'Departed from origin airport')]))
@@ -283,7 +287,14 @@ describe('Shouwu International numbers', () => {
 
 describe('Shouwu International status vocabulary', () => {
   it('maps every status it recorded to the stage recorded for it, and keeps the page’s labels off scan wording', () => {
-    for (const entry of statuses.entries as { code: string; wording: string; stage: string }[]) {
+    for (const entry of statuses.entries as { code?: string; wording: string; stage: string }[]) {
+      if (!entry.code) {
+        // Scan wording recorded without a code.
+        expect(shouwuStage(entry.wording), entry.wording).toEqual({ stage: entry.stage, source: 'carrier_map' });
+        expect(statusMapAnswer({ carrier: 'shouwu', providerCode: null, description: entry.wording }), entry.wording)
+          .toEqual({ kind: 'mapped', stage: entry.stage });
+        continue;
+      }
       expect(shouwuStatusStage(entry.code), entry.code).toBe(entry.stage);
       expect(shouwuStatusLabel(entry.code), entry.code).toBe(entry.wording);
       expect(statusMap.stage(entry.code, ''), entry.code).toBe(entry.stage);

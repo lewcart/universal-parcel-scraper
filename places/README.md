@@ -63,7 +63,10 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   Indian office's, and places nothing.
 - Text that names only a country gets that country, marked `country`, so the map shades
   the country instead of pinning a town. A DHL operation followed only by a country name
-  also places that country; the carrier's name alone supplies no country.
+  also places that country; the carrier's name alone supplies no country. A country name
+  followed only by facility words is a city of that name of 100,000 people or more, on a
+  parcel in the city's country and not in the named one: GIG Logistics' "BENIN HUB" is in
+  Benin City.
 
 ## Scans filed away from the parcel
 

@@ -497,14 +497,15 @@ export function locatePlace(location: string | null | undefined, hints: PlaceHin
   return locate(location, hints)?.place ?? null;
 }
 
-function locate(location: string | null | undefined, hints: PlaceHints): Located | null {
+/** `split` reads a country the text names apart from its town; without it the whole text is the town's. */
+function locate(location: string | null | undefined, hints: PlaceHints, split = true): Located | null {
   const text = location?.trim();
   // A military post office's base can be anywhere in its region (`militaryPostOffice`).
   if (!text || militaryPostOffice(text)) return null;
   const facility = facilityPlace(text);
   if (facility) return { place: facility, text: true };
   const data = gazetteer();
-  const explicit = trackingPlace(text);
+  const explicit = split ? trackingPlace(text) : { country: null, place: text };
   let country = explicit.country && data.countries.has(explicit.country) ? explicit.country : null;
   let rest = explicit.country ? explicit.place : text;
   const context = hints.countries ?? [];
@@ -649,6 +650,15 @@ function locate(location: string | null | undefined, hints: PlaceHints): Located
         ...(place.site ? { site: place.site } : airport ? { site: airport.name } : {}),
       },
     };
+  }
+  // A hub named after a city that shares a country's name: GIG Logistics' "BENIN HUB"
+  // is in Benin City. On a parcel in the city's country, and not in the named one, the
+  // city it is, when it is a large one.
+  const facilityWords = tokens(rest);
+  if (country && !context.includes(country) && text.endsWith(rest) && facilityWords.length
+    && facilityWords.every((token) => FACILITY_WORDS.has(token.key))) {
+    const town = locate(text, hints, false);
+    if (town?.place.precision === 'city' && context.includes(town.place.country) && (town.thousands ?? 0) >= NAMESAKE_THOUSANDS) return town;
   }
   // A two-letter code with no town of its country before it, on a parcel nothing else puts
   // there, may be no country at all: Royal Mail ends its mail centres with MC and its

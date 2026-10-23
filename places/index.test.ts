@@ -196,6 +196,15 @@ describe('locatePlace', () => {
     expect(place('Dintikon')).toBeNull();
   });
 
+  it('puts a hub named after a city that shares a country name in that city, on a parcel in its country', () => {
+    expectPlace('BENIN HUB', { country: 'NG', name: 'Benin City', latitude: 6.34, longitude: 5.63 }, ['NG']);
+    expect(placesForEvents(['LAGOS HUB', 'BENIN HUB'], { carriers: ['gig-logistics'] })[1]).toMatchObject({ precision: 'city', country: 'NG', name: 'Benin City' });
+    expect(place('BENIN HUB')).toMatchObject({ precision: 'country', country: 'BJ' });
+    expect(place('BENIN HUB', ['NG', 'BJ'])).toMatchObject({ precision: 'country', country: 'BJ' });
+    expect(place('GERMANY HUB', ['NG'])).toMatchObject({ precision: 'country', country: 'DE' });
+    expect(place('MEXICO HUB', ['US'])).toMatchObject({ precision: 'country', country: 'MX' });
+  });
+
   it('prefers the country the parcel is in for names several countries share', () => {
     expect(place('Emmen')?.country).toBe('NL');
     expect(place('Emmen', ['CH'])?.country).toBe('CH');

@@ -20,7 +20,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "AWB in a sample request of FAN Courier's API 2.0 documentation."
@@ -44,7 +45,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "AWB in a sample request of FAN Courier's API 2.0 documentation."
@@ -67,7 +69,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "AWB in a sample response of FAN Courier's API 2.0 documentation."
@@ -91,7 +94,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Usage example of an open-source FAN Courier API client; not a real shipment."
@@ -118,7 +122,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Looked up on FAN Courier's own tracker under its old path form, as an archived address shows; the capture was not opened."
@@ -144,7 +149,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Looked up on FAN Courier's own tracker, as an archived address shows; the capture was not opened."
@@ -169,7 +175,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Looked up on FAN Courier's own tracker, as an archived address shows; FAN Courier's tracking returns its history."
@@ -194,7 +201,8 @@
           "la-poste",
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "fan-courier"
         ]
       },
       "note": "Looked up on FAN Courier's own tracker, as an archived address shows; FAN Courier's tracking returns its history."
@@ -219,7 +227,8 @@
           "la-poste",
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "fan-courier"
         ]
       },
       "note": "Looked up on FAN Courier's own tracker, as an archived address shows; FAN Courier's tracking returns its history."

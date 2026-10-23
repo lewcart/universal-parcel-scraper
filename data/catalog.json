@@ -1333,6 +1333,11 @@
       },
       {
         "pattern": "^[A-Z]{2}\\d{9}[A-Z]{2}$",
+        "confidence": "low",
+        "checksum": "s10"
+      },
+      {
+        "pattern": "^(?:(?:PZ|XR|XT|XU|XW|XY)\\d{9}[A-Z]{2}|[A-Z]{2}\\d{9}(?:RV|VF))$",
         "confidence": "low"
       }
     ]
@@ -13764,7 +13769,7 @@
         "domains": [
           "fancourier.ro"
         ],
-        "pathPattern": "^/awb-tracking/?$",
+        "pathPattern": "^/(?:awb-tracking|en/awb-track)/?$",
         "params": [
           "tracking",
           "awb"
@@ -13777,7 +13782,12 @@
         "path": "^/awb-tracking/(\\d{13})/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^(?:[24]\\d{12}|7000\\d{9})$",
+        "confidence": "low"
+      }
+    ]
   },
   "fargo-courier": {
     "displayName": "Fargo Courier",

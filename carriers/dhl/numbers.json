@@ -144,10 +144,7 @@
       "shapeConfirmed": "2026-09-12",
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Invented placeholder whose S10 check digit does not validate. Filed under DHL, which no rule claims."
     },

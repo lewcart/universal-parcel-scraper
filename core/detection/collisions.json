@@ -92,15 +92,7 @@
       "an-post",
       "chronopost"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps An Post IE numbers; the country-specific high-confidence rule decides."
-  },
-  {
-    "shape": "AA9{9}AA",
-    "carriers": [
-      "asendia",
-      "chronopost"
-    ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Asendia USA AS…US numbers; the Asendia high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps An Post IE numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AHOY then 8 characters mixing letters and digits",
@@ -150,7 +142,7 @@
       "austrian-post",
       "chronopost"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Austrian Post AT numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Austrian Post AT numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "9{22}",
@@ -177,7 +169,7 @@
       "bpost",
       "chronopost"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps bpost BE numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps bpost BE numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "9{18}",
@@ -193,7 +185,7 @@
       "bring-posten",
       "chronopost"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Bring NO numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Bring NO numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -201,7 +193,7 @@
       "china-post",
       "chronopost"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps China Post CN numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps China Post CN numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -209,7 +201,7 @@
       "chronopost",
       "correios-br"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Correios BR numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Correios BR numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}CL",
@@ -217,7 +209,7 @@
       "chronopost",
       "correos-chile"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Correos de Chile numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Correos de Chile numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -225,7 +217,7 @@
       "chronopost",
       "correos-spain"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Correos ES numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Correos ES numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -233,7 +225,7 @@
       "chronopost",
       "ctt"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps CTT PT numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps CTT PT numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -241,7 +233,7 @@
       "chronopost",
       "chunghwa-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Chunghwa Post TW numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Chunghwa Post TW numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -249,7 +241,7 @@
       "chronopost",
       "slovenska-posta"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Slovenská pošta SK numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Slovenská pošta SK numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -257,7 +249,7 @@
       "chronopost",
       "hrvatska-posta"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Hrvatska pošta HR numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Hrvatska pošta HR numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -265,7 +257,7 @@
       "chronopost",
       "latvijas-pasts"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Latvijas Pasts LV numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Latvijas Pasts LV numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -273,7 +265,7 @@
       "chronopost",
       "dhl"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps DHL DE numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps DHL DE numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -281,7 +273,7 @@
       "chronopost",
       "hongkong-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Hongkong Post HK numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Hongkong Post HK numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -289,7 +281,7 @@
       "chronopost",
       "india-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps India Post IN numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps India Post IN numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -297,7 +289,7 @@
       "chronopost",
       "intl-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps the postal fallback for suffixes no carrier owns; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps the postal fallback for suffixes no carrier owns; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}FI with a valid S10 check digit",
@@ -395,7 +387,7 @@
       "chronopost",
       "posta-slovenije"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Pošta Slovenije SI numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Pošta Slovenije SI numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -403,7 +395,7 @@
       "chronopost",
       "emirates-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Emirates Post AE numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Emirates Post AE numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}IT with a valid S10 check digit",
@@ -493,7 +485,7 @@
       "australia-post",
       "chronopost"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps the Australian EMS, parcel and tracked-letter items Australia Post issues and tracks; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps the Australian EMS, parcel and tracked-letter items Australia Post issues and tracks; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}UA with a valid S10 check digit",
@@ -748,14 +740,6 @@
     "reason": "The Algerian issuer suffix suggests Algérie Poste but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
-    "shape": "EY9{9}DZ without a valid S10 check digit",
-    "carriers": [
-      "algerie-poste",
-      "chronopost"
-    ],
-    "reason": "Algérie Poste's EY items do not always carry a valid S10 check digit, and Chronopost's low-confidence rule takes any S10 shape; both stay suggestions, Algérie Poste's backed by its own samples."
-  },
-  {
     "shape": "AA9{9}AM with a valid S10 check digit",
     "carriers": [
       "chronopost",
@@ -779,7 +763,7 @@
       "aliexpress",
       "chronopost"
     ],
-    "reason": "TY, MI and XX name no country, but Cainiao numbers AliExpress parcels with them, and Chronopost's low-confidence rule accepts any S10 shape. The AliExpress rules are preferred, so AliExpress is asked first; the number stays a suggestion."
+    "reason": "TY, MI and XX name no country, but Cainiao numbers AliExpress parcels with them, and Chronopost's low-confidence rule accepts any S10 code with a passing check digit. The AliExpress rules are preferred, so AliExpress is asked first; the number stays a suggestion."
   },
   {
     "shape": "AA9{9}MH with a valid S10 check digit",
@@ -787,7 +771,7 @@
       "chronopost",
       "mailamericas"
     ],
-    "reason": "MailAmericas numbers its parcels to Latin America with S10 numbers under the Marshall Islands code, which its tracker and its partner ProShips' answer, and the catalog has no Marshall Islands post, so the number is not international mail. Chronopost's low-confidence rule accepts any S10 shape. The MailAmericas rule is preferred, so MailAmericas is asked first; the number stays a suggestion."
+    "reason": "MailAmericas numbers its parcels to Latin America with S10 numbers under the Marshall Islands code, which its tracker and its partner ProShips' answer, and the catalog has no Marshall Islands post, so the number is not international mail. Chronopost's low-confidence rule accepts any S10 code with a passing check digit. The MailAmericas rule is preferred, so MailAmericas is asked first; the number stays a suggestion."
   },
   {
     "shape": "AA9{9}US with a valid S10 check digit",
@@ -822,7 +806,7 @@
       "chronopost",
       "japan-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Japan Post JP numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Japan Post JP numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -830,7 +814,7 @@
       "chronopost",
       "korea-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Korea Post KR numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Korea Post KR numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -838,7 +822,7 @@
       "chronopost",
       "la-poste"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps La Poste FR numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps La Poste FR numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -846,7 +830,7 @@
       "chronopost",
       "nz-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps NZ Post NZ numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps NZ Post NZ numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -854,7 +838,7 @@
       "chronopost",
       "parcelforce"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Parcelforce GB numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Parcelforce GB numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -862,7 +846,7 @@
       "chronopost",
       "pos-malaysia"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Pos Malaysia MY numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Pos Malaysia MY numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -870,7 +854,7 @@
       "chronopost",
       "poste-italiane"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps the parcel, EMS, registered and tracked-letter items Poste Italiane issues (C, E, L or R first, IT last); the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps the parcel, EMS, registered and tracked-letter items Poste Italiane issues (C, E, L or R first, IT last); the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -878,7 +862,7 @@
       "chronopost",
       "postnord"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps PostNord SE and DK numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps PostNord SE and DK numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -886,7 +870,7 @@
       "chronopost",
       "royal-mail"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Royal Mail GB numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Royal Mail GB numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -894,7 +878,7 @@
       "chronopost",
       "singapore-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Singapore Post SG numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Singapore Post SG numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -902,7 +886,7 @@
       "chronopost",
       "spring-gds"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps PostNL NL numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps PostNL NL numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -910,7 +894,7 @@
       "chronopost",
       "swiss-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Swiss Post CH numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Swiss Post CH numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -918,7 +902,7 @@
       "chronopost",
       "thailand-post"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Thailand Post TH numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Thailand Post TH numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",
@@ -926,7 +910,7 @@
       "chronopost",
       "yanwen"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Yanwen's S10-style YP numbers; the Yanwen high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Yanwen's S10-style YP numbers; the Yanwen high-confidence rule decides."
   },
   {
     "shape": "9{17}",
@@ -3763,14 +3747,6 @@
     "reason": "Passing check digits add FedEx, DHL and Saia to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
   {
-    "shape": "CC, CH or HC, nine digits and LT",
-    "carriers": [
-      "chronopost",
-      "lietuvos-pastas"
-    ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps LP Express numbers that carry no valid S10 check digit; both stay low-confidence suggestions."
-  },
-  {
     "shape": "AA9{9}LT with a valid S10 check digit",
     "carriers": [
       "chronopost",
@@ -3787,9 +3763,10 @@
       "korea-post",
       "la-poste",
       "orlen-paczka",
-      "yunda"
+      "yunda",
+      "fan-courier"
     ],
-    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Delhivery, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion."
+    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Delhivery, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion. FAN Courier's rule for AWBs starting with 2 joins them; recognition asks it first from Romania."
   },
   {
     "shape": "210 and ten digits that pass the GS1 check and fail the Ukrposhta check, ending 7, 8 or 9",
@@ -3798,9 +3775,10 @@
       "korea-post",
       "la-poste",
       "orlen-paczka",
-      "yunda"
+      "yunda",
+      "fan-courier"
     ],
-    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion."
+    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion. FAN Courier's rule for AWBs starting with 2 joins them; recognition asks it first from Romania."
   },
   {
     "shape": "210 and ten digits that pass both the GS1 and the Ukrposhta checks",
@@ -3811,9 +3789,10 @@
       "la-poste",
       "orlen-paczka",
       "ukrposhta",
-      "yunda"
+      "yunda",
+      "fan-courier"
     ],
-    "reason": "When the number also carries a valid Ukrposhta check digit, Ukrposhta joins the carriers sharing ORLEN Paczka's thirteen digits; the number stays a low-confidence suggestion."
+    "reason": "When the number also carries a valid Ukrposhta check digit, Ukrposhta joins the carriers sharing ORLEN Paczka's thirteen digits; the number stays a low-confidence suggestion. FAN Courier's rule for AWBs starting with 2 joins them; recognition asks it first from Romania."
   },
   {
     "shape": "210 and ten digits that pass both the GS1 and the Ukrposhta checks, ending 7, 8 or 9",
@@ -3823,9 +3802,10 @@
       "la-poste",
       "orlen-paczka",
       "ukrposhta",
-      "yunda"
+      "yunda",
+      "fan-courier"
     ],
-    "reason": "When the number also carries a valid Ukrposhta check digit, Ukrposhta joins the carriers sharing ORLEN Paczka's thirteen digits; the number stays a low-confidence suggestion."
+    "reason": "When the number also carries a valid Ukrposhta check digit, Ukrposhta joins the carriers sharing ORLEN Paczka's thirteen digits; the number stays a low-confidence suggestion. FAN Courier's rule for AWBs starting with 2 joins them; recognition asks it first from Romania."
   },
   {
     "shape": "832 and ten digits",
@@ -5740,5 +5720,78 @@
       "sendle"
     ],
     "reason": "Colis Privé's low-confidence rule takes any twelve letters and digits; Sendle's own QSS prefix is preferred."
+  },
+  {
+    "shape": "13 digits starting with 2 or 4",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "fan-courier"
+    ],
+    "reason": "FAN Courier's AWBs are thirteen digits starting with 2, 4 or 7000, inside the space these carriers match broadly; its low rule joins theirs, and recognition asks FAN Courier first from Romania."
+  },
+  {
+    "shape": "13 digits starting with 2 or 4, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "fan-courier"
+    ],
+    "reason": "FAN Courier's AWBs are thirteen digits starting with 2, 4 or 7000, inside the space these carriers match broadly; its low rule joins theirs, and recognition asks FAN Courier first from Romania."
+  },
+  {
+    "shape": "13 digits starting with 250",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "dpd-fr",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "fan-courier"
+    ],
+    "reason": "FAN Courier's AWBs are thirteen digits starting with 2, 4 or 7000, inside the space these carriers match broadly; its low rule joins theirs, and recognition asks FAN Courier first from Romania."
+  },
+  {
+    "shape": "13 digits starting with 2 or 4 that pass the Ukrposhta check",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "ukrposhta",
+      "yunda",
+      "fan-courier"
+    ],
+    "reason": "FAN Courier's AWBs are thirteen digits starting with 2, 4 or 7000, inside the space these carriers match broadly; its low rule joins theirs, and recognition asks FAN Courier first from Romania."
+  },
+  {
+    "shape": "7000 and nine digits",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "la-poste",
+      "yunda",
+      "fan-courier"
+    ],
+    "reason": "FAN Courier's AWBs are thirteen digits starting with 2, 4 or 7000, inside the space these carriers match broadly; its low rule joins theirs, and recognition asks FAN Courier first from Romania."
+  },
+  {
+    "shape": "eight digits starting with 2 or 4, four digits and one digit joined by hyphens",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "ozon-logistics",
+      "yunda",
+      "fan-courier"
+    ],
+    "reason": "FAN Courier's AWBs are thirteen digits starting with 2, 4 or 7000, inside the space these carriers match broadly; its low rule joins theirs, and recognition asks FAN Courier first from Romania."
   }
 ]

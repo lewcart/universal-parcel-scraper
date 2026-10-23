@@ -108,7 +108,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Looked up on Geis's own tracker, as an archived address shows; the capture could not be opened. Geis's tracker no longer knows it."
@@ -215,7 +216,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "ParcelPanel's Geis CZ page offered it as a sample to try on 11 Oct 2026; Geis's tracker returns its history."

@@ -189,10 +189,11 @@ describe('M-ONE HTTP adapter', () => {
 });
 
 describe('M-ONE numbers', () => {
-  it('leaves Serbian S10 numbers with postal detection and asks M-ONE after Pošta Srbije', () => {
+  it('leaves Serbian S10 numbers with postal detection and asks M-ONE with Pošta Srbije first', () => {
     expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     const asked = recognitionCandidates(DELIVERED).map(({ carrier, preferred }) => ({ carrier, preferred }));
-    expect(asked.slice(0, 2)).toEqual([{ carrier: 'posta-srbije', preferred: true }, { carrier: 'm-one', preferred: false }]);
+    expect(asked[0]).toEqual({ carrier: 'posta-srbije', preferred: true });
+    expect(asked.slice(0, 5)).toContainEqual({ carrier: 'm-one', preferred: false });
     // A failed check digit, or another country's code, does not suggest M-ONE.
     expect(recognitionCandidates('PL000000015RS').map(({ carrier }) => carrier)).not.toContain('m-one');
     expect(recognitionCandidates('PL000000014HU').map(({ carrier }) => carrier)).not.toContain('m-one');

@@ -22,8 +22,9 @@ describe('S10-shaped numbers', () => {
       { carrier: 'aliexpress', needsInput: null, preferred: true },
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
-    expect(detectCarrierMatch('RR123456789TY').candidates).toEqual(['chronopost']);
-    expect(checksumRejections('RR123456789TY')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-ty', checksum: 's10' }]);
+    expect(detectCarrierMatch('RR123456789TY').candidates).toEqual([]);
+    expect(checksumRejections('RR123456789TY')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-ty', checksum: 's10' },
+      { carrier: 'chronopost', rule: 'chronopost-3', checksum: 's10' }]);
   });
 
   it('suggests AliExpress first for an MI number, a suffix Cainiao gives an AliExpress parcel', () => {
@@ -34,8 +35,9 @@ describe('S10-shaped numbers', () => {
       { carrier: 'aliexpress', needsInput: null, preferred: true },
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
-    expect(detectCarrierMatch('RR123456789MI').candidates).toEqual(['chronopost']);
-    expect(checksumRejections('RR123456789MI')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-mi', checksum: 's10' }]);
+    expect(detectCarrierMatch('RR123456789MI').candidates).toEqual([]);
+    expect(checksumRejections('RR123456789MI')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-mi', checksum: 's10' },
+      { carrier: 'chronopost', rule: 'chronopost-3', checksum: 's10' }]);
   });
 
   it('suggests AliExpress first for an XX number, a suffix Cainiao gives an AliExpress parcel', () => {
@@ -43,8 +45,9 @@ describe('S10-shaped numbers', () => {
       carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'chronopost'], preferred: ['aliexpress'],
     });
     expect(recognitionCandidates('RR123456785XX')[0]).toEqual({ carrier: 'aliexpress', needsInput: null, preferred: true });
-    expect(detectCarrierMatch('RR123456789XX').candidates).toEqual(['chronopost']);
-    expect(checksumRejections('RR123456789XX')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-xx', checksum: 's10' }]);
+    expect(detectCarrierMatch('RR123456789XX').candidates).toEqual([]);
+    expect(checksumRejections('RR123456789XX')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-xx', checksum: 's10' },
+      { carrier: 'chronopost', rule: 'chronopost-3', checksum: 's10' }]);
     for (const number of ['RR12345678XX', 'RR1234567850XX', 'R1234567850XX']) {
       expect(detectCarrierMatch(number).candidates, number).not.toContain('aliexpress');
     }
@@ -58,7 +61,8 @@ describe('S10-shaped numbers', () => {
       expect(recognitionCandidates(number)[0], number).toEqual({ carrier: 'mailamericas', needsInput: null, preferred: true });
     }
     expect(detectCarrierMatch('ML123456789MH').candidates).not.toContain('mailamericas');
-    expect(checksumRejections('ML123456789MH')).toEqual([{ carrier: 'mailamericas', rule: 'mailamericas-s10', checksum: 's10' }]);
+    expect(checksumRejections('ML123456789MH')).toEqual([{ carrier: 'chronopost', rule: 'chronopost-3', checksum: 's10' },
+      { carrier: 'mailamericas', rule: 'mailamericas-s10', checksum: 's10' }]);
     expect(detectCarrierMatch('ML12345678MH').candidates).not.toContain('mailamericas');
   });
 
@@ -72,7 +76,8 @@ describe('S10-shaped numbers', () => {
     }
     expect(detectCarrierMatch('RR123456789DE').candidates).not.toContain('dhl');
     expect(detectCarrierMatch('RR123456789DE').candidates).not.toContain('intl-post');
-    expect(checksumRejections('RR123456789DE')).toEqual([{ carrier: 'dhl', rule: 'dhl-14', checksum: 's10' }]);
+    expect(checksumRejections('RR123456789DE')).toEqual([{ carrier: 'dhl', rule: 'dhl-14', checksum: 's10' },
+      { carrier: 'chronopost', rule: 'chronopost-3', checksum: 's10' }]);
     // Other German-issued services stay international mail.
     expect(detectCarrierMatch('EE123456785DE')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
   });
@@ -322,5 +327,17 @@ describe('Australia Post barcodes', () => {
       { carrier: 'australia-post', rule: 'australia-post-prepaid', checksum: 'gs1' },
     ]);
     expect(detectCarrierMatch('0408061234567890123454').candidates).not.toContain('australia-post');
+  });
+});
+
+describe('a mistyped postal number', () => {
+  // A synthetic Cyprus Post item, valid and with its check digit changed.
+  it('suggests no carrier when its S10 check digit fails, while Chronopost\'s own codes stay suggestions', () => {
+    expect(detectCarrierMatch('RR123456785CY')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(detectCarrierMatch('RR123456784CY').candidates ?? []).toEqual([]);
+    expect(recognitionCandidates('RR123456784CY')).toEqual([]);
+    for (const number of ['XW123456784FR', 'RR123456784RV', 'RR123456784VF']) {
+      expect(detectCarrierMatch(number).candidates, number).toContain('chronopost');
+    }
   });
 });

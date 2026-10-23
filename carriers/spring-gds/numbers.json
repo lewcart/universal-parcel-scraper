@@ -192,10 +192,7 @@
       "shapeConfirmed": "2026-09-12",
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Invented placeholder whose S10 check digit does not validate. Filed under PostNL, which no rule claims."
     },
@@ -208,10 +205,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Official documentation example, not a real shipment. The S10 check digit does not validate. The source attributes it to PostNL, which no rule claims."
     },
@@ -224,10 +218,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Official documentation example, not a real shipment. The S10 check digit does not validate. The source attributes it to PostNL, which no rule claims."
     },

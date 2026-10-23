@@ -42,7 +42,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Public Delhivery report. Delhivery's tracker returns its history."
@@ -186,7 +187,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Customer reports an AWB for a shipment of several boxes. Shared numeric formats require carrier recognition."
@@ -276,7 +278,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Public Delhivery report. Delhivery's tracker no longer finds it."
@@ -334,7 +337,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Public Delhivery report. Delhivery's tracker no longer finds it."
@@ -500,7 +504,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "A Delhivery tracking link archived by the Wayback Machine. Delhivery's tracker returns its history."
@@ -590,7 +595,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Delhivery's own API design notes give it as an example waybill; not a real shipment."

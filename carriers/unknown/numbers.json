@@ -261,10 +261,7 @@
       "shapeConfirmed": "2026-09-12",
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "S10 shape with a broken check digit, so the Swiss Post rule rejects it."
     },

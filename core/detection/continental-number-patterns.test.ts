@@ -763,3 +763,24 @@ describe('wave eight courier rules', () => {
     }
   });
 });
+
+describe('FAN Courier AWBs', () => {
+  // Synthetic AWBs in FAN Courier's layout; none is a real parcel.
+  it('suggests FAN Courier for thirteen digits starting with 2, 4 or 7000, and asks it first in Romania', () => {
+    for (const number of ['2012345678901', '4098765432104', '7000123456785']) {
+      expect(detectCarrierMatch(number).candidates, number).toContain('fan-courier');
+      expect(detectCarrierMatch(number).confidence, number).toBe('low');
+      expect(recognitionAskedCarriers(number, { countryHint: 'RO' })[0], number).toBe('fan-courier');
+    }
+    for (const number of ['3012345678901', '7001123456785', '201234567890', '20123456789012']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('fan-courier');
+    }
+  });
+
+  it('reads an AWB from the English and Romanian tracker links', () => {
+    for (const url of ['https://www.fancourier.ro/en/awb-track/?tracking=2012345678901',
+      'https://www.fancourier.ro/awb-tracking/?tracking=2012345678901', 'https://www.fancourier.ro/awb-tracking/?awb=2012345678901']) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: '2012345678901', carrier: 'fan-courier', source: 'link' });
+    }
+  });
+});

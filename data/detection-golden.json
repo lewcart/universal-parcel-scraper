@@ -21771,11 +21771,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -21787,11 +21789,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -21803,11 +21807,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -21819,11 +21825,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -21834,10 +21842,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -23363,12 +23373,14 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "ukrposhta",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -23649,10 +23661,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -23664,11 +23678,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -23706,11 +23722,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -23849,12 +23867,14 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -23866,11 +23886,13 @@
       "correos-chile",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -23883,12 +23905,14 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -23902,13 +23926,15 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
       "ukrposhta",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -23920,11 +23946,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -23938,13 +23966,15 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
       "ukrposhta",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -23958,13 +23988,15 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
       "ukrposhta",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -24026,12 +24058,14 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -24044,12 +24078,14 @@
       "correos-chile",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
       "ukrposhta",
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -24086,11 +24122,13 @@
       "correos-chile",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -24111,12 +24149,14 @@
       "delhivery",
       "yunda",
       "korea-post",
+      "fan-courier",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -24128,11 +24168,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -24487,12 +24529,14 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "ukrposhta",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -24984,11 +25028,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -24999,10 +25045,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -25050,11 +25098,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -25464,11 +25514,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -25716,11 +25768,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -26089,11 +26143,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -26327,11 +26383,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -26453,11 +26511,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -26469,11 +26529,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -26508,11 +26570,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -26523,10 +26587,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -26537,10 +26603,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -26596,11 +26664,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -26798,11 +26868,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -26825,12 +26897,14 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "ukrposhta",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -27000,10 +27074,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -27115,10 +27191,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -27402,11 +27480,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -27520,11 +27600,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -27780,10 +27862,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -27846,11 +27930,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -27984,10 +28070,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -27999,11 +28087,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -28972,11 +29062,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -29105,11 +29197,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -29407,11 +29501,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -29436,10 +29532,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -29679,11 +29777,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -29695,11 +29795,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -29711,11 +29813,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -29727,11 +29831,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -29743,11 +29849,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -30009,11 +30117,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -30252,12 +30362,14 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "ukrposhta",
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -37037,10 +37149,12 @@
       "la-poste",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "fan-courier"
     ]
   },
   {
@@ -38019,11 +38133,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -38576,11 +38692,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -38753,11 +38871,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -39305,11 +39425,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -40680,11 +40802,13 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -50628,11 +50752,13 @@
       "la-poste",
       "correos-chile",
       "delhivery",
-      "yunda"
+      "yunda",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -50728,11 +50854,13 @@
       "la-poste",
       "correos-chile",
       "delhivery",
-      "yunda"
+      "yunda",
+      "fan-courier"
     ],
     "asked": [
       "la-poste",
-      "delhivery"
+      "delhivery",
+      "fan-courier"
     ]
   },
   {
@@ -64872,13 +65000,8 @@
   {
     "input": "AS823417258CN",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "ASDLP2465555",
@@ -65856,13 +65979,8 @@
   {
     "input": "BR003081784MG",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "BR257449972818X",
@@ -66471,13 +66589,8 @@
   {
     "input": "CA482156827DE",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CA643257963AT",
@@ -66754,12 +66867,10 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "chronopost",
       "lietuvos-pastas"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -66775,12 +66886,10 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "chronopost",
       "lietuvos-pastas"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -66791,8 +66900,8 @@
       "intl-post"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "chronopost",
+      "lietuvos-pastas"
     ]
   },
   {
@@ -66803,8 +66912,8 @@
       "intl-post"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "chronopost",
+      "lietuvos-pastas"
     ]
   },
   {
@@ -67427,13 +67536,8 @@
   {
     "input": "CH400397205DE",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CH540450562DE",
@@ -67448,12 +67552,10 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "chronopost",
       "lietuvos-pastas"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -67461,12 +67563,10 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "chronopost",
       "lietuvos-pastas"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -67482,12 +67582,10 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "chronopost",
       "lietuvos-pastas"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -67543,13 +67641,8 @@
   {
     "input": "CI142565858FR",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CI152320192UZ",
@@ -68691,24 +68784,14 @@
   {
     "input": "CP123456789FI",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CP123456789PL",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CP16658276R",
@@ -68885,13 +68968,8 @@
   {
     "input": "CP865614593AT",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CP904407182AR",
@@ -69423,13 +69501,8 @@
   {
     "input": "CV000562646ES",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CV019554871PL",
@@ -69564,24 +69637,14 @@
   {
     "input": "CV944756321US",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CV950076856US",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CW545691123FR",
@@ -71056,8 +71119,8 @@
     ],
     "asked": [
       "posta-srbije",
-      "m-one",
-      "chronopost"
+      "chronopost",
+      "m-one"
     ]
   },
   {
@@ -71290,24 +71353,14 @@
   {
     "input": "EE123456789BE",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "EE123456789PL",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "EE130496348IL",
@@ -71484,13 +71537,8 @@
   {
     "input": "EE995454657TN",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "EEUS026904543AE0",
@@ -72975,15 +73023,13 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "algerie-poste",
-      "chronopost"
+      "algerie-poste"
     ],
     "preferred": [
       "algerie-poste"
     ],
     "asked": [
-      "algerie-poste",
-      "chronopost"
+      "algerie-poste"
     ]
   },
   {
@@ -72991,15 +73037,13 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "algerie-poste",
-      "chronopost"
+      "algerie-poste"
     ],
     "preferred": [
       "algerie-poste"
     ],
     "asked": [
-      "algerie-poste",
-      "chronopost"
+      "algerie-poste"
     ]
   },
   {
@@ -73007,15 +73051,13 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "algerie-poste",
-      "chronopost"
+      "algerie-poste"
     ],
     "preferred": [
       "algerie-poste"
     ],
     "asked": [
-      "algerie-poste",
-      "chronopost"
+      "algerie-poste"
     ]
   },
   {
@@ -75426,12 +75468,10 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "chronopost",
       "lietuvos-pastas"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -75439,12 +75479,10 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "chronopost",
       "lietuvos-pastas"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -75452,12 +75490,10 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "chronopost",
       "lietuvos-pastas"
     ],
     "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -77011,13 +77047,8 @@
   {
     "input": "JN067614885IN",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "JNCN000001885888",
@@ -78714,13 +78745,8 @@
   {
     "input": "LF123456789DE",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "LF260010425BN",
@@ -79836,8 +79862,8 @@
     ],
     "asked": [
       "posta-srbije",
-      "m-one",
-      "chronopost"
+      "chronopost",
+      "m-one"
     ]
   },
   {
@@ -79927,13 +79953,8 @@
   {
     "input": "LX123456789NL",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "LX153962241JE",
@@ -82652,13 +82673,8 @@
   {
     "input": "PA001273079CO",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "PA478037534ZA",
@@ -83020,13 +83036,8 @@
   {
     "input": "PE300009327MG",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "PE421851137ZA",
@@ -83650,8 +83661,8 @@
     ],
     "asked": [
       "posta-srbije",
-      "m-one",
-      "chronopost"
+      "chronopost",
+      "m-one"
     ]
   },
   {
@@ -83663,8 +83674,8 @@
     ],
     "asked": [
       "posta-srbije",
-      "m-one",
-      "chronopost"
+      "chronopost",
+      "m-one"
     ]
   },
   {
@@ -84767,24 +84778,14 @@
   {
     "input": "RA123456789CH",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "RA123456789SG",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "RA143195240CN",
@@ -85276,13 +85277,8 @@
   {
     "input": "RD000080260BO",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "RD001244049BO",
@@ -85806,13 +85802,8 @@
   {
     "input": "RI543495045NL",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "RJ004718684ZA",
@@ -86396,13 +86387,8 @@
   {
     "input": "RR000083193BO",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "RR000137661AE",
@@ -86773,13 +86759,8 @@
   {
     "input": "RR123456789PL",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "RR123815032SE",
@@ -86867,8 +86848,8 @@
     ],
     "asked": [
       "posta-srbije",
-      "m-one",
-      "chronopost"
+      "chronopost",
+      "m-one"
     ]
   },
   {
@@ -86880,8 +86861,8 @@
     ],
     "asked": [
       "posta-srbije",
-      "m-one",
-      "chronopost"
+      "chronopost",
+      "m-one"
     ]
   },
   {
@@ -90673,13 +90654,8 @@
   {
     "input": "UE597256100NL",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "UESM932943613",
@@ -90942,13 +90918,8 @@
   {
     "input": "UL123456789JP",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "UL191943101YP",
@@ -91072,13 +91043,8 @@
   {
     "input": "UN057195456MU",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "UN2026COM0000000000",
@@ -91185,35 +91151,20 @@
   {
     "input": "UQ170070321TH",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "UQ170111843TH",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "UQ170176592TH",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "UQM-MU00155901",
@@ -91317,8 +91268,8 @@
       "intl-post"
     ],
     "asked": [
-      "dhl-ecommerce",
-      "chronopost"
+      "chronopost",
+      "dhl-ecommerce"
     ]
   },
   {
@@ -91833,13 +91784,8 @@
   {
     "input": "VV123456789PL",
     "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "chronopost"
-    ],
-    "asked": [
-      "chronopost"
-    ]
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "VV175837515HR",

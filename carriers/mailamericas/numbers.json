@@ -354,10 +354,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "An S10-shaped number whose check digit fails, looked up on MailAmericas' own tracker. The tracker returns a delivered history in Peru."
     },

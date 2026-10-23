@@ -233,10 +233,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "A comment under a review on vidhuk.ua's Meest page gives it as a parcel sent from New Jersey."
     },
@@ -315,10 +312,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "On vidhuk.ua's Meest page, a reviewer gives it as their parcel number in reply to Meest's support. Meest's tracker knows it as a parcel from the United States delivered in Ukraine."
     },

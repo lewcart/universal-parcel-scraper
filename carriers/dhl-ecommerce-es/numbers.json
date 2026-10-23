@@ -152,10 +152,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Example of a shipment from Europe on the Spanish help page, not a real shipment. Its check digit is wrong."
     },

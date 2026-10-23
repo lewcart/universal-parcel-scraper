@@ -20,7 +20,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "A complaint on Şikayetvar's PTT Kargo page gives it as the parcel's tracking number. PTT's shipment query returns its history; no rule claims thirteen digits."
@@ -44,7 +45,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "A complaint on Şikayetvar's PTT Kargo page gives it as the parcel's tracking number."
@@ -84,7 +86,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "A complaint on Şikayetvar's PTT Kargo page gives it as the parcel's barcode number."
@@ -167,7 +170,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "A complaint on Şikayetvar's PTT Kargo page gives it as the parcel's tracking number."

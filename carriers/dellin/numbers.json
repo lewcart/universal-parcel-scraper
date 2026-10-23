@@ -22,7 +22,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "The archived page of Dellin's own tracker shows this order as completed and the cargo handed out, with waybill 21-00781013582."
@@ -48,7 +49,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Looked up on Dellin's own tracker, as an archived address shows; the capture was not opened."
@@ -74,7 +76,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Looked up on Dellin's own tracker, as an archived address shows; the capture was not opened."
@@ -207,7 +210,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "The waybill number of a damaged consignment, quoted in a complaint about Delovye Linii. Dellin's order search knows it as a completed order."
@@ -232,7 +236,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "The transport waybill quoted in an Otzovik review of the Delovye Linii transport company."
@@ -258,7 +263,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "The waybill number quoted in an Otzovik review of the Delovye Linii transport company about a marketplace delivery."
@@ -308,7 +314,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "One of two waybills quoted in an Irecommend review of Delovye Linii. Dellin's order search knows both as one completed order."
@@ -332,7 +339,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "The second waybill quoted in the same review, an additional waybill of the same order."
@@ -356,7 +364,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "The waybill quoted in an Otzovik review of the Delovye Linii holding. Dellin's order search knows it as a completed order."

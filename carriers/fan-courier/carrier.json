@@ -71,7 +71,7 @@
       "domains": [
         "fancourier.ro"
       ],
-      "pathPattern": "^/awb-tracking/?$",
+      "pathPattern": "^/(?:awb-tracking|en/awb-track)/?$",
       "params": [
         "tracking",
         "awb"
@@ -84,5 +84,11 @@
       "path": "^/awb-tracking/(\\d{13})/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "fan-courier-1",
+      "pattern": "^(?:[24]\\d{12}|7000\\d{9})$",
+      "confidence": "low"
+    }
+  ]
 }

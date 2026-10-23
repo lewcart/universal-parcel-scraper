@@ -72,10 +72,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Official documentation example, not a real shipment. The S10 check digit does not validate. The source attributes it to Singapore Post, which no rule claims."
     },

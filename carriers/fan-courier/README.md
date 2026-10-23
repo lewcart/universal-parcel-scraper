@@ -16,8 +16,9 @@ Courier's own AWB tracker.
 Every AWB found has thirteen digits: in FAN Courier's API 2.0 documentation, in an
 open-source client, in lookups archived from its tracker and in the tracker's own replies.
 They start with `2`, `4` or `7000`, but FAN publishes no length, prefix or check-digit rule.
-Thirteen digits are shared with several posts and couriers, so no rule claims them and the
-user picks FAN Courier. The adapter refuses any other shape without a request.
+Thirteen digits are shared with several posts and couriers, so a low-confidence rule offers
+FAN Courier for those starts alongside them, and recognition asks it first for a parcel from
+Romania. The adapter refuses any other shape without a request.
 
 ## Notes
 
@@ -36,13 +37,13 @@ user picks FAN Courier. The adapter refuses any other shape without a request.
 - Clocks carry no offset and stay local wall times, read in the catalog zone.
 - The contents, weight, dimensions, payment date, related AWBs and the masked name of the
   person who signed are never read.
-- Recognition asks the tracker and knows an AWB when it returns events. No detection rule
-  offers FAN Courier yet, so recognition is not asked until one does.
+- Recognition asks the tracker and knows an AWB when it returns events.
 
 ## Links
 
 FAN Courier's tracker writes the AWB into its address as `?tracking={number}` and renders
-that number back when the page loads. Older links put the AWB in `awb` or in the path.
+that number back when the page loads, on `/awb-tracking/` and on the English `/en/awb-track/`.
+Older links put the AWB in `awb` or in the path.
 
 ## Limitations
 

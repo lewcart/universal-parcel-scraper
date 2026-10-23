@@ -73,10 +73,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Listed with origin BO in the AGBC list of items held for collection in La Paz, published as JSON on correos.gob.bo; opened capture, no history shown; its check digit does not validate."
     },
@@ -95,10 +92,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Listed with origin BO in the AGBC list of items held for collection in La Paz, published as JSON on correos.gob.bo; opened capture, no history shown; its check digit does not validate."
     },

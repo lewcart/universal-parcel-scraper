@@ -505,10 +505,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Archived ParcelsApp lookup. ParcelsApp does not attribute a carrier, and the S10 check digit fails, so it is not established that the Colombian post issued it."
     },
@@ -623,10 +620,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Archived ParcelsApp lookup. ParcelsApp does not attribute a carrier, and the S10 check digit fails, so it is not established that the Malagasy post issued it."
     }

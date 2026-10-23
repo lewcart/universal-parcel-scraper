@@ -19,10 +19,7 @@
       "derivedFrom": "official_shape",
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Invented Finnish-shaped identifier with a failed S10 check digit. It cannot suggest Posti."
     },

@@ -1335,6 +1335,11 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^[A-Z]{2}\\d{9}[A-Z]{2}$",
+        "confidence": "low",
+        "checksum": "s10"
+      },
+      {
+        "pattern": "^(?:(?:PZ|XR|XT|XU|XW|XY)\\d{9}[A-Z]{2}|[A-Z]{2}\\d{9}(?:RV|VF))$",
         "confidence": "low"
       }
     ]
@@ -13766,7 +13771,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "fancourier.ro"
         ],
-        "pathPattern": "^/awb-tracking/?$",
+        "pathPattern": "^/(?:awb-tracking|en/awb-track)/?$",
         "params": [
           "tracking",
           "awb"
@@ -13779,7 +13784,12 @@ export const CARRIER_CATALOG = {
         "path": "^/awb-tracking/(\\d{13})/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^(?:[24]\\d{12}|7000\\d{9})$",
+        "confidence": "low"
+      }
+    ]
   },
   "fargo-courier": {
     "displayName": "Fargo Courier",
@@ -32917,7 +32927,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "mondial-relay": ["mondial-relay-1","mondial-relay-2"],
   "relais-colis": ["relais-colis-1","relais-colis-2","relais-colis-3"],
   "la-poste": ["la-poste-1","la-poste-4","la-poste-5","la-poste-6","la-poste-7","la-poste-2","la-poste-3"],
-  "chronopost": ["chronopost-1","chronopost-own-suffix","chronopost-2","chronopost-3"],
+  "chronopost": ["chronopost-1","chronopost-own-suffix","chronopost-2","chronopost-3","chronopost-4"],
   "gls-fr": ["gls-fr-1","gls-fr-2","gls-fr-3","gls-fr-4"],
   "colis-prive": ["colis-prive-1","colis-prive-2"],
   "geodis": ["geodis-1"],
@@ -33212,7 +33222,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "exline-kz": [],
   "exmate": ["exmate-1"],
   "express-one": [],
-  "fan-courier": [],
+  "fan-courier": ["fan-courier-1"],
   "fargo-courier": ["fargo-courier-1"],
   "fargo-uz": [],
   "fastdrop": [],

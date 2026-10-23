@@ -226,7 +226,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "A piece number: an archived lookup by piece on TOPTRANS's own tracking service shows the shipment it belongs to and its history."
@@ -281,7 +282,8 @@
           "la-poste",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "A piece number: an archived shipment lookup on TOPTRANS's own tracking service lists it as the first piece of the shipment."

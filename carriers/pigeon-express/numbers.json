@@ -299,7 +299,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fan-courier"
         ]
       },
       "note": "Pigeon Express's own API documentation gives this package barcode from the label and says it resolves to the shipment it belongs to."

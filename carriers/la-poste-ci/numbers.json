@@ -56,10 +56,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "Example on Ship24's La Poste de Côte d'Ivoire page; it is a French-issued international number, and an aggregator example never counts alone."
     }

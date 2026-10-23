@@ -57,10 +57,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ]
+        "confidence": "none"
       },
       "note": "ParcelPanel's DHLink page offered it to try. DHLink's tracker answers it as the tracking number of one of its parcels, delivered in the United States; its check digit fails, so no post issued it."
     },

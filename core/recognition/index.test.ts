@@ -187,11 +187,9 @@ describe('recognition candidates', () => {
 
   it('does not infer Posti from a failed postal checksum or probe a known direct postal carrier', () => {
     expect(recognitionCandidates('CE123456789FI').map(({ carrier }) => carrier)).not.toContain('posti');
-    // Chronopost accepts proprietary aliases with the same shape, which need
-    // not have an S10 checksum. Its lookup still has to confirm the identity.
-    expect(recognitionCandidates('CE123456789FI')).toEqual([
-      { carrier: 'chronopost', needsInput: null, preferred: false },
-    ]);
+    // A failed check digit under another post's suffix is a mistyped number:
+    // Chronopost's own codes without one keep its prefixes or suffixes.
+    expect(recognitionCandidates('CE123456789FI')).toEqual([]);
     expect(recognitionCandidates('RA123456785CH')).toEqual([]);
   });
 });

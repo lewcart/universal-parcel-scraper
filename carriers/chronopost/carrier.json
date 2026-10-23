@@ -88,6 +88,12 @@
     {
       "id": "chronopost-3",
       "pattern": "^[A-Z]{2}\\d{9}[A-Z]{2}$",
+      "confidence": "low",
+      "checksum": "s10"
+    },
+    {
+      "id": "chronopost-4",
+      "pattern": "^(?:(?:PZ|XR|XT|XU|XW|XY)\\d{9}[A-Z]{2}|[A-Z]{2}\\d{9}(?:RV|VF))$",
       "confidence": "low"
     }
   ]

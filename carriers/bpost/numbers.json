@@ -281,13 +281,7 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "chronopost"
-        ],
-        "not": [
-          "bpost"
-        ]
+        "confidence": "none"
       },
       "note": "Official documentation example, not a real shipment. The S10 check digit does not validate, so bpost is not named."
     },

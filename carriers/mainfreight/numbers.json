@@ -45,6 +45,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -74,6 +75,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -121,7 +123,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on Mainfreight's own tracker under its New Zealand transport (MSNZS) service code, as an archived address shows; the capture was not opened."
@@ -150,7 +153,8 @@
           "old-dominion",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on Mainfreight's own tracker under its New Zealand transport (MSNZS) service code, as an archived address shows; the capture was not opened."
@@ -178,7 +182,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on Mainfreight's own tracker under its New Zealand transport (MSNZS) service code, as an archived address shows; the capture was not opened."
@@ -205,8 +210,10 @@
           "gls-fr",
           "gls-de",
           "coordinadora",
+          "dpd-ro",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -239,6 +246,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -309,7 +317,8 @@
           "aramex",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Mainfreight's tracking webhook documentation gives it as the consignment number in its New Zealand transport example."
@@ -337,7 +346,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "The same New Zealand transport example gives it in its tracking address on Mainfreight's tracker, under the MSNZS service code."

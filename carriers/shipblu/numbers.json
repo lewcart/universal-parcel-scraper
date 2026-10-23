@@ -56,7 +56,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "ShipBlu's own API collection, published on its developer documentation site, uses it as the tracking number in its shipping-label requests; no history is shown."

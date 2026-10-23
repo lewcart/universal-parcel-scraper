@@ -26,8 +26,8 @@ Recognition uses the same lookup.
 DPD Romania waybills, return waybills included, are eleven digits starting with 8, so other
 inputs are invalid without a request. Lookups archived from DPD Romania's tracker, a tracking
 guide and an open-source tracking library's test show them. Eleven digits are shared with
-Speedy and many other carriers, and nothing in the number points to DPD Romania, so no rule
-claims them and preflight does not ask this adapter. `tracking.dpd.ro` also takes the
+Speedy and many other carriers, and nothing in the number points to DPD Romania, so `dpd-ro-1`
+only suggests it, and recognition asks DPD Romania only when the lookup's country is Romania. `tracking.dpd.ro` also takes the
 fourteen-digit DPD group parcel number of a parcel handed to the DPD network and shows Speedy
 waybills of shipments between Bulgaria and Romania. The adapter takes only DPD Romania's own
 waybills; the `dpd` and `speedy` entries track the others.

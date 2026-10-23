@@ -18,7 +18,8 @@
           "cdek",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Invented placeholder for an eleven-digit waybill; the public sample's tracker names its sender and recipient, masked."

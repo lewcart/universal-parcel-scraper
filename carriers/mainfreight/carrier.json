@@ -26,7 +26,8 @@
       "retry"
     ],
     "recognition": {
-      "rank": 923
+      "rank": 923,
+      "servedCountriesOnly": true
     },
     "localClocks": true
   },
@@ -103,5 +104,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "mainfreight-1",
+      "pattern": "^\\d{11}$",
+      "confidence": "low"
+    }
+  ]
 }

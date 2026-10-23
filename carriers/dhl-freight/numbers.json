@@ -24,7 +24,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on DHL Freight's ActiveTracing as a domestic consignment ID; the opened capture shows a DHL Home Delivery history."
@@ -181,7 +182,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on DHL Freight's ActiveTracing as a consignment ID, as an archived address shows; the capture was not opened."
@@ -209,7 +211,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on DHL Freight's ActiveTracing as a consignment ID, as an archived address shows; the capture was not opened."
@@ -284,7 +287,8 @@
           "coordinadora",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "The domestic consignment ID shown on DHL Freight's ActiveTracing for the package of that capture."
@@ -377,7 +381,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "The domestic consignment ID shown on DHL Freight's ActiveTracing for the package of that capture."

@@ -55,7 +55,8 @@
           "aramex",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "TrackingMore lists it as an example on its Saia LTL Freight page; it is not described as a live shipment."
@@ -82,7 +83,8 @@
           "cdek",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "ParcelPanel's Saia page says it entered this PRO on Saia's tracker and the shipment details showed up."
@@ -109,7 +111,8 @@
           "cdek",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "ParcelPanel's Saia page gives it as an example PRO number; it is not described as a live shipment."
@@ -139,6 +142,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -169,7 +173,8 @@
           "coordinadora",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."
@@ -198,7 +203,8 @@
           "cdek",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."
@@ -227,6 +233,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -256,6 +263,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -286,6 +294,7 @@
           "dhl-ecommerce-pl",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },

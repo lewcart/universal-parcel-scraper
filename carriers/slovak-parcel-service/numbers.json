@@ -89,7 +89,8 @@
           "aramex",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on SPS's own tracker without the 703 country prefix, as an archived address shows. SPS's tracking service returns the parcel's history for this form too."
@@ -151,7 +152,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on SPS's own tracker without the 703 country prefix, as an archived address shows. SPS's tracking service returns the history of the parcel with that prefix."

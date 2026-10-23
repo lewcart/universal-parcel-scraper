@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
-import { parseTrackingInput } from '../../core/detection/index.js';
+import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -413,6 +414,23 @@ describe('Mainfreight tracking adapter', () => {
     for (const [link, number] of [[`https://www.mainfreight.com/track/MSAUS/${CONSIGNMENT}`, CONSIGNMENT], [`https://www.mainfreight.com/track/CW/${JOB}?lang=en`, JOB],
       [`https://www.mainfreight.com/tracking?trackingnumber=${SENDER_REFERENCE}`, SENDER_REFERENCE]] as const) {
       expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: number, carrier: 'mainfreight', source: 'link' });
+    }
+  });
+});
+
+describe('Mainfreight numbers', () => {
+  it('suggests eleven digits and is asked about them only for a lookup in New Zealand, Australia or the United States', () => {
+    expect(detectCarrierMatch(CONSIGNMENT)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(CONSIGNMENT).candidates).toContain('mainfreight');
+    for (const countryHint of ['NZ', 'AU', 'US']) {
+      expect(recognitionAskedCarriers(CONSIGNMENT, { countryHint })[0], countryHint).toBe('mainfreight');
+    }
+    // In Europe GLS prints the same eleven digits.
+    for (const countryHint of [undefined, 'DE', 'FR', 'CO', 'RO']) {
+      expect(recognitionAskedCarriers(CONSIGNMENT, { countryHint }), `${countryHint}`).not.toContain('mainfreight');
+    }
+    for (const other of [JOB, CONTAINER, SENDER_REFERENCE, `${CONSIGNMENT}0`]) {
+      expect(detectCarrierMatch(other).candidates ?? [], other).not.toContain('mainfreight');
     }
   });
 });

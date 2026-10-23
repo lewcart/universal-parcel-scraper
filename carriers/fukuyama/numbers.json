@@ -29,6 +29,7 @@
           "dhl-ecommerce-pl",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -61,6 +62,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -93,6 +95,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -123,8 +126,10 @@
           "japan-post",
           "aramex",
           "coordinadora",
+          "dpd-ro",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -157,7 +162,8 @@
           "coordinadora",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Looked up on Fukuyama Transporting's own tracker, as an archived address shows; the capture was not opened."
@@ -189,6 +195,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -221,6 +228,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -254,6 +262,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -287,6 +296,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -319,6 +329,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },

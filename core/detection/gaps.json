@@ -1058,12 +1058,6 @@
     "reason": "Ten digits are shared by several carriers and nothing in the number points to DPD Ireland."
   },
   {
-    "carrier": "dpd-ro",
-    "pattern": "^8\\d{10}$",
-    "kind": "by_design",
-    "reason": "Eleven digits are shared with Speedy and many other carriers, and nothing in the number points to DPD Romania."
-  },
-  {
     "carrier": "dpd-za",
     "pattern": "^[A-Z]{2,3}\\d{5,11}$",
     "kind": "by_design",
@@ -2285,12 +2279,6 @@
     "pattern": "^MPXL\\d{6}$",
     "kind": "open",
     "reason": "MailPlus's tracker documents MPXL numbers beside its MPX ones, but only one example is public, and C Chez Vous's low rule takes the same ten characters."
-  },
-  {
-    "carrier": "mainfreight",
-    "pattern": "^\\d{11}$",
-    "kind": "by_design",
-    "reason": "Eleven digits are shared by many carriers, and nothing in the number points to Mainfreight."
   },
   {
     "carrier": "mainfreight",

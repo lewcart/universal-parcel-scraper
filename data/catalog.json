@@ -11963,7 +11963,8 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-ro",
-      "recognitionRank": 934
+      "recognitionRank": 934,
+      "recognitionServedCountriesOnly": true
     },
     "canaryUrl": "https://www.dpd.com/ro/ro/",
     "trackingUrlTemplate": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
@@ -11988,7 +11989,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^8\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "dpd-uk": {
     "displayName": "DPD UK",
@@ -20455,6 +20461,7 @@
       "mode": "automatic",
       "adapter": "mainfreight",
       "recognitionRank": 923,
+      "recognitionServedCountriesOnly": true,
       "localClocks": true
     },
     "canaryUrl": "https://www.mainfreight.com/tracking",
@@ -20479,7 +20486,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "major-express": {
     "displayName": "Major Express",

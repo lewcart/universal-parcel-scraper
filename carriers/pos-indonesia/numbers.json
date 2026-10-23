@@ -68,7 +68,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "A Media Konsumen letter gives it as the resi of a Paket Kilat Khusus parcel sent from a Pos Indonesia branch."
@@ -97,7 +98,8 @@
           "coordinadora",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "A Media Konsumen letter gives it as the resi of a Pos Kilat Khusus parcel."
@@ -125,7 +127,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "A Media Konsumen letter gives it as the barcode of a parcel sent with PT Pos Indonesia."
@@ -296,7 +299,8 @@
           "coordinadora",
           "dhl-ecommerce-pl",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "An archived lookup on Pos Indonesia's own tracking page passes it as the barcode; the capture was not opened."

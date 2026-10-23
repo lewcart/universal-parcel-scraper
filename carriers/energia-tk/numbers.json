@@ -22,7 +22,8 @@
           "gls-de",
           "coordinadora",
           "gls-at",
-          "gls-pl"
+          "gls-pl",
+          "mainfreight"
         ]
       },
       "note": "Gdeposylka's TK Energia page gives it as an example receipt number, and Energia's tracker knows it."
@@ -51,6 +52,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -83,6 +85,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -115,6 +118,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -144,6 +148,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },
@@ -173,6 +178,7 @@
           "coordinadora",
           "gls-at",
           "gls-pl",
+          "mainfreight",
           "ppl"
         ]
       },

@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, DPD_RO_ENDPOINT, DpdRoTracker } from './adapter.js';
@@ -153,6 +155,20 @@ describe('DPD Romania HTTP adapter', () => {
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED, carrier: 'dpd-ro' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'dpd-ro', source: 'dpd-ro', result: { current_stage: 'delivered' } });
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith(`${DPD_RO_ENDPOINT}?`))).toBe(true);
+  });
+});
+
+describe('DPD Romania numbers', () => {
+  it('suggests eleven digits starting with 8 and is asked about them only for a lookup in Romania', () => {
+    expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(DELIVERED).candidates).toContain('dpd-ro');
+    expect(recognitionAskedCarriers(DELIVERED, { countryHint: 'RO' })[0]).toBe('dpd-ro');
+    for (const countryHint of [undefined, 'BG', 'DE', 'AL', 'NZ']) {
+      expect(recognitionAskedCarriers(DELIVERED, { countryHint }), `${countryHint}`).not.toContain('dpd-ro');
+    }
+    for (const other of ['70000000001', '8000000001', '800000000012']) {
+      expect(detectCarrierMatch(other).candidates ?? [], other).not.toContain('dpd-ro');
+    }
   });
 });
 

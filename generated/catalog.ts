@@ -11965,7 +11965,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-ro",
-      "recognitionRank": 934
+      "recognitionRank": 934,
+      "recognitionServedCountriesOnly": true
     },
     "canaryUrl": "https://www.dpd.com/ro/ro/",
     "trackingUrlTemplate": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
@@ -11990,7 +11991,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^8\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "dpd-uk": {
     "displayName": "DPD UK",
@@ -20457,6 +20463,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "mainfreight",
       "recognitionRank": 923,
+      "recognitionServedCountriesOnly": true,
       "localClocks": true
     },
     "canaryUrl": "https://www.mainfreight.com/tracking",
@@ -20481,7 +20488,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "major-express": {
     "displayName": "Major Express",
@@ -33242,7 +33254,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-nl": ["dpd-nl-1"],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
   "dpd-pt": ["dpd-pt-1","dpd-pt-2","dpd-pt-3","dpd-pt-4"],
-  "dpd-ro": [],
+  "dpd-ro": ["dpd-ro-1"],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],
   "dpex": [],
@@ -33458,7 +33470,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic"],
   "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-domc","mailamericas-s10"],
   "mailplus-au": ["mailplus-au-1"],
-  "mainfreight": [],
+  "mainfreight": ["mainfreight-1"],
   "major-express": [],
   "makati-express": ["makati-express-1"],
   "maltapost": ["maltapost-s10"],

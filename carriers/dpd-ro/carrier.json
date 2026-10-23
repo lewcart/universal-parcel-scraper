@@ -24,7 +24,8 @@
       "direct"
     ],
     "recognition": {
-      "rank": 934
+      "rank": 934,
+      "servedCountriesOnly": true
     }
   },
   "capabilities": [
@@ -90,5 +91,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "dpd-ro-1",
+      "pattern": "^8\\d{10}$",
+      "confidence": "low"
+    }
+  ]
 }

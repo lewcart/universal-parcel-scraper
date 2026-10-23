@@ -30,6 +30,7 @@
     {"wording": "Item out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "SFC's name for a relayed scan, followed in brackets by the courier's own text, which names the driver and gives a phone number."},
     {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "SFC's name for a relayed scan, followed in brackets by the courier's own text, which has a place for the recipient's name and gives a phone number."},
     {"wording": "Delivery notice", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "Written at the same instant as the departure from SFC's warehouse; it names no step of its own, so the scan keeps no stage."},
-    {"wording": "Estimated Time of International Flight Departure", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "The departure SFC expects for the flight, written before it with the expected date in brackets. It is no scan, so the adapter drops the row."}
+    {"wording": "Estimated Time of International Flight Departure", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "The departure SFC expects for the flight, written before it with the expected date in brackets. It is no scan, so the adapter drops the row."},
+    {"wording": "Estimated Time of International Flight Arrival", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-23", "unmapped": true, "note": "The arrival SFC expects for the flight, dated at that arrival in the destination's clock before it happens. It is no scan, so the adapter drops the row."}
   ]
 }

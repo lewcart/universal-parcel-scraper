@@ -162,6 +162,9 @@ describe('SFC HTTP adapter', () => {
     // The estimate alone is no scan.
     expect(() => parseSfc(changed('delivered', (body) => { body.trackingList = body.trackingList.slice(15, 16); }), DELIVERED))
       .toThrow(expect.objectContaining({ name: 'NoHistoryError' }));
+    expect(() => parseSfc(changed('delivered', (body) => {
+      body.trackingList = [{ date: '2026-03-12 21:19:00', location: 'Example Airport, NL', statu: 'Estimated Time of International Flight Arrival' }];
+    }), DELIVERED)).toThrow(expect.objectContaining({ name: 'NoHistoryError' }));
     expect(() => parseSfc(changed('in-transit', (body) => { body.count = 2; }), IN_TRANSIT))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'SFC found several orders for the number' }));
   });

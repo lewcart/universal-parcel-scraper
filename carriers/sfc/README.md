@@ -37,8 +37,8 @@ the destination country. Tracked through the lookup its tracking page makes.
 - The order's `track_status` sorts it into the page's tabs. Delivered, returned and waiting for
   collection are taken over the scans; the others, including in transit, which is also the
   page's default, are not.
-- The expected flight departure is written before the flight and is no scan: the adapter drops
-  it.
+- The expected flight departure and arrival are written before they happen and are no scans:
+  the adapter drops them.
 - Scans carry wall clocks with no zone: China's for SFC's legs and the destination's for the
   partner's, so they stay `local_time`.
 - The shop's reference, the service, the weight, the sender's country and the proof of delivery

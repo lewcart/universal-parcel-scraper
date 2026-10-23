@@ -99,7 +99,7 @@ function projectRow(row: unknown): { key: string; event: CarrierEvent; handover?
   if (!isRecord(row)) throw new SchemaError(PROVIDER, 'SFC returned an invalid scan');
   const { description, handover } = sfcWording(text(row, 'statu', 2000));
   if (!description) throw new SchemaError(PROVIDER, 'SFC returned a scan without wording');
-  // The departure SFC expects for the flight is written before it and is no scan.
+  // The departure or arrival SFC expects for the flight is written before it and is no scan.
   if (ESTIMATE.test(description)) return null;
   const local = scanClock(row);
   const location = text(row, 'location', 120);

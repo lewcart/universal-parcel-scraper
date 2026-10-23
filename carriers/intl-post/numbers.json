@@ -542,7 +542,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "posta-srbije",
         "confidence": "high"
       },
       "note": "Archived ParcelsApp lookup. Registered item from Serbia. No universal provider was checked."

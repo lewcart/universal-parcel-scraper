@@ -25,9 +25,11 @@ errors and malformed answers keep their own failure kinds. Recognition uses the 
 
 Pošta Srbije tracks UPU S10 items. Its own end `RS`, as do those of Post Express, its courier
 arm. The adapter takes S10 codes with a valid check digit, from any country, and treats anything
-else as invalid without a request. The issuer of an S10 code does not establish who delivers it,
-so detection keeps codes ending `RS` with the generic postal carrier and the low-confidence
-`posta-srbije-s10` rule makes preflight ask Pošta Srbije about them.
+else as invalid without a request. Its tracker relays the foreign post's events for its parcels,
+EMS, letter and registered items sent abroad, so detection names it for codes ending `RS` that
+start C, E, L or R (`posta-srbije-own`). Other codes ending `RS` stay with the generic postal
+carrier, since M-ONE uses its P series, and the low-confidence `posta-srbije-s10` rule makes
+preflight ask Pošta Srbije about them first.
 
 ## Notes
 

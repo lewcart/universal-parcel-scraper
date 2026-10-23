@@ -205,6 +205,25 @@ describe('Slovenian S10 items', () => {
   });
 });
 
+describe('Serbian S10 items', () => {
+  it.each(['CE123456785RS', 'ED123456785RS', 'LX123456785RS', 'RR123456785RS'])('names Pošta Srbije, which tracks %s abroad', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'posta-srbije', confidence: 'high', candidates: ['posta-srbije'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  // M-ONE gives its parcels P series numbers with the same code.
+  it('leaves its other items to international mail and asks it first, then M-ONE', () => {
+    expect(detectCarrierMatch('PL123456785RS')).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+    expect(recognitionAskedCarriers('PL123456785RS')[0]).toBe('posta-srbije');
+    expect(recognitionAskedCarriers('PL123456785RS')).toContain('m-one');
+  });
+
+  it('names nobody for a failed check digit or another issuer', () => {
+    expect(detectCarrierMatch('RR123456784RS').candidates).not.toContain('posta-srbije');
+    expect(detectCarrierMatch('RR123456785RU').candidates).not.toContain('posta-srbije');
+  });
+});
+
 describe('Italian S10 items', () => {
   it.each(['CE123456785IT', 'CP123456785IT', 'EE123456785IT', 'LC123456785IT', 'RN123456785IT'])('names Poste Italiane, which tracks %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'poste-italiane', confidence: 'high', candidates: ['poste-italiane'] });

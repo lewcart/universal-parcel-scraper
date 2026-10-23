@@ -43,8 +43,9 @@ its parcel lockers. Tracked through the lookup the tracker on its home page make
 ## Numbers
 
 M-ONE's parcels carry numbers in the UPU S10 layout with Serbia's code, the layout Pošta Srbije
-uses. Postal detection keeps them. A valid S10 number with that code also suggests M-ONE
-(`m-one-s10`), after Pošta Srbije, and recognition asks both. The adapter also takes the letters
+uses, in the P series. Detection names Pošta Srbije for the C, E, L and R series, its own, and
+keeps the others postal, where a valid S10 number with that code also suggests M-ONE
+(`m-one-s10`) after Pošta Srbije, and recognition asks both. The adapter also takes the letters
 RS and twelve digits, the shape of the number in the page's fixed reply. The samples and their
 sources are in [`numbers.json`](numbers.json).
 

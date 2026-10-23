@@ -245,9 +245,12 @@ describe('Pošta Srbije tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url) === POSTA_SRBIJE_ENDPOINT)).toBe(true);
   });
 
-  it('is asked about Serbian S10 codes, which detection leaves with the postal fallback, and reads its links', () => {
-    expect(detectCarrierMatch(ABROAD)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers(ABROAD)).toContain('posta-srbije');
+  it('is named for its own Serbian S10 codes, asked about the others, and reads its links', () => {
+    expect(detectCarrierMatch(ABROAD)).toMatchObject({ carrier: 'posta-srbije', confidence: 'high' });
+    expect(detectCarrierMatch(RETURNED)).toMatchObject({ carrier: 'posta-srbije', confidence: 'high' });
+    expect(detectCarrierMatch('PL900000019RS')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionAskedCarriers('PL900000019RS')[0]).toBe('posta-srbije');
+    expect(detectCarrierMatch('CE900000023RS').candidates).not.toContain('posta-srbije');
     expect(recognitionAskedCarriers('CE900000023RS')).not.toContain('posta-srbije');
     expect(recognitionAskedCarriers('RR900000019DE')).not.toContain('posta-srbije');
     for (const language of ['cir', 'lat', 'eng']) {

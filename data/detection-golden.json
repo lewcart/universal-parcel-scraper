@@ -71471,15 +71471,10 @@
   },
   {
     "input": "ED485467211RS",
-    "carrier": "intl-post",
+    "carrier": "posta-srbije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-srbije",
-      "chronopost",
-      "m-one"
+      "posta-srbije"
     ]
   },
   {
@@ -80226,15 +80221,10 @@
   },
   {
     "input": "LX000885412RS",
-    "carrier": "intl-post",
+    "carrier": "posta-srbije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-srbije",
-      "chronopost",
-      "m-one"
+      "posta-srbije"
     ]
   },
   {
@@ -87208,28 +87198,18 @@
   },
   {
     "input": "RR313231213RS",
-    "carrier": "intl-post",
+    "carrier": "posta-srbije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-srbije",
-      "chronopost",
-      "m-one"
+      "posta-srbije"
     ]
   },
   {
     "input": "RR314584512RS",
-    "carrier": "intl-post",
+    "carrier": "posta-srbije",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "posta-srbije",
-      "chronopost",
-      "m-one"
+      "posta-srbije"
     ]
   },
   {

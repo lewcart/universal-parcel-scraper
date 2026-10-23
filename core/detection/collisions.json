@@ -501,7 +501,16 @@
       "m-one",
       "posta-srbije"
     ],
-    "reason": "The Serbian issuer suffix suggests Pošta Srbije, whose preferred rule keeps it first. M-ONE tracks its parcels under S10 numbers with the same code, so recognition asks it too. Neither establishes the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+    "reason": "On Serbian items not starting C, E, L or R, the issuer suffix suggests Pošta Srbije, whose preferred rule keeps it first. M-ONE tracks its parcels under P series numbers with the same code, so recognition asks it too. Neither establishes the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
+    "shape": "C, E, L or R then A9{9}RS with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "m-one",
+      "posta-srbije"
+    ],
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, and M-ONE's any Serbian one, so they overlap Pošta Srbije's own items; its high-confidence rule, for the items whose foreign legs its tracker relays, decides."
   },
   {
     "shape": "C, E or L, a letter, 9{9}AU with a valid S10 check digit",

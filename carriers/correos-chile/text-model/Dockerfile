@@ -8,4 +8,4 @@ FROM ghcr.io/ggml-org/llama.cpp@sha256:8c74db29f1a2bef3f0a331b52c4d6214601dfceed
 COPY --from=model /model.gguf /models/correos-chile.gguf
 COPY --from=model /MODEL-LICENSE /usr/share/licenses/correos-chile-text-model/LICENSE
 EXPOSE 8080
-CMD ["--model", "/models/correos-chile.gguf", "--host", "0.0.0.0", "--port", "8080", "--threads", "2", "--threads-batch", "2", "--ctx-size", "1024", "--parallel", "1", "--n-predict", "32", "--no-warmup", "--no-webui", "--log-disable"]
+CMD ["--model", "/models/correos-chile.gguf", "--host", "0.0.0.0", "--port", "8080", "--threads", "2", "--threads-batch", "2", "--ctx-size", "1024", "--parallel", "1", "--n-predict", "32", "--no-warmup", "--no-webui", "--metrics", "--log-disable"]

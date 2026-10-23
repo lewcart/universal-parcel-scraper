@@ -47,8 +47,10 @@ endpoint. Only the question is sent, without parcel data, tokens or browser stat
 The optional [model Dockerfile](text-model/Dockerfile) serves a pinned,
 Apache-licensed Qwen model with llama.cpp; build it from this repository and keep
 port 8080 on a private network. Point the setting at `/v1/chat/completions`.
-Allow two CPU cores and 2 GB of memory. Both services are optional; rejected
-answers retain fallback, and direct history can be shorter than provider history.
+Its Prometheus `/metrics` counts the prompt and answer tokens it has processed, which
+shows how often the solver asks. Allow two CPU cores and 2 GB of memory. Both services
+are optional; rejected answers retain fallback, and direct history can be shorter than
+provider history.
 
 The official mobile app reads the same shipment detail, with no session, key or
 bot check, from `GET https://appmovil.correos.cl/api/tracking/tracking_code/{number}/list_status`.

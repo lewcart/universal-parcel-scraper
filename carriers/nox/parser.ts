@@ -17,9 +17,10 @@ export const NOX_MAX_BYTES = 256 * 1024;
 const ZONE = 'Europe/Berlin';
 // The label specification's shipping barcode: a two-digit client code, 000, the
 // sender's customer id, the print date and a serial. Then the older SWR
-// barcodes, and the return barcode: RA, the pickup type, the return customer,
-// the returning sender and a serial.
-const NUMBER = /^(?:\d{2}000\d{19}|SWR\d{21}|RA[12][A-Z0-9]{12}\d{9})$/;
+// barcodes, the return barcode: RA, the pickup type, the return customer,
+// the returning sender and a serial, and a sender's own barcode of C and 29
+// digits, outside the specification, that the tracker answers too.
+const NUMBER = /^(?:\d{2}000\d{19}|SWR\d{21}|RA[12][A-Z0-9]{12}\d{9}|C\d{29})$/;
 // "2023-09-08T06:27:52": a wall clock in Germany, without an offset.
 const CLOCK = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})(:\d{2})?(?:\.\d{1,9})?$/;
 // Bot checks a CDN or firewall could put in place of the reply.
@@ -29,7 +30,7 @@ const MAX_ROWS = 300;
 /** A nox barcode in capitals, as the tracker matches it; anything else is not one nox prints. */
 export function normalizeNoxNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw).toUpperCase() : '';
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'nox barcodes are 24 digits, or SWR or RA and 21 characters');
+  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'nox barcodes are 24 digits, SWR or RA and 21 characters, or C and 29 digits');
   return number;
 }
 

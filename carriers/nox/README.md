@@ -43,6 +43,10 @@ Archived lookups also show barcodes of SWR and 21 digits, with the same eight di
 and then the print date. Return labels start with RA and the pickup type. Detection leaves both
 layouts unclaimed; the adapter takes them when nox is chosen.
 
+The tracker also answers a sender's own barcode of C and 29 digits, which the label specification
+does not define and a universal provider names nox for. The adapter takes it; detection leaves it
+unclaimed until its layout is known.
+
 nox Austria runs its own tracker and is not covered here.
 
 ## Links

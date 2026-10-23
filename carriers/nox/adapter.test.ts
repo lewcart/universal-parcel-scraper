@@ -181,6 +181,18 @@ describe('nox tracking adapter', () => {
     expect(String(fetcher.mock.calls[0]![0])).toBe(`${NOX_API}${RETURN}`);
   });
 
+  it('takes a sender barcode of C and 29 digits, which the tracker also answers, and leaves its detection unclaimed', async () => {
+    const fetcher = site();
+    const sender = `C${'0'.repeat(20)}123456789`;
+    expect(normalizeNoxNumber(` ${sender.toLowerCase()} `)).toBe(sender);
+    await expect(carrier(fetcher).track({ number: sender })).rejects.toMatchObject({ kind: 'not_found' });
+    expect(String(fetcher.mock.calls[0]![0])).toBe(`${NOX_API}${sender}`);
+    for (const number of [`C${'0'.repeat(28)}`, `C${'0'.repeat(30)}`, `D${'0'.repeat(29)}`]) {
+      expect(() => normalizeNoxNumber(number), number).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
+    }
+    expect(detectCarrierMatch(sender).candidates).not.toContain('nox');
+  });
+
   it('recognizes a known barcode with its last activity and an unknown one from plain HTTP', async () => {
     const fetcher = site();
     await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: '2026-02-12T06:14:09.000Z' });

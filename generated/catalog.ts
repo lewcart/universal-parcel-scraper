@@ -26875,6 +26875,45 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "shouwu": {
+    "displayName": "Shouwu International",
+    "color": "#be2c33",
+    "aliases": [
+      "SWE",
+      "守务国际",
+      "上海守务国际",
+      "Shanghai Shouwu International"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://admin.shshouwu.com/track.html",
+    "trackingUrlTemplate": "https://admin.shshouwu.com/track.html?q={trackingNumber}",
+    "trackingSearchUrl": "https://admin.shshouwu.com/track.html",
+    "linkRules": [
+      {
+        "domains": [
+          "admin.shshouwu.com"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SWECN\\d{12}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
   "shree-anjani": {
     "displayName": "Shree Anjani Courier",
     "color": "#f58220",
@@ -32706,6 +32745,7 @@ export const CARRIER_IDS = [
   "shipblu",
   "shipentegra",
   "shiprocket",
+  "shouwu",
   "shree-anjani",
   "shree-mahabali-express",
   "shree-mahavir",
@@ -33500,6 +33540,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shipblu": [],
   "shipentegra": ["shipentegra-1"],
   "shiprocket": ["shiprocket-1"],
+  "shouwu": ["shouwu-1"],
   "shree-anjani": [],
   "shree-mahabali-express": [],
   "shree-mahavir": [],

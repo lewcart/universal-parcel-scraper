@@ -89293,6 +89293,14 @@
     "candidates": []
   },
   {
+    "input": "SWECN000000000017YQ",
+    "carrier": "shouwu",
+    "confidence": "high",
+    "candidates": [
+      "shouwu"
+    ]
+  },
+  {
     "input": "SWQ1CS26536351",
     "carrier": "indah-logistik",
     "confidence": "high",

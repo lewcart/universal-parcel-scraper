@@ -1865,6 +1865,7 @@ export const REGISTRY: RegistryDefinition = {
     "shipentegra": "shipentegra",
     "shiprocket": "shiprocket",
     "shipup": "universal",
+    "shouwu": "universal",
     "shree-anjani": "shree-anjani",
     "shree-mahabali-express": "universal",
     "shree-mahavir": "universal",

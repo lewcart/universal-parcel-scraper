@@ -147,6 +147,16 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     expect(detectCarrierMatch('YL0000000001YQ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['gzyl'] });
   });
 
+  it('names Shouwu International for SWECN, twelve digits and YQ, and only that layout', () => {
+    for (const number of ['SWECN000000000017YQ', 'swecn 000000 000017 yq']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'shouwu', confidence: 'high', candidates: ['shouwu'] });
+    }
+    for (const number of ['SWECN0000000017YQ', 'SWECN00000000017YQ', 'SWECN0000000000017YQ', 'SWEHK000000000017YQ',
+      'SWECN000000000017', 'SWECN000000000017YT']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('shouwu');
+    }
+  });
+
   it('names Techlink for its dated ZHPHD waybills ending in ML', () => {
     expect(detectCarrierMatch('ZHPHD260101000001ML')).toMatchObject({ carrier: 'techlink', confidence: 'high', candidates: ['techlink'] });
     expect(detectCarrierMatch('zhphd 260101 000001 ml')).toMatchObject({ carrier: 'techlink', confidence: 'high' });

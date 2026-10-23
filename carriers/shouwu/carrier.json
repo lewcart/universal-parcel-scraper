@@ -1,0 +1,53 @@
+{
+  "id": "shouwu",
+  "displayName": "Shouwu International",
+  "aliases": [
+    "SWE",
+    "守务国际",
+    "上海守务国际",
+    "Shanghai Shouwu International"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#be2c33"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://admin.shshouwu.com/track.html?q={trackingNumber}",
+    "searchUrl": "https://admin.shshouwu.com/track.html",
+    "canaryUrl": "https://admin.shshouwu.com/track.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "admin.shshouwu.com"
+      ],
+      "pathPattern": "^/track\\.html$",
+      "params": [
+        "q"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "shouwu-1",
+      "pattern": "^SWECN\\d{12}YQ$",
+      "confidence": "high"
+    }
+  ]
+}

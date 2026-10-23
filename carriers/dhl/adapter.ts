@@ -11,6 +11,9 @@
  * session. Rate limits and server errors stay errors: they are never routed
  * through a browser.
  *
+ * A record that asks for the recipient's postcode gets it, when the caller gave
+ * one, through the `/shipment` POST DHL's page sends.
+ *
  * DHL's business API credentials are not needed for this public flow.
  */
 
@@ -26,6 +29,7 @@ import {
 } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { carrierIdFromPartnerLinks } from '../../core/catalog/hints.js';
+import { DELIVERY_POSTCODE, deliveryPostcodeText } from '../../core/catalog/postcode.js';
 import { runSteps, singleFlight, takeTurn } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { countryCode, isoTime } from '../../core/time/index.js';
@@ -41,6 +45,8 @@ const ORIGIN = 'https://www.dhl.de';
 const DATA_PATH = '/int-verfolgen/data';
 const CONFIG_URL = `${ORIGIN}${DATA_PATH}/config?domain=de&language=en`;
 const TRACKING_PAGE = `${ORIGIN}/en/privatkunden/dhl-sendungsverfolgung.html`;
+// Where DHL's page sends the recipient's postcode for a record that asks for it.
+const SHIPMENT_URL = `${ORIGIN}${DATA_PATH}/shipment?language=en`;
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36';
 const MAX_BYTES = 2_000_000;
 
@@ -92,8 +98,8 @@ function noData(): CarrierResult {
   return { status: 'unknown', last_status_text: 'DHL has not published tracking information for this shipment yet', last_update: null, expected_delivery: null, events: [] };
 }
 
-/** Parse only public status fields: never persist recipient, address, signature or service data. */
-export function parseDHLTrackingResponse(payload: unknown, trackingNumber: string): CarrierResult {
+/** The one shipment DHL returned for the requested number. */
+function matchingShipment(payload: unknown, trackingNumber: string): JsonObject {
   const requested = normalizeDHLTrackingNumber(trackingNumber);
   if (!isRecord(payload)) throw new SchemaError(PROVIDER, 'DHL returned an invalid tracking response');
   if (payload.rateLimited === true || payload.isRateLimited === true) throw new RateLimitedError(PROVIDER);
@@ -107,7 +113,43 @@ export function parseDHLTrackingResponse(payload: unknown, trackingNumber: strin
       .some((value) => clean(value, 64).toUpperCase() === requested);
   });
   if (matches.length !== 1) throw new SchemaError(PROVIDER, 'DHL did not return one matching shipment');
-  const shipment = matches[0]!;
+  return matches[0]!;
+}
+
+/**
+ * DHL holds several shipments under the number and shows this one for its recipient's postcode.
+ * Its page then sends the postcode with the record's `international` flag. Not when the record
+ * names no shipment, or asks for the sender's postcode or the shipping date instead.
+ */
+function recipientPostcodeAsked(payload: unknown, trackingNumber: string): { international: boolean } | null {
+  const shipment = matchingShipment(payload, trackingNumber);
+  const details = isRecord(shipment.sendungsdetails) ? shipment.sendungsdetails : {};
+  const missing = isRecord(shipment.sendungNichtGefunden) ? shipment.sendungNichtGefunden : {};
+  if (shipment.plzBenoetigt !== true || shipment.versandDatumBenoetigt === true || details.isShipperPlz === true
+    || Object.values(missing).some((flag) => flag === true)) return null;
+  return { international: details.international === true };
+}
+
+/** DHL holds the parcel, but not for the postcode given: the owner has to correct it. */
+function postcodeMismatch(retryAfterMs?: number): InputRequiredError {
+  return new InputRequiredError(PROVIDER, 'the delivery postcode', 'DHL has the parcel, but not for this postcode', {
+    reason: 'postcode_mismatch', ...(retryAfterMs !== undefined && retryAfterMs > 0 ? { retryAfterMs } : {}),
+  });
+}
+
+/**
+ * DHL refuses a postcode with its "Your input was incorrect" message, and after repeated ones
+ * with the time it accepts another. Other refusals stay HTTP errors.
+ */
+function refusedPostcode(value: unknown): InputRequiredError | null {
+  if (!isRecord(value)) return null;
+  if (typeof value.blockTime === 'number') return postcodeMismatch(value.blockTime - Date.now());
+  return /\bincorrect\b/i.test(clean(value.error)) ? postcodeMismatch() : null;
+}
+
+/** Parse only public status fields: never persist recipient, address, signature or service data. */
+export function parseDHLTrackingResponse(payload: unknown, trackingNumber: string): CarrierResult {
+  const shipment = matchingShipment(payload, trackingNumber);
   const missing = isRecord(shipment.sendungNichtGefunden) ? shipment.sendungNichtGefunden : {};
   if (shipment.plzBenoetigt === true || shipment.versandDatumBenoetigt === true) {
     // DHL asks the recipient's postcode to show a parcel it holds; a record it also calls not found names none.
@@ -220,7 +262,7 @@ class DHLSession {
     }
   }
 
-  async fetch(number: string, limits: Limits): Promise<CarrierResult> {
+  async fetch(number: string, limits: Limits, postcode?: string | null): Promise<CarrierResult> {
     if (!this.token) {
       const config = await this.request(CONFIG_URL, limits);
       if (typeof config.verfolgenCsrfToken !== 'string' || !config.verfolgenCsrfToken) throw new DHLSessionError();
@@ -229,22 +271,44 @@ class DHLSession {
     }
     const url = new URL(`${ORIGIN}${DATA_PATH}/search`);
     url.search = new URLSearchParams({ piececode: number, noRedirect: 'true', language: 'en' }).toString();
-    return parseDHLTrackingResponse(await this.request(url, limits), number);
+    const payload = await this.request(url, limits);
+    const asked = postcode ? recipientPostcodeAsked(payload, number) : null;
+    if (!asked) return parseDHLTrackingResponse(payload, number);
+    const answer = await this.request(SHIPMENT_URL, limits, { piececode: number, zip: postcode, international: asked.international });
+    if (recipientPostcodeAsked(answer, number)) throw postcodeMismatch();
+    return parseDHLTrackingResponse(answer, number);
   }
 
-  private async request(url: string | URL, limits: Limits): Promise<JsonObject> {
-    const { response, bytes } = await fetchBounded(url, { signal: limits.signal, headers: {
-      Accept: 'application/json, text/plain, */*', 'Accept-Language': 'en-US,en;q=0.9',
-      'User-Agent': this.userAgent, Referer: TRACKING_PAGE,
-      'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty',
-      ...(this.token ? { 'verfolgen-CSRF-token': this.token, 'verfolgen-wg': this.wg } : {}),
-    } }, {
+  /** A read, or with a body the JSON POST DHL's page sends, which carries no `verfolgen-wg`. */
+  private async request(url: string | URL, limits: Limits, body?: JsonObject): Promise<JsonObject> {
+    const { response, bytes } = await fetchBounded(url, {
+      signal: limits.signal,
+      ...(body ? { method: 'POST', body: JSON.stringify(body) } : {}),
+      headers: {
+        Accept: 'application/json, text/plain, */*', 'Accept-Language': 'en-US,en;q=0.9',
+        'User-Agent': this.userAgent, Referer: TRACKING_PAGE,
+        'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty',
+        ...(body ? { 'Content-Type': 'application/json' } : {}),
+        ...(this.token ? { 'verfolgen-CSRF-token': this.token, ...(body ? {} : { 'verfolgen-wg': this.wg }) } : {}),
+      },
+    }, {
       provider: PROVIDER, timeoutMs: capped(this.timeoutMs, limits), maxBytes: MAX_BYTES,
       fetcher: this.fetcher, redirect: 'manual', allowHttpError: true,
     });
     if ([301, 302, 303, 307, 308, 401, 403, 419].includes(response.status)) throw new DHLSessionError();
-    if (!response.ok) throw new UpstreamHttpError(PROVIDER, response.status);
-    if (!response.headers.get('content-type')?.includes('application/json')) throw new DHLSessionError();
+    const json = response.headers.get('content-type')?.includes('application/json') === true;
+    if (!response.ok) {
+      let refused: InputRequiredError | null = null;
+      if (body && json && response.status < 500) {
+        try {
+          refused = refusedPostcode(parseJsonBytes(bytes, PROVIDER));
+        } catch {
+          // An unreadable refusal stays the HTTP error it is.
+        }
+      }
+      throw refused ?? new UpstreamHttpError(PROVIDER, response.status);
+    }
+    if (!json) throw new DHLSessionError();
     const value = parseJsonBytes(bytes, PROVIDER);
     if (!isRecord(value)) throw new SchemaError(PROVIDER, 'DHL returned an invalid tracking response');
     const token = response.headers.get('verfolgen-CSRF-token');
@@ -297,10 +361,15 @@ export class DHLTracker {
     return session;
   }
 
-  /** Lookups share one session, so two parcels never renew it at the same time. */
-  async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
+  /**
+   * Lookups share one session, so two parcels never renew it at the same time. The recipient's
+   * postcode is sent only when DHL asks for it.
+   */
+  async fetch(trackingNumber: string, context: TrackingContext = {}, postcode?: string | null): Promise<CarrierResult> {
     const number = normalizeDHLTrackingNumber(trackingNumber);
-    return takeTurn(this.serialize, 'dhl', context, (left) => this.lookup(number, left));
+    const zip = postcode ? deliveryPostcodeText(postcode) : null;
+    if (zip !== null && !DELIVERY_POSTCODE.test(zip)) throw new InvalidInputError(PROVIDER, 'DHL delivery postcode is invalid');
+    return takeTurn(this.serialize, 'dhl', context, (left) => this.lookup(number, left, zip));
   }
 
   /**
@@ -323,7 +392,7 @@ export class DHLTracker {
     });
   }
 
-  private async lookup(number: string, context: TrackingContext): Promise<CarrierResult> {
+  private async lookup(number: string, context: TrackingContext, postcode: string | null): Promise<CarrierResult> {
     const { signal } = context;
     // The caller may have left while the lookup waited for its turn.
     signal?.throwIfAborted();
@@ -338,13 +407,13 @@ export class DHLTracker {
           id: 'direct',
           run: (step) => {
             ended = step.signal;
-            return this.direct(number, { signal: step.signal, deadline });
+            return this.direct(number, { signal: step.signal, deadline }, postcode);
           },
         },
         {
           id: 'trawl', enabled: trawl !== null,
           recovers: (error) => renewable(error) && !over(ended, deadline),
-          run: (step) => this.browser(trawl!, number, { signal: step.signal, deadline }),
+          run: (step) => this.browser(trawl!, number, { signal: step.signal, deadline }, postcode),
         },
       ]);
     } catch (error) {
@@ -355,23 +424,23 @@ export class DHLTracker {
   }
 
   /** The direct session, renewing a stale one or an interrupted read once. */
-  private async direct(number: string, limits: Limits): Promise<CarrierResult> {
+  private async direct(number: string, limits: Limits, postcode?: string | null): Promise<CarrierResult> {
     if (this.session !== null && this.now() - this.sessionOpenedAt >= SESSION_MAX_AGE_MS) this.session = null;
     const cached = this.session !== null;
     const session = this.session ?? this.open(new DHLSession(this.directTimeoutMs, this.fetcher));
     try {
-      return await session.fetch(number, limits);
+      return await session.fetch(number, limits, postcode);
     } catch (error) {
       // A fresh session that was rejected outright needs a browser, not a
       // second identical attempt; a cached one may simply have expired.
       if (!renewable(error) || (!cached && !(error instanceof UpstreamNetworkError))) throw error;
       if (over(limits.signal, limits.deadline)) throw error;
-      return await this.open(new DHLSession(this.directTimeoutMs, this.fetcher)).fetch(number, limits);
+      return await this.open(new DHLSession(this.directTimeoutMs, this.fetcher)).fetch(number, limits, postcode);
     }
   }
 
   /** A solved browser session, replayed over HTTP with its cookies and user agent. */
-  private async browser(trawl: TrawlClient, number: string, limits: Limits): Promise<CarrierResult> {
+  private async browser(trawl: TrawlClient, number: string, limits: Limits, postcode: string | null): Promise<CarrierResult> {
     this.session = null;
     const timeoutMs = capped(this.timeoutMs, limits);
     const solved = await trawl.scrape(
@@ -380,7 +449,7 @@ export class DHLTracker {
     );
     const session = new DHLSession(this.directTimeoutMs, this.fetcher);
     await session.seed(solved.cookies, solved.userAgent);
-    const result = await session.fetch(number, limits);
+    const result = await session.fetch(number, limits, postcode);
     this.open(session);
     return result;
   }
@@ -393,7 +462,7 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: 'dhl',
     steps: ['direct', 'trawl'],
-    track: (input, context) => tracker.fetch(input.number, context),
+    track: (input, context) => tracker.fetch(input.number, context, input.postcode),
     recognize: (number, context) => tracker.recognizes(number, context),
   };
 };

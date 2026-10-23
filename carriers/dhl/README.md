@@ -22,6 +22,15 @@ such.
 Lookups are serialised per instance, so two parcels never renew the session at
 once.
 
+When DHL holds several shipments under the number, the record asks for the
+recipient's postcode (`plzBenoetigt`). Given one, the adapter sends it as DHL's
+page does: a JSON `POST /int-verfolgen/data/shipment` with the number, the
+postcode and the record's `international` flag, which answers like `search`. It
+sends nothing when the record asks for the sender's postcode (`isShipperPlz`) or
+the shipping date, or names no shipment. The catalog offers the postcode,
+optional, for twelve-digit numbers: recognition asks DHL about those, so it is
+how a consumer learns that DHL holds one behind a postcode.
+
 ## Notes
 
 - `JVGL` numbers belong to [DHL eCommerce Netherlands](../dhl-ecommerce-nl/README.md):
@@ -122,9 +131,12 @@ once.
   belonging to another DHL service, are explicit errors, not "not yet
   announced". A postcode request on a record with no "not found" flag carries the
   reason `parcel_found`: DHL holds the parcel, so recognition counts the number as
-  known. When DHL Paket says it holds no Paket shipment under the number,
-  the inconclusive error carries the reason `portal_not_found`, so a consumer
-  can tell DHL's answer from an outage.
+  known. A postcode DHL refuses ("Your input was incorrect", or an answer still
+  asking for it) carries the reason `postcode_mismatch`. After repeated refusals
+  DHL names the time it takes another, which becomes the error's retry delay.
+  Another refusal stays an HTTP error. When DHL Paket says it holds no Paket
+  shipment under the number, the inconclusive error carries the reason
+  `portal_not_found`, so a consumer can tell DHL's answer from an outage.
 - No weight, dimensions, sender or pickup-point data is read.
 - Recipient name, address (beyond its country), signature and service details
   are never read; a test asserts it.

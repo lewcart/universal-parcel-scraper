@@ -4,7 +4,8 @@ import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { countryCode } from '../../core/time/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
-import { DHLSessionError, DHLTracker, dhlTrackingUrl, normalizeDHLTrackingNumber, parseDHLTrackingResponse } from './adapter.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, DHLSessionError, DHLTracker, dhlTrackingUrl, normalizeDHLTrackingNumber, parseDHLTrackingResponse } from './adapter.js';
 
 const NUMBER = 'LF123456785DE';
 const CONFIG = 'https://www.dhl.de/int-verfolgen/data/config?domain=de&language=en';
@@ -446,5 +447,70 @@ describe('DHL sessions and browser fallback', () => {
       { step: 'trawl', outcome: 'ok', fallbackFrom: 'direct' },
     ]);
     expect(lookups).toEqual([{ finalStep: 'trawl', outcome: 'ok' }]);
+  });
+});
+
+describe('DHL recipient postcode', () => {
+  const SHIPMENT = 'https://www.dhl.de/int-verfolgen/data/shipment?language=en';
+  const held = (details: Record<string, unknown> = {}, extra: Record<string, unknown> = {}) =>
+    Response.json({ sendungen: [{ id: NUMBER, plzBenoetigt: true, sendungsdetails: details, ...extra }] });
+  const carrier = () => adapter({ fetcher: fetch, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+
+  it('sends the postcode the way DHL’s page does when several shipments share the number', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(config()).mockResolvedValueOnce(held({ international: true }))
+      .mockResolvedValueOnce(Response.json(shipment()));
+    const result = await carrier().track({ number: NUMBER, postcode: ' 1010 ' }, { budgetMs: 10_000 });
+    expect(result.current_stage).toBe('in_transit');
+    expect(String(fetcher.mock.calls[2]![0])).toBe(SHIPMENT);
+    const init = fetcher.mock.calls[2]![1]!;
+    expect(init.method).toBe('POST');
+    expect(JSON.parse(String(init.body))).toEqual({ piececode: NUMBER, zip: '1010', international: true });
+    const headers = new Headers(init.headers);
+    expect(headers.get('content-type')).toBe('application/json');
+    expect(headers.get('verfolgen-CSRF-token')).toBe('test-csrf');
+    expect(headers.get('verfolgen-wg')).toBeNull();
+  });
+
+  it('sends no postcode DHL does not ask for, nor one for the sender or a missing shipment', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()));
+    const tracker = new DHLTracker({ trawl: null });
+    expect((await tracker.fetch(NUMBER, {}, '10115')).current_stage).toBe('in_transit');
+    for (const answer of [held({ isShipperPlz: true }), held({}, { versandDatumBenoetigt: true }),
+      held({}, { sendungNichtGefunden: { keineDhlPaketSendung: true } })]) {
+      fetcher.mockResolvedValueOnce(answer);
+      await expect(tracker.fetch(NUMBER, {}, '10115')).rejects.toMatchObject({ kind: 'input_required' });
+    }
+    // Without a postcode, a postcode request stays a parcel DHL holds.
+    fetcher.mockResolvedValueOnce(held());
+    await expect(tracker.fetch(NUMBER)).rejects.toMatchObject({ kind: 'input_required', reason: 'parcel_found' });
+    expect(fetcher.mock.calls.map(([url]) => String(url))).not.toContain(SHIPMENT);
+  });
+
+  it('tells a postcode DHL refuses from a failed request', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(config());
+    const tracker = new DHLTracker({ trawl: null });
+    const refused = async (answer: Response) => {
+      fetcher.mockResolvedValueOnce(held()).mockResolvedValueOnce(answer);
+      return tracker.fetch(NUMBER, {}, '10115').catch((error: unknown) => error);
+    };
+    expect(await refused(Response.json({ error: 'Your input was incorrect.' }, { status: 400 })))
+      .toMatchObject({ kind: 'input_required', reason: 'postcode_mismatch' });
+    // An answer still asking for the postcode did not take it either.
+    expect(await refused(held())).toMatchObject({ kind: 'input_required', reason: 'postcode_mismatch' });
+    // After repeated refusals DHL names the time it takes another.
+    const blocked = await refused(Response.json({ blockTime: Date.now() + 600_000 }, { status: 400 }));
+    expect(blocked).toMatchObject({ kind: 'input_required', reason: 'postcode_mismatch' });
+    expect((blocked as { retryAfterMs: number }).retryAfterMs).toBeGreaterThan(500_000);
+    expect(await refused(Response.json({ error: 'An error occurred processing the request. Please try again later.' }, { status: 406 })))
+      .toMatchObject({ name: 'UpstreamHttpError', status: 406 });
+    expect(await refused(Response.json({ error: 'Your input was incorrect.' }, { status: 500 })))
+      .toMatchObject({ name: 'UpstreamHttpError', status: 500 });
+  });
+
+  it('rejects a postcode no country writes before asking DHL', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch');
+    await expect(new DHLTracker({ trawl: null }).fetch(NUMBER, {}, '<1>')).rejects.toMatchObject({ kind: 'invalid_input' });
+    expect(fetcher).not.toHaveBeenCalled();
   });
 });

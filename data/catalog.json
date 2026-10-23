@@ -528,6 +528,21 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl",
+      "requirements": [
+        {
+          "field": "postcode",
+          "whenTrackingNumber": "^[0-9]{12}$",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "Optional. DHL asks for it when several shipments share the number.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ],
       "recognitionRank": 999,
       "recognitionPattern": "^\\d{12}$",
       "browser": true

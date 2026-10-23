@@ -7,6 +7,83 @@
       "language": "es",
       "stage": "customs",
       "confirmedBy": "live"
+    },
+    {
+      "wording": "RECIBIDO POR CORREOSCHILE",
+      "language": "es",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "A parcel leaving Chile, as a universal provider relays it without the portal code."
+    },
+    {
+      "wording": "RECIBIDO EN PLANTA DE ORIGEN",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "A parcel leaving Chile, as a universal provider relays it without the portal code."
+    },
+    {
+      "wording": "ENVIO DESPACHADO",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "A parcel leaving Chile, as a universal provider relays it without the portal code."
+    },
+    {
+      "wording": "DISPONIBLE PARA SALIR AL PAIS DE DESTINO",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "A parcel leaving Chile, as a universal provider relays it without the portal code."
+    },
+    {
+      "wording": "ENVIO DESPACHADO AL PAIS DE DESTINO",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "A parcel leaving Chile, as a universal provider relays it without the portal code."
+    },
+    {
+      "wording": "ENVIO INGRESA A PAIS DE DESTINO",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "A parcel leaving Chile, as a universal provider relays it without the portal code."
+    },
+    {
+      "wording": "ENVIO EN PROCESO DE INTERNACION",
+      "language": "es",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "note": "A parcel leaving Chile, as a universal provider relays it without the portal code."
+    },
+    {
+      "wording": "RECIBIDO EN PLANTA ORIGEN",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "prior-art",
+      "note": "In the example reply of an open-source Correos de Chile client, without the portal code."
+    },
+    {
+      "wording": "DESPACHADO A OFICINA DE CORREOSCHILE",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "prior-art",
+      "note": "In the example reply of an open-source Correos de Chile client, without the portal code."
+    },
+    {
+      "wording": "RECIBIDO EN OFICINA DE CORREOSCHILE",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "prior-art",
+      "note": "In the example reply of an open-source Correos de Chile client, without the portal code."
+    },
+    {
+      "wording": "RECEPCION INTERNACIONAL POR CORREOSCHILE",
+      "language": "es",
+      "stage": "in_transit",
+      "confirmedBy": "prior-art",
+      "note": "In the example reply of an open-source Correos de Chile client, without the portal code."
     }
   ]
 }

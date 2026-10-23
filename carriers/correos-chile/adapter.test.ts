@@ -40,9 +40,25 @@ describe('Correos de Chile anonymous tracking', () => {
     expect(result.events?.[1]!.stage).toBeUndefined();
     expect(result.delivered_at).toBeUndefined();
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE_SYNTHETIC|sucursales|Iconos|Codigo|Referencia|RutEntrega/);
-    for (const entry of statuses.entries) {
-      expect(classifyCorreosChileScan(entry.code, entry.wording)?.stage).toBe(entry.stage);
+    for (const entry of statuses.entries as { code?: string; wording: string; stage: string }[]) {
+      expect(classifyCorreosChileScan(entry.code ?? '', entry.wording)?.stage).toBe(entry.stage);
     }
+  });
+
+  it('stages the scans of a parcel leaving Chile and keeps their wording', () => {
+    const body = detail();
+    const scans = [['ENVÍO EN PROCESO DE INTERNACIÓN', 'customs'], ['ENVÍO INGRESA A PAÍS DE DESTINO', 'in_transit'],
+      ['ENVÍO DESPACHADO AL PAÍS DE DESTINO', 'in_transit'], ['DISPONIBLE PARA SALIR AL PAÍS DE DESTINO', 'in_transit'],
+      ['ENVÍO DESPACHADO', 'in_transit'], ['RECIBIDO EN PLANTA DE ORIGEN', 'in_transit'], ['RECIBIDO POR CORREOSCHILE', 'accepted']];
+    body.historial = scans.map(([Estado], index) => ({ ...detail().historial[0], Estado, Icono: '002',
+      FechaDate: `2026-09-${String(20 - index).padStart(2, '0')}T10:00:00`, Fecha: '' }));
+    const result = parseCorreosChileTracking(payload({ seguimiento: JSON.stringify(body) }), NUMBER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', last_status_text: 'ENVÍO EN PROCESO DE INTERNACIÓN' });
+    expect(result.events?.map((event) => [event.description, event.stage])).toEqual(scans);
+    // Only the whole wording counts: more text after it is free text, and stays neutral.
+    body.historial = [{ ...body.historial[0], Estado: 'ENVÍO DESPACHADO A PRIVATE_SYNTHETIC_RECIPIENT' }];
+    expect(parseCorreosChileTracking(payload({ seguimiento: JSON.stringify(body) }), NUMBER))
+      .toMatchObject({ status: 'unknown', last_status_text: 'Actualización del envío' });
   });
 
   it('requires both exact provider references, bounded nonempty history and valid response shapes', () => {

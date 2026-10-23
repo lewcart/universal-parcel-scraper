@@ -551,6 +551,7 @@ import { statusMap as yto } from '../../carriers/yto/status.js';
 import { statusMap as yunexpress } from '../../carriers/yunexpress/status.js';
 import { statusMap as yilongLogistics } from '../../carriers/yilong-logistics/status.js';
 import { statusMap as yurticiKargo } from '../../carriers/yurtici-kargo/status.js';
+import { statusMap as yypost } from '../../carriers/yypost/status.js';
 import { statusMap as zajil } from '../../carriers/zajil/status.js';
 import { statusMap as zeleris } from '../../carriers/zeleris/status.js';
 import { statusMap as zrExpress } from '../../carriers/zr-express/status.js';
@@ -641,7 +642,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'united-delivery-service': unitedDeliveryService, upaya, ups, urbano, urvaam, usps,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, 'viettel-post': viettelPost,
   vimenpaq, 'vinted-go': vintedGo, vozovoz, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl,
-  yanwen, 'ycs-logistics': ycsLogistics, 'yilong-logistics': yilongLogistics, yto, yunexpress, zto, 'zto-international': ztoInternational,
+  yanwen, 'ycs-logistics': ycsLogistics, 'yilong-logistics': yilongLogistics, yto, yunexpress, yypost, zto, 'zto-international': ztoInternational,
   'yurtici-kargo': yurticiKargo, zajil, zeleris, 'zr-express': zrExpress,
 };
 

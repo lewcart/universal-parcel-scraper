@@ -611,6 +611,7 @@ import { adapter as yto } from '../carriers/yto/adapter.js';
 import { adapter as yunda } from '../carriers/yunda/adapter.js';
 import { adapter as yunexpress } from '../carriers/yunexpress/adapter.js';
 import { adapter as yurticiKargo } from '../carriers/yurtici-kargo/adapter.js';
+import { adapter as yypost } from '../carriers/yypost/adapter.js';
 import { adapter as zajil } from '../carriers/zajil/adapter.js';
 import { adapter as zeleris } from '../carriers/zeleris/adapter.js';
 import { adapter as zrExpress } from '../carriers/zr-express/adapter.js';
@@ -1229,6 +1230,7 @@ export const REGISTRY: RegistryDefinition = {
     "yunda": yunda,
     "yunexpress": yunexpress,
     "yurtici-kargo": yurticiKargo,
+    "yypost": yypost,
     "zajil": zajil,
     "zeleris": zeleris,
     "zr-express": zrExpress,
@@ -2019,6 +2021,7 @@ export const REGISTRY: RegistryDefinition = {
     "yunda": "yunda",
     "yunexpress": "yunexpress",
     "yurtici-kargo": "yurtici-kargo",
+    "yypost": "yypost",
     "z-leading": "universal",
     "zajil": "zajil",
     "zeleris": "zeleris",

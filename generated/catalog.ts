@@ -31946,6 +31946,31 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "yypost": {
+    "displayName": "YYpost",
+    "color": "#0000cc",
+    "aliases": [
+      "YY Post",
+      "Yuanyou",
+      "远邮",
+      "远邮国际",
+      "深圳市远邮国际物流有限公司",
+      "Shenzhen Yuanyou International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "yypost",
+      "localClocks": true
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "z-leading": {
     "displayName": "Z-Leading",
     "color": "#005ab0",
@@ -32993,6 +33018,7 @@ export const CARRIER_IDS = [
   "yilong-logistics",
   "yimidida",
   "yurtici-kargo",
+  "yypost",
   "z-leading",
   "zajil",
   "zeleris",
@@ -33789,6 +33815,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "yilong-logistics": ["yilong-logistics-1"],
   "yimidida": [],
   "yurtici-kargo": [],
+  "yypost": [],
   "z-leading": [],
   "zajil": [],
   "zeleris": ["zeleris-1"],

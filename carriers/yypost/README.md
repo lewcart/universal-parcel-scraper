@@ -1,0 +1,51 @@
+# YYpost
+
+YYpost (远邮, Shenzhen Yuanyou International Logistics) is a Shenzhen forwarder that flies
+parcels through Hong Kong and hands them to a network in the destination country. Its tracker is
+on yypostal.com. The adapter reads the tracker's own lookup for numbers of YY, nine digits and
+CN.
+
+## How it works
+
+1. `direct`: the tracking page asks YYpost's tenant of the rtb56 tracking platform, `GET
+   http://szyy.rtb56.com/webservice/Service.ashx`, without a cookie or account, and the
+   adapter sends the same request: `method=track`, `param` set to `{"sp":"","nums":[…]}` and
+   `key` set to the Base64 of that text's MD5 in hexadecimal, as JSONP (`callbackparam`). It
+   reads the reply in that callback, or bare. The platform's host answers plain HTTP only: its
+   certificate is not for that name. DayOne's tracker runs on the same platform.
+2. `retry`: one more read when the first fails to connect or hangs. The first gets half of the
+   budget.
+
+## Notes
+
+- Only the entry whose `server_hawbcode` is the whole number asked is read.
+- Scans are wall clocks without a zone: the reply's `time_zone` and `utc_offset` are empty, and
+  the rows at the destination's airport are as likely on its clock as on China's. Every scan
+  keeps its wall clock, in the tracker's order, and its place dates it.
+- Scans are English wording from YYpost's warehouse in Shenzhen, its air line through Hong Kong
+  and the destination's clearance, staged by the wording recorded in
+  [statuses.json](statuses.json), then the shared rules. Scan codes and the parcel's summary
+  status, which repeats the newest scan's, are not read. The line's shipment order, recorded
+  after the parcel has left the warehouse, is no step back.
+- `channel_hawbcode`, the onward network's number, becomes `delivery_tracking_number`, and the
+  hand-off decides who is asked: for a Portuguese `CNPRT` number, Cainiao's last mile there.
+- The tracker's unknown-number answer is a not-found. Its "Parameter error" is a schema
+  failure and any other refusal is inconclusive. Redirects, 404s and browser checks are never
+  read as a missing parcel.
+- The merchant's order reference, the signatory and the proof-of-delivery link are not read.
+
+## Limitations
+
+YYpost's numbers have S10's layout and check digit with CN, so detection gives them to China
+Post, which has no record of them. The adapter is asked when the parcel is filed under YYpost
+or a universal provider names it.
+
+## Links
+
+The tracking page opens a parcel at `http://www.yypostal.com/track.html?c=` and the number.
+It is plain HTTP, so no portal link is published.
+
+## Testing
+
+Set `YYPOST_TRACKING_NUMBER` and optionally `YYPOST_UNKNOWN_NUMBER` outside the repository, then
+run `npm run test:carriers:live -- carriers/yypost`.

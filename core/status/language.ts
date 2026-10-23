@@ -391,6 +391,10 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // the package's data, which does not say it has the parcel, then the parcel about to leave the centre.
   if (/^operation cent(?:er|re) is processing (?:the )?(?:package|parcel|shipment) information$/.test(text)) return 'registered';
   if (/^preparing to leave (?:the )?(?:[a-z]+ ){0,3}operation cent(?:er|re)$/.test(text)) return 'in_transit';
+  // PostNL's international scans as providers relay them without its categories, read as Spring GDS's map reads
+  // them: the item prepared before its bulk handover, then PostNL's acceptance centre taking it in.
+  if (/^(?:the )?item is ready for shipment$/.test(text)) return 'registered';
+  if (/^consignment received at (?:the )?postnl acceptance cent(?:re|er)$/.test(text)) return 'accepted';
   if (/^(?:received in office|export to foreign provider)$/.test(text)) return 'in_transit';
   // Sent on to another country: "Sent abroad".
   if (/^(?:(?:the )?(?:shipment|parcel|package|item) )?(?:(?:has been|was) )?(?:sent|dispatched|forwarded) abroad$/.test(text)) return 'in_transit';

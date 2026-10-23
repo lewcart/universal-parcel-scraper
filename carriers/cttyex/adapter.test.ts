@@ -79,6 +79,39 @@ describe('CTTYEX HTTP adapter', () => {
     ]);
   });
 
+  it('stages the steps after the flight by their wording, with or without a town, and keeps their wall clocks', () => {
+    const place = 'Sample City, Sample State, 00000';
+    const result = parseCttyex(changed('in-transit', (item) => {
+      item.details.unshift(
+        { create_time: '2026-03-30 23:11:10', content: `${place} Leaving the sorting center` },
+        { create_time: '2026-03-30 06:18:28', content: `${place} Arrive at the last mile sorting and distribution center` },
+        { create_time: '2026-03-28 23:43:58', content: `${place} Accepted at logistics carrier Regional Destination Facility` },
+        { create_time: '2026-03-26 04:23:25', content: 'Arrived at logistics carrier Facility In Transit to Next Facility' },
+        { create_time: '2026-03-25 20:57:51', content: 'Leave the Sample Port processing center' },
+        { create_time: '2026-03-24 03:50:50', content: 'Sample Port Import customs clearance' },
+        { create_time: '2026-03-22 01:09:52', content: 'Arrive at the destination international airport' },
+      );
+    }), IN_TRANSIT);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
+      last_update: null, last_update_local: '2026-03-30T23:11:10' });
+    expect(result.events!.slice(0, 8).map((event) => [event.local_time ?? event.time, event.stage, event.stage_source])).toEqual([
+      ['2026-03-30T23:11:10', 'in_transit', 'carrier_map'],
+      ['2026-03-30T06:18:28', 'in_transit', 'carrier_map'],
+      // The last-mile network's first scan near the recipient, not the parcel's acceptance.
+      ['2026-03-28T23:43:58', 'in_transit', 'carrier_map'],
+      ['2026-03-26T04:23:25', 'in_transit', 'carrier_map'],
+      ['2026-03-25T20:57:51', 'in_transit', 'carrier_map'],
+      ['2026-03-24T03:50:50', 'customs', 'carrier_map'],
+      ['2026-03-22T01:09:52', 'in_transit', 'carrier_map'],
+      ['2026-03-21T01:10:20+08:00', 'in_transit', 'carrier_map'],
+    ]);
+    // The receiving point's other wording is a step in China.
+    const received = parseCttyex(changed('registered', (item) => {
+      item.details.unshift({ create_time: '2026-04-03 11:00:50', content: 'Arrive at the receiving point' });
+    }), REGISTERED);
+    expect(received).toMatchObject({ current_stage: 'accepted', last_update: '2026-04-03T11:00:50+08:00' });
+  });
+
   it('takes the summary’s status when no scan has a stage, and drops the markup the page would render', () => {
     const result = parseCttyex(changed('registered', (item) => {
       item.details = [{ create_time: '2026-04-02 14:20:10', content: 'Synthetic <b>note</b>' }];

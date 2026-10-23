@@ -9,10 +9,30 @@ import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status
 const SCANS: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   ['order information received', 'registered'], // The shipment data has arrived; CTTYEX does not hold the parcel yet.
   ['arrive at the cross border receiving point', 'accepted'], // Received at the cross-border receiving point in China.
+  ['arrive at the receiving point', 'accepted'], // The receiving point's other wording, before the operation center.
   ['goods leave the operation center', 'in_transit'],
   ['arrival at domestic internationality airport', 'in_transit'], // At the departure airport in China.
   ['departure from the airport of origin domestic', 'in_transit'], // The flight has left China.
 ]);
+
+/**
+ * The steps after the flight, from the destination agent and the last-mile
+ * network, worded as on LinHan's tracker, the same system. A port's town, or
+ * the recipient's town, state and ZIP code, can open the wording, and a
+ * processing center's town sits inside it. They are not CTTYEX's steps in
+ * China, so they keep their wall clocks.
+ */
+const ABROAD: readonly (readonly [RegExp, Stage])[] = [
+  [/^arrive at the destination international airport$/, 'in_transit'],
+  [/^(?:.+ )?import customs clearance$/, 'customs'], // No release yet.
+  [/^leave the .+ processing center$/, 'in_transit'],
+  // The last-mile network's scans, its name replaced by "logistics carrier".
+  [/^arrived at logistics carrier facility in transit to next facility$/, 'in_transit'],
+  // Its first scan near the recipient, not the acceptance: CTTYEX took the parcel in China.
+  [/^(?:.+ )?accepted at logistics carrier regional destination facility$/, 'in_transit'],
+  [/^(?:.+ )?arrive at the last mile sorting and distribution center$/, 'in_transit'],
+  [/^(?:.+ )?leaving the sorting center$/, 'in_transit'],
+];
 
 /** The summary's status over the scans, in Chinese, or in English when the tracker is asked in English. */
 const SUMMARIES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
@@ -31,7 +51,7 @@ export function cttyexChinaStep(wording: string): boolean {
 /** The stage CTTYEX's wording gives a scan or the summary. */
 export function cttyexMappedStage(wording: string): Stage | undefined {
   const key = normalizeStatusWording(wording);
-  return SCANS.get(key) ?? SUMMARIES.get(key);
+  return SCANS.get(key) ?? SUMMARIES.get(key) ?? ABROAD.find(([pattern]) => pattern.test(key))?.[1];
 }
 
 /** A scan's stage: the map, else the shared wording rules, else nothing. */

@@ -28,14 +28,16 @@ cross-border e-commerce parcels from China. Tracked through the lookup its track
 ## Notes
 
 - The tracker shows CTTYEX's own steps in China, from the order data to the departure from the
-  origin airport, and can go on with a few forwarder steps at the destination: the arrival there,
-  the customs clearance and the hand-over to a local company. Scans print a wall clock to the
-  second without a zone. China keeps one zone, so a scan the map lists is an instant on Beijing
-  time. A wording the map does not list comes from another leg and keeps its wall clock.
-  [LinHan's](../linhan/README.md) tracker, the same system, writes its rows abroad on Beijing
-  time too, but no CTTYEX row abroad has yet come beside a clock that tells its zone.
+  origin airport, then the destination agent's and the last-mile network's steps, worded as on
+  [LinHan's](../linhan/README.md) tracker, the same system: the arrival, the import clearance, the
+  processing and sorting centers. Scans print a wall clock to the second without a zone. China
+  keeps one zone, so a step in China is an instant on Beijing time. Any other row keeps its wall
+  clock: LinHan's tracker writes its rows abroad on Beijing time too, but no CTTYEX row abroad
+  has yet come beside a clock that tells its zone. [`identity.ts`](identity.ts) lets a wording the
+  map comes to list as a step in China take over the row an app stored from its wall clock.
 - The tracker has no codes. [`status.ts`](status.ts) stages the scans by their wording; others go
-  through the shared wording rules. The newest staged scan decides the parcel's stage, and the
+  through the shared wording rules. The last-mile network's "Accepted at … Regional Destination
+  Facility" is in transit: CTTYEX took the parcel in China. The newest staged scan decides the parcel's stage, and the
   summary's status only when no scan has one: a status such as "运输途中" (in transit) says less
   than the scans.
 - The destination's Chinese name becomes a country code where it names a country, and is kept as
@@ -44,6 +46,7 @@ cross-border e-commerce parcels from China. Tracked through the lookup its track
 ## Limitations
 
 - No location, delivery estimate, weight, delivery partner or partner number.
+- A row abroad keeps the town, state and ZIP code that open it in its wording.
 - The tracker keeps parcels for two months.
 
 ## Numbers

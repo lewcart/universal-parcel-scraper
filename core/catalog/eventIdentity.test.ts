@@ -286,6 +286,23 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
   });
 
+  it('lets a CTTYEX row read on Beijing time take over the row stored from its wall clock, by wording and place', () => {
+    expect(sameInstantIdentityPolicy('cttyex')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('cttyex', { supportsScanMatching: true });
+    expect(policy).toMatchObject({
+      sourceCarrierId: 'cttyex', storedSources: ['cttyex'], requireProviderCode: false, matchEachScan: true, matchWallClock: true,
+    });
+    const stored = { stage: 'in_transit', description: 'Arrive at the receiving point', location: '', providerCode: '' };
+    const incoming = { ...stored, stage: 'accepted', description: ' arrive at the  Receiving Point' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(stored, incoming)).toBe(true);
+    for (const different of [
+      { ...stored, description: 'Arrive at the cross border receiving point' },
+      { ...stored, location: 'Sample City' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+
   it('lets a YunExpress row read on China’s clock take over the row stored on another zone, by wall clock, place and wording', () => {
     expect(sameInstantIdentityPolicy('yunexpress')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('yunexpress', { supportsScanMatching: true });

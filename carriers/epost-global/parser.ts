@@ -16,7 +16,7 @@ export const PROVIDER = 'ePost Global';
 // as data and as rendered rows.
 export const EPOST_GLOBAL_MAX_BYTES = 1024 * 1024;
 // EPG and ten to fifteen digits; current labels print fifteen.
-const NUMBER = /^EPG\d{10,15}$/;
+const NUMBER = /^(?:EPG\d{10,15}|[A-Z]{2}\d{9}US)$/;
 // The page's call that shows a card's details: its scans, the card's index,
 // the number asked, the partner's number and the shipment's details.
 const CALL = /^transactionDetails\('(.*?)','(\d+)','([^']*)', '([^']*)', '(.*)'\)$/s;
@@ -38,7 +38,7 @@ const MAX_EVENTS = 100;
 /** An ePost Global number; anything else is a number the tracker is not asked for. */
 export function normalizeEpostGlobalNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'ePost Global numbers are EPG and ten to fifteen digits');
+  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'ePost Global numbers are EPG and ten to fifteen digits, or a USPS code ending in US');
   return number;
 }
 

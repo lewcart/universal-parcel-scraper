@@ -45,6 +45,11 @@ ePost Global numbers are `EPG` and digits, with no check digit. Current labels p
 digits; an Amazon seller's forum post lists older ones of ten to thirteen. `epost-global-1`
 claims the prefix with ten to fifteen.
 
+A shipment sent on as USPS international mail can carry USPS's S10 code instead, ending in
+`US`: the tracker files it under that code. One seen through LV codes, `epost-global-lv`
+offers ePost Global with low confidence for LV and a passing check digit, beside USPS, which
+shows only the label until the parcel reaches it. The adapter takes any code ending in `US`.
+
 ## Links
 
 The tracking page reads a number from its path or its `id` parameter and looks it up at once, so

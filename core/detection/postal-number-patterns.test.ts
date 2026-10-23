@@ -341,3 +341,14 @@ describe('a mistyped postal number', () => {
     }
   });
 });
+
+describe('ePost Global shipments under a USPS code', () => {
+  // Synthetic USPS codes; none is a real shipment.
+  it('offers ePost Global with low confidence for LV codes ending in US with a passing check digit', () => {
+    expect(detectCarrierMatch('LV123456785US')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionAskedCarriers('LV123456785US')).toContain('epost-global');
+    for (const number of ['LV123456784US', 'LW123456785US', 'LV123456785NL', 'LV12345678US']) {
+      expect(recognitionAskedCarriers(number), number).not.toContain('epost-global');
+    }
+  });
+});

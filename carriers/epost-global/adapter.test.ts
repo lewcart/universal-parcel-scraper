@@ -127,6 +127,19 @@ describe('ePost Global HTTP adapter', () => {
     expect(own.delivery_tracking_number).toBeUndefined();
   });
 
+  it('tracks and recognizes a shipment filed under the USPS code ending in US that its label carries', async () => {
+    // A synthetic USPS code with a passing check digit.
+    const number = 'LV123456785US';
+    const filed = rewrite('spring-delivered', (details) => { details.Ref = number; }, number);
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(filed));
+    await expect(carrier(fetcher).track({ number: 'lv 123 456 785 us' })).resolves.toMatchObject({ status: 'delivered' });
+    await expect(carrier(fetcher).recognize!(number)).resolves.toMatchObject({ known: true });
+    expect(fetcher.mock.calls.map(([, init]) => String(init!.body))).toEqual([`id=${number}`, `id=${number}`]);
+    // Another post's code is not ePost Global's to answer.
+    await expect(carrier(fetcher).track({ number: 'LV123456785NL' })).rejects.toMatchObject({ kind: 'invalid_input' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
   it('binds the card to the number asked and the details to their own number', () => {
     expect(() => parseEpostGlobal(rewrite('spring-delivered', () => {}, 'LX000000005NL'), SPRING)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parseEpostGlobal(rewrite('spring-delivered', (details) => { details.Ref = 'EPG990000000000009'; }), SPRING))

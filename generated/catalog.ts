@@ -13175,6 +13175,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^EPG\\d{10,15}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^LV\\d{9}US$",
+        "confidence": "low",
+        "checksum": "s10"
       }
     ]
   },
@@ -33206,7 +33211,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "envia-colombia": [],
   "envialia": [],
   "eparcel-kr": ["eparcel-kr-1"],
-  "epost-global": ["epost-global-1"],
+  "epost-global": ["epost-global-1","epost-global-lv"],
   "equick": ["equick-eqk"],
   "estes": [],
   "estes-forwarding": [],

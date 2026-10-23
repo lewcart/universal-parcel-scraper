@@ -783,6 +783,16 @@
     "reason": "The US issuer suffix suggests USPS but does not establish the delivering carrier; the postal fallback remains selected, and only browser recognition can ask USPS to confirm it."
   },
   {
+    "shape": "LV9{9}US with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "epost-global",
+      "intl-post",
+      "usps"
+    ],
+    "reason": "ePost Global files shipments it sends on as USPS mail under these USPS codes; its low rule joins the USPS candidates, the postal fallback remains selected, and recognition asks ePost Global's tracker."
+  },
+  {
     "shape": "AA9{9}JE with a valid S10 check digit",
     "carriers": [
       "chronopost",

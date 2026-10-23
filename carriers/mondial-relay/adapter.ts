@@ -1,7 +1,7 @@
 
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { recognizeFromLookup, type AdapterFactory, type Recognition, type TrackingContext } from '../../core/adapter/index.js';
 import { DELIVERY_POSTCODE, deliveryPostcodeText } from '../../core/catalog/postcode.js';
 import { isValidMondialRelayBarcode } from '../../core/detection/index.js';
 import { ChallengeError, InputRequiredError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -411,6 +411,15 @@ export class MondialRelayTracker {
       (left) => this.#lookup(normalizeMondialRelayCredential(rawShipment, rawPostcode), left));
   }
 
+  /**
+   * Only InPost Spain's own numbers are recognized: its page answers each one alone and a number it
+   * does not hold is not found. Mondial Relay's own numbers need a browser or an account.
+   */
+  recognize(rawShipment: string, context: TrackingContext = {}): Promise<Recognition> {
+    const inpost = inpostSpainNumber(rawShipment);
+    return recognizeFromLookup(() => this.#inpostSpain(inpost!, context), () => inpost !== null);
+  }
+
   async #lookup(credential: MondialRelayCredential, context: TrackingContext): Promise<CarrierResult> {
     // Cloudflare blocks every non-browser client of the website with an HTTP
     // 403 WAF block (verified from multiple networks, 2026-09-10). The app's
@@ -528,5 +537,6 @@ export const adapter: AdapterFactory = (environment) => {
     // InPost Spain's own numbers are read from its page, retried once when it cannot be reached.
     steps: ['app', 'trawl', 'inpost-es', 'retry'],
     track: (input, context) => tracker.fetch(input.number, input.postcode ?? '', context),
+    recognize: (number, context) => tracker.recognize(number, context),
   };
 };

@@ -68,6 +68,8 @@ const BROWSER_ONLY: Readonly<Record<string, readonly (keyof Browsers)[]>> = {
   loggi: ['service'], 'sf-express': ['service'], swiftx: ['service'], usps: ['service'], 'emirates-post': ['service'], '17TRACK': ['service'],
   yunexpress: ['service', 'chromium'], 'Postal Ninja': ['service', 'chromium'],
 };
+/** Numbers a carrier above tracks over plain HTTP, without its browser. */
+const HTTP_NUMBERS: Readonly<Record<string, RegExp>> = { 'mondial-relay': /^FV\d{8}$/ };
 
 const corpus = new Map(loadNumberCorpusFiles().map((file) => [file.carrier, file.records]));
 /** Synthetic numbers in the format of a carrier whose corpus has no public number yet. */
@@ -237,7 +239,7 @@ describe.each(Object.entries(ENVIRONMENTS))('%s', (_, browsers) => {
 
       if (browserless) {
         it('fails every corpus number without a request', async () => {
-          const inputs = samples(subject, operation);
+          const inputs = samples(subject, operation).filter(({ number }) => !HTTP_NUMBERS[subject]?.test(number));
           expect(inputs).not.toHaveLength(0);
           for (const sample of inputs) {
             const { adapter, requests } = harness(subject, browsers);

@@ -5972,5 +5972,13 @@
       "straightship"
     ],
     "reason": "Colis Privé accepts generic seventeen-character composites; Straightship's STSH layout is offered at low confidence so recognition asks its tracker."
+  },
+  {
+    "shape": "FV and eight digits",
+    "carriers": [
+      "mondial-relay",
+      "tnt-it"
+    ],
+    "reason": "TNT Italy's waybill code takes any two letters and eight digits; InPost Spain's FV numbers are offered to Mondial Relay at low confidence and recognition asks both trackers."
   }
 ]

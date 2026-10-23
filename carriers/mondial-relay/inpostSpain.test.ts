@@ -1,6 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { ChallengeError, InputRequiredError, NoHistoryError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
+import { createTracker } from '../../facade/index.js';
 import { MondialRelayTracker, mondialRelayTrackingUrl } from './adapter.js';
 import { parseInpostSpainPage } from './inpostSpain.js';
 
@@ -141,6 +144,39 @@ describe('InPost Spain tracking page', () => {
     ] as const) {
       const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(body, { status, headers: status === 302 ? { Location: '/' } : {} }));
       await expect(new MondialRelayTracker({ fetcher, trawl: null }).fetch(NUMBER), String(status)).rejects.toBeInstanceOf(kind);
+    }
+  });
+
+  it('recognizes an FV number from the page alone, and asks nothing about Mondial Relay’s own numbers', async () => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response(FIXTURE))
+      .mockResolvedValueOnce(new Response(details([], 404)))
+      .mockResolvedValueOnce(new Response('<html><head><title>Just a moment...</title></head></html>', { status: 403 }));
+    const tracker = new MondialRelayTracker({ fetcher, trawl: null });
+    await expect(tracker.recognize(' fv 0000-0001 ')).resolves.toMatchObject({ known: true });
+    await expect(tracker.recognize(NUMBER)).resolves.toEqual({ known: false });
+    // A browser check is no answer.
+    await expect(tracker.recognize(NUMBER)).rejects.toBeInstanceOf(ChallengeError);
+    for (const number of ['12345678', '1234567890', '123456789012', 'FV0000001', 'FV000000001']) {
+      await expect(tracker.recognize(number), number).resolves.toEqual({ known: false });
+    }
+    expect(fetcher).toHaveBeenCalledTimes(3);
+  });
+
+  it('is offered and asked first for FV and eight digits, and asked about no other number', async () => {
+    expect(detectCarrierMatch(NUMBER)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(NUMBER).candidates).toContain('mondial-relay');
+    expect(recognitionAskedCarriers(NUMBER)[0]).toBe('mondial-relay');
+    for (const number of ['FV0000001', 'FV000000001', 'FW00000001']) expect(detectCarrierMatch(number).candidates, number).not.toContain('mondial-relay');
+    for (const number of ['12345678', '1234567890', '123456789012']) expect(recognitionAskedCarriers(number), number).not.toContain('mondial-relay');
+    vi.useFakeTimers({ now: new Date('2026-10-23T12:00:00Z'), toFake: ['Date'] });
+    try {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async (input) => String(input) === PAGE_URL
+        ? new Response(FIXTURE) : new Response('Not found', { status: 404 }));
+      await expect(createTracker({ fetcher, providers: [], env: {} }).recognize(NUMBER, { budgetMs: 3000 }))
+        .resolves.toMatchObject({ carrier: 'mondial-relay' });
+    } finally {
+      vi.useRealTimers();
     }
   });
 

@@ -1155,6 +1155,8 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
+      "recognitionRank": 894,
+      "recognitionPattern": "^FV\\d{8}$",
       "browser": true
     },
     "canaryUrl": "https://www.mondialrelay.fr/suivi-de-colis/",
@@ -1181,6 +1183,10 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^(?:\\d{8}|\\d{10}|\\d{12})$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^FV\\d{8}$",
         "confidence": "low"
       }
     ]
@@ -33086,7 +33092,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gls-ch": ["gls-ch-1","gls-ch-2","gls-ch-3","gls-ch-4"],
   "dpd": ["dpd-2","dpd-1","dpd-3"],
   "dpd-fr": ["dpd-fr-1","dpd-fr-4","dpd-fr-3","dpd-fr-2"],
-  "mondial-relay": ["mondial-relay-1","mondial-relay-2"],
+  "mondial-relay": ["mondial-relay-1","mondial-relay-2","mondial-relay-3"],
   "relais-colis": ["relais-colis-1","relais-colis-2","relais-colis-3"],
   "la-poste": ["la-poste-1","la-poste-4","la-poste-5","la-poste-6","la-poste-7","la-poste-2","la-poste-3"],
   "chronopost": ["chronopost-1","chronopost-own-suffix","chronopost-2","chronopost-3","chronopost-4"],

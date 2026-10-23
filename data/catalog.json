@@ -1153,6 +1153,8 @@
           "autoComplete": "postal-code"
         }
       ],
+      "recognitionRank": 894,
+      "recognitionPattern": "^FV\\d{8}$",
       "browser": true
     },
     "canaryUrl": "https://www.mondialrelay.fr/suivi-de-colis/",
@@ -1179,6 +1181,10 @@
       },
       {
         "pattern": "^(?:\\d{8}|\\d{10}|\\d{12})$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^FV\\d{8}$",
         "confidence": "low"
       }
     ]

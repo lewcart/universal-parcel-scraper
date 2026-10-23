@@ -33,6 +33,14 @@ tracker answered a UH item with the scan a universal provider had, so UH items g
 A successful reply must confirm the whole item. Other U series stay with international mail
 and remain unsupported.
 
+Mail from abroad keeps the sending post's number. Chunghwa Post's
+[ePacket page](https://www.post.gov.tw/post/internet/Postal/index.jsp?ID=1499060698896) says
+tracked letters imported into Taiwan are followed on its tracker, whose notes leave out those
+from France, and [Taipei Customs](https://web.customs.gov.tw/taipei/singlehtml/3130?cntId=cus2_164078_3130)
+sends the recipients of registered parcels from abroad there with the parcel's own number. So
+Chunghwa Post is the destination post an item for Taiwan is handed to, except a `U` customs
+label, which its tracker cannot read.
+
 ## Limitations
 
 The direct path supports international EMS, parcel, registered and tracked-letter S10 items,

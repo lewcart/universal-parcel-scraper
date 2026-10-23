@@ -63,8 +63,9 @@ export function deliveryHandoff(carrier: string, number: string, result: Carrier
   // S10 binds the postal identity across borders. Its issuer suffix does not
   // identify the destination operator; try that country's post only when no
   // partner is named, and let the shared progress/freshness checks confirm it.
-  // Japan Post does not track `U`-prefixed customs labels. Chronopost names
-  // La Poste itself for the other posts' items it scans; it delivers the rest.
+  // Japan Post and Chunghwa Post do not track `U`-prefixed customs labels.
+  // Chronopost names La Poste itself for the other posts' items it scans; it
+  // delivers the rest.
   if (!target && isValidS10TrackingNumber(reference)
     && (carrier !== 'chronopost' || isAnotherPostItemAtChronopost(reference))) {
     // Origins such as An Post name no destination. The recipient of an item
@@ -75,7 +76,7 @@ export function deliveryHandoff(carrier: string, number: string, result: Carrier
     const country = countryCode(destination ?? looked);
     target = carrier === 'dhl' && /^C[A-Z]\d{9}DE$/.test(reference) && country && Object.hasOwn(DHL_PARCEL_PARTNERS, country)
       ? DHL_PARCEL_PARTNERS[country] ?? undefined : nationalPostCandidate(destination ?? looked);
-    if (target === 'japan-post' && reference.startsWith('U')) target = undefined;
+    if ((target === 'japan-post' || target === 'chunghwa-post') && reference.startsWith('U')) target = undefined;
     if (target) basis = 'destination';
   }
   // A downstream reference binds the two identities, but does not prove its

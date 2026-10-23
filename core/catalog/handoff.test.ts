@@ -44,7 +44,8 @@ describe('general delivery handoff candidates', () => {
   });
   it.each([['FI', 'posti'], ['CH', 'swiss-post'], ['FR', 'la-poste'], ['US', 'usps'], ['SE', 'postnord'], ['Sweden', 'postnord'],
     ['AU', 'australia-post'], ['Australia', 'australia-post'], ['PL', 'poczta-polska'], ['Poland', 'poczta-polska'],
-    ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta'], ['IT', 'poste-italiane'], ['Italy', 'poste-italiane']])(
+    ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta'], ['IT', 'poste-italiane'], ['Italy', 'poste-italiane'],
+    ['TW', 'chunghwa-post'], ['Taiwan', 'chunghwa-post']])(
     'proposes one national post for a checksum-valid postal reference going to %s', (destination_country, target) => {
       expect(deliveryHandoff('spring-gds', 'LX123456785NL', { destination_country }))
         .toEqual({ carrier: target, number: 'LX123456785NL', basis: 'destination' });
@@ -86,6 +87,10 @@ describe('general delivery handoff candidates', () => {
       expect(deliveryHandoff('an-post', 'LX123456785IE', { status: 'in_transit' }, hint))
         .toEqual({ carrier: 'posti', number: 'LX123456785IE', basis: 'destination' });
     }
+    // Chunghwa Post follows a tracked letter from abroad under the sending post's number.
+    expect(deliveryHandoff('lietuvos-pastas', 'LX123456785LT', { status: 'in_transit' }, 'TW'))
+      .toEqual({ carrier: 'chunghwa-post', number: 'LX123456785LT', basis: 'destination' });
+    expect(deliveryHandoff('lietuvos-pastas', 'UA123456785LT', { status: 'in_transit' }, 'TW')).toBeNull();
     // A reported destination or partner comes first, even one no post answers for.
     expect(deliveryHandoff('an-post', 'LX123456785IE', { destination_country: 'SE' }, 'FI')?.carrier).toBe('postnord');
     expect(deliveryHandoff('an-post', 'LX123456785IE', { destination_country: 'IN' }, 'FI')).toBeNull();

@@ -12,7 +12,10 @@ match the requested number and contain one waybill with dated scans. Multiple pi
 rejected because selecting one could return another parcel's progress.
 
 Each scan keeps its operation code as its provider code and takes its stage from it
-(`status.ts`); a scan with an unknown code is classified by its wording. The newest scan
+(`status.ts`); a scan with an unknown code is classified by its wording. An order shipped from
+JD's own warehouse abroad is accepted there while it is picked and weighed, then handed to a
+last-mile partner such as GOFO, whose steps JD relays. GOFO's label comes under a code JD has
+shown with that step alone, so its wording decides it rather than the code. The newest scan
 decides the status. The courier's name and phone are dropped from the out-for-delivery wording
 (`wording.ts`).
 

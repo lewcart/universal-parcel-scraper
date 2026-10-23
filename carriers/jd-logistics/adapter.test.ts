@@ -164,6 +164,24 @@ describe('JD Logistics international projection', () => {
     ]);
   });
 
+  it('stages the steps of JD\'s warehouse abroad and the partner steps it relays', () => {
+    const reply = history();
+    const nodes = reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList as Record<string, unknown>[];
+    nodes.splice(0, nodes.length, ...[
+      ['DMPU', 'Arrived at GOFO Regional Hub'], ['1060', 'Handed over to Carrier'], ['3052', 'Departed from Warehouse.'],
+      ['3043', 'Weighed at Warehouse.'], ['3041', 'Picking Completed.'], ['SRRF3P', 'Shipping Label Created'], ['COSH', 'Order Created.'],
+    ].map(([operationCode, operatorDesc], index) => ({ operatorTime: `2026-09-0${9 - index} 08:00:00`, operatorDesc, operationCode })));
+    const result = parseJdLogistics(reply, NUMBER);
+    expect(result.events?.map(event => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['DMPU', 'in_transit', 'carrier_map'], ['1060', 'in_transit', 'carrier_map'], ['3052', 'in_transit', 'carrier_map'],
+      ['3043', 'accepted', 'carrier_map'], ['3041', 'accepted', 'carrier_map'], ['SRRF3P', 'registered', 'carrier_map'],
+      ['COSH', 'registered', 'carrier_map'],
+    ]);
+    // The partner's other steps under SRRF3P are read by their wording.
+    nodes[0] = { ...nodes[0], operationCode: 'SRRF3P', operatorDesc: 'Delivered' };
+    expect(parseJdLogistics(reply, NUMBER)).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'wording:language' });
+  });
+
   it('drops the courier\'s name and phone from the out-for-delivery wording', () => {
     const reply = history();
     const nodes = reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList as Record<string, unknown>[];

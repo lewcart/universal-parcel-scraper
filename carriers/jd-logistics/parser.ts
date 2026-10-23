@@ -160,7 +160,7 @@ export function parseJdLogistics(payload: unknown, raw: string): CarrierResult {
     const instant = EXPLICIT_OFFSET_PATTERN.test(iso) ? explicitOffsetTime(iso) : scanInstant(node, iso);
     const location = scanLocation(node);
     const code = clean(node.operationCode, 32);
-    const mapped = code ? jdLogisticsStatus(code) : undefined;
+    const mapped = jdLogisticsStatus(code, description);
     const classification = classifyWording(description);
     return { description, ...(instant ? { time: instant.iso } : { local_time: wall.toFormat("yyyy-MM-dd'T'HH:mm:ss") }),
       ...(location ? { location } : {}), ...(code ? { provider_code: code } : {}),
@@ -176,7 +176,7 @@ export function parseJdLogistics(payload: unknown, raw: string): CarrierResult {
     seen.add(key); return true;
   }).slice(0, 100);
   const latest = unique[0]!;
-  const coded = latest.provider_code ? jdLogisticsStatus(latest.provider_code) : undefined;
+  const coded = jdLogisticsStatus(latest.provider_code, latest.description!);
   const classified = classifyWording(latest.description!);
   return { status: coded?.status ?? (classified.source !== 'none' ? languageStageStatus(classified.stage) : 'unknown'),
     ...(latest.stage ? { current_stage: latest.stage, current_stage_source: latest.stage_source } : {}),

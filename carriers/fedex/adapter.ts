@@ -423,11 +423,13 @@ export class FedExTracker {
           const qualifier = (data: unknown): unknown => isRecord(data) && isRecord(data.output) && Array.isArray(data.output.packages)
             ? data.output.packages.filter(isRecord).find(item => cleanScalar(item.trackingNbr).replace(/[\s.-]/g, '') === number)?.trackingQualifier
             : undefined;
+          const currentQualifier = qualifier(payload);
           for (const earlier of responses.slice(index + 1)) {
+            if (typeof currentQualifier !== 'string' || !currentQualifier.trim()) break;
             if (earlier.url !== TRACK_API || earlier.status !== 200 || earlier.truncated || earlier.body === null) continue;
             try {
               const prior: unknown = JSON.parse(earlier.body);
-              if (qualifier(prior) !== qualifier(payload)) continue;
+              if (qualifier(prior) !== currentQualifier) continue;
               const filled = fillPartialAnswer('fedex', number, result, this.#structuredResult(number, prior));
               if (filled) return filled;
             } catch { /* An earlier unreadable reply supplies no history. */ }

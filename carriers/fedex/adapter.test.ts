@@ -493,6 +493,7 @@ describe('FedEx lookup steps', () => {
 
   it('fills the latest scan-less status with compatible history captured earlier in this lookup', async () => {
     const full = inTransitFixture();
+    (full.output as { packages: Record<string, unknown>[] }).packages[0]!.trackingQualifier = 'same-shipment';
     const summary = structuredClone(full);
     (summary.output as { packages: Record<string, unknown>[] }).packages[0]!.scanEventList = [];
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '<body>Tracking</body>',
@@ -517,6 +518,15 @@ describe('FedEx lookup steps', () => {
     const summary = structuredClone(full);
     (full.output as { packages: Record<string, unknown>[] }).packages[0]!.trackingQualifier = 'earlier';
     Object.assign((summary.output as { packages: Record<string, unknown>[] }).packages[0]!, { trackingQualifier: 'later', scanEventList: [] });
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '<body>Tracking</body>',
+      capturedResponses: [full, summary].map(body => ({ url: TRACK_API, status: 200, body: JSON.stringify(body) })) }));
+    expect(await new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(IN_TRANSIT_NUMBER)).toMatchObject({ summary_only: true, events: [] });
+  });
+
+  it.each([undefined, null, '', ' ', 1])('does not combine replies without a nonempty shipment qualifier (%s)', async qualifier => {
+    const full = inTransitFixture(), summary = inTransitFixture();
+    (full.output as { packages: Record<string, unknown>[] }).packages[0]!.trackingQualifier = qualifier;
+    Object.assign((summary.output as { packages: Record<string, unknown>[] }).packages[0]!, { trackingQualifier: qualifier, scanEventList: [] });
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '<body>Tracking</body>',
       capturedResponses: [full, summary].map(body => ({ url: TRACK_API, status: 200, body: JSON.stringify(body) })) }));
     expect(await new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(IN_TRANSIT_NUMBER)).toMatchObject({ summary_only: true, events: [] });

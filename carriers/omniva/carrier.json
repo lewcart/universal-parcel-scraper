@@ -103,6 +103,12 @@
       "confidence": "high"
     },
     {
+      "id": "omniva-own",
+      "pattern": "^(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "omniva-s10",
       "pattern": "^[A-Z]{2}\\d{9}EE$",
       "confidence": "low",

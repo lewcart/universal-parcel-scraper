@@ -67187,26 +67187,18 @@
   },
   {
     "input": "CC404213205EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
     "input": "CC494962743EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
@@ -67508,14 +67500,10 @@
   },
   {
     "input": "CE213390194EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
@@ -67544,14 +67532,10 @@
   },
   {
     "input": "CE553638368EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
@@ -67564,14 +67548,10 @@
   },
   {
     "input": "CE675386615EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
@@ -67711,14 +67691,10 @@
   },
   {
     "input": "CF104760588EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
@@ -79480,14 +79456,10 @@
   },
   {
     "input": "LL002789060EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
@@ -85602,14 +85574,10 @@
   },
   {
     "input": "RC034998210EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
@@ -85626,26 +85594,18 @@
   },
   {
     "input": "RC052807282EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {
     "input": "RC052807407EE",
-    "carrier": "intl-post",
+    "carrier": "omniva",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "omniva",
-      "chronopost"
+      "omniva"
     ]
   },
   {

@@ -170,6 +170,24 @@ describe('Polish S10 items', () => {
   });
 });
 
+describe('Estonian S10 items', () => {
+  it.each(['CC123456785EE', 'EE123456785EE', 'LL123456785EE', 'RC123456785EE'])('names Omniva, which tracks %s abroad', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'omniva', confidence: 'high', candidates: ['omniva'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  // Meest gives these series for parcels to Ukraine, and Omniva's tracker has answered none of them.
+  it.each(['RO123456785EE', 'CR123456785EE', 'CV123456785EE', 'UA123456785EE'])('leaves %s to international mail and asks Omniva about it', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+    expect(recognitionAskedCarriers(number)[0]).toBe('omniva');
+  });
+
+  it('names nobody for a failed check digit or another issuer', () => {
+    expect(detectCarrierMatch('RC123456784EE').candidates).not.toContain('omniva');
+    expect(detectCarrierMatch('RC123456785LT').candidates).not.toContain('omniva');
+  });
+});
+
 describe('Slovenian S10 items', () => {
   it.each(['CA123456785SI', 'EE123456785SI', 'LZ123456785SI', 'RA123456785SI'])('names Pošta Slovenije, which tracks %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'posta-slovenije', confidence: 'high', candidates: ['posta-slovenije'] });

@@ -231,9 +231,10 @@ describe('Omniva tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url) === OMNIVA_ENDPOINT + COLLECTED)).toBe(true);
   });
 
-  it('is asked about Estonian S10 codes, which detection leaves with the postal fallback, and claims JJEE ids', () => {
-    expect(detectCarrierMatch(COLLECTED)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers(COLLECTED)).toContain('omniva');
+  it('is named for its own items, asked about its other Estonian S10 codes, and claims JJEE ids', () => {
+    expect(detectCarrierMatch(COLLECTED)).toMatchObject({ carrier: 'omniva', confidence: 'high' });
+    expect(detectCarrierMatch('RO900000019EE')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionAskedCarriers('RO900000019EE')[0]).toBe('omniva');
     expect(recognitionAskedCarriers('CC900000018EE')).not.toContain('omniva');
     expect(recognitionAskedCarriers('RR900000019DE')).not.toContain('omniva');
     expect(detectCarrierMatch(COURIER)).toMatchObject({ carrier: 'omniva', confidence: 'high' });

@@ -174,7 +174,7 @@
         "service": "Cainiao tracking leg"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
       "note": "Publicly reported shipment number. Cainiao returns matching shipment activity; this does not confirm the last-mile operator."
@@ -194,7 +194,7 @@
         "service": "Cainiao tracking leg"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
       "note": "Publicly reported shipment number. Cainiao returns matching shipment activity; this does not confirm the last-mile operator."

@@ -2037,7 +2037,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -22326,6 +22326,11 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       },
       {
+        "pattern": "^(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}EE$",
         "confidence": "low",
         "checksum": "s10",
@@ -33520,7 +33525,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ocs-ana": [],
   "olva-courier": ["olva-courier-3"],
   "omgo": ["omgo-1"],
-  "omniva": ["omniva-1","omniva-2","omniva-s10"],
+  "omniva": ["omniva-1","omniva-2","omniva-own","omniva-s10"],
   "one-world-express": ["one-world-express-1"],
   "opt-nc": [],
   "orian": [],

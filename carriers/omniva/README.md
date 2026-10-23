@@ -22,10 +22,13 @@ and its parcel ids: `JJEE` and seventeen digits, or `JJEE`, three letters and el
 Lithuanian tracker also answered `ZA` and eight digits with a history, a layout Omniva does not
 document. The adapter takes these and treats anything else as invalid without a request.
 
-`omniva-1` and `omniva-2` claim the parcel ids. A code ending `EE` is Omniva's, but the issuer of
-an S10 code does not establish who delivers it, so detection keeps such codes with the generic
-postal carrier, and a low-confidence rule makes preflight ask Omniva about them. No rule claims
-the `ZA` layout.
+`omniva-1` and `omniva-2` claim the parcel ids. Detection names Omniva for the parcels, EMS,
+registered and tracked-letter items it issues: `C`, `E`, `L` or `R` first, `EE` last and a passing
+check digit. Its tracker carries such an item's scans in the destination country. `RO`, `CR` and
+`CV` codes are left out: Meest's tracker and its customers' reviews give them for parcels to
+Ukraine, and Omniva's tracker has answered none of them. Its other `EE` codes stay with the generic
+postal carrier, as the issuer of an S10 code does not establish who delivers it, and a
+low-confidence rule makes preflight ask Omniva about them. No rule claims the `ZA` layout.
 
 ## Notes
 

@@ -15,7 +15,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
       "note": "Looked up on Omniva's own tracker, as an archived address shows; the capture was not opened."
@@ -34,7 +34,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
       "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows; the capture was not opened."
@@ -91,7 +91,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
       "note": "Looked up on Omniva's own tracker, as an archived address shows; the capture was not opened."
@@ -152,7 +152,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
       "note": "Looked up on Omniva's own Latvian tracker, as an archived address shows; the capture was not opened."
@@ -171,10 +171,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
-      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows. Omniva's tracking service answers for it; detection selects the generic postal carrier."
+      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows. Omniva's tracking service answers for it; detection names Omniva."
     },
     {
       "number": "LL002789060EE",
@@ -190,10 +190,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
-      "note": "Looked up on Omniva's own Latvian tracker, as an archived address shows. Omniva's tracking service answers for it; detection selects the generic postal carrier."
+      "note": "Looked up on Omniva's own Latvian tracker, as an archived address shows. Omniva's tracking service answers for it; detection names Omniva."
     },
     {
       "number": "CC404213205EE",
@@ -209,10 +209,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
-      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows. Omniva's tracking service answers for it; detection selects the generic postal carrier."
+      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows. Omniva's tracking service answers for it; detection names Omniva."
     },
     {
       "number": "JJEE51086300000202035",

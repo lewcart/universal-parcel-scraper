@@ -326,7 +326,7 @@
       "intl-post",
       "omniva"
     ],
-    "reason": "The Estonian issuer suffix suggests Omniva but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+    "reason": "On Estonian items not starting C, E, L or R, and on RO, CR and CV items Meest tracks, the issuer suffix suggests Omniva but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
     "shape": "PZ, XR, XT, XU, XW or XY then 9{9}EE with a valid S10 check digit",

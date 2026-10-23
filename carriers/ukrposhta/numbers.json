@@ -303,7 +303,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "omniva",
         "confidence": "high"
       },
       "note": "Mail from Estonia whose Ukrposhta tracking page the Wayback Machine archived. Ukrposhta's status API returns its journey, from posting abroad to delivery in Ukraine, under the sending post's number."

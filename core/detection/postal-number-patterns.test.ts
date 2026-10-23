@@ -67,7 +67,7 @@ describe('S10-shaped numbers', () => {
   });
 
   it('keeps a country suffix with no dedicated post in international mail', () => {
-    expect(detectCarrierMatch('RR123456785EE')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(detectCarrierMatch('RR123456785GE')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
   });
 
   it('names DHL for Deutsche Post registered letters whose check digit holds', () => {

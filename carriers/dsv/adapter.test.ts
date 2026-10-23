@@ -305,12 +305,11 @@ describe('DSV tracking adapter', () => {
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
   });
 
-  it('routes a shipment filed under DSV to the adapter, which detection never names and recognition never asks', async () => {
+  it('routes a shipment filed under DSV to the adapter, which detection never names nor recognition asks about', async () => {
     const fetcher = routes('search-road', null, 'statuses-road');
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: BOOKING, carrier: 'dsv' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'dsv', source: 'dsv', result: { current_stage: 'accepted' } });
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith('https://mydsv.com/app/search/'))).toBe(true);
-    expect(carrier(fetcher).recognize).toBeUndefined();
     for (const number of [HOUSE_BILL, BOOKING, 'ZZR0000000042']) {
       expect(detectCarrierMatch(number)?.carrier).not.toBe('dsv');
       expect(recognitionAskedCarriers(number)).not.toContain('dsv');
@@ -374,6 +373,49 @@ describe('DSV former DB Schenker tracker', () => {
     }
     for (const number of ['CNABC123456789', 'FRABC12345678', 'FRABC1234567890', 'FRAB1123456789']) {
       expect(detectCarrierMatch(number).candidates).not.toContain('dsv');
+    }
+  });
+
+  it('recognizes a long STT through the former tracker alone, puzzle included', async () => {
+    const long = 'DEXYZ000000001';
+    const details = land((payload) => { payload.sttNumber = long; payload.shipmentId = `LandStt:${long}:CTTS,OSM:LAND`; });
+    const fetcher = former('schenker-search', details);
+    expect(recognitionAskedCarriers(long)).toEqual(['dsv']);
+    await expect(carrier(fetcher).recognize!(` ${long.toLowerCase()} `, { budgetMs: 60_000 }))
+      .resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-05-13T15:10:00' });
+    // myDSV's search does not know former DB Schenker STTs, so it is not asked.
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([`${SCHENKER_LAND}LandStt:${long}:LAND`, `${SCHENKER_LAND}LandStt:${long}:LAND`]);
+    vi.useFakeTimers({ now: new Date('2026-05-14T12:00:00Z'), toFake: ['Date'] });
+    try {
+      await expect(createTracker({ fetcher: former('schenker-search', details), providers: [], env: {} }).recognize(long))
+        .resolves.toMatchObject({ carrier: 'dsv', asked: ['dsv'], unanswered: [] });
+    } finally {
+      vi.useRealTimers();
+    }
+    // Any other number takes the ordinary lookup.
+    const booking = routes('search-road', null, 'statuses-road');
+    await expect(carrier(booking).recognize!(BOOKING)).resolves.toMatchObject({ known: true });
+    expect(booking.mock.calls.every(([url]) => String(url).startsWith('https://mydsv.com/app/search/'))).toBe(true);
+  });
+
+  it('leaves DSV offered by its rule alone when the former tracker does not know an STT or answers late', async () => {
+    const long = 'DEXYZ000000001';
+    for (const details of [() => reply('{"code":"TRACKING-BADREQ-SHIPMENT_NOT_FOUND"}', 400), () => reply('{"code":"TRACKING-NOTFOUND"}', 404)]) {
+      const fetcher = former('schenker-search', details);
+      await expect(carrier(fetcher).recognize!(long)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+      await expect(createTracker({ fetcher, providers: [], env: {} }).recognize(long))
+        .resolves.toMatchObject({ choices: [], asked: ['dsv'], unanswered: ['dsv'] });
+    }
+    expect(detectCarrierMatch(long)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dsv'] });
+    const answers = former('schenker-search');
+    const hanging = vi.fn<typeof fetch>().mockImplementation(async (input, init) => new Headers(init?.headers).has('captcha-solution')
+      ? new Promise<Response>((_, reject) => init!.signal!.addEventListener('abort', () => reject(init!.signal!.reason), { once: true }))
+      : answers(input, init));
+    // Recognition's own limit holds against a longer budget, and a shorter budget holds against it.
+    for (const [options, budgetMs] of [[{ recognitionMs: 300 }, 60_000], [{}, 300]] as const) {
+      const started = performance.now();
+      await expect(new DsvTracker({ fetcher: hanging, ...options }).recognize(long, { budgetMs })).rejects.toMatchObject({ kind: 'budget' });
+      expect(performance.now() - started).toBeLessThan(2_000);
     }
   });
 

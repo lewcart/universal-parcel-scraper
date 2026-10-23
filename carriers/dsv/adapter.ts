@@ -1,4 +1,4 @@
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type Recognition, type TrackingContext } from '../../core/adapter/index.js';
 import { BudgetExceededError, ChallengeError, IndeterminateError, SchemaError, TransportError, UpstreamHttpError,
   UpstreamNetworkError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
@@ -18,6 +18,10 @@ export const DSV_STATUSES_ENDPOINT = 'https://mydsv.com/app/search/shipment/new-
 // The former DB Schenker tracker's API, behind the page at www.dsv.com/mydsv/tracking-public.
 export const DSV_SCHENKER_ENDPOINT = 'https://www.dsv.com/nges-portal/api/public/tracking-public';
 const DEFAULT_BUDGET_MS = 15_000;
+// Recognition's longest wait: the former DB Schenker tracker's puzzle and
+// details take under a second at most times, and a slower answer leaves DSV
+// offered by its detection rule alone.
+const RECOGNITION_MS = 3_000;
 // The former DB Schenker tracker's longest wait. It answers within a second,
 // but at times holds an STT's details for half a minute, and a package's
 // search for a quarter of a minute before them; a later reply is given up,
@@ -31,7 +35,7 @@ const BLOCKED = /<title>\s*(?:Request Rejected|Access Denied|Just a moment|Atten
 
 export class DsvTracker {
   constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string;
-    schenkerMs?: Readonly<Record<SchenkerRoute, number>> } = {}) {}
+    schenkerMs?: Readonly<Record<SchenkerRoute, number>>; recognitionMs?: number } = {}) {}
 
   /**
    * One JSON read. The shipment's key opens its details, so a failed read by
@@ -161,6 +165,24 @@ export class DsvTracker {
         run: ({ signal, remainingMs }) => this.schenkerShipment(number, route!, signal, remainingMs) },
     ]);
   }
+
+  /**
+   * Whether DSV knows a number, within three seconds. An STT goes straight to
+   * the former DB Schenker tracker, as myDSV's search does not know them; any
+   * other number takes the ordinary lookup. A number neither tracker knows
+   * stays inconclusive, as when tracking it.
+   */
+  recognize(raw: string, context: TrackingContext = {}): Promise<Recognition> {
+    const longest = this.options.recognitionMs ?? RECOGNITION_MS;
+    const budgetMs = Math.min(context.budgetMs ?? longest, longest);
+    return recognizeFromLookup(() => {
+      const number = normalizeDsvNumber(raw);
+      if (dsvSchenkerRoute(number) !== 'stt') return this.fetch(number, { ...context, budgetMs });
+      return runSteps({ carrier: 'dsv', budgetMs, signal: context.signal, recorder: this.options.recorder ?? NOOP_RECORDER }, [
+        { id: 'schenker', run: ({ signal, remainingMs }) => this.schenkerShipment(number, 'stt', signal, remainingMs) },
+      ]);
+    }, () => accepted(() => normalizeDsvNumber(raw)));
+  }
 }
 
 /** myDSV's search answered and does not know the number. */
@@ -173,5 +195,6 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: 'dsv', recordsSteps: true, steps: ['direct', 'retry', 'schenker'],
     track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => tracker.recognize(number, context),
   };
 };

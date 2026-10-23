@@ -12308,6 +12308,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dsv",
+      "recognitionRank": 436,
       "localClocks": true
     },
     "canaryUrl": "https://mydsv.com/track-shipment",

@@ -28,6 +28,9 @@
       "retry",
       "schenker"
     ],
+    "recognition": {
+      "rank": 436
+    },
     "localClocks": true
   },
   "capabilities": [

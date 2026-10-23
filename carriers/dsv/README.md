@@ -45,7 +45,6 @@ budget ends. The official DSV Tracking app (`com.dbschenker.mobile.connect2schen
 same API on `mydsv.dsv.com`, without a key or an account, and solves the same puzzle. The page's
 other public base, `/nges-portal/api/public/tracking/v1`, sets it too, and myDSV's search does
 not know former DB Schenker STTs, so no public read confirms an STT without the puzzle.
-Recognition does not ask DSV.
 
 The tracker answers within a second, but at times holds each reply for a quarter or half a
 minute. The step waits as long as an STT's details, or an SSCC's search and details, take then,
@@ -63,6 +62,13 @@ the page prints each clock as written, and the adapter keeps them as wall clocks
 delivery day, else the estimated one, is the delivery estimate until the shipment is delivered.
 The parties, references, addresses, goods, the recipient on a delivery and the packages' own rows
 are not read.
+
+## Recognition
+
+Recognition asks the former DB Schenker tracker about an STT straight away, puzzle included, as
+myDSV's search does not know them; any other number takes the ordinary lookup. It waits three
+seconds at most. A later answer, and a number neither tracker knows, leave DSV offered by its
+detection rule alone.
 
 ## Notes
 

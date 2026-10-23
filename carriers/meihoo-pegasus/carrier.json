@@ -16,16 +16,52 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "meihoo-pegasus",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "service_name",
+    "destination_country",
+    "canonical_tracking_number"
+  ],
   "portal": {
     "canaryUrl": "https://t.17track.net/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "destination_country",
+      "canonical_tracking_number",
+      "parcel_count",
+      "customer_reference",
+      "recipient_name",
+      "postcodes"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "destination_country",
+      "canonical_tracking_number"
+    ],
+    "discarded": [
+      "parcel_count",
+      "customer_reference",
+      "recipient_name",
+      "postcodes"
+    ],
+    "unavailable": [
+      "eta",
+      "delivered_at",
+      "offset_timestamps"
+    ]
   },
   "links": [],
   "detection": [

@@ -362,6 +362,7 @@ import { adapter as mauritiusPost } from '../carriers/mauritius-post/adapter.js'
 import { adapter as mayiyinfu } from '../carriers/mayiyinfu/adapter.js';
 import { adapter as mdsCollivery } from '../carriers/mds-collivery/adapter.js';
 import { adapter as meest } from '../carriers/meest/adapter.js';
+import { adapter as meihooPegasus } from '../carriers/meihoo-pegasus/adapter.js';
 import { adapter as messengerCz } from '../carriers/messenger-cz/adapter.js';
 import { adapter as metropolitanWarehouse } from '../carriers/metropolitan-warehouse/adapter.js';
 import { adapter as microExpress } from '../carriers/micro-express/adapter.js';
@@ -979,6 +980,7 @@ export const REGISTRY: RegistryDefinition = {
     "mayiyinfu": mayiyinfu,
     "mds-collivery": mdsCollivery,
     "meest": meest,
+    "meihoo-pegasus": meihooPegasus,
     "messenger-cz": messengerCz,
     "metropolitan-warehouse": metropolitanWarehouse,
     "micro-express": microExpress,
@@ -1689,7 +1691,7 @@ export const REGISTRY: RegistryDefinition = {
     "mayiyinfu": "mayiyinfu",
     "mds-collivery": "mds-collivery",
     "meest": "meest",
-    "meihoo-pegasus": "universal",
+    "meihoo-pegasus": "meihoo-pegasus",
     "messenger-cz": "messenger-cz",
     "method": "universal",
     "metropolitan-warehouse": "metropolitan-warehouse",

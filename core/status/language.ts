@@ -421,6 +421,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // The sender's drop-off at a parcel shop in German, which names the shop and its address before the verb:
   // "Die Sendung wurde vom Absender im PaketShop <shop>, <address> abgegeben".
   if (/^die sendung wurde vom absender (?:im|in der|in einem|in einer) (?:[\w-]+ )?(?:paketshop|parcelshop|filiale)\b(?!.*\bnicht\b).*\babgegeben$/.test(text)) return 'accepted';
+  // The same row in English, as Hermes Germany's English route words it: "The package was dropped off by the
+  // sender at the PaketShop <shop>, <address>".
+  if (/^(?:the |your )?(?:package|parcel|shipment) (?:was|has been) dropped off by the sender at (?:the |a )?(?:hermes )?(?:paketshop|parcel ?shop)\b/.test(text)) return 'accepted';
   // DPD Poland's scans as ParcelsApp words them: the sender's drop-off at a pickup point, and the pickup
   // point handing the parcel to DPD's courier, not a delivery round.
   if (/^sending the (?:package|parcel) at the pick ?up point$|^handing over the (?:package|parcel) to the courier$/.test(text)) return 'accepted';

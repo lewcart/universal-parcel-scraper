@@ -38,7 +38,8 @@ tracking page makes.
 - Scans carry no code. The map reads Pitney Bowes's own wording and the postal wording it
   relays; other relayed wording falls to the shared rules. Export paperwork written at the hub
   ("Customs Documentation and Labeling") is not customs, and the onward carrier opening its
-  record moves nothing.
+  record moves nothing. Interpost's import clearance comes as `B2C ClearanceStatus` and a
+  status number; Interpost's own tracker captions 4 as cleared, so only that number is mapped.
 - The summary's `Delivered` settles a delivery. Its other statuses stand in only when no scan
   has a stage: a reply has marked a parcel its addressee collected as `DeliveryException`.
 - Relayed scans link to the onward carrier's page through a URL that carries an access key and

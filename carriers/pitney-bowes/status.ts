@@ -33,6 +33,9 @@ const SCANS: Readonly<Record<string, Stage>> = {
   'Customs Cleared': 'in_transit',
   'Cleared customs': 'in_transit',
   'Customs Clearance': 'customs',
+  // Interpost's import clearance with its status number; Interpost's own
+  // tracker captions status 4 "Customs Import cleared".
+  'B2C ClearanceStatus4': 'in_transit',
   'Departed carrier facility': 'in_transit',
   'Processed by Carrier': 'in_transit',
   'Item in transit by postal company': 'in_transit',

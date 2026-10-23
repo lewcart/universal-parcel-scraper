@@ -266,6 +266,9 @@ describe('Pitney Bowes status vocabulary', () => {
     expect(statusMapAnswer({ carrier: 'pitney-bowes', description: 'Customs Documentation and Labeling' }))
       .toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(statusMapAnswer({ carrier: 'pitney-bowes', description: 'Synthetic note' })).toEqual({ kind: 'unknown' });
+    // Interpost's import clearance: status 4 is cleared; another status number stays customs by the shared rules.
+    expect(statusMapAnswer({ carrier: 'pitney-bowes', description: 'B2C ClearanceStatus4' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(pitneyBowesStage('B2C ClearanceStatus1')).toEqual({ stage: 'customs', source: 'wording:language' });
     // Wording the map does not know, relayed from a partner, falls to the shared rules.
     expect(pitneyBowesStage('Depart Facility')).toEqual({ stage: 'in_transit', source: 'wording:language' });
     expect(pitneyBowesStage('Synthetic note')).toBeNull();

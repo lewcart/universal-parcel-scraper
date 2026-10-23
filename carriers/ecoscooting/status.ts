@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const DELIVERED: ClassifiedStatus = { status: 'delivered', stage: 'delivered' };
 // A pickup point signing for the parcel or receiving it means it waits there.
@@ -71,3 +72,6 @@ export function ecoscootingStatus(code: string, description = ''): ClassifiedSta
   if (code === 'GTMS_DEL_FAILURE' && /encountered an exception/i.test(description)) return PROBLEM;
   return CODES.get(code);
 }
+
+/** What the map says about one scan: every scan carries its code. */
+export const statusMap: CarrierStatusMap = { stage: (code, wording) => code ? ecoscootingStatus(code, wording)?.stage : undefined, gaps: [] };

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { statusMapAnswer } from '../../app.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
@@ -31,6 +32,10 @@ describe('Ecoscooting parcel history', () => {
     expect(result.events?.slice(2, 4).map(event => event.time)).toEqual(['2026-01-08T12:00:00Z', '2026-01-07T12:00:00Z']);
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|imgUrl|opCode|Latitude|Longitude|outOrder|toZip|feature|cainiaoId|solution/);
     for (const entry of statuses.entries) expect(ecoscootingStatus(entry.code, entry.wording)?.stage, entry.code).toBe(entry.stage);
+    // The app's review reads the same records through the declared map.
+    for (const entry of statuses.entries) {
+      expect(statusMapAnswer({ carrier: 'ecoscooting', providerCode: entry.code, description: entry.wording }), entry.code).toEqual({ kind: 'mapped', stage: entry.stage });
+    }
     const wrong = referenceFixture(number.replace(/1$/, '2'));
     expect(() => parseEcoscooting(wrong, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
     const wrongScan = referenceFixture(number); wrongScan.statuses[1].mailNo = NUMBER;

@@ -9,6 +9,30 @@ const MAX_REPLIES = 20;
 // Its ordinary failure log cannot describe these refusals. Keep this separate
 // from the reply, and log only fixed labels, counts and elapsed times.
 const reportRefusal = fields => console.warn(JSON.stringify({ level: 'warn', event: 'fedex.api-refusal', ...fields }));
+const reportSessionEnd = fields => console.warn(JSON.stringify({ level: 'warn', event: 'fedex.session-end', ...fields }));
+
+// Classify a discarded reply without retaining its content or identifying its parcel.
+function discardedReply(entries, number) {
+  const last = entries.at(-1);
+  if (!last || last.status === 0) return 'request_failed';
+  if ([401, 403].includes(last.status)) return 'api_denied';
+  if (last.status !== 200) return 'api_error';
+  if (last.truncated || last.error || !last.body) return 'unreadable';
+  try {
+    const output = JSON.parse(last.body)?.output;
+    const packages = output?.packages;
+    if (!Array.isArray(packages)) return 'unreadable';
+    const matches = packages.filter(item => item?.trackingNbr === number);
+    if (packages.length && matches.length !== 1) return 'identity';
+    const errors = [...(Array.isArray(output.errorList) ? output.errorList : []),
+      ...(Array.isArray(matches[0]?.errorList) ? matches[0].errorList : [])];
+    const codes = errors.map(error => String(error?.code ?? error?.errorCode ?? '').slice(0, 80)).join(' ');
+    if (/AUTHORIZ|AUTHENTICAT/i.test(codes)) return 'verification_required';
+    if (/TRACKINGNUMBER|NOTFOUND|NO TRACKING/i.test(codes)) return 'no_tracking';
+    if (!packages.length) return 'empty_result';
+    return 'missing_status';
+  } catch { return 'unreadable'; }
+}
 
 export function fedexSessionNumber(url, capture = {}) {
   let page;
@@ -33,13 +57,14 @@ export class FedExSessions {
   #sessions = new WeakMap();
   #activity = new WeakMap();
   constructor({ idleMs = 30 * 60_000, maxAgeMs = 2 * 60 * 60_000, closeMs = 3_000,
-    settleMs = 250, incompleteSettleMs = 1_000, onRefusal = reportRefusal } = {}) {
+    settleMs = 250, incompleteSettleMs = 1_000, onRefusal = reportRefusal, onSessionEnd = reportSessionEnd } = {}) {
     this.idleMs = idleMs;
     this.maxAgeMs = maxAgeMs;
     this.closeMs = closeMs;
     this.settleMs = settleMs;
     this.incompleteSettleMs = incompleteSettleMs;
     this.onRefusal = onRefusal;
+    this.onSessionEnd = onSessionEnd;
   }
 
   preferred(entries, domain) {
@@ -57,9 +82,16 @@ export class FedExSessions {
       < (this.#activity.get(best.browser)?.at ?? 0) ? entry : best);
   }
 
-  async #discard(browser, session, replace) {
+  async #discard(browser, session, replace, reason) {
     if (session.disposed) return;
     session.disposed = true;
+    try {
+      this.onSessionEnd({ host: 'api.fedex.com', browser: session.browserId, reason,
+        sessionAgeMs: Math.max(0, Date.now() - session.created), lookups: session.lookups,
+        digits: session.digits, hadVerifiedLookup: session.lastVerifiedAt !== undefined,
+        idleMs: session.lastLookupAt === undefined ? null : Math.max(0, Date.now() - session.lastLookupAt),
+        sinceVerifiedMs: session.lastVerifiedAt === undefined ? null : Math.max(0, Date.now() - session.lastVerifiedAt) });
+    } catch { /* Diagnostics must never prevent session disposal. */ }
     clearTimeout(session.timer);
     browser.off('disconnected', session.disconnected);
     if (this.#sessions.get(browser) === session) this.#sessions.delete(browser);
@@ -73,7 +105,9 @@ export class FedExSessions {
 
   #retain(browser, session, replace) {
     const left = Math.min(this.idleMs, this.maxAgeMs - (Date.now() - session.created));
-    session.timer = setTimeout(() => { void this.#discard(browser, session, replace); }, Math.max(0, left));
+    session.timer = setTimeout(() => {
+      void this.#discard(browser, session, replace, Date.now() - session.created >= this.maxAgeMs ? 'max_age' : 'idle');
+    }, Math.max(0, left));
     session.timer.unref?.();
   }
 
@@ -91,23 +125,28 @@ export class FedExSessions {
     const activity = { at: started, lookups: (previous?.lookups ?? 0) + 1, successAt: previous?.successAt };
     this.#activity.set(browser, activity);
     if (session && (Date.now() - session.created >= this.maxAgeMs || session.page.isClosed())) {
-      await this.#discard(browser, session, handle.requestBrowserReplacement);
+      await this.#discard(browser, session, handle.requestBrowserReplacement,
+        Date.now() - session.created >= this.maxAgeMs ? 'max_age' : 'page_closed');
       session = undefined;
     }
     const reused = Boolean(session?.verified);
     if (!session) {
-      session = { created: Date.now(), busy: true, verified: false, disposed: false };
-      session.disconnected = () => { void this.#discard(browser, session, handle.requestBrowserReplacement); };
+      session = { created: Date.now(), busy: true, verified: false, disposed: false, lookups: 0,
+        browserId: Number.isSafeInteger(handle.id) && handle.id >= 0 && handle.id < 1024 ? handle.id : undefined };
+      session.disconnected = () => { void this.#discard(browser, session, handle.requestBrowserReplacement, 'browser_disconnected'); };
       this.#sessions.set(browser, session);
       browser.once('disconnected', session.disconnected);
     }
     clearTimeout(session.timer);
     session.busy = true;
+    session.lookups++;
+    session.lastLookupAt = started;
+    session.digits = number.length;
     try {
       const result = await bounded(this.#lookup({ number, session, browser, started, maxTimeout, capture, installPolicy,
         replace: handle.requestBrowserReplacement, onCreated: handle.noteTemporaryContext }),
         Math.max(0, maxTimeout - (Date.now() - started)), 'FedEx lookup budget exhausted');
-      if (session.verified) activity.successAt = Date.now();
+      if (session.verified) session.lastVerifiedAt = activity.successAt = Date.now();
       const rejected = result.capturedResponses.find(entry => [401, 403].includes(entry.status));
       if (rejected) {
         try {
@@ -120,13 +159,13 @@ export class FedExSessions {
             ...(result.capturedResponses.length > 1 ? { responses: result.capturedResponses.length, recovered: session.verified } : {}) });
         } catch { /* Diagnostics must not change tracking or cleanup. */ }
       }
-      if (!session.verified) await this.#discard(browser, session, handle.requestBrowserReplacement);
+      if (!session.verified) await this.#discard(browser, session, handle.requestBrowserReplacement, discardedReply(result.capturedResponses, number));
       return { tier, status: 'success', statusCode: 200, durationMs: Date.now() - started,
         effectiveUrl: url, ...result, cookies: [], reason: reused ? 'fedex-session-reused' : 'fedex-session-new' };
     } catch {
       // Selector and navigation errors can include the number; do not include
       // those raw messages in shared browser-service diagnostics.
-      await this.#discard(browser, session, handle.requestBrowserReplacement);
+      await this.#discard(browser, session, handle.requestBrowserReplacement, 'lookup_failed');
       return failure('FedEx browser session could not complete tracking');
     } finally {
       session.busy = false;

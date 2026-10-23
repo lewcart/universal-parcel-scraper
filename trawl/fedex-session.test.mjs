@@ -70,7 +70,7 @@ function fixture(replies = [], settings = {}) {
     };
     return context;
   };
-  const sessions = settings.sessions ?? new FedExSessions({ settleMs: 0, incompleteSettleMs: 0, onRefusal: () => {}, ...settings });
+  const sessions = settings.sessions ?? new FedExSessions({ settleMs: 0, incompleteSettleMs: 0, onRefusal: () => {}, onSessionEnd: () => {}, ...settings });
   const handle = { browser, requestBrowserReplacement: reason => replacements.push(reason) };
   const run = (number = NUMBER, options = {}) => sessions.run({ url: url(number), handle, tier: 3,
     maxTimeout: 1000, capture, installPolicy: async () => { policies++; }, ...options });
@@ -382,4 +382,81 @@ test('pool affinity returns to a verified browser and releases rejected affinity
   assert.equal(sessions.preferred(entries, 'www.fedex.com'), entries[0]);
   assert.equal(sessions.preferred(entries, 'other.test'), undefined);
   await a.close(); await b.close();
+});
+
+
+test('session-end warnings identify an inconclusive read that discards verified clearance without exposing reply data', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const reports = [];
+  const empty = JSON.stringify({ output: { packages: [{ trackingNbr: NUMBER, keyStatus: 'PRIVATE placeholder',
+    recipient: 'PRIVATE recipient', errorList: [{ code: 'TRACKINGNUMBER.NOTFOUND' }] }] } });
+  const f = fixture([{}, { body: empty }], { onSessionEnd: fields => reports.push(fields) });
+  await f.run();
+  t.mock.timers.tick(7);
+  const result = await f.run();
+  assert.equal(result.capturedResponses[0].body, empty);
+  assert.equal(f.contexts[0].closed, true);
+  assert.deepEqual(reports, [{ host: 'api.fedex.com', browser: undefined, reason: 'no_tracking',
+    sessionAgeMs: 7, lookups: 2, digits: 12, hadVerifiedLookup: true, idleMs: 0, sinceVerifiedMs: 7 }]);
+  assert.equal(JSON.stringify(reports).includes(NUMBER), false);
+  assert.equal(JSON.stringify(reports).includes('PRIVATE'), false);
+  assert.equal((await f.run()).reason, 'fedex-session-new');
+  await f.close();
+});
+
+for (const [reason, spec] of [
+  ['no_tracking', { body: JSON.stringify({ output: { packages: [{ trackingNbr: NUMBER, errorList: [{ code: 'TRACKINGNUMBER.INVALID' }] }] } }) }],
+  ['identity', { body: JSON.stringify({ output: { packages: [{ trackingNbr: OTHER, keyStatus: 'PRIVATE' }] } }) }],
+  ['empty_result', { body: JSON.stringify({ output: { packages: [] } }) }],
+  ['verification_required', { body: JSON.stringify({ output: { packages: [{ trackingNbr: NUMBER, errorList: [{ code: 'AUTHORIZATION.REQUIRED' }] }] } }) }],
+  ['missing_status', { body: JSON.stringify({ output: { packages: [{ trackingNbr: NUMBER }] } }) }],
+  ['unreadable', { body: '{PRIVATE' }],
+  ['api_denied', { status: 403 }],
+  ['api_error', { status: 503 }],
+]) test(`session-end diagnostics distinguish ${reason} without promoting a cold context`, async () => {
+  const reports = [], f = fixture([spec], { onSessionEnd: fields => reports.push(fields) });
+  await f.run();
+  assert.equal(reports.length, 1);
+  assert.equal(reports[0].reason, reason);
+  assert.equal(reports[0].hadVerifiedLookup, false);
+  assert.equal(reports[0].sinceVerifiedMs, null);
+  assert.equal(f.contexts[0].closed, true);
+  assert.equal((await f.run()).reason, 'fedex-session-new');
+  await f.close();
+});
+
+for (const [reason, settings] of [['idle', { idleMs: 20, maxAgeMs: 100 }], ['max_age', { idleMs: 100, maxAgeMs: 20 }]]) {
+  test(`records ${reason} expiry exactly once with the last verified lookup age`, async t => {
+    t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+    const reports = [], f = fixture([], { ...settings, onSessionEnd: fields => reports.push(fields) });
+    await f.run();
+    t.mock.timers.tick(21);
+    await tick();
+    assert.equal(f.contexts[0].closed, true);
+    assert.equal(reports.length, 1);
+    assert.equal(reports[0].reason, reason);
+    assert.equal(reports[0].hadVerifiedLookup, true);
+    assert.equal(reports[0].idleMs, 21);
+    assert.equal(reports[0].sinceVerifiedMs, 21);
+    await f.close();
+    assert.equal(reports.length, 1);
+  });
+}
+
+test('names a disconnected browser and an unexpectedly closed page separately', async () => {
+  const reports = [], f = fixture([], { onSessionEnd: fields => reports.push(fields) });
+  await f.run();
+  f.contexts[0].closed = true;
+  await f.run();
+  assert.equal(reports[0].reason, 'page_closed');
+  await f.close();
+  assert.equal(reports[1].reason, 'browser_disconnected');
+});
+
+test('a failed session-end reporter cannot prevent disposal or change the captured reply', async () => {
+  const f = fixture([{ status: 403 }], { onSessionEnd: () => { throw new Error('PRIVATE diagnostics'); } });
+  assert.equal((await f.run()).capturedResponses[0].status, 403);
+  assert.equal(f.contexts[0].closed, true);
+  assert.equal((await f.run()).reason, 'fedex-session-new');
+  await f.close();
 });

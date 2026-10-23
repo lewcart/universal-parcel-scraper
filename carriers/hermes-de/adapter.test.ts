@@ -113,6 +113,20 @@ describe('Hermes Germany', () => {
     expect(parseHermesGermanyResponse(payload(), barcode).canonical_tracking_number).toBeUndefined();
   });
 
+  it('answers a barcode asked with a leading zero too many under the barcode itself', () => {
+    const barcode = '01234567890128';
+    const payload = () => [{ barcode, parcelProgress: [{ parcelStatus: 'PARCELSHOP_DROP_OFF', timestamp: '2026-09-02T09:00:00Z' }] }];
+    expect(parseHermesGermanyResponse(payload(), `0${barcode}`, { references: true })).toMatchObject({
+      current_stage: 'accepted', canonical_tracking_number: barcode,
+    });
+    // Recognition asks for the barcode itself; another first digit, or a barcode failing its check, is another number.
+    expect(() => parseHermesGermanyResponse(payload(), `0${barcode}`)).toThrow('different');
+    expect(() => parseHermesGermanyResponse(payload(), `1${barcode}`, { references: true })).toThrow('different');
+    const unchecked = '01234567890129';
+    expect(() => parseHermesGermanyResponse([{ ...payload()[0]!, barcode: unchecked }], `0${unchecked}`, { references: true }))
+      .toThrow('different');
+  });
+
   it('exposes sender and keeps unknown latest as unknown, not an error', () => {
     const result = parseHermesGermanyResponse(delivered(), NUMBER);
     expect(result).toMatchObject({ sender_name: 'Example Webshop GmbH', delivered_at: '2026-09-03T09:00:00.000Z' });

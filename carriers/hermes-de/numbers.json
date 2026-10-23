@@ -607,7 +607,7 @@
           "yunda"
         ]
       },
-      "note": "Fifteen digits from a public Paketda question about a Hermes parcel. Hermes's recipient service answers it with the parcel whose fourteen-digit number lacks the first zero, a reply the adapter rejects as another parcel's."
+      "note": "Fifteen digits from a public Paketda question about a Hermes parcel. Hermes's recipient service answers it with the parcel whose fourteen-digit number lacks the first zero, which tracking takes under that number."
     }
   ]
 }

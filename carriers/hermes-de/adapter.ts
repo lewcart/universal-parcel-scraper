@@ -96,7 +96,8 @@ function internationalPartner(view: Record<string, unknown>): Pick<CarrierResult
 /**
  * A 14-digit number failing the barcode check digit is no Hermes barcode but a
  * reference, which the search resolves to its parcel as the tracking page does.
- * With `references`, that one parcel answers and names its own barcode.
+ * A barcode asked with a leading zero too many is answered under the barcode
+ * itself. With `references`, that one parcel answers and names its own barcode.
  */
 export function parseHermesGermanyResponse(payload: unknown, trackingNumber: string, { references = false } = {}): CarrierResult {
   const requested = normalizeHermesGermanyNumber(trackingNumber);
@@ -106,8 +107,9 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
   if (!payload.length) throw new HermesGermanyTrackingError();
   const parcels = payload.filter((entry) => entry.barcode === requested);
   const barcode = payload.length === 1 && typeof payload[0]!.barcode === 'string' ? payload[0]!.barcode : '';
-  const reference = references && !parcels.length && /^\d{14}$/.test(requested) && !isValidHermesParcelNumber(requested)
-    && /^(?=.*\d)[A-Z0-9]{8,20}$/.test(barcode);
+  const reference = references && !parcels.length && (/^\d{14}$/.test(requested) && !isValidHermesParcelNumber(requested)
+    ? /^(?=.*\d)[A-Z0-9]{8,20}$/.test(barcode)
+    : /^0\d{14}$/.test(requested) && barcode === requested.slice(1) && isValidHermesParcelNumber(barcode));
   if (reference) parcels.push(payload[0]!);
   if (parcels.length !== 1) throw new SchemaError(CARRIER, 'Hermes Germany returned a different or ambiguous shipment');
   const progress = parcels[0]!.parcelProgress;

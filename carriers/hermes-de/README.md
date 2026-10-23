@@ -17,7 +17,9 @@ The response must contain exactly one parcel whose `barcode` equals the
 requested number. A 14-digit number that fails the barcode check digit is a
 reference instead, which the search resolves to its parcel as the tracking page
 does: tracking takes that one parcel and names its barcode as
-`canonical_tracking_number`. Recognition still needs the barcode itself, since a
+`canonical_tracking_number`. A barcode asked with a leading zero too many is
+answered under the barcode itself, which tracking takes the same way when the
+barcode passes its check digit. Recognition still needs the barcode itself, since a
 reference proves no ownership of the number. Exact `(time, parcelStatus)`
 duplicates are dropped, and rows are sorted newest first. Timestamps are read
 with their own offset (falling back to `Europe/Berlin`) and stored as UTC.
@@ -93,9 +95,6 @@ with their own offset (falling back to `Europe/Berlin`) and stored as UTC.
 - The `address` block is read only for a ParcelShop. A home, neighbour or
   safe-place address and the delivery preferences in the payload are never
   read.
-- Hermes answers some numbers with a leading zero too many under the shorter
-  barcode. The reply names another barcode than the one asked, so it is
-  rejected as a different parcel.
 
 ## Testing
 

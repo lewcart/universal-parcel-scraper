@@ -49,6 +49,16 @@ describe.each(cases)('GOFO $region identity and history', ({ region, number, par
     expect(() => parse(duplicate, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
     const unbound = fixture(region); item(unbound).trackEventList[1].waybillNo = number.slice(0, -1) + '2';
     expect(() => parse(unbound, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const otherReference = fixture(region); item(otherReference).trackEventList[1].trackingNumber = 'ORDER-2';
+    expect(() => parse(otherReference, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('binds a record by its waybill when the shipper reference is missing or free text', () => {
+    for (const value of [null, undefined, '', ' ', 'Order #A_1/2', 'SAMPLE ORDER', `${'X'.repeat(60)}1`]) {
+      const reply = fixture(region); item(reply).trackingNumber = value;
+      expect(parse(reply, number).canonical_tracking_number).toBe(number);
+      expect(JSON.stringify(parse(reply, number))).not.toMatch(/order|sample|XXXX/i);
+    }
   });
 
   it('answers an empty list or scan list as no history, and keeps unsuccessful replies inconclusive and malformed envelopes distinct', () => {
@@ -125,4 +135,6 @@ it('reconstructs the French shipper reference and binds it to the national waybi
   expect(() => normalizeGofoItalyNumber(number)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
   const wrong = fixture('fr'); item(wrong).trackingNumber = raw.slice(0, -1) + '1';
   expect(() => parseGofoFrance(wrong, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  const missing = fixture('fr'); item(missing).trackingNumber = null;
+  expect(() => parseGofoFrance(missing, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
 });

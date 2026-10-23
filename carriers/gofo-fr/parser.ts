@@ -29,6 +29,13 @@ function identity(value: unknown, provider: string): string {
   return normalizeTrackingNumber(value.trim());
 }
 
+/** The shipper's reference is free text the official client shows only when present. */
+function shipperReference(value: unknown, provider: string): string | undefined {
+  if (value != null && typeof value !== 'string') throw new SchemaError(provider, 'GOFO returned an invalid shipper reference');
+  const text = clean(value, 100);
+  return text ? normalizeTrackingNumber(text) : undefined;
+}
+
 function scanClock(value: unknown, provider: string): Pick<CarrierEvent, 'time'> & { local_time?: string; provider_time_text?: string } {
   if (value == null || value === '') return {};
   if (typeof value !== 'string') throw new SchemaError(provider, 'GOFO returned a non-text scan clock');
@@ -66,9 +73,9 @@ export function parseRegionalGofo(payload: unknown, rawNumber: string, region: G
   if (payload.data.length !== 1) throw new SchemaError(provider, 'GOFO returned ambiguous parcel history');
   const item = payload.data[0]!;
   const waybill = identity(item.waybillNo, provider);
-  const reference = identity(item.trackingNumber, provider);
-  if (!isRegionalGofoWaybill(waybill, region) || ![waybill, reference].includes(number)
-    || /^(?:GF|CI)(?:US|FR|IT|NL|ES)/.test(reference) && (!isRegionalGofoWaybill(reference, region) || reference !== waybill)) {
+  const reference = shipperReference(item.trackingNumber, provider);
+  if (!isRegionalGofoWaybill(waybill, region) || waybill !== number && reference !== number
+    || reference && /^(?:GF|CI)(?:US|FR|IT|NL|ES)/.test(reference) && (!isRegionalGofoWaybill(reference, region) || reference !== waybill)) {
     throw new SchemaError(provider, 'GOFO returned a different parcel or national network');
   }
   if (countryCode(item.toCountry) !== region) throw new SchemaError(provider, 'GOFO returned a parcel outside the national service');
@@ -87,8 +94,8 @@ export function parseRegionalGofo(payload: unknown, rawNumber: string, region: G
   // The regional clients render the latest-first list as returned. Equal or
   // unresolved clocks keep this order instead of acquiring an invented zone.
   for (const row of rows) {
-    if (row.waybillNo != null && identity(row.waybillNo, provider) !== waybill
-      || row.trackingNumber != null && identity(row.trackingNumber, provider) !== reference) {
+    const rowReference = shipperReference(row.trackingNumber, provider);
+    if (row.waybillNo != null && identity(row.waybillNo, provider) !== waybill || rowReference && rowReference !== reference) {
       throw new SchemaError(provider, 'GOFO returned a scan for a different parcel');
     }
     const code = cleanScalar(row.processCode, 32);

@@ -15,7 +15,8 @@ The whole requested identifier must match one record's national waybill or its
 explicitly paired reference, with an Italian destination. The
 [customer support page](https://www.gofo.com/it/contact-us/) describes the
 national identifier families. A different GOFO-owned identifier is rejected
-instead of treated as a shipper reference.
+instead of treated as a shipper reference. A missing or free-text shipper
+reference leaves the waybill to bind its record.
 
 ## Notes
 

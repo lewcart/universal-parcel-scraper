@@ -13,6 +13,8 @@ session or browser is needed. HTTP recognition uses the same identity checks.
 
 The whole requested identifier must match `trackingNumber` or `waybillNo` in one
 record. Its national waybill and destination must establish French scope.
+The shipper's reference is free text, missing on some records, as the official
+client allows, so a waybill binds its record without it.
 The [customer support page](https://www.gofo.com/fr/contact-us/) describes the
 national identifier families. The supported shipper reference needs its printed
 hyphens restored after package normalization; an unpunctuated request returns

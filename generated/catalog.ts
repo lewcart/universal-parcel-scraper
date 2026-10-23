@@ -9937,12 +9937,20 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "correos-cuba",
+      "recognitionRank": 859,
       "localClocks": true
     },
     "canaryUrl": "https://www.correos.cu/rastreador-de-envios/",
     "trackingSearchUrl": "https://www.correos.cu/rastreador-de-envios/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CU$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "correos-de-mexico": {
     "displayName": "Correos de México",
@@ -33295,7 +33303,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "correo-uruguayo": ["correo-uruguayo-s10"],
   "correos-bolivia": [],
   "correos-costa-rica": [],
-  "correos-cuba": [],
+  "correos-cuba": ["correos-cuba-s10"],
   "correos-de-mexico": ["correos-de-mexico-s10"],
   "correos-el-salvador": [],
   "correos-nicaragua": [],

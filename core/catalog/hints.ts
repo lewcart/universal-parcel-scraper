@@ -51,8 +51,10 @@ const CATALOG_NAMES = new Set([
 // from abroad, not for registered mail. Posta Kenya dates only scans it places
 // in Kenya by name. Correo Uruguayo's clocks name no zone, and those relayed
 // from abroad keep the sender's. Posta dates only scans at a Faroese place.
-// Correos de El Salvador's clocks name no zone either. Correios Brazil names
-// each row's zone. An Post shows only its own scans of mail from abroad, on
+// Correos de El Salvador's clocks name no zone either, nor do Correos de
+// Cuba's, whose tracker finds an item only in the current year and the one
+// before. Correios Brazil names each row's zone. An Post shows only its own
+// scans of mail from abroad, on
 // Irish time; bpost dates the scans that name Belgium. Hrvatska pošta, Latvijas
 // Pasts, Slovenská pošta and Lietuvos paštas date a scan abroad on its
 // country's clock when that country keeps one zone, and their own on theirs.
@@ -64,7 +66,7 @@ const CATALOG_NAMES = new Set([
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AT', 'austrian-post'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
   ['BE', 'bpost'], ['BG', 'bulgarian-posts'], ['BR', 'correios-br'], ['BY', 'belpost'], ['CA', 'canada-post'],
-  ['CH', 'swiss-post'], ['CZ', 'ceska-posta'], ['DE', 'dhl'], ['DK', 'postnord'], ['DZ', 'algerie-poste'],
+  ['CH', 'swiss-post'], ['CU', 'correos-cuba'], ['CZ', 'ceska-posta'], ['DE', 'dhl'], ['DK', 'postnord'], ['DZ', 'algerie-poste'],
   ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FO', 'posta-faroe'], ['FR', 'la-poste'],
   ['GB', 'royal-mail'], ['GR', 'elta'], ['HR', 'hrvatska-posta'], ['IE', 'an-post'], ['IS', 'posturinn'],
   ['IT', 'poste-italiane'], ['JO', 'jordan-post'], ['JP', 'japan-post'], ['KE', 'posta-kenya'], ['LT', 'lietuvos-pastas'],

@@ -35,7 +35,11 @@ neither is kept. The page's hint about ten-digit DHL numbers is not supported.
 ## Numbers
 
 Its items carry UPU S10 numbers ending in CU. Inbound items keep the S10 number of the post
-that sent them. Generic postal detection handles both, so no carrier rule claims the layout.
+that sent them. The issuer of an S10 code does not establish who delivers it, so detection keeps
+codes ending `CU` with the generic postal carrier. `correos-cuba-s10`, at low confidence, makes
+preflight ask Correos de Cuba about them first. Mail from abroad reaches Correos de Cuba when a
+caller names it, a provider names it, or a result gives Cuba as the destination of an S10 item.
+The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

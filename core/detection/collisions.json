@@ -789,6 +789,15 @@
     "reason": "The Algerian issuer suffix suggests Algérie Poste but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}CU with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "correos-cuba",
+      "intl-post"
+    ],
+    "reason": "The Cuban issuer suffix suggests Correos de Cuba but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}AM with a valid S10 check digit",
     "carriers": [
       "chronopost",

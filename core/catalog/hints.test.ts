@@ -56,6 +56,7 @@ describe('national postal lookup candidates', () => {
     ['BD', 'bangladesh-post'], ['Bangladesh', 'bangladesh-post'],
     ['MA', 'barid-al-maghrib'], ['Morocco', 'barid-al-maghrib'],
     ['DZ', 'algerie-poste'], ['Algeria', 'algerie-poste'],
+    ['CU', 'correos-cuba'], ['Cuba', 'correos-cuba'],
     ['MK', 'posta-north-macedonia'], ['North Macedonia', 'posta-north-macedonia'],
     ['PH', 'phlpost'], ['Philippines', 'phlpost'],
     ['AM', 'haypost'], ['Armenia', 'haypost'],

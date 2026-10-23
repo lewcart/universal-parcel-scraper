@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -182,6 +184,13 @@ describe('Correos de Cuba tracking adapter', () => {
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(1024 * 1024 + 1)));
     await expect(carrier(large).track({ number: INBOUND })).rejects.toThrow('unexpectedly large');
+  });
+
+  it('is asked first about its own codes, and not about other posts\' codes', () => {
+    // The issuer does not establish who delivers the item: detection keeps the postal fallback.
+    expect(detectCarrierMatch(OWN)).toMatchObject({ carrier: 'intl-post' });
+    expect(recognitionAskedCarriers(OWN)[0]).toBe('correos-cuba');
+    for (const number of [INBOUND, 'ZZ000000015CU']) expect(recognitionAskedCarriers(number), number).not.toContain('correos-cuba');
   });
 
   it('routes an item filed under Correos de Cuba to the adapter', async () => {

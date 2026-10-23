@@ -22,6 +22,9 @@
       "direct",
       "retry"
     ],
+    "recognition": {
+      "rank": 859
+    },
     "localClocks": true
   },
   "capabilities": [
@@ -61,5 +64,13 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "correos-cuba-s10",
+      "pattern": "^[A-Z]{2}\\d{9}CU$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

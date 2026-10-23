@@ -9935,12 +9935,20 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "correos-cuba",
+      "recognitionRank": 859,
       "localClocks": true
     },
     "canaryUrl": "https://www.correos.cu/rastreador-de-envios/",
     "trackingSearchUrl": "https://www.correos.cu/rastreador-de-envios/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CU$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "correos-de-mexico": {
     "displayName": "Correos de México",

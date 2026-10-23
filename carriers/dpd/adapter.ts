@@ -475,11 +475,19 @@ export function parseDPDTrackingApi(
     });
   }
   if (scans.length === 0) {
+    const timeOf = (raw: JsonObject) => apiEventTime(zone, raw.eventDateAndTime, '', raw.eventDateAndTimeZoneId);
+    // DPD dates the hand-over anew when its unit in another country takes the parcel. Dated
+    // after a later milestone, it is that hand-off between units, made in transit.
+    const firstMove = Math.min(...history.filter((raw) => {
+      const code = scanCode(raw.description);
+      return Object.hasOwn(API_LABELS, code) && code !== 'ORDER_CREATED' && code !== 'PARCEL_HANDED';
+    }).map((raw) => Date.parse(timeOf(raw))).filter(Number.isFinite));
     for (const raw of history) {
       const code = scanCode(raw.description);
-      const stage = apiStage(code);
+      const time = timeOf(raw);
+      const stage = code === 'PARCEL_HANDED' && Date.parse(time) > firstMove ? 'in_transit' : apiStage(code);
       append({
-        time: apiEventTime(zone, raw.eventDateAndTime, '', raw.eventDateAndTimeZoneId),
+        time,
         location: apiLocation(raw),
         description: apiDescription(raw.description),
         ...(stage ? { stage } : {}),

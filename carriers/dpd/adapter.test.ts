@@ -517,6 +517,26 @@ describe('DPD unverified guest payload', () => {
       },
     ]);
   });
+
+  it('reads a hand-over dated after the parcel moved as a hand-off between DPD units', () => {
+    const milestones = (handed: string) => parseDPDTrackingApi({
+      parcelNumber: TRACKING_NUMBER,
+      status: { description: 'PARCEL_HANDED' },
+      parcelHistory: [
+        { description: 'PARCEL_HANDED', eventDateAndTime: handed },
+        { description: 'IN_TRANSIT', eventDateAndTime: '2026-10-23T17:39:42' },
+      ],
+    }, TRACKING_NUMBER, false);
+    const abroad = milestones('2026-10-23T18:47:42');
+    expect(abroad).toMatchObject({ status: 'in_transit', last_status_text: 'Parcel handed to DPD' });
+    expect(abroad.events?.map((event) => [event.provider_code, event.stage])).toEqual([
+      ['PARCEL_HANDED', 'in_transit'], ['IN_TRANSIT', undefined],
+    ]);
+    // Before the parcel moves, it is left to its wording.
+    expect(milestones('2026-10-22T15:15:58').events?.map((event) => [event.provider_code, event.stage])).toEqual([
+      ['IN_TRANSIT', undefined], ['PARCEL_HANDED', undefined],
+    ]);
+  });
 });
 
 describe('DPD scan times', () => {

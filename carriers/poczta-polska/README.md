@@ -1,11 +1,16 @@
 # Poczta Polska
 
 Tracks registered postal items and parcel barcodes through the official
-eMonitoring widget's anonymous JSON service. Polish-issued postal numbers are
-candidates for recognition through the same lookup. The
+eMonitoring widget's anonymous JSON service. Detection names Poczta Polska for
+the parcels, EMS, registered and tracked-letter items it issues: `C`, `E`, `L`
+or `R` first, `PL` last and a passing check digit. Its tracker follows them
+abroad with the partner post's scans. `CV` codes are left out: Meest's app
+tracks parcels to Ukraine under them, and Poczta Polska's tracker has not
+answered one. The
 [UPU S10 standard](https://www.upu.int/UPU/media/upu/files/postalSolutions/programmesAndServices/standards/S10-12.pdf)
-names the issuing country, not the deliverer, so the suffix alone never selects
-Poczta Polska.
+names the issuing country, not the deliverer, so its other `PL` codes stay with
+the generic postal carrier, and recognition asks Poczta Polska about them
+through the same lookup.
 
 ## How it works
 

@@ -155,6 +155,21 @@ describe('UAE S10 items', () => {
   });
 });
 
+describe('Polish S10 items', () => {
+  it.each(['CP123456785PL', 'EE123456785PL', 'LX123456785PL', 'RR123456785PL'])('names Poczta Polska, which tracks %s abroad', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'poczta-polska', confidence: 'high', candidates: ['poczta-polska'] });
+  });
+
+  it.each(['VV123456785PL', 'CV123456785PL'])('leaves %s to international mail', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+  });
+
+  it('names nobody for a failed check digit or another issuer', () => {
+    expect(detectCarrierMatch('LX123456784PL').candidates).not.toContain('poczta-polska');
+    expect(detectCarrierMatch('LX123456785CZ').candidates).not.toContain('poczta-polska');
+  });
+});
+
 describe('Slovenian S10 items', () => {
   it.each(['CA123456785SI', 'EE123456785SI', 'LZ123456785SI', 'RA123456785SI'])('names Pošta Slovenije, which tracks %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'posta-slovenije', confidence: 'high', candidates: ['posta-slovenije'] });

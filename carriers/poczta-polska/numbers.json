@@ -29,10 +29,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "poczta-polska",
         "confidence": "high"
       },
-      "note": "Publicly reported parcel sent from Poland to China. Poczta Polska's tracker returns its history; detection selects the generic postal carrier."
+      "note": "Publicly reported parcel sent from Poland to China. Poczta Polska's tracker returns its history."
     },
     {
       "number": "PX0000000013",

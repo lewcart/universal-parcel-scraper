@@ -2037,7 +2037,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -4760,6 +4760,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^PX\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$",
+        "confidence": "high",
+        "checksum": "s10"
       },
       {
         "pattern": "^[A-Z]{2}\\d{9}PL$",
@@ -33037,7 +33042,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ninja-van": ["ninja-van-1","ninja-van-2","ninja-van-3"],
   "china-post": ["china-post-1","china-post-zs","china-post-zc","china-post-za"],
   "packeta": ["packeta-1","packeta-packet-id"],
-  "poczta-polska": ["poczta-polska-1","poczta-polska-barcode","poczta-polska-sscc","poczta-polska-2","poczta-polska-s10"],
+  "poczta-polska": ["poczta-polska-1","poczta-polska-barcode","poczta-polska-sscc","poczta-polska-2","poczta-polska-own","poczta-polska-s10"],
   "bring-posten": ["bring-posten-1","bring-posten-2","bring-posten-3","bring-posten-4"],
   "aramex": ["aramex-1"],
   "tnt": ["tnt-1","tnt-2"],

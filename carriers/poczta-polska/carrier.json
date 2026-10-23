@@ -104,6 +104,12 @@
       "confidence": "high"
     },
     {
+      "id": "poczta-polska-own",
+      "pattern": "^(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "poczta-polska-s10",
       "pattern": "^[A-Z]{2}\\d{9}PL$",
       "confidence": "low",

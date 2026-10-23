@@ -110,7 +110,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "poczta-polska",
         "confidence": "high"
       },
       "note": "An archived reply of the API behind Pósturinn's tracking page for a parcel from Poland, under the Polish post's number; it shows the parcel held at Pósturinn's import department."

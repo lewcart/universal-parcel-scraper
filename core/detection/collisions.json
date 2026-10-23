@@ -343,7 +343,7 @@
       "intl-post",
       "poczta-polska"
     ],
-    "reason": "The Polish issuer suffix suggests Poczta Polska but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+    "reason": "On Polish items not starting C, E, L or R, and on CV items Meest tracks, the issuer suffix suggests Poczta Polska but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
     "shape": "AA9{9}CZ with a valid S10 check digit",
@@ -396,6 +396,14 @@
       "emirates-post"
     ],
     "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Emirates Post AE numbers; the country-specific high-confidence rule decides."
+  },
+  {
+    "shape": "AA9{9}AA",
+    "carriers": [
+      "chronopost",
+      "poczta-polska"
+    ],
+    "reason": "Chronopost's low-confidence rule accepts any S10 code with a passing check digit, so it overlaps Poczta Polska PL numbers; the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}IT with a valid S10 check digit",

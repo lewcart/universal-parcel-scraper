@@ -93,13 +93,13 @@ describe('S10-shaped numbers', () => {
     expect(detectCarrierMatch('UL123456785AT').carrier).not.toBe('dhl');
   });
 
-  it('asks Poczta Polska first about a Polish-issued number without selecting it', () => {
-    expect(detectCarrierMatch('cp 123 456 785 pl')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionCandidates('cp 123 456 785 pl')).toEqual([
+  it('asks Poczta Polska first about a Polish-issued number it does not own without selecting it', () => {
+    expect(detectCarrierMatch('vv 123 456 785 pl')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionCandidates('vv 123 456 785 pl')).toEqual([
       { carrier: 'poczta-polska', needsInput: null, preferred: true },
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
-    expect(recognitionAskedCarriers('CP123456789PL')).not.toContain('poczta-polska');
+    expect(recognitionAskedCarriers('VV123456789PL')).not.toContain('poczta-polska');
   });
 
   it('asks Correo Argentino first about an Argentine-issued number without selecting it', () => {

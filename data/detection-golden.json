@@ -68869,26 +68869,18 @@
   },
   {
     "input": "CP257233008PL",
-    "carrier": "intl-post",
+    "carrier": "poczta-polska",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "poczta-polska",
-      "chronopost"
+      "poczta-polska"
     ]
   },
   {
     "input": "CP265970733PL",
-    "carrier": "intl-post",
+    "carrier": "poczta-polska",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "poczta-polska",
-      "chronopost"
+      "poczta-polska"
     ]
   },
   {

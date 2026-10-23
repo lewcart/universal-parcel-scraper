@@ -27,7 +27,12 @@ ZTO solves Dingxiang's slider and ordered-character challenge locally, with at m
 concurrent offline OCR workers. Each worker ends with its request and retains no images.
 Verification failures and the public tracker's incomplete history still need enabled providers.
 China Post reads its ordered-character prompt offline, submits the anonymous preview form
-and retains only scan state labels and local clocks. Its two-scan guest window stays marked
+and retains only scan state labels and local clocks. If the entry form fails to load,
+it reloads the official page once before sending any tracking request. An identified
+unsolved verification on an HTTP 200 page reaches the adapter as a challenge,
+with its phase retained in a `china-post.verification` warning.
+The `china-post.form-reload` warning records whether the form recovered and
+a bound scan reply arrived, without identifiers or page content. Its two-scan guest window stays marked
 incomplete; the helper enters no phone digits and signs into no account.
 DHL Poland uses TRAWL's native checkbox and audio solver.
 Poste Italiane uses that solver only after its tracking API requests a CAPTCHA. Its page

@@ -10,7 +10,7 @@ const found = { success: true, token: 'PRIVATE', value: { domesticMailResultDtoL
   receiverAddress: 'PRIVATE', resObj: [{ traceNo: number, bubbleTime: '2030-01-02 12:30', opStateCode: 'O_051',
     opName: '到达境外目的地', opDesc: 'PRIVATE', senderPhone: 'PRIVATE', gis: 'PRIVATE' }] }] } };
 const response = (payload = found, overrides = {}) => ({ url: () => api, status: () => 200,
-  request: () => ({ method: () => 'POST', postDataJSON: () => ({ list: [number], value: [{ orderNum: [number] }] }) }),
+  request: () => ({ url: () => api, method: () => 'POST', postDataJSON: () => ({ list: [number], value: [{ orderNum: [number] }] }) }),
   headers: () => ({ 'content-type': 'application/json', 'set-cookie': 'PRIVATE' }),
   body: async () => Buffer.from(JSON.stringify(payload)), ...overrides });
 function fixture() {
@@ -19,6 +19,8 @@ function fixture() {
   const page = {
     on: (name, fn) => { handlers[name] = fn; }, off: name => { delete handlers[name]; },
     goto: async () => { state.navigated++; return { status: () => 200 }; },
+    url: () => 'https://www.ems.com.cn/queryList',
+    reload: async () => { state.navigated++; return { status: () => 200 }; },
     locator: () => ({ fill: async n => { submitted = n; }, inputValue: async () => submitted,
       waitFor: async () => {}, evaluate: async () => {} }),
     waitForResponse: async () => ({ status: () => 200, body: async () => Buffer.from(JSON.stringify({ data: {
@@ -65,9 +67,9 @@ test('observes before navigation, retains the response sequence and cleans up', 
 test('ignores unrelated, partial, batched and non-POST requests', async () => {
   const f = fixture(); f.page.getByRole = (_role, { name }) => ({ evaluate: async () => {
     if (name !== '验证') return;
-    for (const r of [response(found, { url: () => api + '/wrong' }), response(found, { request: () => ({ method: () => 'GET' }) }),
-      ...[other, number.slice(0, -1)].map(n => response(found, { request: () => ({ method: () => 'POST', postDataJSON: () => ({ list: [n], value: [{ orderNum: [n] }] }) }) })),
-      response(found, { request: () => ({ method: () => 'POST', postDataJSON: () => ({ list: [number, other], value: [{ orderNum: [number] }] }) }) })]) f.handlers.response(r);
+    for (const r of [response(found, { url: () => api + '/wrong' }), response(found, { request: () => ({ url: () => api, method: () => 'GET' }) }),
+      ...[other, number.slice(0, -1)].map(n => response(found, { request: () => ({ url: () => api, method: () => 'POST', postDataJSON: () => ({ list: [n], value: [{ orderNum: [n] }] }) }) })),
+      response(found, { request: () => ({ url: () => api, method: () => 'POST', postDataJSON: () => ({ list: [number, other], value: [{ orderNum: [number] }] }) }) })]) f.handlers.response(r);
     f.handlers.response(response());
   } });
   assert.equal((await runChinaPostBrowser(f.options)).capturedResponses.length, 1);
@@ -101,13 +103,15 @@ test('preserves rejections and bounds body reads', async () => {
     assert.ok(r.status !== 200 || r.truncated); assert.equal(r.body, null);
   }
 });
-test('distinguishes prompt and position failures without retaining solver data', async () => {
+test('distinguishes prompt and position failures without retaining solver data', async t => {
+  const logs = []; t.mock.method(console, 'warn', text => { logs.push(JSON.parse(text)); });
   for (const stage of ['prompt', 'positions']) {
     const f = fixture();
     f.options.solveCharacters = async (_challenge, _signal, _timeout, report) => { report(stage); return null; };
     const result = await runChinaPostBrowser(f.options);
     assert.equal(result.reason, `china-post-characters-${stage}`);
-    assert.equal(result.status, 'error');
+    assert.equal(result.status, 'success');
+    assert.equal(result.statusCode, 200);
     assert.equal(result.capturedResponses.length, 0);
     assert.equal(f.state.closed, 1);
   }
@@ -116,6 +120,10 @@ test('distinguishes prompt and position failures without retaining solver data',
   const result = await runChinaPostBrowser(f.options);
   assert.equal(result.reason, 'china-post-characters');
   assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
+  assert.deepEqual(logs.map(row => row.phase), ['characters-prompt', 'characters-positions', 'characters']);
+  assert.ok(logs.every(row => row.event === 'china-post.verification' && row.cause === 'unreadable'));
+  assert.equal(JSON.stringify(logs).includes('PRIVATE'), false);
+  assert.equal(JSON.stringify(logs).includes(number), false);
 });
 test('ends stalled work, aborts OCR and closes late contexts', async () => {
   const f = fixture(); let signal;
@@ -127,4 +135,109 @@ test('ends stalled work, aborts OCR and closes late contexts', async () => {
   await runChinaPostBrowser({ ...late.options, maxTimeout: 5 });
   release(late.context); await new Promise(resolve => setTimeout(resolve, 10));
   assert.equal(late.state.closed, 1); assert.equal(late.state.navigated, 0);
+});
+
+test('reloads a missing form once before searching and keeps only bound tracking history', async t => {
+  const logs = [];
+  t.mock.method(console, 'warn', text => { logs.push(JSON.parse(text)); });
+  const f = fixture(), locator = f.page.locator;
+  let fills = 0, searches = 0, verifies = 0;
+  f.page.locator = (...args) => {
+    const item = locator(...args), fill = item.fill;
+    item.fill = async (...values) => {
+      if (++fills === 1) {
+        f.handlers.request({ url: () => api, method: () => 'POST', postDataJSON: () => ({ list: [other], value: [{ orderNum: [other] }] }) });
+        throw new Error('PRIVATE selector');
+      }
+      await fill(...values);
+    };
+    return item;
+  };
+  f.page.getByRole = (_role, { name }) => ({ evaluate: async () => {
+    if (name === '查询') searches++;
+    if (name === '验证') { verifies++; f.handlers.response(response()); }
+  } });
+  const result = await runChinaPostBrowser({ ...f.options, maxTimeout: 30000 });
+  assert.equal(f.state.navigated, 2);
+  assert.equal(searches, 1); assert.equal(verifies, 1);
+  assert.equal(result.capturedResponses.length, 1);
+  assert.equal(JSON.parse(result.capturedResponses[0].body).match, true);
+  assert.equal(f.state.closed, 1);
+  assert.deepEqual(logs, [{ level: 'warn', event: 'china-post.form-reload', host: 'www.ems.com.cn', formReady: true, scans: 1 }]);
+  assert.equal(JSON.stringify(logs).includes(number), false);
+  assert.equal(JSON.stringify(logs).includes('PRIVATE'), false);
+});
+
+test('does not reload repeatedly, after cancellation, with a short budget or on another page', async t => {
+  t.mock.method(console, 'warn', () => {});
+  for (const mode of ['twice', 'short', 'aborted', 'other']) {
+    const f = fixture(), control = new AbortController();
+    let reloads = 0, fills = 0;
+    f.page.locator = () => ({ fill: async () => { fills++; if (mode === 'aborted') control.abort(); throw new Error('PRIVATE'); } });
+    f.page.reload = async () => { reloads++; return { status: () => 200 }; };
+    if (mode === 'other') f.page.url = () => 'https://example.test/queryList';
+    await runChinaPostBrowser({ ...f.options, maxTimeout: mode === 'short' ? 200 : 30000, signal: control.signal });
+    assert.equal(reloads, mode === 'twice' ? 1 : 0);
+    assert.equal(fills, mode === 'twice' ? 2 : 1);
+    assert.equal(f.state.closed, 1);
+  }
+});
+
+test('preserves a known firewall challenge after its final page becomes HTTP 200', async t => {
+  const logs = []; t.mock.method(console, 'warn', text => { logs.push(JSON.parse(text)); });
+  const f = fixture(), frame = {};
+  f.page.mainFrame = () => frame;
+  f.page.goto = async () => {
+    f.handlers.response({ url: () => 'https://www.ems.com.cn/queryList', status: () => 412,
+      request: () => ({ isNavigationRequest: () => true }), frame: () => frame });
+    return { status: () => 200 };
+  };
+  f.page.locator = () => ({ fill: async () => { throw new Error('PRIVATE'); } });
+  const result = await runChinaPostBrowser(f.options);
+  assert.equal(result.status, 'success');
+  assert.equal(result.statusCode, 200);
+  assert.equal(result.verificationStatus, 412);
+  assert.equal(result.capturedResponses.length, 0);
+  assert.deepEqual(logs, [{ level: 'warn', event: 'china-post.verification', host: 'www.ems.com.cn',
+    phase: 'form', cause: 'firewall', pageStatus: 200, verificationStatus: 412 }]);
+  assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
+});
+
+test('an earlier firewall response does not turn later stalled tracking into a verification failure', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const logs = []; t.mock.method(console, 'warn', text => { logs.push(JSON.parse(text)); });
+  const f = fixture(), frame = {};
+  f.page.mainFrame = () => frame;
+  f.page.goto = async () => {
+    f.handlers.response({ url: () => 'https://www.ems.com.cn/queryList', status: () => 412,
+      request: () => ({ isNavigationRequest: () => true }), frame: () => frame });
+    return { status: () => 200 };
+  };
+  f.page.getByRole = () => ({ evaluate: async () => {} });
+  const pending = runChinaPostBrowser({ ...f.options, maxTimeout: 1000 });
+  await new Promise(resolve => setImmediate(resolve));
+  t.mock.timers.tick(1000);
+  const result = await pending;
+  assert.equal(result.reason, 'china-post-history');
+  assert.equal(result.status, 'error');
+  assert.equal(result.verificationStatus, 412);
+  assert.equal(result.capturedResponses.length, 0);
+  assert.equal(f.state.closed, 1);
+  assert.deepEqual(logs, []);
+});
+
+test('never reloads after its matching tracking request starts, even before the reply arrives', async t => {
+  t.mock.method(console, 'warn', () => {});
+  const f = fixture(); let reloads = 0;
+  f.page.locator = () => ({ fill: async () => {
+    f.handlers.request(response().request());
+    throw new Error('PRIVATE pending request');
+  } });
+  f.page.reload = async () => { reloads++; return { status: () => 200 }; };
+  const result = await runChinaPostBrowser({ ...f.options, maxTimeout: 30000 });
+  assert.equal(reloads, 0);
+  assert.equal(result.capturedResponses.length, 0);
+  assert.equal(result.status, 'error');
+  assert.equal(f.state.closed, 1);
+  assert.deepEqual(f.handlers, {});
 });

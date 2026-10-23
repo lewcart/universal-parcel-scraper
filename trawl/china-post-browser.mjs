@@ -49,7 +49,8 @@ export async function runChinaPostBrowser({ url, handle, tier, maxTimeout, captu
   const started = Date.now(), entries = [], reads = [];
   const stopped = new AbortController();
   const operationSignal = signal ? AbortSignal.any([signal, stopped.signal]) : stopped.signal;
-  let context, page, observer, timer, abort, accepting = true, expired = false, statusCode = 0, totalBytes = 0, verificationStatus = 0, phase = 'setup';
+  let context, page, observer, requestObserver, timer, abort, accepting = true, expired = false, statusCode = 0, totalBytes = 0, verificationStatus = 0, phase = 'setup';
+  let formReloaded = false, formReadyAfterReload = false, unreadableChallenge = false, trackingStarted = false;
   let finish;
   const trackingWait = () => new Promise(resolve => { finish = resolve; });
   let completed = trackingWait();
@@ -58,8 +59,23 @@ export async function runChinaPostBrowser({ url, handle, tier, maxTimeout, captu
     if (expired || left < 1) throw new Error('China Post browser budget exhausted');
     return Math.max(1, Math.min(cap, Math.floor(left)));
   };
-  const result = () => ({ tier, status: entries.length ? 'success' : 'error', statusCode, durationMs: Date.now() - started, effectiveUrl: url,
+  // The browser service otherwise turns every failed tier into HTTP 500. An
+  // identified verification failure must still reach the carrier parser, which
+  // rejects the empty capture as a challenge; it is never tracking history.
+  const identifiedChallenge = () => statusCode === 200
+    && (unreadableChallenge || (phase === 'form' && !trackingStarted && [403, 405, 412].includes(verificationStatus)));
+  const result = () => ({ tier, status: entries.length || identifiedChallenge() ? 'success' : 'error', statusCode, durationMs: Date.now() - started, effectiveUrl: url,
     html: '', body: new Uint8Array(), cookies: [], capturedResponses: entries, verificationStatus, reason: `china-post-${phase}` });
+  const boundEndpoint = request => {
+    const endpoint = endpointOf(request.url?.());
+    if (![FLAG, API].includes(endpoint) || request.method() !== 'POST') return null;
+    let body;
+    try { body = request.postDataJSON(); } catch { return null; }
+    return endpoint === API
+      ? body?.list?.length === 1 && body.list[0] === number && body.value?.length === 1
+        && body.value[0]?.orderNum?.length === 1 && body.value[0].orderNum[0] === number ? endpoint : null
+      : body?.value?.waybillNoList?.length === 1 && body.value.waybillNoList[0] === number ? endpoint : null;
+  };
   const close = async target => {
     let closed = false, timeout;
     try { await Promise.race([Promise.resolve().then(() => target.close()).then(() => { closed = true; }).catch(() => {}),
@@ -87,13 +103,8 @@ export async function runChinaPostBrowser({ url, handle, tier, maxTimeout, captu
             statusCode = response.status();
             if ([403, 405, 412].includes(statusCode)) verificationStatus = statusCode;
           }
-          if (![FLAG, API].includes(endpoint) || response.request().method() !== 'POST') return;
-          let request;
-          try { request = response.request().postDataJSON(); } catch { return; }
+          if (![FLAG, API].includes(endpoint) || boundEndpoint(response.request()) !== endpoint) return;
           const track = endpoint === API;
-          if (track ? request?.list?.length !== 1 || request.list[0] !== number || request.value?.length !== 1
-            || request.value[0]?.orderNum?.length !== 1 || request.value[0].orderNum[0] !== number
-            : request?.value?.waybillNoList?.length !== 1 || request.value.waybillNoList[0] !== number) return;
           if (entries.length >= 10) { entries.at(-1).error = 'response-limit'; accepting = false; finish(); return; }
           const headers = response.headers();
           // The firewall appends session material to query strings. Never retain it.
@@ -119,6 +130,8 @@ export async function runChinaPostBrowser({ url, handle, tier, maxTimeout, captu
             if (track || projected.success !== true) finish();
           }).catch(() => { if (accepting) { entry.error = 'response-read'; finish(); } }));
         };
+        requestObserver = request => { if (accepting && boundEndpoint(request)) trackingStarted = true; };
+        page.on('request', requestObserver);
         page.on('response', observer);
         phase = 'navigation';
         const navigation = await page.goto(`${ORIGIN}/queryList`, { waitUntil: 'domcontentloaded', timeout: remaining(25000) });
@@ -128,7 +141,22 @@ export async function runChinaPostBrowser({ url, handle, tier, maxTimeout, captu
         const input = page.locator('input[placeholder="输入最多20个邮件号(多个请用空格或,隔开)"]');
         phase = 'form';
         // Its firewall can return executable HTML with 412, then navigate to the form.
-        await input.fill(number, { timeout: remaining(15000) });
+        try { await input.fill(number, { timeout: remaining(15000) }); }
+        catch (error) {
+          // A cleared firewall page can leave its scripts unloaded. Reload only
+          // before any tracking request, once, on the same official entry page.
+          const location = new URL(page.url());
+          if (operationSignal.aborted || trackingStarted || entries.length || remaining() < 15000
+            || ![200, 403, 405, 412].includes(statusCode) || location.origin !== ORIGIN || location.pathname !== '/queryList') throw error;
+          formReloaded = true;
+          phase = 'form-reload';
+          const reloaded = await page.reload({ waitUntil: 'domcontentloaded', timeout: remaining(15000) });
+          statusCode = reloaded?.status() ?? 0;
+          if ([403, 405, 412].includes(statusCode)) verificationStatus = statusCode;
+          phase = 'form';
+          await input.fill(number, { timeout: remaining(15000) });
+          formReadyAfterReload = true;
+        }
         if (await input.inputValue({ timeout: remaining(3000) }) !== number) throw new Error('China Post input changed');
         // Blurring commits the typed value to the form's list of waybills.
         await input.evaluate(element => element.blur(), undefined, { timeout: remaining(3000) });
@@ -150,7 +178,10 @@ export async function runChinaPostBrowser({ url, handle, tier, maxTimeout, captu
             if (stage === 'prompt' || stage === 'positions') phase = `characters-${stage}`;
           });
           if (!points?.length || points.length > 4 || points.some(point => !Number.isFinite(point?.x) || !Number.isFinite(point?.y)
-            || point.x < 0 || point.y < 0 || point.x >= challenge.backgroundImageWidth || point.y >= challenge.backgroundImageHeight)) return result();
+            || point.x < 0 || point.y < 0 || point.x >= challenge.backgroundImageWidth || point.y >= challenge.backgroundImageHeight)) {
+            unreadableChallenge = true;
+            return result();
+          }
           phase = 'submit';
           await page.locator('.text-verify').evaluate((element, positions) => {
             const rect = element.getBoundingClientRect();
@@ -182,8 +213,28 @@ export async function runChinaPostBrowser({ url, handle, tier, maxTimeout, captu
   } catch {
     return result();
   } finally {
+    const failedVerification = !entries.length && identifiedChallenge(), failurePhase = phase;
+    const failureCause = unreadableChallenge ? 'unreadable' : 'firewall', failurePageStatus = statusCode, failureVerificationStatus = verificationStatus;
+    const reloadedFormReady = formReadyAfterReload;
+    let reloadScans = 0;
+    if (formReloaded) {
+      try {
+        const last = entries.at(-1), payload = JSON.parse(last?.body ?? 'null');
+        if (last?.url === API && last.status === 200 && payload?.success === true && payload.match === true && Array.isArray(payload.scans)) reloadScans = payload.scans.length;
+      } catch { /* A failed reply supplies no history. */ }
+    }
     expired = true; accepting = false; stopped.abort(); clearTimeout(timer); signal?.removeEventListener('abort', abort);
     if (page && observer) page.off('response', observer);
+    if (page && requestObserver) page.off('request', requestObserver);
     if (context) await close(context);
+    if (failedVerification) {
+      try { console.warn(JSON.stringify({ level: 'warn', event: 'china-post.verification', host: 'www.ems.com.cn',
+        phase: failurePhase, cause: failureCause, pageStatus: failurePageStatus, verificationStatus: failureVerificationStatus })); }
+      catch { /* Diagnostics cannot change tracking or cleanup. */ }
+    }
+    if (formReloaded) {
+      try { console.warn(JSON.stringify({ level: 'warn', event: 'china-post.form-reload', host: 'www.ems.com.cn',
+        formReady: reloadedFormReady, scans: reloadScans })); } catch { /* Diagnostics cannot change tracking or cleanup. */ }
+    }
   }
 }

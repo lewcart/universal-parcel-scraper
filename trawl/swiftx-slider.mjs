@@ -8,38 +8,46 @@ let active = 0;
 const reportVerification = fields => console.warn(JSON.stringify({ level: 'warn', event: 'swiftx.verification', ...fields }));
 
 /** Disposable image analysis, with no number, session or verification token. */
-export function locateSwiftxSlider(challenge, signal, timeoutMs) {
-  if (signal.aborted || timeoutMs < 100 || active >= 2) return Promise.resolve(null);
+export function locateSwiftxSlider(challenge, signal, timeoutMs, onAnalysis = () => {}) {
+  const report = outcome => { try { onAnalysis(outcome); } catch { /* Diagnostics cannot change analysis. */ } };
+  if (signal.aborted || timeoutMs < 100 || active >= 2) {
+    report(signal.aborted ? 'cancelled' : timeoutMs < 100 ? 'budget' : 'capacity');
+    return Promise.resolve(null);
+  }
   active++;
   return new Promise(resolve => {
-    let output = '', invalid = false;
+    let output = '', invalid = false, failureReason;
+    const complete = (answer, outcome) => { report(outcome); resolve(answer); };
     const child = spawn('/opt/zto-ocr/bin/python', [fileURLToPath(new URL('./swiftx-slider.py', import.meta.url))],
       { stdio: ['pipe', 'pipe', 'ignore'], env: { PATH: process.env.PATH ?? '', OMP_NUM_THREADS: '1', OPENBLAS_NUM_THREADS: '1' } });
-    const stop = () => { invalid = true; child.kill('SIGKILL'); };
-    const timer = setTimeout(stop, Math.min(4000, timeoutMs));
-    signal.addEventListener('abort', stop, { once: true });
-    child.stdout.on('data', data => { output += data.toString(); if (output.length > 512) stop(); });
+    const stop = reason => { invalid = true; failureReason = reason; child.kill('SIGKILL'); };
+    const aborted = () => stop('cancelled');
+    const timer = setTimeout(() => stop('timeout'), Math.min(4000, timeoutMs));
+    signal.addEventListener('abort', aborted, { once: true });
+    child.stdout.on('data', data => { output += data.toString(); if (output.length > 512) stop('output_limit'); });
     child.stdin.on('error', () => {});
-    child.on('error', () => { invalid = true; });
+    child.on('error', () => { invalid = true; failureReason = 'worker_error'; });
     child.on('close', code => {
-      clearTimeout(timer); signal.removeEventListener('abort', stop); active--;
+      clearTimeout(timer); signal.removeEventListener('abort', aborted); active--;
       try {
         const answer = !invalid && code === 0 ? JSON.parse(output) : null;
+        const missing = failureReason ?? (code === 0 ? 'no_plan' : 'worker_error');
         if (challenge.type === 'ICON_CLICK') {
           const points = answer?.points;
-          resolve(Array.isArray(points) && Number.isInteger(challenge.clickCount) && challenge.clickCount >= 2
+          const valid = Array.isArray(points) && Number.isInteger(challenge.clickCount) && challenge.clickCount >= 2
             && challenge.clickCount <= 6 && points.length === challenge.clickCount
             && points.every(point => Number.isInteger(point?.x) && Number.isInteger(point?.y)
-              && point.x > 0 && point.x < challenge.backgroundImageWidth && point.y > 0 && point.y < challenge.backgroundImageHeight)
-            ? { points: points.map(({ x, y }) => ({ x, y })) } : null);
+              && point.x > 0 && point.x < challenge.backgroundImageWidth && point.y > 0 && point.y < challenge.backgroundImageHeight);
+          complete(valid ? { points: points.map(({ x, y }) => ({ x, y })) } : null, valid ? 'planned' : answer == null ? missing : 'invalid_plan');
           return;
         }
         const maximum = ['CONCAT', 'ROTATE'].includes(challenge.type) ? challenge.backgroundImageWidth
           : challenge.backgroundImageWidth - challenge.templateImageWidth;
-        resolve(Number.isInteger(answer?.x) && answer.x >= 0 && answer.x < maximum ? answer : null);
-      } catch { resolve(null); }
+        const valid = Number.isInteger(answer?.x) && answer.x >= 0 && answer.x < maximum;
+        complete(valid ? answer : null, valid ? 'planned' : answer == null ? missing : 'invalid_plan');
+      } catch { complete(null, 'unreadable'); }
     });
-    if (signal.aborted) stop();
+    if (signal.aborted) aborted();
     else child.stdin.end(JSON.stringify(Object.fromEntries(['type', 'backgroundImage', 'templateImage',
       'backgroundImageWidth', 'backgroundImageHeight', 'templateImageWidth', 'templateImageHeight', 'concatTopHeight', 'clickCount']
       .map(key => [key, challenge[key]]))));
@@ -125,7 +133,7 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
   let current, generation = 0, verified = false, refusal, disposed = false, reads = 0;
   let deadline = 0, attempted = 0, seen = 0, running, hasRequest = () => false, onRefusal;
   const started = Date.now();
-  let sawImage = false, prepared = false, puzzleType = 'none', outcome = 'not_seen';
+  let sawImage = false, prepared = false, puzzleType = 'none', outcome = 'not_seen', analysisOutcome = 'not_started';
   const remaining = () => Math.max(0, deadline - Date.now());
   const refused = value => { refusal = value; onRefusal?.(value); };
   const pending = new Set();
@@ -162,7 +170,7 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
           current = Object.fromEntries(['captchaId', 'type', 'backgroundImage', 'templateImage', 'backgroundImageWidth',
             'backgroundImageHeight', 'templateImageWidth', 'templateImageHeight', 'concatTopHeight', 'clickCount']
             .map(key => [key, challenge[key]]));
-          generation++; verified = false; outcome = 'received'; startDrive();
+          generation++; verified = false; outcome = 'received'; analysisOutcome = 'not_started'; startDrive();
         }
       } else {
         const result = payload?.verifyOfficialTrackingSlider;
@@ -181,7 +189,7 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
     // refusal. Never include the challenge, answer, digest or tracking number.
     try {
       const trackingRequested = prepared ? Boolean(hasRequest()) : null;
-      if (sawImage || (prepared && !trackingRequested)) onVerification({ host: 'swiftx-express.com', puzzleType, outcome, prepared,
+      if (sawImage || (prepared && !trackingRequested)) onVerification({ host: 'swiftx-express.com', puzzleType, outcome, analysisOutcome, prepared,
         attempts: attempted, generations: generation, verified, trackingRequested, pendingReads: pending.size,
         cancelled: parent?.aborted === true, timedOut: deadline > 0 && remaining() === 0, durationMs: Date.now() - started });
     } catch { /* Diagnostics cannot affect cleanup or tracking. */ }
@@ -199,7 +207,11 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
       if (attempted >= 2 || remaining() < 3500) break;
       seen = generation; attempted++;
       const challenge = current;
-      const plan = await solve(challenge, signal, remaining());
+      analysisOutcome = 'unreported';
+      const plan = await solve(challenge, signal, remaining(), value => {
+        if (!disposed && current === challenge && ['cancelled', 'budget', 'capacity', 'timeout', 'output_limit',
+          'worker_error', 'no_plan', 'invalid_plan', 'planned', 'unreadable'].includes(value)) analysisOutcome = value;
+      });
       if (disposed || signal.aborted || remaining() < 2000 || current !== challenge) continue;
       const geometry = plan && await page.evaluate(swiftxSliderGeometry, { number, challenge });
       const drag = swiftxSliderDrag(geometry, plan);

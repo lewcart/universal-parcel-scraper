@@ -28,6 +28,7 @@ concurrent offline OCR workers. Each worker ends with its request and retains no
 Verification failures and the public tracker's incomplete history still need enabled providers.
 SwiftX emits a `swiftx.verification` warning for an observed image challenge or
 an unresolved prepared page, using fixed puzzle types, outcome labels and counts.
+Analysis labels distinguish worker limits from an uncertain image match.
 It retains no images, answers, tracking identifiers or verification tokens.
 China Post reads its ordered-character prompt offline, submits the anonymous preview form
 and retains only scan state labels and local clocks. If the entry form fails to load,

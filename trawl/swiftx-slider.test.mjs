@@ -55,7 +55,7 @@ test('reports bound image verification once without its number, digest, images o
   assert.equal(reports.length, 1);
   const { durationMs, ...row } = reports[0];
   assert.ok(Number.isInteger(durationMs) && durationMs >= 0);
-  assert.deepEqual(row, { host: 'swiftx-express.com', puzzleType: 'SLIDER', outcome: 'verified', prepared: true,
+  assert.deepEqual(row, { host: 'swiftx-express.com', puzzleType: 'SLIDER', outcome: 'verified', analysisOutcome: 'unreported', prepared: true,
     attempts: 1, generations: 1, verified: true, trackingRequested: true, pendingReads: 0,
     cancelled: false, timedOut: false });
   for (const value of [NUMBER, digest, 'PRIVATE_TOKEN', 'SYNTHETIC_A', 'data:image']) assert.equal(JSON.stringify(reports).includes(value), false);
@@ -137,7 +137,12 @@ test('maps native puzzle displacement through the page’s scaled slider geometr
 
 test('does not start image analysis after cancellation', async () => {
   const stopped = new AbortController(); stopped.abort();
-  assert.equal(await locateSwiftxSlider(challenge(), stopped.signal, 4000), null);
+  const reports = [];
+  assert.equal(await locateSwiftxSlider(challenge(), stopped.signal, 4000, value => reports.push(value)), null);
+  assert.deepEqual(reports, ['cancelled']);
+  assert.equal(await locateSwiftxSlider(challenge(), new AbortController().signal, 0, value => reports.push(value)), null);
+  assert.deepEqual(reports, ['cancelled', 'budget']);
+  assert.equal(await locateSwiftxSlider(challenge(), stopped.signal, 4000, () => { throw new Error('PRIVATE'); }), null);
 });
 
 test('refreshes an unreadable puzzle only once', async () => {

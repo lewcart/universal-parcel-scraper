@@ -150,6 +150,8 @@ export function parseMondialRelayApp(payload: unknown, uid: string): CarrierResu
   if (!events.length && !current) throw new IndeterminateError('Mondial Relay', 'Mondial Relay app returned no shipment activity');
   // The delivery point, while the parcel waits there.
   const pickup = current?.stage === 'ready_for_pickup' ? deliveryPoint(parcel.detail) : '';
+  // As on the website, a delivered parcel takes its delivery scan's clock.
+  const deliveredAt = current?.status === 'delivered' ? events.find((event) => event.stage === 'delivered')?.time : undefined;
   return {
     status: current?.status ?? 'unknown',
     ...(current ? { current_stage: current.stage } : {}),
@@ -157,6 +159,7 @@ export function parseMondialRelayApp(payload: unknown, uid: string): CarrierResu
     last_update: events[0]?.time ?? null,
     expected_delivery: null,
     ...(pickup ? { pickup_point: pickup } : {}),
+    ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
     timezone: ZONE,
     events,
     source: 'mondial_relay_app',

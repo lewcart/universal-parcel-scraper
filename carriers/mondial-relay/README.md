@@ -91,8 +91,8 @@ for another shipment → `SchemaError`.
   livraison". That scan, and no other at that instant, reads out for delivery;
   on a relay delivery it stays movement. The app's milestones are read the
   same way.
-- The website names the delivery country, and a delivered parcel takes its
-  delivery scan's clock as its delivery time.
+- The website names the delivery country. A delivered parcel takes its delivery
+  scan's clock as its delivery time, whichever source answers.
 - Website timestamps are offset-less Paris wall-clock. A bare calendar day stays
   a day. The estimate is reduced to a day and dropped once delivered or in
   exception. App timestamps are UTC instants, shown on Paris clocks.

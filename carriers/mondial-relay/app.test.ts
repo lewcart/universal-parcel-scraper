@@ -187,6 +187,20 @@ describe('Mondial Relay app service', () => {
     expect(() => parseMondialRelayApp({ steps: [] }, UID)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
+  it('dates a delivery at its delivery scan', () => {
+    const delivered = detail(UID, '');
+    delivered[0]!.detail.steps = [
+      { number: 5, status: 'Colis livré au destinataire', date: '2026-01-03T09:30:00Z', events: [
+        { label: 'Colis livré au destinataire', date: '2026-01-03T09:30:00Z' },
+      ] },
+      { number: 3, status: "Colis sur l'agence de livraison", date: '2026-01-02T15:00:00Z', events: [
+        { label: 'Colis en cours de traitement sur le site EXAMPLE TOWN', date: '2026-01-02T15:00:00Z' },
+      ] },
+    ];
+    expect(parseMondialRelayApp(delivered, UID)).toMatchObject({ status: 'delivered', delivered_at: '2026-01-03T10:30:00+01:00' });
+    expect(parseMondialRelayApp(detail(), UID)).not.toHaveProperty('delivered_at');
+  });
+
   it('reads the last leg of a home delivery as out for delivery where its milestone is dated', () => {
     const home = detail(UID, '');
     home[0]!.detail.steps = [

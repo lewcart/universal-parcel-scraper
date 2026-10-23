@@ -495,6 +495,7 @@ import { adapter as shipa } from '../carriers/shipa/adapter.js';
 import { adapter as shipblu } from '../carriers/shipblu/adapter.js';
 import { adapter as shipentegra } from '../carriers/shipentegra/adapter.js';
 import { adapter as shiprocket } from '../carriers/shiprocket/adapter.js';
+import { adapter as shouwu } from '../carriers/shouwu/adapter.js';
 import { adapter as shreeAnjani } from '../carriers/shree-anjani/adapter.js';
 import { adapter as shreeMaruti } from '../carriers/shree-maruti/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
@@ -1111,6 +1112,7 @@ export const REGISTRY: RegistryDefinition = {
     "shipblu": shipblu,
     "shipentegra": shipentegra,
     "shiprocket": shiprocket,
+    "shouwu": shouwu,
     "shree-anjani": shreeAnjani,
     "shree-maruti": shreeMaruti,
     "singapore-post": singaporePost,
@@ -1865,7 +1867,7 @@ export const REGISTRY: RegistryDefinition = {
     "shipentegra": "shipentegra",
     "shiprocket": "shiprocket",
     "shipup": "universal",
-    "shouwu": "universal",
+    "shouwu": "shouwu",
     "shree-anjani": "shree-anjani",
     "shree-mahabali-express": "universal",
     "shree-mahavir": "universal",

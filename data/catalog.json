@@ -26894,7 +26894,8 @@
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shouwu",
+      "recognitionRank": 63
     },
     "canaryUrl": "https://admin.shshouwu.com/track.html",
     "trackingUrlTemplate": "https://admin.shshouwu.com/track.html?q={trackingNumber}",

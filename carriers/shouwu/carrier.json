@@ -19,18 +19,51 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "shouwu",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 63
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "destination_country",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://admin.shshouwu.com/track.html?q={trackingNumber}",
     "searchUrl": "https://admin.shshouwu.com/track.html",
     "canaryUrl": "https://admin.shshouwu.com/track.html",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "destination_country"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "destination_country",
+      "offset_timestamps"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

@@ -1879,6 +1879,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'guatex', number: 'A0000X00000',
     route: /^https:\/\/servicios\.guatex\.gt\/Guatex\/RastreoTracking\?tipo=G&dato=A0000X00000$/,
     marker: /¿Por dónde va|Consultar el estado de tu envío/ },
+  // The page looks up the number in `?q=` on load and lists an unknown one as Not Found.
+  { carrier: 'shouwu', number: 'SWECN000000000001YQ',
+    route: /^https:\/\/admin\.shshouwu\.com\/track\.html\?q=SWECN000000000001YQ$/,
+    marker: /守务国际包裹追踪|We seem can't identify the number/ },
 ];
 
 /**

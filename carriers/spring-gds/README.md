@@ -20,8 +20,9 @@ native catalog all carry it; everything user-facing says PostNL.
      with a four-letter customer code, the layout the endpoint reads, where it marks a code
      PostNL did not issue, such as DHL eCommerce's. Those phrases are the only part of
      `message` read; the rest is provider prose that must not reach an error or log.
-   - An empty history without that message is inconclusive. Duplicate matching identities
-     are refused. HTTP 404/410 means the endpoint is unavailable, not the parcel missing.
+   - An empty history without that message is a `NoHistoryError`, inconclusive: PostNL lists
+     mail from abroad it does not hold yet the same way. Duplicate matching identities are
+     refused. HTTP 404/410 means the endpoint is unavailable, not the parcel missing.
 
 ## Notes
 

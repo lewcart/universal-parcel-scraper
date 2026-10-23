@@ -19,7 +19,7 @@
  */
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
 import { DateTime } from 'luxon';
-import { IndeterminateError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import { NoHistoryError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { countryTimeZone, explicitOffsetTime, firstOccurrence, mislabeledWallTime, settleGuessedClocks, type FeedClock, type ParsedTime } from '../../core/time/index.js';
 import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
@@ -151,7 +151,8 @@ export function parsePostNLTrackingResponse(value: unknown, trackingNumber: stri
     // phrase is used, and none of it reaches the error.
     throw new NotFoundError(PROVIDER);
   }
-  if (rawEvents.length === 0) throw new IndeterminateError(PROVIDER);
+  // PostNL lists mail from abroad it does not hold yet the same way: an answer about the item, without scans.
+  if (rawEvents.length === 0) throw new NoHistoryError(PROVIDER, 'PostNL lists the item without scans');
   const clocks = rawEvents.slice(0, 100).map(scanClock);
   const times = settleGuessedClocks(clocks, readAt.getTime());
   const events = rawEvents.slice(0, 100).map((event, index): CarrierEvent => {

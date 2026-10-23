@@ -777,6 +777,8 @@ describe('classifyWording', () => {
       ['Attempted but unfinished drop off at locker', 'registered'], ['Received by partner carrier', 'in_transit'],
       ['Operation center is processing package information', 'registered'], ['Preparing to leave Hong Kong operation center', 'in_transit'],
       ['The item is ready for shipment', 'registered'], ['Consignment received at the PostNL Acceptance Centre', 'accepted'],
+      ['As requested, the UPS My Choice® delivery change was completed.', 'in_transit'], ['The address was changed as the receiver requested.', 'in_transit'],
+      ["The company or receiver name is incorrect. This will delay delivery. We're attempting to update this information.", 'exception'],
       ['Registered and being prepared', 'registered'], ['Left the branch', 'in_transit'], ['Left the branch 3', 'in_transit'],
       ['Collo in der nox Niederlassung eingetroffen. Sendung eingetroffen', 'in_transit'],
       ['Collo von der nox Niederlassung weiterverladen. Sendung weiterverladen', 'in_transit'],

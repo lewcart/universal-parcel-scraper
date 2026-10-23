@@ -9,6 +9,15 @@
       "confirmedBy": "live"
     },
     {
+      "code": "101",
+      "wording": "Label Cancelled",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "The label voided after code 100 created it, and no scan follows: no parcel is coming under the number."
+    },
+    {
       "code": "802",
       "wording": "Pickup Exception, GOFO has not Received the Package from the Warehouse yet.",
       "language": "en",

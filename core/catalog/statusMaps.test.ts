@@ -831,7 +831,7 @@ describe("universal providers' answers", () => {
     }
   });
 
-  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's, BRT's, nox's, Vinted Go's, MeiHoo Pegasus's and PostNL's scans as their carriers read them", () => {
+  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's, BRT's, nox's, Vinted Go's, MeiHoo Pegasus's, PostNL's and UPS's scans as their carriers read them", () => {
     for (const [wording, stage] of [['Registered and being prepared', 'registered'], ['Left the branch 12', 'in_transit'],
       ['Collo von der nox Niederlassung weiterverladen. Sendung weiterverladen', 'in_transit'],
       ['Collo is reloaded by the nox branch. Consignment reloaded', 'in_transit'],
@@ -839,7 +839,10 @@ describe("universal providers' answers", () => {
       ['Tendered to International Gateway.', 'in_transit'], ['Attempted but unfinished drop off at locker', 'registered'],
       ['Received by partner carrier', 'in_transit'], ['Operation center is processing package information', 'registered'],
       ['Preparing to leave Hong Kong operation center', 'in_transit'], ['The item is ready for shipment', 'registered'],
-      ['Consignment received at the PostNL Acceptance Centre', 'accepted'], ['TURMOIL', 'exception']] as const) {
+      ['Consignment received at the PostNL Acceptance Centre', 'accepted'],
+      ['As requested, the UPS My Choice® delivery change was completed.', 'in_transit'], ['The address was changed as the receiver requested.', 'in_transit'],
+      ["The company or receiver name is incorrect. This will delay delivery. We're attempting to update this information.", 'exception'],
+      ['TURMOIL', 'exception']] as const) {
       expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     }
     expect(answer('unknown', null, 'Left the branch office of the recipient')).toEqual(unknown);

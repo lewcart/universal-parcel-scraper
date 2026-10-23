@@ -219,7 +219,7 @@ describe('UPS structured response', () => {
 
     // A wrong receiver or company name holds the delivery until UPS has the right one.
     expect(parseUPSTrackingResponse(withScans([
-      scan('AD', 'The company or receiver name is incorrect. This will delay delivery. We&#39;re attempting to update the information.', '20260905 14:25:10'),
+      scan('AD', 'The company or receiver name is incorrect. This will delay delivery. We&#39;re attempting to update this information.', '20260905 14:25:10'),
       scan('OT', 'Out For Delivery Today', '20260905 06:53:02'),
     ], { progressBarType: 'Exception' }), TRACKING_NUMBER, TODAY))
       .toMatchObject({ status: 'exception', current_stage: 'exception', current_stage_source: 'carrier_map' });

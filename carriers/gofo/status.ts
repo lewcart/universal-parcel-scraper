@@ -3,6 +3,8 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const CODES = new Map<string, ClassifiedStatus>([
   ['100', { status: 'pending', stage: 'registered' }],
+  // The label voided after it was created: no parcel is coming under the number.
+  ['101', { status: 'exception', stage: 'exception' }],
   // A pickup exception: GOFO has not received the parcel from the sender's warehouse yet.
   ['802', { status: 'pending', stage: 'registered' }],
   ...['200', '201', '202', '203', '411', '412', '414', '810'].map(code => [code, { status: 'in_transit', stage: 'in_transit' }] as [string, ClassifiedStatus]),

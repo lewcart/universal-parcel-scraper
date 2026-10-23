@@ -1747,12 +1747,6 @@
     "reason": "Hermes Austria prints Hermes's fourteen-digit parcel number, which Hermes Germany's checksum rule and the DPD networks' rules already suggest, and nothing in the number names the Austrian network."
   },
   {
-    "carrier": "hermes-de",
-    "pattern": "^00\\d{13}$",
-    "kind": "open",
-    "reason": "Hermes's recipient service answers fifteen digits made of an extra leading zero and a fourteen-digit parcel number, but no Hermes rule claims the fifteen-digit shape and the adapter rejects the reply's shorter number."
-  },
-  {
     "carrier": "hi-trans",
     "pattern": "^[A-Z]{3}\\d{3,12}$",
     "kind": "by_design",

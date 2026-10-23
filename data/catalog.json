@@ -1895,6 +1895,11 @@
         "checksum": "hermes"
       },
       {
+        "pattern": "^00\\d{13}$",
+        "confidence": "low",
+        "checksum": "gs1"
+      },
+      {
         "pattern": "^H\\d{15}$",
         "confidence": "low"
       }

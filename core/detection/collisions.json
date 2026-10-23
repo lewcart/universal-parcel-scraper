@@ -1065,6 +1065,17 @@
     "reason": "A passing GS1 check digit adds FedEx to BRT, DPD France and Yunda, which accept these numbers without one; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
   {
+    "shape": "Fifteen digits starting 00 that pass the GS1 check",
+    "carriers": [
+      "brt",
+      "dpd-fr",
+      "fedex",
+      "hermes-de",
+      "yunda"
+    ],
+    "reason": "Hermes Germany joins BRT, DPD France, FedEx and Yunda for a fourteen-digit Hermes barcode typed after a zero, whose GS1 check is the barcode's own. A check digit does not establish ownership, so the number stays a low-confidence suggestion, and recognition asks Hermes first for a lookup in Germany."
+  },
+  {
     "shape": "Fifteen digits outside DPD France's 0/1 prefixes and STO's 77 range that pass the GS1 check",
     "carriers": [
       "brt",

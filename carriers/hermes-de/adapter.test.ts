@@ -119,8 +119,8 @@ describe('Hermes Germany', () => {
     expect(parseHermesGermanyResponse(payload(), `0${barcode}`, { references: true })).toMatchObject({
       current_stage: 'accepted', canonical_tracking_number: barcode,
     });
-    // Recognition asks for the barcode itself; another first digit, or a barcode failing its check, is another number.
-    expect(() => parseHermesGermanyResponse(payload(), `0${barcode}`)).toThrow('different');
+    // Recognition takes it too, as the parcel's own number; another first digit, or a barcode failing its check, is another number.
+    expect(parseHermesGermanyResponse(payload(), `0${barcode}`)).toMatchObject({ canonical_tracking_number: barcode });
     expect(() => parseHermesGermanyResponse(payload(), `1${barcode}`, { references: true })).toThrow('different');
     const unchecked = '01234567890129';
     expect(() => parseHermesGermanyResponse([{ ...payload()[0]!, barcode: unchecked }], `0${unchecked}`, { references: true }))
@@ -324,6 +324,7 @@ describe('Hermes Germany', () => {
     const hermes = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
     await expect(hermes.track({ number: '60000000000001' }, {})).resolves.toMatchObject({ canonical_tracking_number: '01234567890128' });
     await expect(hermes.recognize!('60000000000001')).rejects.toMatchObject({ kind: 'schema' });
+    await expect(hermes.recognize!('001234567890128')).resolves.toMatchObject({ known: true });
   });
 
   it('answers a number Hermes does not issue without a request', async () => {

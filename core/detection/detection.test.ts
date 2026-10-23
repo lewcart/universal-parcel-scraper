@@ -316,6 +316,15 @@ describe('the detection engine', () => {
     expect(detectCarrierMatch('12345678901234').candidates).not.toContain('hermes-de');
   });
 
+  it('offers Hermes for a barcode starting 0 typed after another zero, and asks it first in Germany', () => {
+    expect(detectCarrierMatch('001234567890128')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch('001234567890128').candidates).toContain('hermes-de');
+    expect(recognitionAskedCarriers('001234567890128', { countryHint: 'DE' })[0]).toBe('hermes-de');
+    for (const number of ['001234567890129', '012345678901231', '0001234567890128']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('hermes-de');
+    }
+  });
+
   it('offers GLS for a 12-digit number only when its check digit passes', () => {
     // 11 digits, weights 3-1 from the right plus one: 12345678901 → 1.
     expect(isValidGlsParcelNumber('123456789011')).toBe(true);

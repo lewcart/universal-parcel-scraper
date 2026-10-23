@@ -93,6 +93,12 @@
       "checksum": "hermes"
     },
     {
+      "id": "hermes-de-padded",
+      "pattern": "^00\\d{13}$",
+      "confidence": "low",
+      "checksum": "gs1"
+    },
+    {
       "id": "hermes-de-3",
       "pattern": "^H\\d{15}$",
       "confidence": "low"

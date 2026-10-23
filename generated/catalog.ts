@@ -1897,6 +1897,11 @@ export const CARRIER_CATALOG = {
         "checksum": "hermes"
       },
       {
+        "pattern": "^00\\d{13}$",
+        "confidence": "low",
+        "checksum": "gs1"
+      },
+      {
         "pattern": "^H\\d{15}$",
         "confidence": "low"
       }
@@ -33019,7 +33024,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "asendia": ["asendia-1","asendia-2","asendia-3","asendia-4"],
   "shipup": [],
   "india-post": ["india-post-1"],
-  "hermes-de": ["hermes-de-1","hermes-de-2","hermes-de-3"],
+  "hermes-de": ["hermes-de-1","hermes-de-2","hermes-de-padded","hermes-de-3"],
   "gls-de": ["gls-de-1","gls-de-2","gls-de-3"],
   "delivengo": [],
   "intl-post": ["intl-post-2"],

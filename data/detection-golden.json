@@ -1426,6 +1426,7 @@
     "candidates": [
       "fedex",
       "dpd-fr",
+      "hermes-de",
       "brt",
       "yunda"
     ],
@@ -1433,6 +1434,7 @@
       "fedex"
     ],
     "asked": [
+      "hermes-de",
       "brt"
     ]
   },
@@ -2883,6 +2885,7 @@
     "candidates": [
       "fedex",
       "dpd-fr",
+      "hermes-de",
       "brt",
       "yunda"
     ],
@@ -2890,6 +2893,7 @@
       "fedex"
     ],
     "asked": [
+      "hermes-de",
       "brt"
     ]
   },

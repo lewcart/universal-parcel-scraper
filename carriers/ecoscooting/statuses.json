@@ -301,6 +301,24 @@
       "confirmedBy": "live"
     },
     {
+      "code": "SC_SORTING",
+      "wording": "Your shipment is in process at sorting center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "Between the sorting center's intake and its outbound scan."
+    },
+    {
+      "code": "SC_CONSOLIDATION",
+      "wording": "Your shipment consolidation has been completed at sorting center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "Between the sorting center's intake and its outbound scan."
+    },
+    {
       "code": "PU_PICKUP_SUCCESS",
       "wording": "Shipment picked up by carrier",
       "language": "en",

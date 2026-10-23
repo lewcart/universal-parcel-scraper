@@ -52,6 +52,9 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['TRANSFER_DEPART', { status: 'in_transit', stage: 'in_transit' }],
   ['SC_OUTBOUND', { status: 'in_transit', stage: 'in_transit' }],
   ['SC_INBOUND', { status: 'in_transit', stage: 'in_transit' }],
+  // Sorting and consolidation between the sorting center's intake and its outbound scan.
+  ['SC_SORTING', { status: 'in_transit', stage: 'in_transit' }],
+  ['SC_CONSOLIDATION', { status: 'in_transit', stage: 'in_transit' }],
   ['PU_PICKUP_SUCCESS', { status: 'in_transit', stage: 'accepted' }],
   ['CREATE_ORDER_CES', { status: 'pending', stage: 'registered' }],
 ]);

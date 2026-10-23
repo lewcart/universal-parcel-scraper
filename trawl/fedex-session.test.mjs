@@ -20,7 +20,7 @@ function fixture(replies = [], settings = {}) {
     const context = { closed: false, async close() { this.closed = true; }, async newPage() { return page; } };
     contexts.push(context);
     page.isClosed = () => context.closed;
-    page.goto = async target => { navigations++; assert.equal(target, 'https://www.fedex.com/fedextrack/'); };
+    page.goto = async target => { navigations++; assert.equal(target, 'https://www.fedex.com/fedextrack/'); await settings.navigationGate; };
     page.content = async () => '<html><body>Tracking</body></html>';
     let entered, opened = false;
     page.locator = () => ({ first: () => ({
@@ -181,9 +181,15 @@ test('keeps a final refusal after an earlier success and discards that context',
   await f.close();
 });
 
-test('an unfinished later request cannot leave an earlier success as the answer', async () => {
+test('an unfinished later request cannot leave an earlier success as the answer', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
   const f = fixture([{ following: [{ after: 10, pending: true }] }], { incompleteSettleMs: 25 });
-  const result = await f.run(NUMBER, { maxTimeout: 80 });
+  const pending = f.run(NUMBER, { maxTimeout: 1000 });
+  await tick();
+  t.mock.timers.tick(10);
+  await tick();
+  t.mock.timers.tick(970);
+  const result = await pending;
   assert.deepEqual(result.capturedResponses.map(x => x.status), [200, 0]);
   assert.equal(result.capturedResponses.at(-1).error, 'fedex-tracking-request-failed');
   assert.equal(f.contexts[0].closed, true);
@@ -297,9 +303,34 @@ test('rejects overlapping calls without disturbing the active session', async ()
   await f.close();
 });
 
-test('a budget timeout closes the context and cannot leave a reusable session', async () => {
+test('a budget timeout closes the context and cannot leave a reusable session', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  let release;
+  const f = fixture([], { navigationGate: new Promise(resolve => { release = resolve; }) });
+  const pending = f.run(NUMBER, { maxTimeout: 20 });
+  await tick();
+  t.mock.timers.tick(20);
+  assert.equal((await pending).status, 'error');
+  assert.equal(f.contexts[0].closed, true);
+  release();
+  await tick();
+  assert.equal((await f.run()).reason, 'fedex-session-new');
+  await f.close();
+});
+
+test('returns a captured unreadable body before the deadline without keeping its context', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
   const f = fixture([{ bodyGate: new Promise(() => {}) }]);
-  assert.equal((await f.run(NUMBER, { maxTimeout: 20 })).status, 'error');
+  const pending = f.run(NUMBER, { maxTimeout: 1000 });
+  await tick();
+  t.mock.timers.tick(980);
+  const result = await pending;
+  assert.equal(result.status, 'success');
+  assert.equal(result.capturedResponses.length, 1);
+  assert.equal(result.capturedResponses[0].status, 200);
+  assert.equal(result.capturedResponses[0].body, null);
+  assert.equal(result.capturedResponses[0].truncated, true);
+  assert.equal(result.capturedResponses[0].error, 'tracking response could not be read');
   assert.equal(f.contexts[0].closed, true);
   assert.equal((await f.run()).reason, 'fedex-session-new');
   await f.close();

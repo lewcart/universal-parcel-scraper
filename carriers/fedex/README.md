@@ -24,7 +24,9 @@ fallback')`.
 
 1. `trawl`: loads `https://www.fedex.com/fedextrack/?trknbr=…` (a shell) with
    `captureResponses` on `POST https://api.fedex.com/track/v2/shipments` and parses the
-   captured replies newest first. The browser service has a dedicated FedEx route (see
+   captured replies newest first. The browser service retains a bounded sequence of matching
+   requests and replies through automatic verification and history loading, with time left
+   for cleanup. The browser service has a dedicated FedEx route (see
    [`trawl/README.md`](../../trawl/README.md)):
    - it opens the blank tracker and submits its normal form, every time, because the
      result-page form can ignore a submission or keep the previous route;
@@ -37,6 +39,9 @@ fallback')`.
 
 - The newest captured reply decides. A captured 401/403 is a `ChallengeError`, so routing
   applies cooldown and fallback; it is not hidden behind an older 200 from the same page.
+- A status without usable scans is a partial summary. Compatible history from an earlier
+  reply in the same lookup can fill it; otherwise consumers can ask providers for the rest.
+  A failed or unreadable final reply does not revive an older success.
 - A captured 403 gets one more browser read within the same budget. The service discards
   the refused context, so the second read starts a fresh one, and Akamai's 403 is
   intermittent. A 401 or a challenged page is not repeated.

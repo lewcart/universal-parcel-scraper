@@ -483,6 +483,45 @@ describe('FedEx lookup steps', () => {
     expect(records).toEqual([]);
   });
 
+  it('marks a status with no usable scans as a partial summary', () => {
+    const fixture = inTransitFixture();
+    (fixture.output as { packages: Record<string, unknown>[] }).packages[0]!.scanEventList = [];
+    expect(parseFedExTrackingResponse(fixture, IN_TRANSIT_NUMBER)).toMatchObject({
+      summary_only: true, events: [], last_update: null,
+    });
+  });
+
+  it('fills the latest scan-less status with compatible history captured earlier in this lookup', async () => {
+    const full = inTransitFixture();
+    const summary = structuredClone(full);
+    (summary.output as { packages: Record<string, unknown>[] }).packages[0]!.scanEventList = [];
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '<body>Tracking</body>',
+      capturedResponses: [full, summary].map(body => ({ url: TRACK_API, status: 200, body: JSON.stringify(body) })) }));
+    const result = await new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(IN_TRANSIT_NUMBER);
+    expect(result.events?.length).toBeGreaterThan(0);
+    expect(result.summary_only).not.toBe(true);
+  });
+
+  it.each([
+    [{ status: 0, body: null, error: 'fedex-tracking-request-failed' }, 'TransportError'],
+    [{ status: 200, body: '{broken' }, 'SchemaError'],
+    [{ status: 200, body: null, truncated: true }, 'SchemaError'],
+  ])('preserves a final unreadable or failed response after an earlier success (%s)', async (last, name) => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '<body>Tracking</body>',
+      capturedResponses: [{ url: TRACK_API, status: 200, body: JSON.stringify(deliveredFixture()) }, { url: TRACK_API, ...last }] }));
+    await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ name });
+  });
+
+  it('does not fill a summary with another qualified shipment using the same number', async () => {
+    const full = inTransitFixture();
+    const summary = structuredClone(full);
+    (full.output as { packages: Record<string, unknown>[] }).packages[0]!.trackingQualifier = 'earlier';
+    Object.assign((summary.output as { packages: Record<string, unknown>[] }).packages[0]!, { trackingQualifier: 'later', scanEventList: [] });
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '<body>Tracking</body>',
+      capturedResponses: [full, summary].map(body => ({ url: TRACK_API, status: 200, body: JSON.stringify(body) })) }));
+    expect(await new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(IN_TRANSIT_NUMBER)).toMatchObject({ summary_only: true, events: [] });
+  });
+
   it('reads the tracking reply the browser captured', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({
       tier: 3,

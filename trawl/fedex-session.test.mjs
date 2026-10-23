@@ -35,10 +35,10 @@ function fixture(replies = [], settings = {}) {
       const spec = replies.shift() ?? {};
       const request = number => ({ url: () => API, method: () => 'POST',
         postDataJSON: () => ({ trackingInfo: [{ trackNumberInfo: { trackingNumber: number } }] }) });
-      const response = (req, body) => ({ request: () => req,
-        status: () => spec.status ?? 200,
-        headers: () => ({ 'content-type': 'application/json', ...spec.headers }),
-        body: async () => { await spec.bodyGate; return Buffer.from(body); },
+      const response = (req, body, part = spec) => ({ request: () => req,
+        status: () => part.status ?? 200,
+        headers: () => ({ 'content-type': 'application/json', ...part.headers }),
+        body: async () => { await part.bodyGate; return Buffer.from(body); },
       });
       requests.push(entered);
       const req = request(entered);
@@ -50,6 +50,15 @@ function fixture(replies = [], settings = {}) {
         page.emit('response', response(unrelated, payload(OTHER)));
       }
       page.emit('response', response(req, spec.body ?? payload(entered)));
+      const submittedNumber = entered;
+      for (const following of spec.following ?? []) setTimeout(() => {
+        if (context.closed) return;
+        const next = request(following.number ?? submittedNumber);
+        page.emit('request', next);
+        if (following.pending) return;
+        if (following.failed) page.emit('requestfailed', next);
+        else page.emit('response', response(next, following.body ?? payload(submittedNumber), following));
+      }, following.after ?? 0);
       opened = false;
       };
       return { evaluate: act, click: async () => {
@@ -61,7 +70,7 @@ function fixture(replies = [], settings = {}) {
     };
     return context;
   };
-  const sessions = settings.sessions ?? new FedExSessions({ onRefusal: () => {}, ...settings });
+  const sessions = settings.sessions ?? new FedExSessions({ settleMs: 0, incompleteSettleMs: 0, onRefusal: () => {}, ...settings });
   const handle = { browser, requestBrowserReplacement: reason => replacements.push(reason) };
   const run = (number = NUMBER, options = {}) => sessions.run({ url: url(number), handle, tier: 3,
     maxTimeout: 1000, capture, installPolicy: async () => { policies++; }, ...options });
@@ -138,6 +147,53 @@ test('classifies an edge denial while retaining only safe response headers', asy
     },
     error: 'fedex-edge-denial',
   });
+  await f.close();
+});
+
+test('retains a refusal and the page\'s later automatic successful reply without submitting twice', async () => {
+  const reports = [];
+  const full = JSON.stringify({ output: { packages: [{ trackingNbr: NUMBER, keyStatus: 'Delivered', scanEventList: [{}] }] } });
+  const f = fixture([{ status: 403, following: [{ after: 10, body: full }] }],
+    { settleMs: 5, incompleteSettleMs: 25, onRefusal: fields => reports.push(fields) });
+  const result = await f.run();
+  assert.deepEqual(result.capturedResponses.map(x => x.status), [403, 200]);
+  assert.deepEqual(f.requests, [NUMBER]);
+  assert.equal(f.contexts[0].closed, false);
+  assert.equal(reports[0].responses, 2);
+  assert.equal(reports[0].recovered, true);
+  await f.close();
+});
+
+test('waits for the history after an initial scan-less summary and retains the sequence', async () => {
+  const full = JSON.stringify({ output: { packages: [{ trackingNbr: NUMBER, keyStatus: 'Delivered', scanEventList: [{}] }] } });
+  const f = fixture([{ following: [{ after: 10, body: full }] }], { settleMs: 5, incompleteSettleMs: 25 });
+  const result = await f.run();
+  assert.equal(result.capturedResponses.length, 2);
+  assert.equal(result.capturedResponses.at(-1).body, full);
+  await f.close();
+});
+
+test('keeps a final refusal after an earlier success and discards that context', async () => {
+  const f = fixture([{ following: [{ after: 10, status: 403 }] }], { incompleteSettleMs: 25 });
+  const result = await f.run();
+  assert.deepEqual(result.capturedResponses.map(x => x.status), [200, 403]);
+  assert.equal(f.contexts[0].closed, true);
+  await f.close();
+});
+
+test('an unfinished later request cannot leave an earlier success as the answer', async () => {
+  const f = fixture([{ following: [{ after: 10, pending: true }] }], { incompleteSettleMs: 25 });
+  const result = await f.run(NUMBER, { maxTimeout: 80 });
+  assert.deepEqual(result.capturedResponses.map(x => x.status), [200, 0]);
+  assert.equal(result.capturedResponses.at(-1).error, 'fedex-tracking-request-failed');
+  assert.equal(f.contexts[0].closed, true);
+  await f.close();
+});
+
+test('caps an automatic response sequence and leaves no response listeners behind', async () => {
+  const f = fixture([{ following: Array.from({ length: 30 }, () => ({})) }], { incompleteSettleMs: 25 });
+  const result = await f.run();
+  assert.equal(result.capturedResponses.length, 20);
   await f.close();
 });
 

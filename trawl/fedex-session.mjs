@@ -3,6 +3,7 @@
 const PAGE = 'https://www.fedex.com/fedextrack/';
 const API = 'https://api.fedex.com/track/v2/shipments';
 const MAX_BODY = 2_000_000;
+const MAX_REPLIES = 20;
 
 // The browser tier succeeds even when its captured tracking API returns 403.
 // Its ordinary failure log cannot describe these refusals. Keep this separate
@@ -31,10 +32,13 @@ async function bounded(promise, ms, message) {
 export class FedExSessions {
   #sessions = new WeakMap();
   #activity = new WeakMap();
-  constructor({ idleMs = 30 * 60_000, maxAgeMs = 2 * 60 * 60_000, closeMs = 3_000, onRefusal = reportRefusal } = {}) {
+  constructor({ idleMs = 30 * 60_000, maxAgeMs = 2 * 60 * 60_000, closeMs = 3_000,
+    settleMs = 250, incompleteSettleMs = 1_000, onRefusal = reportRefusal } = {}) {
     this.idleMs = idleMs;
     this.maxAgeMs = maxAgeMs;
     this.closeMs = closeMs;
+    this.settleMs = settleMs;
+    this.incompleteSettleMs = incompleteSettleMs;
     this.onRefusal = onRefusal;
   }
 
@@ -100,7 +104,7 @@ export class FedExSessions {
     clearTimeout(session.timer);
     session.busy = true;
     try {
-      const result = await bounded(this.#lookup({ number, session, browser, started, maxTimeout, installPolicy,
+      const result = await bounded(this.#lookup({ number, session, browser, started, maxTimeout, capture, installPolicy,
         replace: handle.requestBrowserReplacement, onCreated: handle.noteTemporaryContext }),
         Math.max(0, maxTimeout - (Date.now() - started)), 'FedEx lookup budget exhausted');
       if (session.verified) activity.successAt = Date.now();
@@ -112,7 +116,8 @@ export class FedExSessions {
             statusCode: rejected.status, cause: rejected.error === 'fedex-edge-denial' ? 'edge' : 'api',
             session: reused ? 'reused' : 'new', sessionAgeMs: Math.max(0, started - session.created),
             idleMs: previous ? Math.max(0, started - previous.at) : null, browserLookups: activity.lookups,
-            sinceSuccessMs: activity.successAt === undefined ? null : Math.max(0, started - activity.successAt) });
+            sinceSuccessMs: activity.successAt === undefined ? null : Math.max(0, started - activity.successAt),
+            ...(result.capturedResponses.length > 1 ? { responses: result.capturedResponses.length, recovered: session.verified } : {}) });
         } catch { /* Diagnostics must not change tracking or cleanup. */ }
       }
       if (!session.verified) await this.#discard(browser, session, handle.requestBrowserReplacement);
@@ -129,7 +134,7 @@ export class FedExSessions {
     }
   }
 
-  async #lookup({ number, session, browser, started, maxTimeout, installPolicy, replace, onCreated }) {
+  async #lookup({ number, session, browser, started, maxTimeout, capture, installPolicy, replace, onCreated }) {
     const timeout = (cap = 15_000) => {
       const remaining = maxTimeout - (Date.now() - started);
       if (remaining <= 0 || session.disposed) throw new Error('FedEx lookup budget exhausted');
@@ -151,9 +156,20 @@ export class FedExSessions {
     // Begin each lookup at the blank form while preserving the context. The
     // result-page form can ignore submissions or retain the previous route.
     session.verified = false;
-    let submitted = false, resolveReply;
+    let submitted = false, wake, lastActivity = Date.now();
     const requests = new Set();
-    const reply = new Promise(resolve => { resolveReply = resolve; });
+    const responded = new WeakSet();
+    const replies = [];
+    const changed = () => { lastActivity = Date.now(); wake?.(); };
+    const waitForChange = async ms => {
+      let timer, resolve;
+      try {
+        await new Promise(done => { resolve = done; wake = done; timer = setTimeout(done, Math.max(1, ms)); });
+      } finally {
+        clearTimeout(timer);
+        if (wake === resolve) wake = undefined;
+      }
+    };
     const matches = request => {
       if (!submitted || request.url() !== API || request.method() !== 'POST') return false;
       try {
@@ -161,9 +177,21 @@ export class FedExSessions {
         return info?.length === 1 && info[0]?.trackNumberInfo?.trackingNumber === number;
       } catch { return false; }
     };
-    const onResponse = response => { if (requests.has(response.request())) resolveReply(response); };
-    const onFailure = request => { if (requests.has(request)) resolveReply(null); };
-    const onRequest = request => { if (matches(request)) requests.add(request); };
+    const observed = (request, response) => {
+      if (!requests.has(request) || responded.has(request)) return;
+      responded.add(request);
+      replies.push(response);
+      if (replies.length > MAX_REPLIES) replies.shift();
+      changed();
+    };
+    const onResponse = response => observed(response.request(), response);
+    const onFailure = request => observed(request, null);
+    const onRequest = request => {
+      if (!matches(request)) return;
+      requests.add(request);
+      if (requests.size > MAX_REPLIES) requests.delete(requests.values().next().value);
+      changed();
+    };
     page.on('response', onResponse);
     page.on('requestfailed', onFailure);
     page.on('request', onRequest);
@@ -192,43 +220,86 @@ export class FedExSessions {
         // out. Never submit twice when that request is already in flight.
         if (!requests.size) await submit.evaluate(element => { if (!element.disabled) element.click(); }, undefined, { timeout: timeout() });
       }
-      const response = await bounded(reply, timeout(), 'FedEx tracking response missing');
-      if (!response) throw new Error('FedEx tracking connection failed');
-      const headers = response.headers();
-      const retainedHeaders = {};
-      for (const name of ['content-type', 'server', 'retry-after']) {
-        if (headers[name]) retainedHeaders[name] = headers[name].slice(0, 100);
-      }
-      const entry = { url: API, status: response.status(), body: null, truncated: false, base64Encoded: false,
-        headers: retainedHeaders };
-      if ([401, 403].includes(entry.status)) {
-        entry.error = /akamai/i.test(retainedHeaders.server ?? '')
-          && /text\/html/i.test(retainedHeaders['content-type'] ?? '')
-          ? 'fedex-edge-denial' : 'fedex-browser-request-rejected';
-      }
-      if (entry.status === 200) {
-        const length = Number(headers['content-length'] ?? 0);
-        if (!String(headers['content-type'] ?? '').includes('application/json')
-          || !Number.isSafeInteger(length) || length < 0 || length > MAX_BODY) {
-          entry.error = 'unsupported or oversized tracking response';
-        } else {
-          const body = await bounded(response.body(), timeout(5_000), 'FedEx response read timed out');
-          if (body.length > MAX_BODY) { entry.truncated = true; entry.error = 'tracking response budget exceeded'; }
-          else {
-            entry.body = body.toString('utf8');
-            try {
-              const packages = JSON.parse(entry.body)?.output?.packages;
-              const matches = Array.isArray(packages) ? packages.filter(p => p?.trackingNbr === number) : [];
-              session.verified = matches.length === 1 && Boolean(matches[0].keyStatus || matches[0].keyStatusCD
-                || (Array.isArray(matches[0].scanEventList) && matches[0].scanEventList.length));
-            } catch { entry.error = 'tracking response could not be read'; }
+      // Keep the bounded response sequence, including automatic verification retries.
+      // A summary without scans gets a little longer to receive the history. Neither
+      // a refusal nor an unreadable final reply can disappear behind an older success.
+      const entries = [];
+      const deadline = started + maxTimeout - Math.min(250, maxTimeout / 50);
+      let rich = false;
+      while (Date.now() < deadline) {
+        if (!replies.length) {
+          const pending = [...requests].some(request => !responded.has(request));
+          const quiet = Math.min(capture.settleTimeout ?? Infinity, rich ? this.settleMs : this.incompleteSettleMs);
+          const left = entries.length && !pending ? quiet - (Date.now() - lastActivity) : deadline - Date.now();
+          if (left <= 0) break;
+          await waitForChange(Math.min(left, deadline - Date.now()));
+          continue;
+        }
+        const response = replies.shift();
+        session.verified = false;
+        rich = false;
+        if (!response) {
+          entries.push({ url: API, status: 0, body: null, headers: {}, truncated: false,
+            base64Encoded: false, error: 'fedex-tracking-request-failed' });
+          continue;
+        }
+        const headers = response.headers();
+        const retainedHeaders = {};
+        for (const name of ['content-type', 'server', 'retry-after']) {
+          if (headers[name]) retainedHeaders[name] = headers[name].slice(0, 100);
+        }
+        const entry = { url: API, status: response.status(), body: null, truncated: false, base64Encoded: false,
+          headers: retainedHeaders };
+        if ([401, 403].includes(entry.status)) {
+          entry.error = /akamai/i.test(retainedHeaders.server ?? '')
+            && /text\/html/i.test(retainedHeaders['content-type'] ?? '')
+            ? 'fedex-edge-denial' : 'fedex-browser-request-rejected';
+        }
+        if (entry.status === 200) {
+          const length = Number(headers['content-length'] ?? 0);
+          if (!String(headers['content-type'] ?? '').includes('application/json')
+            || !Number.isSafeInteger(length) || length < 0 || length > MAX_BODY) {
+            entry.error = 'unsupported or oversized tracking response';
+          } else {
+            let body;
+            try { body = await bounded(response.body(), Math.max(1, Math.min(timeout(5_000), deadline - Date.now())), 'FedEx response read timed out'); }
+            catch { entry.truncated = true; entry.error = 'tracking response could not be read'; }
+            if (body && body.length > MAX_BODY) { entry.truncated = true; entry.error = 'tracking response budget exceeded'; }
+            else if (body) {
+              entry.body = body.toString('utf8');
+              try {
+                const packages = JSON.parse(entry.body)?.output?.packages;
+                const matches = Array.isArray(packages) ? packages.filter(p => p?.trackingNbr === number) : [];
+                const errors = matches[0]?.errorList ?? [];
+                const placeholder = Array.isArray(errors) && errors.some(error => /TRACKINGNUMBER|NOTFOUND|NO TRACKING|AUTHORIZ|AUTHENTICAT/i.test(error?.code ?? error?.errorCode ?? ''));
+                session.verified = matches.length === 1 && Boolean(matches[0].keyStatus || matches[0].keyStatusCD
+                  || (Array.isArray(matches[0].scanEventList) && matches[0].scanEventList.length)) && !placeholder;
+                rich = session.verified && Array.isArray(matches[0].scanEventList) && matches[0].scanEventList.length > 0;
+              } catch { entry.error = 'tracking response could not be read'; }
+            }
           }
         }
+        entries.push(entry);
+        lastActivity = Date.now();
+        if (entries.length > MAX_REPLIES) entries.shift();
+        let bytes = 0;
+        for (const kept of entries.slice().reverse()) {
+          bytes += Buffer.byteLength(kept.body ?? '');
+          if (bytes > 2 * MAX_BODY && kept.body !== null) {
+            kept.body = null; kept.truncated = true; kept.error = 'tracking sequence budget exceeded';
+          }
+        }
+      }
+      if (!entries.length) throw new Error('FedEx tracking response missing');
+      if (replies.length || [...requests].some(request => !responded.has(request))) {
+        session.verified = false;
+        entries.push({ url: API, status: 0, body: null, headers: {}, truncated: false,
+          base64Encoded: false, error: 'fedex-tracking-request-failed' });
       }
       // Responses are never cached. Retaining this context retains only the
       // browser session; every lookup submits and captures its own request.
       const html = await bounded(page.content(), timeout(3_000), 'FedEx page read timed out');
-      return { html, capturedResponses: [entry] };
+      return { html, capturedResponses: entries.slice(-MAX_REPLIES) };
     } finally {
       page.off('response', onResponse);
       page.off('requestfailed', onFailure);

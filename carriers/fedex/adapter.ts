@@ -1,6 +1,7 @@
 
 import { load } from 'cheerio';
 import { recognizeFromBrowserLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { fillPartialAnswer } from '../../core/result/partial.js';
 import { fedexBarcodeTrackingNumber, fedexGroundEconomyUspsNumber } from '../../core/detection/fedex.js';
 import { uspsPackageIdentifier } from '../../core/detection/usps.js';
 import {
@@ -294,6 +295,7 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
       ? { delivered_at: deliveredAt(shipment.actDeliveryDt) } : {}),
     ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
     ...(postal ? { delivery_carrier: 'usps', delivery_tracking_number: postal } : {}),
+    ...(trimmed.length === 0 ? { summary_only: true } : {}),
     events: trimmed,
   };
 }
@@ -385,8 +387,12 @@ export class FedExTracker {
     });
     let captureError: Error | undefined;
     // Newest first: a later reply is the page's final answer.
-    for (const entry of page.capturedResponses.slice(-MAX_CAPTURED).reverse()) {
+    const responses = page.capturedResponses.slice(-MAX_CAPTURED).reverse();
+    for (const [index, entry] of responses.entries()) {
       if (entry.url !== TRACK_API) continue;
+      if (entry.status === 0 && entry.error === 'fedex-tracking-request-failed') {
+        throw new TransportError('FedEx', 'FedEx tracking request did not complete');
+      }
       // The page shell can load normally while its tracking API is rejected.
       // Preserve that failure instead of reporting a missing capture or falling
       // back to an older successful reply from the same page.
@@ -403,15 +409,38 @@ export class FedExTracker {
       if (entry.status >= 400) {
         throw new TransportError('FedEx', `FedEx tracking API returned HTTP ${entry.status}`, { status: entry.status });
       }
-      if (entry.status !== 200 || entry.truncated || entry.body === null) continue;
+      if (entry.status !== 200) continue;
+      if (entry.truncated || entry.body === null) {
+        captureError = new SchemaError('FedEx', 'FedEx tracking response could not be read completely');
+        break;
+      }
       try {
-        return this.#structuredResult(number, JSON.parse(entry.body));
+        const payload: unknown = JSON.parse(entry.body);
+        const result = this.#structuredResult(number, payload);
+        // A later status can omit scans that this same lookup already received.
+        // It keeps that history only when it still fits the newer status and clock.
+        if (result.summary_only === true) {
+          const qualifier = (data: unknown): unknown => isRecord(data) && isRecord(data.output) && Array.isArray(data.output.packages)
+            ? data.output.packages.filter(isRecord).find(item => cleanScalar(item.trackingNbr).replace(/[\s.-]/g, '') === number)?.trackingQualifier
+            : undefined;
+          for (const earlier of responses.slice(index + 1)) {
+            if (earlier.url !== TRACK_API || earlier.status !== 200 || earlier.truncated || earlier.body === null) continue;
+            try {
+              const prior: unknown = JSON.parse(earlier.body);
+              if (qualifier(prior) !== qualifier(payload)) continue;
+              const filled = fillPartialAnswer('fedex', number, result, this.#structuredResult(number, prior));
+              if (filled) return filled;
+            } catch { /* An earlier unreadable reply supplies no history. */ }
+          }
+        }
+        return result;
       } catch (error) {
         if (error instanceof InputRequiredError) throw error;
         // An unreadable or unrelated reply; the rendered page may still name a challenge.
         captureError ??= error instanceof SyntaxError
           ? new SchemaError('FedEx', 'FedEx returned unreadable tracking JSON', { cause: error })
           : error instanceof Error ? error : new SchemaError('FedEx', 'FedEx returned invalid tracking data', { cause: error });
+        break;
       }
     }
     if (parseFedExTrackingHtml(page.html) === 'challenged') {

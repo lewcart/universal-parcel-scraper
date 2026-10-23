@@ -23,16 +23,19 @@ const capture = (value: unknown, status = 200, id = number) => ({ url: `${API}?T
   headers: { 'content-type': 'application/json' }, body: JSON.stringify(value), truncated: false, base64Encoded: false, error: null });
 
 describe('WanbExpress', () => {
-  it('uses the optional private browser for tracking and opt-in recognition, with the initial failure recorded', async () => {
+  it('tracks in the optional private browser without the plain request it refuses, and recognizes over HTTP first', async () => {
     vi.mocked(fetchWanbInBrowser).mockClear().mockResolvedValue(parseWanb(found(), number));
     const recorded: unknown[] = [];
+    const fetcher = vi.fn<typeof fetch>(async () => reply(challenge));
     const carrier = adapter({ env: { WANBEXPRESS_BROWSER_WS_ENDPOINT: 'ws://browser.test/synthetic' },
-      fetcher: async () => reply(challenge), trawl: null, browserExecutablePath: null,
+      fetcher, trawl: null, browserExecutablePath: null,
       recorder: { ...NOOP_RECORDER, step: event => { recorded.push(event); } } });
     await expect(carrier.recognize!(number)).rejects.toMatchObject({ kind: 'challenge' });
     expect(fetchWanbInBrowser).not.toHaveBeenCalled();
+    expect(fetcher).toHaveBeenCalledTimes(1);
     await expect(carrier.track({ number }, { budgetMs: 8000 })).resolves.toMatchObject({ current_stage: 'delivered' });
-    expect(recorded).toMatchObject([{ step: 'direct', outcome: 'challenge' }, { step: 'browser', outcome: 'ok', fallbackFrom: 'direct' }]);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(recorded).toMatchObject([{ step: 'browser', outcome: 'ok' }]);
     expect(fetchWanbInBrowser).toHaveBeenCalledWith(number, 'ws://browser.test/synthetic', expect.any(AbortSignal), expect.any(Number));
     expect(vi.mocked(fetchWanbInBrowser).mock.calls[0]![3]).toBeLessThanOrEqual(6000);
     await expect(carrier.recognizeWithBrowser!(number, {})).resolves.toMatchObject({ known: true });
@@ -54,8 +57,12 @@ describe('WanbExpress', () => {
   });
 
   it('retains a verification failure when neither browser service is configured', async () => {
-    const carrier = adapter({ env: {}, fetcher: async () => reply(challenge), trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER });
+    const fetcher = vi.fn<typeof fetch>(async () => reply(challenge));
+    const carrier = adapter({ env: {}, fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER });
     await expect(carrier.recognizeWithBrowser!(number, {})).rejects.toMatchObject({ kind: 'challenge' });
+    // Without a browser, a lookup still makes the plain request.
+    await expect(carrier.track({ number }, { budgetMs: 8000 })).rejects.toMatchObject({ kind: 'challenge' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('binds the complete parcel id and trusts UTC instead of applying the display offset again', () => {
@@ -96,8 +103,8 @@ describe('WanbExpress', () => {
     const carrier = adapter({ env: {}, fetcher, trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null,
       recorder: { ...NOOP_RECORDER, step: event => { recorded.push(event); } } });
     await expect(carrier.track({ number }, { budgetMs: 8000 })).resolves.toMatchObject({ current_stage: 'delivered' });
-    expect(recorded).toMatchObject([{ step: 'direct', outcome: 'challenge' }, { step: 'trawl', outcome: 'ok' }]);
-    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(recorded).toMatchObject([{ step: 'trawl', outcome: 'ok' }]);
+    expect(fetcher).not.toHaveBeenCalled();
     expect(browserFetcher).toHaveBeenCalledTimes(1);
   });
 

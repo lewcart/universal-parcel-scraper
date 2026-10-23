@@ -1,11 +1,11 @@
 # WanbExpress
 
 Tracks WanbExpress's own parcel identifiers through `tracking.wanbexpress.com`.
-A direct HTTP lookup is tried first. A refused session can recover through a private
-Playwright browser configured with `WANBEXPRESS_BROWSER_WS_ENDPOINT`, then the optional
-TRAWL service. HTTP recognition never starts a browser. The tracker refuses plain requests
-with its verification code, so lookups usually go on to a browser. The direct request names a
-language: the tracker fails with HTTP 500 on fetch's default `Accept-Language: *`.
+The tracker refuses plain requests with its verification code, so a lookup starts in a private
+Playwright browser configured with `WANBEXPRESS_BROWSER_WS_ENDPOINT`, then the optional TRAWL
+service. Only without either does it make the direct HTTP request. HTTP recognition makes the
+direct request and never starts a browser. The direct request names a language: the tracker
+fails with HTTP 500 on fetch's default `Accept-Language: *`.
 
 The private browser opens the blank form and uses its advertised passive V3 verification.
 Use a browser and network accepted by the carrier, with the SDK's exact `playwright-core`

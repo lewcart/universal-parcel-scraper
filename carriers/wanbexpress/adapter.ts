@@ -61,9 +61,13 @@ export class WanbTracker {
 
   fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeWanbNumber(raw);
+    const browsers = this.browserSteps(number);
+    // The tracker refuses plain lookups with its verification code, so with a browser to
+    // ask the lookup starts there; HTTP recognition still makes the plain request.
+    const browser = browsers.some(step => step.enabled);
     return runSteps({ carrier: 'wanbexpress', budgetMs: context.budgetMs ?? 45000, signal: context.signal, recorder: this.environment.recorder }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: Math.min(5000, remainingMs) }) },
-      ...this.browserSteps(number),
+      { id: 'direct', enabled: !browser, run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: Math.min(5000, remainingMs) }) },
+      ...browsers,
     ]);
   }
 }

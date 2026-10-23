@@ -114,6 +114,8 @@ describe('status map answers', () => {
     expect(answer('yunexpress', null, 'Your shipment delivery attempt failed [Example] and was returned')).toEqual(unknown);
     expect(answer('four-px', 'FPX_O_IR', 'Order information has been transmitted to DPD.')).toEqual(mapped('registered'));
     expect(answer('four-px', 'FPX_O_IR', 'Order information has been transmitted to Example Post.')).toEqual(mapped('registered'));
+    expect(answer('four-px', 'FPX_O_IR', 'Label creation')).toEqual(mapped('registered'));
+    expect(answer('four-px', 'FPX_O_IR', 'Manifest created')).toEqual(mapped('in_transit'));
     expect(answer('j-and-t-au', null, 'Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.')).toEqual(mapped('out_for_delivery'));
     expect(answer('j-and-t-au', null, 'Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.')).toEqual(mapped('delivered'));
     expect(answer('dhl-express', 'PL', 'Processed at EXAMPLE CITY - FRANCE')).toEqual(mapped('in_transit'));

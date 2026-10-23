@@ -227,6 +227,9 @@ describe('4PX result projection', () => {
     expect(statusMap.stage('FPX_O_IR', 'waybill generated')).toBe('registered');
     expect(statusMap.stage('FPX_O_IR', 'waybill generated for em000000000001ca')).toBe('registered');
     expect(statusMap.stage('FPX_O_IR', 'waybill generated for the sender, picked up')).toBeUndefined();
+    expect(statusMap.stage('FPX_O_IR', 'label creation')).toBe('registered');
+    expect(statusMap.stage('FPX_O_IR', 'manifest created')).toBe('in_transit');
+    expect(statusMap.stage('FPX_NEW', 'manifest created')).toBeUndefined();
   });
 
   it('proves the declared capabilities using the synthetic response', () => {

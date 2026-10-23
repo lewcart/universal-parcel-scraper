@@ -204,6 +204,24 @@
     },
     {
       "code": "FPX_O_IR",
+      "wording": "Label creation",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "Asendia Hong Kong's label, placed after 4PX received the parcel and before its sorting facility scanned it."
+    },
+    {
+      "code": "FPX_O_IR",
+      "wording": "Manifest created",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "Asendia Hong Kong's manifest, placed after the parcel left 4PX's facility and before the airline took it: the partner's record of the hand-over, not a pre-advice, as Yanwen relays it too."
+    },
+    {
+      "code": "FPX_O_IR",
       "wording": "The shipment item has arrived at the country of destination.",
       "language": "en",
       "stage": "in_transit",

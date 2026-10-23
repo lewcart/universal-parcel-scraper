@@ -33,13 +33,14 @@ history expired, so it remains inconclusive.
 Its not-found notice carries the reason `portal_not_found`, so a consumer can
 tell the carrier's answer from an outage.
 
-The page can return a browser challenge or redirect to Radware's bot check.
-Set `CORREOS_CHILE_BROWSER_WS_ENDPOINT` to a private Playwright Chromium service
-to enable challenge recovery. It opens a fresh context, selects the offered
-hCaptcha text challenge, and submits the normal verification and tracking forms.
-The page's separate reCAPTCHA check still runs. A refused network or unsupported
-challenge remains a failure for enabled provider fallback. Browser recovery does
-not enable HTTP recognition.
+Radware's bot check stops every plain read of the page, sending it to its
+validation host. Set `CORREOS_CHILE_BROWSER_WS_ENDPOINT` to a private Playwright
+Chromium service and a lookup starts there instead, without the plain read. It
+opens a fresh context, selects the offered hCaptcha text challenge, and submits
+the normal verification and tracking forms. The page's separate reCAPTCHA check
+still runs. A refused network or unsupported challenge remains a failure for
+enabled provider fallback. Without a browser service the plain read runs and its
+challenge goes to the same fallback. The browser does not enable HTTP recognition.
 
 Exact arithmetic and string questions are answered locally. Other questions
 need `CORREOS_CHILE_TEXT_MODEL_URL`, a private OpenAI-compatible chat-completions

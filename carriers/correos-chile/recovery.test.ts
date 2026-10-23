@@ -15,29 +15,33 @@ function tracker(configured = true, status = 403) {
 }
 afterEach(() => { vi.clearAllMocks(); });
 
-it('recovers only the direct challenge inside the supplied budget and records provenance', async () => {
+it('starts in the browser when one is configured, inside the supplied budget, and records the step', async () => {
   const h = tracker();
   vi.mocked(fetchCorreosChileInBrowser).mockResolvedValue({ status: 'delivered', last_status_text: 'Delivered', last_update: null, expected_delivery: null, events: [] });
   await expect(h.carrier.track({ number }, { budgetMs: 20_000 })).resolves.toMatchObject({ status: 'delivered' });
   expect(fetchCorreosChileInBrowser).toHaveBeenCalledWith(number, 'ws://browser.test/synthetic', expect.any(AbortSignal), expect.any(Number), undefined);
   expect(vi.mocked(fetchCorreosChileInBrowser).mock.calls[0]![3]).toBeLessThanOrEqual(20_000);
-  expect(h.recorder.step.mock.calls.map(([r]) => [r.step, r.outcome])).toEqual([['direct', 'challenge'], ['browser', 'ok']]);
-  expect(h.recorder.step).toHaveBeenLastCalledWith(expect.objectContaining({ fallbackFrom: 'direct', fallbackReason: 'challenge' }));
+  expect(h.recorder.step.mock.calls.map(([r]) => [r.step, r.outcome])).toEqual([['browser', 'ok']]);
+  expect(h.fetcher).not.toHaveBeenCalled();
   expect(h.carrier.recognize).toBeUndefined();
 });
 
-it('keeps challenges when recovery is absent, too late or refused', async () => {
-  await expect(tracker(false).carrier.track({ number })).rejects.toMatchObject({ kind: 'challenge' });
-  await expect(tracker().carrier.track({ number }, { budgetMs: 1000 })).rejects.toMatchObject({ kind: 'challenge' });
+it('keeps the plain read\'s challenge without a browser, a budget too short for one and the browser\'s refusal', async () => {
+  const plain = tracker(false);
+  await expect(plain.carrier.track({ number })).rejects.toMatchObject({ kind: 'challenge' });
+  expect(plain.recorder.step.mock.calls.map(([r]) => [r.step, r.outcome])).toEqual([['direct', 'challenge']]);
+  await expect(tracker().carrier.track({ number }, { budgetMs: 1000 })).rejects.toMatchObject({ kind: 'budget' });
   expect(fetchCorreosChileInBrowser).not.toHaveBeenCalled();
   vi.mocked(fetchCorreosChileInBrowser).mockRejectedValue(new ChallengeError('Correos de Chile'));
   await expect(tracker().carrier.track({ number })).rejects.toMatchObject({ kind: 'challenge' });
 });
 
 it('does not retry rate limits, missing resources, malformed replies or cancellation', async () => {
-  for (const status of [429, 404, 200]) await expect(tracker(true, status).carrier.track({ number })).rejects.toBeDefined();
-  const h = tracker(), controller = new AbortController(); controller.abort();
-  await expect(h.carrier.track({ number }, { signal: controller.signal })).rejects.toBeDefined();
-  expect(h.fetcher).not.toHaveBeenCalled();
+  for (const status of [429, 404, 200]) await expect(tracker(false, status).carrier.track({ number })).rejects.toBeDefined();
+  for (const configured of [false, true]) {
+    const h = tracker(configured), controller = new AbortController(); controller.abort();
+    await expect(h.carrier.track({ number }, { signal: controller.signal })).rejects.toBeDefined();
+    expect(h.fetcher).not.toHaveBeenCalled();
+  }
   expect(fetchCorreosChileInBrowser).not.toHaveBeenCalled();
 });

@@ -35,9 +35,12 @@ export class CorreosChileTracker {
 
   fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeCorreosChileNumber(raw);
-    const budgetMs = context.budgetMs ?? (this.options.browserWsEndpoint ? 45_000 : 15_000);
+    // Radware's bot check stops every plain read of the page, so with a browser
+    // to ask the lookup starts there.
+    const browser = Boolean(this.options.browserWsEndpoint);
+    const budgetMs = context.budgetMs ?? (browser ? 45_000 : 15_000);
     return runSteps({ carrier: 'correos-chile', budgetMs, signal: context.signal,
-      recorder: this.options.recorder ?? NOOP_RECORDER }, [{ id: 'direct', run: async ({ signal, remainingMs }) => {
+      recorder: this.options.recorder ?? NOOP_RECORDER }, [{ id: 'direct', enabled: !browser, run: async ({ signal, remainingMs }) => {
       const deadline = performance.now() + remainingMs;
       const read = async (url: string, init: RequestInit, maxBytes: number) => {
         signal.throwIfAborted();
@@ -82,10 +85,9 @@ export class CorreosChileTracker {
       catch { throw new SchemaError('Correos de Chile', 'Tracking resource returned invalid JSON'); }
       return parseCorreosChileTracking(payload, number);
     } }, {
-      id: 'browser', enabled: Boolean(this.options.browserWsEndpoint),
-      recovers: error => error instanceof ChallengeError,
-      run: ({ signal, remainingMs, previousError }) => {
-        if (remainingMs < 10_000) throw previousError instanceof Error ? previousError : new ChallengeError('Correos de Chile');
+      id: 'browser', enabled: browser,
+      run: ({ signal, remainingMs }) => {
+        if (remainingMs < 10_000) throw new BudgetExceededError('Correos de Chile', budgetMs);
         return fetchCorreosChileInBrowser(number, this.options.browserWsEndpoint!, signal, Math.min(60_000, remainingMs),
           this.options.textModelUrl ? (heading, question, stopped, timeout) => answerCorreosChileText(
             this.options.textModelUrl!, heading, question, stopped, timeout, this.options.fetcher) : undefined);

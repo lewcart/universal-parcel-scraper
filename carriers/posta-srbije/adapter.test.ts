@@ -270,5 +270,7 @@ describe('Pošta Srbije status vocabulary', () => {
       .toEqual({ kind: 'mapped', stage: 'returned' });
     expect(statusMapAnswer({ carrier: 'posta-srbije', providerCode: 'VR', description: 'Neuspešan pokušaj uručenja' }))
       .toEqual({ kind: 'mapped', stage: 'failed_attempt' });
+    expect(statusMapAnswer({ carrier: 'posta-srbije', providerCode: 'ZI', description: 'In charge of delivery at post office' }))
+      .toEqual({ kind: 'mapped', stage: 'ready_for_pickup' });
   });
 });

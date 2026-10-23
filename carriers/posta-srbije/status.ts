@@ -14,6 +14,10 @@ const CODES: Readonly<Record<string, Stage>> = {
   // Dispatched to the next office, or handed to transport abroad at the office of exchange.
   OT: 'in_transit',
   PS: 'in_transit',
+  // The addressee notified, naming the office that holds the item ("Izveštena").
+  IZ: 'ready_for_pickup',
+  // Assigned for handover at that office's counter ("Zadužena za isporuku").
+  ZI: 'ready_for_pickup',
   VR: 'failed_attempt',
   UR: 'delivered',
   // Delivered back to the sender.

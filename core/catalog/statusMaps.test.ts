@@ -833,7 +833,7 @@ describe("universal providers' answers", () => {
     }
   });
 
-  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's, BRT's, nox's, Vinted Go's, MeiHoo Pegasus's, PostNL's, UPS's and ePost Global's scans as their carriers read them", () => {
+  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's, BRT's, nox's, Vinted Go's, MeiHoo Pegasus's, PostNL's, UPS's, ePost Global's and Hermes's scans as their carriers read them", () => {
     for (const [wording, stage] of [['Registered and being prepared', 'registered'], ['Left the branch 12', 'in_transit'],
       ['Collo von der nox Niederlassung weiterverladen. Sendung weiterverladen', 'in_transit'],
       ['Collo is reloaded by the nox branch. Consignment reloaded', 'in_transit'],
@@ -845,6 +845,7 @@ describe("universal providers' answers", () => {
       ['As requested, the UPS My Choice® delivery change was completed.', 'in_transit'], ['The address was changed as the receiver requested.', 'in_transit'],
       ["The company or receiver name is incorrect. This will delay delivery. We're attempting to update this information.", 'exception'],
       ['Shipment in Transit to the ePost Global Processing Center', 'registered'],
+      ['The package was dropped off by the sender at the PaketShop Beispielkiosk, Musterstraße 1, 00000 Musterstadt.', 'accepted'],
       ['TURMOIL', 'exception']] as const) {
       expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     }

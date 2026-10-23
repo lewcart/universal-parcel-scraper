@@ -1,6 +1,6 @@
 
 /**
- * Asendia tracking through Asendia USA's A1 platform, then Asendia UK's tracker.
+ * Asendia tracking through Asendia USA's A1 platform.
  *
  * Protocol provenance (inspected 2026-09-22):
  * - The official public page https://a1.asendiausa.com/tracking/ (the same
@@ -25,12 +25,10 @@
  *   backend/src/sources/implementations/asendia.ts) and deingithub/beanstalk
  *   (beanstalk/parcel.py).
  *
- * Coverage: A1 answers for parcels on Asendia USA's platform. The adapter
- * then asks Asendia UK's tracker (uk.ts), which serves parcels Asendia UK
- * carries, when A1 does not know the number, fails, or holds its registration
- * alone. Asendia's global portal track.asendia.com, which serves the
- * other subsidiaries, uses an optional browser recovery step (browser.ts).
- * Without that service, a number neither HTTP tracker knows is a
+ * Coverage: A1 answers for parcels on Asendia USA's platform. Asendia's
+ * global portal track.asendia.com, which serves the other subsidiaries and
+ * replaced Asendia UK's own tracker, uses an optional browser recovery step
+ * (browser.ts). Without that service, a number A1 does not know is a
  * not-found for this adapter only; routing then tries the universal providers
  * in the same check.
  *
@@ -39,7 +37,7 @@
  * read, and nothing else from the summary is copied except the destination
  * country, weight and the declared last-mile reference.
  */
-import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { BudgetExceededError, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
@@ -49,7 +47,6 @@ import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, userAgent
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { daiPostScanZone } from '../dai-post/clock.js';
 import { classifyAsendiaA1Event, comparableText, type ClassifiedAsendiaStatus } from './status.js';
-import { AsendiaUkTracker } from './uk.js';
 import { asendiaBrowser } from './browser.js';
 import { recoverableByDefault, runSteps } from '../../core/runner/index.js';
 
@@ -510,80 +507,28 @@ interface RequestBudget {
   budgetBound?: boolean;
 }
 
-/** The part of a lookup's budget kept for Asendia UK's tracker, at most a third. */
-const UK_RESERVE_MS = 8_000;
-
-/** Whether a result shows the parcel past its registration. */
-function progressed(result: CarrierResult): boolean {
-  return result.status !== 'pending' && result.status !== 'unknown';
-}
-
-/**
- * A1 first, then Asendia UK. A1 can hold a UK parcel's registration alone
- * while Asendia UK's tracker shows its progress, so a parcel A1 has not seen
- * past registration is also looked up there, and the UK history is returned
- * when it has progressed further. A not-found means both said so: any other
- * A1 failure is reported instead when the UK tracker does not know the number
- * either, and the first failure is the one reported when both fail.
- */
-async function trackEverywhere(
-  a1: AsendiaA1Tracker,
-  uk: AsendiaUkTracker,
-  rawTrackingNumber: string,
-  context: TrackingContext = {},
-): Promise<CarrierResult> {
-  const trackingNumber = normalizeAsendiaA1TrackingNumber(rawTrackingNumber);
-  const budget = lookupBudget(context, DEFAULT_BUDGET_MS, PROVIDER);
-  const reserve = Math.min(UK_RESERVE_MS, Math.floor(budget.remainingMs() / 3));
-  let failure: Error | null = null;
-  let registered: CarrierResult | null = null;
-  try {
-    const result = await a1.fetch(trackingNumber, { signal: budget.signal, budgetMs: Math.max(1, budget.remainingMs() - reserve) });
-    if (progressed(result)) return result;
-    registered = result;
-  } catch (error) {
-    if (context.signal?.aborted || !(error instanceof Error)) throw error;
-    if (!(error instanceof NotFoundError)) failure = error;
-  }
-  if (budget.signal.aborted) {
-    if (registered) return registered;
-    throw failure ?? new BudgetExceededError(PROVIDER, budget.budgetMs);
-  }
-  try {
-    const result = await uk.fetch(trackingNumber, { signal: budget.signal, budgetMs: budget.remainingMs() });
-    return registered && !progressed(result) ? registered : result;
-  } catch (error) {
-    if (context.signal?.aborted) throw error;
-    // A1's answer stands whatever the UK tracker says.
-    if (registered) return registered;
-    if (error instanceof NotFoundError) throw failure ?? new NotFoundError(PROVIDER);
-    throw failure ?? error;
-  }
-}
-
 export const adapter: AdapterFactory = (environment) => {
   const a1 = new AsendiaA1Tracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
-  const uk = new AsendiaUkTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
   return {
     id: 'asendia',
     recordsSteps: true,
     steps: ['direct', 'trawl'],
-    // A1 and Asendia UK only: recognition never opens the global portal's browser.
-    recognize: (number, context) => recognizeFromLookup(() => trackEverywhere(a1, uk, number, context),
+    // A1 only: recognition never opens the global portal's browser.
+    recognize: (number, context) => recognizeFromLookup(() => a1.fetch(number, context),
       () => accepted(() => normalizeAsendiaA1TrackingNumber(number))),
     track: (input, context) => {
       const number = normalizeAsendiaA1TrackingNumber(input.number);
       const browserEligible = !!environment.trawl && /^[A-Z0-9]{8,40}$/.test(number) && /\d/.test(number);
       return runSteps({ carrier: 'asendia', signal: context?.signal,
         budgetMs: context?.budgetMs ?? (browserEligible ? 65_000 : DEFAULT_BUDGET_MS), recorder: environment.recorder }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => trackEverywhere(a1, uk, number,
+      { id: 'direct', run: ({ signal, remainingMs }) => a1.fetch(number,
         { signal, budgetMs: Math.min(DEFAULT_BUDGET_MS, browserEligible ? Math.max(1, Math.floor(remainingMs * 0.4)) : remainingMs) }) },
       { id: 'trawl', enabled: browserEligible,
         recovers: error => error instanceof NotFoundError || recoverableByDefault(error),
         run: async ({ signal, remainingMs, previousError }) => {
           try { return await asendiaBrowser(environment.trawl!, number, signal, remainingMs, input.postcode?.trim() || null); }
           catch (error) {
-            // The global portal cannot erase a failure from either HTTP source.
+            // The global portal cannot erase a failure from A1.
             if (error instanceof NotFoundError && !(previousError instanceof NotFoundError)) throw previousError;
             throw error;
           }

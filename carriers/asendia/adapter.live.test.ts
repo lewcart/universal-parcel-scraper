@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { AsendiaA1Tracker } from './adapter.js';
-import { AsendiaUkTracker } from './uk.js';
 import { asendiaBrowser } from './browser.js';
 import { TrawlClient } from '../../core/transport/trawl.js';
 
@@ -37,26 +36,5 @@ describe('Asendia global browser lookup', () => {
     expect(result.last_status_text).toBeTruthy();
     if (!result.events?.length) expect(result.summary_only).toBe(true);
     if (process.env.ASENDIA_GLOBAL_LIVE_POSTCODE && !result.summary_only) expect(result.events!.length).toBeGreaterThan(0);
-  });
-});
-
-describe('Asendia UK live lookup', () => {
-  // The tracker drops parcels some months after posting. Positive retrieval
-  // needs a current shipment the operator is authorized to query, supplied
-  // outside the repository.
-  it.skipIf(!process.env.ASENDIA_UK_LIVE_NUMBER)('retrieves a matching history with wall clocks', async () => {
-    const started = performance.now();
-    const result = await new AsendiaUkTracker().fetch(process.env.ASENDIA_UK_LIVE_NUMBER!);
-    expect(result).toMatchObject({ tracking_source: 'rendered-page', last_update: null });
-    expect(result.events!.length).toBeGreaterThan(0);
-    expect(result.events!.every((event) => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00$/.test(String(event.local_time)))).toBe(true);
-    expect(performance.now() - started).toBeLessThan(10_000);
-  });
-
-  it('reports an unknown number as not found', async () => {
-    await expect(new AsendiaUkTracker().fetch(UNKNOWN_NUMBER)).rejects.toMatchObject({
-      name: 'NotFoundError',
-      kind: 'not_found',
-    });
   });
 });

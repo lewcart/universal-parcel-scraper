@@ -513,36 +513,27 @@ describe('Asendia A1 lookup flow', () => {
   });
 });
 
-describe('Asendia lookup across A1 and Asendia UK', () => {
-  const UK_NUMBER = 'SYNTHETICUK0000001';
-  const ukPage = (name: string) => () => new Response(readFileSync(fileURLToPath(new URL(`./fixtures/${name}`, import.meta.url)), 'utf8'));
+describe('Asendia lookup', () => {
+  const OTHER_NUMBER = 'SYNTHETICGB0000001';
   const environment = (fetcher: typeof fetch) => ({ fetcher, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} }, env: {} });
   const a1Unknown = () => ({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(NOT_FOUND)] });
 
-  it('asks Asendia UK for a number A1 does not know', async () => {
-    const { fetcher, paths } = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-delivered.html')] });
-    await expect(adapter(environment(fetcher)).track({ number: UK_NUMBER })).resolves.toMatchObject({
-      status: 'delivered', tracking_source: 'rendered-page', delivery_carrier: 'la-poste',
-    });
-    expect(paths()).toEqual(['main.js', 'Customer', 'Tracking', 'tracking.php']);
-  });
-
-  it('reports not-found only when both trackers say so', async () => {
-    const { fetcher, paths } = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-not-found.html')] });
-    await expect(adapter(environment(fetcher)).track({ number: UK_NUMBER })).rejects.toMatchObject({
+  it('reports not-found for a number A1 does not know, without the global portal', async () => {
+    const { fetcher, paths } = upstream(a1Unknown());
+    await expect(adapter(environment(fetcher)).track({ number: OTHER_NUMBER })).rejects.toMatchObject({
       name: 'NotFoundError', kind: 'not_found', message: 'Asendia could not locate the shipment',
     });
-    expect(paths()).toEqual(['main.js', 'Customer', 'Tracking', 'tracking.php']);
+    expect(paths()).toEqual(['main.js', 'Customer', 'Tracking']);
   });
 
   it('recovers an HTTP miss through an identity-bound global summary and records both attempts', async () => {
-    const { fetcher } = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-not-found.html')] });
+    const { fetcher } = upstream(a1Unknown());
     const step = vi.fn();
     const scrape = vi.fn(async () => ({ capturedResponses: [{ url: asendiaTrackingApiUrl(), status: 200,
-      trackingNumberSubmitted: UK_NUMBER, body: JSON.stringify({ context_code: 1000,
-        data: [{ tracking_id: UK_NUMBER, status: 'In transit' }] }), error: null, truncated: false, base64Encoded: false }] }));
+      trackingNumberSubmitted: OTHER_NUMBER, body: JSON.stringify({ context_code: 1000,
+        data: [{ tracking_id: OTHER_NUMBER, status: 'In transit' }] }), error: null, truncated: false, base64Encoded: false }] }));
     const instance = adapter({ ...environment(fetcher), trawl: { scrape } as unknown as TrawlClient, recorder: { step, lookup() {} } });
-    await expect(instance.track({ number: UK_NUMBER })).resolves.toMatchObject({ status: 'in_transit', summary_only: true, events: [] });
+    await expect(instance.track({ number: OTHER_NUMBER })).resolves.toMatchObject({ status: 'in_transit', summary_only: true, events: [] });
     expect(scrape.mock.calls[0]).toBeDefined();
     expect(step).toHaveBeenCalledWith(expect.objectContaining({ step: 'direct', outcome: 'not_found' }));
     expect(step).toHaveBeenCalledWith(expect.objectContaining({ step: 'trawl', outcome: 'ok', fallbackFrom: 'direct', fallbackReason: 'not_found' }));
@@ -550,112 +541,52 @@ describe('Asendia lookup across A1 and Asendia UK', () => {
 
   it('preserves an HTTP failure when the global portal also misses, and never replaces a complete HTTP result', async () => {
     const scrape = vi.fn(async () => ({ capturedResponses: [{ url: asendiaTrackingApiUrl(), status: 200,
-      trackingNumberSubmitted: UK_NUMBER, body: JSON.stringify({ context_code: 1000, data: [] }), error: null, truncated: false, base64Encoded: false }] }));
-    const missing = upstream({ 'main.js': [new Response('', { status: 500 })], 'tracking.php': [ukPage('uk-not-found.html')] });
-    await expect(adapter({ ...environment(missing.fetcher), trawl: { scrape } as unknown as TrawlClient }).track({ number: UK_NUMBER }))
+      trackingNumberSubmitted: OTHER_NUMBER, body: JSON.stringify({ context_code: 1000, data: [] }), error: null, truncated: false, base64Encoded: false }] }));
+    const missing = upstream({ 'main.js': [new Response('', { status: 500 })] });
+    await expect(adapter({ ...environment(missing.fetcher), trawl: { scrape } as unknown as TrawlClient }).track({ number: OTHER_NUMBER }))
       .rejects.toMatchObject({ kind: 'indeterminate', status: 500 });
     expect(scrape).toHaveBeenCalledTimes(1);
-    const known = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-delivered.html')] });
-    await expect(adapter({ ...environment(known.fetcher), trawl: { scrape } as unknown as TrawlClient }).track({ number: UK_NUMBER }))
-      .resolves.toMatchObject({ status: 'delivered', tracking_source: 'rendered-page' });
+    const known = upstream({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(delivered())] });
+    await expect(adapter({ ...environment(known.fetcher), trawl: { scrape } as unknown as TrawlClient }).track({ number: NUMBER }))
+      .resolves.toMatchObject({ status: 'delivered', tracking_source: 'structured-web-response' });
     expect(scrape).toHaveBeenCalledTimes(1);
   });
 
-  it('keeps an A1 failure when Asendia UK does not know the number', async () => {
-    const { fetcher } = upstream({
-      'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [new Response('', { status: 503 })],
-      'tracking.php': [ukPage('uk-not-found.html')],
-    });
-    await expect(adapter(environment(fetcher)).track({ number: UK_NUMBER })).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 503 });
+  it('reports an A1 failure', async () => {
+    const { fetcher } = upstream({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [new Response('', { status: 503 })] });
+    await expect(adapter(environment(fetcher)).track({ number: OTHER_NUMBER })).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 503 });
   });
 
-  it('still finds a UK parcel while A1 fails', async () => {
-    const { fetcher } = upstream({
-      'main.js': [new Response('', { status: 500 })], 'tracking.php': [ukPage('uk-delivered.html')],
+  it('keeps A1\'s answer when it holds the registration alone', async () => {
+    const reply = delivered();
+    reply.trackingBrandedDetail = reply.trackingBrandedDetail.filter((event) => event.eventCode === '1');
+    const { fetcher, paths } = upstream({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(reply)] });
+    await expect(adapter(environment(fetcher)).track({ number: NUMBER })).resolves.toMatchObject({
+      status: 'pending', current_stage: 'registered', tracking_source: 'structured-web-response',
     });
-    await expect(adapter(environment(fetcher)).track({ number: UK_NUMBER })).resolves.toMatchObject({ status: 'delivered' });
-  });
-
-  it('reports an Asendia UK failure after an A1 not-found', async () => {
-    const { fetcher } = upstream({ ...a1Unknown(), 'tracking.php': [new Response('<html><title>Just a moment...</title></html>')] });
-    await expect(adapter(environment(fetcher)).track({ number: UK_NUMBER })).rejects.toMatchObject({ kind: 'challenge' });
-  });
-
-  it('does not ask Asendia UK once the lookup is cancelled', async () => {
-    const controller = new AbortController();
-    const { fetcher, paths } = upstream({
-      'main.js': [() => { controller.abort(new Error('cancelled')); return script(); }],
-      Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(NOT_FOUND)], 'tracking.php': [ukPage('uk-delivered.html')],
-    });
-    await expect(adapter(environment(fetcher)).track({ number: UK_NUMBER }, { signal: controller.signal })).rejects.toThrow();
-    expect(paths()).not.toContain('tracking.php');
-  });
-
-  describe('when A1 holds the registration alone', () => {
-    const a1Registered = () => {
-      const reply = delivered();
-      reply.trackingBrandedSummary.trackingNumberCustomerCarrierOriginal = UK_NUMBER;
-      reply.trackingBrandedDetail = reply.trackingBrandedDetail.filter((event) => event.eventCode === '1');
-      return jsonReply(reply);
-    };
-    const a1Answers = () => ({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [a1Registered()] });
-    const ukRegistered = () => () => new Response(readFileSync(fileURLToPath(new URL('./fixtures/uk-delivered.html', import.meta.url)), 'utf8')
-      .replace(/<tr>\s*<td class="history-left"[\s\S]*?<\/tr>\s*/g, (row) => row.includes('Manifest received') ? row : ''));
-
-    it('returns the UK history once it has progressed further', async () => {
-      const { fetcher, paths } = upstream({ ...a1Answers(), 'tracking.php': [ukPage('uk-delivered.html')] });
-      await expect(adapter(environment(fetcher)).track({ number: UK_NUMBER })).resolves.toMatchObject({
-        status: 'delivered', tracking_source: 'rendered-page',
-      });
-      expect(paths()).toEqual(['main.js', 'Customer', 'Tracking', 'tracking.php']);
-    });
-
-    it.each([
-      ['also shows registration alone', ukRegistered()],
-      ['does not know the parcel', ukPage('uk-not-found.html')],
-      ['fails', () => new Response('', { status: 500 })],
-    ])('keeps A1\'s answer when the UK tracker %s', async (_name, reply) => {
-      const { fetcher, paths } = upstream({ ...a1Answers(), 'tracking.php': [reply] });
-      await expect(adapter(environment(fetcher)).track({ number: UK_NUMBER })).resolves.toMatchObject({
-        status: 'pending', current_stage: 'registered', tracking_source: 'structured-web-response',
-      });
-      expect(paths()).toEqual(['main.js', 'Customer', 'Tracking', 'tracking.php']);
-    });
-  });
-
-  it('keeps part of the budget for Asendia UK when A1 stalls', async () => {
-    const { fetcher, paths } = upstream({ 'tracking.php': [ukPage('uk-delivered.html')] });
-    const stalling: typeof fetch = (input, init) => String(input).includes('main.js')
-      ? new Promise((_resolve, reject) => init!.signal!.addEventListener('abort', () => reject(init!.signal!.reason), { once: true }))
-      : fetcher(input, init);
-    await expect(adapter(environment(stalling)).track({ number: UK_NUMBER }, { budgetMs: 900 })).resolves.toMatchObject({ status: 'delivered' });
-    expect(paths()).toEqual(['tracking.php']);
+    expect(paths()).toEqual(['main.js', 'Customer', 'Tracking']);
   });
 });
 
 describe('Asendia recognition', () => {
-  const UK_NUMBER = 'SYNTHETICUK0000001';
-  const ukPage = (name: string) => () => new Response(readFileSync(fileURLToPath(new URL(`./fixtures/${name}`, import.meta.url)), 'utf8'));
+  const OTHER_NUMBER = 'SYNTHETICGB0000001';
   const environment = (fetcher: typeof fetch, scrape = vi.fn()) => ({ fetcher, trawl: { scrape } as unknown as TrawlClient,
     browserExecutablePath: null, recorder: { step() {}, lookup() {} }, env: {} });
-  const a1Unknown = () => ({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(NOT_FOUND)] });
 
-  it('knows a parcel A1 or Asendia UK holds, and never opens the global portal', async () => {
+  it('knows a parcel A1 holds, and never opens the global portal', async () => {
     const a1 = upstream({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(delivered())] });
     await expect(adapter(environment(a1.fetcher)).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
     expect(a1.paths()).toEqual(['main.js', 'Customer', 'Tracking']);
-    const uk = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-delivered.html')] });
-    await expect(adapter(environment(uk.fetcher)).recognize!(UK_NUMBER)).resolves.toMatchObject({ known: true });
     const scrape = vi.fn();
-    const neither = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-not-found.html')] });
-    await expect(adapter(environment(neither.fetcher, scrape)).recognize!(UK_NUMBER)).resolves.toEqual({ known: false });
-    expect(neither.paths()).toEqual(['main.js', 'Customer', 'Tracking', 'tracking.php']);
+    const unknown = upstream({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(NOT_FOUND)] });
+    await expect(adapter(environment(unknown.fetcher, scrape)).recognize!(OTHER_NUMBER)).resolves.toEqual({ known: false });
+    expect(unknown.paths()).toEqual(['main.js', 'Customer', 'Tracking']);
     expect(scrape).not.toHaveBeenCalled();
   });
 
   it('keeps a tracker failure inconclusive and sends nothing for input Asendia cannot take', async () => {
-    const failing = upstream({ 'main.js': [new Response('', { status: 500 })], 'tracking.php': [ukPage('uk-not-found.html')] });
-    await expect(adapter(environment(failing.fetcher)).recognize!(UK_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', status: 500 });
+    const failing = upstream({ 'main.js': [new Response('', { status: 500 })] });
+    await expect(adapter(environment(failing.fetcher)).recognize!(OTHER_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', status: 500 });
     const idle = upstream({});
     await expect(adapter(environment(idle.fetcher)).recognize!('AB12')).resolves.toEqual({ known: false });
     expect(idle.fetcher).not.toHaveBeenCalled();

@@ -1,10 +1,9 @@
 /**
  * Asendia event vocabularies → product stage.
  *
- * Three sources, three maps. The registered adapter reads Asendia USA's A1
- * platform through `classifyAsendiaA1Event` and Asendia UK's tracker through
- * `classifyAsendiaUkEvent`; `classifyAsendiaStatus` serves the global-portal
- * probe.
+ * Two sources, two maps. The registered adapter reads Asendia USA's A1
+ * platform through `classifyAsendiaA1Event`; `classifyAsendiaStatus` serves
+ * the global-portal probe.
  *
  * A1: Asendia's own scans carry numeric codes (`1`, `2`, `2.1`, …) and are
  * mapped by code. Last-mile partners' scans arrive through the same list with
@@ -12,9 +11,6 @@
  * wording only where a fixture shows it. Anything else returns null and keeps
  * no event stage, leaving it to the sync's shared wording rules and the
  * unmapped-wording review.
- *
- * Asendia UK: one fixed English vocabulary for Asendia's own scans and the
- * last-mile partner's, mapped by exact wording.
  *
  * Global portal: Asendia's branded portal harmonizes the wording of every partner post into
  * one English vocabulary (`harmonizedEvent`), which is what this map keys on;
@@ -198,47 +194,4 @@ export function classifyAsendiaA1Event(
   if (byCode) return Object.hasOwn(byCode, code) ? byCode[code]! : null;
   const wording = comparableText(description);
   return Object.hasOwn(PARTNER_WORDING, wording) ? PARTNER_WORDING[wording]! : null;
-}
-
-/** Asendia UK tracker wording seen live or in archived captures, compared with `comparableText`. */
-const UK_WORDING: Readonly<Record<string, ClassifiedAsendiaStatus>> = {
-  'manifest received': REGISTERED,
-  // Asendia's own hub sort: the parcel's first physical scan.
-  'processed down packet line': ACCEPTED,
-  // Both follow the hub sort, so the parcel is already with Asendia.
-  'not yet received by carrier': IN_TRANSIT,
-  'awaiting despatch': IN_TRANSIT,
-  'scanned to container': IN_TRANSIT,
-  // The last-mile partner's pre-advice, recorded after the parcel left the hub.
-  'elec advice recd by carrier': IN_TRANSIT,
-  'arrived at import gateway': IN_TRANSIT,
-  'awaiting customs clearance': CUSTOMS,
-  'customs clearance in progress': CUSTOMS,
-  'held by customs or governing body': CUSTOMS,
-  'customs cleared': IN_TRANSIT,
-  'handover by broker to delivery partner': IN_TRANSIT,
-  'received by carrier': IN_TRANSIT,
-  'received at carrier facility': IN_TRANSIT,
-  'sub contractor received': IN_TRANSIT,
-  // Seen between the partner's own receipt scans, not as a first pickup.
-  'collection made': IN_TRANSIT,
-  'internal hub scan': IN_TRANSIT,
-  'in transit': IN_TRANSIT,
-  'arrival at delivery depot': IN_TRANSIT,
-  'out for delivery': OUT_FOR_DELIVERY,
-  delivered: DELIVERED,
-};
-
-/** Notices the tracker interleaves with scans, even before the hub sort: they never set the current stage. */
-const UK_NOTICES = new Set(['information', 'carrier delays']);
-
-/** The explicit mapping for one Asendia UK event, or null when the map does not know its wording. */
-export function classifyAsendiaUkEvent(description: string): ClassifiedAsendiaStatus | null {
-  const wording = comparableText(description);
-  return Object.hasOwn(UK_WORDING, wording) ? UK_WORDING[wording]! : null;
-}
-
-/** Whether an Asendia UK event is a notice rather than a scan. */
-export function isAsendiaUkNotice(description: string): boolean {
-  return UK_NOTICES.has(comparableText(description));
 }

@@ -9,16 +9,19 @@ const gate = { id: 2, tipo: 'error', descrizione: 'CAPTCHA required', token: 'PR
 const history = { idTracciatura: number, esitoRicerca: '3', stato: '5', recipient: 'PRIVATE',
   listaMovimenti: [{ statoLavorazione: 'Consegnato', dataOra: 1767484800000, recipient: 'PRIVATE' }] };
 function response(status = 200, payload = history, request = {}) {
+  const sent = { url: () => endpoint, method: () => 'POST',
+    postDataJSON: () => ({ codiceSpedizione: number, tipoRichiedente: 'WEB', ...request }) };
   return { url: () => endpoint, status: () => status, headers: () => ({ 'set-cookie': 'PRIVATE' }),
-    request: () => ({ method: () => 'POST', postDataJSON: () => ({ codiceSpedizione: number, tipoRichiedente: 'WEB', ...request }) }),
+    request: () => sent,
     body: async () => Buffer.from(typeof payload === 'string' ? payload : JSON.stringify(payload)) };
 }
 function fixture() {
-  const handlers = {}, state = { closed: 0, policy: 0, solved: 0, signal: null };
+  const handlers = {}, state = { closed: 0, policy: 0, solved: 0, signal: null, diagnostics: [] };
   const page = { on: (name, fn) => { handlers[name] = fn; }, off: name => { delete handlers[name]; },
     goto: async () => { handlers.response(response(400, gate)); return { status: () => 200 }; },
     getByRole: () => ({ click: async () => {} }) };
   const options = { url, capture, tier: 3, maxTimeout: 6000,
+    onVerification: fields => state.diagnostics.push(fields),
     handle: { browser: { newContext: async () => ({ newPage: async () => page, close: async () => { state.closed++; } }) } },
     installPolicy: async () => { state.policy++; },
     solveCaptcha: async (_page, _timeout, signal) => {
@@ -70,6 +73,92 @@ test('returns an unsolved challenge promptly and bounds bodies, response counts 
   assert.equal(result.capturedResponses.length, 10); assert.match(result.capturedResponses.at(-1).error, /limit/);
   const deadline = fixture(); deadline.options.maxTimeout = 15; deadline.page.goto = () => new Promise(() => {});
   assert.equal((await runPosteItalianeBrowser(deadline.options)).status, 'error'); assert.equal(deadline.state.closed, 1);
+});
+test('finishes a verified tracking request already sent when the widget disappears', async () => {
+  const f = fixture(); let deliver;
+  f.options.solveCaptcha = async () => {
+    const reply = response(200, history, { captcha: 'PRIVATE' });
+    f.handlers.request?.(reply.request());
+    deliver = setTimeout(() => f.handlers.response?.(reply), 10);
+    return false;
+  };
+  try {
+    const result = await runPosteItalianeBrowser(f.options);
+    assert.deepEqual(result.capturedResponses.map(row => row.status), [400, 200]);
+    assert.equal(JSON.parse(result.capturedResponses.at(-1).body).idTracciatura, number);
+  } finally { clearTimeout(deliver); }
+});
+test('finishes reading a response body after the native solver returns false', async () => {
+  const f = fixture(); let deliver;
+  f.options.solveCaptcha = async () => {
+    const reply = response(200, history, { captcha: 'PRIVATE' });
+    reply.body = () => new Promise(resolve => { deliver = setTimeout(() => resolve(Buffer.from(JSON.stringify(history))), 10); });
+    f.handlers.response(reply);
+    return false;
+  };
+  try {
+    const result = await runPosteItalianeBrowser(f.options);
+    assert.equal(JSON.parse(result.capturedResponses.at(-1).body)?.idTracciatura, number);
+  } finally { clearTimeout(deliver); }
+});
+test('does not wait for another identifier, endpoint or request method', async () => {
+  const f = fixture();
+  f.options.solveCaptcha = async () => {
+    const wrong = response(200, history, { codiceSpedizione: number + '0' }).request();
+    f.handlers.request(wrong);
+    f.handlers.request({ ...response().request(), url: () => endpoint + '?extra' });
+    f.handlers.request({ ...response().request(), method: () => 'GET' });
+    return false;
+  };
+  const result = await runPosteItalianeBrowser(f.options);
+  assert.deepEqual(result.capturedResponses.map(row => row.status), [400]);
+  assert.equal(f.state.diagnostics[0].waitedForRequest, false);
+});
+test('a later failed tracking request cannot be hidden by an earlier history', async () => {
+  const f = fixture();
+  f.options.solveCaptcha = async () => {
+    const first = response(200, history, { captcha: 'PRIVATE' });
+    const last = response(200, history, { captcha: 'PRIVATE' });
+    f.handlers.request(first.request()); f.handlers.request(last.request());
+    f.handlers.response(first); f.handlers.requestfailed(last.request());
+    return false;
+  };
+  const result = await runPosteItalianeBrowser(f.options);
+  assert.deepEqual(result.capturedResponses.map(row => row.status), [400, 200, 0]);
+  assert.equal(result.capturedResponses.at(-1).body, null);
+  assert.match(result.capturedResponses.at(-1).error, /request failed/);
+  assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
+});
+test('pending verification requests stop at the shared deadline and close their context', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const f = fixture(); let submitted;
+  const sent = new Promise(resolve => { submitted = resolve; });
+  f.options.solveCaptcha = async () => {
+    f.handlers.request(response(200, history, { captcha: 'PRIVATE' }).request());
+    submitted(); return false;
+  };
+  const lookup = runPosteItalianeBrowser(f.options);
+  await sent;
+  for (let i = 0; i < 12; i++) await Promise.resolve();
+  t.mock.timers.tick(6001);
+  const result = await lookup;
+  assert.equal(result.capturedResponses.at(-1).status, 0);
+  assert.match(result.capturedResponses.at(-1).error, /unfinished/);
+  assert.equal(f.state.closed, 1); assert.deepEqual(f.handlers, {});
+});
+test('verification diagnostics keep only fixed outcomes and cannot break cleanup', async () => {
+  const f = fixture();
+  f.options.solveCaptcha = async (_page, _ms, _signal, report) => {
+    report('audio_started'); report('audio_refused'); report('PRIVATE'); return false;
+  };
+  await runPosteItalianeBrowser(f.options);
+  const [diagnostic] = f.state.diagnostics;
+  assert.deepEqual(Object.keys(diagnostic).sort(), ['durationMs', 'nativeOutcome', 'outcome', 'pending', 'responses', 'waitedForRequest']);
+  assert.equal(diagnostic.nativeOutcome, 'audio_refused'); assert.equal(diagnostic.outcome, 'challenge');
+  assert.equal(JSON.stringify(diagnostic).includes('PRIVATE'), false);
+  const broken = fixture(); broken.options.onVerification = () => { throw new Error('PRIVATE'); };
+  assert.equal((await runPosteItalianeBrowser(broken.options)).capturedResponses.at(-1).status, 200);
+  assert.equal(broken.state.closed, 1);
 });
 test('cancels the solver and closes only its own context on caller cancellation', async () => {
   const f = fixture(); const controller = new AbortController(); f.options.signal = controller.signal;

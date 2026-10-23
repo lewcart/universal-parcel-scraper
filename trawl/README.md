@@ -38,7 +38,10 @@ DHL Poland uses TRAWL's native checkbox and audio solver.
 Poste Italiane uses that solver only after its tracking API requests a CAPTCHA. Its page
 submits the issued token and the helper captures the matching history, keeping the earlier
 refusal and excluding verification tokens and recipient fields. A disappearing widget does
-not override a verified tracking response.
+not override a tracking request already in flight: its response and body finish within the
+same deadline. Failed or unfinished later requests stay failures. The fixed-label
+`poste.verification` log records native solver outcomes and pending-request counts without
+tokens, parcel identifiers or page text.
 Its scoped native modules replace upstream raw debug logs with fixed events.
 It submits its history form after reCAPTCHA verification and returns only
 the waybill and scan fields, excluding recipient acknowledgements and verification tokens.

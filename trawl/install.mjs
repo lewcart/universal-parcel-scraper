@@ -46,7 +46,7 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   if (carrierPage && dhlExpressBrowserNumber(url, capture)) return await runDhlExpressBrowser(carrierRun)
   if (carrierPage && posteItalianeBrowserNumber(url, capture)) {
     return await runPosteItalianeBrowser({ ...carrierRun, signal: budget.signal,
-      solveCaptcha: (page, timeout, signal) => solveDhlPolandNative(page, timeout, AbortSignal.any([budget.signal, signal])) })
+      solveCaptcha: (page, timeout, signal, report) => solveDhlPolandNative(page, timeout, AbortSignal.any([budget.signal, signal]), report) })
   }
   if (carrierPage && ztoBrowserNumber(url, capture)) return await runZtoBrowser({ ...carrierRun, signal: budget.signal })
   if (carrierPage && chinaPostBrowserNumber(url, capture)) return await runChinaPostBrowser({ ...carrierRun, signal: budget.signal })

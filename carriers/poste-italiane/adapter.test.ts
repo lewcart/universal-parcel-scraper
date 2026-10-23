@@ -12,7 +12,7 @@ import {
 } from './adapter.js';
 import { trackingLocationCountry, trackingPlace } from '../../places/trackingLocation.js';
 import { classifyPosteItalianeStatus } from './status.js';
-import { TrawlClient } from '../../core/transport/trawl.js';
+import { TrawlClient, type TrawlCapturedResponse } from '../../core/transport/trawl.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 
 // All identifiers and timestamps below are synthetic. Italian status wordings
@@ -448,7 +448,7 @@ describe('Poste Italiane response parsing', () => {
 describe('PosteItalianeTracker fetch', () => {
   const gate = { id: 2, tipo: 'error', descrizione: 'CAPTCHA required' };
   const endpoint = 'https://www.poste.it/online/dovequando/DQ-REST/ricercasemplice';
-  const capture = (payload: unknown, status = 200, url = endpoint) => ({ url, status, body: JSON.stringify(payload),
+  const capture = (payload: unknown, status = 200, url = endpoint): TrawlCapturedResponse => ({ url, status, body: JSON.stringify(payload),
     headers: { 'content-type': 'application/json' }, base64Encoded: false, truncated: false, error: null });
   const browser = (captures: ReturnType<typeof capture>[]) => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response({ tier: 3, statusCode: 200, html: '', capturedResponses: captures }));
@@ -487,6 +487,8 @@ describe('PosteItalianeTracker fetch', () => {
       [[capture(parcel({ idTracciatura: 'RA00000000002' }))], 'schema'],
       [[capture(parcel(), 200, endpoint + '/other')], 'challenge'],
       [[{ ...capture(parcel()), truncated: true }], 'transport'],
+      [[capture(gate, 400), { ...capture({}, 0), body: null, error: 'Poste tracking request failed' }], 'transport'],
+      [[capture(parcel()), { ...capture({}, 0), body: null, error: 'Poste tracking request unfinished' }], 'transport'],
       [[capture(parcel()), capture(gate, 400)], 'challenge'],
       [[capture(parcel({ esitoRicerca: '1' }))], 'not_found'],
     ];

@@ -49,6 +49,9 @@ Italiane for a number issued abroad.
    identifier and passes through the same history parser. An unsolved or rejected challenge
    remains a failure, allowing enabled providers to recover. HTTP recognition uses only `direct`.
    Both steps share the caller's budget; browser recovery needs at least eight seconds left.
+   If the widget disappears while its verified lookup is in flight, capture waits for that
+   request within the same deadline. A later failed request cannot leave an earlier answer
+   looking complete.
 
 ## Notes
 

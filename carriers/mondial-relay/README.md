@@ -100,6 +100,14 @@ for another shipment → `SchemaError`.
   reached its pickup point counts: its arrival there and the locker countdown. The app gives the parcel's delivery point
   (`detail.deliveryPointModel`), whose first address line is its name, as the
   app shows it. A delivered parcel has none, collected there or not.
+- Lead: `https://www.inpost.es/seguimiento-del-envio/?parcelNumber={number}` renders the
+  tracker on the server with no cookie or bot check. The props of its tracking component
+  carry `trackingDetailsStatus`: 404 for an unknown number, 409 when the page asks the
+  recipient postcode, 200 with `trackingDetails` milestones and their coded events. The
+  page takes up to two letters followed by digits, eight to 26 characters. Random 8-digit
+  numbers mostly answer, so an answer without the postcode does not single out a parcel;
+  random numbers with InPost Spain's `FV` prefix do not. No adapter step reads it yet: a
+  public `FV` sample and a private number with its postcode would confirm the reply.
 
 ## Mobile API
 

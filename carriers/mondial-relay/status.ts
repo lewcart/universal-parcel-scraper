@@ -13,7 +13,7 @@
  * `in_transit` stage placeholder, which the adapter only uses as an event stage
  * when a more specific source has already set the shipment status.
  */
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import { classifyWording, type ClassifiedStatus, type ClassifiedWording, type Stage } from '../../core/status/index.js';
 
 /** Fold a French label to the form the phrase lists are written in. */
 export function comparableText(value: string): string {
@@ -149,4 +149,49 @@ export function milestoneNumberStatus(number: number): ClassifiedStatus {
   if (number === 4) return { status: 'out_for_delivery', stage: 'ready_for_pickup' };
   if (number >= 2) return { status: 'in_transit', stage: 'in_transit' };
   return { status: 'pending', stage: 'registered' };
+}
+
+/**
+ * InPost Spain's event codes: creation (CRE), first mile (FMD), the network
+ * (MMD), last mile (LMD) and end of life (EOL), each with its own Spanish
+ * label. The page's bundle lists more codes than these, without meanings.
+ */
+const INPOST_SPAIN_CODES: ReadonlyMap<string, Stage> = new Map([
+  ['CRE.1001', 'registered'],
+  // Prepared, waiting for a courier to collect it from the sender.
+  ['FMD.1001', 'registered'],
+  ['FMD.1002', 'accepted'],
+  ['MMD.1001', 'in_transit'],
+  ['MMD.1004', 'in_transit'],
+  ['LMD.1001', 'in_transit'],
+  // At the last depot, before the Punto Pack or locker shows it ready.
+  ['LMD.1002', 'in_transit'],
+  ['LMD.1004', 'ready_for_pickup'],
+  ['EOL.1001', 'delivered'],
+] as const);
+
+/** InPost Spain's milestones that hold only movement. */
+const MOVEMENT_MILESTONES = new Set(['IN_TRANSIT', 'IN_TRANSIT_LAST_MILE']);
+
+/** The page's headline milestones, for a parcel none of whose scans has a stage. */
+const HEADLINE_MILESTONES: ReadonlyMap<string, Stage> = new Map([
+  ['AT_THE_ORIGIN', 'registered'],
+  ['IN_TRANSIT', 'in_transit'],
+  ['IN_TRANSIT_LAST_MILE', 'in_transit'],
+  ['AWAITING_COLLECTION', 'ready_for_pickup'],
+  ['DELIVERED', 'delivered'],
+] as const);
+
+/** An InPost Spain scan's stage: its code, else the shared wording rules, else a movement milestone. */
+export function inpostSpainStage(code: string, label: string, milestone: string): ClassifiedWording | null {
+  const mapped = INPOST_SPAIN_CODES.get(code);
+  if (mapped) return { stage: mapped, source: 'carrier_map' };
+  const worded = classifyWording(label, 'in_transit');
+  if (worded.source !== 'none') return worded;
+  return MOVEMENT_MILESTONES.has(milestone) ? { stage: 'in_transit', source: 'milestone' } : null;
+}
+
+/** The stage of the page's headline milestone; a return or a failed delivery has none here. */
+export function inpostSpainHeadlineStage(milestone: string): Stage | undefined {
+  return HEADLINE_MILESTONES.get(milestone);
 }

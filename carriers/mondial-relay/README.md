@@ -7,7 +7,8 @@ direct requests to that flow.
 
 In Spain and Portugal the network trades as InPost: `inpost.es` and `inpost.pt` run its site
 and tracker, with the same 8-character shipment numbers. InPost's own hub also serves Portugal,
-so only the Spanish names resolve here.
+so only the Spanish names resolve here. InPost Spain's own `FV` numbers are read from
+`inpost.es` over plain HTTP.
 
 ## How it works
 
@@ -35,6 +36,14 @@ so only the Spanish names resolve here.
 3. Parse the JSON from the captured body or the `<pre>` a browser navigation
    wraps it in. `Expedition.Numero` must match the requested number or its
    embedded 8-digit shipment before anything else is read.
+
+An InPost Spain number (`FV` and eight digits) takes neither step:
+
+1. `inpost-es`: load `https://www.inpost.es/seguimiento-del-envio/?parcelNumber=…`,
+   which the server renders with no cookie or bot check, and read the props of
+   its tracking component. Both `parcelNumber` and `trackingDetails.packageId`
+   must be the number asked.
+2. `retry`: one more read when the page cannot be reached or hangs.
 
 A customer-reported association between references does not override this
 identity check. Outbound and return legs keep separate tracking identities;
@@ -100,14 +109,19 @@ for another shipment → `SchemaError`.
   reached its pickup point counts: its arrival there and the locker countdown. The app gives the parcel's delivery point
   (`detail.deliveryPointModel`), whose first address line is its name, as the
   app shows it. A delivered parcel has none, collected there or not.
-- Lead: `https://www.inpost.es/seguimiento-del-envio/?parcelNumber={number}` renders the
-  tracker on the server with no cookie or bot check. The props of its tracking component
-  carry `trackingDetailsStatus`: 404 for an unknown number, 409 when the page asks the
-  recipient postcode, 200 with `trackingDetails` milestones and their coded events. The
-  page takes up to two letters followed by digits, eight to 26 characters. Random 8-digit
-  numbers mostly answer, so an answer without the postcode does not single out a parcel;
-  random numbers with InPost Spain's `FV` prefix do not. No adapter step reads it yet: a
-  public `FV` sample and a private number with its postcode would confirm the reply.
+- InPost Spain's page carries `trackingDetailsStatus` in its props: 404 for an
+  unknown number, 409 when it asks the recipient postcode, 200 with
+  `trackingDetails`. Its milestones come newest first, each with coded scans
+  (`CRE`, `FMD`, `MMD`, `LMD`, `EOL`). The code sets the stage; an unknown code
+  falls back to its Spanish label, then to a movement milestone, and the parcel
+  to the headline milestone. Scans are UTC instants, shown on Madrid clocks.
+  The page names no scan place and gives no estimate.
+- Only `FV` numbers are read there. Random 8-digit numbers mostly answer without
+  the postcode, so an answer does not single out a parcel; random `FV` numbers
+  do not answer.
+- Lead: a 26-digit label barcode of a parcel for Spain answers on the same page
+  without a postcode, with the same coded scans; others answer 404. Barcodes
+  stay on the app and the website.
 
 ## Mobile API
 
@@ -173,6 +187,7 @@ error.
 
 `MONDIAL_RELAY_REFRESH_TOKEN=… MONDIAL_RELAY_TRACKING_NUMBER=… MONDIAL_RELAY_POSTCODE=…
 npm run test:carriers:live -- carriers/mondial-relay/adapter.live.test.ts`
-tracks a private parcel through the app alone. A refresh token comes from an
+tracks a private parcel through the app alone, and
+`MONDIAL_RELAY_INPOST_SPAIN_NUMBER=…` an InPost Spain number through its page. A refresh token comes from an
 InPost sign-in with PKCE at `https://account.inpost-group.com/oauth2/authorize`,
 redirecting to `https://account.inpost-group.com/callback`.

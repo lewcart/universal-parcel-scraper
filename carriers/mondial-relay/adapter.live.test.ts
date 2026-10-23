@@ -20,3 +20,15 @@ describe('Mondial Relay live app tracking', () => {
     expect(performance.now() - started).toBeLessThan(5_000);
   }, 30_000);
 });
+
+const inpostSpainNumber = (process.env.MONDIAL_RELAY_INPOST_SPAIN_NUMBER ?? '').trim();
+
+describe('Mondial Relay live InPost Spain tracking', () => {
+  it.runIf(Boolean(inpostSpainNumber))('reads an InPost Spain number from its page without a browser or an account', async () => {
+    const result = await new MondialRelayTracker({ trawl: null }).fetch(inpostSpainNumber, '', { budgetMs: 20_000 });
+    expect(result.tracking_source).toBe('rendered-page');
+    expect(result.events?.length).toBeGreaterThan(0);
+    expect(result.status).not.toBe('unknown');
+    expect(result.events?.every(event => /^[A-Z]{3}\.\d{4}$/.test(event.provider_code ?? '') && /\+0[12]:00$/.test(event.time ?? ''))).toBe(true);
+  }, 30_000);
+});

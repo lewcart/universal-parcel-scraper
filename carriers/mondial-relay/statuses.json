@@ -50,6 +50,15 @@
     { "wording": "Votre colis a été livré à l'enseigne.", "language": "fr", "stage": "delivered", "confirmedBy": "live", "firstSeen": "2026-10-10", "note": "Headline of a return the merchant received." },
     { "wording": "Sollicitation Client pour replace colis", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-10", "note": "The relay could not take the parcel and the customer is asked to choose another; it then goes on to that relay." },
     { "wording": "Relais de substitution choisi", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-10", "note": "Follows the request for another relay." },
-    { "wording": "Colis pris en charge en Locker", "language": "fr", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-10", "note": "The sender's drop-off at a locker; \"en Point Relais\" for a relay." }
+    { "wording": "Colis pris en charge en Locker", "language": "fr", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-10", "note": "The sender's drop-off at a locker; \"en Point Relais\" for a relay." },
+    { "code": "CRE.1001", "wording": "En preparación", "language": "es", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page: the label is registered." },
+    { "code": "FMD.1001", "wording": "Listo para ser recogido por el mensajero", "language": "es", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page: prepared, waiting for a courier to collect it from the sender." },
+    { "code": "FMD.1002", "wording": "Recogido por el mensajero", "language": "es", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page: the courier collected it." },
+    { "code": "MMD.1001", "wording": "Recibido en el centro logístico", "language": "es", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page." },
+    { "code": "MMD.1004", "wording": "En tránsito entre centros", "language": "es", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page." },
+    { "code": "LMD.1001", "wording": "En tránsito (último destino)", "language": "es", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page." },
+    { "code": "LMD.1002", "wording": "Paquete en el destino", "language": "es", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page: at the last depot, before the Punto Pack or locker shows it ready. Not in the page bundle's code list." },
+    { "code": "LMD.1004", "wording": "Listo para recoger en Punto Pack", "language": "es", "stage": "ready_for_pickup", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page; adapter result status out_for_delivery." },
+    { "code": "EOL.1001", "wording": "Entregado", "language": "es", "stage": "delivered", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "InPost Spain page: its instant is the delivery time." }
   ]
 }

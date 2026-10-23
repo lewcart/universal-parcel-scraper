@@ -7,6 +7,7 @@ import { isValidMondialRelayBarcode } from '../../core/detection/index.js';
 import { ChallengeError, InputRequiredError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps, singleFlight, takeTurn } from '../../core/runner/index.js';
+import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { firstOccurrence, isoTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
@@ -14,6 +15,7 @@ import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, trawlBody, type TrawlClient,
 import { transportOf } from '../../core/transport/transportOf.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { MondialRelayAppClient } from './app.js';
+import { inpostSpainTrackingUrl, isInpostSpainNumber, readInpostSpain } from './inpostSpain.js';
 import { classifyScan, classifyStatus, milestoneNumberStatus, scanSite } from './status.js';
 
 // Protocol provenance (inspected 2026-08-30):
@@ -32,7 +34,7 @@ const DEFAULT_TIMEOUT_MS = 90_000;
 const DEFAULT_DIRECT_TIMEOUT_MS = 10_000;
 const ZONE = 'Europe/Paris';
 const CREDENTIAL_MESSAGE = 'Mondial Relay tracking requires a 26-digit label barcode, a 10- or 12-digit shipment '
-  + 'number, or an 8-digit shipment number with the recipient postcode';
+  + 'number, an 8-digit shipment number with the recipient postcode, or an InPost Spain number (FV and eight digits)';
 
 interface MondialRelayCredential {
   shipment: string;
@@ -101,7 +103,15 @@ export function normalizeMondialRelayCredential(
     : { shipment, postcode };
 }
 
+/** A number as InPost Spain's page is asked it, when it is one of InPost Spain's own. */
+function inpostSpainNumber(rawShipment: string): string | null {
+  const number = typeof rawShipment === 'string' && rawShipment.length <= 64 ? rawShipment.trim().replace(/[\s.-]/g, '').toUpperCase() : '';
+  return isInpostSpainNumber(number) ? number : null;
+}
+
 export function mondialRelayTrackingUrl(rawShipment: string, rawPostcode = ''): string {
+  const inpost = inpostSpainNumber(rawShipment);
+  if (inpost) return inpostSpainTrackingUrl(inpost);
   const credential = normalizeMondialRelayCredential(rawShipment, rawPostcode);
   const url = new URL(TRACKING_PAGE);
   url.searchParams.set('numeroExpedition', credential.shipment);
@@ -367,6 +377,7 @@ export class MondialRelayTracker {
   readonly #trawl: TrawlClient | null;
   readonly #app: MondialRelayAppClient | null;
   readonly #fetcher: typeof fetch | undefined;
+  readonly #userAgent: string | undefined;
   readonly #recorder: StepRecorder;
   readonly #serialize = singleFlight();
 
@@ -383,6 +394,7 @@ export class MondialRelayTracker {
       ? new MondialRelayAppClient({ refreshToken: options.appRefreshToken, fetcher: transportOf(options.fetcher), userAgent: options.userAgent })
       : null;
     this.#fetcher = options.fetcher;
+    this.#userAgent = options.userAgent;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
     if (!Number.isFinite(this.timeoutMs) || this.timeoutMs <= 0) {
       throw new TypeError('Mondial Relay timeout must be positive');
@@ -390,6 +402,9 @@ export class MondialRelayTracker {
   }
 
   async fetch(rawShipment: string, rawPostcode = '', context: TrackingContext = {}): Promise<CarrierResult> {
+    // InPost Spain's own numbers are tracked on its page alone, with no browser or account.
+    const inpost = inpostSpainNumber(rawShipment);
+    if (inpost) return this.#inpostSpain(inpost, context);
     // One lookup at a time: the page token and the API call have to stay on the
     // same solved browser identity, and the app's access token is renewed once.
     return takeTurn(this.#serialize, 'Mondial Relay', context,
@@ -431,6 +446,15 @@ export class MondialRelayTracker {
         recovers: () => true,
         run: ({ remainingMs, signal }) => this.#trawlResult(trawl!, credential, performance.now() + remainingMs, signal),
       },
+    ]);
+  }
+
+  #inpostSpain(number: string, context: TrackingContext): Promise<CarrierResult> {
+    const read = (signal: AbortSignal, timeoutMs: number) => readInpostSpain(number, { signal, timeoutMs, fetcher: this.#fetcher, userAgent: this.#userAgent });
+    // A read that fails to reach the site, or hangs, gets one more: the first gets half of the budget.
+    return runSteps({ carrier: 'mondial-relay', budgetMs: context.budgetMs ?? 15_000, signal: context.signal, recorder: this.#recorder }, [
+      { id: 'inpost-es', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
+      networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
     ]);
   }
 
@@ -501,7 +525,8 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: 'mondial-relay', recordsSteps: true,
     // Cloudflare refuses every non-browser client of the website; the app step needs an account.
-    steps: ['app', 'trawl'],
+    // InPost Spain's own numbers are read from its page, retried once when it cannot be reached.
+    steps: ['app', 'trawl', 'inpost-es', 'retry'],
     track: (input, context) => tracker.fetch(input.number, input.postcode ?? '', context),
   };
 };

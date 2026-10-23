@@ -39,7 +39,9 @@
     ],
     "steps": [
       "app",
-      "trawl"
+      "trawl",
+      "inpost-es",
+      "retry"
     ],
     "browser": true
   },

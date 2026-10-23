@@ -48,17 +48,43 @@ jobs:
           set -euo pipefail
           run=true
           weekly=true
+          echo "Run $RUN_NUMBER, started by $EVENT at $(date -u +%FT%TZ)."
           if [ "$EVENT" = schedule ] || [ "$EVENT" = workflow_run ]; then
             # The day's canary starts at 02:41 UTC, the first slot.
             start="$(date -u +%F)T02:41:00Z"
-            if [ "$(date -u +%FT%TZ)" \< "$start" ]; then run=false; fi
-            earlier=$(gh api -X GET "repos/$GH_REPO/actions/workflows/carrier-canary.yml/runs" \
-              -f created=">=$(date -u +%F)" -F per_page=100 \
-              --jq "[.workflow_runs[] | select(.event == \"schedule\" or .event == \"workflow_run\")
-                | select(.created_at >= \"$start\" and .run_number < $RUN_NUMBER)] | length")
-            if [ "$earlier" != 0 ]; then run=false; fi
+            if [ "$(date -u +%FT%TZ)" \< "$start" ]; then
+              run=false
+              echo "The day's canary starts at $start."
+            fi
+            # The newest runs, unfiltered: a filtered list comes from a search
+            # index that sometimes returned no runs, and let several starts
+            # through in one day. The list is current once it shows this run.
+            runs=
+            for attempt in 1 2 3; do
+              runs=$(gh api -X GET "repos/$GH_REPO/actions/workflows/carrier-canary.yml/runs" -F per_page=100)
+              if jq -e --argjson number "$RUN_NUMBER" 'any(.workflow_runs[]; .run_number == $number)' <<<"$runs" >/dev/null; then break; fi
+              echo "Attempt $attempt: the run list does not show this run yet."
+              runs=
+              sleep 10
+            done
+            if [ -z "$runs" ]; then
+              echo "::error::The run list never showed this run, so the gate cannot tell whether the day's canary ran."
+              exit 1
+            fi
+            # A start cancelled while it waited for a running canary never
+            # reached its gate.
+            earlier=$(jq -r --arg start "$start" --argjson number "$RUN_NUMBER" '.workflow_runs[]
+              | select(.event == "schedule" or .event == "workflow_run")
+              | select(.created_at >= $start and .run_number < $number and .conclusion != "cancelled")
+              | "#\(.run_number), started by \(.event) at \(.created_at): \(.conclusion // .status)"' <<<"$runs")
+            if [ -n "$earlier" ]; then
+              run=false
+              echo "Automatic runs already started today:"
+              echo "$earlier"
+            fi
             if [ "$(date -u +%u)" != 1 ]; then weekly=false; fi
           fi
+          echo "run=$run weekly=$weekly"
           echo "run=$run" >>"$GITHUB_OUTPUT"
           echo "weekly=$weekly" >>"$GITHUB_OUTPUT"
 

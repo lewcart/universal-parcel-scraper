@@ -70,9 +70,18 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
   scans carry a date and a time with no zone. `com.sf.iapp` posts to
   `https://iccsp.sf-international.com/iccsp/api/app/queryRouteV1`, which requires a signed-in token.
 
+## Links
+
+The library reads SF's own waybills from links to its trackers: SF International's page,
+`sf-international.com/{site}/{lang}/support/querySupport/waybill?No={number}`, which fills its
+search from `No` and runs it, the Taiwan page, with the number in the fragment, and
+`sf-express.com` waybill detail pages.
+
 ## Limitations
 
 - Anonymous access may not cover every shipment class; restricted numbers get `60000`.
+- SF hands international parcels to local partners in some countries, but no reply seen names the
+  partner or its number, so there is no hand-off.
 - Weights, facility IDs, estimates and personal detail blocks are not read. At most 100 of 500 scans
   are kept, and a longer history is marked truncated.
 

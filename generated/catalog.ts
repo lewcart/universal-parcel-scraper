@@ -4043,6 +4043,16 @@ export const CARRIER_CATALOG = {
         ],
         "pathPattern": "^/tw/en/dynamic_function/waybill/$",
         "fragment": "^search/bill-number/(SF\\d{13}|\\d{12})$"
+      },
+      {
+        "domains": [
+          "sf-international.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/[a-z]{2}/)?support/querySupport/waybill(?:/mobile/result)?/?$",
+        "params": [
+          "No"
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [

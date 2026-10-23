@@ -84,4 +84,21 @@ describe('SF Express browser adapter', () => {
     expect((await instance.track({ number: NUMBER })).status).toBe('delivered');
     expect(parseTrackingInput(sfExpressTrackingUrl(NUMBER))).toMatchObject({ carrier: 'sf-express', trackingNumber: NUMBER, source: 'link', confidence: 'high' });
   });
+
+  it('reads SF International tracking links, which fill the number from No', () => {
+    for (const url of [
+      `https://www.sf-international.com/us/en/support/querySupport/waybill?No=${NUMBER}`,
+      `https://www.sf-international.com/cn/sc/support/querySupport/waybill?No=${NUMBER},SF0000000000002`,
+      `https://www.sf-international.com/vn/vi/support/querySupport/waybill/mobile/result?No=${NUMBER}&queryType=global`,
+      'https://www.sf-international.com/au/en/support/querySupport/waybill?No=123456789012',
+    ]) {
+      expect(parseTrackingInput(url), url).toMatchObject({ carrier: 'sf-express', source: 'link', confidence: 'high' });
+    }
+    expect(parseTrackingInput(`https://www.sf-international.com/us/en/support/querySupport/waybill?No=${NUMBER}`).trackingNumber).toBe(NUMBER);
+    // Another carrier's number in the field is detected on its own, and another page of the site names no carrier.
+    expect(parseTrackingInput('https://www.sf-international.com/us/en/support/querySupport/waybill?No=1Z999AA10123456784'))
+      .toMatchObject({ carrier: 'ups', source: 'link' });
+    expect(parseTrackingInput(`https://www.sf-international.com/us/en/support/querySupport/freight_aging?No=${NUMBER}`))
+      .toMatchObject({ carrier: 'unknown' });
+  });
 });

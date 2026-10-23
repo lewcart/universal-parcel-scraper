@@ -33,9 +33,20 @@ def tight_mask(mask):
     return mask[ys.min():ys.max() + 1, xs.min():xs.max() + 1] if len(xs) else None
 
 
-def normalized_mask(mask):
+def normalized_mask(mask, preserve_aspect=False):
     cropped = tight_mask(mask)
-    return None if cropped is None else cv2.resize(cropped, (64, 64), interpolation=cv2.INTER_AREA) > .35
+    if cropped is None:
+        return None
+    if not preserve_aspect:
+        return cv2.resize(cropped, (64, 64), interpolation=cv2.INTER_AREA) > .35
+    height, width = cropped.shape
+    scale = 64 / max(height, width)
+    resized = cv2.resize(cropped, (max(1, round(width * scale)), max(1, round(height * scale))),
+                         interpolation=cv2.INTER_AREA)
+    centered = np.zeros((64, 64), np.float32)
+    y, x = (64 - resized.shape[0]) // 2, (64 - resized.shape[1]) // 2
+    centered[y:y + resized.shape[0], x:x + resized.shape[1]] = resized
+    return centered > .35
 
 
 def locate_icons(challenge, background):
@@ -66,9 +77,9 @@ def locate_icons(challenge, background):
                 continue
             ys, xs = np.where(mask)
             center = (int(round(x + xs.mean())), int(round(y + ys.mean())))
-            duplicate = next((i for i, (point, _, _) in enumerate(candidates)
+            duplicate = next((i for i, (point, *_) in enumerate(candidates)
                               if np.hypot(point[0] - center[0], point[1] - center[1]) < 15), None)
-            candidate = (center, normalized_mask(mask), area)
+            candidate = (center, normalized_mask(mask), area, normalized_mask(mask, preserve_aspect=True))
             if duplicate is None:
                 candidates.append(candidate)
             elif candidates[duplicate][2] < area:
@@ -82,16 +93,37 @@ def locate_icons(challenge, background):
         if glyph is None or min(glyph.shape) < 8 or glyph.mean() > .95:
             return None
         square = np.pad(glyph, ((50, 50), (50, 50)))
-        scores = [0.] * len(candidates)
+        shapes = []
         for angle in range(-45, 46, 3):
             matrix = cv2.getRotationMatrix2D((square.shape[1] / 2, square.shape[0] / 2), angle, 1)
             rotated = cv2.warpAffine(square, matrix, (square.shape[1], square.shape[0]))
-            shape = normalized_mask(rotated)
-            for candidate, (_, mask, _) in enumerate(candidates):
-                scores[candidate] = max(scores[candidate], float((shape & mask).sum() / (shape | mask).sum()))
+            shapes.append((normalized_mask(rotated), normalized_mask(rotated, preserve_aspect=True)))
+
+        def similarities(preserve_aspect=False):
+            scores = [0.] * len(candidates)
+            for normalized in shapes:
+                shape = normalized[1 if preserve_aspect else 0]
+                for candidate, value in enumerate(candidates):
+                    mask = value[3 if preserve_aspect else 1]
+                    scores[candidate] = max(scores[candidate], float((shape & mask).sum() / (shape | mask).sum()))
+            return scores
+
+        scores = similarities()
         ranked = sorted(enumerate(scores), key=lambda item: -item[1])
         best, score = ranked[0]
-        if score < .68 or score - ranked[1][1] < .09 or best in chosen:
+        if score < .68:
+            return None
+        if score - ranked[1][1] < .09:
+            # Stretching both axes can make distinct proportions look alike.
+            # Resolve that ambiguity only with an independently distinct match
+            # that also belongs to the original set of plausible silhouettes.
+            proportional = sorted(enumerate(similarities(True)), key=lambda item: -item[1])
+            candidate, confidence = proportional[0]
+            if (confidence < .68 or confidence - proportional[1][1] < .09
+                    or scores[candidate] < .68 or score - scores[candidate] >= .09):
+                return None
+            best = candidate
+        if best in chosen:
             return None
         chosen.append(best)
     return {"points": [{"x": candidates[index][0][0], "y": candidates[index][0][1]} for index in chosen]}

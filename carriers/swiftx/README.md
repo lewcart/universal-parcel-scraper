@@ -13,6 +13,8 @@ tracking page. Shippers and forwarders hand parcels to SwiftX for the last mile.
    pointer controls. The page verifies the answer and submits tracking. At most two
    puzzles are attempted, with a refresh through the official control when a puzzle
    cannot be read. Ambiguous puzzles keep provider fallback.
+   Icon matching preserves proportions when stretching silhouettes to a square makes them ambiguous;
+   both comparisons must support the match, with a distinct proportional match required.
    The page then posts one
    `getOfficialWebsiteTrackingInfoBatch` query to `/api/graphql`, a batch holding the number and its
    verification tokens, and gets a compressed JSON reply. The service's capture helper keeps that reply

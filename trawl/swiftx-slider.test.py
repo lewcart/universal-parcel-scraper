@@ -65,6 +65,26 @@ def icon_puzzle(duplicate=False):
                 templateImageWidth=180, templateImageHeight=60, clickCount=3), positions
 
 
+def proportional_icons(duplicate=False):
+    glyphs = []
+    for axes in ((18, 18), (25, 12)):
+        glyph = np.zeros((60, 60), np.uint8)
+        cv2.ellipse(glyph, (30, 30), axes, 0, 0, 360, 255, -1)
+        glyphs.append(glyph)
+    template = np.full((60, 120, 4), 60, np.uint8)
+    template[:, :, 3] = np.concatenate(glyphs, axis=1)
+    background = np.full((240, 480, 3), 40, np.uint8)
+    positions = [(100, 100), (320, 160)]
+    for index, (x, y) in enumerate(positions):
+        mask = cv2.warpAffine(glyphs[index], cv2.getRotationMatrix2D((30, 30), 24 * index, 1), (60, 60))
+        background[y - 30:y + 30, x - 30:x + 30][mask > 128] = [(255, 120, 0), (0, 210, 255)][index]
+    if duplicate:
+        background[20:80, 250:310][glyphs[0] > 128] = (230, 0, 230)
+    return dict(type='ICON_CLICK', backgroundImage=png(background), templateImage=png(template),
+                backgroundImageWidth=480, backgroundImageHeight=240,
+                templateImageWidth=120, templateImageHeight=60, clickCount=2), positions
+
+
 class SliderTests(unittest.TestCase):
     def test_rotation_seam_and_uniform_ambiguity(self):
         height, width, radius = 360, 600, 90
@@ -113,6 +133,18 @@ class SliderTests(unittest.TestCase):
         actual = slider.locate(data)
         self.assertIsNotNone(actual)
         self.assertAlmostEqual(actual['points'][0]['x'], expected[0][0], delta=4)
+
+    def test_icon_proportions_resolve_stretched_silhouette_ambiguity(self):
+        data, expected = proportional_icons()
+        actual = slider.locate(data)
+        self.assertIsNotNone(actual)
+        for point, (x, y) in zip(actual['points'], expected):
+            self.assertAlmostEqual(point['x'], x, delta=4)
+            self.assertAlmostEqual(point['y'], y, delta=4)
+
+    def test_icon_proportions_still_reject_duplicate_shapes(self):
+        data, _ = proportional_icons(duplicate=True)
+        self.assertIsNone(slider.locate(data))
 
     def test_photograph_texture_disambiguates_a_faded_cutout(self):
         data = puzzle((150,))

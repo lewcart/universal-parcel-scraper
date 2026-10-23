@@ -2,8 +2,9 @@ import { usStateTimeZone } from '../../core/time/index.js';
 
 /** A place that ends its town with a state: "EXAMPLE CITY, NY 10001". */
 export const STATE_PATTERN = /,\s*([A-Z]{2})\b/;
-// A facility names its state before its kind: "EXAMPLE CITY NY DISTRIBUTION CENTER", "ISC EXAMPLE CITY NY (USPS)".
-const FACILITY_STATE = /\s([A-Z]{2})\s*(?:\(USPS\)|(?:(?:NETWORK|REGIONAL|INTERNATIONAL)\s+)?DISTRIBUTION\s+CENTER)$/;
+// A facility names its state before its kind: "EXAMPLE CITY NY DISTRIBUTION CENTER",
+// "EXAMPLE CITY PA PACKAGE SORTING CENTER", "ISC EXAMPLE CITY NY (USPS)".
+const FACILITY_STATE = /\s([A-Z]{2})\s*(?:\(USPS\)|(?:(?:NETWORK|REGIONAL|INTERNATIONAL)\s+)?DISTRIBUTION\s+CENTER|PACKAGE\s+SORTING\s+CENTER)$/;
 
 /**
  * The zone of a USPS scan's wall clock: that of the state its place names,

@@ -123,7 +123,8 @@ describe('USPS rendered page', () => {
 
   it('reads the state a facility names before its kind', () => {
     for (const [facility, time] of [['EXAMPLE NY DISTRIBUTION CENTER', '2025-03-14T12:17:00-04:00'],
-      ['EXAMPLE CITY CA NETWORK DISTRIBUTION CENTER', '2025-03-14T12:17:00-07:00'], ['ISC EXAMPLE CITY IL (USPS)', '2025-03-14T12:17:00-05:00']] as const) {
+      ['EXAMPLE CITY CA NETWORK DISTRIBUTION CENTER', '2025-03-14T12:17:00-07:00'], ['ISC EXAMPLE CITY IL (USPS)', '2025-03-14T12:17:00-05:00'],
+      ['EXAMPLE CITY PA PACKAGE SORTING CENTER', '2025-03-14T12:17:00-04:00']] as const) {
       const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('EXAMPLE CITY, NY 00000', facility), DELIVERED_NUMBER);
       expect(result.events?.[0], facility).toMatchObject({ location: facility, time });
     }

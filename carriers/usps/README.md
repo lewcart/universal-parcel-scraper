@@ -67,9 +67,10 @@ Parsing, in order:
   the delivery-partner handoff route.
 - Scan times are facility-local. The state in the location maps to a zone (multi-zone states
   use their majority zone); a facility without a comma names its state before its kind, as in
-  `EXAMPLE CITY NY DISTRIBUTION CENTER`. With no resolvable state the event keeps an offset-free
-  `local_time`, and the page's newest-first order is kept rather than re-sorted. A step USPS
-  dates by its day alone, as it does pre-shipment info, keeps that day as `local_time`.
+  `EXAMPLE CITY NY DISTRIBUTION CENTER` or `EXAMPLE CITY PA PACKAGE SORTING CENTER`. With no
+  resolvable state the event keeps an offset-free `local_time`, and the page's newest-first
+  order is kept rather than re-sorted. A step USPS dates by its day alone, as it does
+  pre-shipment info, keeps that day as `local_time`.
 - Delivered lines are rewritten to "Delivered" because USPS names the signatory.
 - "Available for Pickup" and a hold at the post office are stage `ready_for_pickup` but result
   status `out_for_delivery`. "Arrived at Post Office" is the delivering office's arrival before

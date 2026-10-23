@@ -20894,6 +20894,30 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "meihoo-pegasus": {
+    "displayName": "MeiHoo Pegasus",
+    "color": "#e0c060",
+    "aliases": [
+      "MeiHoo"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^MYH\\d{9}CN$",
+        "confidence": "high"
+      }
+    ]
+  },
   "messenger-cz": {
     "displayName": "Messenger",
     "color": "#fedf05",
@@ -32617,6 +32641,7 @@ export const CARRIER_IDS = [
   "mayiyinfu",
   "mds-collivery",
   "meest",
+  "meihoo-pegasus",
   "messenger-cz",
   "method",
   "metropolitan-warehouse",
@@ -33412,6 +33437,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "mayiyinfu": ["mayiyinfu-1"],
   "mds-collivery": [],
   "meest": ["meest-1"],
+  "meihoo-pegasus": ["meihoo-pegasus-1"],
   "messenger-cz": [],
   "method": [],
   "metropolitan-warehouse": ["metropolitan-warehouse-1"],

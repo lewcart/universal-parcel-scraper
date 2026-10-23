@@ -20892,6 +20892,30 @@
       }
     ]
   },
+  "meihoo-pegasus": {
+    "displayName": "MeiHoo Pegasus",
+    "color": "#e0c060",
+    "aliases": [
+      "MeiHoo"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^MYH\\d{9}CN$",
+        "confidence": "high"
+      }
+    ]
+  },
   "messenger-cz": {
     "displayName": "Messenger",
     "color": "#fedf05",

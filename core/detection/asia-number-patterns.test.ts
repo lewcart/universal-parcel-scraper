@@ -157,6 +157,15 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     }
   });
 
+  it('names MeiHoo Pegasus for MYH, nine digits and CN, and only that layout', () => {
+    for (const number of ['MYH900000001CN', 'myh 900 000 001 cn']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'meihoo-pegasus', confidence: 'high', candidates: ['meihoo-pegasus'] });
+    }
+    for (const number of ['MYH90000001CN', 'MYH9000000001CN', 'MYH900000001US', 'MYX900000001CN', 'MYH900000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('meihoo-pegasus');
+    }
+  });
+
   it('names Techlink for its dated ZHPHD waybills ending in ML', () => {
     expect(detectCarrierMatch('ZHPHD260101000001ML')).toMatchObject({ carrier: 'techlink', confidence: 'high', candidates: ['techlink'] });
     expect(detectCarrierMatch('zhphd 260101 000001 ml')).toMatchObject({ carrier: 'techlink', confidence: 'high' });

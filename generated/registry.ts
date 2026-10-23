@@ -1689,6 +1689,7 @@ export const REGISTRY: RegistryDefinition = {
     "mayiyinfu": "mayiyinfu",
     "mds-collivery": "mds-collivery",
     "meest": "meest",
+    "meihoo-pegasus": "universal",
     "messenger-cz": "messenger-cz",
     "method": "universal",
     "metropolitan-warehouse": "metropolitan-warehouse",

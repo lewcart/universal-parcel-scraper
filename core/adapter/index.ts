@@ -7,7 +7,7 @@
  * declares its steps; it reaches the network only through what the
  * `AdapterEnvironment` provides, and it reports through the `StepRecorder`.
  */
-import { BudgetExceededError, carrierErrorKind, InvalidInputError } from '../errors/index.js';
+import { BudgetExceededError, CarrierError, carrierErrorKind, InvalidInputError } from '../errors/index.js';
 import { normalizeCarrierResult, type CarrierResult } from '../result/index.js';
 import type { StepRecorder } from '../telemetry/index.js';
 import type { TrawlClient } from '../transport/trawl.js';
@@ -144,6 +144,16 @@ export function accepted(check: () => unknown): boolean {
   }
 }
 
+/** The first carrier error in the chain asks for an input to show a parcel the carrier holds. */
+function foundBehindInput(error: unknown): boolean {
+  const seen = new Set<unknown>();
+  for (let current = error; current instanceof Error && !seen.has(current) && seen.size < 8; current = current.cause) {
+    seen.add(current);
+    if (current instanceof CarrierError) return current.kind === 'input_required' && current.reason === 'parcel_found';
+  }
+  return false;
+}
+
 export async function recognizeFromLookup(
   lookup: () => Promise<CarrierResult>,
   accepts: () => boolean = () => true,
@@ -155,6 +165,8 @@ export async function recognizeFromLookup(
   } catch (error) {
     // A number the carrier does not issue is as unknown to it as one it cannot find.
     if (['not_found', 'invalid_input'].includes(carrierErrorKind(error) ?? '')) return { known: false };
+    // The carrier holds the parcel and shows it only once the recipient gives an input, such as a postcode.
+    if (foundBehindInput(error)) return { known: true, lastActivityAt: null };
     throw error;
   }
   // Local clocks and malformed dates name no instant.

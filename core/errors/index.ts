@@ -120,6 +120,10 @@ export class SchemaError extends CarrierError {
   }
 }
 
+/**
+ * The lookup needs an input the parcel does not have. With the reason `parcel_found` the carrier
+ * holds the parcel and shows it only with that input, so recognition counts the number as known.
+ */
 export class InputRequiredError extends CarrierError {
   readonly field: string;
   /**

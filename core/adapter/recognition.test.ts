@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { InvalidInputError, NotFoundError, UpstreamHttpError } from '../errors/index.js';
+import { InputRequiredError, InvalidInputError, NotFoundError, UpstreamHttpError } from '../errors/index.js';
 import { REGISTRY } from '../../generated/registry.js';
 import { NOOP_RECORDER } from '../telemetry/index.js';
 import { AdapterRegistry, accepted, recognizeFromBrowserLookup, recognizeFromLookup } from './index.js';
@@ -85,6 +85,19 @@ describe('recognition from a plain lookup', () => {
     await expect(recognizeFromLookup(async () => ({ status: 'in_transit', events: [{ time: '27/09/2026 08:15', description: 'Sorted' }] })))
       .resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-09-27T08:15:00' });
     await expect(recognizeFromLookup(async () => { throw new UpstreamHttpError('Carrier', 503); })).rejects.toThrow();
+  });
+
+  it('knows a parcel the carrier holds behind the recipient\'s postcode, and no number a form asks a postcode for', async () => {
+    const held = new InputRequiredError('Carrier', 'a postcode', undefined, { reason: 'parcel_found' });
+    await expect(recognizeFromLookup(async () => { throw held; })).resolves.toEqual({ known: true, lastActivityAt: null });
+    // A step runner's wrapper keeps the answer.
+    await expect(recognizeFromLookup(async () => { throw new Error('direct failed', { cause: held }); }))
+      .resolves.toEqual({ known: true, lastActivityAt: null });
+    // A carrier that asks every number for a postcode says nothing about this one.
+    await expect(recognizeFromLookup(async () => { throw new InputRequiredError('Carrier', 'a postcode'); }))
+      .rejects.toMatchObject({ kind: 'input_required' });
+    await expect(recognizeFromLookup(async () => { throw new InputRequiredError('Carrier', 'a postcode', undefined, { reason: 'postcode_mismatch' }); }))
+      .rejects.toMatchObject({ kind: 'input_required' });
   });
 });
 

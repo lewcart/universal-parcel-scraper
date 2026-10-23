@@ -67,7 +67,8 @@ Parsing, in order:
   the delivery-partner handoff route.
 - Scan times are facility-local. The state in the location maps to a zone (multi-zone states
   use their majority zone); a facility without a comma names its state before its kind, as in
-  `EXAMPLE CITY NY DISTRIBUTION CENTER` or `EXAMPLE CITY PA PACKAGE SORTING CENTER`. With no
+  `EXAMPLE CITY NY DISTRIBUTION CENTER` or `EXAMPLE CITY PA PACKAGE SORTING CENTER`. A place
+  that gives only a ZIP code is in that ZIP code's state, by its three-digit prefix. With no
   resolvable state the event keeps an offset-free `local_time`, and the page's newest-first
   order is kept rather than re-sorted. A step USPS dates by its day alone, as it does
   pre-shipment info, keeps that day as `local_time`.

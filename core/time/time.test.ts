@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   calendarDay, countryCode, countryTimeZone, epochMillisTime, epochSecondsTime, explicitOffsetTime, firstOccurrence, isoTime, mislabeledLocalTime,
   mislabeledWallTime, canadaProvinceTimeZone, postalOfficeZone, regionHasTown, settleGuessedClocks, sharedClockZone, timeZoneCountry, townKey,
-  usStateTimeZone, zonedTime,
+  usStateTimeZone, usZipState, zonedTime,
 } from './index.js';
 
 describe('time policies', () => {
@@ -179,6 +179,17 @@ describe('time policies', () => {
     expect(usStateTimeZone(' ny ')).toBe('America/New_York');
     expect(usStateTimeZone('PR')).toBe('America/Puerto_Rico');
     for (const value of ['ON', 'US', '', undefined]) expect(usStateTimeZone(value)).toBeNull();
+  });
+
+  it('places a US ZIP code in its state by its prefix', () => {
+    expect(usZipState('94000')).toBe('CA');
+    expect(usZipState(' 00600-0000 ')).toBe('PR');
+    // A prefix without ZCTAs inside one state's run is that state's.
+    expect(usZipState('19200')).toBe('PA');
+    // Another state's prefixes inside a run, military, unassigned and boundary prefixes have no state.
+    for (const value of ['05500', '73300', '09000', '34000', '96200', '00000', '56800', '1000', '100000', 10000, undefined]) {
+      expect(usZipState(value), String(value)).toBeNull();
+    }
   });
 
   it('maps Canadian provinces and territories to their majority zone', () => {

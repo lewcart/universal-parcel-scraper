@@ -132,6 +132,19 @@ describe('USPS rendered page', () => {
     expect(unnamed.events?.[0]).toMatchObject({ local_time: '2025-03-14T12:17:00' });
   });
 
+  it('reads a place that gives only its ZIP code in the state of that ZIP code', () => {
+    for (const [place, time] of [['EXAMPLE CITY 94000', '2025-03-14T12:17:00-07:00'], ['60000', '2025-03-14T12:17:00-05:00'],
+      ['EXAMPLE CITY 10000-0000', '2025-03-14T12:17:00-04:00']] as const) {
+      const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('EXAMPLE CITY, NY 00000', place), DELIVERED_NUMBER);
+      expect(result.events?.[0], place).toMatchObject({ location: place, time });
+    }
+    // A military or unassigned prefix, or a place with other digits, gives no state.
+    for (const place of ['EXAMPLE 09000', 'EXAMPLE CITY 00000', 'EXAMPLE 1 60000']) {
+      const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('EXAMPLE CITY, NY 00000', place), DELIVERED_NUMBER);
+      expect(result.events?.[0], place).toMatchObject({ local_time: '2025-03-14T12:17:00' });
+    }
+  });
+
   it('keeps the day of a date-only update without inventing a clock time', () => {
     const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('March 14, 2025 12:17 PM', 'March 14, 2025'), DELIVERED_NUMBER);
     expect(result.events?.[0]).toMatchObject({ description: 'Delivered', local_time: '2025-03-14' });

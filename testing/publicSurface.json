@@ -120,6 +120,7 @@
       "universalSourceBudget",
       "universalSources",
       "usStateTimeZone",
+      "usZipState",
       "uspsPackageIdentifier",
       "validTrackingNumber",
       "validateDachserTrackingUrl",

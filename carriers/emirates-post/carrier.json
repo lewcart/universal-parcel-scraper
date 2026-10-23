@@ -88,6 +88,12 @@
   ],
   "detection": [
     {
+      "id": "emirates-post-own",
+      "pattern": "^[CELR][A-Z]\\d{9}AE$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "emirates-post-s10",
       "pattern": "^[A-Z]{2}\\d{9}AE$",
       "confidence": "low",

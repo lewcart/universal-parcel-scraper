@@ -10,9 +10,17 @@ the official public tracker. An identifier is confirmed only by a matching track
    history. Both the page query and its one result must name the whole requested identifier.
 
 Requires the optional TRAWL service. Recognition through this path is browser-only and opt-in.
-The own-country S10 rule offers a candidate; shared domestic digits remain unclaimed without
-an explicit carrier or tracking link. Verification and rate limits stay distinct from the
-page's explicit not-found response. Enabled universal providers remain available.
+Verification and rate limits stay distinct from the page's explicit not-found response. Enabled
+universal providers remain available.
+
+## Numbers
+
+Detection names Emirates Post for the parcels, EMS, registered and tracked-letter items it
+issues: `C`, `E`, `L` or `R` first, `AE` last and a passing check digit. Its tracker relays the
+destination post's events of an item sent abroad, such as import customs and the delivery depot.
+Its other `AE` codes stay with the generic postal carrier and are offered for browser
+confirmation. Shared domestic digits remain unclaimed without an explicit carrier or tracking
+link.
 
 ## Notes
 

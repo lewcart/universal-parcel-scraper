@@ -68841,13 +68841,10 @@
   },
   {
     "input": "CP410098760AE",
-    "carrier": "intl-post",
+    "carrier": "emirates-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "emirates-post"
     ]
   },
   {
@@ -71576,13 +71573,10 @@
   },
   {
     "input": "EG616814097AE",
-    "carrier": "intl-post",
+    "carrier": "emirates-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "emirates-post"
     ]
   },
   {
@@ -78245,13 +78239,10 @@
   },
   {
     "input": "LA000351483AE",
-    "carrier": "intl-post",
+    "carrier": "emirates-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "emirates-post"
     ]
   },
   {
@@ -86399,13 +86390,10 @@
   },
   {
     "input": "RR000137661AE",
-    "carrier": "intl-post",
+    "carrier": "emirates-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "emirates-post"
     ]
   },
   {
@@ -86945,13 +86933,10 @@
   },
   {
     "input": "RR513022184AE",
-    "carrier": "intl-post",
+    "carrier": "emirates-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "emirates-post"
     ]
   },
   {

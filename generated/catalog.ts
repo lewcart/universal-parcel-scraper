@@ -2032,7 +2032,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -12873,6 +12873,11 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^[CELR][A-Z]\\d{9}AE$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
       {
         "pattern": "^[A-Z]{2}\\d{9}AE$",
         "confidence": "low",
@@ -33178,7 +33183,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ekart": ["ekart-ecommerce","ekart-merchant"],
   "elta": ["elta-s10"],
   "emile": ["emile-1","emile-2"],
-  "emirates-post": ["emirates-post-s10"],
+  "emirates-post": ["emirates-post-own","emirates-post-s10"],
   "ems-vietnam": ["ems-vietnam-s10"],
   "energia-tk": [],
   "energo": ["energo-1"],

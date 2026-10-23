@@ -20,6 +20,16 @@ const atShop = (code: string): Array<Record<string, unknown>> => [{
     { parcelStatus: code, timestamp: '2026-09-03T09:00:00Z', historyText: 'Synthetic wording' },
   ],
 }];
+// A parcel handed to a partner abroad, with the link the page shows for that partner.
+const abroad = (link: unknown, newest = 'INTERNATIONAL_ARRIVED_IN_COUNTRY'): Array<Record<string, unknown>> => [{
+  barcode: NUMBER,
+  parcelAttributes: { national: false },
+  viewParameters: { internationalTrackingLink: link },
+  parcelProgress: [
+    { parcelStatus: 'SORTED', timestamp: '2026-09-02T09:00:00Z' },
+    { parcelStatus: newest, timestamp: '2026-09-04T09:00:00Z' },
+  ],
+}];
 const capabilities = (JSON.parse(
   readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'),
 ) as { capabilities: string[] }).capabilities;
@@ -38,7 +48,8 @@ describe('Hermes Germany', () => {
   });
 
   it('covers every capability declared in carrier.json', () => {
-    expect(capabilities).toEqual(['history', 'eta', 'sender_name', 'delivered_at', 'pickup_point', 'provider_code']);
+    expect(capabilities).toEqual(['history', 'eta', 'sender_name', 'delivered_at', 'pickup_point', 'provider_code',
+      'delivery_partner', 'delivery_tracking_number']);
     const result = parseHermesGermanyResponse(delivered(), NUMBER);
     expect(result.events?.length).toBeGreaterThan(0);
     expect(result.events?.some((event) => event.provider_code)).toBe(true);
@@ -47,6 +58,8 @@ describe('Hermes Germany', () => {
     const active = parseHermesGermanyResponse(outForDelivery(), NUMBER);
     expect(active).toMatchObject({ status: 'out_for_delivery', expected_delivery: '2026-09-03' });
     expect(parseHermesGermanyResponse(atShop('PARCELSHOP_READY_FOR_COLLECTION'), NUMBER).pickup_point).toBeTruthy();
+    expect(parseHermesGermanyResponse(abroad('https://tracking.postnord.com/en/?id=00370000000000000017'), NUMBER))
+      .toMatchObject({ delivery_carrier: 'postnord', delivery_tracking_number: '00370000000000000017' });
   });
 
   it('ignores the pre-announcement preference booking', () => {
@@ -152,6 +165,31 @@ describe('Hermes Germany', () => {
     // A delivery abroad before any parcel-shop miss stays a delivery.
     const delivered = parseHermesGermanyResponse(reply([rows[0]!, rows[1]!, rows[5]!]), NUMBER);
     expect(delivered).toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+  });
+
+  it('names the partner abroad and its number from the link the page gives for that partner', () => {
+    for (const [link, carrier, number] of [
+      ['https://www.postnord.dk/en/track-and-trace?shipmentId=00370000000000000017', 'postnord', '00370000000000000017'],
+      ['https://www.correos.es/es/es/herramientas/localizador/envios/detalle?tracking-number=PQ0ZZZ0000000000000000X', 'correos-spain', 'PQ0ZZZ0000000000000000X'],
+      ['https://inpost.pl/sledzenie-przesylek?number=600000000000000000000000', 'inpost', '600000000000000000000000'],
+      ['https://www.hrparcel.com/traccia-spedizioni/?barcode=' + NUMBER, 'hr-parcel', NUMBER],
+      ['https://www.postaonline.cz/trackandtrace/-/zasilka/DR0000000000CZ', 'ceska-posta', 'DR0000000000CZ'],
+      ['https://tracking.dpd.de/status/en_US/parcel/01234567890123', 'dpd-de', '01234567890123'],
+    ]) {
+      expect(parseHermesGermanyResponse(abroad(link), NUMBER), link)
+        .toMatchObject({ status: 'in_transit', delivery_carrier: carrier, delivery_tracking_number: number });
+    }
+    // An unmapped newest row keeps the partner too.
+    expect(parseHermesGermanyResponse(abroad('https://inpost.pl/sledzenie-przesylek?number=600000000000000000000000', 'NEW_CODE'), NUMBER))
+      .toMatchObject({ status: 'unknown', delivery_carrier: 'inpost' });
+    // A home page, a host no catalog link belongs to (whatever shape its number has), Hermes's own
+    // page and a link that is no URL name no partner.
+    for (const link of ['https://www.post.at/', 'https://partner.example/track?id=EE123456785CN',
+      `https://www.myhermes.de/empfangen/sendungsverfolgung/sendungsinformation#${NUMBER}`, 'Sendungsdetails', 42, null]) {
+      const result = parseHermesGermanyResponse(abroad(link), NUMBER);
+      expect(result, String(link)).not.toHaveProperty('delivery_carrier');
+      expect(result, String(link)).not.toHaveProperty('delivery_tracking_number');
+    }
   });
 
   it('does not give an unknown historical update the delivered shipment stage', () => {

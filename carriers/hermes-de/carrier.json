@@ -31,7 +31,9 @@
     "sender_name",
     "delivered_at",
     "pickup_point",
-    "provider_code"
+    "provider_code",
+    "delivery_partner",
+    "delivery_tracking_number"
   ],
   "portal": {
     "url": "https://www.myhermes.de/empfangen/sendungsverfolgung/sendungsinformation#{trackingNumber}",

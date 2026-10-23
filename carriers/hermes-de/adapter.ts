@@ -1,7 +1,8 @@
 
 import { DateTime } from 'luxon';
 import { lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { isValidHermesParcelNumber } from '../../core/detection/index.js';
+import { carrierLinkRules, matchesDomain } from '../../core/catalog/linkRules.js';
+import { isValidHermesParcelNumber, normalizeTrackingNumber, parseTrackingInput } from '../../core/detection/index.js';
 import { InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { firstOccurrence } from '../../core/time/index.js';
@@ -76,6 +77,23 @@ function parcelShop(parcel: Record<string, unknown>, latest: { metadata?: Milest
 }
 
 /**
+ * The partner abroad Hermes handed the parcel to and its number there, from the
+ * link the tracking page shows as the international delivery partner. Both stand
+ * when the catalog's link rules read them from it, on a host of that carrier's
+ * own links. The link is never followed.
+ */
+function internationalPartner(view: Record<string, unknown>): Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'> {
+  const link = clean(view.internationalTrackingLink, 2_000);
+  let host: string;
+  try { host = new URL(link).hostname.toLowerCase(); } catch { return {}; }
+  const match = parseTrackingInput(link);
+  if (match.source !== 'link' || match.confidence !== 'high' || match.carrier === 'unknown' || match.carrier === 'hermes-de'
+    || !carrierLinkRules(match.carrier).some((rule) => rule.domains.some((domain) => matchesDomain(host, domain)))) return {};
+  const number = normalizeTrackingNumber(match.trackingNumber).toUpperCase();
+  return /^[A-Z0-9]{4,40}$/.test(number) ? { delivery_carrier: match.carrier, delivery_tracking_number: number } : {};
+}
+
+/**
  * A 14-digit number failing the barcode check digit is no Hermes barcode but a
  * reference, which the search resolves to its parcel as the tracking page does.
  * With `references`, that one parcel answers and names its own barcode.
@@ -147,6 +165,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
   // Once Hermes clears it, a box delivery that is still the newest row has
   // been taken out.
   const view = isRecord(parcel.viewParameters) ? parcel.viewParameters : {};
+  const partner = internationalPartner(view);
   const boxReady = view.readyForParcelBoxCollection;
   const latestCode = latest.event.provider_code;
   const readsDelivered = !latest.metadata || latest.metadata.stage === 'delivered';
@@ -170,6 +189,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
       timezone: 'Europe/Berlin',
       ...(sender ? { sender_name: sender } : {}),
       ...(reference ? { canonical_tracking_number: barcode } : {}),
+      ...partner,
       events: events.slice(0, 100).map(({ event }) => event),
     };
   }
@@ -188,6 +208,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
     ...(deliveredAt && status === 'delivered' ? { delivered_at: deliveredAt } : {}),
     ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
     ...(reference ? { canonical_tracking_number: barcode } : {}),
+    ...partner,
     events: events.slice(0, 100).map(({ event }) => event),
   };
 }

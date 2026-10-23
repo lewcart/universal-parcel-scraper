@@ -50,6 +50,13 @@ with their own offset (falling back to `Europe/Berlin`) and stored as UTC.
   (`INTERNATIONAL_PUDO_NOT_COLLECTED`) goes back to the sender. A later
   `INTERNATIONAL_DELIVERED` is its hand-over on that way, so it reads as
   returned rather than delivered.
+- Abroad, a partner such as PostNord, InPost or Correos delivers the parcel.
+  The tracking page links the partner's tracking page as the international
+  delivery partner (`viewParameters.internationalTrackingLink`). When the
+  catalog's link rules read a carrier and its number from that link, on a host
+  of that carrier's own links, they become `delivery_carrier` and
+  `delivery_tracking_number`. A number's shape alone names no partner, since
+  any host can carry one. The link is never followed.
 - `EDL_BOOKED_DROPOFF` and `EDL_BOOKED_PARCELSHOP` are dropped: they are the
   recipient's delivery preference (a safe place, a ParcelShop), not a movement,
   and as the newest row they would move the parcel backwards.
@@ -79,6 +86,8 @@ with their own offset (falling back to `Europe/Berlin`) and stored as UTC.
 ## Limitations
 
 - History rows carry no scan location.
+- A partner whose tracking links have no catalog rule, Austrian Post's for
+  one, or a link to a home page leaves the partner unnamed.
 - History expires: an old delivered number answers 404, shown as not found.
 - Hermes answers 403 to some networks, including GitHub runners.
 - The `address` block is read only for a ParcelShop. A home, neighbour or

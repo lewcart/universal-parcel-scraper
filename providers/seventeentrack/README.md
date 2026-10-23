@@ -107,8 +107,11 @@ carrier.
 - USPS's leg (carrier key 21051) shows USPS's wall clocks, each the scanning facility's,
   and 17TRACK puts on each an offset it guesses from the scan's state: right in Arizona, but
   `-05:00` in Indiana, which keeps Eastern time, an hour late against USPS's own page. A row
-  whose place names its state is read in that state's zone, as the
+  whose place names its state or gives a ZIP code is read in that state's zone, as the
   [USPS adapter](../../carriers/usps/README.md) reads it; any other keeps 17TRACK's reading.
+  A step USPS dates by its day alone, such as a label printed at a post office, comes at
+  midnight under 17TRACK's offset; it keeps its day as `local_time`, as on USPS's page. A
+  USPS scan at exactly midnight is read the same way.
 - Correos de Chile's leg (carrier key 3101) shows its wall clocks, and 17TRACK labels them
   `-04:00`, Chile's offset outside summer time, in summer too: an hour late against
   Correos de Chile's page and Correios Brazil's copies. That leg's `time_raw` is read on

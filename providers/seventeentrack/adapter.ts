@@ -181,11 +181,20 @@ const DAI_POST = 100790;
  * facility's (`time_raw` has no zone), and puts on each an offset it guesses
  * from the scan's state: Arizona's came right, but a distribution center in
  * Indiana, on Eastern time, came under -05:00, an hour late against USPS's own
- * page (checked 2026-10-22). A row whose place names its state is read in that
- * state's zone, as USPS's adapter reads it (carriers/usps/clock.ts); any other
- * keeps 17TRACK's reading, the last guess.
+ * page (checked 2026-10-22). A row whose place names its state, or gives a ZIP
+ * code, is read in that state's zone, as USPS's adapter reads it
+ * (carriers/usps/clock.ts); any other keeps 17TRACK's reading, the last guess.
+ * A step USPS dates by its day alone, such as a label printed at a post office,
+ * comes at midnight under 17TRACK's offset; it keeps its day, as on USPS's page.
  */
 const USPS = 21051;
+
+/** The day of a USPS row 17TRACK shows at midnight, or without a clock, under an offset of its own. */
+function uspsDay(raw: Record<string, unknown>): string | null {
+  const clock = isRecord(raw.time_raw) ? raw.time_raw : null;
+  if (!clock || clock.timezone !== null || typeof clock.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(clock.date)) return null;
+  return clock.time == null || clock.time === '00:00:00' ? clock.date : null;
+}
 
 /**
  * 17TRACK's carrier 3101, Correos de Chile, shows Correos de Chile's wall
@@ -403,6 +412,14 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }
       catch (cause) { throw new SchemaError(SOURCE, '17TRACK returned an invalid tracking event', { cause }); }
       if (!parsed) continue;
+      const day = usps ? uspsDay(raw) : null;
+      if (day) {
+        const local: CarrierEvent = { ...parsed, local_time: day };
+        delete local.time;
+        events.push(local);
+        latest.see(day, false);
+        continue;
+      }
       if (wall && (abroad.has(index) || shiprocket) && !zone) {
         // A scan NZ Post dated abroad, in a country on several clocks, or a Shiprocket row outside India, keeps its description as a wall time.
         const local: CarrierEvent = { ...parsed, local_time: wall };

@@ -217,6 +217,13 @@ describe('UPS structured response', () => {
     ], { progressBarType: 'Exception' }), TRACKING_NUMBER, TODAY))
       .toMatchObject({ status: 'exception', current_stage: 'failed_attempt', current_stage_source: 'carrier_map' });
 
+    // A wrong receiver or company name holds the delivery until UPS has the right one.
+    expect(parseUPSTrackingResponse(withScans([
+      scan('AD', 'The company or receiver name is incorrect. This will delay delivery. We&#39;re attempting to update the information.', '20260905 14:25:10'),
+      scan('OT', 'Out For Delivery Today', '20260905 06:53:02'),
+    ], { progressBarType: 'Exception' }), TRACKING_NUMBER, TODAY))
+      .toMatchObject({ status: 'exception', current_stage: 'exception', current_stage_source: 'carrier_map' });
+
     // A code the map does not know leaves the stage to the shared classifier.
     const unmapped = parseUPSTrackingResponse(withScans([
       scan('X9', 'Wording UPS has not used before', '20260806 15:50:00'),

@@ -91,6 +91,9 @@ const ACTIVITY_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   // Receiver absent, absent again at the final attempt, business closed, or
   // diverted to an access point after a failed attempt.
   ['48', 'failed_attempt'], ['49', 'failed_attempt'], ['G3', 'failed_attempt'], ['5R', 'failed_attempt'],
+  // The receiver's or company's name is wrong, which holds the delivery until
+  // UPS has the right one.
+  ['AD', 'exception'],
   // Delivered to an access point, and held there.
   ['2Q', 'ready_for_pickup'], ['ZP', 'ready_for_pickup'],
   // Delivered, including collection from an access point and delivery by the

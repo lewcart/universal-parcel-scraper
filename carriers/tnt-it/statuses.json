@@ -1,6 +1,7 @@
 {
   "carrier": "tnt-it",
   "entries": [
+    {"code": "0", "wording": "Spedizione non ancora affidata a FedEx", "language": "it", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-10-23", "note": "Booked, not yet handed to FedEx: the only scan of a shipment that has not moved."},
     {"code": "P", "wording": "Spedizione affidata a una FedEx Location in attesa di ritiro del corriere", "language": "it", "stage": "accepted", "confirmedBy": "live", "note": "The sender left the parcel at a FedEx Location; the courier has yet to collect it. Its depot is empty."},
     {"code": "07", "wording": "La spedizione e' regolarmente partita", "language": "it", "stage": "in_transit", "confirmedBy": "live", "note": "Scanned out of the origin depot."},
     {"code": "12", "wording": "La spedizione e' in transito", "language": "it", "stage": "in_transit", "confirmedBy": "live"},

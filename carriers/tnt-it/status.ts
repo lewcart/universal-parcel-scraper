@@ -6,6 +6,8 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
  * decides. Only codes seen in replies are mapped; another code has no stage.
  */
 const CODES: ReadonlyMap<string, Stage> = new Map([
+  // Booked, not yet handed to FedEx: the only scan of a shipment that has not moved.
+  ['0', 'registered'],
   ['P', 'accepted'], // Left at a FedEx Location for the courier to collect.
   ['07', 'in_transit'], // Left the origin depot.
   ['12', 'in_transit'],

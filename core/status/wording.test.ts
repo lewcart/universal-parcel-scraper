@@ -774,6 +774,7 @@ describe('classifyWording', () => {
       ['The flight landed, and the board was dismantled and cleared', 'in_transit'],
       ['Courier Pick-up', 'accepted'], ['Received in Office', 'in_transit'], ['Export to foreign provider', 'in_transit'],
       ['Parcel Stored by Customer', 'accepted'], ['Scan out - hub', 'in_transit'],
+      ['Attempted but unfinished drop off at locker', 'registered'], ['Received by partner carrier', 'in_transit'],
       ['Registered and being prepared', 'registered'], ['Left the branch', 'in_transit'], ['Left the branch 3', 'in_transit'],
       ['Collo in der nox Niederlassung eingetroffen. Sendung eingetroffen', 'in_transit'],
       ['Collo von der nox Niederlassung weiterverladen. Sendung weiterverladen', 'in_transit'],

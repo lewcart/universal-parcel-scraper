@@ -381,6 +381,12 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // outbound scan.
   if (/^parcel stored by (?:the )?customer$/.test(text)) return 'accepted';
   if (/^scan out hub$/.test(text)) return 'in_transit';
+  // Vinted Go's scan, as Postal Ninja relays it, for a sender who began a drop-off at a locker and did not
+  // finish it: the parcel is still with the sender, between the label and the drop-off.
+  if (/^attempted but unfinished drop[- ]?off at (?:the |a )?locker$/.test(text)) return 'registered';
+  // A partner network taking the parcel over mid-journey, as ParcelsApp relays it between a post's export
+  // scans and the destination's freight scans.
+  if (/^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:(?:has been|was) )?received by (?:the |a |our )?partner carrier$/.test(text)) return 'in_transit';
   if (/^(?:received in office|export to foreign provider)$/.test(text)) return 'in_transit';
   // Sent on to another country: "Sent abroad".
   if (/^(?:(?:the )?(?:shipment|parcel|package|item) )?(?:(?:has been|was) )?(?:sent|dispatched|forwarded) abroad$/.test(text)) return 'in_transit';

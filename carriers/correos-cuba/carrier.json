@@ -17,17 +17,48 @@
   "timezone": "America/Havana",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "correos-cuba",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "searchUrl": "https://www.correos.cu/rastreador-de-envios/",
     "canaryUrl": "https://www.correos.cu/rastreador-de-envios/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin_country",
+      "destination_country",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "origin_country",
+      "destination_country",
+      "progress_rail"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "recipient_name",
+      "sender_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [],
   "detection": []

@@ -9936,7 +9936,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Havana",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correos-cuba",
+      "localClocks": true
     },
     "canaryUrl": "https://www.correos.cu/rastreador-de-envios/",
     "trackingSearchUrl": "https://www.correos.cu/rastreador-de-envios/",

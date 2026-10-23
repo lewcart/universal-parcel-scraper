@@ -169,6 +169,22 @@ describe('Swiss Post historical event codes', () => {
     expect(customs.events?.map((event) => event.time)).toEqual(['2026-08-09T14:30:00+08:00', '2026-08-07T11:05:00+08:00']);
   });
 
+  it('reads a London office of exchange\'s events on a parcel from abroad on London\'s clock', () => {
+    const history = [
+      { eventCode: 'PARCEL.*.2.1202', timestamp: '2026-10-23T18:38:15+02:00', city: 'Example Paketzentrum', zip: '000000', country: 'CH' },
+      { eventCode: 'PARCEL.*.2.915', timestamp: '2026-10-16T17:57:00+02:00', city: 'LON E ET BEA' },
+      { eventCode: 'PARCEL.*.2.913', timestamp: '2026-10-16T17:27:00+02:00', city: 'LON E ET BEA' },
+      { eventCode: 'PARCEL.*.2.912', timestamp: '2026-10-16T16:57:00+02:00', city: 'Belgian Post' },
+    ];
+    const clocks = (shipment: Record<string, unknown>) => parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED', ...shipment }, history)
+      .events?.map((event) => event.time);
+    // UPU has the departure at 17:57 +01:00. The posting names a post, not an office, and keeps Swiss Post's offset.
+    expect(clocks({ internationalImport: true, recipientCountry: 'CH' })).toEqual([
+      '2026-10-23T18:38:15+02:00', '2026-10-16T17:57:00+01:00', '2026-10-16T17:27:00+01:00', '2026-10-16T16:57:00+02:00']);
+    // Only a parcel from abroad passes an office abroad on its way in.
+    expect(clocks({ recipientCountry: 'CH' })).toEqual(history.map((event) => event.timestamp));
+  });
+
   it('falls back to the shipment summary when the newest scan has no stage', () => {
     const result = parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED' }, [
       { eventCode: 'LETTER.*.82.924', timestamp: '2026-09-02T10:00:00+02:00' },

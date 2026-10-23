@@ -12,7 +12,7 @@ import { isRecord, type JsonObject } from '../../core/types.js';
 import {
   FALLBACK_EVENT_LABELS, GLOBAL_STATUS_STAGE, STAGE_STATUS, STATUS_MAP, swissPostEventStage,
 } from './status.js';
-import { DESTINATION_EVENTS } from './clock.js';
+import { DESTINATION_EVENTS, swissPostOriginZone } from './clock.js';
 
 // The public tracker signs an anonymous visitor in before it will search: it
 // creates a throwaway user, echoes a CSRF token, and keys the search result on
@@ -254,6 +254,13 @@ function destinationClock(event: JsonObject, time: string, destination: string |
   return (zone ? isoTime(wall, zone)?.iso : null) ?? time;
 }
 
+/** An origin office's event on a parcel from abroad, on that office's clock when [clock.ts](clock.ts) lists it. */
+function originClock(event: JsonObject, time: string, imported: boolean): string {
+  const zone = imported ? swissPostOriginZone(text(event.city, 100)) : null;
+  const wall = WALL_CLOCK.exec(time)?.[1];
+  return (zone && wall ? isoTime(wall, zone)?.iso : null) ?? time;
+}
+
 /** Ready at a PickPost or My Post 24 point, and the point's own arrival scans. */
 const PICKUP_READY = new Set(['2101', '2102']);
 const PICKUP_ARRIVAL = new Set(['1001', '1100']);
@@ -294,7 +301,7 @@ export function parseSwissPostShipment(
     const eventCode = text(rawEvent.eventCode, 100);
     if (!time || !eventCode) continue;
     const event: CarrierEvent = {
-      time: destinationClock(rawEvent, time, abroad),
+      time: originClock(rawEvent, destinationClock(rawEvent, time, abroad), item.internationalImport === true),
       location: eventLocation(rawEvent),
       description: eventDescription(rawEvent, translations, internationalType),
       provider_code: eventCode,

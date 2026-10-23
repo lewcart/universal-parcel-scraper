@@ -20,6 +20,22 @@ const DESTINATION_WORDING = new RegExp('^(?:arrival in destination country|custo
   + '|retention period was extended by recipient|delivered)$', 'i');
 
 /**
+ * Outward offices of exchange abroad, by the name Swiss Post gives them, and their clock.
+ * On a parcel from abroad their scans carry the office's wall clock under Swiss Post's
+ * offset: a departure from London's office ("LON E ET BEA", UPU's GBLONE) at 17:57 local
+ * came as 17:57 +02:00, and UPU's record has it at 17:57 +01:00 (checked 2026-10-23). The
+ * reply names no origin, and the barcode's post can run an office in another country, so
+ * the office's name is what places them. London's offices show as "LON" and a letter.
+ */
+const ORIGIN_OFFICES: ReadonlyArray<readonly [RegExp, string]> = [[/^LON [A-Z]\b/, 'Europe/London']];
+
+/** The clock of an origin office of exchange Swiss Post names, or null when none is listed for it. */
+export function swissPostOriginZone(location: string): string | null {
+  const name = location.trim().toUpperCase();
+  return ORIGIN_OFFICES.find(([office]) => office.test(name))?.[1] ?? null;
+}
+
+/**
  * The clock of a Swiss Post scan as a relay gives it, when it is the
  * destination post's: worded as one of those events, with no location, on an
  * item bound for `destination`, another country, which keeps one clock. Null

@@ -80,7 +80,8 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
   destination country and delivery time come from the shipment summary. The
   delivery estimate is dropped once the shipment is delivered or returned.
 - Timestamps are kept exactly as sent and parsed only to sort (offset-less
-  values read as UTC for that comparison), but for the destination post's events.
+  values read as UTC for that comparison), but for the destination post's events
+  and those of the origin offices [clock.ts](clock.ts) lists.
 - On a parcel Swiss Post sends abroad (`internationalExport`), the destination post's
   events (codes 901, 902, 909, 918–921, 923, 924, 926, 934, 938) come with no city,
   postcode or country, and carry that office's wall clock under Swiss Post's offset: an
@@ -99,9 +100,10 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
   `915`) carry its office's wall clock under Swiss Post's offset too: a departure from a
   London office of exchange came at the 17:57 UPU gives that office, as `17:57+02:00`. The
   reply names no origin to read them in: `senderCountry` was empty, and the barcode's post
-  can run an office in another country. They keep Swiss Post's offset, right for a
-  neighbour on its clock and an hour or more off elsewhere. Read without it, they would
-  have no instant at all.
+  can run an office in another country. So an office is placed by its name: those
+  [clock.ts](clock.ts) lists (London's, "LON" and a letter) are read on their own clock,
+  and the stored rows move over by the identity policy above. The others keep Swiss Post's
+  offset, right for a neighbour on its clock and an hour or more off elsewhere.
 - Wording is only trimmed, not whitespace-collapsed, so `core/transport`'s
   `clean()` is not used.
 - Scan locations keep the facility's name and number as sent ("Zürich

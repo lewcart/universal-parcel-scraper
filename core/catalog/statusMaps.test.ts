@@ -831,8 +831,10 @@ describe("universal providers' answers", () => {
     }
   });
 
-  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's and BRT's scans as their carriers read them", () => {
+  it("close relayed copies of Nova Poshta's, TNT Italy's, the US Postal Service's, BRT's and nox's scans as their carriers read them", () => {
     for (const [wording, stage] of [['Registered and being prepared', 'registered'], ['Left the branch 12', 'in_transit'],
+      ['Collo von der nox Niederlassung weiterverladen. Sendung weiterverladen', 'in_transit'],
+      ['Collo is reloaded by the nox branch. Consignment reloaded', 'in_transit'],
       ["La spedizione e' regolarmente partita", 'in_transit'], ['Spedizione affidata a una FedEx Location in attesa di ritiro del corriere', 'accepted'],
       ['Tendered to International Gateway.', 'in_transit'], ['TURMOIL', 'exception']] as const) {
       expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
@@ -849,7 +851,7 @@ describe("universal providers' answers", () => {
     for (const wording of ['Shipment parameters updated', 'Tax ID. Form received', 'Keine weiteren Details erforderlich', 'Filiale / Agentur',
       'Benachrichtigt', 'In progress', 'Update on your parcel', '110', 'Item received', 'Received.', 'Shipped', 'Driver assigned',
       'Parcel is with the driver', 'Not received from retailer', 'Pickup document attached', 'Delivery branch. Rescheduling',
-      'Parcel to be taken to a Yodel Store', 'Barcode scanning', 'Packaged']) expect(answer('unknown', null, wording), wording).toEqual(gap);
+      'Parcel to be taken to a Yodel Store', 'The parcel has reached the ParcelShop', 'Barcode scanning', 'Packaged']) expect(answer('unknown', null, wording), wording).toEqual(gap);
     // Only the whole wording: a receipt that names its receiver, or another number, is not left out.
     for (const wording of ['Item received by Royal Mail']) expect(answer('unknown', null, wording), wording).toEqual(mapped('accepted'));
     for (const wording of ['111', 'Received at Example Store']) expect(answer('unknown', null, wording), wording).toEqual(unknown);

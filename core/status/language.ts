@@ -371,6 +371,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // numbered or not.
   if (/^registered and being prepared$/.test(text)) return 'registered';
   if (/^left the branch(?: \d{1,3})?$/.test(text)) return 'in_transit';
+  // nox's branch scans in Germany as Postal Ninja relays them, each followed by the remark nox's former
+  // tracker showed beside it: arrival at a branch, then the branch loading it onward, in German or English.
+  if (/^collo (?:in der nox niederlassung eingetroffen\. sendung eingetroffen|von der nox niederlassung weiterverladen\. sendung weiterverladen|is reloaded by the nox branch\. consignment reloaded)$/.test(text)) return 'in_transit';
   // TNT Italy's departure from the origin depot, and the US Postal Service's hand-off to the international
   // gateway after customs.
   if (/^la spedizione (?:e'|e) regolarmente partita$|^tendered to (?:the )?international gateway$/.test(text)) return 'in_transit';

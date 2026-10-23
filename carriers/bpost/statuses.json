@@ -158,6 +158,14 @@
       "firstSeen": "2026-10-22"
     },
     {
+      "wording": "The return item has been sorted and will be made available for the sender",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-23",
+      "note": "A return label's parcel on its way to the shop that issued the label, which bpost calls the sender."
+    },
+    {
       "wording": "Confirmation of preparation of the shipment received",
       "language": "en",
       "stage": "registered",

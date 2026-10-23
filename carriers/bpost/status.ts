@@ -20,6 +20,9 @@ const WORDINGS: Record<string, ClassifiedStatus> = {
   'Shipment presented without success. Addressee is informed.': { status: 'exception', stage: 'failed_attempt' },
   'Your shipment has arrived at the postal operator of the country of destination and will be delivered in the coming days': { status: 'in_transit', stage: 'in_transit' },
   'Your item has been sorted': { status: 'in_transit', stage: 'in_transit' },
+  // A return label's parcel sorted on its way to the shop that issued the label, which bpost
+  // calls the sender: the label's own trip, not a parcel sent back.
+  'The return item has been sorted and will be made available for the sender': { status: 'in_transit', stage: 'in_transit' },
   'Item is ready for transport': { status: 'in_transit', stage: 'in_transit' },
   'Shipment ready for transport': { status: 'in_transit', stage: 'in_transit' },
   'Departure to country of destination': { status: 'in_transit', stage: 'in_transit' },

@@ -42,7 +42,10 @@ target that bytes 13 and 14 set as exponent and mantissa. It repeats the request
 `Captcha-Solution`, base64 of the tokens and their nonces. A puzzle takes a few thousand hashes,
 milliseconds in Node; one that asks for far more is left inconclusive, and solving stops when the
 budget ends. The official DSV Tracking app (`com.dbschenker.mobile.connect2schenker`) calls the
-same API.
+same API on `mydsv.dsv.com`, without a key or an account, and solves the same puzzle. The page's
+other public base, `/nges-portal/api/public/tracking/v1`, sets it too, and myDSV's search does
+not know former DB Schenker STTs, so no public read confirms an STT without the puzzle.
+Recognition does not ask DSV.
 
 The tracker answers within a second, but at times holds each reply for a quarter or half a
 minute. The step waits as long as an STT's details, or an SSCC's search and details, take then,

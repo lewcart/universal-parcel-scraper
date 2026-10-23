@@ -14,7 +14,7 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const PARCEL = 'YY990000001CN';
 const UNKNOWN = 'YY990000002CN';
-// A number with S10's check digit, which detection gives to China Post.
+// A number with S10's check digit, which detection names YYpost for.
 const POSTAL = 'YY990000006CN';
 const ONWARD = `CNPRT${'0'.repeat(19)}1`;
 
@@ -218,12 +218,18 @@ describe('YYpost HTTP adapter', () => {
     }
   });
 
-  it('answers a number asked for YYpost that detection gives to China Post, and proposes Ecoscooting for the onward number', async () => {
-    expect(detectCarrierMatch(POSTAL)).toMatchObject({ carrier: 'china-post', confidence: 'high' });
+  it('is named for YY and CN numbers with S10’s check digit, which China Post keeps otherwise', () => {
+    expect(detectCarrierMatch(POSTAL)).toMatchObject({ carrier: 'yypost', confidence: 'high', candidates: ['yypost'] });
+    expect(detectCarrierMatch('YX990000006CN')).toMatchObject({ carrier: 'china-post', confidence: 'high' });
+    expect(detectCarrierMatch('YY990000007CN').candidates).not.toContain('yypost');
+    expect(detectCarrierMatch('YY990000006HK').candidates).not.toContain('yypost');
+  });
+
+  it('answers a number detection names YYpost for, and proposes Ecoscooting for the onward number', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => (String(url).startsWith(YYPOST_API)
       ? reply(jsonp(changed((item) => { item.server_hawbcode = POSTAL; }))) : new Response('', { status: 503 })));
     const tracker = createTracker({ fetcher, providers: [], env: {} });
-    const answer = await tracker.track({ number: POSTAL, carrier: 'yypost' }, { budgetMs: 3000 });
+    const answer = await tracker.track({ number: POSTAL }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'yypost', source: 'yypost', result: { current_stage: 'in_transit' },
       handoff: { carrier: 'ecoscooting', number: ONWARD, confirmed: false } });
     expect(fetcher.mock.calls.filter(([url]) => String(url).startsWith(YYPOST_API)).map(([url]) => String(url)))

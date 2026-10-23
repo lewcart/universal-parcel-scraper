@@ -4650,7 +4650,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^[A-Z]{2}\\d{9}CN$",
+        "pattern": "^(?!YY\\d{9}CN$)[A-Z]{2}\\d{9}CN$",
         "confidence": "high",
         "checksum": "s10"
       },
@@ -31969,7 +31969,13 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^YY\\d{9}CN$",
+        "confidence": "high",
+        "checksum": "s10"
+      }
+    ]
   },
   "z-leading": {
     "displayName": "Z-Leading",
@@ -33815,7 +33821,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "yilong-logistics": ["yilong-logistics-1"],
   "yimidida": [],
   "yurtici-kargo": [],
-  "yypost": [],
+  "yypost": ["yypost-1"],
   "z-leading": [],
   "zajil": [],
   "zeleris": ["zeleris-1"],

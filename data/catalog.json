@@ -4648,7 +4648,7 @@
     ],
     "detectionRules": [
       {
-        "pattern": "^[A-Z]{2}\\d{9}CN$",
+        "pattern": "^(?!YY\\d{9}CN$)[A-Z]{2}\\d{9}CN$",
         "confidence": "high",
         "checksum": "s10"
       },
@@ -31967,7 +31967,13 @@
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^YY\\d{9}CN$",
+        "confidence": "high",
+        "checksum": "s10"
+      }
+    ]
   },
   "z-leading": {
     "displayName": "Z-Leading",

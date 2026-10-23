@@ -93278,6 +93278,14 @@
     ]
   },
   {
+    "input": "YY900000019CN",
+    "carrier": "yypost",
+    "confidence": "high",
+    "candidates": [
+      "yypost"
+    ]
+  },
+  {
     "input": "YYXWE0",
     "carrier": "unknown",
     "confidence": "none",

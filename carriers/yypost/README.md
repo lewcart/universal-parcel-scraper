@@ -34,11 +34,13 @@ CN.
   read as a missing parcel.
 - The merchant's order reference, the signatory and the proof-of-delivery link are not read.
 
-## Limitations
+## Numbers
 
-YYpost's numbers have S10's layout and check digit with CN, so detection gives them to China
-Post, which has no record of them. The adapter is asked when the parcel is filed under YYpost
-or a universal provider names it.
+YYpost's numbers have S10's layout and check digit with CN. The S10 standard leaves the Y
+series unassigned, YYpost's tracker answers these numbers and China Post's has no record of
+them, so `yypost-1` names YYpost for YY, nine digits and CN with a valid check digit, and
+China Post's CN rule leaves them out. YY with another country code stays with that country's
+post.
 
 ## Links
 

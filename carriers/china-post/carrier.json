@@ -84,7 +84,7 @@
   "detection": [
     {
       "id": "china-post-1",
-      "pattern": "^[A-Z]{2}\\d{9}CN$",
+      "pattern": "^(?!YY\\d{9}CN$)[A-Z]{2}\\d{9}CN$",
       "confidence": "high",
       "checksum": "s10"
     },

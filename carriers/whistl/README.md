@@ -27,8 +27,12 @@ challenge and is not used.
 
 Whistl publishes no number shape: Parcelhub takes the sender's shipment reference and each
 parcel's tracking number, which vary by client, service and carrier. The adapter takes letters
-and digits, with at least one digit; anything else is invalid without a request. No detection
-rule claims these references, so Whistl is asked only when it is chosen or a link names it.
+and digits, with at least one digit; anything else is invalid without a request.
+
+`whistl-1` offers Whistl at low confidence for L and seventeen digits, the shape of its own
+tracker's archived pages and of a parcel its tracker answered, which no other carrier's numbers
+share; the digits carry no check digit, so recognition asks Whistl. Other references are
+asked about only when Whistl is chosen or a link names it.
 
 ## Notes
 

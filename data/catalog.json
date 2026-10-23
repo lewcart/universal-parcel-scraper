@@ -31387,7 +31387,12 @@
         "path": "^/tracking/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^L\\d{17}$",
+        "confidence": "low"
+      }
+    ]
   },
   "winion-logis": {
     "displayName": "WINION LOGIS",

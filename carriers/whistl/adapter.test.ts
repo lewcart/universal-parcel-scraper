@@ -252,15 +252,20 @@ describe('Whistl tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith(WHISTL_ENDPOINT))).toBe(true);
   });
 
-  it('opens the tracker’s links, with or without a postcode, and is never offered by detection', () => {
+  it('opens the tracker’s links, with or without a postcode, and is offered by detection only for L and seventeen digits', () => {
     for (const link of [`https://web.parcelhub.net/Tracking/reference/${OWN}`, `https://web.parcelhub.net/tracking/Reference/${OWN}/postcode/ZZ99`,
       `https://despatch.whistl.co.uk/Tracking/reference/${OWN}`, `https://trackmyitem.whistl.co.uk/tracking/${OWN}`]) {
       expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: OWN, carrier: 'whistl', source: 'link' });
     }
-    // Parcelhub references share no format, so only a chosen carrier or a link asks Whistl.
-    for (const number of [OWN, SHIPMENT, PARTNER]) {
+    // Parcelhub references share no format, so only a chosen carrier or a link asks Whistl about them.
+    for (const number of [OWN, SHIPMENT, PARTNER, 'L1234567890123456', 'L123456789012345678', 'LL12345678901234567', '12345678901234567L']) {
       expect(detectCarrierMatch(number).candidates, number).not.toContain('whistl');
       expect(recognitionAskedCarriers(number), number).not.toContain('whistl');
+    }
+    // Its own tracker's archived pages, and a parcel it answered, share L and seventeen digits, with no check digit.
+    for (const number of ['L12345678901234567', 'l 1234 5678 9012 3456 7']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['whistl'] });
+      expect(recognitionAskedCarriers(number), number).toEqual(['whistl']);
     }
   });
 });

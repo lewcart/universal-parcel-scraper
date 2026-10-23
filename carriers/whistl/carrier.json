@@ -87,5 +87,7 @@
       "path": "^/tracking/([^/?#]+)/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    { "id": "whistl-1", "pattern": "^L\\d{17}$", "confidence": "low" }
+  ]
 }

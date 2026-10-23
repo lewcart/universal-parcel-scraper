@@ -31389,7 +31389,12 @@ export const CARRIER_CATALOG = {
         "path": "^/tracking/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^L\\d{17}$",
+        "confidence": "low"
+      }
+    ]
   },
   "winion-logis": {
     "displayName": "WINION LOGIS",
@@ -33826,7 +33831,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "wahana": [],
   "wanbexpress": ["wanbexpress-1"],
   "ward-trucking": [],
-  "whistl": [],
+  "whistl": ["whistl-1"],
   "winion-logis": [],
   "winit": ["winit-1","winit-2","winit-3"],
   "x-express-ba": [],

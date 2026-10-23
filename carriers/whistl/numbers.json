@@ -54,7 +54,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "whistl"
+        ]
       },
       "note": "Looked up on Whistl's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -73,7 +76,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "whistl"
+        ]
       },
       "note": "Looked up on Whistl's own tracker in lower case, as an archived address shows; the capture was not opened."
     },

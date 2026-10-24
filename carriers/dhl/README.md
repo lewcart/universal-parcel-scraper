@@ -137,6 +137,13 @@ how a consumer learns that DHL holds one behind a postcode.
   Another refusal stays an HTTP error. When DHL Paket says it holds no Paket
   shipment under the number, the inconclusive error carries the reason
   `portal_not_found`, so a consumer can tell DHL's answer from an outage.
+- DHL's global tracking page answers DHL Paket numbers too: its `utapi` reply
+  names the shipment's service `parcel-de` and lists the same scans as this
+  endpoint, with the places this endpoint shows only for the recipient's
+  postcode. It needs the browser verification the
+  [DHL Express](../dhl-express/README.md) helper completes, and that helper
+  takes Express numbers only. Whether it answers a record this endpoint holds
+  behind the recipient's postcode is untested, so the adapter does not ask it.
 - No weight, dimensions, sender or pickup-point data is read.
 - Recipient name, address (beyond its country), signature and service details
   are never read; a test asserts it.

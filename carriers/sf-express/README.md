@@ -67,6 +67,9 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
   remark. A remark SF words in Chinese only, such as the distance left on a `310` scan, keeps it:
   no English for it is known. The app lets the scan take over the row stored with the Chinese
   name when each is the only one at that instant.
+- A scan's `location` is the first site its remark names in brackets ("arrived at 【…】",
+  "loaded at 【…】, prepare to send to 【…】"): SF gives no other. A remark about a courier or a
+  signature may name a person there, so it gets none, and neither does a delivered scan.
 - Not used: [SF International](https://www.sf-international.com/us/en/support/querySupport/waybill)
   (Tencent verification) and the Mainland China portal (GeeTest plus phone verification).
 - Not used: SF's Android apps. `com.sf.hmto` posts to

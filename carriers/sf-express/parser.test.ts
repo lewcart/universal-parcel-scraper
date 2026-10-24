@@ -173,6 +173,21 @@ describe('SF Express public route parsing', () => {
     });
     // A site without an English name keeps its Chinese one.
     expect(events[2]?.description).toBe('Arrived at 【Sample Point】, then 【样本站】 and 【样本（站）】');
+    // The first site a remark names is its scan's.
+    expect(events[3]?.location).toBe('Sample Town');
+    expect(events[2]?.location).toBe('Sample Point');
+  });
+
+  it('names no place for a remark about a person, a number in brackets or a delivery', () => {
+    const value = copy(); const routes = value.result[0]!.routes;
+    routes[2]!.remark = 'Out for delivery by courier 【Synthetic Person】';
+    routes[3]!.remark = 'About 【120】 km to the next station';
+    routes[1]!.remark = 'Shipment loaded at 【Sample Hub】, prepare to send to next station';
+    const events = parse(value, NUMBER).events!;
+    expect(events[3]).not.toHaveProperty('location');
+    expect(events[2]).not.toHaveProperty('location');
+    expect(events[4]?.location).toBe('Sample Hub');
+    expect(events[0]).not.toHaveProperty('location');
   });
 
   it('bounds retained and inspected scans, deduplicates exact repeats and sorts like the portal', () => {

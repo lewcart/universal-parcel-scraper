@@ -53,6 +53,15 @@ function remarkText(raw: unknown): string {
 const BILINGUAL_SITE = /【([^【】（）()]*\p{Script=Han}[^【】（）()]*)[（(]([^【】（）()\p{Script=Han}]*\p{Script=Latin}[^【】（）()\p{Script=Han}]*)[）)]】/gu;
 const englishSites = (text: string): string => text.replace(BILINGUAL_SITE, (_, _chinese: string, english: string) => `【${english.trim()}】`);
 
+// A remark names the site of its scan in its first brackets: "The shipment has arrived at 【A】",
+// "Shipment loaded at 【A】, prepare to send to 【B】". A remark about a courier or whoever signed
+// may name a person there instead.
+const PERSON = /courier|deliver(?:y|er) ?(?:man|person|staff)|sign(?:ed|er)|recipient|收派员|快递员|派件员|配送员|签收|簽收|联系|聯繫/iu;
+function scanSite(remark: string): string | undefined {
+  const site = /【([^【】]*\p{L}[^【】]*)】/u.exec(remark)?.[1]?.trim();
+  return site && site.length <= 100 && !PERSON.test(remark) ? site : undefined;
+}
+
 /** Parse the anonymous Taiwan routes endpoint, never a logged-in waybill detail. */
 export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const number = normalizeSfExpressNumber(trackingNumber);
@@ -86,8 +95,10 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     const reason = clean(raw.stayWhyCode, 64);
     if (!/^[A-Z0-9_-]{1,64}$/.test(code)) throw new SchemaError(PROVIDER, 'SF Express returned an invalid operation code');
     const status = sfExpressEventStatus(code, reason, text);
-    const event: CarrierEvent = { time, provider_code: code,
-      description: status?.status === 'delivered' ? 'Delivered' : englishSites(text),
+    const description = status?.status === 'delivered' ? 'Delivered' : englishSites(text);
+    const site = status?.status === 'delivered' ? undefined : scanSite(description);
+    const event: CarrierEvent = { time, provider_code: code, description,
+      ...(site ? { location: site } : {}),
       ...(status ? { stage: status.stage } : {}),
     };
     const key = JSON.stringify([local, event.description, code, reason]);

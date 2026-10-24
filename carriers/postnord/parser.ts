@@ -1,7 +1,7 @@
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { countryTimeZone, explicitOffsetTime, mislabeledLocalTime, mislabeledWallTime, type ParsedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
@@ -47,6 +47,27 @@ function pickupPoint(raw: unknown, scanned: string): string {
   return street && town ? [name, street, [clean(address.postalCode, 16), town].filter(Boolean).join(' ')].join('\n') : name;
 }
 
+/** PostNord's own countries. */
+const POSTNORD_COUNTRIES = new Set(['SE', 'DK', 'NO', 'FI']);
+const WHOLE_MINUTE_UTC = /T\d{2}:\d{2}:00(?:\.0{1,9})?Z$/;
+
+/**
+ * The country of a scan PostNord has by EDI and gives a country and no place
+ * (`locationType` UNDEF), to the minute, when its digits are that country's
+ * wall clock under a Z: PostNord's own, a Danish item's transport scans at
+ * 05:09 and 05:12 beside its postcentre's at 03:09 and 03:12 UTC, and the
+ * origin post's, Poczta Polska's posting at 08:23 UTC as 10:23Z. A post
+ * delivering abroad relays instants: Deutsche Post's scans have the minute of
+ * its own tracker's. With no destination, a foreign post's scan stays as labelled.
+ */
+function relayedWallCountry(raw: Record<string, unknown>, rawTime: string, destination: string | null): string | null {
+  const location = isRecord(raw.location) ? raw.location : null;
+  const country = location ? clean(location.countryCode, 8) : '';
+  if (!location || location.locationType !== 'UNDEF' || clean(location.name, 160) || !/^[A-Z]{2}$/.test(country)
+    || !WHOLE_MINUTE_UTC.test(rawTime)) return null;
+  return POSTNORD_COUNTRIES.has(country) || (destination && country !== destination) ? country : null;
+}
+
 export function parsePostnord(payload: unknown, number: string): CarrierResult {
   const requested = normalizePostnordNumber(number);
   if (!isRecord(payload) || payload.shipmentId !== requested || payload.actualReturnedId !== requested
@@ -59,25 +80,46 @@ export function parsePostnord(payload: unknown, number: string): CarrierResult {
   if (!isRecord(item.status) || !clean(item.status.code, 64) || !Array.isArray(item.events) || item.events.length > 500) {
     throw new SchemaError('PostNord');
   }
-  const scans: { event: CarrierEvent; timestamp: number; mapped?: ClassifiedStatus }[] = [];
-  const seen = new Set<string>();
+  const destination = isRecord(payload.receiver) && isRecord(payload.receiver.address)
+    && typeof payload.receiver.address.countryCode === 'string' && /^[A-Z]{2}$/.test(payload.receiver.address.countryCode)
+    ? payload.receiver.address.countryCode : null;
+  const rows: { raw: Record<string, unknown>; description: string; code: string; rawTime: string; labelled: ParsedTime;
+    wall: { country: string; time: ParsedTime | null } | null }[] = [];
   for (const raw of item.events) {
     if (!isRecord(raw)) throw new SchemaError('PostNord', 'PostNord returned an incomplete scan row');
     const description = clean(raw.eventDescription, 500);
     const code = clean(raw.status, 64);
     const rawTime = clean(raw.eventTime, 64);
-    const time = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-](?:[01]\d|2[0-3]):?[0-5]\d)$/.test(rawTime)
+    const labelled = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-](?:[01]\d|2[0-3]):?[0-5]\d)$/.test(rawTime)
       ? explicitOffsetTime(rawTime) : null;
-    if (!description || !code || !time) throw new SchemaError('PostNord', 'PostNord returned a scan without valid wording, code or offset timestamp');
+    if (!description || !code || !labelled) throw new SchemaError('PostNord', 'PostNord returned a scan without valid wording, code or offset timestamp');
     // These confirmed notices describe messages or recipient choices rather
     // than parcel movement. A notification "delivered" is not a delivery scan.
     if (isPostnordAdministrativeEvent(code, description)) continue;
+    const country = relayedWallCountry(raw, rawTime, destination);
+    const zone = country ? countryTimeZone(country) : null;
+    rows.push({ raw, description, code, rawTime, labelled, wall: country ? { country, time: zone ? mislabeledLocalTime(rawTime, zone) : null } : null });
+  }
+  // The same relayed scan can also come labelled with its instant, its wall
+  // clock's offset earlier: that row keeps its label, and the two are one scan.
+  const relayed = ({ code, description, wall }: (typeof rows)[number], timestamp: number) =>
+    `${code}\u0000${description}\u0000${wall?.country}\u0000${timestamp}`;
+  const walls = new Set(rows.flatMap((row) => (row.wall?.time ? [relayed(row, row.wall.time.timestamp)] : [])));
+  const scans: { event: CarrierEvent; timestamp: number; mapped?: ClassifiedStatus }[] = [];
+  const seen = new Set<string>();
+  for (const row of rows) {
+    const { raw, description, code, rawTime, labelled, wall } = row;
+    const instant = wall && walls.has(relayed(row, labelled.timestamp));
+    const time = wall && !instant ? wall.time : labelled;
+    // A country of several clocks keeps the wall clock; it orders by its digits.
+    const local = wall && !instant && !time ? mislabeledWallTime(rawTime) : null;
     const location = isRecord(raw.location) ? clean(raw.location.name, 160) : '';
-    const key = `${time.timestamp}\u0000${code}\u0000${description}\u0000${location}`;
+    const timestamp = time?.timestamp ?? labelled.timestamp;
+    const key = `${time ? timestamp : local}\u0000${code}\u0000${description}\u0000${location}`;
     if (seen.has(key)) continue;
     seen.add(key);
     const mapped = classifyPostnordStatus(code, description);
-    scans.push({ timestamp: time.timestamp, mapped, event: { time: time.iso, description, provider_code: code,
+    scans.push({ timestamp, mapped, event: { ...(time ? { time: time.iso } : { local_time: local! }), description, provider_code: code,
       ...(location ? { location } : {}), ...(mapped ? { stage: mapped.stage } : {}) } });
   }
   if (!scans.length) throw new IndeterminateError('PostNord', 'PostNord returned no shipment history');
@@ -104,15 +146,14 @@ export function parsePostnord(payload: unknown, number: string): CarrierResult {
   const delivery = mapped?.status === 'delivered' ? events.find((event) => event.stage === 'delivered') : undefined;
   // The portal names the sender, usually the shop; of the receiver's address only the country is read.
   const sender = isRecord(payload.sender) ? clean(payload.sender.name, 200) : '';
-  const country = isRecord(payload.receiver) && isRecord(payload.receiver.address) ? payload.receiver.address.countryCode : undefined;
   const pickupScan = atPickupPoint(mapped?.stage, events);
   const pickup = pickupScan ? pickupPoint(payload.servicePoint, pickupScan.location ?? '') : '';
   const service = clean(payload.serviceName, 80);
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
-    last_status_text: (newest ? '' : header) || events[0]!.description, last_update: events[0]!.time,
+    last_status_text: (newest ? '' : header) || events[0]!.description, last_update: events[0]!.time ?? null,
     expected_delivery: null, ...(delivery?.time ? { delivered_at: delivery.time } : {}),
     ...(sender ? { sender_name: sender } : {}), ...(pickup ? { pickup_point: pickup } : {}), ...(service ? { service_name: service } : {}),
-    ...(typeof country === 'string' && /^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}),
+    ...(destination ? { destination_country: destination } : {}),
     ...(weight ? { weight_kg: (weight.value as number) / (weight.unit === 'g' ? 1000 : 1) } : {}),
     ...(dimensions.every(Boolean) ? { dimensions_text: `${dimensions.map((dimension) => dimension!.value).join(' × ')} cm` } : {}),
     events: events.slice(0, 100) };

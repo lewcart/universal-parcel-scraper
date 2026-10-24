@@ -122,6 +122,42 @@ describe('PostNord direct tracking', () => {
     expect(parsePostnord(value, NUMBER).events?.slice(0, 2).map((event) => event.provider_code)).toEqual(['DELIVERED', 'OTHER']);
   });
 
+  it('reads a relayed scan without a place on its country\'s wall clock, unless a post delivering abroad relays it', () => {
+    const relayed = (country: string, eventTime: string, status = 'OTHER', eventDescription = 'The shipment item is under transportation.') =>
+      ({ eventDescription, eventTime, status, location: { countryCode: country, locationType: 'UNDEF' } });
+    const value = payload();
+    value.items[0].events = [
+      relayed('PL', '2026-10-23T10:23:00.000Z', 'EN_ROUTE', 'The shipment item has been dropped off by sender.'),
+      // The same departure, labelled with its instant and with its wall clock.
+      relayed('PL', '2026-10-24T02:13:00.000Z'), relayed('PL', '2026-10-24T04:13:00.000Z'),
+      relayed('DK', '2026-10-24T09:12:00.000Z'),
+      relayed('US', '2026-10-24T21:19:00.000Z'),
+      relayed('SE', '2026-10-25T12:35:58.000Z', 'OTHER', 'Import Charge sent to recipient.'),
+      relayed('DE', '2026-10-26T12:51:00.000Z'),
+    ];
+    value.items[0].status = { code: 'EN_ROUTE', header: 'The shipment item is under transportation.' };
+    const clocks = (result: ReturnType<typeof parsePostnord>) => result.events?.map((event) => event.time ?? `local ${event.local_time}`);
+    expect(clocks(parsePostnord(value, NUMBER))).toEqual([
+      '2026-10-26T12:51:00+01:00', // to Sweden: Deutsche Post's scan is the origin post's
+      '2026-10-25T12:35:58Z', // to the second: PostNord's own instant
+      'local 2026-10-24T21:19:00.000', // a country of several clocks
+      '2026-10-24T09:12:00+02:00',
+      '2026-10-24T02:13:00Z',
+      '2026-10-23T10:23:00+02:00',
+    ]);
+    expect(parsePostnord(value, NUMBER).last_update).toBe('2026-10-26T12:51:00+01:00');
+    // Germany's post, delivering there, relays its instants.
+    value.receiver.address.countryCode = 'DE';
+    expect(clocks(parsePostnord(value, NUMBER))?.[0]).toBe('2026-10-26T12:51:00Z');
+    // Nothing tells a foreign post's side without a destination.
+    delete value.receiver;
+    expect(clocks(parsePostnord(value, NUMBER))?.at(-1)).toBe('2026-10-23T10:23:00Z');
+    // A newest scan on a wall clock alone leaves no instant for the update.
+    value.receiver = { address: { countryCode: 'SE' } };
+    value.items[0].events = [relayed('US', '2026-10-24T21:19:00.000Z'), relayed('SE', '2026-10-23T09:00:00.000Z')];
+    expect(parsePostnord(value, NUMBER)).toMatchObject({ last_update: null, events: [{ local_time: '2026-10-24T21:19:00.000' }, { time: '2026-10-23T09:00:00+02:00' }] });
+  });
+
   it('removes only confirmed administrative OTHER rows after validation and treats notice-only replies as inconclusive', () => {
     const value = payload();
     value.items[0].events = [

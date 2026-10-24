@@ -24,6 +24,13 @@ like a missing shipment. Only the service's structured not-found response is a c
 The requested identifier must match the shipment, selected item and returned identifier.
 Shipment group references and aliases need an exact item reference. Offset timestamps
 are ordered by instant; incomplete scans fail rather than allowing older progress to appear current.
+A scan PostNord has by EDI and gives only a country (`locationType` UNDEF), to the minute, can
+be that country's wall clock under a Z. PostNord's own relays and the origin post's are: a
+Danish item's scans came two hours after its postcentre's, and Poczta Polska's posting two
+hours after Poczta Polska's own instant. They are read on the country's clock, or keep their
+wall clock in a country of several, and a twin labelled with the instant counts once. A post
+delivering abroad relays instants (Deutsche Post's have the minute of its own tracker's), and
+without a destination a foreign post's scan stays as labelled.
 Each event uses its own code and, where the code covers several milestones, exact portal wording.
 Pickup availability remains distinct from parcel delivery. Confirmed notification and
 recipient-choice notices, a chosen pickup point among them, are omitted from shipment

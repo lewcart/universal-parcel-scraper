@@ -17,6 +17,14 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   "sort centre") are dropped. What is left is matched against town names, and translations
   for larger towns ("Genf", "Cologne"). A translation of three Latin letters is left out: it
   is a code or a stray transliteration more often than a name ("Lon" for Lognes).
+- A town is looked up at the start or the end of a name, and between other words when it is
+  a city of 100,000 people where the parcel is ("Example Reading Station Lockers"), or
+  something else in the text confirms it.
+- A longer place name is the place it names, not a town that shares a word of it, when it
+  is a town where the text or the parcel is, or a city and the shorter name names no town
+  there: "Cartagena de Indias" is in Colombia, "San Jose de Costa Rica" in Costa Rica, but
+  "East London MC" on a British parcel is in London. A town within 50 km of the longer name
+  may still be the one meant ("NEW DELHI").
 - A country after the last dash is taken off, as DHL Express prints it ("BENIN CITY -
   NIGERIA", "AMSTERDAM - NETHERLANDS, THE"). Georgia stays: it is also a US state.
 - Chinese, Japanese and Korean names match in their own script. "广东省深圳市" is read as
@@ -172,6 +180,8 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   parcel "Buchs, CH" is the depot in Buchs ZH, and "Buchs SG" the town in St. Gallen. SPX
   Brazil's "ShiYan", whose wording names Shenzhen, is in Shenzhen's Shiyan, not the city in Hubei.
   MRW's "Meres (Plataforma)" is its platform in Meres, Asturias, not the town in Turkey.
+  Royal Mail's mail centres named after an area ("Thames Valley MC", in Swindon, not Valley
+  on Anglesey) count on Royal Mail and Parcelforce parcels.
 - A carrier's own coordinates, supplied through the `points` option, move a scan
   to the facility when they are within 30 km of the town its text names. Scans with the same
   text share a point, so a carrier that places some scans of an office keeps them together.

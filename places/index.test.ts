@@ -241,8 +241,34 @@ describe('locatePlace', () => {
     // SPX's sorting centre in Shiyan, Shenzhen, not the city of Shiyan in Hubei.
     expect(locatePlace('ShiYan', { carriers: ['spx-br'] })).toMatchObject({ country: 'CN', latitude: 22.686, longitude: 113.932 });
     expect(locatePlace('ShiYan')).toMatchObject({ country: 'CN', latitude: 32.648 });
+    // Royal Mail's mail centres named after an area, not a town: Valley is on Anglesey, East London in South Africa.
+    const royalMail = { carriers: ['royal-mail'], countries: ['GB'] };
+    for (const [location, name, site] of [['Home Counties North MC', 'Hemel Hempstead', 'Home Counties North Mail Centre'],
+      ['Mount Pleasant MC', 'London', 'London Central Mail Centre'], ['Northern Ireland MC', 'Newtownabbey', 'Northern Ireland Mail Centre'],
+      ['Thames Valley MC', 'Swindon', 'Thames Valley Mail Centre']] as const) {
+      expect(locatePlace(location, royalMail), location).toMatchObject({ country: 'GB', name, site });
+    }
+    expect(locatePlace('East London MC', royalMail)).toMatchObject({ country: 'GB', name: 'London' });
+    expect(locatePlace('Mount Pleasant MC', { countries: ['US'] })).toMatchObject({ country: 'US' });
     // MRW's platform in Meres, Asturias, a village too small for the gazetteer, not Meres in Turkey.
     expect(locatePlace('00099 Meres (Plataforma)', { carriers: ['mrw'], countries: ['ES'] })).toMatchObject({ country: 'ES', name: 'Meres', latitude: 43.376 });
+  });
+
+  it('takes a longer place name for the place it names, not for a town that shares a word of it', () => {
+    expect(place('Cartagena de Indias')).toMatchObject({ country: 'CO', latitude: 10.398 });
+    expect(place('San Jose de Costa Rica')).toMatchObject({ country: 'CR' });
+    // A country code the text writes settles which: Atena is a name of Athens.
+    expect(place('Atena Lucana - IT (depot 0001)')?.country).not.toBe('GR');
+    // A town near the longer name may still be the one meant.
+    expect(place('NEW DELHI IN', ['IT'])).toMatchObject({ country: 'IN' });
+  });
+
+  it('finds a town between other words of a name, when it is a city where the parcel is', () => {
+    expect(place('Example Reading Station Lockers', ['GB'])).toMatchObject({ country: 'GB', name: 'Reading' });
+    expect(place('Punkt Pocztowy Example Lublin L999', ['PL'])).toMatchObject({ country: 'PL', name: 'Lublin' });
+    // Not a city abroad, nor a village where the parcel is.
+    expect(place('Queen Elizabeth Example Park Lockers', ['GB'])).toBeNull();
+    expect(place('Example Wells Station Lockers', ['GB'])).toBeNull();
   });
 
   it('takes a region for its country, not for a town that shares a word of its name', () => {
@@ -407,7 +433,7 @@ describe('placesForEvents', () => {
     expect(route(['FR', 'Cornwall', 'GB'])).toEqual(['France, FR', null, 'United Kingdom, GB']);
     // Where the scans stop there is no way to be off, only a distance: a name several towns share is not enough.
     expect(route(['Plymouth MC', 'Cornwall MC'], royalMail)).toEqual(['Plymouth, GB', null]);
-    expect(route(['Mount Pleasant MC'], royalMail)).toEqual([null]);
+    expect(route(['Mount Vernon MC'], royalMail)).toEqual([null]);
     // Its own text, the destination or a scan nearby keeps the town.
     expect(route(['Plymouth MC', 'Cornwall, ON'], royalMail)).toEqual(['Plymouth, GB', 'Cornwall, CA']);
     expect(route(['Plymouth MC', 'Cornwall'], { ...royalMail, destinationCountry: 'CA' })).toEqual(['Plymouth, GB', 'Cornwall, CA']);

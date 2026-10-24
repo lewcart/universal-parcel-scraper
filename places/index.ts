@@ -123,6 +123,10 @@ const LEAP_MAX_KM = 3000;
 const WORLD_CITY_THOUSANDS = 1000;
 /** The city a region is named after ("Santo Domingo Province") has at least this many thousand people. */
 const NAMESAKE_THOUSANDS = 100;
+// A town this near a longer place name that contains its name may be the one that name means.
+const PART_OF_NAME_KM = 50;
+// The most words of a town's name looked up between other words.
+const MIDDLE_WORDS = 3;
 // A town of that size this many times larger than its namesake in a country the parcel is in keeps its name.
 const DOMINANT_TIMES = 10;
 // Scans that record paperwork, which an office can file where the parcel is not.
@@ -382,8 +386,11 @@ function awayScans(
 }
 
 interface Token { key: string; start: number; end: number }
-/** Where in its field a phrase was read, and whether it is all the field says. */
-interface Phrase { key: string; text: string; rank: number; start: number; end: number; whole: boolean }
+/**
+ * Where in its field a phrase was read, whether it is all the field says, and whether other
+ * words of the name surround it (`middle`, "Example Reading Station Lockers").
+ */
+interface Phrase { key: string; text: string; rank: number; start: number; end: number; whole: boolean; middle?: boolean }
 
 const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u;
 
@@ -401,15 +408,17 @@ function tokens(text: string): Token[] {
 function phrases(field: string): Phrase[] {
   const all = tokens(field).filter((token) => !/^\d+$/.test(token.key));
   const found: Phrase[] = [];
-  const add = (list: Token[], rank: number, whole = false) => {
+  const add = (list: Token[], rank: number, whole = false, middle = false) => {
     if (!list.length) return;
     const key = list.map((token) => token.key).join(' ');
     const seen = found.find((phrase) => phrase.key === key);
     // "Guangdong" is all "Guangdong Province" says, once its administrative word is gone.
-    if (seen) seen.whole ||= whole;
-    else if (key.length >= 3) {
+    if (seen) {
+      seen.whole ||= whole;
+      if (!middle) delete seen.middle;
+    } else if (key.length >= 3) {
       const [start, end] = [list[0]!.start, list.at(-1)!.end];
-      found.push({ key, text: field.slice(start, end), rank, start, end, whole });
+      found.push({ key, text: field.slice(start, end), rank, start, end, whole, ...(middle ? { middle } : {}) });
     }
   };
   // Facility words alone ("Hub", "Terminal") are no town, whatever GeoNames says.
@@ -419,6 +428,12 @@ function phrases(field: string): Phrase[] {
   const spans = (list: Token[], offset: number) => {
     for (let count = list.length; count > 0; count -= 1) add(list.slice(0, count), offset + list.length - count + 1, count === list.length);
     for (let start = 1; start < list.length; start += 1) add(list.slice(start), offset + list.length + start);
+    // "Example Reading Station Lockers": a town between other words.
+    for (let start = 1; start < list.length - 1; start += 1) {
+      for (let end = start + 1; end < list.length && end - start <= MIDDLE_WORDS; end += 1) {
+        add(list.slice(start, end), offset + 2 * list.length + start + list.length - end, false, true);
+      }
+    }
   };
   spans(words, 0);
   // "Zhejiang Province Jinhua City": the town without its administrative words.
@@ -622,9 +637,18 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
         && (fieldIndex > 0 || region.country === country || hinted.includes(region.country))) : [];
       // A hub's name inside a longer place name is part of that name: "Beauregard-de-Terrasson"
       // is a village, not the agency at Terrasson, and "Roissy-en-Brie" is no airport.
-      const partOfName = list.some((other) => other.start <= phrase.start && other.end >= phrase.end
+      const longer = list.filter((other) => other.start <= phrase.start && other.end >= phrase.end
         && other.key.length > phrase.key.length && data.keys.has(other.key));
-      const towns = candidates(data, phrase.key, carriers).filter((place) => !place.hub || !partOfName);
+      // So is a town's, when the longer name is a town where the text or the parcel is, or a city
+      // and the shorter name no town there: "Cartagena de Indias" is in Colombia, "San Jose de
+      // Costa Rica" in Costa Rica, but "East London MC" on a British parcel is in London.
+      const all = candidates(data, phrase.key, carriers);
+      const here = (place: Candidate) => place.country === country || hinted.includes(place.country) || admin.includes(place.country);
+      const anyHere = all.some((place) => !place.hub && here(place));
+      const longerTowns = longer.flatMap((other) => candidates(data, other.key, carriers))
+        .filter((place) => !place.hub && (here(place) || (!anyHere && place.thousands >= NAMESAKE_THOUSANDS)));
+      const towns = all.filter((place) => (place.hub ? !longer.length : !longerTowns.length
+        || longerTowns.some((other) => distanceKm(place.latitude, place.longitude, other.latitude, other.longitude) <= PART_OF_NAME_KM)));
       namesTown ||= towns.length > 0;
       for (const place of towns) {
         // A town may still be named like the region it lies in: Moscow in "…, Moscow",
@@ -652,6 +676,10 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
           && distanceKm(postcode.latitude, postcode.longitude, place.latitude, place.longitude) < 30;
         const confirmed = inCountry || hint >= 0 || adminMatch || postcodeMatch;
         if (!confirmed && place.thousands < UNCONFIRMED_MIN_THOUSANDS) continue;
+        // Between other words, a town is a city where the parcel is, or something else confirms
+        // it: "Queen Elizabeth Olympic Park" is not in Elizabeth, New Jersey.
+        if (phrase.middle && !place.hub && !place.own && !adminMatch && !postcodeMatch
+          && !((inCountry || hint >= 0) && place.thousands >= NAMESAKE_THOUSANDS)) continue;
         const score = Math.log10(Math.max(place.thousands, .3) * 1000)
           + (place.alternate ? 0 : 1.8)
           + (inCountry ? 4 : hint >= 0 ? 2.5 - Math.min(hint, 3) * .4 : 0)

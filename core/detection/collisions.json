@@ -1778,6 +1778,41 @@
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
+    "shape": "14 digits starting 49",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "imile",
+      "seur",
+      "dhl-ecommerce-uk",
+      "dpd-pt"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. iMile's low rule takes those starting 49, which its own tracker answered for Italian parcels. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
+    "shape": "14 digits starting 49, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "imile",
+      "seur",
+      "dhl-ecommerce-uk",
+      "dpd-pt"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. iMile's low rule takes those starting 49, which its own tracker answered for Italian parcels. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
     "shape": "14 digits",
     "carriers": [
       "brt",

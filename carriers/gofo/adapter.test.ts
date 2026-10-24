@@ -20,7 +20,10 @@ describe('GOFO US history', () => {
     const result = parseGofo(counterFixture(), NUMBER);
     expect(result.events).toHaveLength(14);
     expect(result).toMatchObject({ status: 'delivered', last_update: '2026-01-20T15:00:00-08:00', delivered_at: '2026-01-20T15:00:00-08:00' });
-    expect(result.events?.[2]).toMatchObject({ description: 'Delivery Exception, Business Closed.', provider_code: '206' });
+    expect(result.events?.[2]).toMatchObject({ description: 'Delivery Exception, Business Closed.', provider_code: '206', stage: 'failed_attempt' });
+    // Collected from the sender: the pick-up's start is no receipt yet, its success is.
+    expect(result.events?.filter((event) => ['216', '801'].includes(String(event.provider_code))).map((event) => [event.provider_code, event.stage]))
+      .toEqual([['801', 'accepted'], ['216', 'registered']]);
     expect(result.events?.at(-1)).toMatchObject({ stage: 'registered', time: '2026-01-14T04:30:00-08:00' });
     for (const field of ['processContent', 'processDeptId', 'processSecondCode', 'processTimeZone']) {
       const wrongSummary = counterFixture(); item(wrongSummary).lastTrackEvent[field] = 'Different';

@@ -2575,6 +2575,7 @@
         {
           "time": "2026-01-18T16:00:00-08:00",
           "description": "Delivery Exception, Business Closed.",
+          "stage": "failed_attempt",
           "provider_code": "206",
           "location": "Example City, EX"
         },
@@ -2637,12 +2638,14 @@
         {
           "time": "2026-01-14T18:00:00-08:00",
           "description": "Pick Up Success",
+          "stage": "accepted",
           "provider_code": "801",
           "location": "Origin City, EX"
         },
         {
           "time": "2026-01-14T16:00:00-08:00",
           "description": "Pick Up Start",
+          "stage": "registered",
           "provider_code": "216",
           "location": "Seller City, EX"
         },

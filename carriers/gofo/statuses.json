@@ -27,6 +27,33 @@
       "note": "GOFO has not received the parcel from the sender's warehouse yet."
     },
     {
+      "code": "216",
+      "wording": "Pick Up Start",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-24",
+      "note": "GOFO has started collecting the parcel from the sender; it does not hold it yet."
+    },
+    {
+      "code": "801",
+      "wording": "Pick Up Success",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-24",
+      "note": "GOFO collected the parcel from the sender."
+    },
+    {
+      "code": "206",
+      "wording": "Delivery Exception, Business Closed",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-24",
+      "note": "A delivery attempt that failed; the reason after the comma varies."
+    },
+    {
       "code": "612",
       "wording": "Arrived at Sorting Center",
       "language": "en",

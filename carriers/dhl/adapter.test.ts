@@ -69,6 +69,21 @@ describe('DHL public tracking normalization', () => {
     expect(parseDHLTrackingResponse(payload, NUMBER).delivery_carrier).toBe(expected);
   });
 
+  it('reads the partner from the arrival notice, then shows the notice without its link', () => {
+    const arrival = 'The shipment has arrived in the destination country/destination area.';
+    for (const link of [`http://www.post.ch/?id=${NUMBER}`, '']) {
+      const payload = shipment();
+      payload.sendungen[0]!.sendungsdetails.sendungsverlauf.status = `${arrival} (Homepage / online shipment tracking: ${link})`;
+      payload.sendungen[0]!.sendungsdetails.sendungsverlauf.events.push({
+        datum: '2026-08-11T10:00:00+02:00', status: `${arrival} (Homepage / online shipment tracking: ${link})` });
+      const result = parseDHLTrackingResponse(payload, NUMBER);
+      expect(result.delivery_carrier, link).toBe(link ? 'swiss-post' : undefined);
+      expect(result.events?.[0]).toMatchObject({ description: arrival, stage: 'in_transit' });
+      expect(result.last_status_text).toBe(arrival);
+      expect(JSON.stringify(result)).not.toMatch(/Homepage|post\.ch/);
+    }
+  });
+
   it('keeps the correct event order, stages and dates without private recipient data', () => {
     const result = parseDHLTrackingResponse(shipment(), NUMBER);
     expect(result).toMatchObject({

@@ -147,6 +147,10 @@ function refusedPostcode(value: unknown): InputRequiredError | null {
   return /\bincorrect\b/i.test(clean(value.error)) ? postcodeMismatch() : null;
 }
 
+/** DHL's arrival notice ends with the delivery operator's page, at times with no link. */
+const PARTNER_LINK = /\s*\(Homepage \/ online shipment tracking:[^()]*\)$/i;
+const withoutPartnerLink = (text: string): string => text.replace(PARTNER_LINK, '');
+
 /** Parse only public status fields: never persist recipient, address, signature or service data. */
 export function parseDHLTrackingResponse(payload: unknown, trackingNumber: string): CarrierResult {
   const shipment = matchingShipment(payload, trackingNumber);
@@ -165,15 +169,17 @@ export function parseDHLTrackingResponse(payload: unknown, trackingNumber: strin
   const details = isRecord(shipment.sendungsdetails) ? shipment.sendungsdetails : {};
   const timeline = isRecord(details.sendungsverlauf) ? details.sendungsverlauf : {};
   if (timeline.events !== undefined && !Array.isArray(timeline.events)) throw new SchemaError(PROVIDER, 'DHL returned invalid tracking events');
-  const events: CarrierEvent[] = (Array.isArray(timeline.events) ? timeline.events : []).filter(isRecord).flatMap((event) => {
-    const description = clean(event.status);
+  const rows = (Array.isArray(timeline.events) ? timeline.events : []).filter(isRecord);
+  // Arrival notices link to the delivery operator. The catalog resolves its
+  // identity; the host still confirms progress through that operator's adapter.
+  // The reader sees the notice without the link.
+  const deliveryCarrier = carrierIdFromPartnerLinks(rows.map((event) => clean(event.status)), 'dhl');
+  const events: CarrierEvent[] = rows.flatMap((event) => {
+    const description = withoutPartnerLink(clean(event.status));
     if (!description) return [];
     return [{ time: date(event.datum), location: clean(event.ort, 160), description, stage: stageForText(description) }];
   }).sort((left, right) => millis(right.time) - millis(left.time)).slice(0, 100);
-  // Arrival notices link to the delivery operator. The catalog resolves its
-  // identity; the host still confirms progress through that operator's adapter.
-  const deliveryCarrier = carrierIdFromPartnerLinks(events.map((event) => event.description), 'dhl');
-  const summary = clean(timeline.status);
+  const summary = withoutPartnerLink(clean(timeline.status));
   if (!events.length && !summary && details.istZugestellt !== true) {
     if (Object.values(missing).some((flag) => flag === true)) return noData();
     throw new SchemaError(PROVIDER, 'DHL returned no usable tracking status');

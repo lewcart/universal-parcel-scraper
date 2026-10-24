@@ -12,7 +12,10 @@ const CODES: Readonly<Record<string, Stage>> = {
   NAJ: 'registered',
   // The item arrived at Pošta Slovenije and was sent on.
   S: 'accepted',
-  // UPU's departure from the outward office of exchange: the item leaves Slovenia.
+  // UPU's events in the origin country: the item posted, at the outward office of exchange,
+  // then leaving it for abroad.
+  EMA: 'accepted',
+  EMB: 'in_transit',
   EMC: 'in_transit',
   // "Pošiljka bo predvidoma dostavljena danes": with the postman, on its way to the address.
   N: 'out_for_delivery',

@@ -63,6 +63,8 @@ opening a browser.
   are left out. Repeated delivery rows count once.
 - The app's scans carry UTC instants, which events keep in `time`. The tracker shows Budapest
   wall clocks without an offset; its events get `local_time` and the result `last_update_local`.
+- An item from abroad can list its next leg at the time it is planned, after the lookup. A row
+  more than an hour after the lookup, on Budapest time for the tracker, is held back until then.
 - A parcel's details name its service. The post office, PostaPont or locker an item waited at is
   its pickup point. The line naming who received an item is dropped.
 - The tracker's notice for the number is not found. The app answers a number it does not add,

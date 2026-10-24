@@ -6,7 +6,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, S
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { isMagyarPostaSettlement, magyarPostaStage } from './status.js';
@@ -28,6 +28,9 @@ const STAMP = /^(\d{4})\. (\d{2})\. (\d{2})\. (\d{1,2}):(\d{2})$/;
 const CATEGORY = /^fig_[123]([1-5])$/;
 // The app's instants: UTC, with microseconds.
 const APP_STAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$/;
+const HOME = 'Europe/Budapest';
+// Handheld clocks can run a little early; a row further ahead of the lookup is a plan, not a scan.
+const CLOCK_SKEW_MS = 3_600_000;
 /** The app names each scan's category, the tracker's icons 1 to 5. */
 const APP_CATEGORIES: ReadonlyMap<string, string> = new Map([
   ['felvétel', '1'], ['feldolgozás', '2'], ['szállítás', '3'], ['kézbesítés', '4'], ['kézbesített', '5'],
@@ -85,7 +88,7 @@ function wording(cell: Selection): string {
  * its category, wording, clock and mostly a facility. A number without data
  * comes back with a notice instead.
  */
-export function parseMagyarPosta(html: string, raw: string): CarrierResult {
+export function parseMagyarPosta(html: string, raw: string, readAt = Date.now()): CarrierResult {
   const number = normalizeMagyarPostaNumber(raw);
   const $ = load(html);
   const sections = $('div.result_section');
@@ -130,6 +133,7 @@ export function parseMagyarPosta(html: string, raw: string): CarrierResult {
     const description = wording(line.children('div.data_more_3'));
     if (!code || !time || !description) throw new SchemaError(PROVIDER, 'Magyar Posta returned a scan without a category, clock or wording');
     if (isMagyarPostaSettlement(description)) return;
+    if (firstOccurrence(DateTime.fromISO(time, { zone: HOME })).toMillis() > readAt + CLOCK_SKEW_MS) return;
     const location = place(line.children('div.data_more_4').text());
     const event: CarrierEvent = { local_time: time, description, ...(location ? { location } : {}), provider_code: code };
     // A delivery can repeat a scan with the same clock, place and wording.
@@ -204,7 +208,7 @@ function history(events: CarrierEvent[], current: string, serviceName: string,
  * tracker, its current state and service. Null when the reply holds no item
  * for the number, which is how the app's list answers a number it does not hold.
  */
-export function parseMagyarPostaApp(payload: unknown, raw: string): CarrierResult | null {
+export function parseMagyarPostaApp(payload: unknown, raw: string, readAt = Date.now()): CarrierResult | null {
   const number = normalizeMagyarPostaNumber(raw);
   if (!isRecord(payload) || !Array.isArray(payload.data)) throw new SchemaError(PROVIDER, 'Magyar Posta app returned an invalid reply');
   const items = (payload.data as unknown[]).filter(item => isRecord(item) && returnedTrackingNumber(item.package_id) === number);
@@ -221,6 +225,8 @@ export function parseMagyarPostaApp(payload: unknown, raw: string): CarrierResul
     const description = isRecord(row) ? clean(row.message, 300) || clean(row.alias, 300) : '';
     if (!isRecord(row) || !time || !description) throw new SchemaError(PROVIDER, 'Magyar Posta app returned a scan without a clock or wording');
     if (isMagyarPostaSettlement(description)) return;
+    // A dispatch from abroad can carry the planned time of its next leg. It is held back until then.
+    if (time.timestamp > readAt + CLOCK_SKEW_MS) return;
     const code = APP_CATEGORIES.get(clean(row.status, 40).toLowerCase());
     const location = place(clean(row.location, 400));
     const event: CarrierEvent = { time: time.iso, description, ...(location ? { location } : {}), ...(code ? { provider_code: code } : {}) };

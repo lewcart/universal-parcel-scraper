@@ -93,6 +93,17 @@ describe('Magyar Posta result page', () => {
     expect(parseMagyarPosta(collected, LETTER)).toMatchObject({ current_stage: 'delivered', pickup_point: 'Példaváros 1 posta, Példaváros' });
   });
 
+  it('holds back a row dated after the lookup on Budapest time until it is due', () => {
+    const planned = edit(fixture('pickup'), $ => {
+      $('div.more_details_container').append(rowFor('2', '2', 'Küldemény előkészítése szállításhoz', '2026. 04. 12. 11:40', ''));
+    });
+    // 10:00 in Budapest, then an hour before the row and after it.
+    expect(parseMagyarPosta(planned, LETTER, Date.parse('2026-04-11T08:00:00Z'))).toMatchObject({ last_update_local: '2026-04-11T09:00:00' });
+    for (const readAt of ['2026-04-12T08:45:00Z', '2026-04-12T10:00:00Z']) {
+      expect(parseMagyarPosta(planned, LETTER, Date.parse(readAt))).toMatchObject({ last_update_local: '2026-04-12T11:40:00' });
+    }
+  });
+
   it('reads a delivery after an undeliverable item went back as its return', () => {
     const html = fixture('delivered').replace('fig_14', 'fig_13').replace('A küldemény a kézbesítőnél van', 'A küldemény nem kézbesíthető (nem kereste)');
     const result = parseMagyarPosta(html, PARCEL);
@@ -170,6 +181,21 @@ describe('Magyar Posta app reply', () => {
       last_status_text: 'A küldemény postán átvehető', service_name: 'Levél', last_update: '2026-04-11T07:00:00Z' });
     expect(result.events!.map(event => [event.provider_code, event.stage])).toEqual([
       ['4', 'ready_for_pickup'], ['3', 'in_transit'], ['2', 'in_transit'], ['2', 'in_transit'], ['1', 'accepted']]);
+  });
+
+  it('holds back the planned leg of a dispatch from abroad until it is due, then keeps its instant', () => {
+    const item = (appFixture('app-pickup').data as Record<string, unknown>[])[0]!;
+    const events = item.events as Record<string, unknown>[];
+    const planned = { alias: 'Küldemény előkészítése szállításhoz', status: 'Feldolgozás', message: 'Küldemény előkészítése szállításhoz',
+      code: '2', location: '', date: '2026-04-09T09:40:00.000000Z' };
+    const payload = { data: [{ ...item, events: [...events.slice(0, 3), planned] }] };
+    const before = parseMagyarPostaApp(payload, LETTER, Date.parse('2026-04-08T12:00:00Z'))!;
+    expect(before).toMatchObject({ last_update: '2026-04-08T11:30:00Z' });
+    expect(before.events!.map(event => event.time)).toEqual(['2026-04-08T11:30:00Z', '2026-04-08T10:02:00Z', '2026-04-06T09:15:00Z']);
+    // An hour early, as a clock running ahead, and once due.
+    for (const readAt of ['2026-04-09T08:45:00Z', '2026-04-09T10:00:00Z']) {
+      expect(parseMagyarPostaApp(payload, LETTER, Date.parse(readAt))!.events![0]).toMatchObject({ time: '2026-04-09T09:40:00Z', stage: 'in_transit' });
+    }
   });
 
   it('answers null for a number the list does not hold, and refuses other replies', () => {

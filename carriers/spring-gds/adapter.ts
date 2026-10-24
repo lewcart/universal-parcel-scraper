@@ -16,20 +16,32 @@
  * The response echoes the requested barcodes, so the item whose `item` equals
  * the requested number is the only one read. PostNL answers an unknown barcode
  * with an ordinary item that has no events and says so in `message`.
+ *
+ * A 3S barcode sent within the Netherlands is not there: PostNL's domestic
+ * tracker on jouw.postnl.nl shows it, given the barcode, the country and the
+ * delivery postcode. With a Dutch postcode that tracker is asked first.
  */
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
 import { DateTime } from 'luxon';
-import { NoHistoryError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import {
+  CarrierError, IndeterminateError, InputRequiredError, NoHistoryError, NotFoundError, SchemaError, TransportError, UpstreamHttpError,
+  UpstreamNetworkError,
+} from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { runSteps } from '../../core/runner/index.js';
+import { classifyWording, languageStageStatus, type ClassifiedWording } from '../../core/status/index.js';
+import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { countryTimeZone, explicitOffsetTime, firstOccurrence, mislabeledWallTime, settleGuessedClocks, type FeedClock, type ParsedTime } from '../../core/time/index.js';
 import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { postNLStatus } from './status.js';
+import { postNLDomesticStage, postNLStatus } from './status.js';
 
 const PROVIDER = 'PostNL';
 const TOKEN_URL = 'https://postnl.post/api/v1/auth/token';
 const TRACK_URL = 'https://postnl.post/api/v1/tracking-items';
+const DOMESTIC_URL = 'https://jouw.postnl.nl/track-and-trace/api/trackAndTrace';
 const TOKEN_TIMEOUT_MS = 10_000;
+const DOMESTIC_TIMEOUT_MS = 10_000;
 const TRACK_TIMEOUT_MS = 15_000;
 const LOOKUP_TIMEOUT_MS = 25_000;
 const MAX_TOKEN_LENGTH = 16_384;
@@ -43,6 +55,10 @@ const TOKEN_RENEWAL_MARGIN_MS = 5 * 60_000;
 const NOT_FOUND_MESSAGE = /barcode was not found/i;
 const INCORRECT_MESSAGE = /barcode was incorrect/i;
 const READABLE_3S = /^3S[A-Z]{4}\d{9}$/;
+// The 3S barcodes the domestic tracker may hold, and the Dutch postcode it takes them with.
+const THREE_S = /^(?=.{13}$|.{15}$)3S[A-Z]{1,4}\d+$/;
+const DUTCH_POSTCODE = /^([1-9]\d{3}) ?([A-Z]{2})$/;
+const DOMESTIC_MESSAGE = 'PostNL shows a parcel sent within the Netherlands only with its delivery postcode';
 // PostNL's own records (the pre-advice, the shipper's data) name no country and
 // keep Amsterdam time. See this folder's README for the evidence.
 const HOME_ZONE = 'Europe/Amsterdam';
@@ -146,6 +162,10 @@ export function parsePostNLTrackingResponse(value: unknown, trackingNumber: stri
   }
   if (rawEvents.length > 500) throw new SchemaError(PROVIDER, 'PostNL returned excessive tracking history');
   const message = text(item.message);
+  if (rawEvents.length === 0 && NOT_FOUND_MESSAGE.test(message) && THREE_S.test(requested)) {
+    // A 3S barcode sent within the Netherlands is only on the domestic tracker.
+    throw new InputRequiredError(PROVIDER, 'postcode', DOMESTIC_MESSAGE);
+  }
   if (rawEvents.length === 0 && (NOT_FOUND_MESSAGE.test(message) || (INCORRECT_MESSAGE.test(message) && READABLE_3S.test(requested)))) {
     // The rest of `message` can carry provider prose; only the recognized
     // phrase is used, and none of it reaches the error.
@@ -185,10 +205,96 @@ export function parsePostNLTrackingResponse(value: unknown, trackingNumber: stri
   };
 }
 
+/** A description as PostNL's domestic tracker writes it, without its stray spaces. */
+function domesticText(value: unknown): string {
+  return text(value).replace(/\s+/g, ' ').trim().slice(0, 500);
+}
+
+/**
+ * Projects one domestic tracker reply, keyed by barcode under `colli`. The
+ * delivery is not among its observations: `isDelivered` says it happened and
+ * `deliveryDate`, when present, when. Recipient, sender and route details are
+ * not read. Pure: the offline tests target this.
+ */
+export function parsePostNLDomesticResponse(value: unknown, trackingNumber: string): CarrierResult {
+  const colli = record(value).colli;
+  if (!isRecord(colli)) throw new SchemaError(PROVIDER, 'PostNL returned an invalid domestic tracking response');
+  const entries = Object.values(colli);
+  // The tracker answers an unknown barcode and a wrong postcode alike.
+  if (entries.length === 0) {
+    throw new IndeterminateError(PROVIDER, 'PostNL found no parcel for that barcode and postcode', { reason: 'portal_not_found' });
+  }
+  const requested = comparableIdentifier(trackingNumber);
+  const matches = entries.filter((entry) => isRecord(entry) && comparableIdentifier(entry.barcode) === requested);
+  if (matches.length !== 1) throw new SchemaError(PROVIDER, 'PostNL returned a different or ambiguous shipment');
+  const collo = matches[0] as JsonObject;
+  const rawObservations = collo.observations ?? [];
+  if (!Array.isArray(rawObservations)) throw new SchemaError(PROVIDER, 'PostNL returned invalid tracking history');
+  const observations = recordArray(rawObservations);
+  if (observations.length !== rawObservations.length) throw new SchemaError(PROVIDER, 'PostNL returned an invalid tracking event');
+  if (observations.length > 500) throw new SchemaError(PROVIDER, 'PostNL returned excessive tracking history');
+  const phase = record(collo.statusPhase);
+  const phaseMessage = domesticText(phase.message);
+  const scans = observations.slice(0, 100).map((observation) => {
+    const description = domesticText(observation.description);
+    const mapped = postNLDomesticStage(description);
+    const classified: ClassifiedWording | null = mapped ? { stage: mapped, source: 'carrier_map' }
+      : description ? classifyWording(description, 'in_transit') : null;
+    return { observation, description, time: explicitOffsetTime(observation.observationDate),
+      classified: classified?.source === 'none' ? null : classified };
+  });
+  const delivered = collo.isDelivered === true;
+  const deliveredAt = delivered ? explicitOffsetTime(collo.deliveryDate) : null;
+  // The observations come newest first; the delivery, when dated, ends them.
+  if (deliveredAt) {
+    scans.unshift({ observation: {}, description: phaseMessage || 'Delivered', time: deliveredAt, classified: { stage: 'delivered', source: 'carrier_map' } });
+  }
+  const latest = scans.reduce<(typeof scans)[number] | undefined>((newest, scan) => (
+    !newest || (scan.time && (!newest.time || scan.time.timestamp > newest.time.timestamp)) ? scan : newest), undefined);
+  if (!latest) {
+    // An announced parcel PostNL has not received yet has no observations.
+    if (phase.index !== 0 || !phaseMessage) throw new NoHistoryError(PROVIDER, 'PostNL lists the parcel without scans');
+    return {
+      status: 'pending', current_stage: 'registered', current_stage_source: 'carrier_map',
+      last_status_text: phaseMessage, last_update: null, expected_delivery: null, summary_only: true, events: [],
+    };
+  }
+  const events = scans.map(({ observation, description, time, classified }): CarrierEvent => {
+    const raw = text(observation.observationDate).trim().slice(0, 64);
+    const code = text(observation.observationCode).trim();
+    return {
+      ...(time ? { time: time.iso } : raw ? { provider_time_text: raw } : {}),
+      description,
+      ...(/^[A-Z0-9]{1,8}$/i.test(code) ? { provider_code: code } : {}),
+      ...(classified ? { stage: classified.stage, stage_source: classified.source } : {}),
+    };
+  });
+  // `isDelivered` decides: the phase already reads delivered while a parcel waits at a pick-up point.
+  const current: ClassifiedWording | null = delivered ? { stage: 'delivered', source: 'carrier_map' } : latest.classified;
+  return {
+    status: current ? languageStageStatus(current.stage) : 'unknown',
+    ...(current ? { current_stage: current.stage, current_stage_source: current.source } : {}),
+    last_status_text: (delivered && phaseMessage) || latest.description || null,
+    last_update: latest.time?.iso ?? null,
+    expected_delivery: null,
+    ...(deliveredAt ? { delivered_at: deliveredAt.iso } : {}),
+    events,
+  };
+}
+
+/** The same failure without the request details fetchBounded attaches: the address holds the postcode. */
+function withoutPostcode(error: unknown): unknown {
+  if (error instanceof UpstreamHttpError) return new UpstreamHttpError(error.provider, error.status, error.retryAfterMs);
+  if (error instanceof UpstreamNetworkError) return new UpstreamNetworkError(error.provider, error.cause);
+  return error;
+}
+
 export class PostNLTracker {
   private readonly fetcher: typeof fetch | undefined;
   private readonly now: () => Date;
   private readonly headers: Record<string, string>;
+  private readonly userAgent: string;
+  private readonly recorder: StepRecorder;
 
   /**
    * The visitor token this tracker's lookups share until shortly before it
@@ -197,10 +303,12 @@ export class PostNLTracker {
    */
   private cachedToken: { value: string; expiresAt: number } | null = null;
 
-  constructor(options: { fetcher?: typeof fetch; now?: () => Date; userAgent?: string } = {}) {
+  constructor(options: { fetcher?: typeof fetch; now?: () => Date; userAgent?: string; recorder?: StepRecorder } = {}) {
     this.fetcher = options.fetcher;
     this.now = options.now ?? (() => new Date());
-    this.headers = siteHeaders(userAgentOf(options.userAgent));
+    this.userAgent = userAgentOf(options.userAgent);
+    this.headers = siteHeaders(this.userAgent);
+    this.recorder = options.recorder ?? NOOP_RECORDER;
   }
 
   /** The shared visitor token, or a new one once it is close to expiring. */
@@ -257,11 +365,28 @@ export class PostNLTracker {
     return bytes;
   }
 
-  async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
-    const budget = context.budgetMs ?? LOOKUP_TIMEOUT_MS;
-    if (!Number.isFinite(budget) || budget <= 0) throw new TypeError('PostNL timeout must be positive');
-    context.signal?.throwIfAborted();
-    const signal = AbortSignal.any([AbortSignal.timeout(Math.max(1, Math.floor(budget))), ...(context.signal ? [context.signal] : [])]);
+  /** The domestic tracker's answer for a 3S barcode and its Dutch delivery postcode, sent without its space. */
+  private async domestic(trackingNumber: string, postcode: string, signal: AbortSignal, timeoutMs: number): Promise<CarrierResult> {
+    const key = `${encodeURIComponent(trackingNumber)}-NL-${postcode}`;
+    let bytes: Uint8Array;
+    try {
+      ({ bytes } = await fetchBounded(
+        `${DOMESTIC_URL}/${key}?language=en`,
+        { method: 'GET', headers: { Accept: 'application/json', 'Accept-Language': 'en-US,en;q=0.9', 'User-Agent': this.userAgent }, signal },
+        { provider: 'PostNL domestic tracking', timeoutMs, maxBytes: 1_000_000, retryTransient: true, fetcher: this.fetcher },
+      ));
+    } catch (error) {
+      if (error instanceof UpstreamHttpError && [404, 410].includes(error.status)) {
+        throw new TransportError(PROVIDER, 'PostNL domestic tracking is unavailable', { status: error.status });
+      }
+      throw withoutPostcode(error);
+    }
+    signal.throwIfAborted();
+    return parsePostNLDomesticResponse(parseJsonBytes(bytes, 'PostNL domestic tracking'), trackingNumber);
+  }
+
+  /** The international tracker's answer, with the visitor token it needs. */
+  private async international(trackingNumber: string, signal: AbortSignal): Promise<CarrierResult> {
     try {
       const token = await this.visitorToken(signal);
       let bytes: Uint8Array;
@@ -281,6 +406,43 @@ export class PostNLTracker {
       throw error;
     }
   }
+
+  async fetch(trackingNumber: string, context: TrackingContext = {}, postcode?: string | null): Promise<CarrierResult> {
+    const budget = context.budgetMs ?? LOOKUP_TIMEOUT_MS;
+    if (!Number.isFinite(budget) || budget <= 0) throw new TypeError('PostNL timeout must be positive');
+    const supplied = postcode?.trim().toUpperCase() ?? '';
+    const dutch = DUTCH_POSTCODE.exec(supplied);
+    const domestic = THREE_S.test(comparableIdentifier(trackingNumber)) && dutch !== null;
+    return runSteps({ carrier: 'spring-gds', budgetMs: budget, signal: context.signal, recorder: this.recorder }, [
+      {
+        id: 'domestic',
+        enabled: domestic,
+        // Half of the budget at most, so the international tracker can still be asked.
+        run: ({ signal, remainingMs }) => this.domestic(trackingNumber, `${dutch![1]}${dutch![2]}`, signal,
+          Math.max(1, Math.floor(Math.min(DOMESTIC_TIMEOUT_MS, remainingMs / 2)))),
+      },
+      {
+        id: 'direct',
+        // The international tracker shows parcels the domestic one does not.
+        recovers: () => true,
+        run: async ({ signal, previousError }) => {
+          try {
+            return await this.international(trackingNumber, signal);
+          } catch (error) {
+            if (!(error instanceof InputRequiredError) || !supplied) throw error;
+            if (!dutch) {
+              throw new InputRequiredError(PROVIDER, 'postcode', 'PostNL\'s domestic tracker takes a Dutch delivery postcode', { reason: 'postcode_mismatch' });
+            }
+            // The domestic tracker's own failure, unless it found nothing either.
+            if (previousError instanceof CarrierError && !(previousError instanceof IndeterminateError && previousError.reason === 'portal_not_found')) {
+              throw previousError;
+            }
+            throw new IndeterminateError(PROVIDER, 'PostNL found no parcel for that barcode and postcode', { reason: 'portal_not_found' });
+          }
+        },
+      },
+    ]);
+  }
 }
 
 /** Kept for the host's legacy dispatch chain until it is deleted. */
@@ -289,12 +451,14 @@ export async function fetchPostNL(trackingNumber: string): Promise<CarrierResult
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new PostNLTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
+  const tracker = new PostNLTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent, recorder: environment.recorder });
   return {
     id: 'spring-gds',
-    // The visitor token and the lookup are one step: both are keyless HTTP on
-    // the same host, and each replays once inside the step.
-    steps: ['direct'],
-    track: (input, context) => tracker.fetch(input.number, context),
+    recordsSteps: true,
+    // The domestic tracker runs only for a 3S barcode with a Dutch postcode. The
+    // international visitor token and lookup are one step: both are keyless HTTP
+    // on the same host, and each replays once inside the step.
+    steps: ['domestic', 'direct'],
+    track: (input, context) => tracker.fetch(input.number, context, input.postcode),
   };
 };

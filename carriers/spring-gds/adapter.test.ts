@@ -3,7 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CarrierResult } from '../../core/result/index.js';
-import { fetchPostNL, parsePostNLTrackingResponse, PostNLTracker } from './adapter.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, fetchPostNL, parsePostNLDomesticResponse, parsePostNLTrackingResponse, PostNLTracker } from './adapter.js';
 import { postNLStatus } from './status.js';
 
 const folder = path.dirname(fileURLToPath(import.meta.url));
@@ -353,7 +354,7 @@ describe('PostNL ambiguity and clock safety', () => {
     expect(result.events?.[0]?.provider_code).toBe(expected);
   });
 
-  it('reads incorrect as not found only for a 3S layout the endpoint reads', () => {
+  it('reads incorrect as not found only for a 3S layout the endpoint reads, and asks the postcode a 3S barcode it lacks', () => {
     const response = (item: string, message: string) => ({ status: 'success', data: { items: [{ item, message, events: [] as unknown[] }] } });
     const fifteen = '3SABCD123456789';
     expect(() => parsePostNLTrackingResponse(response(fifteen, 'The shipment barcode was incorrect.'), fifteen)).toThrow(expect.objectContaining({ kind: 'not_found' }));
@@ -361,8 +362,14 @@ describe('PostNL ambiguity and clock safety', () => {
     // Parcel EU barcodes are thirteen characters, and the endpoint calls all of them incorrect.
     for (const unreadable of ['3SABCD1234567', '3SABC123456789']) {
       expect(() => parsePostNLTrackingResponse(response(unreadable, 'The shipment barcode was incorrect.'), unreadable)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-      expect(() => parsePostNLTrackingResponse(response(unreadable, 'The shipment barcode was not found.'), unreadable)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     }
+    // A 3S barcode sent within the Netherlands is on the domestic tracker only.
+    for (const domestic of [fifteen, '3SABCD1234567']) {
+      expect(() => parsePostNLTrackingResponse(response(domestic, 'The shipment barcode was not found.'), domestic))
+        .toThrow(expect.objectContaining({ kind: 'input_required', field: 'postcode' }));
+    }
+    expect(() => parsePostNLTrackingResponse(response('3SABC123456789', 'The shipment barcode was not found.'), '3SABC123456789'))
+      .toThrow(expect.objectContaining({ kind: 'not_found' }));
   });
 
   it('refuses duplicate matching identities and an echo with empty history', () => {
@@ -517,5 +524,101 @@ describe('PostNL complete lookup budget', () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response('Unavailable', { status }));
     await expect(new PostNLTracker({ fetcher }).fetch(POSTNL_WRONG_NUMBER)).rejects.toMatchObject({ kind: 'transport' });
     expect(fetcher).toHaveBeenCalledOnce();
+  });
+});
+
+describe('PostNL domestic tracker', () => {
+  const barcode = '3SABCD123456789';
+  const observations = [
+    { observationDate: '2026-05-12T08:38:33+02:00', observationCode: 'J05', description: 'Driver is en route' },
+    { observationDate: '2026-05-12T07:48:27+02:00', observationCode: 'J01', description: 'Shipment has been sorted' },
+    { observationDate: '2026-05-11T22:42:53+02:00', observationCode: 'B01', description: 'Shipment received by PostNL' },
+    { observationDate: '2026-05-11T17:09:57.117+02:00', observationCode: 'A01', description: 'Shipment expected, but not yet arrived or processed at PostNL' },
+  ];
+  const collo = (fields: Record<string, unknown> = {}) => ({
+    barcode, isDelivered: false, deliveryDate: null, statusPhase: { index: 3, message: 'Driver is en route' }, observations,
+    recipient: { names: { personName: 'Synthetic Person' }, address: { street: 'Synthetic Street', postalCode: '1234AB', town: 'SYNTHETIC TOWN' } },
+    sender: { names: { companyName: 'Synthetic Shop' } }, ...fields,
+  });
+  const reply = (...entries: Record<string, unknown>[]) => ({ colli: Object.fromEntries(entries.map((entry) => [String(entry.barcode), entry])) });
+  const domesticUrl = (url: unknown) => String(url).startsWith('https://jouw.postnl.nl/');
+  const notFound = { data: { items: [{ item: barcode, message: 'The shipment barcode was not found.', events: [] }] } };
+
+  it('reads the observations and their stages without the recipient or sender', () => {
+    const result = parsePostNLDomesticResponse(reply(collo()), barcode);
+    expect(result).toMatchObject({
+      status: 'out_for_delivery', current_stage: 'out_for_delivery', current_stage_source: 'carrier_map',
+      last_status_text: 'Driver is en route', last_update: '2026-05-12T08:38:33+02:00',
+    });
+    expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual([
+      ['J05', 'out_for_delivery'], ['J01', 'in_transit'], ['B01', 'accepted'], ['A01', 'registered'],
+    ]);
+    expect(JSON.stringify(result)).not.toMatch(/Synthetic|1234AB/);
+  });
+
+  it('dates the delivery the observations leave out, and only when PostNL says it happened', () => {
+    const delivered = parsePostNLDomesticResponse(reply(collo({
+      isDelivered: true, deliveryDate: '2026-05-12T11:21:20+02:00', statusPhase: { index: 4, message: 'Shipment in letterbox' },
+    })), barcode);
+    expect(delivered).toMatchObject({ status: 'delivered', delivered_at: '2026-05-12T11:21:20+02:00', last_status_text: 'Shipment in letterbox' });
+    expect(delivered.events?.[0]).toEqual({ time: '2026-05-12T11:21:20+02:00', description: 'Shipment in letterbox', stage: 'delivered', stage_source: 'carrier_map' });
+    // Delivered without a date: no delivery time is guessed from the driver's last scan.
+    const undated = parsePostNLDomesticResponse(reply(collo({ isDelivered: true, statusPhase: { index: 4, message: 'Shipment in letterbox' } })), barcode);
+    expect(undated).toMatchObject({ status: 'delivered', last_update: '2026-05-12T08:38:33+02:00' });
+    expect(undated.delivered_at).toBeUndefined();
+    // The phase alone, as for a parcel waiting at a pick-up point, is not a delivery.
+    expect(parsePostNLDomesticResponse(reply(collo({ statusPhase: { index: 4, message: 'Synthetic phase' } })), barcode).status).toBe('out_for_delivery');
+  });
+
+  it('keeps an announced parcel as a summary, and a parcel without scans as no history', () => {
+    const announced = { index: 0, message: 'Shipment expected, but not yet arrived or processed at PostNL' };
+    expect(parsePostNLDomesticResponse(reply(collo({ observations: [], statusPhase: announced })), barcode))
+      .toMatchObject({ status: 'pending', current_stage: 'registered', summary_only: true, events: [] });
+    expect(() => parsePostNLDomesticResponse(reply(collo({ observations: [], statusPhase: { index: 2, message: 'Synthetic phase' } })), barcode))
+      .toThrow(expect.objectContaining({ name: 'NoHistoryError' }));
+  });
+
+  it('reads an empty reply as unknown rather than absent, and refuses another barcode or a changed shape', () => {
+    expect(() => parsePostNLDomesticResponse({ colli: {} }, barcode)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    expect(() => parsePostNLDomesticResponse(reply(collo({ barcode: '3SABCD123456780' })), barcode)).toThrow('different or ambiguous');
+    expect(() => parsePostNLDomesticResponse({ colli: [] }, barcode)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => parsePostNLDomesticResponse(reply(collo({ observations: {} })), barcode)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => parsePostNLDomesticResponse(reply(collo({ observations: [null] })), barcode)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('asks the domestic tracker first with a Dutch postcode, sent without its space', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(jsonResponse(reply(collo())));
+    const tracker = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
+    await expect(tracker.track({ number: barcode, postcode: '1234 ab' }, {})).resolves.toMatchObject({ status: 'out_for_delivery' });
+    expect(fetcher).toHaveBeenCalledOnce();
+    expect(String(fetcher.mock.calls[0]![0])).toBe(`https://jouw.postnl.nl/track-and-trace/api/trackAndTrace/${barcode}-NL-1234AB?language=en`);
+  });
+
+  it('asks the international tracker when the domestic one finds nothing, and keeps the postcode out of errors', async () => {
+    const intl = jsonResponse({ data: { items: [{ item: barcode, events: [{ category: 'Processing', datetime_local: '2026-05-11T12:00:00Z', country_code: 'NL' }] }] } });
+    const found = vi.fn<typeof fetch>().mockImplementation(async (url) => (domesticUrl(url) ? jsonResponse({ colli: {} })
+      : String(url).endsWith('/token') ? jsonResponse({ access_token: 'visitor-token' }) : intl));
+    await expect(new PostNLTracker({ fetcher: found }).fetch(barcode, {}, '1234AB')).resolves.toMatchObject({ status: 'in_transit' });
+    expect(found).toHaveBeenCalledTimes(3);
+
+    const absent = vi.fn<typeof fetch>().mockImplementation(async (url) => (domesticUrl(url) ? jsonResponse({ colli: {} })
+      : String(url).endsWith('/token') ? jsonResponse({ access_token: 'visitor-token' }) : jsonResponse(notFound)));
+    await expect(new PostNLTracker({ fetcher: absent }).fetch(barcode, {}, '1234AB'))
+      .rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+
+    const failing = vi.fn<typeof fetch>().mockImplementation(async (url) => (domesticUrl(url) ? new Response('', { status: 500 })
+      : String(url).endsWith('/token') ? jsonResponse({ access_token: 'visitor-token' }) : jsonResponse(notFound)));
+    const error = await new PostNLTracker({ fetcher: failing }).fetch(barcode, {}, '1234AB').catch((caught: unknown) => caught);
+    expect(error).toMatchObject({ name: 'UpstreamHttpError', status: 500 });
+    expect(JSON.stringify(error, Object.getOwnPropertyNames(error))).not.toContain('1234AB');
+  });
+
+  it('skips the domestic tracker without a Dutch postcode, and says which postcode it needs', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => (String(url).endsWith('/token')
+      ? jsonResponse({ access_token: 'visitor-token' }) : jsonResponse(notFound)));
+    const tracker = new PostNLTracker({ fetcher });
+    await expect(tracker.fetch(barcode)).rejects.toMatchObject({ kind: 'input_required', field: 'postcode' });
+    await expect(tracker.fetch(barcode, {}, '10115')).rejects.toMatchObject({ kind: 'input_required', reason: 'postcode_mismatch' });
+    expect(fetcher.mock.calls.some(([url]) => domesticUrl(url))).toBe(false);
   });
 });

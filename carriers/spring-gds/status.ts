@@ -12,7 +12,7 @@
  * `unsuccesfull` is PostNL's own spelling; the corrected spelling is mapped
  * alongside it so a fix upstream does not silently lose the classification.
  */
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
 
 const CATEGORY_STATUS = new Map<string, ClassifiedStatus>([
   ['pre-advised', { status: 'pending', stage: 'registered' }],
@@ -62,4 +62,19 @@ export function postNLStatus(category: unknown, description?: unknown): Classifi
   const code = (typeof category === 'string' ? category : '').trim().toLocaleLowerCase('en-US');
   const label = (typeof description === 'string' ? description : '').trim().toLocaleLowerCase('en-US').replace(/[.!]+$/, '');
   return LABEL_STATUS.get(code)?.get(label) ?? CATEGORY_STATUS.get(code);
+}
+
+/**
+ * Labels of PostNL's domestic tracker the shared wording rules read wrong,
+ * lowercase without final punctuation. Its observations carry no category.
+ */
+const DOMESTIC_STAGE = new Map<string, Stage>([
+  ['shipment expected, but not yet arrived or processed at postnl', 'registered'],
+  ['shipment received by postnl', 'accepted'],
+  ['driver is en route', 'out_for_delivery'],
+]);
+
+/** The stage of one domestic tracker observation, or undefined when unmapped. */
+export function postNLDomesticStage(description: string): Stage | undefined {
+  return DOMESTIC_STAGE.get(description.trim().toLocaleLowerCase('en-US').replace(/[.!]+$/, ''));
 }

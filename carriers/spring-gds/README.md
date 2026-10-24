@@ -1,13 +1,28 @@
 # PostNL
 
 Dutch S10 numbers ending in `NL` and PostNL's `3S…` barcodes, tracked through the keyless
-API behind `postnl.post`. The folder id stays `spring-gds` (PostNL's international
+API behind `postnl.post`, and for a `3S` parcel sent within the Netherlands through PostNL's
+domestic tracker with its delivery postcode. The folder id stays `spring-gds` (PostNL's international
 subsidiary) because stored parcels, the detection corpus, the published contract and the
 native catalog all carry it; everything user-facing says PostNL.
 
 ## How it works
 
-1. `direct`: two POSTs on the same host.
+1. `domestic`: only for a 13- or 15-character `3S` barcode given with a Dutch postcode. A GET
+   to `jouw.postnl.nl/track-and-trace/api/trackAndTrace/{barcode}-NL-{postcode}`, the request
+   PostNL's own tracking page makes, with the postcode sent without its space.
+   - The reply keys parcels by barcode under `colli`; only the entry whose `barcode` equals
+     the requested number is read. An empty `colli` answers an unknown barcode and a wrong
+     postcode alike, so it stays inconclusive and the next step runs. So does any other
+     failure of this step: it gets at most half of the budget.
+   - `observations` come newest first with a stated offset, an `observationCode` kept as
+     `provider_code` and an English `description`. The delivery is not among them:
+     `isDelivered` says it happened and `deliveryDate`, when present, dates it. The status
+     phase alone is not read as delivered, because it already reads so while a parcel waits
+     at a pick-up point. An announced parcel without observations is kept as a summary.
+   - The reply names the recipient, the sender and their addresses; none of that is read.
+     Errors leave out the request address, which holds the postcode.
+2. `direct`: two POSTs on the same host.
    - `postnl.post/api/v1/auth/token` returns a visitor token that lasts a day
      (`expires_in`). An empty or implausibly long token is refused.
    - `postnl.post/api/v1/tracking-items` takes the barcode with that token. The answer echoes
@@ -23,6 +38,10 @@ native catalog all carry it; everything user-facing says PostNL.
    - An empty history without that message is a `NoHistoryError`, inconclusive: PostNL lists
      mail from abroad it does not hold yet the same way. Duplicate matching identities are
      refused. HTTP 404/410 means the endpoint is unavailable, not the parcel missing.
+   - "Barcode was not found" for a 13- or 15-character `3S` barcode asks for the delivery
+     postcode: PostNL's international tracker does not hold parcels sent within the
+     Netherlands. With a Dutch postcode the domestic tracker has already been asked, so the
+     lookup stays inconclusive; another postcode is reported as not matching.
 
 ## Notes
 
@@ -48,6 +67,9 @@ native catalog all carry it; everything user-facing says PostNL.
   the lookup.
 - Stamps with seven fraction digits (customs, bagging) carry a real `Z`: read as local
   times, they would break the list's order.
+- The domestic tracker's labels carry no category. The shared wording rules stage them,
+  except three they read as in transit: PostNL's announcement, its receipt and the driver's
+  round.
 - Categories supply the status. Exact English labels refine the categories that cover
   several milestones: sorting and the delivery round within `Processing`, PostNL's own
   acceptance within `Transit`, customs release within `Customs`, and a completed return
@@ -82,10 +104,15 @@ native catalog all carry it; everything user-facing says PostNL.
 - The tracking endpoint enforces a per-minute call quota shared beyond one client, so a
   lookup can meet HTTP 429 at a low request rate. The replay after its one-second
   `Retry-After` can meet the same quota; the lookup then fails as a rate limit.
+- A `3S` parcel sent within the Netherlands is only on PostNL's domestic tracker, which shows
+  it only with its delivery postcode. Without one, the lookup asks for it and other sources
+  are asked. Only Dutch postcodes are sent: a parcel bound abroad keeps to the international
+  tracker.
 - The endpoints are undocumented and can change without notice.
 
 ## Testing
 
 `npm run test:carriers:live -- carriers/spring-gds`. It checks that a never-issued S10
 number returns a clean 404. With `SPRING_GDS_TRACKING_NUMBER` set to a live parcel, as a
-consumer stored it, it also checks that `trackCarrier` returns that parcel's history.
+consumer stored it, it also checks that `trackCarrier` returns that parcel's history; for a
+`3S` parcel sent within the Netherlands, set `SPRING_GDS_POSTCODE` to its delivery postcode.

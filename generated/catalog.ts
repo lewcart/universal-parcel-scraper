@@ -392,6 +392,22 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "spring-gds",
+      "requirements": [
+        {
+          "field": "postcode",
+          "whenTrackingNumber": "^(?=.{13}$|.{15}$)3S[A-Z]{1,4}[0-9]+$",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery postcode",
+          "type": "text",
+          "placeholder": "1234 AB",
+          "help": "Optional. PostNL shows a parcel sent within the Netherlands only with its delivery postcode. Without it, other sources are asked.",
+          "pattern": "^[1-9][0-9]{3} ?[A-Za-z]{2}$",
+          "maxLength": 7,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ],
       "refresh": {
         "minMinutes": 30
       },

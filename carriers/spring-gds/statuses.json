@@ -223,6 +223,30 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
       "note": "The Undelivered category also covers attempts that end in a new delivery."
+    },
+    {
+      "wording": "Shipment expected, but not yet arrived or processed at PostNL",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "source",
+      "firstSeen": "2026-10-24",
+      "note": "A label of PostNL's domestic tracker; the shared wording rules read it as in transit."
+    },
+    {
+      "wording": "Shipment received by PostNL",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "source",
+      "firstSeen": "2026-10-24",
+      "note": "A label of PostNL's domestic tracker; the shared wording rules read it as in transit."
+    },
+    {
+      "wording": "Driver is en route",
+      "language": "en",
+      "stage": "out_for_delivery",
+      "confirmedBy": "source",
+      "firstSeen": "2026-10-24",
+      "note": "A label of PostNL's domestic tracker; the shared wording rules read it as in transit."
     }
   ]
 }

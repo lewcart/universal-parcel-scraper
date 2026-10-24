@@ -65,11 +65,15 @@ Parsing, in order:
 
 ## Notes
 
-- Accepting an S10 number does not make detection pick USPS. The S10 suffix names
-  the issuing country, not the deliverer, so a US-issued number stays with the unknown
-  postal carrier. It makes USPS a candidate for opt-in browser recognition only, since
-  USPS has no HTTP lookup. Other suffixes reach USPS when callers select it or through
-  the delivery-partner handoff route.
+- Detection names USPS for the parcels, EMS, registered and tracked-letter items it
+  issues: `C`, `E`, `L` or `R` first, `US` last and a passing check digit. Its tracker
+  follows them abroad, and USPS has no HTTP lookup, so recognition could not find it
+  for them before a check. `CV` and `CE` codes are left out: Meest's tracker follows
+  parcels from the United States under `CV` codes, and a CDEK Forward parcel from the
+  United States was given a `CE` code. Other `US` codes stay with the unknown postal
+  carrier, which makes USPS a candidate for opt-in browser recognition only. Other
+  suffixes reach USPS when callers select it or through the delivery-partner handoff
+  route.
 - Scan times are facility-local. The state in the location maps to a zone (multi-zone states
   use their majority zone); a facility without a comma names its state before its kind, as in
   `EXAMPLE CITY NY DISTRIBUTION CENTER` or `EXAMPLE CITY PA PACKAGE SORTING CENTER`. A place

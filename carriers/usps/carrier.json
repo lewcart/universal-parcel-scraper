@@ -109,6 +109,12 @@
       "preferred": true
     },
     {
+      "id": "usps-own",
+      "pattern": "^(?:C[A-DF-UW-Z]|[ELR][A-Z])\\d{9}US$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "usps-s10",
       "pattern": "^[A-Z]{2}\\d{9}US$",
       "confidence": "low",

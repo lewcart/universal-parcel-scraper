@@ -262,7 +262,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "A United States tracked letter to Slovakia, looked up on Slovenská pošta's tracker, as an archived address shows. Slovenská pošta's tracker answers for it under the same number, through to the delivery."

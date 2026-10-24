@@ -67690,13 +67690,10 @@
   },
   {
     "input": "CF028201988US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -67896,13 +67893,10 @@
   },
   {
     "input": "CH056695198US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -68135,13 +68129,10 @@
   },
   {
     "input": "CJ158165955US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -68154,13 +68145,10 @@
   },
   {
     "input": "CJ215716557US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -68584,17 +68572,6 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
-  },
-  {
-    "input": "CN987654326US",
-    "carrier": "intl-post",
-    "confidence": "high",
-    "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
-    ]
   },
   {
     "input": "CNA000002663047",
@@ -71219,13 +71196,10 @@
   },
   {
     "input": "EB803017483US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -72766,13 +72740,10 @@
   },
   {
     "input": "EP992072779US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -78934,13 +78905,10 @@
   },
   {
     "input": "LA059565532US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -79074,13 +79042,10 @@
   },
   {
     "input": "LC960517794US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -79201,13 +79166,10 @@
   },
   {
     "input": "LF123456785US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -79333,13 +79295,10 @@
   },
   {
     "input": "LH194723189US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -79452,13 +79411,10 @@
   },
   {
     "input": "LJ150908992US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -79623,13 +79579,10 @@
   },
   {
     "input": "LN242142606US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -80233,26 +80186,18 @@
   },
   {
     "input": "LV297667943US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost",
-      "epost-global"
+      "usps"
     ]
   },
   {
     "input": "LV679342632US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost",
-      "epost-global"
+      "usps"
     ]
   },
   {
@@ -80482,13 +80427,10 @@
   },
   {
     "input": "LX393949456US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -80645,13 +80587,10 @@
   },
   {
     "input": "LZ316815810US",
-    "carrier": "intl-post",
+    "carrier": "usps",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "usps"
     ]
   },
   {
@@ -92258,6 +92197,17 @@
     "confidence": "low",
     "candidates": [
       "spx-vn"
+    ]
+  },
+  {
+    "input": "VN987654326US",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
     ]
   },
   {

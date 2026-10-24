@@ -634,7 +634,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "Mail from the United States whose Canada Post tracking page the Wayback Machine archived. Canada Post's tracker returns its journey in Canada under the sending post's number."

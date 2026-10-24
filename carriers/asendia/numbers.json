@@ -180,10 +180,10 @@
         "assessment": "review"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
-      "note": "Open-source project example, not a real shipment. The source attributes it to Asendia; detection falls back to the generic postal rule."
+      "note": "Open-source project example, not a real shipment. The source attributes it to Asendia; detection names USPS, the issuing post."
     },
     {
       "number": "ASDLP2465555",

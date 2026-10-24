@@ -114,7 +114,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "An EMS Cooperative tracking link archived by the Wayback Machine. The EMS tracker no longer returns it."

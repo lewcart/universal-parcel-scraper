@@ -49,9 +49,9 @@ digits; an Amazon seller's forum post lists older ones of ten to thirteen. `epos
 claims the prefix with ten to fifteen.
 
 A shipment sent on as USPS international mail can carry USPS's S10 code instead, ending in
-`US`: the tracker files it under that code. One seen through LV codes, `epost-global-lv`
-offers ePost Global with low confidence for LV and a passing check digit, beside USPS, which
-shows only the label until the parcel reaches it. The adapter takes any code ending in `US`.
+`US`: the tracker files it under that code. Detection names USPS, the issuing post, for those
+codes: USPS's tracker follows the parcel once it reaches USPS, while ePost Global's showed only
+the label of one USPS was already moving. The adapter takes any code ending in `US`.
 
 ## Links
 

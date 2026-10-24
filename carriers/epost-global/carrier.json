@@ -97,12 +97,6 @@
       "id": "epost-global-1",
       "pattern": "^EPG\\d{10,15}$",
       "confidence": "high"
-    },
-    {
-      "id": "epost-global-lv",
-      "pattern": "^LV\\d{9}US$",
-      "confidence": "low",
-      "checksum": "s10"
     }
   ]
 }

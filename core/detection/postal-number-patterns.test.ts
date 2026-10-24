@@ -146,13 +146,23 @@ describe('S10-shaped numbers', () => {
     expect(recognitionAskedCarriers('RR123456789UA')).not.toContain('ukrposhta');
   });
 
-  it('offers USPS a US-issued number in the browser phase only', () => {
-    expect(detectCarrierMatch('EC123456785US')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers('EC123456785US')).not.toContain('usps');
-    expect(recognitionCandidates('EC123456785US', { phase: 'browser' })).toEqual([
-      { carrier: 'usps', needsInput: null, preferred: true },
-    ]);
-    expect(recognitionCandidates('EC123456789US', { phase: 'browser' })).toEqual([]);
+  it('names USPS for the parcels, EMS, registered and tracked-letter items it issues', () => {
+    for (const number of ['EC123456785US', 'LV123456785US', 'RR123456785US', 'CP123456785US', 'lz 123 456 785 us']) {
+      expect(detectCarrierMatch(number), number).toEqual({ carrier: 'usps', confidence: 'high', candidates: ['usps'], preferred: [] });
+    }
+    for (const number of ['EC123456789US', 'LV123456784US']) expect(detectCarrierMatch(number).candidates, number).not.toContain('usps');
+  });
+
+  it('offers USPS its other US-issued numbers in the browser phase only', () => {
+    // Meest's CV codes and a CDEK Forward CE code stay with international mail.
+    for (const number of ['CV123456785US', 'CE123456785US', 'VV123456785US']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+      expect(recognitionAskedCarriers(number), number).not.toContain('usps');
+      expect(recognitionCandidates(number, { phase: 'browser' }), number).toEqual([
+        { carrier: 'usps', needsInput: null, preferred: true },
+      ]);
+    }
+    expect(recognitionCandidates('VV123456789US', { phase: 'browser' })).toEqual([]);
     // Asendia USA's own numbers keep their carrier.
     expect(detectCarrierMatch('AS123456785US')).toMatchObject({ carrier: 'asendia', confidence: 'high' });
     expect(recognitionCandidates('AS123456785US', { phase: 'browser' })).toEqual([]);
@@ -344,10 +354,9 @@ describe('a mistyped postal number', () => {
 
 describe('ePost Global shipments under a USPS code', () => {
   // Synthetic USPS codes; none is a real shipment.
-  it('offers ePost Global with low confidence for LV codes ending in US with a passing check digit', () => {
-    expect(detectCarrierMatch('LV123456785US')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers('LV123456785US')).toContain('epost-global');
-    for (const number of ['LV123456784US', 'LW123456785US', 'LV123456785NL', 'LV12345678US']) {
+  it('names USPS, the issuing post, for the LV codes ePost Global sends on', () => {
+    expect(detectCarrierMatch('LV123456785US')).toMatchObject({ carrier: 'usps', confidence: 'high' });
+    for (const number of ['LV123456785US', 'LV123456784US', 'LW123456785US', 'LV123456785NL', 'LV12345678US']) {
       expect(recognitionAskedCarriers(number), number).not.toContain('epost-global');
     }
   });

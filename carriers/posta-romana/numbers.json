@@ -116,7 +116,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "Inbound item looked up on Poșta Română's former tracker; the opened capture holds only the frame set."

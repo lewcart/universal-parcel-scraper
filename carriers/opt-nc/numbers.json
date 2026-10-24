@@ -56,7 +56,7 @@
         "service": "inbound international"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "An archived lookup on OPT-NC's former tracker shows this USPS parcel posted and leaving the United States for New Caledonia."

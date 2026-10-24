@@ -134,7 +134,7 @@
         "service": "inbound international"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "An archived lookup on the TELE-POST tracker at post.gl for an item posted in the United States; the capture was not opened."

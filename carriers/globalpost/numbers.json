@@ -168,7 +168,7 @@
         "assessment": "scope_review"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "GlobalPost's own tracker shows USPS network scans for this number, but its US-suffix S10 layout names USPS as the issuing post, so it may be USPS's label rather than GlobalPost's."

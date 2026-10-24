@@ -2,7 +2,7 @@
   "carrier": "intl-post",
   "records": [
     {
-      "number": "CN987654326US",
+      "number": "VN987654326US",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",

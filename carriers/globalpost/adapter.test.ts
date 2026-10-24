@@ -432,7 +432,7 @@ describe('GlobalPost numbers', () => {
     }
     // The older SDC layout is GlobalPost's too, though no rule claims it; a USPS label it shows is not.
     const older = numbers.records.filter((record) => record.number.startsWith('SDC'));
-    const postal = numbers.records.filter((record) => record.expect.carrier === 'intl-post');
+    const postal = numbers.records.filter((record) => record.expect.carrier === 'usps');
     expect(older.length && postal.length).toBeTruthy();
     for (const { number } of older) expect(normalizeGlobalpostNumber(number), number).toBe(number);
     for (const { number } of postal) expect(() => normalizeGlobalpostNumber(number), number).toThrow(expect.objectContaining({ kind: 'invalid_input' }));

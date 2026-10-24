@@ -250,7 +250,7 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "Customer reports a parcel sent from the USA. The suffix names USPS as the issuing postal operator."
@@ -271,7 +271,7 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "Customer reports a parcel that left the USA for China. The suffix names USPS as the issuing postal operator."
@@ -292,7 +292,7 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "Customer reports their own US-origin parcel in a comment. The suffix names USPS as the issuing postal operator."
@@ -313,7 +313,7 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
       "note": "Sender reports an item held by Chinese customs. The suffix names USPS as the issuing postal operator."
@@ -883,10 +883,10 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
-      "note": "An international postal item with the US issuer suffix, archived from a USPS tracking link. The postal fallback stays selected."
+      "note": "An international postal item with the US issuer suffix, archived from a USPS tracking link. Detection names USPS."
     },
     {
       "number": "CJ158165955US",
@@ -902,10 +902,10 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
-      "note": "An international parcel with the US issuer suffix, archived from a USPS tracking link. The postal fallback stays selected."
+      "note": "An international parcel with the US issuer suffix, archived from a USPS tracking link. Detection names USPS."
     },
     {
       "number": "9434 6508 9956 3068 6020 30",

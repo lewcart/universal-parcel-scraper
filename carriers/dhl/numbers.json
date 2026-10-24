@@ -131,10 +131,10 @@
       "derivedFrom": "official_shape",
       "shapeConfirmed": "2026-09-12",
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format. Filed under DHL; detection falls back to the generic postal rule."
+      "note": "Made-up number that follows the published format. Filed under DHL; detection names USPS, the issuing post."
     },
     {
       "number": "LF123456789DE",

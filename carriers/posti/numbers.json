@@ -66,10 +66,10 @@
         "date": "2025-04-22"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "usps",
         "confidence": "high"
       },
-      "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Posti; detection selects the generic postal carrier. US item inbound to Finland."
+      "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Posti; detection names USPS, the issuing post. US item inbound to Finland."
     },
     {
       "number": "JJFI65432155555123456",

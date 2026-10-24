@@ -50,11 +50,12 @@ describe('SPX Express Brazil HTTP adapter', () => {
     expect(result.events!.map((event) => [event.time, event.provider_code, event.stage, event.location ?? null])).toEqual([
       ['2026-05-19T12:53:20Z', 'F980', 'delivered', null],
       ['2026-05-19T08:26:40Z', 'F600', 'out_for_delivery', null],
-      ['2026-05-18T16:46:40Z', 'F540', 'in_transit', null],
+      // A departure names its centre only in its wording.
+      ['2026-05-18T16:46:40Z', 'F540', 'in_transit', 'Vila Amostra - SP'],
       ['2026-05-17T19:33:20Z', 'F515', 'in_transit', 'Vila Amostra - SP'],
       // The repeated sorting scan is kept once.
       ['2026-05-17T16:46:40Z', 'F510', 'in_transit', 'Vila Amostra - SP'],
-      ['2026-05-17T14:00:00Z', 'F450', 'in_transit', null],
+      ['2026-05-17T14:00:00Z', 'F450', 'in_transit', 'Cidade Exemplo - SP'],
       ['2026-05-17T03:26:40Z', 'F440', 'in_transit', 'Cidade Exemplo - SP'],
       // The pickup names the seller's town, which is not kept.
       ['2026-05-17T01:06:40Z', 'F100', 'accepted', null],
@@ -62,6 +63,7 @@ describe('SPX Express Brazil HTTP adapter', () => {
     ]);
     expect(result.events![6]).toMatchObject({ point: { latitude: -23.5, longitude: -46.6 },
       description: 'Seu pedido chegou ao centro logístico: Cidade Exemplo - SP' });
+    expect(result.events![2]).not.toHaveProperty('point');
     expect(result.events!.every((event) => !('local_time' in event))).toBe(true);
     expect(JSON.stringify(result)).not.toMatch(/Pessoa Exemplo|Recebido|Vendedor|Rua |Avenida|R101|1000000000000000001/);
   });

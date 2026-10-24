@@ -21,6 +21,8 @@ const MAX_EVENTS = 100;
 // the way out and back. Pickups, deliveries and the return to the seller
 // name the seller's or the recipient's town, which is not kept.
 const FACILITY = /^F(?:[2-5]\d\d|67\d|680)$/;
+// A departure can name its centre only in its wording: "Seu pedido saiu do centro logístico: Cidade Exemplo - SP".
+const NAMED_CENTRE = /\bcentro log[ií]stico:\s*(\S[^:]*)$/i;
 
 /** A number for SPX Brazil's tracker; anything else is not one it issues. */
 export function normalizeSpxBrNumber(raw: string): string {
@@ -59,8 +61,10 @@ function projectRow(row: Record<string, unknown>): CarrierEvent | null {
   const time = typeof clock === 'number' && Number.isSafeInteger(clock) && clock >= 1_000_000_000 && clock < 10_000_000_000
     ? epochSecondsTime(clock)?.iso : undefined;
   if (!time) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid scan time');
-  const place = FACILITY.test(code) && isRecord(row.current_location) ? row.current_location : null;
-  const location = place ? clean(text(place, 'location_name'), 120) : '';
+  const facility = FACILITY.test(code);
+  const place = facility && isRecord(row.current_location) ? row.current_location : null;
+  const location = (place ? clean(text(place, 'location_name'), 120) : '')
+    || (facility ? clean(NAMED_CENTRE.exec(description)?.[1] ?? '', 120) : '');
   const point = place && location ? eventPoint(place.lat, place.lng) : null;
   const staged = spxBrStage(code, description);
   return {

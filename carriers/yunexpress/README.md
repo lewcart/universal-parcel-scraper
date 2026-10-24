@@ -22,7 +22,13 @@ rows name only the country, so a row without a place on China's leg, up to the
 flight out, is dated on China's clock when the nearest row with a place, the
 older one first, is in China: a departure given as the latest scan carries
 +08:00, and read on the destination's clock the flight would land hours too
-soon. [`identity.ts`](identity.ts) lets such a row take over the one an app
+soon. The destination's leg, after the flight in or the whole history of a
+parcel sent within its destination country, is dated on the latest scan's
+stated offset when none of its rows names a place: one partner relays it,
+and the carrier's home clock would be China's. Some partners state their
+zone's standard offset in summer too, and the leg then shares the latest
+scan's error.
+[`identity.ts`](identity.ts) lets such a row take over the one an app
 stored for its wall clock under another offset, with the same place and wording. The
 reply is inconclusive when its latest summary does not match the first scan.
 A shorter projection than the returned raw history is incomplete. An older row
@@ -33,7 +39,11 @@ The downstream reference is retained for separate carrier confirmation. The
 page's notes link to the last-mile carrier's site; that carrier becomes
 `delivery_carrier` when the catalog knows the host and its own detection offers
 the reference, because one brand's host can also serve regional networks the
-catalog carrier does not cover. The feed relays the last-mile carrier's wording
+catalog carrier does not cover. When the reply declares no reference, a
+relayed row can link the partner's contact page with the partner's own
+reference. That reference is the hand-off when the notes' carrier offers it,
+else when detection gives it to one carrier alone and that carrier delivers in
+the destination country. The feed relays the last-mile carrier's wording
 without codes, so the status map also holds the partner lines seen there.
 
 The reply carries a weight without a unit and with placeholder values for some

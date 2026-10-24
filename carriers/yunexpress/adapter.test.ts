@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 import { describe, expect, it, vi } from 'vitest';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { TrawlClient, type TrawlScrapeResponse } from '../../core/transport/index.js';
@@ -167,6 +168,63 @@ describe('YunExpress captured response projection', () => {
     expect(landed.events?.[5]!.time).toBe('2026-03-15T13:39:00+08:00');
     // A history without China's leg keeps every wall clock.
     expect(parse(placing({ 5: '', 6: '', 13: '' }), NUMBER).events?.filter((event) => event.time)).toHaveLength(1);
+  });
+
+  it("dates the destination leg on the latest scan's stated offset when none of its rows names a place", () => {
+    const payload = placing({ 0: '', 1: '', 2: '', 3: '' });
+    const info = payload.ResultList[0].TrackInfo;
+    Object.assign(info.LastTrackEvent, { ProcessLocation: '', GmtProcessTimezone: 'GMT+10:00' });
+    const result = parse(payload, NUMBER);
+    expect(result.events?.[0]).toMatchObject({ time: '2026-03-20T13:39:00+10:00' });
+    for (const [at, time] of [[1, '2026-03-19T13:39:00+10:00'], [3, '2026-03-17T13:39:00+10:00']] as const) {
+      expect(result.events?.[at]).toMatchObject({ time, local_time: time.slice(0, 19), time_zone: 'UTC+10', time_zone_basis: 'neighbour' });
+    }
+    // The flight's arrival and what precedes it are not the leg.
+    for (const at of [4, 5, 13]) expect(result.events?.[at]!.time).toBeUndefined();
+    // A row of the leg with a place leaves the leg to the facade.
+    payload.ResultList[0].TrackData.ProcessGroupList[2].ProcessDetailList[0].ProcessContent = 'Collected at Cargo Terminal----Sample Town';
+    expect(parse(payload, NUMBER).events?.slice(1).filter((event) => event.time)).toHaveLength(0);
+  });
+
+  it('dates a parcel sent within its destination country as one leg', () => {
+    const payload = placing(Object.fromEntries(Array.from({ length: 14 }, (_, at) => [at, ''])));
+    const item = payload.ResultList[0];
+    Object.assign(item.TrackInfo.LastTrackEvent, { ProcessLocation: '', GmtProcessTimezone: 'GMT+09:30' });
+    item.TrackData.ProcessGroupList[4].ProcessDetailList[0].ProcessContent = 'Arrived at sort facility';
+    item.TrackData.ProcessGroupList[5].ProcessDetailList[0].ProcessContent = 'Departed from facility';
+    Object.assign(item.TrackInfo, { DestinationCountryCode: 'AU', OriginCountryCode: 'AU' });
+    const events = parse(payload, NUMBER).events!;
+    expect(events.every((event) => event.time?.endsWith('+09:30'))).toBe(true);
+    expect(events[13]).toMatchObject({ time: '2026-03-07T13:39:00+09:30', time_zone: 'UTC+9:30', time_zone_basis: 'neighbour' });
+    // From abroad, a history without the flight in names no leg.
+    item.TrackInfo.OriginCountryCode = 'CN';
+    expect(parse(payload, NUMBER).events?.filter((event) => event.time)).toHaveLength(1);
+  });
+
+  it("hands over to the partner whose own reference a relayed row's contact link carries", () => {
+    const payload = fixture();
+    const info = payload.ResultList[0].TrackInfo;
+    const rows = payload.ResultList[0].TrackData.ProcessGroupList.flatMap((group: { ProcessDetailList: unknown[] }) => group.ProcessDetailList);
+    info.TrackingNumber = '';
+    info.DestinationCountryCode = 'AU';
+    rows[3].ProcessContent = "1 item has been transferred to Example (synthville) <b><a href='/Contact?tracNum=CPABC0000000001'>CARD LEFT</a></b>----Example facility";
+    const result = parse(payload, NUMBER);
+    expect(result).toMatchObject({ delivery_carrier: 'couriersplease', delivery_tracking_number: 'CPABC0000000001' });
+    expect(deliveryHandoff('yunexpress', NUMBER, result)).toEqual({ carrier: 'couriersplease', number: 'CPABC0000000001', basis: 'partner' });
+    // A carrier that does not deliver where the parcel goes owns no reference.
+    info.DestinationCountryCode = 'US';
+    expect(parse(payload, NUMBER)).not.toHaveProperty('delivery_tracking_number');
+    info.DestinationCountryCode = 'AU';
+    // Neither does a shape no carrier claims, nor one of two references.
+    rows[3].ProcessContent = rows[3].ProcessContent.replace('CPABC0000000001', 'CP000000000001');
+    expect(parse(payload, NUMBER)).not.toHaveProperty('delivery_tracking_number');
+    rows[3].ProcessContent = rows[3].ProcessContent.replace('CP000000000001', 'CPABC0000000001');
+    rows[2].ProcessContent = "Card left <a href='/Contact?tracNum=CPXYZ0000000002'>here</a>----Example facility";
+    expect(parse(payload, NUMBER)).not.toHaveProperty('delivery_tracking_number');
+    // A reference the reply declares wins over the link.
+    info.TrackingNumber = 'GFUS01000000000001';
+    expect(parse(payload, NUMBER)).toMatchObject({ delivery_tracking_number: 'GFUS01000000000001' });
+    expect(parse(payload, NUMBER).delivery_carrier).toBeUndefined();
   });
 
   it("keeps a partner link's text and drops its markup and the number it holds", () => {

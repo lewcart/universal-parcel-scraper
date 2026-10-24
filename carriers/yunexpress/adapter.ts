@@ -1,6 +1,7 @@
-import { DateTime } from 'luxon';
+import { DateTime, FixedOffsetZone } from 'luxon';
 import type { Response as BrowserResponse } from 'playwright-core';
 import type { AdapterEnvironment, AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
 import { carrierIdsFromPartnerLinks } from '../../core/catalog/hints.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
@@ -43,6 +44,7 @@ function eventClock(raw: string, offset?: string): Pick<CarrierEvent, 'time'> & 
 const wording = (event: CarrierEvent) => (event.description ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
 const IN_CHINA = /(?:^|[\s,])(?:CN|China)$/i;
 const ORIGIN_ZONE = 'Asia/Shanghai';
+const ARRIVAL = 'international flight has arrived';
 
 /**
  * Dates the rows without a place that China's leg holds, up to the flight
@@ -52,7 +54,7 @@ const ORIGIN_ZONE = 'Asia/Shanghai';
  * Events are newest first.
  */
 function dateOriginLeg(events: CarrierEvent[]): CarrierEvent[] {
-  const arrival = events.map(wording).lastIndexOf('international flight has arrived');
+  const arrival = events.map(wording).lastIndexOf(ARRIVAL);
   const start = events.findIndex((event, at) => at > arrival
     && (IN_CHINA.test(event.location ?? '') || wording(event) === 'international flight has departed'));
   if (start < 0) return events;
@@ -69,6 +71,30 @@ function dateOriginLeg(events: CarrierEvent[]): CarrierEvent[] {
 }
 
 /**
+ * Dates the destination leg's rows on the offset the latest-scan record
+ * states, when no row of that leg names a place: one partner relays the leg,
+ * and with no place the facade would read it on China's clock. The leg is
+ * what follows the flight in; a parcel sent within its destination country
+ * is one leg. Events are newest first, and the newest is the stated scan.
+ */
+function dateDestinationLeg(events: CarrierEvent[], offset: string | undefined, domestic: boolean): CarrierEvent[] {
+  const zone = offset ? FixedOffsetZone.parseSpecifier(`UTC${offset}`) : null;
+  if (!offset || !zone) return events;
+  const arrival = events.map(wording).indexOf(ARRIVAL);
+  const end = arrival >= 0 ? arrival : domestic ? events.length : 0;
+  if (events.slice(0, end).some((event) => event.location)) return events;
+  return events.map((event, at) => at >= end || event.time || !event.local_time ? event
+    : { ...event, time: eventClock(event.local_time, offset).time, time_zone: zone.name, time_zone_basis: 'neighbour' });
+}
+
+/** The one reference the relayed rows' contact links carry, as a partner's markup gives it. */
+function contactReference(contents: string[]): string | undefined {
+  const found = new Set(contents.flatMap((content) => [...content.matchAll(/[?&]tracNum=([A-Z0-9]{4,40})(?![A-Z0-9])/gi)]
+    .map((match) => match[1]!.toUpperCase())));
+  return found.size === 1 ? [...found][0] : undefined;
+}
+
+/**
  * The last-mile carrier whose official site the notes link to. The catalog
  * knows the host, and that carrier's own detection must offer the declared
  * reference: a brand's host can serve regional networks outside its scope.
@@ -78,6 +104,19 @@ function linkedPartner(notes: unknown, reference: string): string | undefined {
   const [partner, ...others] = carrierIdsFromPartnerLinks([notes], 'yunexpress');
   if (!partner || others.length) return undefined;
   return (detectCarrierMatch(reference).candidates as string[]).includes(partner) ? partner : undefined;
+}
+
+/**
+ * The carrier a contact link's reference belongs to: the one the notes link
+ * to, else the one whose detection alone claims the whole reference and that
+ * delivers in the destination country.
+ */
+function contactPartner(notes: unknown, reference: string, country: string): string | undefined {
+  const linked = linkedPartner(notes, reference);
+  if (linked) return linked;
+  const detected = detectCarrierMatch(reference);
+  return detected.confidence === 'high' && detected.carrier !== 'yunexpress'
+    && CARRIER_DEFINITIONS[detected.carrier]?.countries?.includes(country) ? detected.carrier : undefined;
 }
 
 export function parse(payload: unknown, trackingNumber: string): CarrierResult {
@@ -103,6 +142,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const lastOffset = /^GMT([+-]\d{2}:\d{2})$/.exec(clean(last.GmtProcessTimezone, 32))?.[1];
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
+  const contents: string[] = [];
   let scans = 0;
   let current: ClassifiedStatus | undefined;
   let decider: CarrierEvent | undefined;
@@ -111,6 +151,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     for (const raw of group.ProcessDetailList) {
       if (!isRecord(raw) || typeof raw.ProcessContent !== 'string' || ++scans > 500) throw new SchemaError('YunExpress');
       const content = clean(raw.ProcessContent, MAX_BYTES);
+      contents.push(content);
       const rawTime = clean(raw.ProcessDate, 64);
       // The feed joins wording and place with "----". A relayed line can give
       // a dash as its place, which runs into the divider and is no place. A
@@ -154,13 +195,19 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   if (Array.isArray(info.TrackEventDetails) && info.TrackEventDetails.length > scans) {
     throw new IndeterminateError('YunExpress', 'YunExpress returned incomplete parcel history');
   }
-  const dated = dateOriginLeg(events);
+  const country = clean(info.DestinationCountryCode, 8).toUpperCase();
+  const domestic = /^[A-Z]{2}$/.test(country) && clean(info.OriginCountryCode, 8).toUpperCase() === country;
+  const dated = dateDestinationLeg(dateOriginLeg(events), lastOffset, domestic);
   const latest = dated[0]!;
   const classified = current;
   const deliveryNumber = clean(info.TrackingNumber, 64).toUpperCase();
-  const handoff = deliveryNumber !== number && /^[A-Z0-9]{4,40}$/.test(deliveryNumber) ? deliveryNumber : '';
-  const partner = handoff ? linkedPartner(info.AdditionalNotes, handoff) : undefined;
-  const country = clean(info.DestinationCountryCode, 8).toUpperCase();
+  const declared = deliveryNumber !== number && /^[A-Z0-9]{4,40}$/.test(deliveryNumber) ? deliveryNumber : '';
+  // A partner's relayed row can link its contact page with its own reference,
+  // the only place the reply gives it; it counts once a carrier owns it.
+  const linked = declared ? undefined : contactReference(contents);
+  const linkedCarrier = linked && linked !== number ? contactPartner(info.AdditionalNotes, linked, country) : undefined;
+  const handoff = declared || (linkedCarrier ? linked! : '');
+  const partner = declared ? linkedPartner(info.AdditionalNotes, declared) : linkedCarrier;
   // The first event is the exact latest event, so its code belongs to it.
   return { status: classified?.status ?? yunExpressCodeStatus(last.TrackingStatus) ?? 'unknown', ...(classified ? { current_stage: classified.stage } : {}),
     last_status_text: latest.description, last_update: latest.time ?? null,

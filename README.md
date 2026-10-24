@@ -150,6 +150,9 @@ Each one you enable receives the tracking number.
 createTracker({ providers: ['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU'] });
 ```
 
+`track({ number, source: 'ParcelsApp' })` asks one enabled tracker alone, without the carrier;
+the command line's `track --source ParcelsApp` does the same.
+
 **Stages.** Carriers word the same moment differently. Every scan is filed under one stage:
 
 <!-- GENERATED:stages -->

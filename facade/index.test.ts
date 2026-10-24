@@ -323,6 +323,22 @@ describe('standalone tracker', () => {
     expect(lookup).not.toHaveBeenCalled();
   });
 
+  it('asks a named provider alone, without recognition, the carrier or a hand-off', async () => {
+    const lookup = vi.fn().mockResolvedValue({ status: 'delivered', events: [{ time: '2026-01-02T12:00:00Z', description: 'Delivered' }] });
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => Response.json({
+      carriers: ['Universal Postal Union'], states: [{ date: '2026-01-02T12:00:00Z', status: 'Delivered', carrier: 0 }] }));
+    const tracker = createTracker({ registry: registry(lookup), fetcher, providers: ['ParcelsApp', 'UPU'] });
+    await expect(tracker.track({ number, source: 'ParcelsApp' })).resolves.toMatchObject({ carrier: 'ups', source: 'ParcelsApp',
+      result: { status: 'delivered' }, attempts: [{ source: 'ParcelsApp', kind: 'ok' }] });
+    expect(lookup).not.toHaveBeenCalled();
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(new URL(String(fetcher.mock.calls[0]![0])).hostname).toContain('parcelsapp');
+    // A provider that is not enabled is refused before any lookup.
+    await expect(tracker.track({ number, source: 'Ship24' })).rejects.toThrow('Unknown or disabled universal provider');
+    await expect(tracker.track({ number, source: 'Nope' as UniversalSource })).rejects.toBeInstanceOf(TypeError);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
   it('gives a postcode a provider asks for to the providers only, when the carrier reads none', async () => {
     // ParcelsApp relays a postcode gate until its request carries one; UPS's own lookup finds nothing.
     const lookup = vi.fn().mockRejectedValue(new NotFoundError('UPS'));

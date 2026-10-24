@@ -37,11 +37,22 @@ describe('command line', () => {
     await expect(main(['carriers', 'ups'], {})).rejects.toThrow('Unexpected argument');
     await expect(main(['track', number, '--budget', '5'], {})).rejects.toThrow('Unknown or incomplete command option');
     await expect(main(['track', number], { SCRAPER_PROVIDERS: 'ship24' })).rejects.toThrow('Unknown universal provider');
+    await expect(main(['track', number, '--source', 'ship24'], {})).rejects.toThrow('Unknown universal provider');
     await expect(main(['track', number], { FLARESOLVERR_URL: 'localhost:8191' })).rejects.toThrow('FLARESOLVERR_URL must be an HTTP(S) URL');
     await expect(main(['serve', '--port', '99999'], {})).rejects.toThrow('Invalid port');
     await expect(main(['track', number, '--carrier', 'nope'], {})).rejects.toThrow('Unknown carrier nope');
     await expect(main(['track', '12345678901234', '--carrier', 'gls-ch'], {})).rejects.toThrow('requires the four-digit delivery postcode');
     expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('asks the provider --source names alone, whatever SCRAPER_PROVIDERS enables', async () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json({
+      carriers: ['Universal Postal Union'], states: [{ date: '2026-01-02T12:00:00Z', status: 'Delivered', carrier: 0 }] }));
+    await expect(main(['track', number, '--source', 'ParcelsApp'], { SCRAPER_PROVIDERS: 'UPU' })).resolves.toBe(0);
+    expect(JSON.parse(log.mock.calls[0]![0] as string)).toMatchObject({ carrier: 'ups', source: 'ParcelsApp',
+      attempts: [{ source: 'ParcelsApp', kind: 'ok' }] });
+    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).hostname)).toEqual([expect.stringContaining('parcelsapp')]);
   });
 
   it('prints those messages and keeps every other failure generic', () => {

@@ -44,6 +44,8 @@ export interface ParcelInput {
   /** @deprecated Accepted for compatibility; it no longer affects a lookup. */
   countryHint?: string | null;
   trackingUrl?: string | null;
+  /** Ask this enabled provider alone, whatever its coverage: no recognition, carrier lookup or hand-off. */
+  source?: UniversalSource;
 }
 
 export interface TrackingAttempt {
@@ -187,6 +189,7 @@ export function createTracker(options: TrackerOptions = {}) {
   async function track(input: ParcelInput, context: TrackingContext = {}): Promise<TrackingResponse> {
     if (!input || typeof input.number !== 'string' || !validTrackingNumber(input.number)) throw new TypeError('Invalid tracking number');
     if (input.carrier !== undefined && (typeof input.carrier !== 'string' || !input.carrier)) throw new TypeError('Invalid carrier');
+    if (input.source !== undefined && !enabled.includes(input.source)) throw new TypeError('Unknown or disabled universal provider');
     const number = normalizeTrackingNumber(input.number);
     const ms = budget(context.budgetMs, 90_000);
     const end = Date.now() + ms;
@@ -196,7 +199,7 @@ export function createTracker(options: TrackerOptions = {}) {
     let carrier = input.carrier || detectCarrierMatch(input.number).carrier;
     if (typeof carrier !== 'string') throw new TypeError('Invalid carrier');
     carrierDefinition(carrier);
-    if (!input.carrier && recognitionCandidates(input.number).length > 0) {
+    if (!input.carrier && !input.source && recognitionCandidates(input.number).length > 0) {
       try {
         const answer = await recognize(input.number, { signal, budgetMs: Math.min(10_000, ms) });
         if (answer.carrier) carrier = answer.carrier;
@@ -235,7 +238,7 @@ export function createTracker(options: TrackerOptions = {}) {
         return null;
       }
     }
-    const adapter = registry.for(carrier);
+    const adapter = input.source ? undefined : registry.for(carrier);
     const directInput = { number, postcode: fields.postcode, trackingUrl: fields.trackingUrl };
     const directBudget = () => Math.min(remaining() + DEADLINE_SLACK_MS, 60_000);
     let result = adapter ? await attempt(carrier, async () => dateLocalClocks(carrier, normalizeCarrierResult(
@@ -255,7 +258,7 @@ export function createTracker(options: TrackerOptions = {}) {
     if (!result || partial) {
       const plan = universalPlan({ carriers: [carrier], trackingNumber: number, enablePostalNinja: enabled.includes('Postal Ninja') });
       const zone = carrierTimezone(carrier) === 'UTC' ? null : carrierTimezone(carrier);
-      for (const candidate of plan.sources.filter(source => enabled.includes(source))) {
+      for (const candidate of input.source ? [input.source] : plan.sources.filter(source => enabled.includes(source))) {
         const left = remaining();
         if (signal.aborted || left <= reserve) break;
         const share = left - reserve;
@@ -275,7 +278,7 @@ export function createTracker(options: TrackerOptions = {}) {
       ? failureHint(new BudgetExceededError('Tracking', ms)) : failureHint(lastError));
     const direct = partial && relayed ? partial : null;
     const response: TrackingResponse = { carrier, source, result, attempts, ...(direct ? { direct } : {}) };
-    const proposal = named || deliveryHandoff(carrier, number, relayed ?? result);
+    const proposal = input.source ? null : named || deliveryHandoff(carrier, number, relayed ?? result);
     if (proposal && !signal.aborted) {
       const partner = registry.for(proposal.carrier);
       if (partner) {

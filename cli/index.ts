@@ -12,12 +12,13 @@ const help = `Universal Parcel Scraper
 
   parcel-scraper detect <number, link or text>
   parcel-scraper recognize <number>
-  parcel-scraper track <number> [--carrier <id>] [--postcode <value>] [--tracking-url <url>]
+  parcel-scraper track <number> [--carrier <id>] [--postcode <value>] [--tracking-url <url>] [--source <provider>]
   parcel-scraper carriers
   parcel-scraper serve [--host <address>] [--port <port>]
   parcel-scraper royal-mail-browser
 
-SCRAPER_PROVIDERS selects comma-separated providers; default: UPU.
+SCRAPER_PROVIDERS selects comma-separated providers; default: UPU. --source asks one alone,
+without the carrier: Ship24, ParcelsApp, 17TRACK, Postal Ninja or UPU.
 FLARESOLVERR_URL and TRACKING_CHROMIUM_PATH enable browser transports.
 SCRAPER_USER_AGENT replaces the client name adapters send to carriers.
 SCRAPER_TOKEN protects the HTTP API. SCRAPER_DEMO_PAGE=true enables its one-off page.
@@ -45,7 +46,7 @@ export async function main(argv = process.argv.slice(2), env = process.env): Pro
   if (!['detect','recognize','track','carriers','serve'].includes(command)) throw new TypeError('Unknown command; use --help');
   const values: Record<string, string> = {};
   const positional: string[] = [];
-  const allowed = command === 'track' ? ['carrier','postcode','tracking-url','country-hint'] : command === 'serve' ? ['host','port'] : [];
+  const allowed = command === 'track' ? ['carrier','postcode','tracking-url','country-hint','source'] : command === 'serve' ? ['host','port'] : [];
   for (let i = 0; i < args.length; i++) {
     const argument = args[i]!;
     if (!argument.startsWith('--')) { positional.push(argument); continue; }
@@ -60,7 +61,9 @@ export async function main(argv = process.argv.slice(2), env = process.env): Pro
   // The catalog and detection are offline: the transport settings below cannot break them.
   if (command === 'carriers') { print(CARRIER_CATALOG); return 0; }
   if (command === 'detect') { print(createTracker().detect(input)); return 0; }
-  const providers = env.SCRAPER_PROVIDERS === undefined ? undefined
+  const source = values.source as UniversalSource | undefined;
+  // A provider named for one lookup is asked whatever SCRAPER_PROVIDERS enables.
+  const providers = source !== undefined ? [source] : env.SCRAPER_PROVIDERS === undefined ? undefined
     : env.SCRAPER_PROVIDERS.split(',').map(value => value.trim()).filter(Boolean) as UniversalSource[];
   const options = { providers, trawlUrl: env.FLARESOLVERR_URL, chromiumPath: env.TRACKING_CHROMIUM_PATH,
     userAgent: env.SCRAPER_USER_AGENT?.trim() || undefined, env };
@@ -80,7 +83,7 @@ export async function main(argv = process.argv.slice(2), env = process.env): Pro
   }
   const tracker = createTracker(options);
   if (command === 'recognize') print(await tracker.recognize(input));
-  else print(await tracker.track({ number: input, carrier: values.carrier, postcode: values.postcode, trackingUrl: values['tracking-url'], countryHint: values['country-hint'] }));
+  else print(await tracker.track({ number: input, carrier: values.carrier, postcode: values.postcode, trackingUrl: values['tracking-url'], countryHint: values['country-hint'], source }));
   return 0;
 }
 

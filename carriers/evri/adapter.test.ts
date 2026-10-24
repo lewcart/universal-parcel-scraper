@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { adapter, EvriTracker, normalizeEvriNumber, parse } from './adapter.js';
 import { evriPartner } from './parser.js';
 import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
+import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { DEFAULT_USER_AGENT } from '../../core/transport/index.js';
 
@@ -91,6 +92,20 @@ describe('Evri International parser', () => {
     expect(parse(html.replaceAll('Delivery Attempted', label), NUMBER)).toMatchObject({ status, current_stage: stage });
   });
 
+  it('reads the delivery estimate a comment states, and nothing else in the comments', () => {
+    const estimated = (comment: string, page = html) => parse(page.replace('<td>CROSSDOCK</td>', `<td>${comment}</td>`), NUMBER);
+    expect(estimated('Estimated delivery date is: 10-30-2026').expected_delivery).toBe('2026-10-30');
+    expect(estimated('ESTIMATED DELIVERY DATE IS 2026-10-30').expected_delivery).toBe('2026-10-30');
+    // The newest row's estimate stands.
+    const revised = html.replace('<td>AT LOCAL DEPOT</td>', '<td>Estimated delivery date is: 11-02-2026</td>');
+    expect(estimated('Estimated delivery date is: 10-30-2026', revised).expected_delivery).toBe('2026-11-02');
+    for (const comment of ['Estimated delivery date is: 30-10-2026', 'Estimated delivery date is: soon', 'Delivery date 10-30-2026']) {
+      expect(estimated(comment).expected_delivery, comment).toBeNull();
+    }
+    // A delivered parcel has no estimate.
+    expect(estimated('Estimated delivery date is: 10-30-2026', html.replaceAll('Delivery Attempted', 'Delivered')).expected_delivery).toBeNull();
+  });
+
   it('does not claim malformed or nonpositive weights', () => {
     for (const value of ['0 kg', '-1 kg', '2 lb', 'unknown']) {
       expect(parse(html.replace('1.95 kg', value), NUMBER).weight_kg).toBeUndefined();
@@ -108,6 +123,15 @@ describe('Evri International delivery partners', () => {
   const partner = (label: string, number: string) => html
     .replace('Example Delivery Partner', label)
     .replaceAll('CI000000005NL', number);
+
+  it('names USPS for OSM Worldwide\'s expedited line, by its routing barcode without the ZIP code', () => {
+    // A synthetic PIC behind a routing ZIP of zeros; the check digit is calculated independently.
+    const barcode = '42000000' + '9210090000000012345679';
+    const result = parse(partner('Smart Kargo - OSM Expedited', barcode), NUMBER);
+    expect(result).toMatchObject({ delivery_carrier: 'usps', delivery_tracking_number: barcode });
+    expect(normalizeCarrierResult(result)).toMatchObject({ delivery_carrier: 'usps', delivery_tracking_number: '9210090000000012345679' });
+    expect(parse(partner('Smart Kargo - OSM Expedited', 'CI000000005NL'), NUMBER)).not.toHaveProperty('delivery_carrier');
+  });
 
   it('names the partner and its number when the label maps and the number is that carrier\'s', () => {
     expect(parse(partner('Paack 48H', 'PK000000000000000001'), NUMBER))
@@ -132,7 +156,7 @@ describe('Evri International delivery partners', () => {
 
   it('maps each label to an automatic catalog carrier with its own adapter', () => {
     for (const label of ['Paack 48H', 'Colis Prive', 'Hermes HSI Courier', 'GLS Italy', 'DHL Connect', 'Spring Tracked',
-      'Cross Border Connect SpeedX', 'Mondial Point Relais delivery PUDO']) {
+      'Cross Border Connect SpeedX', 'Mondial Point Relais delivery PUDO', 'Smart Kargo - OSM Expedited']) {
       const carrier = evriPartner(label);
       expect(carrier, label).toBeDefined();
       const definition = CARRIER_DEFINITIONS[carrier as keyof typeof CARRIER_DEFINITIONS];

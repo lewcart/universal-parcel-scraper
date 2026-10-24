@@ -11,9 +11,11 @@ export const PROVIDER = 'Evri International';
 /**
  * Evri International's names for the carriers that deliver its parcels, as its
  * Carrier field prints them, by lower-case label. A label names one catalog
- * network; one missing here gives no delivery partner.
+ * network; one missing here gives no delivery partner. OSM Worldwide hands its
+ * parcels to USPS, whose barcode Carrier Tracking holds.
  */
 const PARTNERS: ReadonlyMap<string, string> = new Map([
+  ['smart kargo - osm expedited', 'usps'],
   ['paack 48h', 'paack'],
   ['colis prive', 'colis-prive'],
   ['hermes hsi courier', 'hermes-de'],
@@ -35,6 +37,18 @@ export function normalizeEvriNumber(raw: string): string {
     throw new InvalidInputError(PROVIDER, 'Evri requires a 16-character tracking number');
   }
   return number;
+}
+
+// A row's comment can state the delivery estimate, month first: "Estimated delivery date is: 10-30-2026".
+const ESTIMATE = /\bestimated delivery date is:?\s*(?:(\d{1,2})-(\d{1,2})-(\d{4})|(\d{4})-(\d{2})-(\d{2}))\b/i;
+
+/** The delivery estimate a comment states, as a calendar day. Nothing else in a comment is read. */
+function commentEstimate(comment: string): string | null {
+  const match = ESTIMATE.exec(comment);
+  if (!match) return null;
+  const [month, day, year] = match[1] ? [match[1], match[2], match[3]] : [match[5], match[6], match[4]];
+  const date = DateTime.fromObject({ year: Number(year), month: Number(month), day: Number(day) }, { zone: 'UTC' });
+  return date.isValid ? date.toISODate() : null;
 }
 
 function wallTime(raw: string): string {
@@ -109,6 +123,7 @@ export function parseEvriInternational(html: string, requested: string): EvriInt
   if (!rows.length || rows.length > 500) throw new SchemaError(PROVIDER, 'Evri returned incomplete tracking history');
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
+  let estimate: string | null = null;
   for (const row of rows.toArray()) {
     const cells = $(row).children('td');
     if (cells.length !== 4 || cells.filter('[colspan], [rowspan]').length) throw new SchemaError(PROVIDER, 'Evri returned an invalid event row');
@@ -116,6 +131,8 @@ export function parseEvriInternational(html: string, requested: string): EvriInt
     const description = clean(cells.eq(1).text(), 500);
     const location = clean(cells.eq(2).text(), 200);
     if (!description) throw new SchemaError(PROVIDER, 'Evri returned an empty event');
+    // Rows come newest first: the newest estimate stands.
+    estimate ??= commentEstimate(clean(cells.eq(3).text(), 500));
     const key = JSON.stringify([time, description, location]);
     if (seen.has(key)) continue;
     seen.add(key);
@@ -128,12 +145,14 @@ export function parseEvriInternational(html: string, requested: string): EvriInt
   if (!description) throw new SchemaError(PROVIDER, 'Evri returned no current status');
   const status = evriStatus(description);
   const weight = /^(\d+(?:\.\d+)?)\s*kg$/.exec(fields.get('Weight:') ?? '');
+  const finished = ['delivered', 'returned'].includes(status?.stage ?? '') || ['delivered', 'returned'].includes(latest.stage ?? '');
   const weightKg = weight ? Number(weight[1]) : NaN;
   return {
     system, carrierTracking, carrierLabel: fields.get('Carrier:') ?? '',
     result: {
       status: status?.status ?? 'unknown', ...(status ? { current_stage: status.stage } : {}),
-      last_status_text: description, last_update: null, last_update_local: latest.local_time, expected_delivery: null,
+      last_status_text: description, last_update: null, last_update_local: latest.local_time,
+      expected_delivery: finished ? null : estimate,
       ...(Number.isFinite(weightKg) && weightKg > 0 ? { weight_kg: weightKg } : {}),
       events: events.slice(0, 100),
     },

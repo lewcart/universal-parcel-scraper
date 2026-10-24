@@ -24,7 +24,8 @@ International first for a `C` in the sixth place.
   `delivery_carrier` and `delivery_tracking_number` only when the parser's label
   table maps the label to a catalog carrier and that carrier's detection offers
   the whole number. Evri's own courier labels, a label the table lacks and the
-  barcode repeated in Carrier Tracking name nobody.
+  barcode repeated in Carrier Tracking name nobody. OSM Worldwide's line names
+  USPS, which delivers its parcels under the USPS barcode Carrier Tracking holds.
 - The tracker also finds a parcel by that partner number, but this adapter asks
   only by the Evri barcode. A partner's number belongs to the partner: Paack
   reads this tracker for the numbers it gives these parcels (see
@@ -52,14 +53,18 @@ International first for a `C` in the sixth place.
   timeline and uses this result as the fallback. It can establish initial
   progress but can't overwrite a richer summary, and it doesn't feed the
   timeline of confirmed instants. The host keeps these scans in a bounded
-  `direct_local_history` archive across later universal refreshes. No ETA or
-  delivered time is inferred.
+  `direct_local_history` archive across later universal refreshes. No delivered
+  time is inferred.
+- A row's comment can state the delivery estimate, month first ("Estimated
+  delivery date is: 10-30-2026"). The newest one is `expected_delivery` until
+  the parcel is delivered or returned.
 - Exact duplicate scans are removed; at most 100 are returned.
 
 ## Limitations
 
 - International only; domestic UK numbers use the Evri UK adapter.
-- Sender names, destination, comments and outbound links are never read.
+- Sender names, destination and outbound links are never read, nor is anything
+  in a comment but a delivery estimate.
 
 ## Testing
 

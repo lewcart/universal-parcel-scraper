@@ -734,6 +734,7 @@ describe('classifyWording', () => {
     // A sender's deposit is no delivery; a deposit for the recipient is.
     expect(wordingStage('Deposited by the sender at the post office', 'pending')).not.toBe('delivered');
     expect(wordingStage('Deposited in the mailbox', 'pending')).toBe('delivered');
+    for (const wording of ['Shipment in letterbox', 'Your parcel was left in the mailbox']) expect(wordingStage(wording, 'pending'), wording).toBe('delivered');
     // A collection still to come is none.
     expect(wordingStage('Once you have collected your parcel, rate your delivery', 'pending')).not.toBe('delivered');
   });

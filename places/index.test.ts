@@ -250,6 +250,15 @@ describe('locatePlace', () => {
     expectPlace('Changsha市 00000001', { country: 'CN', name: 'Changsha', latitude: 28.2, longitude: 112.97 });
   });
 
+  it('reads a town a carrier names after the city it serves as that town', () => {
+    expect(place('TORINO MONCALIERI (999)', ['IT'])).toMatchObject({ country: 'IT', name: 'Moncalieri', latitude: 44.999 });
+    expect(place('LYON CORBAS 2', ['FR'])).toMatchObject({ country: 'FR', name: 'Corbas' });
+    expect(place('LONDON CROYDON')).toMatchObject({ country: 'GB', name: 'Croydon' });
+    // Not a word that is no town there, nor before an airport the text names.
+    expect(place('TORINO NORD')).toMatchObject({ country: 'IT', name: 'Turin' });
+    expect(place('PARIS ORLY')).toMatchObject({ country: 'FR', name: 'Paris', site: 'Paris-Orly Airport' });
+  });
+
   it('reads a Chinese address down to the county-level city it names after its prefecture', () => {
     const yiwu = { country: 'CN', name: 'Yiwu', latitude: 29.31, longitude: 120.08 };
     expectPlace('浙江省金华市义乌市示例路', yiwu);

@@ -148,6 +148,8 @@ const PLANE_KMH = 1000;
 const CLOCK_SLACK_HOURS = 2;
 // A county-level city lies this close to the city of its prefecture.
 const COUNTY_MAX_KM = 150;
+// A town a carrier names after the city it serves is this close to it.
+const SUBURB_MAX_KM = 30;
 // An airport only its bare code names is on the parcel's way when it takes it no further off than this:
 // a hub such as Doha between China and Europe.
 const AIRPORT_DETOUR_KM = 3000;
@@ -651,8 +653,8 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
 
   // "ITA" alone is Italy's code more often than Itá: a town of a country's three letters needs confirming.
   const countryCoded = COUNTRY_CODES.has(text);
-  let best: { place: Candidate; score: number; text: string; key: string; field: number; end: number; backed: boolean; shared: boolean } | null = null;
-  const scored: { place: Candidate; score: number; key: string }[] = [];
+  let best: { place: Candidate; score: number; text: string; key: string; field: number; start: number; end: number; backed: boolean; shared: boolean } | null = null;
+  const scored: { place: Candidate; score: number; key: string; text: string; field: number; start: number; end: number }[] = [];
   // Whether the text names a town at all, even one nothing confirms.
   let namesTown = false;
   // The carrier's words for each town by its own name: "Asuncion del Paraguay" is Asunción, by any of its names.
@@ -738,9 +740,9 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
           + (inCountry ? 4 : hint >= 0 ? 2.5 - Math.min(hint, 3) * .4 : 0)
           + (adminMatch ? 3 : 0) + (postcodeMatch ? 3 : 0) + (place.own ? 3 : 0)
           - phrase.rank * .3 - fieldIndex * .5;
-        scored.push({ place, score, key: phrase.key });
+        scored.push({ place, score, key: phrase.key, text: phrase.text, field: fieldIndex, start: phrase.start, end: phrase.end });
         if (!best || score > best.score) {
-          best = { place, score, text: phrase.text, key: phrase.key, field: fieldIndex, end: phrase.end, backed: inCountry || adminMatch || postcodeMatch, shared: towns.length > 1 };
+          best = { place, score, text: phrase.text, key: phrase.key, field: fieldIndex, start: phrase.start, end: phrase.end, backed: inCountry || adminMatch || postcodeMatch, shared: towns.length > 1 };
         }
       }
     }
@@ -748,12 +750,22 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
 
   if (best) {
     const county = countyIn(data, fieldPhrases[best.field] ?? [], best, carriers);
-    const { place, text: carrierWords } = county
-      ?? { place: best.place, text: (best.place.alternate && ownWords.get(townId(best.place))) || best.text };
-    const airport = place.hub ? null : airportFor(data, rest, fields[best.field] ?? rest, place, carrierWords, country);
+    const found = county ?? { place: best.place, text: (best.place.alternate && ownWords.get(townId(best.place))) || best.text };
+    const atFound = found.place.hub ? null : airportFor(data, rest, fields[best.field] ?? rest, found.place, found.text, country);
+    // A smaller town that ends the part of the text a city begins, close to it, is the carrier's site
+    // there: "TORINO MONCALIERI" is a depot in Moncalieri. An airport the text names comes first.
+    const first = fieldTokens[best.field]![0];
+    const suburb = county || atFound || found.place.hub || best.start !== first?.start ? undefined : scored
+      .filter((other) => other.field === best.field && other.start >= best.end && other.place.country === best.place.country
+        && !other.place.hub && other.place.thousands < best.place.thousands
+        && fieldTokens[best.field]!.every((token) => token.end <= other.end || !/\p{L}/u.test(token.key))
+        && distanceKm(best.place.latitude, best.place.longitude, other.place.latitude, other.place.longitude) <= SUBURB_MAX_KM)
+      .sort((a, b) => b.score - a.score)[0];
+    const { place, text: carrierWords } = suburb ?? found;
+    const airport = suburb ? null : atFound;
     // Keep the carrier's spelling unless it is shouting: "La Crau", but "Köln" for "KOELN".
     const name = (town: Candidate) => !town.named && /\p{Ll}/u.test(carrierWords) ? carrierWords : town.name;
-    const twins = county || place.hub ? [] : scored.filter((other) => other.key === best.key && other.place.country === place.country
+    const twins = county || suburb || place.hub ? [] : scored.filter((other) => other.key === best.key && other.place.country === place.country
       && !other.place.hub && other.place.alternate === place.alternate && best.score - other.score < TWIN_SCORE
       && distanceKm(place.latitude, place.longitude, other.place.latitude, other.place.longitude) > PART_OF_NAME_KM);
     return {

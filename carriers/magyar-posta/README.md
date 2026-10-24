@@ -38,7 +38,9 @@ for that number redirects to, without scripts or form tokens. Every search needs
 answer. A search the tracker refuses comes back as its form without a redirect, which is a
 challenge.
 
-Neither route answers without the browser service, so recognition does not ask Magyar Posta.
+Neither route answers without the browser service, so HTTP recognition does not ask Magyar Posta.
+Browser recognition asks it first for S10 items ending in `HU` and MPL numbers. Only the app's
+dated scans confirm a number there: the tracker's wall clocks name no instant.
 
 The tracker answers in the language the browser asks for. The helper sets the tracker's own
 Hungarian language cookie, and the parser and status map read Hungarian. The result must name

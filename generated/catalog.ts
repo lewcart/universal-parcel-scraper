@@ -20508,6 +20508,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "magyar-posta",
+      "browserRecognitionRank": 400,
       "localClocks": true,
       "browser": true
     },

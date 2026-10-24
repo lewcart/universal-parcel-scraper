@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
 import { adapter, MAGYAR_POSTA_APP_PAGE, MAGYAR_POSTA_APP_TRACKING, MAGYAR_POSTA_RESULT, MAGYAR_POSTA_SEARCH, MAGYAR_POSTA_TRACKER, MagyarPostaTracker,
@@ -429,6 +430,29 @@ describe('Magyar Posta tracker search', () => {
     const instance = adapter({ trawl: null } as never);
     expect(instance).toMatchObject({ id: 'magyar-posta', steps: ['app', 'trawl'], recordsSteps: true });
     expect(instance.recognize).toBeUndefined();
+    expect(instance.recognizeWithBrowser).toEqual(expect.any(Function));
+  });
+
+  it('is asked first in browser recognition for its own S10 items and MPL numbers, never over HTTP', async () => {
+    for (const number of ['RB472618350HU', 'PNZZZ58204711']) {
+      expect(recognitionCandidates(number).map((candidate) => candidate.carrier)).not.toContain('magyar-posta');
+      expect(recognitionCandidates(number, { phase: 'browser' })[0]).toMatchObject({ carrier: 'magyar-posta', needsInput: null });
+    }
+    expect(recognitionCandidates('RB472618351HU', { phase: 'browser' }).map((candidate) => candidate.carrier)).not.toContain('magyar-posta');
+    expect(recognitionCandidates('RB472618350HR', { phase: 'browser' }).map((candidate) => candidate.carrier)).not.toContain('magyar-posta');
+
+    // The app's scans are instants, which confirm the number and come back for reuse.
+    const scrape = vi.fn().mockResolvedValue({ tier: 3, statusCode: 200, capturedResponses: [added(appFixture('app-delivered'))] });
+    const api = appApi();
+    const app = adapter({ trawl: { scrape }, fetcher: api.fetcher, userAgent: 'synthetic-host/1.0' } as never);
+    const known = await app.recognizeWithBrowser!(PARCEL, { budgetMs: 40_000 });
+    expect(known).toMatchObject({ known: true, lastActivityAt: '2026-03-03T12:20:14.000Z' });
+    expect(known.result?.current_stage).toBe('delivered');
+
+    // The tracker's wall clocks name no instant, so its answer confirms nothing.
+    const web = tracker();
+    const page = adapter({ trawl: { scrape: web.scrape }, fetcher: keyRefused } as never);
+    expect(await page.recognizeWithBrowser!(PARCEL, { budgetMs: 40_000 })).toEqual({ known: false, lastActivityAt: null });
   });
 });
 

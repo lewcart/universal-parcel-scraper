@@ -193,11 +193,11 @@ describe('Magyar Posta numbers', () => {
     expect(detectCarrierMatch('PB00000000014').candidates).toEqual(['la-poste']);
   });
 
-  it('keeps a Hungarian S10 number in international mail and never asks Magyar Posta, whose tracker needs a solved checkbox', () => {
+  it('keeps a Hungarian S10 number in international mail and asks Magyar Posta, whose tracker needs a solved checkbox, in the browser phase only', () => {
     expect(detectCarrierMatch('RR123456785HU')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     for (const number of ['RR123456785HU', 'PNZZZ00000013', 'PB00000000013']) {
       expect(recognitionAskedCarriers(number)).not.toContain('magyar-posta');
-      expect(recognitionCandidates(number, { phase: 'browser' })).toEqual([]);
+      expect(recognitionCandidates(number, { phase: 'browser' }).map(({ carrier }) => carrier)).toEqual(['magyar-posta']);
     }
     expect(checksumRejections('RR123456789HU')).toContainEqual({ carrier: 'magyar-posta', rule: 'magyar-posta-s10', checksum: 's10' });
   });

@@ -24,6 +24,9 @@
       "trawl"
     ],
     "localClocks": true,
+    "browserRecognition": {
+      "rank": 400
+    },
     "browser": true
   },
   "capabilities": [

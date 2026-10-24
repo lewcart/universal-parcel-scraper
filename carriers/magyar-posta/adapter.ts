@@ -1,4 +1,4 @@
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { type AdapterFactory, recognizeFromBrowserLookup, type TrackingContext } from '../../core/adapter/index.js';
 import { BudgetExceededError, ChallengeError, IndeterminateError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
@@ -200,5 +200,6 @@ export class MagyarPostaTracker {
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new MagyarPostaTracker({ trawl: environment.trawl, fetcher: environment.fetcher, userAgent: environment.userAgent,
     recorder: environment.recorder });
-  return { id: 'magyar-posta', recordsSteps: true, steps: ['app', 'trawl'], track: (input, context) => tracker.fetch(input.number, context) };
+  return { id: 'magyar-posta', recordsSteps: true, steps: ['app', 'trawl'], track: (input, context) => tracker.fetch(input.number, context),
+    recognizeWithBrowser: (number, context) => recognizeFromBrowserLookup(() => tracker.fetch(number, context)) };
 };

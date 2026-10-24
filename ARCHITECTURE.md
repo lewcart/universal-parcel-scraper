@@ -282,7 +282,9 @@ Explicit carrier vocabularies and provider codes use `carrier_map`; text rules u
 `wording:<rule>`, and unmatched text uses `none`. Resolution preserves that source,
 including on `pending` events. Universal summaries carry `current_stage_source` from
 the event that establishes the current stage. Consumers can review wording and
-fallback decisions without mistaking them for explicit maps.
+fallback decisions without mistaking them for explicit maps. `resultStage()` reads a result
+that states no status by its newest scan with a stage, unless that scan is a delivery or a
+return the newer scans without a stage may have undone.
 
 Each carrier's `statuses.json` records the codes and wordings seen from that carrier and the
 stage each one means. [CORPUS.md](CORPUS.md) describes those records.

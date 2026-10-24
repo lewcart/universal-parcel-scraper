@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { normalizeCarrierResult } from './index.js';
-import { resolveResult } from './resolve.js';
+import { resolveResult, resultStage } from './resolve.js';
 
 // Synthetic identifiers; the PIC check digits are calculated independently.
 const PIC = '9210090000000012345679';
@@ -65,6 +65,29 @@ describe('result completeness flags', () => {
       expect(result).not.toHaveProperty('summary_only');
       expect(result.events).toEqual([{ description: 'In transit' }]);
     }
+  });
+});
+
+describe('a summary without a stage', () => {
+  const scans = [
+    { time: '2026-01-05T10:00:00+01:00', description: 'Synthetic customs step the carrier left unstaged' },
+    { time: '2026-01-03T09:00:00+01:00', description: 'Held at customs', stage: 'customs', stage_source: 'carrier_map' },
+    { time: '2026-01-02T08:00:00+01:00', description: 'Arrived at the office of exchange', stage: 'in_transit' },
+  ];
+
+  it('takes the newest scan that has a stage, whichever way the carrier lists them', () => {
+    for (const events of [scans, [...scans].reverse()]) {
+      const result = { status: 'unknown', last_status_text: scans[0]!.description, events } as const;
+      expect(resultStage(result)).toBe('customs');
+      expect(resolveResult(result)).toMatchObject({ status: 'unknown', current_stage: 'customs' });
+    }
+  });
+
+  it('keeps a stage the carrier gave, and borrows no delivery or return the newer scans may have undone', () => {
+    expect(resultStage({ status: 'unknown', current_stage: 'in_transit', events: scans })).toBe('in_transit');
+    expect(resultStage({ status: 'unknown', events: [scans[0]!] })).toBeNull();
+    const delivered = { ...scans[1]!, description: 'Delivered', stage: 'delivered' };
+    expect(resultStage({ status: 'unknown', events: [scans[0]!, delivered] })).toBeNull();
   });
 });
 

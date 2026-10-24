@@ -29,6 +29,18 @@ export function carrierAdapter(carrierId: string): string | null {
   return carrierDefinition(carrierId).tracking.adapter;
 }
 
+const anchoredRequirementPatterns = new WeakMap<CarrierRequirementRule, RegExp>();
+
+/** A requirement's `whenTrackingNumber`, anchored and compiled once per requirement. */
+function anchoredRequirementPattern(requirement: CarrierRequirementRule, source: string): RegExp {
+  let pattern = anchoredRequirementPatterns.get(requirement);
+  if (!pattern) {
+    pattern = new RegExp(`^(?:${source})$`);
+    anchoredRequirementPatterns.set(requirement, pattern);
+  }
+  return pattern;
+}
+
 /**
  * The requirements that apply to one number. The pattern is anchored here,
  * unlike the unanchored UI filter in `carrierRequirements`.
@@ -39,7 +51,7 @@ export function activeRequirements(
 ): CarrierRequirementRule[] {
   return (carrierDefinition(carrierId).tracking.requirements ?? []).filter(
     (requirement) => !requirement.whenTrackingNumber
-      || new RegExp(`^(?:${requirement.whenTrackingNumber})$`).test(trackingNumber),
+      || anchoredRequirementPattern(requirement, requirement.whenTrackingNumber).test(trackingNumber),
   );
 }
 

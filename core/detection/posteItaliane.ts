@@ -1,10 +1,14 @@
 import { CARRIER_DEFINITIONS } from '../catalog/definitions.js';
 import { CHECKSUMS } from './checksums.js';
+import { ruleFits } from './rules.js';
 import { isValidS10TrackingNumber } from './s10.js';
 
-/** Catalog shape and check-digit eligibility; a matching Poste lookup must still establish the shipment. */
-export function isPosteItalianeTrackingNumber(number: string): boolean {
-  return CARRIER_DEFINITIONS['poste-italiane'].detectionRules.some(rule => new RegExp(rule.pattern).test(number)
+/**
+ * Catalog shape and check-digit eligibility; a matching Poste lookup must still establish the
+ * shipment. A rule's rawPattern reads `printed`, the number as typed, which defaults to the number.
+ */
+export function isPosteItalianeTrackingNumber(number: string, printed = number): boolean {
+  return CARRIER_DEFINITIONS['poste-italiane'].detectionRules.some(rule => ruleFits(rule, number, printed)
     && (rule.checksum === undefined || CHECKSUMS[rule.checksum](number)));
 }
 

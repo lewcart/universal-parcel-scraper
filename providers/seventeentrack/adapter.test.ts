@@ -278,8 +278,9 @@ describe('17TRACK result parsing', () => {
     expect(parsed.events?.[0]).toMatchObject({ provider_time_iso: '2026-05-08T09:00:00-05:00' });
     expect(parsed.events?.[0]?.time).toBeUndefined();
     // So does a row placed in the country alone.
-    expect(parse17TrackResponse(reply(21051, [row('2026-05-08', '09:00:00', '-06:00', 'US')]), number).events?.[0])
-      .toMatchObject({ local_time: '2026-05-08T09:00:00', provider_time_iso: '2026-05-08T09:00:00-06:00' });
+    const country = parse17TrackResponse(reply(21051, [row('2026-05-08', '09:00:00', '-06:00', 'US')]), number).events?.[0];
+    expect(country).toMatchObject({ local_time: '2026-05-08T09:00:00', provider_time_iso: '2026-05-08T09:00:00-06:00' });
+    expect(country?.time).toBeUndefined();
     // A place that names no state keeps 17TRACK's reading.
     expect(parse17TrackResponse(reply(21051, [row('2026-05-08', '09:00:00', '-05:00', 'EXAMPLE FACILITY')]), number).events?.[0]?.time)
       .toBe('2026-05-08T14:00:00.000Z');

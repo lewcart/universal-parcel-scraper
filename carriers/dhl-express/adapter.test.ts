@@ -5,6 +5,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, R
 import { TrawlClient } from '../../core/transport/index.js';
 import { adapter, DhlExpressTracker, normalizeNumber, normalizePieceId, parse, parseMobile, parseUnified, parseUnifiedPiece } from './adapter.js';
 import { CAPTCHA_MEMORY_MS, HOURLY_REQUESTS, MAX_CAPTCHA_MEMORY_MS, MobilePacedError, SETTINGS_TTL_MS } from './mobile.js';
+import { API, ApiPacedError, PAUSE_MS } from './api.js';
 import { dhlExpressStage } from './status.js';
 
 const number = '1234567891';
@@ -625,5 +626,128 @@ describe('DHL Express piece identifiers', () => {
     const { env } = browserEnvironment([pieceCapture()]);
     expect(await adapter(env).recognizeWithBrowser!(piece, { budgetMs: 20_000 }, new IndeterminateError('DHL Express', 'HTTP')))
       .toMatchObject({ known: true, result: { canonical_tracking_number: number } });
+  });
+});
+
+describe('DHL tracking API', () => {
+  const missing = { status: 404, title: 'No result found', detail: 'No shipment with given tracking number found.' };
+  const apiFetcher = (reply: () => Response = () => new Response(JSON.stringify(unifiedPayload()))) => {
+    const mobile = mobileFetcher();
+    return vi.fn<typeof fetch>().mockImplementation(async (url, init) => String(url).startsWith(API) ? reply() : mobile(url, init));
+  };
+  const keyed = (fetcher: typeof fetch, trawl: TrawlClient | null = null, key = 'synthetic-key') => ({ ...environment(fetcher, trawl), env: { DHL_API_KEY: key } });
+  const apiCalls = (fetcher: ReturnType<typeof apiFetcher>) => fetcher.mock.calls.filter(([url]) => String(url).startsWith(API));
+  const recorded = () => ({ ...NOOP_RECORDER, step: vi.fn() });
+  const steps = (recorder: ReturnType<typeof recorded>) => recorder.step.mock.calls.map(([record]) => [record.step, record.outcome]);
+  const later = (ms: number) => vi.setSystemTime(Date.now() + ms);
+
+  it('asks the API first under the key, and only when a key is set', async () => {
+    const fetcher = apiFetcher();
+    const recorder = recorded();
+    expect(adapter(keyed(fetcher)).steps).toEqual(['api', 'direct', 'trawl']);
+    expect(adapter(environment(fetcher)).steps).toEqual(['direct', 'trawl']);
+    expect(await new DhlExpressTracker({ ...keyed(fetcher), recorder }).fetch(number)).toMatchObject({ status: 'delivered',
+      events: [{ time: '2026-10-05T15:06:00-04:00', stage: 'delivered' }, { stage: 'out_for_delivery' }, { stage: 'accepted' }] });
+    expect(fetcher).toHaveBeenCalledOnce();
+    const [url, init] = fetcher.mock.calls[0]!;
+    expect(String(url)).toBe(`${API}?trackingNumber=${number}&language=en`);
+    expect(new Headers(init!.headers).get('dhl-api-key')).toBe('synthetic-key');
+    expect(steps(recorder)).toEqual([['api', 'ok']]);
+    // Recognition stays on the mobile API.
+    await adapter(keyed(fetcher)).recognize!(number, { budgetMs: 1000 });
+    expect(apiCalls(fetcher)).toHaveLength(1);
+    await new DhlExpressTracker(environment(fetcher)).fetch(number);
+    expect(apiCalls(fetcher)).toHaveLength(1);
+  });
+  it('ends the lookup at DHL\'s not-found, and leaves any other failure to the mobile API', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const notFound = apiFetcher(() => new Response(JSON.stringify(missing), { status: 404 }));
+      await expect(new DhlExpressTracker(keyed(notFound)).fetch(number)).rejects.toThrow(NotFoundError);
+      expect(notFound).toHaveBeenCalledOnce();
+      for (const reply of [() => new Response('{}', { status: 404 }), () => new Response('<html></html>', { status: 404 }), () => new Response('<html></html>'),
+        () => new Response('{}', { status: 500 }), () => new Response('{}', { status: 410 }), () => { throw new TypeError('fetch failed'); },
+        () => new Response(JSON.stringify({ shipments: [{ ...unifiedPayload().shipments[0], id: '1234567880' }] }))]) {
+        const fetcher = apiFetcher(reply);
+        const recorder = recorded();
+        expect(await new DhlExpressTracker({ ...keyed(fetcher), recorder }).fetch(number)).toMatchObject({ status: 'delivered', last_update_local: '2026-10-05T15:06:00' });
+        expect(steps(recorder)).toEqual([['api', expect.not.stringMatching(/^(ok|not_found)$/)], ['direct', 'ok']]);
+        // No failure carries the request that holds the key.
+        const failure: unknown = recorder.step.mock.calls[0]![0].error;
+        expect(failure).toBeInstanceOf(Error);
+        expect(JSON.stringify(failure, Object.getOwnPropertyNames(failure))).not.toContain('synthetic-key');
+        expect((failure as { request?: unknown }).request).toBeUndefined();
+      }
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it('pauses the key for DHL\'s retry window after a rate limit, and for an hour after a refusal', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      for (const [reply, pauseMs] of [[() => new Response('{}', { status: 429, headers: { 'retry-after': '120' } }), 120_000],
+        [() => new Response('{}', { status: 429 }), PAUSE_MS], [() => new Response('{}', { status: 401 }), PAUSE_MS],
+        [() => new Response('{}', { status: 403 }), PAUSE_MS]] as const) {
+        const fetcher = apiFetcher(reply);
+        const recorder = recorded();
+        const tracker = new DhlExpressTracker({ ...keyed(fetcher), recorder });
+        await expect(tracker.fetch(number)).resolves.toMatchObject({ status: 'delivered' });
+        later(pauseMs - 1);
+        await expect(tracker.fetch(number)).resolves.toMatchObject({ status: 'delivered' });
+        // Another instance on the transport shares the pause; another key does not.
+        await new DhlExpressTracker(keyed(fetcher)).fetch(number);
+        expect(apiCalls(fetcher)).toHaveLength(1);
+        await new DhlExpressTracker(keyed(fetcher, null, 'other-key')).fetch(number);
+        expect(apiCalls(fetcher)).toHaveLength(2);
+        later(1);
+        await tracker.fetch(number);
+        expect(apiCalls(fetcher)).toHaveLength(3);
+        expect(steps(recorder).map(([step]) => step)).toEqual(['api', 'direct', 'direct', 'api', 'direct']);
+      }
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it('waits five seconds between calls, and asks the mobile API when the turn would come too late', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const fetcher = apiFetcher();
+      const recorder = recorded();
+      const tracker = new DhlExpressTracker({ ...keyed(fetcher), recorder });
+      await tracker.fetch(number);
+      await expect(tracker.unified(number, { budgetMs: 5_000 })).rejects.toThrow(ApiPacedError);
+      await expect(tracker.fetch(number, { budgetMs: 5_000 })).resolves.toMatchObject({ last_update_local: '2026-10-05T15:06:00' });
+      expect(apiCalls(fetcher)).toHaveLength(1);
+      later(4_950);
+      const started = performance.now();
+      await expect(tracker.fetch(number)).resolves.toMatchObject({ last_update: '2026-10-05T15:06:00-04:00' });
+      expect(performance.now() - started).toBeGreaterThanOrEqual(40);
+      expect(apiCalls(fetcher)).toHaveLength(2);
+      expect(steps(recorder)).toEqual([['api', 'ok'], ['api', 'rate_limited'], ['direct', 'ok'], ['api', 'ok']]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it('resolves a piece without the browser, which still answers when the API cannot', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const piece = 'JD014600000000000001';
+      const data = unifiedPayload(); data.shipments[0]!.details.pieceIds = [piece];
+      const fetcher = apiFetcher(() => new Response(JSON.stringify(data)));
+      expect(await new DhlExpressTracker(keyed(fetcher)).fetch(`J${piece}`)).toMatchObject({ canonical_tracking_number: number, status: 'delivered' });
+      expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([`${API}?trackingNumber=${piece}&language=en`]);
+      const refused = apiFetcher(() => new Response('{}', { status: 401 }));
+      await expect(new DhlExpressTracker(keyed(refused)).fetch(piece)).rejects.toThrow('refused the key');
+      await expect(new DhlExpressTracker(keyed(refused)).fetch(piece)).rejects.toThrow(ApiPacedError);
+      const trawl = new TrawlClient('https://browser.example');
+      const scrape = vi.spyOn(trawl, 'scrape').mockResolvedValue({ url: '', html: '', cookies: [], userAgent: null, tier: 2, statusCode: 200, raw: {},
+        capturedResponses: [captured(data, 200, `https://www.dhl.com/utapi?trackingNumber=${piece}`)] });
+      expect(await new DhlExpressTracker(keyed(refused, trawl)).fetch(piece)).toMatchObject({ canonical_tracking_number: number });
+      expect(scrape).toHaveBeenCalledOnce();
+      expect(apiCalls(refused)).toHaveLength(1);
+      expect(refused.mock.calls.every(([url]) => String(url).startsWith(API))).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

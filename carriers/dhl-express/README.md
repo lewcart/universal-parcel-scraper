@@ -1,7 +1,7 @@
 # DHL Express
 
-DHL Express waybills through its mobile guest API and public tracking portal, separate from
-the German DHL Paket adapter.
+DHL Express waybills through DHL's tracking API, its mobile guest API and public tracking
+portal, separate from the German DHL Paket adapter.
 
 Detection shares the [MyDHL+ tracking page](https://mydhl.express.dhl/gb/en/tracking.html)'s
 waybill check with the adapter. A passing check prioritizes a candidate; it does
@@ -26,6 +26,19 @@ The adapter refuses other numbers without a request, so a hand-off never asks
 it about another carrier's number.
 
 ## Retrieval
+
+With `DHL_API_KEY` set, `api` asks DHL's
+[Shipment Tracking Unified API](https://developer.dhl.com/api-reference/shipment-tracking)
+first, under the consumer's own key. Its reply is the global page's, with each event's offset,
+and it resolves a piece identifier without a browser. DHL allows a key one call every five
+seconds: calls through a key take turns, and a lookup whose turn would come more than ten
+seconds later, or too late for its budget, skips the API. A rate limit pauses the key for
+DHL's retry window, or an hour without one, and a refused key (HTTP 401 or 403) for an hour;
+the lookups meanwhile go to `direct`. DHL's not-found ends the lookup there; any other failure
+leaves the number to the next step. Recognition never asks the API, so unknown numbers spend
+none of the key's daily calls. DHL's terms for the key bind the consumer: they ask for the
+line "Delivered by Deutsche Post DHL Group" beside the data, its deletion 30 days after
+delivery, and no use with advertising.
 
 `direct` asks the mobile guest API for one waybill. Before it reads an empty
 shipment list as a missing shipment, it checks the application's
@@ -56,10 +69,8 @@ retrying `utapi`. Observe that exchange in the scoped browser helper before
 changing headers or reproducing challenge code. MyDHL+ can instead return a
 blocked HTML page with HTTP 200; that page contains no usable tracking history.
 
-The [registered Shipment Tracking Unified API](https://developer.dhl.com/tracking)
-is another route, separate from the public portal. It requires a consumer-owned
-subscription key in `DHL-API-Key`; its demo key and Try Now responses are mocked
-and cannot establish live tracking coverage.
+The tracking API's demo key and Try Now responses are mocked and cannot establish live
+tracking coverage.
 
 ## Mobile API
 
@@ -153,7 +164,7 @@ browser service with the DHL Express capture helper.
 
 `npm run test:carriers:live -- carriers/dhl-express`
 
-Set `DHL_EXPRESS_LIVE_TRACKING_NUMBER` to exercise mobile retrieval. Add `TRAWL_URL`
-to exercise the separate browser path.
+Set `DHL_EXPRESS_LIVE_TRACKING_NUMBER` to exercise mobile retrieval. Add `DHL_API_KEY`
+to exercise the tracking API, and `TRAWL_URL` to exercise the separate browser path.
 Carrier protection can reject HTTP and browser sessions. These failures stay
 distinct from a missing waybill.

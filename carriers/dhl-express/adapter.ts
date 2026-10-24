@@ -1,12 +1,13 @@
 import { DateTime } from 'luxon';
 import { accepted, lookupBudget, recognizeFromBrowserLookup, recognizeFromLookup, type AdapterFactory, type AdapterEnvironment, type TrackingContext } from '../../core/adapter/index.js';
 import { isValidDhlExpressWaybill } from '../../core/detection/numericChecksums.js';
-import { BudgetExceededError, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import { BudgetExceededError, carrierErrorKind, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
-import { runSteps } from '../../core/runner/index.js';
+import { recoverableByDefault, runSteps, type StepContext } from '../../core/runner/index.js';
 import { explicitOffsetTime, zonedTime } from '../../core/time/index.js';
 import { clean, parseJsonBytes } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { DhlTrackingApi, isMissingShipment } from './api.js';
 import { facilityZone } from './clock.js';
 import { DhlMobileApi, MobilePacedError } from './mobile.js';
 import { dhlExpressStage } from './status.js';
@@ -202,8 +203,25 @@ export function parseMobile(payload: unknown, raw: string): CarrierResult {
 
 export class DhlExpressTracker {
   private readonly mobile: DhlMobileApi;
+  private readonly api: DhlTrackingApi;
   constructor(private readonly environment: AdapterEnvironment) {
     this.mobile = new DhlMobileApi(environment);
+    this.api = new DhlTrackingApi(environment);
+  }
+
+  get steps(): string[] {
+    return [...(this.api.configured ? ['api'] : []), 'direct', 'trawl'];
+  }
+
+  /** DHL's tracking API answers like the global page, without a browser, for a waybill or a piece. */
+  async unified(raw: string, context?: TrackingContext): Promise<CarrierResult> {
+    const budget = lookupBudget(context, 15_000, PROVIDER);
+    if (isPieceId(raw)) {
+      const piece = normalizePieceId(raw);
+      return parseUnifiedPiece(await this.api.shipments(piece, budget), piece);
+    }
+    const waybill = normalizeNumber(raw);
+    return parseUnified(await this.api.shipments(waybill, budget), waybill);
   }
 
   async direct(number: string, context?: TrackingContext): Promise<CarrierResult> {
@@ -247,8 +265,7 @@ export class DhlExpressTracker {
     if (response.status === 404 && response.body) {
       let missing: unknown;
       try { missing = JSON.parse(response.body); } catch { /* An arbitrary 404 is not a shipment answer. */ }
-      if (isRecord(missing) && missing.status === 404 && missing.title === 'No result found'
-        && missing.detail === 'No shipment with given tracking number found.') throw new NotFoundError(PROVIDER);
+      if (isMissingShipment(missing)) throw new NotFoundError(PROVIDER);
     }
     if (response.status >= 400) throw new UpstreamHttpError(PROVIDER, response.status);
     if (response.body === null) throw new TransportError(PROVIDER, 'DHL Express returned no complete matching browser response');
@@ -258,26 +275,38 @@ export class DhlExpressTracker {
 
   fetch(raw: string, context?: TrackingContext): Promise<CarrierResult> {
     const run = { carrier: 'dhl-express', budgetMs: context?.budgetMs ?? 45_000, signal: context?.signal, recorder: this.environment.recorder };
+    const trawl = !!this.environment.trawl;
+    // Only DHL's not-found ends a lookup at the tracking API: a paced or refused key, or a
+    // reply the adapter cannot read, leaves the number to the steps after it.
+    let apiError: unknown;
+    const afterApi = (error: unknown) => recoverableByDefault(error) || (error === apiError && carrierErrorKind(error) !== 'not_found');
+    const api = (number: string, last: boolean) => ({ id: 'api', enabled: this.api.configured && (last || !this.api.paused()),
+      run: async ({ signal, remainingMs }: StepContext) => {
+        try { return await this.unified(number, { signal, budgetMs: Math.min(remainingMs, 15_000) }); }
+        catch (error) { apiError = error; throw error; }
+      } });
     if (isPieceId(raw)) {
       const piece = normalizePieceId(raw);
-      // Without the browser service the step reports that it needs one.
-      return runSteps(run, [{ id: 'trawl', run: ({ signal, remainingMs }) => this.browserPiece(piece, { signal, budgetMs: remainingMs }) }]);
+      // Without the browser service or the tracking API the step reports that it needs one.
+      return runSteps(run, [api(piece, !trawl),
+        { id: 'trawl', enabled: trawl || !this.api.configured, recovers: afterApi,
+          run: ({ signal, remainingMs }) => this.browserPiece(piece, { signal, budgetMs: remainingMs }) }]);
     }
     const number = normalizeNumber(raw);
-    const trawl = !!this.environment.trawl;
     return runSteps(run, [
+      api(number, false),
       // While a CAPTCHA holds or the hour's requests are spent, the app's API would fail without a request,
       // so a browser service is asked at once.
-      { id: 'direct', enabled: !(trawl && this.mobile.withheld()),
+      { id: 'direct', enabled: !(trawl && this.mobile.withheld()), recovers: afterApi,
         run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: Math.min(remainingMs, 10_000) }) },
-      { id: 'trawl', enabled: trawl, run: ({ signal, remainingMs }) => this.browser(number, { signal, budgetMs: remainingMs }) },
+      { id: 'trawl', enabled: trawl, recovers: afterApi, run: ({ signal, remainingMs }) => this.browser(number, { signal, budgetMs: remainingMs }) },
     ]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new DhlExpressTracker(environment);
-  return { id: 'dhl-express', recordsSteps: true, steps: ['direct', 'trawl'], track: (input, context) => tracker.fetch(input.number, context),
+  return { id: 'dhl-express', recordsSteps: true, steps: tracker.steps, track: (input, context) => tracker.fetch(input.number, context),
     recognize: async (number, context) => {
       // Only the browser phase can resolve a piece; over HTTP it stays inconclusive.
       if (isPieceId(number)) throw new IndeterminateError(PROVIDER, 'DHL Express resolves piece identifiers on its browser page only');

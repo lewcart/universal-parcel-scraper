@@ -106,6 +106,7 @@ describe('FAR International HTTP adapter', () => {
   it('maps the recorded wording, and stages new wording through the shared rules', () => {
     expect(farStage('Last Mile Label Create')).toEqual({ stage: 'registered', source: 'carrier_map' });
     expect(farStage('包裹开始派送')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    expect(farStage('Picked up by Customs clearance company')).toEqual({ stage: 'customs', source: 'carrier_map' });
     // The last-mile label, listed after the parcel reached the hub, is no step back.
     const labelled = parseFar(rows(row('2026-02-28 01:54:51', '【,,US】', 'GMT-05:00', 'Last Mile Label Create'),
       row('2026-02-28 13:49:10', '【CN】', 'GMT+08:00', 'Arrived at departure transport hub')), PARCEL);

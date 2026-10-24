@@ -32,6 +32,12 @@ stored as UTC.
 - Barcodes shared with Evri remain ambiguous across services. Longer Hermes
   barcodes retain their existing recognition. Numeric detection uses the
   published checksum as a preference, since other carriers can pass it too.
+- A 14-digit number that fails that checksum and still finds a Hermes parcel
+  is a reference when the parcel comes back under another barcode, which
+  `canonical_tracking_number` names; detection leaves references out on
+  purpose. Only a parcel whose own barcode fails the checksum questions it.
+  Change `hermes-de-2` only once a second such barcode turns up, and first
+  look for what the two share, such as a leading range with its own check.
 - Stages come from the `parcelStatus` enum, no carrier wording rules. The enum
   is stable, and wording would only add a chance to be wrong. The enum was read
   from the carrier's public bundle `gcp-prd.my-deliveries.de/tnt/bundle/tnt-bundle-v2.js`.

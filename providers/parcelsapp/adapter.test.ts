@@ -424,8 +424,10 @@ describe('ParcelsApp result parsing', () => {
 
   it('reads Correos de Chile\'s scans on Santiago\'s clock', () => {
     // Correos de Chile's page shows the scan at 10:43, in Chile's summer time.
-    const payload = { carriers: ['Correos Chile'], states: [{ date: '2026-09-11T10:43:00Z', status: 'En tránsito', carrier: 0 }] };
-    expect(parseParcelsAppResponse(payload, number, identity()).events?.[0]?.time).toBe('2026-09-11T13:43:00.000Z');
+    for (const name of ['Correos Chile', 'Correos de Chile', 'CorreosChile', 'Chile Post', 'Chile Correos', 'Correos Chile (CorreosChile)']) {
+      const payload = { carriers: [name], states: [{ date: '2026-09-11T10:43:00Z', status: 'En tránsito', carrier: 0 }] };
+      expect(parseParcelsAppResponse(payload, number, identity()).events?.[0]?.time, name).toBe('2026-09-11T13:43:00.000Z');
+    }
   });
 
   it('reads Correios Brazil\'s scans on Brasília\'s clock, in Brazil and abroad', () => {

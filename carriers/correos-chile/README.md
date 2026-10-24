@@ -19,7 +19,7 @@ time, Correios Brazil's copies of the same scans carry `-03:00`, Santiago's
 offset then. The catalog clock is therefore Santiago's. It places a provider's
 copy that has no offset, and 17TRACK's rows, labelled with Chile's winter offset
 in summer too, are read on it ([17TRACK](../../providers/seventeentrack/README.md)).
-Providers name the carrier "Correos Chile".
+Providers name the carrier "Correos Chile", and ParcelsApp also "Chile Post" or "Chile Correos".
 
 Future progress-rail markers, customer details, delivery names, identity
 numbers, notices and the branch directory are excluded. Free-form status text is

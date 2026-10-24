@@ -24,7 +24,7 @@ const NAME_ALIASES: Readonly<Record<string, string>> = {
   asendiausa: 'asendia', asendiaunitedstates: 'asendia', finlandpost: 'posti', spainpost: 'correos-spain',
   portugalctt: 'ctt', portugalpostportugalctt: 'ctt',
   italypost: 'poste-italiane', italysda: 'poste-italiane', deutschepostdhlpaket: 'dhl', austriapost: 'austrian-post',
-  evri: 'evri-uk',
+  evri: 'evri-uk', chilepost: 'correos-chile', chilecorreos: 'correos-chile', correoschilecorreoschile: 'correos-chile',
 };
 // The postal union's shared feed, which aggregators list among a parcel's carriers.
 const FEED_NAMES = ['upu', 'universalpostalunion'];

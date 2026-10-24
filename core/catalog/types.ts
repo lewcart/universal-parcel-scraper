@@ -137,6 +137,8 @@ export interface CarrierDefinition {
     browserRecognitionRank?: number;
     refresh?: { minMinutes: number; afterFailureMinutes?: number };
     localClocks?: boolean;
+    /** Every scan the adapter dates by its day alone is one the carrier gives no clock by design. */
+    dateOnlyScans?: boolean;
     /** A lookup can open a browser: the private browser service or a local or remote Chromium. */
     browser?: boolean;
   };

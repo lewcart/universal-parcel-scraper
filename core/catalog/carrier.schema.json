@@ -183,6 +183,10 @@
           "description": "True when the adapter can return scans without an instant: a wall clock with no UTC offset, or provider text. Consumers can keep that history beside instants and ask fallback providers for dated scans.",
           "type": "boolean"
         },
+        "dateOnlyScans": {
+          "description": "True when every scan the adapter dates by its day alone is one the carrier gives no clock by design, such as a delivery round or a history listed under day headings. Fallback providers have no clock to add to such a scan.",
+          "const": true
+        },
         "browser": {
           "description": "True when a lookup through the adapter can open a browser: the private browser service or a local or remote Chromium. Consumers can space out repeated lookups.",
           "const": true

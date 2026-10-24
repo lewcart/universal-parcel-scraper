@@ -45,4 +45,11 @@ describe('carrier.json', () => {
     });
     expect([...new Set(ids)]).toHaveLength(ids.length);
   });
+
+  it('says a carrier gives day-only scans by design only where its adapter keeps local clocks', () => {
+    const tracking = (folder: string) => readCarrier(folder).tracking as { localClocks?: boolean; dateOnlyScans?: boolean };
+    const dayOnly = folders.filter((folder) => tracking(folder).dateOnlyScans);
+    expect(dayOnly).toContain('brt');
+    expect(dayOnly.filter((folder) => !tracking(folder).localClocks)).toEqual([]);
+  });
 });

@@ -2726,7 +2726,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "nacex",
       "recognitionRank": 850,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://www.nacex.es/irSeguimiento.do",
     "trackingUrlTemplate": "https://www.nacex.es/seguimientoFormularioExterno.do?intcli={trackingNumber}",
@@ -2953,7 +2954,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "brt",
       "recognitionRank": 860,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://services.brt.it/en/tracking",
     "trackingUrlTemplate": "https://vas.brt.it/vas/sped_det_new.htm?brtCode={trackingNumber}&lang=en",
@@ -5419,7 +5421,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "4sides",
       "recognitionRank": 783,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://4sides.ru/tracking",
     "trackingUrlTemplate": "https://4sides.ru/tracking?number={trackingNumber}",
@@ -7226,7 +7229,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "aymakan",
       "recognitionRank": 942,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://aymakan.com/tracking",
     "trackingUrlTemplate": "https://aymakan.com/tracking/{trackingNumber}",
@@ -17696,7 +17700,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "israel-post",
       "recognitionRank": 81,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://israelpost.co.il/",
     "trackingUrlTemplate": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D?OpenForm&itemcode={trackingNumber}",
@@ -18276,7 +18281,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "jetline-couriers",
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://www.jetlinecouriers.in/",
     "trackingSearchUrl": "https://www.jetlinecouriers.in/",
@@ -20324,7 +20330,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "madhur-courier",
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://madhurcouriers.in/CNoteTracking",
     "trackingSearchUrl": "https://madhurcouriers.in/CNoteTracking",
@@ -21163,7 +21170,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "mng-kargo",
       "recognitionRank": 360,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://www.dhlecommerce.com.tr/gonderitakip",
     "trackingUrlTemplate": "https://www.dhlecommerce.com.tr/gonderitakip",
@@ -24354,7 +24362,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "post-luxembourg",
       "recognitionRank": 80,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace",
     "trackingUrlTemplate": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace#/search?numero={trackingNumber}",
@@ -26355,7 +26364,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "sat-ukraine",
       "recognitionRank": 564,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://www.sat.ua/tracking/",
     "trackingUrlTemplate": "https://www.sat.ua/tracking/?number={trackingNumber}",
@@ -28772,7 +28782,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sundarban-courier",
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://operation.sundarbancourierltd.com/",
     "trackingUrlTemplate": "https://operation.sundarbancourierltd.com/?cnnumber={trackingNumber}",
@@ -29641,7 +29652,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "tirupati-courier",
       "recognitionRank": 711,
-      "localClocks": true
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://www.shreetirupaticourier.net/",
     "trackingSearchUrl": "https://www.shreetirupaticourier.net/",

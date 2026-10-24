@@ -39,6 +39,8 @@ describe('BRT direct tracking', () => {
     // BRT dates its delivery round by the day alone: the scan keeps that day, on no clock.
     expect(result.events?.[2]).toMatchObject({ stage: 'out_for_delivery', local_time: '2026-01-14' });
     expect(result.events?.[2]!.time).toBeUndefined(); expect(result.events?.[2]!.provider_time_text).toBeUndefined();
+    // No copy of such a scan has its clock, which the catalog tells consumers.
+    expect(JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8')).tracking).toMatchObject({ localClocks: true, dateOnlyScans: true });
     expect(result.events?.[5]!.stage).toBe('accepted');
     expect(result.events?.[6]!.stage).toBe('registered');
     // The Italian depot's scans are on Rome's clock; the depot abroad, named after a country on another clock, keeps wall clocks.

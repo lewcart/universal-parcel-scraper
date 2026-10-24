@@ -25,7 +25,8 @@
     "recognition": {
       "rank": 942
     },
-    "localClocks": true
+    "localClocks": true,
+    "dateOnlyScans": true
   },
   "capabilities": [
     "history"

@@ -194,6 +194,8 @@ function contractTracking(tracking) {
   if (tracking.browserRecognition !== undefined) contractValue.browserRecognitionRank = tracking.browserRecognition.rank;
   if (tracking.refresh !== undefined) contractValue.refresh = tracking.refresh;
   if (tracking.localClocks !== undefined) contractValue.localClocks = tracking.localClocks;
+  // Consumers need not ask fallback providers for the clock of a scan dated by its day alone.
+  if (tracking.dateOnlyScans !== undefined) contractValue.dateOnlyScans = tracking.dateOnlyScans;
   // Clients space out repeated lookups that can open a browser.
   if (tracking.browser !== undefined) contractValue.browser = tracking.browser;
   return contractValue;

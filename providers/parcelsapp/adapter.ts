@@ -365,6 +365,14 @@ const HOME_CLOCKS: Readonly<Record<string, string>> = {
   sunyousytrack: 'Asia/Shanghai', royalmail: 'Europe/London', parcelforce: 'Europe/London', parcelforceworldwide: 'Europe/London',
 };
 /**
+ * Correios Brazil's dates, under any of its names, are Brasília's clock
+ * wherever the scan was: its own tracker gives its rows America/Sao_Paulo,
+ * and 17TRACK's -03:00 copies of the same scans, in Curitiba and in the origin
+ * country, have ParcelsApp's digits. Brazil keeps several zones, so its scans
+ * otherwise kept the UTC label.
+ */
+const CORREIOS_BRAZIL_CLOCK = 'America/Sao_Paulo';
+/**
  * SunYou's feed dates its destination leg, from the arrival at the
  * destination's airport, on the destination's clock: "+02:00" for a parcel to
  * Spain, where ParcelsApp has the same digits and EcoScooting's own instants
@@ -787,6 +795,7 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   const abroad = carrier === 'hrvatska-posta' ? hrvatskaPostaForeignZone(scanLocation(name, state.location)) : undefined;
   if (abroad !== undefined) return abroad;
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
+  if (carrier === 'correios-br') return CORREIOS_BRAZIL_CLOCK;
   // A home clock stays a guess that a location abroad rules out, even when
   // the catalog gives the network that zone (GEODIS Poland for "Pekaes").
   const zone = carrier && !Object.hasOwn(HOME_COUNTRIES, key) ? carrierTimezone(carrier) : 'UTC';

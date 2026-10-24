@@ -428,6 +428,23 @@ describe('ParcelsApp result parsing', () => {
     expect(parseParcelsAppResponse(payload, number, identity()).events?.[0]?.time).toBe('2026-09-11T13:43:00.000Z');
   });
 
+  it('reads Correios Brazil\'s scans on Brasília\'s clock, in Brazil and abroad', () => {
+    // Correios Brazil's own tracker and 17TRACK's -03:00 copies have these digits.
+    for (const name of ['Brazil Post', 'Correios Brazil']) {
+      const payload = {
+        carriers: [name],
+        states: [
+          { date: '2026-09-29T08:06:00Z', status: 'Item presented to import Customs', carrier: 0, location: 'EXAMPLE CITY, Brazil' },
+          { date: '2026-09-14T17:29:00Z', status: 'Need to inform recipient\'s CPF/CNPJ', carrier: 0, location: 'Country, International Treatment Unit' },
+          { date: '2026-09-14T17:28:00Z', status: 'Item in transfer - please wait', carrier: 0, location: 'Country, CHILE' },
+        ],
+      };
+      expect(parseParcelsAppResponse(payload, number, identity()).events?.map((scan) => scan.time)).toEqual([
+        '2026-09-29T11:06:00.000Z', '2026-09-14T20:29:00.000Z', '2026-09-14T20:28:00.000Z',
+      ]);
+    }
+  });
+
   it('falls back to the parcel carrier\'s zone when a scan names no usable carrier or place', () => {
     const payload = { carriers: ['Example Parcel Co'], states: [{ date: '2026-06-10T14:05:00+00:00', status: 'Return to sender', carrier: 0 }] };
     expect(parseParcelsAppResponse(payload, number, identity(), 'Europe/Zurich').events?.[0]?.time).toBe('2026-06-10T12:05:00.000Z');

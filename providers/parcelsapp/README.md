@@ -335,7 +335,10 @@ step exists for future protocol changes.
   lookup does. "Royal Mail", "Parcelforce" and "Parcelforce Worldwide" have the labels
   of Royal Mail's tracker, on London time at home and beyond Europe: a South African
   office's scans have the instants of the South African post's own clock that way.
-  Their European partners' relays are on another clock (below). "South Korea Post"
+  Their European partners' relays are on another clock (below). Correios Brazil's ("Brazil
+  Post") have the digits of Correios' own tracker, whose rows name America/Sao_Paulo, in
+  Brazil and in the origin country, and 17TRACK's -03:00 copies agree: they are read on
+  Brasília's clock, which the catalog's UTC and Brazil's several zones left out. "South Korea Post"
   (Korea Post's page) and "Posten Norge - Norway Post" (Bring's offsets, in Denmark too) were
   checked at home only, so their home clock is a step 3 guess that a location in another
   country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local

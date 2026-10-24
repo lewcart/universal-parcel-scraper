@@ -108,7 +108,9 @@ carrier.
   and 17TRACK puts on each an offset it guesses from the scan's state: right in Arizona, but
   `-05:00` in Indiana, which keeps Eastern time, an hour late against USPS's own page. A row
   whose place names its state or gives a ZIP code is read in that state's zone, as the
-  [USPS adapter](../../carriers/usps/README.md) reads it; any other keeps 17TRACK's reading.
+  [USPS adapter](../../carriers/usps/README.md) reads it. A row with no place gives no state:
+  it keeps USPS's wall clock as `local_time`, as the USPS adapter gives it, so a consumer
+  dates both copies alike. A place that names neither keeps 17TRACK's reading.
   A step USPS dates by its day alone, such as a label printed at a post office, comes at
   midnight under 17TRACK's offset; it keeps its day as `local_time`, as on USPS's page. A
   USPS scan at exactly midnight is read the same way.

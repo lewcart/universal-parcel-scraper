@@ -272,9 +272,14 @@ describe('17TRACK result parsing', () => {
       row('2026-05-06', '16:35:00', '-07:00', 'EXAMPLE CITY AZ DISTRIBUTION CENTER'),
       row('2026-05-06', '15:20:00', '-07:00', 'EXAMPLE CITY, AZ 00000', 'Accepted at USPS Origin Facility'),
     ]), number);
-    // Indiana keeps Eastern time; a row that names no state keeps 17TRACK's reading.
-    expect(parsed.events?.map((event) => event.time)).toEqual([
-      '2026-05-08T14:00:00.000Z', '2026-05-08T00:16:00.000Z', '2026-05-06T23:35:00.000Z', '2026-05-06T22:20:00.000Z']);
+    // Indiana keeps Eastern time; a row with no place keeps USPS's wall clock, as USPS's adapter gives it.
+    expect(parsed.events?.map((event) => event.time ?? event.local_time)).toEqual([
+      '2026-05-08T09:00:00', '2026-05-08T00:16:00.000Z', '2026-05-06T23:35:00.000Z', '2026-05-06T22:20:00.000Z']);
+    expect(parsed.events?.[0]).toMatchObject({ provider_time_iso: '2026-05-08T09:00:00-05:00' });
+    expect(parsed.events?.[0]?.time).toBeUndefined();
+    // A place that names no state keeps 17TRACK's reading.
+    expect(parse17TrackResponse(reply(21051, [row('2026-05-08', '09:00:00', '-05:00', 'EXAMPLE FACILITY')]), number).events?.[0]?.time)
+      .toBe('2026-05-08T14:00:00.000Z');
     expect(parsed.events?.[1]).toMatchObject({ provider_time_iso: '2026-05-07T20:16:00-05:00', time_provenance: 'provider_inferred' });
     expect(parsed.undated_event_count).toBeUndefined();
     // Another feed keeps 17TRACK's reading.

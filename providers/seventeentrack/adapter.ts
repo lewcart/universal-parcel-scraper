@@ -183,7 +183,10 @@ const DAI_POST = 100790;
  * Indiana, on Eastern time, came under -05:00, an hour late against USPS's own
  * page (checked 2026-10-22). A row whose place names its state, or gives a ZIP
  * code, is read in that state's zone, as USPS's adapter reads it
- * (carriers/usps/clock.ts); any other keeps 17TRACK's reading, the last guess.
+ * (carriers/usps/clock.ts). A row with no place, such as "In Transit, Arriving
+ * On Time", gives no state to guess from: it keeps USPS's wall clock as its
+ * local time, as USPS's adapter gives it, so both copies are dated alike. A
+ * place that names neither keeps 17TRACK's reading, the last guess.
  * A step USPS dates by its day alone, such as a label printed at a post office,
  * comes at midnight under 17TRACK's offset; it keeps its day, as on USPS's page.
  */
@@ -412,7 +415,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }
       catch (cause) { throw new SchemaError(SOURCE, '17TRACK returned an invalid tracking event', { cause }); }
       if (!parsed) continue;
-      const day = usps ? uspsDay(raw) : null;
+      const day = usps ? uspsDay(raw) ?? (text(raw.location) ? null : facilityWall(raw)) : null;
       if (day) {
         const local: CarrierEvent = { ...parsed, local_time: day };
         delete local.time;

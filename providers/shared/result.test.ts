@@ -30,4 +30,12 @@ describe('shared provider result', () => {
     // Another scan dated ahead keeps its time, for the parcel app to flag.
     expect(result([event(at(22 * 3_600_000), 'Arrived at sorting center')!], 'ParcelsApp').events?.[0]?.time).toBe(at(22 * 3_600_000));
   });
+
+  it("reads Chronopost's notice to the recipient without the message type and medium appended to it", () => {
+    const notice = 'Destinataire informé par SMS ou mail';
+    for (const relayed of [`${notice}. Type du message : Retard Média utilisé : E-mail`, `${notice} Type du message : Echec de livraison`]) {
+      expect(event('2026-01-07T12:45:00+01:00', relayed)).toMatchObject({ description: notice, stage: 'pending', stage_source: 'none' });
+    }
+    expect(event('2026-01-07T12:45:00+01:00', `${notice}. Rendez-vous`)?.description).toBe(`${notice}. Rendez-vous`);
+  });
 });

@@ -602,6 +602,7 @@ describe("universal providers' answers", () => {
     // Chronopost's notice to the recipient, relayed as it is, is no scan.
     expect(answer('unknown', null, 'Destinataire informé par SMS ou mail')).toEqual(gap);
     expect(answer('unknown', 'SM', 'Destinataire informé par SMS ou mail')).toEqual(unknown);
+    expect(answer('unknown', null, 'Destinataire informé par SMS ou mail. Type du message : Retard Média utilisé : E-mail')).toEqual(gap);
     // Nor is a bare delivery estimate, or a note that the recipient's details changed.
     expect(answer('unknown', null, 'Estimated delivery')).toEqual(gap);
     expect(answer('unknown', null, 'Recipient information updated')).toEqual(gap);
@@ -855,7 +856,8 @@ describe("universal providers' answers", () => {
   });
 
   it('leave out notices, detail lines, headings and scans whose wording cannot settle a step, each with its reason', () => {
-    expect(universal.gaps.slice(0, 5).map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail', 'estimated delivery',
+    expect(universal.gaps.slice(0, 6).map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail',
+      'destinataire informé par sms ou mail. type du message : retard média utilisé : e-mail', 'estimated delivery',
       'recipient information updated', 'last-mile delivery forecast',
       'en demora - el envío ha sufrido un retraso provocando una posible demora en la entrega.']);
     expect(answer('unknown', null, 'EN DEMORA - EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA.')).toEqual(gap);

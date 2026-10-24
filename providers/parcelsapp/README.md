@@ -516,6 +516,9 @@ step exists for future protocol changes.
 - Some carriers' labels arrive written twice (TIPSA's `ENTREGADOENTREGADO`). A label made
   of two identical halves is read once, in the JSON reply and on the rendered page; any
   other label is kept as sent.
+- Chronopost's notice to the recipient arrives with its message type and medium appended
+  ("… Type du message : …"). It is read as the notice alone, as Chronopost's own tracker
+  lists it; the shared event builder does this for every provider.
 - `carriers` and `services[].name` become `reported_carriers`. They include carriers
   ParcelsApp asked without an answer, so `discovered_carrier` comes from the one name
   they list, or else from the carrier every scan names (`states[].carrier`), when that

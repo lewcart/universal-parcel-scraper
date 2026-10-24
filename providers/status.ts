@@ -62,6 +62,9 @@ export const statusMap: CarrierStatusMap = {
     wording: normalizeStatusWording(CHRONOPOST_NOTIFICATION),
     note: "Chronopost's notice to the recipient, relayed as it is: not a scan, so it keeps the stage the parcel already had.",
   }, {
+    wording: normalizeStatusWording(`${CHRONOPOST_NOTIFICATION}. Type du message : Retard Média utilisé : E-mail`),
+    note: "Chronopost's delay notice to the recipient with the message type and medium ParcelsApp appends, which the providers leave out: not a scan, so it keeps the stage the parcel already had.",
+  }, {
     wording: 'estimated delivery',
     note: 'A delivery estimate without its date: not a scan, so it keeps the stage the parcel already had.',
   }, {

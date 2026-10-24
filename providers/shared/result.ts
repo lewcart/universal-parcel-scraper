@@ -16,6 +16,7 @@ import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/resu
 import { IndeterminateError, InvalidInputError } from '../../core/errors/index.js';
 import { isPostiAbroadLabel } from '../../carriers/posti/identity.js';
 import { anPostWordingStage } from '../../carriers/an-post/status.js';
+import { CHRONOPOST_NOTIFICATION } from '../../carriers/chronopost/status.js';
 
 export type UniversalSource = '17TRACK' | 'ParcelsApp' | 'Postal Ninja' | 'Ship24' | 'UPU';
 const STAGES: Record<string, Stage> = {
@@ -289,11 +290,20 @@ export function classifyEvent(description: string, declared?: Stage): { stage: S
   return { stage: broad ?? 'pending', stage_source: broad ? 'wording:provider' : 'none' };
 }
 
+// ParcelsApp appends the message type and medium to Chronopost's notice to the recipient
+// ("… Type du message : Retard Média utilisé : E-mail"). Chronopost's own tracker lists the notice alone.
+const NOTICE_DETAILS = /^\.?\s*Type du message\s*:/i;
+
+function relayedNotice(label: string): string {
+  return label.startsWith(CHRONOPOST_NOTIFICATION) && NOTICE_DETAILS.test(label.slice(CHRONOPOST_NOTIFICATION.length))
+    ? CHRONOPOST_NOTIFICATION : label;
+}
+
 const EXPLICIT_OFFSET = /(?:Z|[+-]\d{2}:\d{2})$/;
 const LOCAL_WALL_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/;
 
 function describe(description: unknown, stage?: unknown): { description: string; stage: Stage; stage_source: string } | null {
-  const label = text(description);
+  const label = relayedNotice(text(description));
   if (!label || isNotice(label)) return null;
   const declared = typeof stage === 'string' && Object.hasOwn(STAGES, stage) ? STAGES[stage] : undefined;
   // Established source semantics (e.g. handoff/negation) remain first. A real

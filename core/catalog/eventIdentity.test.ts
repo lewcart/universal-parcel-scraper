@@ -66,7 +66,7 @@ describe('same-instant identity policies', () => {
     });
   });
 
-  it.each(['dhl', 'gls', '', 'toString'])('does not opt in %s', (source) => {
+  it.each(['dhl-ecommerce-nl', 'gls', '', 'toString'])('does not opt in %s', (source) => {
     expect(sameInstantIdentityPolicy(source)).toBeUndefined();
     expect(sameInstantIdentityPolicy(source, { supportsScanMatching: true })).toBeUndefined();
   });
@@ -296,8 +296,43 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, providerCode: 'A1' }, { ...stored, providerCode: 'B2' })).toBe(false);
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
     // A carrier whose scans carry their own offsets keeps no policy.
-    expect(sameInstantIdentityPolicy('dhl', { supportsScanMatching: true })).toBeUndefined();
+    expect(sameInstantIdentityPolicy('dhl-ecommerce-nl', { supportsScanMatching: true })).toBeUndefined();
   });
+
+  it('lets a 4PX row its facility\'s offset re-dates take over the row stored under the partner\'s, by wall clock', () => {
+    expect(sameInstantIdentityPolicy('four-px', { supportsScanMatching: true })).toMatchObject({ matchWallClock: true });
+  });
+
+  it('lets a DHL arrival notice shown without its partner link take over the row stored with it', () => {
+    expect(sameInstantIdentityPolicy('dhl')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('dhl', { supportsScanMatching: true });
+    expect(policy).toMatchObject({ storedSources: ['dhl'], requireProviderCode: false, matchEachScan: true });
+    const notice = 'The shipment has arrived in the destination country and will be handed over to the delivery company.';
+    const incoming = { stage: 'in_transit', description: notice, location: 'Example Country', providerCode: '' };
+    for (const link of ['https://www.example.com/', '']) {
+      const stored = { ...incoming, description: `${notice} (Homepage / online shipment tracking: ${link})` };
+      expect(policy?.matches?.(incoming, stored)).toBe(true);
+      expect(policy?.matches?.(stored, incoming)).toBe(false);
+      expect(policy?.matches?.(incoming, { ...stored, location: 'Another Country' })).toBe(false);
+      expect(policy?.matches?.({ ...incoming, description: 'Another notice' }, stored)).toBe(false);
+    }
+    expect(policy?.matches?.(incoming, incoming)).toBe(false);
+  });
+
+  it('lets a Posti scan whose status now ends with a full stop take over the row stored without it', () => {
+    const policy = sameInstantIdentityPolicy('posti', { supportsScanMatching: true });
+    const stored = { stage: 'in_transit', description: 'Item has been registered The item can be registered several times.', location: 'EXAMPLE CITY', providerCode: '' };
+    const incoming = { ...stored, description: 'Item has been registered. The item can be registered several times.' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(stored, incoming)).toBe(false);
+    for (const different of [
+      { ...stored, stage: 'pending' },
+      { ...stored, location: 'ANOTHER CITY' },
+      { ...stored, description: 'Item has been sorted The item can be registered several times.' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: 'Item has been registered! The item can be registered several times.' }, stored)).toBe(false);
+  });
+
 
   it('lets a LinHan row read on Beijing time take over the row stored on its town’s zone, by wall clock, town and wording', () => {
     expect(sameInstantIdentityPolicy('linhan')).toBeUndefined();

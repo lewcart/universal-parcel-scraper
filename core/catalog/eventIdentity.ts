@@ -9,6 +9,7 @@ import { sameInstantIdentityPolicy as correosExpress } from '../../carriers/corr
 import { sameInstantIdentityPolicy as correosSpain } from '../../carriers/correos-spain/identity.js';
 import { sameInstantIdentityPolicy as ctt } from '../../carriers/ctt/app.js';
 import { sameInstantIdentityPolicy as cttyex } from '../../carriers/cttyex/identity.js';
+import { sameInstantIdentityPolicy as dhl } from '../../carriers/dhl/identity.js';
 import { sameInstantIdentityPolicy as dhlEcommerce } from '../../carriers/dhl-ecommerce/identity.js';
 import { sameInstantIdentityPolicy as dhlExpress } from '../../carriers/dhl-express/identity.js';
 import { sameInstantIdentityPolicy as dpd } from '../../carriers/dpd/app.js';
@@ -82,7 +83,7 @@ export interface SameInstantIdentityPolicy {
 }
 
 const policies: ReadonlyMap<string, SameInstantIdentityPolicy> = new Map(
-  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhlEcommerce, dhlExpress, dpd, dpdFrance, fedex, hermesGermany, indiaPost, inpost, jdLogistics, jrt, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postnord, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, thhy, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
+  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhl, dhlEcommerce, dhlExpress, dpd, dpdFrance, fedex, hermesGermany, indiaPost, inpost, jdLogistics, jrt, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postnord, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, thhy, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
 );
 
 const wording = (scan: SameInstantScan) => scan.description.replace(/\s+/g, ' ').trim().toLowerCase();

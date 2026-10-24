@@ -103,7 +103,8 @@ how a consumer learns that DHL holds one behind a postcode.
   as Swiss Post) becomes `delivery_carrier`; the host confirms the shipment
   through that carrier before switching. Lookalike hosts and userinfo URLs are
   ignored. The notice is then shown without the link, which DHL appends as
-  `(Homepage / online shipment tracking: …)`, at times empty. DHL Express's
+  `(Homepage / online shipment tracking: …)`, at times empty; a notice stored with
+  it keeps its row. DHL Express's
   tracking page names DHL Express, which tracks its own
   waybills only, so it is not asked about DHL's number; DHL's tracker keeps the
   Express scans to the delivery.

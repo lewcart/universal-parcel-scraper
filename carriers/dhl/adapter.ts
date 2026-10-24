@@ -37,6 +37,7 @@ import {
   clean as cleanText, fetchBounded, parseJsonBytes, type TrawlClient, UpstreamHttpError, UpstreamNetworkError,
 } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
+import { withoutPartnerLink } from './identity.js';
 import { stageForText, statusForStage } from './status.js';
 
 const PROVIDER = 'DHL';
@@ -146,10 +147,6 @@ function refusedPostcode(value: unknown): InputRequiredError | null {
   if (typeof value.blockTime === 'number') return postcodeMismatch(value.blockTime - Date.now());
   return /\bincorrect\b/i.test(clean(value.error)) ? postcodeMismatch() : null;
 }
-
-/** DHL's arrival notice ends with the delivery operator's page, at times with no link. */
-const PARTNER_LINK = /\s*\(Homepage \/ online shipment tracking:[^()]*\)$/i;
-const withoutPartnerLink = (text: string): string => text.replace(PARTNER_LINK, '');
 
 /** Parse only public status fields: never persist recipient, address, signature or service data. */
 export function parseDHLTrackingResponse(payload: unknown, trackingNumber: string): CarrierResult {

@@ -832,11 +832,11 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   // on a Brazilian parcel, though Cape Verde has one too.
   // A code nothing backs is a guess: it tells the scans around it nothing.
   const guessed = Boolean(rest) && (looseCountry || bracketed) && !context.includes(country!);
-  // "DPD GERMANY DE": a carrier's operation in a country it names, where the parcel is. Two
-  // letters are no name: "FR0059" is a depot.
+  // "DPD GERMANY DE": a carrier's operation in a country it names, where the parcel is, or names
+  // as "-ian" ("Latvian sorting center"). Two letters are no name: "FR0059" is a depot.
   country ??= fields.map((field) => tokens(field).filter((token) => !FACILITY_WORDS.has(token.key))
     .map((token) => field.slice(token.start, token.end)).join(' '))
-    .filter((words) => !/^[A-Z]{2}$/.test(words)).map(trackingPlace)
+    .filter((words) => !/^[A-Z]{2}$/.test(words)).map((words) => /^\p{L}+ian$/iu.test(words) ? words.slice(0, -1) : words).map(trackingPlace)
     .find((named) => named.country && !named.place && hinted.includes(named.country))?.country ?? null;
   if (!country) {
     const named = fieldPhrases.flatMap((list) => list.filter((phrase) => phrase.whole && phrase.key.length >= 4

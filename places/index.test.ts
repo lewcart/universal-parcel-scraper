@@ -17,6 +17,9 @@ describe('locatePlace', () => {
     expect(place('DHL Netherlands')).toMatchObject({ country: 'NL', precision: 'country', name: 'Netherlands' });
     // Its name in words, where the code after it puts the parcel: DE is also Delaware.
     expect(place('DPD GERMANY DE')).toMatchObject({ country: 'DE', precision: 'country' });
+    // Or as its "-ian" word, where the parcel may be.
+    expect(place('Latvian sorting center', ['EE', 'LV'])).toMatchObject({ country: 'LV', precision: 'country' });
+    expect(place('Latvian sorting center', ['EE'])).toBeNull();
     expect(place('DE0001', ['DE'])).toBeNull();
   });
 

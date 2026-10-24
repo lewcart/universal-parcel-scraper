@@ -71,8 +71,9 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   the Dominican Republic are Royal Mail's, on any carrier's parcel: its mail centre or a
   British town of that name, else the United Kingdom for a name with a British region in it
   ("Mid Wales MC"), else no place.
-- A field with only facility words and a country's name ("DPD GERMANY DE") places that
-  country, when the text's code or the parcel puts the parcel there.
+- A field with only facility words and a country's name ("DPD GERMANY DE"), or its "-ian"
+  word ("Latvian sorting center"), places that country, when the text's code or the parcel
+  puts the parcel there.
 - A US military post office ("Fpo, AE", "APO AP 96001") names a region of the US armed
   forces, not a country: AE there is not the Emirates, and the base can be anywhere in the
   region. The scan gets no place, and `trackingPlace` and `trackingLocationCountry` give it

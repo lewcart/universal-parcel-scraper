@@ -94,6 +94,11 @@
       "id": "dhl-express-piece-label",
       "pattern": "^JJD0146\\d{14}$",
       "confidence": "high"
+    },
+    {
+      "id": "dhl-express-piece-label-after",
+      "pattern": "^JD0146\\d{14}J$",
+      "confidence": "high"
     }
   ]
 }

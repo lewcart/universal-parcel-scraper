@@ -11385,6 +11385,10 @@
       {
         "pattern": "^JJD0146\\d{14}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^JD0146\\d{14}J$",
+        "confidence": "high"
       }
     ]
   },

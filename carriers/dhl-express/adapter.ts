@@ -28,12 +28,14 @@ export function normalizeNumber(raw: string): string {
 }
 
 // The label's lower barcode, "(J)JD" and DHL's ISO piece identifier, in the JD01
-// range Express labels carry. DHL lists it without the (J) data identifier.
-const PIECE_ID = /^J?(JD01\d{16})$/;
+// range Express labels carry. DHL lists it without the (J) data identifier, which
+// a typed number can carry before or after the piece.
+const PIECE_ID = /^J?(JD01\d{16})$|^(JD01\d{16})J$/;
 
 /** An Express piece identifier as DHL lists it. */
 export function normalizePieceId(raw: string): string {
-  const piece = PIECE_ID.exec(raw.toUpperCase().replace(/[\s.-]/g, ''))?.[1];
+  const match = PIECE_ID.exec(raw.toUpperCase().replace(/[\s.-]/g, ''));
+  const piece = match?.[1] ?? match?.[2];
   if (!piece) throw new InvalidInputError(PROVIDER, 'DHL Express piece identifiers are JD01 and 16 digits');
   return piece;
 }

@@ -13,9 +13,10 @@ these numbers as another DHL service and sends them to DHL's global page. Only
 `JD0146` pieces have been confirmed on live Express shipments. Other `JD01`
 ranges appear on DHL's tracking pages but are no longer tracked; the rule covers
 them by inference, as DHL Paket's plates use other prefixes. Typed with its
-`(J)`, a piece of the `JD0146` range goes to DHL Express too. Other `JJD`
-numbers stay DHL Paket's licence plates, and the adapter reads any `(J)JD01`
-piece when DHL Express is named.
+`(J)` before or after it, a piece of the `JD0146` range goes to DHL Express
+too; DHL's tracker knows the piece only without it. Other `JJD` numbers stay
+DHL Paket's licence plates, and the adapter reads any `JD01` piece with its
+`(J)` on either side when DHL Express is named.
 
 Links to MyDHL+, to the Express tracking page on logistics.dhl and to
 dhlexpress.pl, DHL Express Poland's site, name DHL Express. The logistics.dhl

@@ -20,7 +20,7 @@ export interface DeliveryHandoff {
 const REFERENCES_LOOKED_UP: Readonly<Record<string, (number: string) => boolean>> = {
   'poste-italiane': isPosteItalianeLookup,
   // DHL Express tracks its waybills and the piece identifiers on its labels.
-  'dhl-express': (number) => isValidDhlExpressWaybill(number) || /^J?JD01\d{16}$/.test(number),
+  'dhl-express': (number) => isValidDhlExpressWaybill(number) || /^(?:J?JD01\d{16}|JD01\d{16}J)$/.test(number),
 };
 
 // DHL Paket's international parcels, its `C` postal numbers, go to the partner

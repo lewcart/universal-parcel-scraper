@@ -577,10 +577,11 @@ describe('DHL Express piece identifiers', () => {
     return { env: environment(fetcher, trawl), scrape, fetcher };
   };
 
-  it('reads the piece as DHL lists it, with or without the label\'s data identifier', () => {
+  it('reads the piece as DHL lists it, with or without the label\'s data identifier on either side', () => {
     expect(normalizePieceId(piece)).toBe(piece);
     expect(normalizePieceId('jjd0146 0000 0000 0000 01')).toBe(piece);
-    for (const other of ['JD024600000000000001', 'JD149000000000000001', 'JD01460000000000001', number]) {
+    expect(normalizePieceId('jd0146 0000 0000 0000 01 j')).toBe(piece);
+    for (const other of ['JD024600000000000001', 'JD149000000000000001', 'JD01460000000000001', `J${piece}J`, `${piece}JJ`, number]) {
       expect(() => normalizePieceId(other)).toThrow(InvalidInputError);
     }
   });

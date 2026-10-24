@@ -696,6 +696,18 @@
         "confidence": "high"
       },
       "note": "An Express piece identifier with the label's (J) data identifier, typed into DHL Paket's tracking page and archived by the Wayback Machine. DHL's global tracking resolved it to the waybill of an Express shipment that lists the piece without its J."
+    },
+    {
+      "number": "JD014624681357924680J",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-24",
+      "expect": {
+        "carrier": "dhl-express",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of an Express piece typed with the label's (J) data identifier after it. DHL's tracker answered the real piece without the J and listed it on an Express shipment."
     }
   ]
 }

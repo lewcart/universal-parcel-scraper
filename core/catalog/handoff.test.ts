@@ -264,7 +264,7 @@ describe('delivery partners that look up only their own references', () => {
     expect(deliveryHandoff('dhl', 'CX123456785DE', { delivery_carrier: 'dhl-express' })).toBeNull();
     expect(deliveryHandoff('dhl', 'CX123456785DE', { delivery_carrier: 'dhl-express', delivery_tracking_number: '1234567891' }))
       .toEqual({ carrier: 'dhl-express', number: '1234567891', basis: 'partner' });
-    expect(hasDirectHandoffAdapter('dhl-express', 'JD014600000000000001')).toBe(true);
+    for (const piece of ['JD014600000000000001', 'JJD014600000000000001', 'JD014600000000000001J']) expect(hasDirectHandoffAdapter('dhl-express', piece)).toBe(true);
     for (const number of ['1234567890', 'CX123456785DE']) expect(hasDirectHandoffAdapter('dhl-express', number)).toBe(false);
     // The check mirrors the adapter, which refuses any other reference before a request.
     const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('offline'));

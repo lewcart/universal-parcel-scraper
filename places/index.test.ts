@@ -46,6 +46,12 @@ describe('locatePlace', () => {
     // A state the text gives holds: Earth City in Missouri, not Earth in Texas.
     expectPlace('Earth City, MO, United States', { country: 'US', name: 'Earth City', latitude: 38.77, longitude: -90.47 });
     expectPlace('Earth, TX', { country: 'US', name: 'Earth', latitude: 34.23, longitude: -102.41 });
+    // On a parcel that may be in the US, a state names no town abroad, before a facility's words too.
+    expect(place('HILLAH, NC', ['US'])).toBeNull();
+    expect(place('METRO OH DISTRIBUTION CENTER', ['US'])).toBeNull();
+    expect(place('TAMPA FL DISTRIBUTION CENTER', ['US'])).toMatchObject({ country: 'US', name: 'Tampa' });
+    expect(place('Kingston, ON', ['US', 'CA'])).toMatchObject({ country: 'CA', name: 'Kingston' });
+    expect(place('Paris, FR', ['CH'])).toMatchObject({ country: 'FR', name: 'Paris' });
   });
 
   it('tells a province or an office code from a country', () => {
@@ -383,6 +389,9 @@ describe('locatePlace', () => {
   it("places a USPS scan at a ZIP Code in the town most of the code's area is", () => {
     expect(place('ZIP Code 60600')).toMatchObject({ precision: 'city', country: 'US', name: 'Chicago' });
     expect(place('ZIP Code 10099-1234')).toMatchObject({ precision: 'city', country: 'US', name: 'New York' });
+    // The code twice, on a parcel that may be in the US.
+    expect(place('60600,60600', ['US'])).toMatchObject({ precision: 'city', country: 'US', name: 'Chicago' });
+    for (const location of ['60600,60600', '60600,60601']) expect(place(location), location).toBeNull();
     // An area shared by many towns, or a military one, is none of them.
     for (const location of ['ZIP Code 90200', 'ZIP Code 09000', 'ZIP Code 1234']) expect(place(location), location).toBeNull();
   });

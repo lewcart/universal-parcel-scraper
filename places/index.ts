@@ -559,7 +559,7 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   if (!text || militaryPostOffice(text)) return null;
   const facility = facilityPlace(text);
   if (facility) return { place: facility, text: true };
-  const zip = zipCodePlace(text);
+  const zip = zipCodePlace(text, hints.countries ?? []);
   if (zip) return { place: zip, text: true };
   const data = gazetteer();
   const explicit = split ? trackingPlace(text) : { country: null, place: text };
@@ -614,8 +614,13 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   // French departments and Italian provinces in brackets: "Sausheim 68 (68)", "Cologne (BS)".
   for (const match of rest.matchAll(/\((\d{2}|[A-Z]{2})\)|(?:^|\s)(\d{2})(?=\s|$)/g)) admin.push(match[1] ?? match[2]!);
   // A state, province or canton written where one belongs, as a field of its own or at the
-  // end of one ("Earth City, MO", "Buchs AG", "LAUREL, MD 20707"): the town is in it.
-  const stated = text.split(/[,;|()]/).flatMap((field) => /(?:^|\s)([A-Z]{2})(?:\s+\d{4,5}(?:-\d{4})?)?$/.exec(field.trim())?.[1] ?? []);
+  // end of one, before a facility's words at most ("Earth City, MO", "Buchs AG", "LAUREL, MD
+  // 20707", "EXAMPLE NY DISTRIBUTION CENTER"): the town is in it.
+  const stated = text.split(/[,;|()]/).flatMap((field) => {
+    const words = field.trim().split(/\s+/);
+    while (words.length > 1 && FACILITY_WORDS.has(nameKey(words.at(-1)!))) words.pop();
+    return /(?:^|\s)([A-Z]{2})(?:\s+\d{4,5}(?:-\d{4})?)?$/.exec(words.join(' '))?.[1] ?? [];
+  });
 
   // Postcodes only confirm a name, and only in a country the scan or the parcel
   // names: on its own, "2024" is more likely a year than a village.
@@ -714,7 +719,10 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
           || regions.some((region) => region.country === place.country && region.admin1 === place.admin1
             && (region.field !== fieldIndex || region.end <= phrase.start || region.start >= phrase.end));
         // "Earth City, MO" is not Earth in Texas: a state its country has, and the town is not in.
-        if (!adminMatch && stated.some((code) => data.regionNames.has(`${place.country}.${ADMIN_CODES[place.country]?.[code] ?? code}`))) continue;
+        // Nor, on a parcel that may be in the US, is "Hillah, NC" the town abroad named so.
+        const stateOf = (other: string) => stated.some((code) => code !== place.country
+          && data.regionNames.has(`${other}.${ADMIN_CODES[other]?.[code] ?? code}`));
+        if (!adminMatch && (stateOf(place.country) || hinted.some((other) => other !== place.country && stateOf(other)))) continue;
         const inCountry = place.country === country;
         if (country && !inCountry && !((looseCountry || coded) && adminMatch)) continue;
         const hint = hinted.indexOf(place.country);
@@ -1076,11 +1084,13 @@ const COUNTRY_CODES = new Map(`
  * "Office - DEFRA …"): the PIN is then the Indian office's, not where the scan happened.
  */
 /**
- * USPS places some scans only at a ZIP Code ("ZIP Code 60600"): the town its first
- * three digits are named for, when most of their codes are that town's.
+ * USPS places some scans only at a ZIP Code ("ZIP Code 60600", or "60600,60600" on a parcel
+ * that may be in the US): the town its first three digits are named for, when most of their
+ * codes are that town's.
  */
-function zipCodePlace(text: string): EventPlace | null {
-  const prefix = /^ZIP Code (\d{3})\d{2}(?:-\d{4})?$/i.exec(text)?.[1];
+function zipCodePlace(text: string, countries: readonly string[]): EventPlace | null {
+  const prefix = /^ZIP Code (\d{3})\d{2}(?:-\d{4})?$/i.exec(text)?.[1]
+    ?? (countries.includes('US') ? /^(\d{3})(\d{2}),\s*\1\2$/.exec(text)?.[1] : undefined);
   if (!prefix) return null;
   zipPrefixes ??= (JSON.parse(readFileSync(ZIPCODES, 'utf8')) as { prefixes: Record<string, [string, string, number, number]> }).prefixes;
   const town = zipPrefixes[prefix];

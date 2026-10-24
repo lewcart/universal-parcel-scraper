@@ -98,7 +98,8 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   placed in the PIN's town from `pincodes.json` when the scan or the parcel is in India. A
   foreign airport code ("Office - FRA …") names an office of exchange abroad: its PIN is the
   Indian office's, and places nothing.
-- USPS places some scans only at a ZIP Code ("ZIP Code 60600"). Its first three digits name
+- USPS places some scans only at a ZIP Code ("ZIP Code 60600", or the code twice,
+  "60600,60600", on a parcel that may be in the US). Its first three digits name
   an area, placed from `zipcodes.json` in the town that holds most of the area's codes. An
   area many towns share places nothing.
 - Text that names only a country gets that country, marked `country`, so the map shades

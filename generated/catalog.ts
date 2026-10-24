@@ -32009,7 +32009,7 @@ export const CARRIER_CATALOG = {
   },
   "ywe": {
     "displayName": "YWE",
-    "color": "#80ca35",
+    "color": "#055aa1",
     "aliases": [
       "YanwenExpress",
       "YWE Logistics"

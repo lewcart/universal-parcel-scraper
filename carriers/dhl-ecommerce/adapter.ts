@@ -9,6 +9,7 @@
 
 import { DateTime } from 'luxon';
 import { accepted, lookupBudget, recognizeFromBrowserLookup, recognizeFromLookup, type AdapterFactory, type Recognition, type TrackingContext } from '../../core/adapter/index.js';
+import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../../core/detection/usps.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, type CarrierErrorOptions } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -25,8 +26,11 @@ const API = 'https://www.dhl.com/utapi';
 const WEBTRACK_API = 'https://api.dhlecs.com/webtrack/v4/tracking';
 const DIRECT_TIMEOUT_MS = 15_000;
 const POUNDS_TO_KG = 0.453_592_37;
-/** Webtrack's names for the last-mile partner; `MIRROR` means DHL delivers itself. */
-const WEBTRACK_PARTNERS: Readonly<Record<string, string>> = { USPS: 'usps' };
+/**
+ * Webtrack's names for the last-mile partner; `MIRROR` means DHL delivers itself. Another
+ * name is read with its link, as other partner names are.
+ */
+const WEBTRACK_PARTNERS: Readonly<Record<string, string>> = { USPS: 'usps', DAI_DIRECT: 'dai-post' };
 /** Statuses DHL answers with while its challenge is unsolved. */
 const CHALLENGE_STATUSES = [401, 403, 419, 428];
 
@@ -286,6 +290,22 @@ function webtrackClock(event: JsonObject): { time?: string; local_time?: string 
   return instant ? { time: instant } : { local_time: raw };
 }
 
+/** Whether two spellings name one place: the parts of one, in order, among the other's. */
+function samePlace(left: string, right: string): boolean {
+  const parts = (place: string) => place.toLowerCase().split(',').map((part) => part.trim()).filter(Boolean);
+  const [short, long] = [parts(left), parts(right)].sort((a, b) => a.length - b.length) as [string[], string[]];
+  let at = 0;
+  for (const part of long) if (part === short[at]) at += 1;
+  return at === short.length;
+}
+
+/** The last-mile partner Webtrack names, never DHL eCommerce itself. */
+function webtrackPartner(name: string, url: string): string | undefined {
+  const partner = WEBTRACK_PARTNERS[name.toUpperCase()]
+    ?? (name.toUpperCase() === 'MIRROR' ? undefined : carrierIdFromPartner(name.replace(/_/g, ' '), url));
+  return partner === 'dhl-ecommerce' ? undefined : partner;
+}
+
 function webtrackWeight(value: unknown): number | null {
   if (!isRecord(value) || typeof value.value !== 'number' || !Number.isFinite(value.value) || value.value <= 0) return null;
   const unit = clean(value.unitOfMeasure, 8).toUpperCase();
@@ -325,17 +345,31 @@ export function parseDHLEcommerceWebtrackResponse(payload: unknown, trackingNumb
     || shipment.events.some((event) => !isRecord(event))) {
     throw new SchemaError(PROVIDER, 'DHL eCommerce returned invalid Webtrack tracking history');
   }
-  const events: CarrierEvent[] = shipment.events.flatMap((event: JsonObject) => {
+  const events: CarrierEvent[] = [];
+  const keys: string[] = [];
+  for (const event of shipment.events as JsonObject[]) {
     const description = clean(event.primaryEventDescription);
+    const location = clean(event.location, 160);
     const clock = webtrackClock(event);
-    if (!description || !clock) return [];
+    if (!description || !clock) continue;
     // While a parcel is en route, Webtrack adds an EN ROUTE row without a place, stamped
     // with the time of each request: an echo of the status, not a scan.
-    if (description.toUpperCase() === 'EN ROUTE' && !clean(event.location, 160)) return [];
+    if (description.toUpperCase() === 'EN ROUTE' && !location) continue;
     const stage = stageFor({ description });
-    return [{ ...clock, description: stage === 'delivered' ? 'Delivered' : description,
-      location: clean(event.location, 160), stage }];
-  });
+    const scan: CarrierEvent = { ...clock, description: stage === 'delivered' ? 'Delivered' : description, location, stage };
+    // Webtrack can list one scan twice, under one id with two spellings of its place
+    // ("Town, AU" and "Town, City, AU"). The row with an instant, then the fuller place, is kept.
+    const id = clean(event.primaryEventId, 80);
+    const key = [id, clean(event.date, 32), clean(event.time, 32), clean(event.timeZone, 16), description].join('|');
+    const twin = id ? keys.indexOf(key) : -1;
+    if (twin >= 0 && samePlace(events[twin]!.location ?? '', location)) {
+      const kept = events[twin]!;
+      if (scan.time && !kept.time || !scan.time === !kept.time && location.length > (kept.location ?? '').length) events[twin] = scan;
+      continue;
+    }
+    events.push(scan);
+    keys.push(key);
+  }
   // Webtrack lists scans newest first. Its order stands unless every scan has an instant.
   if (events.every((event) => event.time)) events.sort((left, right) => right.time!.localeCompare(left.time!));
   events.splice(100);
@@ -352,7 +386,7 @@ export function parseDHLEcommerceWebtrackResponse(payload: unknown, trackingNumb
   // The partner is named from the label onwards; it is reported once it has the parcel,
   // with its own number for it, such as a USPS PIC, when that is not the one asked for.
   const partner = shipment.events.some((event: JsonObject) => partnerHasParcel(event.primaryEventDescription))
-    ? WEBTRACK_PARTNERS[clean(shipment.dspName, 40).toUpperCase()] : undefined;
+    ? webtrackPartner(clean(shipment.dspName, 40), clean(shipment.dspUrl, 300)) : undefined;
   const partnerNumber = clean(shipment.deliveryConfirmationNumber, 40).toUpperCase().replace(/[\s.-]/g, '');
   return {
     status: statusFor(stage), current_stage: stage,

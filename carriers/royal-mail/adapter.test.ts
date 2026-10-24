@@ -58,6 +58,8 @@ describe('Royal Mail status vocabulary', () => {
     expect(royalMailStage('Sender preparing item')).toBe('registered');
     expect(royalMailStage('Your item will be delivered tomorrow')).toBeNull();
     expect(royalMailStage('Arrived at delivery office')).toBe('in_transit');
+    expect(royalMailStage('Item has cleared customs')).toBe('in_transit');
+    expect(royalMailStage('Item held by customs')).toBe('customs');
     expect(royalMailStage('Redirected')).toBe('in_transit');
     expect(royalMailStage('Ready for collection')).toBe('ready_for_pickup');
     expect(royalMailStatus('Delivered')).toBe('delivered');

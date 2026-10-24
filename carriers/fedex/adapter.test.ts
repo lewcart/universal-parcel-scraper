@@ -98,6 +98,7 @@ describe('FedEx status vocabulary', () => {
     expect(fedexStage('Customer not available or business closed')).toBe('failed_attempt');
     expect(fedexStage('Returning to shipper')).toBe('returned');
     expect(fedexStage('Clearance in progress')).toBe('customs');
+    expect(fedexStage('Cleared customs')).toBe('in_transit');
     expect(fedexStage('In FedEx possession — At FedEx location')).toBe('accepted');
     expect(fedexStage('In FedEx possession — Package available for clearance')).toBe('customs');
     expect(fedexStage('International shipment release - Import')).toBe('in_transit');

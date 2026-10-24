@@ -279,7 +279,7 @@
       "stage": "customs",
       "confirmedBy": "prior-art",
       "firstSeen": "2026-09-12",
-      "note": "Global portal (probe). Wording containing 'customs' takes the customs stage rather than plain transit; inherited from the pre-package module."
+      "note": "Global portal (probe). Wording containing 'customs' takes the customs stage rather than plain transit, unless the shared rules read it as cleared; inherited from the pre-package module."
     },
     {
       "code": "1",

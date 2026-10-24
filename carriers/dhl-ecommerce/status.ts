@@ -19,7 +19,7 @@ function clean(value: unknown, limit = 500): string {
 
 // Webtrack's handover to the last-mile partner, usually USPS, before its own scans
 // appear, and USPS accepting the parcel after it.
-const PARTNER_HANDOVER = /^tendered to (?:the )?delivery service provider\b/;
+const PARTNER_HANDOVER = /^(?:tendered to (?:the )?delivery service provider|handed over to (?:the )?partner carrier)\b/;
 const USPS_ACCEPTANCE = /^(?:shipment )?accepted by usps\b/;
 
 /** Whether a scan shows the parcel handed to its last-mile partner. */
@@ -39,8 +39,11 @@ export function stageFor(event: JsonObject): string {
   if (/picked.?up at (?:a )?parcel ?shop|drop(?:ped)? ?off at|handed in at/.test(text)) return 'accepted';
   if (/ready for (?:pickup|collection)|available for (?:pickup|collection)/.test(text)) return 'ready_for_pickup';
   if (/out for delivery/.test(text)) return 'out_for_delivery';
-  if (/customs.*(?:cleared|released)|clearance completed/.test(text)) return 'in_transit';
-  if (/customs|clearance/.test(text)) return 'customs';
+  // A cleared customs line, in either word order, is a step in transit.
+  if (/customs|clearance/.test(text)) {
+    return /customs.*(?:cleared|released)|clearance completed/.test(text)
+      || trackingLanguageStage(typeof event.description === 'string' ? event.description : '') === 'in_transit' ? 'in_transit' : 'customs';
+  }
   if (/label created|manifest data received|en route to dhl ecommerce or awaiting processing|electronic|information received/.test(text)) return 'registered';
   // USPS taking the parcel after DHL's handover is a step in transit, not its acceptance.
   if (USPS_ACCEPTANCE.test(text)) return 'in_transit';

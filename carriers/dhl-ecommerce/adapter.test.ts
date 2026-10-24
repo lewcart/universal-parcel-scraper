@@ -74,6 +74,13 @@ function shipment(): Payload {
 afterEach(() => vi.restoreAllMocks());
 
 describe('DHL eCommerce normalization', () => {
+  it('reads a cleared customs line, in either word order, and the hand-over to a partner as transit', () => {
+    expect(stageFor({ description: 'CLEARED CUSTOMS' })).toBe('in_transit');
+    expect(stageFor({ description: 'CUSTOMS CLEARED' })).toBe('in_transit');
+    expect(stageFor({ description: 'HELD BY CUSTOMS' })).toBe('customs');
+    expect(stageFor({ description: 'HANDED OVER TO PARTNER CARRIER' })).toBe('in_transit');
+  });
+
   it('requires text before using a translated delivery label', () => {
     expect(stageFor({ description: ['Delivered'], statusCode: 'transit' })).toBe('in_transit');
     expect(stageFor({ description: { text: 'Delivered' }, statusCode: 'transit' })).toBe('in_transit');
@@ -464,6 +471,34 @@ describe('DHL eCommerce Webtrack', () => {
     }
     const payload = handedToUsps(); payload.packages[0]!.events = [scan('SHIPMENT ACCEPTED BY USPS')];
     expect(parseDHLEcommerceWebtrackResponse(payload, NUMBER)).toMatchObject({ delivery_carrier: 'usps' });
+  });
+
+  it('hands over to a partner named by its Webtrack code or its link, and lists a doubled scan once', () => {
+    const scan = (primaryEventId: string, primaryEventDescription: string, time: string, location: string) =>
+      ({ primaryEventId, primaryEventDescription, date: '2026-07-08', time, timeZone: 'LT', location });
+    const payload = webtrack();
+    Object.assign(payload.packages[0]!, { dspName: 'DAI_DIRECT', deliveryConfirmationNumber: '00399999999999999999999', events: [
+      scan('77', 'CLEARED CUSTOMS', '11:31:00', 'Sampleton, AU'),
+      scan('77', 'CLEARED CUSTOMS', '11:31:00', 'Sampleton, Exampleville, AU'),
+      scan('76', 'HANDED OVER TO PARTNER CARRIER', '11:30:00', 'Sampleton, Exampleville, AU'),
+      scan('76', 'HANDED OVER TO PARTNER CARRIER', '11:30:00', 'Sampleton, AU'),
+      // The same wording at the same minute in two different places is two scans.
+      scan('75', 'PROCESSED AT TRANSIT FACILITY', '09:00:00', 'Otherton, AU'),
+      scan('75', 'PROCESSED AT TRANSIT FACILITY', '09:00:00', 'Elsewhere, AU'),
+    ] });
+    const result = parseDHLEcommerceWebtrackResponse(payload, NUMBER);
+    expect(result).toMatchObject({ current_stage: 'in_transit', delivery_carrier: 'dai-post', delivery_tracking_number: '00399999999999999999999' });
+    expect(result.events?.map((event) => [event.description, event.location, event.stage])).toEqual([
+      ['CLEARED CUSTOMS', 'Sampleton, Exampleville, AU', 'in_transit'],
+      ['HANDED OVER TO PARTNER CARRIER', 'Sampleton, Exampleville, AU', 'in_transit'],
+      ['PROCESSED AT TRANSIT FACILITY', 'Otherton, AU', 'in_transit'],
+      ['PROCESSED AT TRANSIT FACILITY', 'Elsewhere, AU', 'in_transit'],
+    ]);
+    // A code it does not list is read with its link; without one, no partner is named.
+    Object.assign(payload.packages[0]!, { dspName: 'NEW_PARTNER', dspUrl: 'https://daipost.com/track?tracknbr=00399999999999999999999' });
+    expect(parseDHLEcommerceWebtrackResponse(payload, NUMBER)).toMatchObject({ delivery_carrier: 'dai-post' });
+    Object.assign(payload.packages[0]!, { dspUrl: '' });
+    expect(parseDHLEcommerceWebtrackResponse(payload, NUMBER)).not.toHaveProperty('delivery_carrier');
   });
 
   it('cleans delivery signatures and excludes delivered estimates', () => {

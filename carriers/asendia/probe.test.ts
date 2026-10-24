@@ -98,6 +98,7 @@ describe('Asendia status vocabulary', () => {
     expect(classifyAsendiaStatus('Not delivered')).toEqual({ status: 'exception', stage: 'failed_attempt' });
     expect(classifyAsendiaStatus('Delivered')).toEqual({ status: 'delivered', stage: 'delivered' });
     expect(classifyAsendiaStatus('Held in customs')).toEqual({ status: 'in_transit', stage: 'customs' });
+    expect(classifyAsendiaStatus('Cleared customs')).toEqual({ status: 'in_transit', stage: 'in_transit' });
     expect(classifyAsendiaStatus('Brand new harmonized wording'))
       .toEqual({ status: 'unknown', stage: 'in_transit' });
   });

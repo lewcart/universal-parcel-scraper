@@ -25,6 +25,7 @@
  * gets no carrier stage assignment beyond the transit default.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import { trackingLanguageStage } from '../../core/status/index.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface ClassifiedAsendiaStatus {
@@ -101,7 +102,8 @@ export function classifyAsendiaStatus(description: string): ClassifiedAsendiaSta
     'customs',
   ])) return {
     status: 'in_transit',
-    stage: value.includes('customs') ? 'customs' : 'in_transit',
+    // A customs line the shared rules read as cleared ("Cleared customs") is a step in transit.
+    stage: value.includes('customs') && trackingLanguageStage(description) !== 'in_transit' ? 'customs' : 'in_transit',
   };
   return { status: 'unknown', stage: 'in_transit' };
 }

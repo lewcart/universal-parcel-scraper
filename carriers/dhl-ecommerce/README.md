@@ -61,14 +61,17 @@ customer references are excluded.
 
 Webtrack also gives the product name, the weight in pounds, and the last-mile
 partner with its own number for the parcel. The partner is named from the label
-onwards, so a USPS partner is reported only once a scan shows it has the parcel,
-with its number when that differs from the one asked for. `MIRROR` means DHL
-delivers itself.
+onwards, so it is reported only once a scan shows it has the parcel, with its
+number when that differs from the one asked for. `USPS` and `DAI_DIRECT` (DAI Post
+in Australia) are Webtrack's own codes; another code is read with the partner link
+beside it, as other partner names are. `MIRROR` means DHL delivers itself.
 
 While a parcel is en route, Webtrack adds an `EN ROUTE` row without a place,
 stamped with the time of each request. It is an echo of the status, not a scan,
-so it is skipped. The handover to the last-mile partner ("TENDERED TO DELIVERY
-SERVICE PROVIDER") is in transit, and so is USPS accepting the parcel after it.
+so it is skipped. Webtrack can also list a scan twice under one event id, with two
+spellings of its place; one row is kept, with the fuller place. The handover to the
+last-mile partner ("TENDERED TO DELIVERY SERVICE PROVIDER", "HANDED OVER TO PARTNER
+CARRIER") is in transit, and so is USPS accepting the parcel after it.
 
 ## Limitations
 

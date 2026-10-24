@@ -68,6 +68,9 @@ describe('USPS status vocabulary', () => {
     expect(uspsStage('Available for Pickup')).toBe('ready_for_pickup');
     // The delivering post office's arrival comes before the delivery round; a held parcel waits for collection.
     expect(uspsStage('Arrived at Post Office')).toBe('in_transit');
+    // A cleared customs line, in either word order, is a step in transit.
+    expect(uspsStage('Cleared Customs')).toBe('in_transit');
+    expect(uspsStage('Customs Clearance')).toBe('customs');
     expect(uspsStage('Held at Post Office, At Customer Request')).toBe('ready_for_pickup');
     expect(uspsStage('Accepted at USPS Origin Facility')).toBe('accepted');
     expect(uspsStage('Arrived at USPS Facility')).toBe('in_transit');

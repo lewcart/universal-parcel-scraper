@@ -12,7 +12,7 @@
  * `statuses.json` holds the full list.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
-import type { Stage } from '../../core/status/index.js';
+import { trackingLanguageStage, type Stage } from '../../core/status/index.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const RETURNED_TERMS = ['return to sender', 'returned to sender', 'returning to sender'];
@@ -55,7 +55,8 @@ export function uspsStage(text: string): Stage | null {
   if (DELIVERED_TERMS.some((term) => value.includes(term))) return 'delivered';
   if (OUT_FOR_DELIVERY_TERMS.some((term) => value.includes(term))) return 'out_for_delivery';
   if (READY_FOR_PICKUP_TERMS.some((term) => value.includes(term))) return 'ready_for_pickup';
-  if (CUSTOMS_TERMS.some((term) => value.includes(term))) return 'customs';
+  // A customs line the shared rules read as cleared ("Cleared customs") is a step in transit.
+  if (CUSTOMS_TERMS.some((term) => value.includes(term))) return trackingLanguageStage(text) === 'in_transit' ? 'in_transit' : 'customs';
   if (EXCEPTION_TERMS.some((term) => value.includes(term))) return 'exception';
   if (REGISTERED_TERMS.some((term) => value.includes(term))) return 'registered';
   if (ACCEPTED_TERMS.some((term) => value.includes(term))) return 'accepted';

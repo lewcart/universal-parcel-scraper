@@ -344,6 +344,9 @@ describe('locatePlace', () => {
     expect(place('Cabo Delgado Province')).toMatchObject({ precision: 'country', country: 'MZ' });
     expect(place('Morona-Santiago Province')).toMatchObject({ precision: 'country', country: 'EC' });
     expect(place('Santa Catarina', ['BR'])).toMatchObject({ precision: 'country', country: 'BR' });
+    // By its local name too, as its country's GeoNames dump gives it.
+    expect(place('Catalunya', ['FR'])).toMatchObject({ precision: 'country', country: 'ES' });
+    expect(place('Lombardia')).toMatchObject({ precision: 'country', country: 'IT' });
     // By its old name too, in whichever country the parcel is.
     expect(place('Distrito Federal', ['MX'])).toMatchObject({ precision: 'country', country: 'MX' });
     expect(place('Distrito Federal', ['BR'])).toMatchObject({ precision: 'country', country: 'BR' });

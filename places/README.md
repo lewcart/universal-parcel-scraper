@@ -227,7 +227,8 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
 ## Data
 
 `node scripts/generate-places.mjs` builds `places.tsv.br`: GeoNames towns of 1,000 people
-or more and first-level regions, the postal localities of Switzerland, Liechtenstein, their
+or more and first-level regions (by the local name in a country's dump where it reads one:
+"Catalunya"), the postal localities of Switzerland, Liechtenstein, their
 neighbours and the Benelux, the Canadian municipalities postal areas are named after (Canada
 Post still addresses Scarborough and North York, now part of Toronto), the municipalities of
 some European countries and Taiwan that no town is named after, the town seats of Guangdong and

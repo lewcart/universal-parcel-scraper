@@ -231,11 +231,15 @@ function knownPlace(country, name, point, km, division) {
       .filter((place) => place.primary.some((key) => key === base || key.startsWith(`${base} `)))].find(near) : undefined);
 }
 
+// First-level regions by the name GeoNames gives them in their country's dump, which is often
+// the local one carriers print: "Catalunya", "Lombardia", "Steiermark".
+const regionLocalNames = new Map();
 for (const country of [...new Set([...Object.keys(DIVISIONS), ...Object.keys(TOWNSHIPS)])].sort()) {
   const levels = new Set(DIVISIONS[country] ?? []);
   const townships = new Set(TOWNSHIPS[country] ?? []);
   const dump = unzip(await download(`dump-${country}.zip`, `https://download.geonames.org/export/dump/${country}.zip`), `${country}.txt`);
   for (const [, rawName, ascii, alternates, lat, lon, featureClass, feature, , , admin1, admin2, , , population] of lines(dump)) {
+    if (featureClass === 'A' && feature === 'ADM1') regionLocalNames.set(`${country}.${admin1}`, [rawName, ascii]);
     const division = featureClass === 'A' && levels.has(feature) && Number(population) >= DIVISION_FROM;
     const seat = townships.has(admin1) && featureClass === 'P' && feature === 'PPLA4';
     if (!division && !seat) continue;
@@ -287,7 +291,7 @@ for (const [key, points] of municipalities) {
 const regions = [];
 for (const [id, name, ascii] of admin1Codes) {
   const [country, admin1] = id.split('.');
-  const keys = new Set([...nameKeys(name), ...nameKeys(ascii)]);
+  const keys = new Set([name, ascii, ...regionLocalNames.get(id) ?? []].flatMap(nameKeys));
   for (const key of [...keys]) if (!GENERIC_REGIONS.has(key.replace(REGION_WORDS, ''))) keys.add(key.replace(REGION_WORDS, ''));
   if (country === 'CN' && CHINESE_PROVINCES[admin1]) keys.add(CHINESE_PROVINCES[admin1]);
   for (const alias of REGION_ALIASES[id] ?? []) keys.add(alias);

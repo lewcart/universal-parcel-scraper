@@ -3,7 +3,7 @@ import { hasGs1CheckDigit } from '../../core/detection/numericChecksums.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { calendarDay, explicitOffsetTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { helthjemCode, helthjemLabel, helthjemStage, STATE } from './status.js';
@@ -70,7 +70,25 @@ function parcelOf(payload: unknown): Record<string, unknown> | null {
   return parcel;
 }
 
-interface Scan { readonly event: CarrierEvent; readonly at: number; readonly index: number }
+interface Scan { readonly event: CarrierEvent; readonly state: string; readonly at: number; readonly index: number }
+
+const MONTHS = ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+// Code 113 books the parcel on a night round: "Planlagt levering natt til 24. oktober!".
+const NIGHT = new RegExp(`\\bnatt til (\\d{1,2})\\. (${MONTHS.join('|')})\\b`, 'i');
+const BOOKING = 'DELIVERING/113';
+
+/**
+ * The day the night round a booking scan names ends on. The wording gives a
+ * day and a month; the year is the scan's own, or the next one for a booking
+ * made in December for January.
+ */
+function bookedNight({ provider_code: code, description, time }: CarrierEvent): string | null {
+  const match = code === BOOKING && description && time ? NIGHT.exec(description) : null;
+  if (!match || !time) return null;
+  const month = MONTHS.indexOf(match[2]!.toLowerCase()) + 1;
+  const year = Number(time.slice(0, 4)) + (month < Number(time.slice(5, 7)) ? 1 : 0);
+  return calendarDay(year, month, Number(match[1]));
+}
 
 /** A delivery is often scanned twice, seconds apart: the first scan of the latest run delivered it. */
 function deliveredAt(events: readonly CarrierEvent[]): string | undefined {
@@ -111,24 +129,29 @@ export function parseHelthjem(payload: unknown, rawNumber: string): CarrierResul
     const providerCode = helthjemCode(rowState, code);
     const description = (isRecord(row.message) ? clean(row.message.content, 300) : '') || helthjemLabel(rowState) || providerCode;
     const location = clean(row.location, 80);
-    const stage = helthjemStage(rowState);
+    const stage = helthjemStage(rowState, code);
     const event: CarrierEvent = { time: at.iso, description, ...(location ? { location } : {}), provider_code: providerCode,
       ...(stage ? { stage, stage_source: 'carrier_map' } : {}) };
     const identity = JSON.stringify(event);
     if (seen.has(identity)) return;
     seen.add(identity);
-    scans.push({ event, at: at.timestamp, index });
+    scans.push({ event, state: rowState, at: at.timestamp, index });
   });
   // Newest first; scans at the same instant keep the reply's order.
   scans.sort((left, right) => right.at - left.at || left.index - right.index);
   const events = scans.map(scan => scan.event);
   const newest = events[0];
 
-  // The page headlines the parcel's state; the newest scan stands in without one.
-  const stateStage = state ? helthjemStage(state) : undefined;
+  // The page headlines the parcel's state; the newest scan stands in without
+  // one, and for it when the scan's event code says more than their state.
+  const stateStage = !state ? undefined
+    : scans[0]?.state === state && newest?.stage ? newest.stage as Stage : helthjemStage(state);
   if (!newest && !state) throw new IndeterminateError(PROVIDER, 'Helthjem returned a parcel without a state or scans');
   const stage = stateStage ?? (newest?.stage as Stage | undefined);
   const delivered = stage === 'delivered' ? deliveredAt(events) : undefined;
+  // The night a booking names, while no scan but a terminal's has followed it.
+  const booking = scans.find(scan => scan.state !== 'IN_TRANSIT')?.event;
+  const night = booking && stage === 'out_for_delivery' ? bookedNight(booking) : null;
   // The point a parcel waits at, or was collected from, by its name alone.
   const point = state === 'READY_FOR_PICKUP' || state === 'PICKED_UP'
     ? (isRecord(parcel.servicePoint) ? clean(parcel.servicePoint.name, 160) : '') : '';
@@ -143,7 +166,7 @@ export function parseHelthjem(payload: unknown, rawNumber: string): CarrierResul
     last_status_text: newest?.description ?? (helthjemLabel(state) || state),
     ...(events.length ? {} : { provider_code: state, summary_only: true }),
     last_update: newest?.time ?? null,
-    expected_delivery: null,
+    expected_delivery: night,
     ...(delivered ? { delivered_at: delivered } : {}),
     ...(point ? { pickup_point: point } : {}),
     ...(shop ? { sender_name: shop } : {}),

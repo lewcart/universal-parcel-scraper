@@ -208,6 +208,11 @@ describe('status map answers', () => {
     expect(answer('allegro-one', null, 'recipient has refused to accept')).toEqual(mapped('failed_attempt'));
   });
 
+  it("answers Helthjem's missed night round by its event code, not its delivering state", () => {
+    expect(answer('helthjem', 'DELIVERING/057', 'Budet fikk ikke med seg pakken din ut i natt.')).toEqual(mapped('in_transit'));
+    expect(answer('helthjem', 'DELIVERING/113', 'Planlagt levering natt til 24. oktober!')).toEqual(mapped('out_for_delivery'));
+  });
+
   it("answers DPD Germany's full pickup point, its line haul and its failed notice by their codes", () => {
     expect(answer('dpd-de', 'DEXD', 'There was an issue to drop off your parcel due to a lack of space in the retrieval point')).toEqual(mapped('failed_attempt'));
     expect(answer('dpd-de', 'LHI', 'Your parcel is on its way')).toEqual(mapped('in_transit'));

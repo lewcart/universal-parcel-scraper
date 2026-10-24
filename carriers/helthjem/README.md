@@ -34,10 +34,13 @@ Helthjem for it, and nor does a rule cover the shipment number.
 
 The parcel and each scan carry one of the service's states, and each scan an event code, a clock
 with its offset and Norwegian wording. The adapter stages the parcel and each scan by its state and
-keeps state and code as `IN_TRANSIT/003`. Code 113 announces the coming night's round, which
-Helthjem files as delivering. The page hides the scans of its sorter, which it names
-`VestbySorter`; the adapter keeps them. A delivery is often scanned twice, seconds apart, and the
-first scan of the latest run is the delivery time.
+keeps state and code as `IN_TRANSIT/003`. Code 113 books the parcel on a night round, which
+Helthjem files as delivering; its wording names the night, and the day that night ends on is the
+expected delivery while no scan but a terminal's has followed the booking. Code 057, filed as
+delivering too, says the night's courier did not take the parcel out, so the adapter stages it
+`in_transit`, and the parcel with it while it is the newest scan. The page hides the scans of its
+sorter, which it names `VestbySorter`; the adapter keeps them. A delivery is often scanned twice,
+seconds apart, and the first scan of the latest run is the delivery time.
 
 The shop is the sender. The pickup point is named only while a parcel waits there or once it was
 collected. A parcel the page sends to PostNord's tracker keeps its shipment number as the
@@ -47,8 +50,8 @@ opening hours, scan help texts and proof-of-delivery images are not requested.
 ## Limitations
 
 The service keeps a parcel for a few months: older numbers come back as null, like unknown ones.
-The delivery estimate is not read, since its date was empty on every live reply. The page words a
-returned parcel like one on its way back.
+The reply's delivery estimate is not read, since its date was empty on every live reply. The page
+words a returned parcel like one on its way back.
 
 ## Links
 

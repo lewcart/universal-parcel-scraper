@@ -711,6 +711,18 @@ describe('La Poste response normalization', () => {
       '2026-07-08T14:10:00+05:30', '2026-07-09T19:15:00+01:00',
     ]);
 
+    // Its transit in France is read so too; its delivery scans keep the feed's instant.
+    const imported = deliveredFixture();
+    imported[0]!.shipment.product = 'Lettre et PPI import suivi';
+    imported[0]!.shipment.event = [
+      { group: 'DISTOU', code: 'MD1', label: 'Votre envoi est sur son site de distribution.', date: '2026-07-11T07:57:29+02:00', country: 'FR', order: 3 },
+      { group: 'ACHNAT', code: 'ET1', label: 'Votre envoi est en transit sur nos plateformes.', date: '2026-07-10T00:44:59+02:00', country: 'FR', order: 2 },
+      { group: 'ACHFR', code: 'ET3', label: 'Votre envoi vient d\'arriver en France.', date: '2026-07-09T15:59:49+02:00', country: 'FR', order: 1 },
+    ];
+    expect(parseLaPosteTrackingResponse(imported, TRACKING_NUMBER).events?.map((event) => event.time)).toEqual([
+      '2026-07-11T07:57:29+02:00', '2026-07-09T22:44:59+02:00', '2026-07-09T13:59:49+02:00',
+    ]);
+
     // Other products keep the feed's instant until their partner scans are compared.
     data[0]!.shipment.product = 'Lettre recommandée';
     expect(parseLaPosteTrackingResponse(data, TRACKING_NUMBER).events?.map((event) => event.time)).toEqual([

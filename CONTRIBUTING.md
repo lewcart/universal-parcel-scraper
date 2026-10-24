@@ -26,6 +26,9 @@ npm run build
 npm run test:package     # packs the tarball, installs it and imports every entry point
 ```
 
+`npm test` runs at most four test files at once (`maxWorkers` in `vitest.config.ts`), whatever
+the machine, so several checkouts can test side by side. `--maxWorkers` changes it for one run.
+
 ## Fix a carrier
 
 Start with the carrier's README in `carriers/<id>/`. It says how the site is read and which

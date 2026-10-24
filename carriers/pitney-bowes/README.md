@@ -40,6 +40,8 @@ tracking page makes.
   ("Customs Documentation and Labeling") is not customs, and the onward carrier opening its
   record moves nothing. Interpost's import clearance comes as `B2C ClearanceStatus` and a
   status number; Interpost's own tracker captions 4 as cleared, so only that number is mapped.
+- Aggregators relay the hub's steps, and Interpost's request for the final-mile label at the
+  hub's processing scan. The universal providers' shared rules stage them as this map does.
 - The summary's `Delivered` settles a delivery. Its other statuses stand in only when no scan
   has a stage: a reply has marked a parcel its addressee collected as `DeliveryException`.
 - Relayed scans link to the onward carrier's page through a URL that carries an access key and

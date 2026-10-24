@@ -217,6 +217,11 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^the shipment was left at a drop-off location[.!]?$/i.test(value)) return 'delivered';
   // Landmark Global's hand-over to the destination's postal operator for the last mile, as Landmark's own map reads it.
   if (/^item deposited to local postal operator[.!]?$/i.test(value)) return 'in_transit';
+  // Pitney Bowes's Global Shipping Program steps as aggregators relay them, as its own map reads them: the shipper's data,
+  // then its hub measuring, labelling and loading the parcel and sending it abroad. Interpost, which carries it on, requests
+  // the final-mile label at the hub's processing scan and hands the parcel to the destination's postal company.
+  if (/^tracking details uploaded[.!]?$/i.test(value)) return 'registered';
+  if (/^(?:first|second) dimension event[.!]?$|^processing at (?:the )?(?:global )?shipping cent(?:er|re)[.!]?$|^parcel documentation and labell?ing[.!]?$|^container (?:assignment|closed)[.!]?$|^shipped from (?:the )?(?:global )?shipping cent(?:er|re) to (?:international )?destination[.!]?$|^ready to ship\. fml label requested[.!]?$|^interpost handed item over to postal company[.!]?$/i.test(value)) return 'in_transit';
   // Austrian Post's hand-over to its partner on the way abroad, "Übergabe an Kooperationspartner" in its own map.
   if (/^item handed over to subcontractor[.!]?$/i.test(value)) return 'in_transit';
   // Hrvatska pošta's scans as its own map reads them: the sender's announcement, then the item

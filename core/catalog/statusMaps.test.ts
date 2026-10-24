@@ -855,6 +855,15 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', null, 'Left the branch office of the recipient')).toEqual(unknown);
   });
 
+  it("read Pitney Bowes's Global Shipping Program steps and Interpost's as Pitney Bowes's own map reads them", () => {
+    expect(answer('unknown', null, 'Tracking details uploaded')).toEqual(mapped('registered'));
+    for (const wording of ['First Dimension Event', 'Second Dimension Event', 'Processing at Shipping Center', 'Parcel Documentation and Labeling',
+      'Container Assignment', 'Container Closed', 'Shipped from Global Shipping Center to Destination', 'Ready to ship. FML label requested',
+      'Interpost handed item over to postal company']) {
+      expect(answer('unknown', null, wording), wording).toEqual(mapped('in_transit'));
+    }
+  });
+
   it('leave out notices, detail lines, headings and scans whose wording cannot settle a step, each with its reason', () => {
     expect(universal.gaps.slice(0, 6).map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail',
       'destinataire informé par sms ou mail. type du message : retard média utilisé : e-mail', 'estimated delivery',

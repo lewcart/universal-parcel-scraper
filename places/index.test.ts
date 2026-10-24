@@ -436,6 +436,18 @@ describe('placesForEvents', () => {
     expect(placesForEvents(['Bern', 'Emmen'])[1]?.country).toBe('CH');
   });
 
+  it('reads a state named alone in the country the parcel is in, before what else its letters name', () => {
+    const states = placesForEvents(['NSW', 'SA', 'VIC', 'TAS', 'WA', 'QLD', 'NT', 'ACT'], { destinationCountry: 'AU', carriers: ['couriersplease'] });
+    expect(states.map((found) => found && [found.country, found.precision, found.region])).toEqual(
+      ['NSW', 'SA', 'VIC', 'TAS', 'WA', 'QLD', 'NT', 'ACT'].map((code) => ['AU', 'country', code]));
+    expect(locatePlace('VIC, AU')).toMatchObject({ country: 'AU', region: 'VIC' });
+    expect(locatePlace('NT', { countries: ['CA', 'AU'] })).toMatchObject({ country: 'CA', region: 'NT' });
+    // Without the country, the letters keep what they name; on a parcel through Saudi Arabia, so does "SA".
+    expect(locatePlace('VIC')).toMatchObject({ country: 'ES', name: 'Vic' });
+    expect(locatePlace('SA', { countries: ['AU', 'SA'] })).toMatchObject({ country: 'SA', precision: 'country' });
+    expect(locatePlace('SA', { countries: ['FR'] })?.country).toBe('SA');
+  });
+
   it('moves every scan with the same text to a point the carrier gave for one of them', () => {
     const gpo = { latitude: 25.6036, longitude: 85.1326 };
     const places = placesForEvents(['Patna GPO 800001', 'Patna GPO 800001', 'Patna NSH 800001'], { carrierCountries: ['IN'], points: [null, gpo, null] });

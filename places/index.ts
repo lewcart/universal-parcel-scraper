@@ -21,6 +21,8 @@ export interface EventPlace {
   name: string;
   /** The facility name, when distinct from the town. */
   site?: string;
+  /** The state or province of a place that is its country's, by the code carriers print ("WA"), when the scan names one. */
+  region?: string;
 }
 
 /** Where a carrier itself puts a scan's facility (`point` on a stored scan). */
@@ -327,7 +329,7 @@ const zoneCache = new Map<string, string | null>();
  * Null for a country the tz database does not know.
  */
 export function placeTimeZone(place: EventPlace): string | null {
-  if (place.precision === 'country') return mainZone(place.country);
+  if (place.precision === 'country') return (place.region ? regionZone(place.country, place.region) : null) ?? mainZone(place.country);
   const key = `${place.country}|${place.latitude.toFixed(2)}|${place.longitude.toFixed(2)}`;
   if (zoneCache.has(key)) return zoneCache.get(key)!;
   const region = ZONED_REGIONS.has(place.country) ? regionNear(place.country, place.latitude, place.longitude) : null;
@@ -560,6 +562,9 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   // "CAN" on a parcel to Canada: a country's three-letter code, where the parcel is, is that country.
   const countryCode = split ? countryCodePlace(data, text, context) : null;
   if (countryCode) return countryCode;
+  // "WA" on a parcel in Australia: a state alone is the state, not the country, town or airport its letters also name.
+  const state = split ? statePlace(data, text, explicit, context) : null;
+  if (state) return state;
   // "JFK Airport", "BNE, AU": the airport a code names, whatever town has its letters ("SAN" in Mali),
   // unless a town of 100,000 people has them where the airport is ("POA, BR" is Poá).
   const airportNamed = split ? codedAirport(data, rest, country) : null;
@@ -815,6 +820,20 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
     country = named.find((set) => set.size === 1)?.values().next().value ?? null;
   }
   return country ? countryPlace(data, country, !guessed) : null;
+}
+
+/**
+ * A state or province alone, by the code carriers print, as the country it is in with its code:
+ * "VIC, AU", or "VIC" in the first country the parcel is likely in that has one, whatever else its
+ * letters name (Vic in Spain, Tashkent's airport). Letters that are also a country's are that
+ * country where the parcel may be: "SA" is Saudi Arabia on a parcel through it.
+ */
+function statePlace(data: Gazetteer, text: string, explicit: { country: string | null; place: string }, context: readonly string[]): Located | null {
+  const code = explicit.country && explicit.place ? explicit.place : text;
+  if (!/^[A-Z]{2,3}$/.test(code) || (!explicit.place && context.includes(code))) return null;
+  const country = explicit.country && explicit.place ? explicit.country : context.find((other) => ADMIN_CODES[other]?.[code]);
+  const found = country && ADMIN_CODES[country]?.[code] ? countryPlace(data, country, true) : null;
+  return found && { ...found, place: { ...found.place, region: code } };
 }
 
 function countryPlace(data: Gazetteer, country: string, text: boolean): Located | null {

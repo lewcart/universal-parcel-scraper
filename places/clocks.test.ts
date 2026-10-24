@@ -73,6 +73,17 @@ describe('dateLocalClocks', () => {
     ]);
   });
 
+  it('dates a scan that names a state alone on the state’s clock', () => {
+    const result = dateLocalClocks('couriersplease', { status: 'in_transit', destination_country: 'AU', events: [
+      { local_time: '2026-10-21T08:00:00', description: 'Delivered', location: 'WA' },
+      { local_time: '2026-10-20T15:00:00', description: 'Arrived at depot', location: 'SA' },
+    ] });
+    expect(result.events!.map(dated)).toEqual([
+      ['2026-10-21T08:00:00+08:00', 'Australia/Perth', 'place'],
+      ['2026-10-20T15:00:00+10:30', 'Australia/Adelaide', 'place'],
+    ]);
+  });
+
   it('takes a town of the same country around a scan that names only a country with several zones', () => {
     const result = dateLocalClocks('gofo', { status: 'in_transit', events: [
       { local_time: '2026-10-20T09:00:00', description: 'Arrived', location: 'UNITED STATES' },

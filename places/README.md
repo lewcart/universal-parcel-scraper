@@ -53,6 +53,10 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   it: "Warsaw" between Lviv and New York is in Poland.
 - A state, province or canton written after the town holds: "Earth City, MO" is not Earth
   in Texas.
+- A state or province written alone by its code ("WA", "VIC, AU") is in the first country the
+  parcel is likely in that has it, before the country, town or airport its letters also name
+  (Saudi Arabia, Vic in Spain, Tashkent). The place is that country's and `region` holds the
+  code. Letters that are also a country's keep naming it on a parcel through that country.
 - Two letters after the town are a country when a town of that name is there ("MONTE CARLO
   MC"), or when the parcel is. Otherwise they may be a province or an office: "PINEROLO
   (TO)" is in the province of Turin, not Tonga, and Royal Mail's "Norwich MC" is a mail
@@ -132,7 +136,7 @@ persist them or serve a parcel when place resolution fails.
 `placeTimeZone` gives the zone a place keeps its clock on: its country's, or in a country of
 several zones, its state's or province's (the US, Canada, Australia, Brazil) or the zone whose
 principal place in the tz database's `zone.tab` lies nearest. A place that names only such a
-country takes the zone most of its people live on. `airportTimeZone` reads an airport its code
+country takes the zone most of its people live on, or its state's when `region` names one. `airportTimeZone` reads an airport its code
 names, alone ("AMS"), with an airport word ("JFK Airport") or with its country ("BNE, AU"): a
 bare code the parcel's way does not bear out places nothing, but it tells a forwarder's clock.
 

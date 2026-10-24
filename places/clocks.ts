@@ -58,8 +58,8 @@ function destinationZone(carrier: string, country: string): string | null {
  * from the scan's place, read with the scans around it, or an airport its
  * code alone names; else from the nearest scan that has a place; else from the destination, if the carrier
  * delivers there; else from the carrier's home clock. A place that names only
- * a country with several zones borrows the zone of a town in that country
- * from the nearest scan that names one. The scan keeps `local_time` and gains
+ * a country with several zones, and none of its states, borrows the zone of a
+ * town in that country from the nearest scan that names one. The scan keeps `local_time` and gains
  * `time`, `time_zone` and `time_zone_basis`. `last_update_local` gives a
  * missing `last_update` the same way. Scans dated by their day alone and
  * offset-less `time` values are left as they are.
@@ -82,7 +82,7 @@ export function dateLocalClocks(carrier: string, result: CarrierResult): Carrier
     stages: scans.map((event) => text(event.stage) || null),
     times: scans.map((event) => instant(event.time) === null ? null : text(event.time)),
   });
-  const placed = places.map((place) => place && place.precision === 'city' ? placeTimeZone(place) : null);
+  const placed = places.map((place) => place && (place.precision === 'city' || place.region) ? placeTimeZone(place) : null);
   // The nearest scan with a zone of its own, the earlier one on a tie.
   const nearest = (at: number, fits: (place: EventPlace) => boolean): string | null => {
     for (let step = 1; step < scans.length; step += 1) {

@@ -326,6 +326,31 @@ describe('Royal Mail structured response', () => {
     expect(elsewhere.events?.[0]!.time).toBe('2026-10-20T11:40:00+01:00');
   });
 
+  it('reads a European partner\'s facility named without its country on the partner\'s clock', () => {
+    // Mail from abroad: the origin's facility comes before the scan that leaves its country, Royal Mail's own after it.
+    const inbound = parseRoyalMailTrackingResponse({ mailPieces: { mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: 'In transit', destinationCountryCode: 'GB' },
+      events: [
+        { eventCode: 'EVDAV', eventName: 'Item Received', eventDateTime: '2026-10-23T09:00:00+01:00', locationName: 'Example International LC' },
+        { eventCode: 'EVHOE', eventName: 'Item Leaving overseas', eventDateTime: '2026-10-22T07:27:00+01:00', locationName: 'Lithuania' },
+        { eventCode: 'EVOAC', eventName: 'Item received at', eventDateTime: '2026-10-22T02:05:00+01:00', locationName: 'EXAMPLE SORTING DEPARTMENT' },
+        { eventCode: 'EVOAC', eventName: 'Item received at', eventDateTime: '2026-10-22T01:00:00+01:00', locationName: 'Example MC' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(inbound.events?.map(event => event.time)).toEqual([
+      '2026-10-23T09:00:00+01:00', '2026-10-22T07:27:00+02:00', '2026-10-22T02:05:00+02:00', '2026-10-22T01:00:00+01:00',
+    ]);
+    // Mail to Europe: a facility named alone is in the destination when the wording says so.
+    const outbound = parseRoyalMailTrackingResponse({ mailPieces: { mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: 'In transit', destinationCountryCode: 'IT' },
+      events: [
+        { eventCode: 'EVJAP', eventName: 'Your item is currently with Customs in the destination country', eventDateTime: '2026-10-20T11:40:00+01:00', locationName: 'EXAMPLE CSI' },
+        { eventCode: 'EVHOE', eventName: 'Item Leaving the UK', eventDateTime: '2026-10-15T03:31:09+01:00', locationName: 'Example HWDC' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(outbound.events?.map(event => event.time)).toEqual(['2026-10-20T11:40:00+02:00', '2026-10-15T03:31:09+01:00']);
+  });
+
   it('keeps Royal Mail\'s label as the instant of a scan beyond Europe', () => {
     // Shape of a parcel to South Africa, whose post's own tracker dates these scans an hour later on its clock.
     const result = parseRoyalMailTrackingResponse({ mailPieces: {

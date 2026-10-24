@@ -54,6 +54,10 @@ const HOME = new Set(['GB', 'JE', 'GG', 'IM']);
 // A European partner's scans reach Royal Mail on Central European time, whatever the country's own clock.
 const RELAY_CLOCK = 'Europe/Brussels';
 const IN_DESTINATION = /\bin the destination country\b/i;
+// The scan that leaves a country: "Item Leaving the UK", or "Item Leaving overseas" placed in the country of origin.
+const LEAVING = /^item leaving\b/i;
+// Royal Mail's own facilities go by bare names: "Example MC", "Example DO", "LANGLEY HWDC".
+const HOME_FACILITY = /\b(?:MC|DO|HWDC|IMC|LC|DC|PFW|Mail Centre|Delivery Office|Hub|Depot)\b/i;
 const europeanAbroad = (country: string | null) => Boolean(country && !HOME.has(country)
   && countryTimeZone(country)?.startsWith('Europe/'));
 /** The country a scan's place is, or ends with. */
@@ -63,14 +67,22 @@ const placeCountry = (location: string) => countryCode(/(?:^|,)\s*([^,]+)$/.exec
  * A scan abroad names its country as, or after, the place. A European partner's
  * scan, and an unplaced one in a European destination country, carries the
  * partner's Central European wall clock under the UK's offset, and is read on
- * that clock. Null for any other scan: beyond Europe, Royal Mail's label is the
- * scan's instant, as at home. The South African post's own tracker dates a South
+ * that clock. A partner's facility can go by its bare name, without a country:
+ * it is in the destination when the wording says so, and in the country of
+ * origin when it comes before the scan that leaves that country (`departure`).
+ * Null for any other scan: beyond Europe, Royal Mail's label is the scan's
+ * instant, as at home. The South African post's own tracker dates a South
  * African office's scans at those instants.
  */
-function abroadClock(raw: string, location: string, description: string, destination: string | null): { time: string } | { local_time: string } | null {
-  if (!eventTime(raw)) return null;
+function abroadClock(raw: string, location: string, description: string, destination: string | null,
+  departure: number | null): { time: string } | { local_time: string } | null {
+  const label = eventTime(raw);
+  if (!label) return null;
   const country = placeCountry(location);
-  const relayed = country ? europeanAbroad(country) : !location && europeanAbroad(destination) && IN_DESTINATION.test(description);
+  const partner = !location || !HOME_FACILITY.test(location);
+  const relayed = country ? europeanAbroad(country)
+    : partner && (europeanAbroad(destination) && IN_DESTINATION.test(description)
+      || Boolean(location) && departure !== null && Date.parse(label) < departure);
   if (!relayed) return null;
   const wall = DateTime.fromISO(raw, { setZone: true }).toISO({ includeOffset: false, suppressMilliseconds: true });
   if (!wall) return null;
@@ -142,6 +154,13 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
   // Without it, an unplaced scan in the destination country is in the country the scans abroad name.
   const abroadCountry = destinationCountry ?? scans.slice(0, MAX_EVENTS_TO_INSPECT)
     .map(raw => isRecord(raw) ? placeCountry(placeName(raw.locationName)) : null).find(country => country && !HOME.has(country)) ?? null;
+  // Mail from abroad names its country of origin on the scan that leaves it, as Royal Mail labels it.
+  const departure = scans.slice(0, MAX_EVENTS_TO_INSPECT).flatMap((raw) => {
+    if (!isRecord(raw) || !LEAVING.test(cleanScalar(raw.eventName).replace(/\*\*/g, '').trim())
+      || !europeanAbroad(placeCountry(placeName(raw.locationName)))) return [];
+    const label = eventTime(raw.eventDateTime);
+    return label ? [Date.parse(label)] : [];
+  }).reduce<number | null>((latest, at) => (latest === null || at > latest ? at : latest), null);
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
   const abroad = new Map<string, { time: string } | { local_time: string }>();
@@ -156,7 +175,7 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
     const stage = royalMailScanStage(code, description);
     const timeText = cleanScalar(raw.eventDateTime, 64);
     const location = placeName(raw.locationName);
-    const clock = abroadClock(timeText, location, description, abroadCountry);
+    const clock = abroadClock(timeText, location, description, abroadCountry, departure);
     if (clock && !abroad.has(timeText)) abroad.set(timeText, clock);
     const time = clock ? ('time' in clock ? clock.time : null) : eventTime(raw.eventDateTime);
     const event: CarrierEvent = {

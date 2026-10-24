@@ -12,6 +12,7 @@ import type { CarrierId } from '../../generated/catalog.js';
 import { CHECKSUMS } from '../detection/checksums.js';
 import { detectCarrierMatch } from '../detection/detect.js';
 import { normalizeTrackingNumber } from '../detection/normalize.js';
+import { ruleFits } from '../detection/rules.js';
 import { AUTOMATIC_CARRIER_IDS, CARRIER_DEFINITIONS, carrierAdapter, requiredRequirements } from './definitions.js';
 import { carrierBrand } from './networks.js';
 import type { CarrierInputField } from './types.js';
@@ -56,11 +57,16 @@ export function recognitionNumberShape(number: string): string | undefined {
 /** Whether the rule that offered a carrier for this number passed a check digit. */
 function checked(carrier: string, normalized: string, printed: string): boolean {
   const rule = CARRIER_DEFINITIONS[carrier as CarrierId]?.detectionRules.find((candidate) =>
-    new RegExp(candidate.pattern).test(normalized)
-    && (!candidate.rawPattern || new RegExp(candidate.rawPattern).test(printed))
+    ruleFits(candidate, normalized, printed)
     && (!candidate.checksum || CHECKSUMS[candidate.checksum](normalized)));
   return rule?.checksum !== undefined;
 }
+
+const BROWSER_RECOGNITION_RANKS: Readonly<Record<string, number | undefined>> = Object.fromEntries(
+  Object.entries(CARRIER_DEFINITIONS).map(([id, definition]) => [id, definition.tracking.browserRecognitionRank]));
+
+const RECOGNITION_PATTERNS: ReadonlyMap<string, RegExp> = new Map(Object.entries(CARRIER_DEFINITIONS)
+  .flatMap(([id, { tracking }]) => tracking.recognitionPattern === undefined ? [] : [[id, new RegExp(tracking.recognitionPattern)] as const]));
 
 /**
  * The low-confidence candidates worth asking, best first: the carrier a
@@ -84,20 +90,18 @@ export function recognitionCandidates(
   // intl-post already checked the S10 checksum, so only S10 or shape-only rules
   // can contribute here.
   const normalized = normalizeTrackingNumber(number);
+  const printed = number.trim().toUpperCase();
   const postalMatches = unknownPostalCarrier ? Object.entries(CARRIER_DEFINITIONS)
     .flatMap(([carrier, definition]) => {
       const rule = definition.detectionRules.find((candidate) => candidate.confidence === 'low'
         && (!candidate.checksum || candidate.checksum === 's10')
-        && new RegExp(candidate.pattern).test(normalized)
-        && (!candidate.rawPattern || new RegExp(candidate.rawPattern).test(number.trim().toUpperCase())));
+        && ruleFits(candidate, normalized, printed));
       return rule ? [{ carrier, preferred: rule.preferred === true }] : [];
     }) : [];
   const candidates: readonly string[] = unknownPostalCarrier ? postalMatches.map(({ carrier }) => carrier) : detected.candidates;
   const preferred: readonly string[] = unknownPostalCarrier
     ? postalMatches.filter((match) => match.preferred).map(({ carrier }) => carrier) : detected.preferred;
-  const ranks: Readonly<Record<string, number | undefined>> = options.phase === 'browser'
-    ? Object.fromEntries(Object.entries(CARRIER_DEFINITIONS).map(([id, definition]) => [id, definition.tracking.browserRecognitionRank]))
-    : CARRIER_RECOGNITION_RANKS;
+  const ranks = options.phase === 'browser' ? BROWSER_RECOGNITION_RANKS : CARRIER_RECOGNITION_RANKS;
   // A carrier the number points to but that cannot be asked (DPD France) keeps
   // its brand's other networks out: DPD's guest API also answers for DPD
   // France parcels, and would file one under DPD Switzerland.
@@ -122,9 +126,8 @@ export function recognitionCandidates(
     if (options.phase === 'browser') return true;
     const tracking = CARRIER_DEFINITIONS[carrier as CarrierId]?.tracking;
     if (tracking?.recognitionServedCountriesOnly && countryScore(carrier) === 0) return false;
-    return tracking?.recognitionPattern === undefined || new RegExp(tracking.recognitionPattern).test(normalized);
+    return RECOGNITION_PATTERNS.get(carrier)?.test(normalized) ?? true;
   };
-  const printed = number.trim().toUpperCase();
   const score = (carrier: string) => [
     carrier === options.hint ? 1 : 0,
     preferred.includes(carrier) ? 1 : 0,

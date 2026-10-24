@@ -16,14 +16,11 @@ import { CARRIER_DEFINITIONS } from '../catalog/definitions.js';
 import { CHECKSUMS } from './checksums.js';
 import { isCttExpressTrackingNumber } from './cttExpress.js';
 import { normalizeTrackingNumber } from './normalize.js';
+import { ruleFits } from './rules.js';
 import type { CarrierDetection, ChecksumRejection } from './types.js';
 
 function checksumPasses(rule: DetectionRule, trackingNumber: string): boolean {
   return rule.checksum === undefined || CHECKSUMS[rule.checksum](trackingNumber);
-}
-
-function fits(rule: DetectionRule, trackingNumber: string, printed: string): boolean {
-  return new RegExp(rule.pattern).test(trackingNumber) && (!rule.rawPattern || new RegExp(rule.rawPattern).test(printed));
 }
 
 interface RejectedRule { carrier: CarrierId; id: string; rule: DetectionRule }
@@ -35,7 +32,7 @@ interface RejectedRule { carrier: CarrierId; id: string; rule: DetectionRule }
  */
 function decisiveRule(carrier: CarrierId, trackingNumber: string, printed: string, rejected: RejectedRule[]): DetectionRule | undefined {
   for (const [index, rule] of CARRIER_DEFINITIONS[carrier].detectionRules.entries()) {
-    if (!fits(rule, trackingNumber, printed)) continue;
+    if (!ruleFits(rule, trackingNumber, printed)) continue;
     if (checksumPasses(rule, trackingNumber)) return rule;
     rejected.push({ carrier, id: DETECTION_RULE_IDS[carrier][index]!, rule });
   }
@@ -104,7 +101,7 @@ export function checksumFailures(raw: string): ChecksumRejection[] {
   if (!trackingNumber) return [];
   return (Object.keys(CARRIER_DEFINITIONS) as CarrierId[]).flatMap((carrier) =>
     CARRIER_DEFINITIONS[carrier].detectionRules.flatMap((rule, index) =>
-      fits(rule, trackingNumber, printed) && !checksumPasses(rule, trackingNumber)
+      ruleFits(rule, trackingNumber, printed) && !checksumPasses(rule, trackingNumber)
         ? [{ carrier, rule: DETECTION_RULE_IDS[carrier][index]!, checksum: rule.checksum! }] : []));
 }
 

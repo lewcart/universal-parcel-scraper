@@ -20,7 +20,10 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
 - A country after the last dash is taken off, as DHL Express prints it ("BENIN CITY -
   NIGERIA", "AMSTERDAM - NETHERLANDS, THE"). Georgia stays: it is also a US state.
 - Chinese, Japanese and Korean names match in their own script. "广东省深圳市" is read as
-  a province followed by a city.
+  a province followed by a city, and a county-level city after its prefecture's city, in
+  the same province, is where the scan is: "浙江省金华市义乌市" is Yiwu. A town's name can
+  start a facility's ("义乌转运中心"); a word for a facility or a part of town ("中心",
+  "新城") names no town.
 - Bigger towns win, and context breaks ties: a country written in the text, a state,
   province or canton, by code or by name ("STERLING - Virginia - USA", "CURITIBA - PR"), a
   Swiss postcode, then the countries of neighbouring scans, the parcel's destination and
@@ -163,7 +166,8 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   name). A longer place name that contains a hub's ("Beauregard-de-Terrasson",
   "Roissy-en-Brie") is that place. A hub with `carriers` counts only on their parcels,
   ahead of the towns of its name, which still win when the text says which one: on a DPD
-  parcel "Buchs, CH" is the depot in Buchs ZH, and "Buchs SG" the town in St. Gallen.
+  parcel "Buchs, CH" is the depot in Buchs ZH, and "Buchs SG" the town in St. Gallen. SPX
+  Brazil's "ShiYan", whose wording names Shenzhen, is in Shenzhen's Shiyan, not the city in Hubei.
 - A carrier's own coordinates, supplied through the `points` option, move a scan
   to the facility when they are within 30 km of the town its text names. Scans with the same
   text share a point, so a carrier that places some scans of an office keeps them together.

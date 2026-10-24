@@ -79,6 +79,9 @@ const FACILITY_WORDS = new Set(`
   courrier courier exchange foreign network processing transit worldwide isc ndc idc piac pic pfc ppdc cdis ctc
   gpo nsh rms tmo fpo aeroport aeroporto aeropuerto flughafen luchthaven lufthavn flygplats lentoasema lotnisko
 `.trim().split(/\s+/));
+// Chinese words for a facility or a part of a town, not a town: "中心扫描" is a centre's scan, not
+// Zhongxin in Yunnan, and a "新城" is a town's new district.
+const CJK_FACILITY_WORDS = new Set(['中心', '新城']);
 // Administrative words a town can be written with or without ("Jinhua City", "Guangdong Sheng").
 const DIVISION_WORDS = new Set('city province prefecture district county shi sheng qu xian si gu do ku ken'.split(' '));
 // Words that say a scan happened at an airport ("Frankfurt Airport (FRA)", "HELSINKI-VANTAAN LENTOASEMA").
@@ -128,6 +131,8 @@ const AWAY_DETOUR_KM = 300;
 // No parcel travels faster than a plane, and two hours absorb a scan clock's rounding and delays.
 const PLANE_KMH = 1000;
 const CLOCK_SLACK_HOURS = 2;
+// A county-level city lies this close to the city of its prefecture.
+const COUNTY_MAX_KM = 150;
 // An airport only its bare code names is on the parcel's way when it takes it no further off than this:
 // a hub such as Doha between China and Europe.
 const AIRPORT_DETOUR_KM = 3000;
@@ -431,7 +436,9 @@ function cjkPhrases(field: string): Phrase[] {
     run[0].split(/(?<=[省市区县都府県])/u).forEach((segment, index) => {
       const end = start + segment.length;
       const add = (key: string, rank: number) => {
-        if (key.length >= 2 && !found.some((phrase) => phrase.key === key)) found.push({ key, text: segment, rank, start, end, whole: false });
+        if (key.length >= 2 && !CJK_FACILITY_WORDS.has(key) && !found.some((phrase) => phrase.key === key)) {
+          found.push({ key, text: segment, rank, start, end, whole: false });
+        }
       };
       const bare = segment.replace(/[省市区县都府県]$/u, '');
       add(segment, index * 2);
@@ -591,7 +598,7 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   const outer = regions.filter((region) => !regions.some((other) => other.field === region.field
     && other.start < region.end && other.end > region.start && other.end - other.start > region.end - region.start));
 
-  let best: { place: Candidate; score: number; text: string; field: number; backed: boolean; shared: boolean } | null = null;
+  let best: { place: Candidate; score: number; text: string; field: number; end: number; backed: boolean; shared: boolean } | null = null;
   // Whether the text names a town at all, even one nothing confirms.
   let namesTown = false;
   for (const [fieldIndex, list] of fieldPhrases.entries()) {
@@ -646,14 +653,15 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
           + (adminMatch ? 3 : 0) + (postcodeMatch ? 3 : 0) + (place.own ? 3 : 0)
           - phrase.rank * .3 - fieldIndex * .5;
         if (!best || score > best.score) {
-          best = { place, score, text: phrase.text, field: fieldIndex, backed: inCountry || adminMatch || postcodeMatch, shared: towns.length > 1 };
+          best = { place, score, text: phrase.text, field: fieldIndex, end: phrase.end, backed: inCountry || adminMatch || postcodeMatch, shared: towns.length > 1 };
         }
       }
     }
   }
 
   if (best) {
-    const { place, text: carrierWords } = best;
+    const county = countyIn(data, fieldPhrases[best.field] ?? [], best, carriers);
+    const { place, text: carrierWords } = county ?? best;
     const airport = place.hub ? null : airportFor(data, rest, fields[best.field] ?? rest, place, carrierWords, country);
     return {
       text: best.backed,
@@ -759,6 +767,24 @@ function stationPlace(data: Gazetteer, text: string, countries: readonly string[
   const airport = airportCode(data, STATION.exec(text)?.[1] ?? '');
   const town = airport && countries.includes(airport.country) ? airportTown(airport, carriers) : null;
   return town && { ...town, text: true };
+}
+
+/**
+ * A county-level city or a county a Chinese address names after the city found, in the same
+ * province and within 150 km of it: "浙江省金华市义乌市" is Yiwu, not Jinhua.
+ */
+function countyIn(
+  data: Gazetteer, list: readonly Phrase[], found: { place: Candidate; text: string; end: number }, carriers: readonly string[],
+): { place: Candidate; text: string } | null {
+  if (!/\p{Script=Han}市$/u.test(found.text)) return null;
+  for (const phrase of list) {
+    if (phrase.start < found.end || !/\p{Script=Han}[市县]$/u.test(phrase.text)) continue;
+    const town = candidates(data, phrase.key, carriers).find((place) => place.country === found.place.country
+      && place.admin1 === found.place.admin1 && !place.hub
+      && distanceKm(place.latitude, place.longitude, found.place.latitude, found.place.longitude) <= COUNTY_MAX_KM);
+    if (town) return { place: town, text: phrase.text };
+  }
+  return null;
 }
 
 /** The airport of an IATA code as carriers write one: three capitals that are no facility word ("HUB"). */

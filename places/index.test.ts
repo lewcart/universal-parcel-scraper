@@ -222,6 +222,27 @@ describe('locatePlace', () => {
     expectPlace('서울', { country: 'KR', name: 'Seoul', latitude: 37.57, longitude: 126.98 });
   });
 
+  it('reads a Chinese address down to the county-level city it names after its prefecture', () => {
+    const yiwu = { country: 'CN', name: 'Yiwu', latitude: 29.31, longitude: 120.08 };
+    expectPlace('浙江省金华市义乌市示例路', yiwu);
+    expectPlace('金华市义乌市', yiwu);
+    expectPlace('江苏省徐州市新沂市', { country: 'CN', name: 'Xinyi', latitude: 34.38, longitude: 118.35 });
+    // A district stays with its city, and so does a county-level city of that name in another province.
+    expectPlace('广东省深圳市宝安区', { country: 'CN', name: 'Shenzhen', latitude: 22.55, longitude: 114.07 });
+    expectPlace('广东省茂名市新沂市', { country: 'CN', name: 'Maoming', latitude: 21.66, longitude: 110.92 });
+  });
+
+  it('reads no town from a Chinese word for a facility', () => {
+    for (const location of ['中心', '中心扫描', '新城', '示例园区中心']) expect(place(location), location).toBeNull();
+    expectPlace('义乌转运中心', { country: 'CN', name: 'Yiwu', latitude: 29.31, longitude: 120.08 });
+  });
+
+  it("places a carrier's hub before a city of its name, on that carrier's parcels", () => {
+    // SPX's sorting centre in Shiyan, Shenzhen, not the city of Shiyan in Hubei.
+    expect(locatePlace('ShiYan', { carriers: ['spx-br'] })).toMatchObject({ country: 'CN', latitude: 22.686, longitude: 113.932 });
+    expect(locatePlace('ShiYan')).toMatchObject({ country: 'CN', latitude: 32.648 });
+  });
+
   it('takes a region for its country, not for a town that shares a word of its name', () => {
     expect(place('Guangdong Province')).toMatchObject({ precision: 'country', country: 'CN' });
     expect(place('Cabo Delgado Province')).toMatchObject({ precision: 'country', country: 'MZ' });

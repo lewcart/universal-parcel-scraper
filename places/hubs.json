@@ -14,5 +14,6 @@
   { "country": "FR", "names": ["Terrasson"], "town": "Terrasson-Lavilledieu", "latitude": 45.129, "longitude": 1.32, "source": "https://www.openstreetmap.org/relation/19894168" },
   { "country": "US", "admin1": "MO", "names": ["Earth City"], "town": "Earth City", "latitude": 38.769, "longitude": -90.468, "source": "https://www.openstreetmap.org/node/151874554" },
   { "country": "DE", "carriers": ["dhl", "dhl-ecommerce", "dhl-express"], "names": ["Staufenberg"], "town": "Staufenberg", "latitude": 51.372, "longitude": 9.634, "source": "https://www.openstreetmap.org/way/35537407" },
-  { "country": "CH", "admin1": "ZH", "carriers": ["dpd"], "names": ["Buchs"], "town": "Buchs", "latitude": 47.452, "longitude": 8.43, "source": "https://www.openstreetmap.org/way/193889834" }
+  { "country": "CH", "admin1": "ZH", "carriers": ["dpd"], "names": ["Buchs"], "town": "Buchs", "latitude": 47.452, "longitude": 8.43, "source": "https://www.openstreetmap.org/way/193889834" },
+  { "country": "ES", "carriers": ["mrw"], "names": ["Meres"], "town": "Meres", "latitude": 43.376, "longitude": -5.749, "source": "https://www.geonames.org/3116856" }
 ]

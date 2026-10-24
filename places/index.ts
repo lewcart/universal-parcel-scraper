@@ -66,6 +66,7 @@ interface Gazetteer {
 
 const DATA = new URL('./places.tsv.br', import.meta.url);
 const PINCODES = new URL('./pincodes.json', import.meta.url);
+const ZIPCODES = new URL('./zipcodes.json', import.meta.url);
 // Words for facilities and services rather than places ("Agence DPD de La Crau", "PAKETZENTRUM", "ISC NEW YORK NY(USPS)").
 const FACILITY_WORDS = new Set(`
   agence agency air airport area branch bureau cedex cidex center centre centro centrum clasificacion colis
@@ -163,6 +164,8 @@ let loaded: Gazetteer | null = null;
 /** Indian PIN codes by town: runs of PINs `[first, last, town]`, in order, and the towns. */
 interface Pincodes { towns: [string, number, number][]; ranges: [number, number, number][] }
 let pincodes: Pincodes | null = null;
+/** US ZIP Code prefixes by the town most of their codes are in: `[town, state, latitude, longitude]`. */
+let zipPrefixes: Record<string, [string, string, number, number]> | null = null;
 
 function gazetteer(): Gazetteer {
   if (loaded) return loaded;
@@ -519,6 +522,8 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   if (!text || militaryPostOffice(text)) return null;
   const facility = facilityPlace(text);
   if (facility) return { place: facility, text: true };
+  const zip = zipCodePlace(text);
+  if (zip) return { place: zip, text: true };
   const data = gazetteer();
   const explicit = split ? trackingPlace(text) : { country: null, place: text };
   let country = explicit.country && data.countries.has(explicit.country) ? explicit.country : null;
@@ -881,6 +886,18 @@ const COUNTRY_CODES = new Map(`
  * after its country's, names an office of exchange abroad ("Office - FRA 400051",
  * "Office - DEFRA …"): the PIN is then the Indian office's, not where the scan happened.
  */
+/**
+ * USPS places some scans only at a ZIP Code ("ZIP Code 60600"): the town its first
+ * three digits are named for, when most of their codes are that town's.
+ */
+function zipCodePlace(text: string): EventPlace | null {
+  const prefix = /^ZIP Code (\d{3})\d{2}(?:-\d{4})?$/i.exec(text)?.[1];
+  if (!prefix) return null;
+  zipPrefixes ??= (JSON.parse(readFileSync(ZIPCODES, 'utf8')) as { prefixes: Record<string, [string, string, number, number]> }).prefixes;
+  const town = zipPrefixes[prefix];
+  return town ? { latitude: town[2], longitude: town[3], precision: 'city', country: 'US', name: town[0] } : null;
+}
+
 function pinPlace(data: Gazetteer, text: string): EventPlace | null {
   const pin = /(?:^|\s)([1-8]\d{5})$/.exec(text)?.[1];
   // Russian, Chinese and other six-digit postcodes come with their own script.

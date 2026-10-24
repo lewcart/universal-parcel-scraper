@@ -64,6 +64,9 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   placed in the PIN's town from `pincodes.json` when the scan or the parcel is in India. A
   foreign airport code ("Office - FRA …") names an office of exchange abroad: its PIN is the
   Indian office's, and places nothing.
+- USPS places some scans only at a ZIP Code ("ZIP Code 60600"). Its first three digits name
+  an area, placed from `zipcodes.json` in the town that holds most of the area's codes. An
+  area many towns share places nothing.
 - Text that names only a country gets that country, marked `country`, so the map shades
   the country instead of pinning a town. A DHL operation followed only by a country name
   also places that country; the carrier's name alone supplies no country. A country name
@@ -168,6 +171,7 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   ahead of the towns of its name, which still win when the text says which one: on a DPD
   parcel "Buchs, CH" is the depot in Buchs ZH, and "Buchs SG" the town in St. Gallen. SPX
   Brazil's "ShiYan", whose wording names Shenzhen, is in Shenzhen's Shiyan, not the city in Hubei.
+  MRW's "Meres (Plataforma)" is its platform in Meres, Asturias, not the town in Turkey.
 - A carrier's own coordinates, supplied through the `points` option, move a scan
   to the facility when they are within 30 km of the town its text names. Scans with the same
   text share a point, so a carrier that places some scans of an office keeps them together.
@@ -186,6 +190,8 @@ Decisions about what to include are commented in the script.
 CSV: each PIN goes to the GeoNames town of 50,000 people or more nearest its head office or
 delivery offices, within 25 km, a tenfold population counting for 5 km. PINs with no such
 town are left out.
+`node scripts/generate-zipcodes.mjs` builds `zipcodes.json` from the GeoNames US postal
+codes: a ZIP Code prefix goes to the town that holds most of its codes, three or more.
 Then run `node scripts/generate-region-towns.mjs`: the carrier catalog keeps
 the towns of a few US states and Canadian provinces from it. `npm run test:generated`
 checks this projection.

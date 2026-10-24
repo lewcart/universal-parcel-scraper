@@ -241,6 +241,8 @@ describe('locatePlace', () => {
     // SPX's sorting centre in Shiyan, Shenzhen, not the city of Shiyan in Hubei.
     expect(locatePlace('ShiYan', { carriers: ['spx-br'] })).toMatchObject({ country: 'CN', latitude: 22.686, longitude: 113.932 });
     expect(locatePlace('ShiYan')).toMatchObject({ country: 'CN', latitude: 32.648 });
+    // MRW's platform in Meres, Asturias, a village too small for the gazetteer, not Meres in Turkey.
+    expect(locatePlace('00099 Meres (Plataforma)', { carriers: ['mrw'], countries: ['ES'] })).toMatchObject({ country: 'ES', name: 'Meres', latitude: 43.376 });
   });
 
   it('takes a region for its country, not for a town that shares a word of its name', () => {
@@ -281,6 +283,13 @@ describe('locatePlace', () => {
     for (const location of ['Office - FRA 400001', 'Office - DEFRA 400001', 'Example TMO 900056']) expect(place(location, ['IN']), location).toBeNull();
     // A town nothing confirms keeps its six digits: here a Swiss Post site.
     expect(place('Daillens Distribution 131070', ['FR', 'IN'])).toBeNull();
+  });
+
+  it("places a USPS scan at a ZIP Code in the town most of the code's area is", () => {
+    expect(place('ZIP Code 60600')).toMatchObject({ precision: 'city', country: 'US', name: 'Chicago' });
+    expect(place('ZIP Code 10099-1234')).toMatchObject({ precision: 'city', country: 'US', name: 'New York' });
+    // An area shared by many towns, or a military one, is none of them.
+    for (const location of ['ZIP Code 90200', 'ZIP Code 09000', 'ZIP Code 1234']) expect(place(location), location).toBeNull();
   });
 
   it('finds small Swiss towns and postcodes when the parcel is in Switzerland', () => {

@@ -109,6 +109,16 @@ describe('locatePlace', () => {
     // Roissy is the airport, not Roissy-en-Brie on the other side of Paris.
     expect(place('ROISSY COURRIER INTERNATIONAL')).toMatchObject({ country: 'FR', name: 'Roissy-en-France', site: 'Charles de Gaulle International Airport' });
     expect(place('EAST MIDLANDS - UK')).toMatchObject({ country: 'GB', site: 'East Midlands Airport' });
+    // A part that is an airport's own name, or names it with an airport word, before the airport
+    // that serves the town: Narita lies beyond the 60 km a town's airports are looked for in.
+    expect(place('LONDON - GATWICK - UK')).toMatchObject({ country: 'GB', name: 'London', site: 'London Gatwick Airport', latitude: 51.149 });
+    expect(place('PARIS - CHARLES DE GAULLE - FRANCE')).toMatchObject({ country: 'FR', name: 'Paris', site: 'Charles de Gaulle International Airport' });
+    expect(place('Narita Airport, Tokyo')).toMatchObject({ country: 'JP', name: 'Tokyo', site: 'Narita International Airport', latitude: 35.769 });
+    expect(place('Tokyo Narita Airport')).toMatchObject({ site: 'Narita International Airport' });
+    expect(place('Tokyo Airport')).toMatchObject({ site: 'Tokyo Haneda International Airport' });
+    // Not by the city an airport serves ("Seoul Gimpo"), a district's name, or the town an airport is named after alone.
+    expect(place('INCHEON NEAR SEOUL')).toMatchObject({ country: 'KR', name: 'Incheon', latitude: 37.456 });
+    for (const location of ['INCHEON NEAR SEOUL', 'Baiyun, Guangzhou', 'Garliava, Kaunas', 'FRANKFURT MAIN']) expect(place(location)?.site, location).toBeUndefined();
     // A hub in a village the gazetteer does not list.
     for (const location of ['SEKOCIN STARY PL', 'SEKOCIN STARY, PL', 'Sekocin Stary, Poland']) {
       expect(place(location), location).toEqual({ precision: 'city', country: 'PL', name: location.startsWith('SEKOCIN') ? 'Sękocin Stary' : 'Sekocin Stary', latitude: 52.108, longitude: 20.88 });

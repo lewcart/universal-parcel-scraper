@@ -113,8 +113,10 @@ const ADMIN_CODES: Record<string, Record<string, string>> = {
 const UNCONFIRMED_MIN_THOUSANDS = 15;
 // A carrier's own point for a scan has to agree with the town its text names.
 const POINT_MAX_KM = 30;
-// An airport a scan names has to be this close to the town it names.
+// An airport a scan names has to be this close to the town it names,
 const AIRPORT_MAX_KM = 60;
+// or this close when the scan names it whole with a word that says it is one: Narita is Tokyo's.
+const NAMED_AIRPORT_MAX_KM = 150;
 // A hub's name ranks like a town of this many thousand people.
 const HUB_THOUSANDS = 50;
 // A carrier that delivers in more countries than this is at home in none of them.
@@ -870,17 +872,19 @@ function airportByName(data: Gazetteer, field: string, country: string | null): 
 
 /**
  * The airport a scan names, near the town it names: by its code in brackets
- * ("Frankfurt Airport (FRA)"), by its own name ("LONDON-HEATHROW", "Chicago O Hare"),
- * or as the one airport of the town when the text says airport ("LIEGE AIRPORT").
- * `text` is the location without the country it names, `field` the part of it
- * the town was read from: in "Soyapango, San Salvador" the region is no airport.
+ * ("Frankfurt Airport (FRA)"), by its own name ("LONDON-HEATHROW", "Chicago O Hare",
+ * "LONDON - GATWICK", "Narita Airport, Tokyo"), or as the one airport of
+ * the town when the text says airport ("LIEGE AIRPORT"). `text` is the location without
+ * the country it names, `field` the part of it the town was read from: in "Soyapango,
+ * San Salvador" the region is no airport.
  */
 function airportFor(data: Gazetteer, text: string, field: string, town: Candidate, written: string, country: string | null): Airport | null {
   const words = new Set(tokens(text).map((token) => token.key));
   const fieldWords = new Set(tokens(field).map((token) => token.key));
   const townWords = new Set([...nameKey(written).split(' '), ...nameKey(town.name).split(' ')]);
-  const nearby = [...data.airports.values()].filter((airport) => (!country || airport.country === country)
-    && distanceKm(town.latitude, town.longitude, airport.latitude, airport.longitude) <= AIRPORT_MAX_KM);
+  const within = (km: number) => [...data.airports.values()].filter((airport) => (!country || airport.country === country)
+    && distanceKm(town.latitude, town.longitude, airport.latitude, airport.longitude) <= km);
+  const nearby = within(AIRPORT_MAX_KM);
   for (const [, code] of text.matchAll(/\(([A-Z]{3})\)/g)) {
     const named = nearby.find((airport) => airport.code === code);
     if (named) return named;
@@ -888,15 +892,42 @@ function airportFor(data: Gazetteer, text: string, field: string, town: Candidat
   // "Chicago O Hare": the words of its own name, together.
   const fieldName = ` ${tokens(field).map((token) => token.key).filter((word) => !AIRPORT_NAME_WORDS.has(word)).join(' ')} `;
   const distinct = nearby.filter((airport) => {
-    const own = nameKey(airport.name).split(' ').filter((word) => !AIRPORT_NAME_WORDS.has(word) && !townWords.has(word));
+    const own = airportOwnWords(airport, townWords);
     return own.some((word) => word.length >= 5 && fieldWords.has(word))
       || (own.join('').length >= 4 && fieldName.includes(` ${own.join(' ')} `));
   });
   if (distinct.length === 1) return distinct[0]!;
+  // A part of the text that is an airport's own name and no town's ("GATWICK", where "Baiyun" is
+  // a district), or names it with a word that says it is one ("Narita International Airport"),
+  // comes before the airport that serves the town.
+  const parts = text.split(/[,;|()]|\s+-\s+/).map((part) => {
+    const keys = tokens(part).map((token) => token.key);
+    const name = keys.filter((key) => !AIRPORT_WORDS.has(key) && !AIRPORT_NAME_WORDS.has(key) && !townWords.has(key)).join(' ');
+    return { name, worded: keys.some((key) => AIRPORT_WORDS.has(key)) };
+  }).filter((part) => part.name.length >= 4 && (part.worded || !data.keys.has(part.name)));
+  const named = within(parts.some((part) => part.worded) ? NAMED_AIRPORT_MAX_KM : AIRPORT_MAX_KM).filter((airport) => {
+    const own = airportOwnWords(airport, townWords).join(' ');
+    const served = nameKey(airport.town.split(/[,(]/)[0]!);
+    return parts.some((part) => (own.length >= 4 && part.name === own) || (part.worded
+      && ((own.length >= 4 && ` ${part.name} `.includes(` ${own} `)) || part.name === served)));
+  });
+  if (named.length === 1) return named[0]!;
   if (![...words].some((word) => AIRPORT_WORDS.has(word))) return null;
   const serving = nearby.filter((airport) => [...townWords].some((word) => word.length >= 3
     && ` ${nameKey(airport.name)} ${nameKey(airport.town)} `.includes(` ${word} `)));
   return serving.length === 1 ? serving[0]! : null;
+}
+
+/**
+ * The words of an airport's name that tell it from the others, without the scan's town and the
+ * town it serves before them: "Seoul Gimpo" is Gimpo, and "INCHEON NEAR SEOUL" not there.
+ * An airport named after its town alone has none: "Kaunas" is the town.
+ */
+function airportOwnWords(airport: Airport, townWords: ReadonlySet<string>): string[] {
+  const served = new Set(nameKey(airport.town.split(/[,(]/)[0]!).split(' '));
+  const words = nameKey(airport.name).split(' ').filter((word) => word && !AIRPORT_NAME_WORDS.has(word));
+  while (words.length > 1 && served.has(words[0]!)) words.shift();
+  return words.every((word) => served.has(word)) ? [] : words.filter((word) => !townWords.has(word));
 }
 
 const round = (value: number) => Math.round(value * 1000) / 1000;

@@ -171,10 +171,14 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
 - A scan that names an airport is placed at it, when the airport is within 60 km of the
   town: by its code in brackets ("Frankfurt Airport (FRA)"), by a word of its name that is
   neither the town nor the country ("LONDON-HEATHROW"), by the words of its name together
-  ("Chicago O Hare"), or as the town's one airport when
-  the text says airport ("LIEGE AIRPORT"). With an airport word, the words of one airport's
-  name that no town has place it alone ("O Hare Airport"), when they are two words or six
-  letters. The place keeps the town as its name and returns the airport as `site`.
+  ("Chicago O Hare"), by a part of the text that is its name and no town's
+  ("LONDON - GATWICK"), or as the town's one airport when the text says airport ("LIEGE AIRPORT"). The
+  city an airport serves is no word of its name ("Seoul Gimpo" is Gimpo), and an airport
+  named after its town alone has none. A part with an airport word that names an airport or
+  its town places the scan there up to 150 km out ("Narita Airport, Tokyo"). With an airport
+  word, the words of one airport's name that no town has place it alone ("O Hare Airport"),
+  when they are two words or six letters. The place keeps the town as its name and returns
+  the airport as `site`.
 - A code with an airport word ("JFK Airport") or the airport's country or state ("BNE, AU")
   is that airport, whatever town elsewhere has its letters, unless a town of 100,000 people
   in that country has them ("POA, BR" is Poá). An operator in brackets does not change that

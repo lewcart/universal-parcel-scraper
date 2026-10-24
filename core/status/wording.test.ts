@@ -520,10 +520,13 @@ describe('classifyWording', () => {
       // The last-mile carrier taking the parcel over, as DHLink relays it, is a handover, not the acceptance.
       ['Package picked up by last-mile carrier', 'in_transit'],
       ['Collected by the final mile courier', 'in_transit'],
+      // The same handover after clearance, as a universal provider relays it.
+      ['Handover To Last Mile', 'in_transit'], ['Received by Last Mile Provider', 'in_transit'],
       ['Package picked up', 'accepted'],
       ['Picked up by the carrier', 'accepted'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
     expect(wordingStage('Not yet picked up by the last-mile carrier')).not.toBe('in_transit');
+    expect(wordingStage('Not yet received by last mile provider')).not.toBe('in_transit');
     // A notice the carrier failed to send is no scan; a failed delivery still is.
     for (const wording of ['REMINDER EMAIL SENT FAILED', 'SMS notification failed', 'Failed to send notification for collection']) {
       expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'pending', source: 'none' });
@@ -744,7 +747,7 @@ describe('classifyWording', () => {
       ['Order submitted, pending to receive.', 'registered'], ['Order created. Order submitted and pending receipt', 'registered'],
       ['Shipment data uploaded', 'registered'], ['Sender preparing item', 'registered'], ['Forecast has been received', 'registered'],
       ['Sender preparing item. The sender has let us know they have despatched your item', 'registered'],
-      ['Sender has despatched item', 'registered'],
+      ['Sender has despatched item', 'registered'], ['Sender despatching item', 'registered'],
       ['Shipping info sent to BRT', 'registered'],
       ['Information, We have received your shipment information, we will have your goods soon', 'registered'],
       ['INFORMADO. Ya hemos recibido la información de su envío, en breve dispondremos de él', 'registered'],

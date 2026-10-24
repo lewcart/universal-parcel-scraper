@@ -308,8 +308,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/\bletrejott a rendszerunkben\b.*\bfelado meg nem adta at\b/.test(text)) return 'registered';
   if (/preparation chez.*expediteur|preparation.*expediteur|preparazione.*mittente|being prepared.*sender|(?:shipper|sender)(?: that)? (?:they are|is|are) preparing|beim absender.*vorbereitet|warehouse of the sender|shippers warehouse|entrepot de l'expediteur|lager des absenders|magazzino del mittente|demande d'envoi.*prise en compte|collection request.*(?:received|recorded)|^(?:the |your )?collection (?:has been |was )?registered$|abholauftrag.*erfasst|richiesta.*ritiro.*registrata/.test(text)) return 'registered';
   // The sender's order or data reached the carrier, not the parcel: "Order submitted, pending to
-  // receive", Royal Mail's "Sender preparing item" and "Sender has despatched item", "Shipping info sent to BRT".
-  if (/\border submitted(?:,| and)? pending (?:to )?rece(?:iv|ipt)|\bshipment data uploaded\b|^sender preparing item\b|^sender has despatched item$|^shipping info(?:rmation)? sent to (?!(?:the |your? )?(?:recipient|customer|consignee|addressee|buyer)\b)|\bwe have received your shipment information\b|\bhemos recibido la informacion de su envio\b|\bwe will pick up (?:the|your) (?:package|parcel) from the sender\b|^booked for collection$|\bpending shipping by (?:the )?(?:seller|sender|shipper|merchant)\b|\bshipment order created\b/.test(text)) return 'registered';
+  // receive", Royal Mail's "Sender preparing item", "Sender despatching item" and "Sender has despatched item", "Shipping info sent to BRT".
+  if (/\border submitted(?:,| and)? pending (?:to )?rece(?:iv|ipt)|\bshipment data uploaded\b|^sender preparing item\b|^sender (?:has despatched|despatching) item$|^shipping info(?:rmation)? sent to (?!(?:the |your? )?(?:recipient|customer|consignee|addressee|buyer)\b)|\bwe have received your shipment information\b|\bhemos recibido la informacion de su envio\b|\bwe will pick up (?:the|your) (?:package|parcel) from the sender\b|^booked for collection$|\bpending shipping by (?:the )?(?:seller|sender|shipper|merchant)\b|\bshipment order created\b/.test(text)) return 'registered';
   // A Shenzhen forwarder's pre-advice from the shipper, before its warehouse has the parcel.
   if (/^forecast has been received$/.test(text)) return 'registered';
   // The carrier has not had the parcel yet: "Shipment not yet received or
@@ -360,7 +360,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // A handover to another network, a carrier or a courier set apart, takes the parcel on.
   if (HANDED_TO_NETWORK.test(text)) return 'in_transit';
   // The same handover seen from the network that delivers the parcel, not the first carrier's acceptance.
-  if (/(?<!\bnot (?:yet )?(?:been )?)\b(?:picked up|collected) by (?:the |a |our )?(?:last|final)[- ]mile (?:carrier|courier|delivery partner)s?\b/.test(text)) return 'in_transit';
+  if (/(?<!\bnot (?:yet )?(?:been )?)\b(?:picked up|collected|received) by (?:the |a |our )?(?:last|final)[- ]mile (?:carrier|courier|(?:delivery )?partner|provider)s?\b/.test(text)
+    || /^hand(?:ed )?over to (?:the )?(?:last|final)[- ]mile(?: (?:carrier|courier|(?:delivery )?partner|provider))?$/.test(text)) return 'in_transit';
   // Posting/collection by the carrier, not recipient pickup or data submission.
   if (/^(?:the |your )?(?:item|package|parcel|shipment) (?:has been |was |is )?(?:received for transport|(?:dropped off|deposited) by (?:the )?sender (?:at|with) (?:our |the |a )?postal partner)\b/.test(text)) return 'accepted';
   // A vehicle load and a gateway scan prove handling, but do not name the delivery round.

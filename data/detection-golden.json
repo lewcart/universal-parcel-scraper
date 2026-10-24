@@ -92949,6 +92949,17 @@
     ]
   },
   {
+    "input": "YF0000000001CN",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhlink"
+    ],
+    "asked": [
+      "dhlink"
+    ]
+  },
+  {
     "input": "YG295909222CO",
     "carrier": "intl-post",
     "confidence": "high",

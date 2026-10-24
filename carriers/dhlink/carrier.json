@@ -108,6 +108,11 @@
       "id": "dhlink-qh",
       "pattern": "^QH\\d{12}FS$",
       "confidence": "low"
+    },
+    {
+      "id": "dhlink-yf",
+      "pattern": "^YF\\d{10}CN$",
+      "confidence": "low"
     }
   ]
 }

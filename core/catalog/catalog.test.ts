@@ -187,6 +187,15 @@ describe('requirementSatisfied', () => {
     expect(requirementSatisfied(postcode, '8000')).toBe(true);
     expect(requirementSatisfied({}, 'anything')).toBe(true);
   });
+
+  it('keeps each requirement to its own pattern across calls', () => {
+    const letters = { pattern: '^[A-Z]{2}$' };
+    for (let attempt = 0; attempt < 2; attempt++) {
+      expect(requirementSatisfied(postcode, '8000')).toBe(true);
+      expect(requirementSatisfied(letters, '8000')).toBe(false);
+      expect(requirementSatisfied(letters, 'AB')).toBe(true);
+    }
+  });
 });
 
 describe('tracking links', () => {

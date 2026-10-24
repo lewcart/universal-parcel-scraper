@@ -129,6 +129,19 @@ export const SELECTABLE_CARRIERS = Object.values(CARRIERS).filter(
   (carrier) => carrier.capabilities.selectable,
 );
 
+const numberPatterns = new WeakMap<object, RegExp>();
+const valuePatterns = new WeakMap<object, RegExp>();
+
+/** A requirement's pattern, compiled once per requirement. */
+function requirementPattern(cache: WeakMap<object, RegExp>, requirement: object, source: string): RegExp {
+  let pattern = cache.get(requirement);
+  if (!pattern) {
+    pattern = new RegExp(source);
+    cache.set(requirement, pattern);
+  }
+  return pattern;
+}
+
 /** The requirements a form shows for one number, matched unanchored. */
 export function carrierRequirements(
   carrierId: CarrierId,
@@ -138,7 +151,7 @@ export function carrierRequirements(
   return CARRIERS[carrierId].capabilities.tracking.requirements.filter(
     (requirement) =>
       !requirement.whenTrackingNumber
-      || new RegExp(requirement.whenTrackingNumber).test(normalized),
+      || requirementPattern(numberPatterns, requirement, requirement.whenTrackingNumber).test(normalized),
   );
 }
 
@@ -152,7 +165,7 @@ export function requirementSatisfied(
 ): boolean {
   const value = raw.trim();
   if (!value) return requirement.optional === true;
-  return !requirement.pattern || new RegExp(requirement.pattern).test(value);
+  return !requirement.pattern || requirementPattern(valuePatterns, requirement, requirement.pattern).test(value);
 }
 
 export function tracksAutomatically(carrierId: CarrierId): boolean {

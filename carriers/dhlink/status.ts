@@ -17,6 +17,8 @@ const NODE_CODES: ReadonlyMap<string, Stage> = new Map([
   ['EUBJ010', 'in_transit'],
   ['AD001', 'in_transit'],
   ['TQ001', 'in_transit'],
+  ['QG001', 'in_transit'],
+  ['JH001', 'in_transit'],
   ['J013', 'out_for_delivery'],
   ['DE002', 'out_for_delivery'],
   ['J014', 'delivered'],
@@ -72,6 +74,9 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['departed destination hub', 'in_transit'],
   // China Post hands the dispatch to the airline after taking the parcel.
   ['handed over to airlines', 'in_transit'],
+  // DHLink's own nodes QG001 and JH001: export clearance, then the hand-over to the airline.
+  ['customs export clearance completed', 'in_transit'],
+  ['package handed over to airline', 'in_transit'],
   ['item presented to customs', 'customs'],
   // Export customs released the item (出口海关/放行).
   ['item returned from customs?', 'in_transit'],
@@ -79,8 +84,10 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['scheduled for delivery', 'out_for_delivery'],
 ]);
 
-/** China Post's scans as DHLink relays them in Chinese, and a relayed USPS notice. */
+/** DHLink's and China Post's scans in Chinese, and a relayed USPS notice. */
 const PATTERNS: readonly (readonly [RegExp, Stage])[] = [
+  // The shipper's electronic data, before any scan.
+  [/^货物电子信息已经?收到$/, 'registered'],
   [/^已入库$/, 'accepted'],
   [/已收取邮件$/, 'accepted'],
   [/^已出库$/, 'in_transit'],

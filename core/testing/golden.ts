@@ -35,13 +35,14 @@ export function buildDetectionGolden(): DetectionGoldenEntry[] {
   for (const record of loadNumberCorpus()) {
     if (entries.has(record.number)) continue;
     const match = detectCarrierMatch(record.number);
+    const asked = recognitionAskedCarriers(record.number);
     entries.set(record.number, {
       input: record.number,
       carrier: match.carrier,
       confidence: match.confidence,
       candidates: match.candidates,
       ...(match.preferred.length > 0 ? { preferred: match.preferred } : {}),
-      ...(recognitionAskedCarriers(record.number).length > 0 ? { asked: recognitionAskedCarriers(record.number) } : {}),
+      ...(asked.length > 0 ? { asked } : {}),
     });
   }
   return [...entries.values()].sort((left, right) => (left.input < right.input ? -1 : 1));

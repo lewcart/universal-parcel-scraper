@@ -354,7 +354,9 @@ describe('declared gaps', () => {
   });
 });
 
-describe('swift golden file', () => {
+// Both tests recognize every corpus number, which takes seconds alone and far
+// longer while other suites load the machine.
+describe('swift golden file', { timeout: 180_000 }, () => {
   it('matches the committed data/detection-golden.json', () => {
     if (process.env.UPDATE_DETECTION_GOLDEN) {
       expect(writeDetectionGolden().length).toBe(buildDetectionGolden().length);

@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { accepted, lookupBudget, recognizeFromBrowserLookup, recognizeFromLookup, type AdapterFactory, type AdapterEnvironment, type TrackingContext } from '../../core/adapter/index.js';
+import { dhlExpressPieceId } from '../../core/detection/dhlExpress.js';
 import { isValidDhlExpressWaybill } from '../../core/detection/numericChecksums.js';
 import { BudgetExceededError, carrierErrorKind, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
@@ -27,21 +28,15 @@ export function normalizeNumber(raw: string): string {
   return number;
 }
 
-// The label's lower barcode, "(J)JD" and DHL's ISO piece identifier, in the JD01
-// range Express labels carry. DHL lists it without the (J) data identifier, which
-// a typed number can carry before or after the piece.
-const PIECE_ID = /^J?(JD01\d{16})$|^(JD01\d{16})J$/;
-
 /** An Express piece identifier as DHL lists it. */
 export function normalizePieceId(raw: string): string {
-  const match = PIECE_ID.exec(raw.toUpperCase().replace(/[\s.-]/g, ''));
-  const piece = match?.[1] ?? match?.[2];
+  const piece = dhlExpressPieceId(raw.toUpperCase().replace(/[\s.-]/g, ''));
   if (!piece) throw new InvalidInputError(PROVIDER, 'DHL Express piece identifiers are JD01 and 16 digits');
   return piece;
 }
 
 function isPieceId(raw: string): boolean {
-  return PIECE_ID.test(raw.toUpperCase().replace(/[\s.-]/g, ''));
+  return dhlExpressPieceId(raw.toUpperCase().replace(/[\s.-]/g, '')) !== null;
 }
 
 export function trackingUrl(raw: string): string {

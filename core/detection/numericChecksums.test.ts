@@ -2,9 +2,18 @@ import { describe, expect, it } from 'vitest';
 import { recognitionAskedCarriers, recognitionCandidates } from '../catalog/recognition.js';
 import { isValidFedEx1DBarcode, isValidFedExGround96Barcode } from './fedex.js';
 import { isValidDhlIdentcode } from './identcode.js';
+import { dhlExpressPieceId } from './dhlExpress.js';
 import { detectCarrierMatch, isValidDhlExpressWaybill, isValidPocztaPolskaBarcode, isValidSscc, isValidTntConsignmentNumber } from './index.js';
 
 describe('numeric checksum candidates', () => {
+  it('reads a DHL Express piece with its (J) on either side or without it', () => {
+    const piece = 'JD014620246813579022';
+    for (const number of [piece, `J${piece}`, `${piece}J`]) expect(dhlExpressPieceId(number)).toBe(piece);
+    for (const number of [piece.slice(0, -1), `${piece}2`, `J${piece}J`, piece.replace('JD01', 'JD02'), piece.toLowerCase()]) {
+      expect(dhlExpressPieceId(number)).toBeNull();
+    }
+  });
+
   it('prioritizes checksum-valid DHL Express waybills without assigning the carrier', () => {
     expect(isValidDhlExpressWaybill('1234567891')).toBe(true);
     expect(isValidDhlExpressWaybill('0000000070')).toBe(true);

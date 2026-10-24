@@ -131,9 +131,11 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const events: CarrierEvent[] = hit.events.map((event): CarrierEvent => {
     if (!isRecord(event) || typeof event.eventDescription !== 'string') throw new SchemaError('Posti');
     const description = clean(event.eventDescription);
+    const reason = clean(event.reasonDescription);
     const city = clean(event.city, 160);
     return {
-      description: [description, clean(event.reasonDescription)].filter(Boolean).join(' '),
+      // The status and its explanation are separate sentences, and the status often has no stop.
+      description: reason && description ? `${/[.!?]$/.test(description) ? description : `${description}.`} ${reason}` : description || reason,
       time: explicitOffsetTime(event.timestamp)?.iso ?? '',
       location: isPostiAbroadLabel(city) ? '' : city,
       stage: postiEventStage(description),

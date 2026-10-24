@@ -27,6 +27,15 @@ describe('Posti projection', () => {
     expect(result.events?.every((event) => event.description && event.time)).toBe(true);
   });
 
+  it('ends the status before its explanation', () => {
+    const descriptions = parse(fixture(), NUMBER).events?.map((event) => event.description);
+    expect(descriptions).toContain('Item is ready for a pick up. Pickup details are available in the arrival notice.');
+    expect(descriptions).toContain('We sent the recipient an email about the item.');
+    const abroad = parse(fixture('delivered-abroad'), 'CE123456785FI').events?.map((event) => event.description);
+    expect(abroad).toContain('Item delivered to the recipient.');
+    expect(abroad).toContain('Item has been registered. The item can be registered several times during delivery.');
+  });
+
   it('names a public pickup point with its address only while the parcel waits there', () => {
     const data = fixture('ready-for-pickup');
     const result = parse(data, NUMBER);

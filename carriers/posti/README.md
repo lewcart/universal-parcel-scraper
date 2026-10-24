@@ -55,7 +55,8 @@ Bootstrap, lookup and refresh share one cancellable 15-second budget.
   (acceptance, transit or customs) sets the current stage.
 - Pickup availability is not delivery; transport back to the sender is not a completed
   return. Notification and pre-advice rows prove no movement.
-- `reasonDescription` is shown but never used to classify.
+- `reasonDescription` follows the event's label as a sentence of its own and is never used to
+  classify.
 - Registration labels describe repeated handling during transport. Country arrival and
   readiness for delivery remain transit until a scan identifies the delivery round.
 - A scan outside Finland has `city` "ULKOMAILLA" ("abroad"), untranslated. It names no

@@ -3,7 +3,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, SchemaError } fr
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { zonedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
-import { tipsaStatus } from './status.js';
+import { comparable, tipsaStatus } from './status.js';
 
 const PROVIDER = 'TIPSA';
 const DETAIL_ORIGIN = 'https://dinapaqweb.tipsa-dinapaq.com';
@@ -11,6 +11,24 @@ const DETAIL_PATH = '/dinapaqweb/detalle_envio.php';
 const SERVICE = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
 const MAX_ROWS = 500;
 export const TIPSA_ZONE = 'Europe/Madrid';
+// A hub read names its hub: "LECTURA EN HUB BAILEN".
+const HUB_READ = /^LECTURA EN HUB ([A-Z][A-Z .'-]{0,40})$/;
+// TIPSA's central agency, whose town the Madrid hub's reads carry.
+const CENTRAL_TOWN = 'SAN FERNANDO DE HENARES';
+// A hub whose name in a read is not its town's whole name.
+const HUB_TOWNS = new Map([['BARBERA', 'BARBERA DEL VALLES']]);
+
+/**
+ * A row's place: its POBLACIÓN, the town of the agency that recorded it. Reads
+ * of hubs other than Madrid's, Bailén's and Barberà del Vallès's among them,
+ * can carry the central agency's town, hundreds of kilometres from the hub;
+ * such a read is placed at the hub its wording names.
+ */
+function rowPlace(description: string, place: string): string {
+  const hub = HUB_READ.exec(comparable(description))?.[1];
+  if (!hub || hub === 'MADRID' || comparable(place) !== CENTRAL_TOWN) return place;
+  return HUB_TOWNS.get(hub) ?? hub;
+}
 
 /** The 22-digit reference: charge agency, origin agency and waybill, six, six and ten digits. */
 export function normalizeTipsaNumber(raw: string): string {
@@ -81,7 +99,7 @@ export function parseTipsaDetail(html: string, raw: string): CarrierResult {
     const time = zonedTime(cellText(0), 'dd/MM/yy HH:mm', TIPSA_ZONE);
     const description = cellText(1);
     if (!time || !description) throw new SchemaError(PROVIDER, 'TIPSA history row has no time or status');
-    const location = cellText(2);
+    const location = rowPlace(description, cellText(2));
     const key = JSON.stringify([time.iso, description, location]);
     if (seen.has(key)) return;
     seen.add(key);

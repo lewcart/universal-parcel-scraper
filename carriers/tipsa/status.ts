@@ -1,7 +1,8 @@
 import { languageStageStatus, trackingLanguageStage, type ClassifiedStatus } from '../../core/status/index.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
-function comparable(value: string): string {
+/** A label or place without accents, in capitals, with single spaces. */
+export function comparable(value: string): string {
   return value.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/\s+/g, ' ').trim();
 }
 
@@ -12,6 +13,8 @@ const LABELS = new Map<string, ClassifiedStatus>([
   ['LEIDO EN DESTINO', { status: 'in_transit', stage: 'in_transit' }],
   ['REPARTO', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['AUSENTE', { status: 'exception', stage: 'failed_attempt' }],
+  // Delivery asked for at another address: the parcel is rerouted.
+  ['SOLICITADA EN OTRA DIRECCION', { status: 'in_transit', stage: 'in_transit' }],
   // Data missing from or wrong in the address, noted on the round before another one.
   ['FALTAN DATOS / DATOS INCORRECTOS', { status: 'exception', stage: 'failed_attempt' }],
   // Between hub scans, before the destination agency reads the parcel.

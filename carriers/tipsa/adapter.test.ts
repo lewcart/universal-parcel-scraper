@@ -80,6 +80,32 @@ describe('TIPSA shipment page', () => {
     }
   });
 
+  it("places a hub read at the hub it names when its place is the central agency's town", () => {
+    const row = (index: number, description: string, place: string) => (page: string) => page
+      .replace(new RegExp(`(for="est_traz_des_${index}">)[^<]*(</span><span id="est_traz_des_${index}">)[^<]*`), `$1${description}$2${description}`)
+      .replace(new RegExp(`(for="est_traz_pob_${index}">)[^<]*(</span><span id="est_traz_pob_${index}">)[^<]*`), `$1${place}$2${place}`);
+    const read = (...rows: ((page: string) => string)[]) => parseTipsaDetail(rows.reduce((page, edit) => edit(page), DETAIL), NUMBER)
+      .events!.slice(-4, -1).map(({ description, location }) => [description, location]);
+    expect(read(row(8, 'LECTURA EN HUB MADRID', 'SAN FERNANDO DE HENARES'), row(7, 'LECTURA EN HUB BARBERA', 'SAN FERNANDO DE HENARES'),
+      row(6, 'LECTURA EN HUB BAILEN', 'San Fernando de Henares'))).toEqual([
+      ['LECTURA EN HUB BAILEN', 'BAILEN'],
+      ['LECTURA EN HUB BARBERA', 'BARBERA DEL VALLES'],
+      ['LECTURA EN HUB MADRID', 'SAN FERNANDO DE HENARES'],
+    ]);
+    // A hub read placed elsewhere, and another row at the central's town, keep their place.
+    expect(read(row(8, 'LECTURA EN HUB MURCIA', 'ALCANTARILLA'), row(7, 'LECTURA EN HUB BAILEN', 'BAILEN'),
+      row(6, 'LECTURA EN OTRA AGENCIA TIPSA CENTRAL 00', 'SAN FERNANDO DE HENARES'))).toEqual([
+      ['LECTURA EN OTRA AGENCIA TIPSA CENTRAL 00', 'SAN FERNANDO DE HENARES'],
+      ['LECTURA EN HUB BAILEN', 'BAILEN'],
+      ['LECTURA EN HUB MURCIA', 'ALCANTARILLA'],
+    ]);
+  });
+
+  it('reads a delivery asked for at another address as the parcel rerouted', () => {
+    const result = parseTipsaDetail(DETAIL.replaceAll('>ENTREGADO<', '>Solicitada en otra dirección<'), NUMBER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Solicitada en otra dirección' });
+  });
+
   it('leaves unknown labels to the shared wording rules', () => {
     expect(tipsaStatus('DEVUELTO')).toEqual({ status: 'exception', stage: 'returned' });
     expect(tipsaStatus('NUEVO REPARTO')).toBeUndefined();

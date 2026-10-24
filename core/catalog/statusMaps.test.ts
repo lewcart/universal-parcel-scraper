@@ -525,6 +525,9 @@ describe('status map answers', () => {
     expect(answer('tipsa', null, 'Pendiente de llegada')).toEqual(mapped('in_transit'));
     expect(answer('tipsa', null, 'DISPONIBLE')).toEqual(mapped('ready_for_pickup'));
     expect(answer('tipsa', null, 'Pendiente de recoger en Tipsa')).toEqual(mapped('ready_for_pickup'));
+    // A delivery asked for at another address, and the read at another agency before it.
+    expect(answer('tipsa', null, 'Solicitada en otra dirección')).toEqual(mapped('in_transit'));
+    expect(answer('tipsa', null, 'LECTURA EN OTRA AGENCIA TIPSA CENTRAL 00')).toEqual(mapped('in_transit'));
     expect(answer('tipsa', null, 'Pendiente de recoger en Example')).toEqual(unknown);
     expect(answer('tipsa', 'ZZ', 'ENTREGADO')).toEqual(unknown);
   });

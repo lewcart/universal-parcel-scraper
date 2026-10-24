@@ -30,6 +30,11 @@ not ask.
   the history's delivery row for deliveries in Spain, an hour earlier in Portugal.
 - Labels map through `status.ts`; others fall to the shared Spanish wording rules, and
   stay unmapped when those don't know them either.
+- A row's place (`POBLACIÓN`) is the town of the agency that recorded it. Hub reads name
+  their hub ("LECTURA EN HUB BAILEN"). TIPSA's central agency is at San Fernando de
+  Henares, where the Madrid hub's reads are placed, and reads of other hubs, Bailén's and
+  Barberà del Vallès's among them, can carry that town hundreds of kilometres from the hub.
+  Such a read is placed at the hub its wording names.
 - Detection only suggests TIPSA: CTT Express numbers share the agency, agency, waybill
   layout, and every six-digit agency code seen so far starts with 0. Recognition asks
   TIPSA first for such numbers.

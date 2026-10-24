@@ -841,7 +841,7 @@ describe("universal providers' answers", () => {
       ['Tendered to International Gateway.', 'in_transit'], ['Attempted but unfinished drop off at locker', 'registered'],
       ['Received by partner carrier', 'in_transit'], ['Operation center is processing package information', 'registered'],
       ['Preparing to leave Hong Kong operation center', 'in_transit'], ['The item is ready for shipment', 'registered'],
-      ['Consignment received at the PostNL Acceptance Centre', 'accepted'],
+      ['Consignment received at the PostNL Acceptance Centre', 'accepted'], ['Pre-alerted shipment enriched by PostNL management', 'registered'],
       ['As requested, the UPS My Choice® delivery change was completed.', 'in_transit'], ['The address was changed as the receiver requested.', 'in_transit'],
       ["The company or receiver name is incorrect. This will delay delivery. We're attempting to update this information.", 'exception'],
       ['Shipment in Transit to the ePost Global Processing Center', 'registered'],

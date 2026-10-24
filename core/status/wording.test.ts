@@ -115,6 +115,8 @@ describe('classifyWording', () => {
       'The package data was sent to OnTrac, but we have yet to receive the package from the sender. Tracking will update once it arrives. Please contact the sender for more information',
       // Lietuvos paštas' label, as aggregators relay it for a parcel filed under no carrier.
       'The label for the parcel has been created',
+      // PostNL's pre-alert, as aggregators relay it.
+      'Pre-alerted shipment enriched by PostNL management', 'Shipment pre-alerted',
     ]) expect(classifyWording(wording, 'pending')).toEqual({ stage: 'registered', source: 'wording:language' });
     // The carrier itself taking the parcel is still acceptance.
     expect(wordingStage('The parcel was handed over to GLS.')).toBe('accepted');

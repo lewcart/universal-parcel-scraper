@@ -39,7 +39,7 @@ try {
     assert.equal(match.carrier, 'ups');
     assert.equal(createTracker({ providers: [] }).detect(match.trackingNumber).carrier, 'ups');
     // Exercise Chronopost through the installed registry, without optional browsers.
-    const chronopostNumber = 'XU123456785FR';
+    const chronopostNumber = 'XU123456799FR';
     const chronopostXml = '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body>'
       + '<t:trackSkybillV2Response xmlns:t="http://cxf.tracking.soap.chronopost.fr/"><return><errorCode>0</errorCode><listEventInfoComp>'
       + "<events><code>TS</code><eventDate>2026-01-03T15:01:15+01:00</eventDate><eventLabel>Colis en cours d'acheminement</eventLabel></events>"
@@ -94,7 +94,7 @@ try {
     assert.equal(omgoRequests, 2);
     const ninjaReply = ${JSON.stringify(ninjaReply)};
     for (const country of ['sg', 'my', 'id', 'ph', 'th', 'vn']) {
-      const number = 'NL' + country.toUpperCase() + 'A00000000';
+      const number = 'NL' + country.toUpperCase() + 'A00000001';
       const answer = await createTracker({ providers: [], fetcher: async (url, init) => {
         const request = new URL(url);
         assert.equal(request.origin, 'https://walrus.ninjavan.co');

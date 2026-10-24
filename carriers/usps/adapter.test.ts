@@ -16,6 +16,7 @@ const TRAWL_URL = 'http://trawl.internal:8191';
 const DELIVERED_PAGE = readFileSync(new URL('./fixtures/delivered.html', import.meta.url), 'utf8');
 const IN_TRANSIT_PAGE = readFileSync(new URL('./fixtures/in-transit.html', import.meta.url), 'utf8');
 const TIMELINE_PAGE = readFileSync(new URL('./fixtures/timeline.html', import.meta.url), 'utf8');
+const ESTIMATE_PAGE = readFileSync(new URL('./fixtures/estimate.html', import.meta.url), 'utf8');
 const HEADER_ONLY_PAGE = '<html><head><title>USPS Tracking® | USPS</title></head><body><div class="Widgets_Container"><div id="g-navigation">Navigation</div></div></body></html>';
 // The bot check's interstitial: no title, no content, one inline script (synthetic here).
 const HEAD_ONLY_PAGE = '<!DOCTYPE html><html lang="en"><head><title>USPS Tracking® | USPS</title><script src="scripts/libs/jquery.min.js"></script></head></html>';
@@ -197,6 +198,21 @@ describe('USPS rendered page', () => {
       expected_delivery: '2025-03-17',
     });
     expect(result.events).toHaveLength(3);
+  });
+
+  it('reads the estimate banner, whose date parts sit apart, and not its tooltips as the verdict', () => {
+    const result = parseUSPSTrackingHtml(ESTIMATE_PAGE, IN_TRANSIT_NUMBER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'In Transit, Arriving On Time',
+      expected_delivery: '2025-03-17' });
+    expect(result.events).toHaveLength(3);
+    // A banner without an estimate gives none, and a delivered parcel keeps none.
+    expect(parseUSPSTrackingHtml(ESTIMATE_PAGE.replace(/<div class="expected_delivery">[\s\S]*?<\/h2>\s*<\/div>/, ''), IN_TRANSIT_NUMBER).expected_delivery).toBeNull();
+    const delivered = ESTIMATE_PAGE.replace('<p class="tb-status">On the Way</p>', '<p class="tb-status">Delivered</p>')
+      .replace('In Transit, Arriving On Time', 'Delivered, In/At Mailbox');
+    expect(parseUSPSTrackingHtml(delivered, IN_TRANSIT_NUMBER)).toMatchObject({ current_stage: 'delivered', expected_delivery: null });
+    // An impossible date is no estimate.
+    expect(parseUSPSTrackingHtml(ESTIMATE_PAGE.replace(/(<strong class="date"><span class="eta_snip">\s*)17/, '$131')
+      .replace(/(<span>\s*)March(\s*<\/span>)/, '$1February$2'), IN_TRANSIT_NUMBER).expected_delivery).toBeNull();
   });
 
   it('keeps the signatory out of the result', () => {

@@ -54,7 +54,10 @@ Parsing, in order:
   included, must match.
 - "Tracking Not Available" in `.latest-update-banner-wrapper .banner-header` (unknown or
   expired number): unlocated `unknown`. Only that wrapper counts; `.banner-header` is also
-  used by an upsell banner.
+  used by an upsell banner and by the headings of the estimate's tooltips, which are skipped.
+- The estimate comes from `.expected_delivery`, whose weekday, date, month and year sit in
+  elements of their own ("Wednesday 28 October 2026 by 9:00pm"), and becomes
+  `expected_delivery` as a calendar day. A delivered parcel has none.
 - History comes from `.tb-step` cards (`.tb-status-detail`, `.tb-date`, `.tb-location`).
   Collapsed cards already hold the full history in the HTML. Undated placeholder steps and
   the "See All Tracking History" control are skipped. Rows of the older

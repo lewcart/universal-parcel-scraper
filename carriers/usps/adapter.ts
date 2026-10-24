@@ -78,11 +78,12 @@ function eventTime(dateText: string, timeText: string, location: string): { iso:
   return iso ? { iso, timestamp: at.toMillis() } : null;
 }
 
-/** A delivery estimate reduced to its calendar day. */
+/** A delivery estimate reduced to its calendar day, written "March 17, 2025" or "17 March 2025". */
 function expectedDelivery(text: string): string | null {
-  const match = /(?:expected|scheduled|anticipated)\s+delivery.*?([A-Z][a-z]+\s+\d{1,2},?\s+\d{4})/is.exec(text);
+  const match = /(?:expected|scheduled|anticipated)\s+delivery.*?(?:([A-Z][a-z]+)\s+(\d{1,2}),?\s+(\d{4})|(\d{1,2})\s+([A-Z][a-z]+)\s+(\d{4}))/is.exec(text);
   if (!match) return null;
-  const day = DateTime.fromFormat(match[1]!, 'MMMM d, yyyy', { locale: 'en-US', zone: 'utc' });
+  const [month, date, year] = match[1] ? [match[1], match[2], match[3]] : [match[5], match[4], match[6]];
+  const day = DateTime.fromFormat(`${month} ${date} ${year}`, 'MMMM d yyyy', { locale: 'en-US', zone: 'utc' });
   return day.isValid ? day.toISODate() : null;
 }
 
@@ -201,9 +202,15 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string): Car
   if (echoed !== number) {
     throw new SchemaError('USPS', 'USPS did not return the requested parcel');
   }
-  // The page reuses .banner-header for an upsell banner; only the verdict
-  // wrapper carries the tracking verdict.
-  const banner = clean($('.latest-update-banner-wrapper .banner-header').first().text());
+  // The page reuses .banner-header for an upsell banner and for the headings of
+  // the estimate's tooltips; only the verdict wrapper's own header is the verdict.
+  const banner = clean($('.latest-update-banner-wrapper .banner-header').filter((_, header) => !$(header).closest('.speech_bubble').length)
+    .first().text());
+  // The estimate's heading, then its weekday, date, month and year and time in elements
+  // of their own: "Expected Delivery by: Wednesday 17 March 2025 by 9:00pm".
+  const eta = $('.expected_delivery').first().clone();
+  eta.find('.hint').remove();
+  const estimate = clean(eta.text(), 500);
   if (/tracking not available/i.test(banner)) return notLocated();
   const current = $('.current-tracking-status-wrapper .current-step').first();
   const statusArea = clean(current.find('.tb-status-detail').first().text()
@@ -242,7 +249,7 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string): Car
     last_status_text: delivered ? 'Delivered' : statusText,
     last_update: events[0]?.time || null,
     ...(events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
-    expected_delivery: delivered ? null : expectedDelivery(`${statusArea} ${banner}`),
+    expected_delivery: delivered ? null : expectedDelivery(`${statusArea} ${banner}`) ?? expectedDelivery(estimate),
     events,
   };
 }

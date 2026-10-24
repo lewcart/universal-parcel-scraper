@@ -83,11 +83,17 @@ export function parseAllegroOne(payload: unknown, raw: string): CarrierResult {
   // and equal ones keep the order in which the reply logged them.
   const oldestFirst = scans.length > 1 && scans[0]!.at < scans.at(-1)!.at;
   scans.sort((left, right) => right.at - left.at || (oldestFirst ? right.index - left.index : left.index - right.index));
-  // Once the parcel is sent back, every later movement is the way back: its
-  // delivery reaches the sender, not the recipient.
+  // Once the parcel has waited at a point, a courier collecting it is the
+  // uncollected parcel taken back, on its way to another point or to the
+  // sender, not the sender's drop-off accepted. Once it is sent back, every
+  // later movement is the way back: its delivery reaches the sender, not the
+  // recipient.
+  let waited = false;
   let returning = false;
   for (const { event } of [...scans].reverse()) {
+    if (waited && event.stage === 'accepted') event.stage = 'in_transit';
     if (returning && event.stage && event.stage !== 'exception') event.stage = 'returned';
+    if (event.stage === 'ready_for_pickup') waited = true;
     if (event.stage === 'returned') returning = true;
   }
   const newest = scans[0]!.event;

@@ -15,6 +15,8 @@ export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
   'Parcel has been dispatched at point': 'accepted',
   'Parcel has been picked up by the courier': 'accepted',
   // A courier collected the sender's drop-off from the locker or the point.
+  // After the parcel has waited at a point for its recipient, the parser reads
+  // a courier's collection as the parcel taken back.
   'Parcel has been picked up from parcel locker by courier': 'accepted',
   'Parcel has been picked up from point by courier': 'accepted',
   'Courier has transferred the parcel to the warehouse': 'in_transit',

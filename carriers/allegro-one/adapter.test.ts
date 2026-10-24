@@ -102,6 +102,38 @@ describe('Allegro One HTTP adapter', () => {
     expect(result.events!.every((event) => event.stage_source === 'carrier_map')).toBe(true);
   });
 
+  it('reads a courier collecting the parcel after it waited at its point as the parcel taken back', () => {
+    const payload = fixture('ready');
+    payload.status.unshift({ eventTimestamp: '2026-10-08T10:04:51Z', description: 'Parcel has been picked up from point by courier' });
+    expect(parseAllegroOne(payload, READY)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit',
+      current_stage_source: 'carrier_map', last_status_text: 'Parcel has been picked up from point by courier' });
+    payload.status.unshift(
+      { eventTimestamp: '2026-10-09T09:40:18Z', description: 'Parcel is awaiting pick-up' },
+      { eventTimestamp: '2026-10-09T06:02:44Z', description: 'Parcel has been released for delivery' },
+      { eventTimestamp: '2026-10-08T15:20:06Z', description: 'Parcel has been picked up by the courier' },
+      { eventTimestamp: '2026-10-08T15:20:05Z', description: 'Courier has transferred the parcel to the warehouse' },
+    );
+    const result = parseAllegroOne(payload, READY);
+    expect(result).toMatchObject({ current_stage: 'ready_for_pickup', last_status_text: 'Parcel is awaiting pick-up' });
+    expect(result.events!.map((event) => [event.description, event.stage])).toEqual([
+      ['Parcel is awaiting pick-up', 'ready_for_pickup'],
+      ['Parcel has been released for delivery', 'out_for_delivery'],
+      ['Parcel has been picked up by the courier', 'in_transit'],
+      ['Courier has transferred the parcel to the warehouse', 'in_transit'],
+      ['Parcel has been picked up from point by courier', 'in_transit'],
+      ['Time for pick-up has been extended', 'ready_for_pickup'],
+      ['Parcel is awaiting pick-up', 'ready_for_pickup'],
+      ['Parcel has been released for delivery', 'out_for_delivery'],
+      ['Parcel delivery time has been arranged with the recipient', 'in_transit'],
+      ['Parcel has been redirected to a different point', 'in_transit'],
+      ['Parcel is waiting for an alternative point indication', 'exception'],
+      ['Parcel has been accepted at the branch', 'in_transit'],
+      ['Parcel may be delivered with delay', 'in_transit'],
+      ['Parcel has been dispatched at point', 'accepted'],
+      ['Parcel has been prepared by the sender', 'registered'],
+    ]);
+  });
+
   it('reads the scans after a return to the sender as the way back', () => {
     const result = parseAllegroOne(fixture('sent-back'), SENT_BACK);
     expect(result).toMatchObject({ status: 'exception', current_stage: 'returned', current_stage_source: 'carrier_map',

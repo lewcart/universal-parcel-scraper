@@ -20,6 +20,10 @@ through the service Allegro's tracking page asks on Allegro's edge gateway.
   seen lists scans from its label on, so an empty list for them is `NotFoundError`. Older
   Allegro Delivery parcels drop out of the service, so an old AD number reads as not found too.
   For the older ALE form an empty list is `NoHistoryError`.
+- A courier's collection, such as "Parcel has been picked up from point by courier", is the
+  sender's drop-off collected until the parcel has waited at a point for its recipient. After
+  that it is the uncollected parcel taken back and is staged `in_transit`: one such parcel was
+  sent to a point again, so it is not read as a return.
 - Once a scan says the parcel went back to the sender, the later scans are its way back and are
   staged `returned`, a delivery to the sender included.
 - A refused request (HTTP 400 or 406), the gateway's "Feature unavailable" 404 for a retired

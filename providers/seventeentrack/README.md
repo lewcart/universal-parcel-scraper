@@ -104,8 +104,9 @@ carrier.
   [DHL Express rule](../../carriers/dhl-express/clock.ts) reads from their location
   instead. A scan the rule cannot place is counted in `undated_event_count`, and when it
   is the reply's latest scan the reply is inconclusive.
-- USPS's leg (carrier key 21051) shows USPS's wall clocks, each the scanning facility's,
-  and 17TRACK puts on each an offset it guesses from the scan's state: right in Arizona, but
+- USPS's leg (carrier key 21051) shows USPS's wall clocks, each the scanning facility's.
+  A row given to the second can name USPS's zone in `time_raw`, and keeps it. On a row
+  without a zone, 17TRACK puts an offset it guesses from the scan's state: right in Arizona, but
   `-05:00` in Indiana, which keeps Eastern time, an hour late against USPS's own page. A row
   whose place names its state or gives a ZIP code is read in that state's zone, as the
   [USPS adapter](../../carriers/usps/README.md) reads it. A row with no place, or with the

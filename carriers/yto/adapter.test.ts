@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
+import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, YtoTracker } from './adapter.js';
 import { normalizeYtoNumber, parseYto } from './parser.js';
@@ -178,17 +179,18 @@ describe('YTO domestic retrieval', () => {
   });
 
   it('gives a hanging first read half of the budget and the retry the rest', async () => {
-    const signals: AbortSignal[] = [];
-    const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      const signal = init!.signal!;
-      signals.push(signal);
-      signal.addEventListener('abort', () => reject(signal.reason), { once: true });
-    }));
-    const started = Date.now();
-    await expect(new YtoTracker({ fetcher }).fetch(NUMBER, { budgetMs: 80 })).rejects.toThrow();
-    expect(fetcher).toHaveBeenCalledTimes(2);
-    expect(signals.every(signal => signal.aborted)).toBe(true);
-    expect(Date.now() - started).toBeLessThan(2000);
+    useRequestClock();
+    try {
+      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+      const lookup = expect(new YtoTracker({ fetcher }).fetch(NUMBER, { budgetMs: 2000 })).rejects.toThrow();
+      await vi.advanceTimersByTimeAsync(2000);
+      await lookup;
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      expect(ended).toEqual([1000, 2000]);
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    }
   });
 
   it('propagates cancellation, fractional deadlines and streaming limits', async () => {

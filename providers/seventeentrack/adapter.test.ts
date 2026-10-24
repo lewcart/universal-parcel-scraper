@@ -288,6 +288,10 @@ describe('17TRACK result parsing', () => {
     expect(parsed.undated_event_count).toBeUndefined();
     // Another feed keeps 17TRACK's reading.
     expect(parse17TrackResponse(reply(100999, [indiana]), number).events?.[0]?.time).toBe('2026-05-08T01:16:00.000Z');
+    // A row to the second that names USPS's zone keeps it, wherever the place is.
+    const zoned = { ...row('2026-05-07', '20:16:09', '-04:00', 'US'), time_raw: { date: '2026-05-07', time: '20:16:09', timezone: '-04:00' } };
+    expect(parse17TrackResponse(reply(21051, [zoned]), number).events?.[0])
+      .toMatchObject({ time: '2026-05-08T00:16:09.000Z', time_provenance: 'carrier_reported' });
     // A place that gives only its ZIP code is read in that ZIP code's state.
     expect(parse17TrackResponse(reply(21051, [row('2026-05-06', '14:03:00', '-05:00', '94000')]), number).events?.[0]?.time)
       .toBe('2026-05-06T21:03:00.000Z');

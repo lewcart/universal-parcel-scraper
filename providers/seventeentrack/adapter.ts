@@ -178,8 +178,9 @@ const DAI_POST = 100790;
 
 /**
  * 17TRACK's carrier 21051, USPS, shows USPS's wall clocks, each the scanning
- * facility's (`time_raw` has no zone), and puts on each an offset it guesses
- * from the scan's state: Arizona's came right, but a distribution center in
+ * facility's. A row given to the second can name USPS's zone in `time_raw`,
+ * and keeps it. A row given to the minute has no zone, and 17TRACK puts on it
+ * an offset it guesses from the scan's state: Arizona's came right, but a distribution center in
  * Indiana, on Eastern time, came under -05:00, an hour late against USPS's own
  * page (checked 2026-10-22). A row whose place names its state, or gives a ZIP
  * code, is read in that state's zone, as USPS's adapter reads it

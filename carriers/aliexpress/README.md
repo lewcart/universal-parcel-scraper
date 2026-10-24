@@ -87,7 +87,7 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
 - Scan time is `timeStr` (local wall clock) plus `timeZone` (`GMT+2`, `GMT+8`…). `timeStr` alone
   would be read as UTC, the catalog timezone. The epoch `time` field is not the instant: it treats
   `timeStr` as Beijing time even for European scans.
-- Cainiao's own notices (`LAST_MILE_ASN_NOTIFY`, "Carrier update") carry no `timeZone`. Their epoch
+- Cainiao's own notices (`LAST_MILE_ASN_NOTIFY`) carry no `timeZone`. Their epoch
   keeps milliseconds that `timeStr` cannot hold, so the epoch is the recorded instant and `timeStr`
   its Beijing rendering: such a scan is read at `+08:00`. Any other scan without `timeZone` keeps its
   raw text, because a whole-second epoch may only be a reading of that text.
@@ -105,9 +105,13 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
   Marseille are accepted even in uppercase. Cainiao Express's tracker puts a town or a country code
   in `location`; the same rule reads it when the wording has no bracket. No scan states its
   country, so the location is the town alone.
-- The app scan-identity policy reconciles extracted towns and corrected milestones at the same
-  instant. Stage corrections require a matching action code, wording and place, and the consumer
-  requires unique matches to update the stored scan.
+- Some steps, the transit sorting centers' scans and the last-mile forecast among them, have the
+  placeholder "Carrier update" as their standard wording. Their own wording (`desc`) is shown
+  instead when they have one.
+- The app scan-identity policy reconciles extracted towns, a placeholder's replacement and
+  corrected milestones at the same instant. A replacement requires the same action code, stage and
+  place, and stage corrections a matching action code, wording and place. The consumer requires
+  unique matches to update the stored scan.
 
 ## Limitations
 

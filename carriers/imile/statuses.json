@@ -35,6 +35,7 @@
     {"code": "1003", "wording": "Customer Wants to Change Location", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "note": "A driver's reason, followed by the attempt's end."},
     {"code": "1003", "wording": "Route not completed", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "note": "A driver's reason, followed by the attempt's end."},
     {"code": "1003", "wording": "Traffic, Strike, Bad weather", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-20", "note": "A driver's reason on the delivery run, followed by the attempt's end and the return to the centre."},
+    {"code": "1002", "wording": "Traffic, Strike, Bad weather", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-22", "note": "The same reason for a parcel held up on its way to the delivery office, before its arrival there: a delay, not an attempt."},
     {"code": "1003", "wording": "User not at home", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "note": "A driver's reason, followed by the attempt's end."},
     {"code": "1003", "wording": "switch off", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "note": "A driver's reason, followed by the attempt's end."},
     {"code": "1003", "wording": "wrong address", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "note": "A driver's reason, followed by the attempt's end."},

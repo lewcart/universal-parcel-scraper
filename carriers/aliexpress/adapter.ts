@@ -178,11 +178,22 @@ function placedWording(wording: string, carriers: ReadonlySet<string>): { descri
   return place ? { description: match![2]!.trim(), location: place } : { description: wording, location: '' };
 }
 
+/**
+ * Cainiao's standard wording, or the scan's own where the standard one is the
+ * placeholder Cainiao gives some steps, its transit sorting centers' scans and
+ * its last-mile forecast among them: "Carrier update" says nothing their own
+ * wording does not.
+ */
+function scanWording(scan: JsonObject): string {
+  const standard = text(scan.standerdDesc);
+  return (/^carrier update$/i.test(standard) && text(scan.desc)) || standard || text(scan.desc);
+}
+
 const BEIJING_OFFSET_MS = 8 * 3_600_000;
 
 /**
  * Whether a zone-less scan is Cainiao's own record on the Beijing clock. Its
- * notices (`LAST_MILE_ASN_NOTIFY`, "Carrier update") come from no facility, so
+ * notices (`LAST_MILE_ASN_NOTIFY`) come from no facility, so
  * they carry no `timeZone`, and their epoch keeps milliseconds that `timeStr`
  * cannot hold: the epoch is then the recorded instant and `timeStr` its
  * Beijing rendering, not the other way round. A whole-second epoch could be
@@ -263,7 +274,7 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
   const events = details.slice(0, MAX_EVENTS_TO_RETURN).map((event): CarrierEvent => {
     const code = cainiaoActionCode(event.actionCode);
     const stage = cainiaoActionStage(code);
-    const placed = placedWording(text(event.standerdDesc) || text(event.desc), carriers);
+    const placed = placedWording(scanWording(event), carriers);
     return {
       ...scanClock(event),
       // Cainiao Express's tracker states a town or a country code in `location`.
@@ -293,7 +304,7 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
   return {
     status,
     ...(currentStage ? { current_stage: currentStage } : {}),
-    last_status_text: placedWording(text(latest.standerdDesc) || text(latest.desc), carriers).description || rawStatus,
+    last_status_text: placedWording(scanWording(latest), carriers).description || rawStatus,
     last_update: 'time' in latestClock ? latestClock.time || null : null,
     ...('local_time' in latestClock ? { last_update_local: latestClock.local_time } : {}),
     expected_delivery: status === 'delivered' ? null : expected,

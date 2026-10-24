@@ -63,7 +63,8 @@ makes, with the China leg Cainiao's global tracker holds under the same number.
   Returned to Client (`2065`) decide whatever the sentence says. In Transit (`1002`) and
   Delivery (`1003`) cover flights, clearance, centres, delivery runs and drivers' reasons, which
   the sentence tells apart. A booked flight, a booked delivery day and a stock count move
-  nothing. Some scans come without a code.
+  nothing. Some scans come without a code. "Traffic, Strike, Bad weather" is a failed attempt on a
+  delivery run and a delay under In Transit, before the parcel reaches its delivery office.
 - Delivery runs lose the driver's phone, deliveries lose who took the parcel, and Brazilian
   deliveries and returns lose iMile's support contacts. The proof-of-delivery photos some
   countries link are not kept.

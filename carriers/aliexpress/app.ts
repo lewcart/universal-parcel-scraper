@@ -1,10 +1,23 @@
-import type { SameInstantIdentityPolicy } from '../../core/catalog/eventIdentity.js';
+import type { SameInstantIdentityPolicy, SameInstantScan } from '../../core/catalog/eventIdentity.js';
 import { cainiaoActionCode, cainiaoActionStage } from './status.js';
 
 const normalized = (value: string) => value.replace(/\s+/g, ' ').trim().toLocaleLowerCase('en-US');
 
+/**
+ * A scan stored with Cainiao's placeholder wording, "Carrier update", and now
+ * worded as its step: the same action code and place.
+ */
+export function replacesCainiaoPlaceholder(incoming: SameInstantScan, stored: SameInstantScan): boolean {
+  const code = cainiaoActionCode(incoming.providerCode);
+  return code !== '' && code === cainiaoActionCode(stored.providerCode)
+    && normalized(stored.description) === 'carrier update'
+    && !['', 'carrier update'].includes(normalized(incoming.description))
+    && normalized(incoming.location) === normalized(stored.location);
+}
+
 // A scan stored while its town was still part of the wording, "[Bordeaux] Out for
-// delivery" without a location, is the same scan as "Out for delivery" in Bordeaux.
+// delivery" without a location, is the same scan as "Out for delivery" in Bordeaux,
+// and one stored with the placeholder is the same scan worded as its step.
 export const sameInstantIdentityPolicy: SameInstantIdentityPolicy = {
   sourceCarrierId: 'aliexpress', storedSources: ['aliexpress'], requireProviderCode: false,
   matchEachScan: true,
@@ -13,6 +26,7 @@ export const sameInstantIdentityPolicy: SameInstantIdentityPolicy = {
     const location = normalized(incoming.location);
     const movedLocation = Boolean(location) && !normalized(stored.location)
       && normalized(stored.description) === `[${location}] ${wording}`;
+    if (replacesCainiaoPlaceholder(incoming, stored)) return true;
     if (!wording || ['', 'unknown'].includes(incoming.stage)) return false;
     if (incoming.stage === stored.stage) return movedLocation;
 

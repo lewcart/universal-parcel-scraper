@@ -159,21 +159,21 @@
     },
     {
       "code": "SC_TRANS_INBOUND_SUCCESS",
-      "wording": "Carrier update",
+      "wording": "Package received by sorting center of transit",
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "firstSeen": "2026-09-12",
-      "note": ""
+      "firstSeen": "2026-10-25",
+      "note": "Cainiao's own wording; its standard wording is the placeholder \"Carrier update\"."
     },
     {
       "code": "SC_TRANS_OUTBOUND_SUCCESS",
-      "wording": "Carrier update",
+      "wording": "Package left sorting center of transit",
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "firstSeen": "2026-09-12",
-      "note": ""
+      "firstSeen": "2026-10-25",
+      "note": "Cainiao's own wording; its standard wording is the placeholder \"Carrier update\"."
     },
     {
       "code": "CC_EX_START",
@@ -401,12 +401,21 @@
     },
     {
       "code": "LAST_MILE_ASN_NOTIFY",
+      "wording": "Last-mile delivery forecast",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-25",
+      "note": "Cainiao's own wording; its standard wording is the placeholder \"Carrier update\"."
+    },
+    {
+      "code": "LAST_MILE_ASN_NOTIFY",
       "wording": "Carrier update",
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-09-12",
-      "note": ""
+      "note": "The placeholder alone, for a notice without wording of its own."
     },
     {
       "code": "GTMS_DO_DEPART",

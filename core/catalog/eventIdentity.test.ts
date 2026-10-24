@@ -333,6 +333,29 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: 'Item has been registered! The item can be registered several times.' }, stored)).toBe(false);
   });
 
+  it.each(['aliexpress', 'imile'])('lets a %s scan Cainiao worded as "Carrier update" take over its row once worded as its step', (source) => {
+    const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
+    const stored = { stage: 'in_transit', description: 'Carrier update', location: '', providerCode: 'SC_TRANS_OUTBOUND_SUCCESS' };
+    const incoming = { ...stored, description: 'Package left sorting center of transit' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.({ ...incoming, stage: 'unknown' }, stored)).toBe(true);
+    expect(policy?.matches?.(stored, incoming)).toBe(false);
+    for (const different of [
+      { ...stored, providerCode: '' },
+      { ...stored, providerCode: 'SC_TRANS_INBOUND_SUCCESS' },
+      { ...stored, location: 'Example City' },
+      { ...stored, description: 'Another scan' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, providerCode: '' }, { ...stored, providerCode: '' })).toBe(false);
+  });
+
+  it('keeps matching an iMile scan read twice by its evidence and wall clock', () => {
+    const policy = sameInstantIdentityPolicy('imile', { supportsScanMatching: true });
+    expect(policy).toMatchObject({ storedSources: ['imile'], requireProviderCode: false, matchEachScan: true, matchWallClock: true });
+    const stored = { stage: 'in_transit', description: 'Departed from sorting center', location: 'Example Hub', providerCode: 'SC_OUTBOUND_SUCCESS' };
+    expect(policy?.matches?.({ ...stored, description: ' departed from  sorting center' }, stored)).toBe(true);
+    expect(policy?.matches?.({ ...stored, providerCode: 'OTHER' }, stored)).toBe(false);
+  });
 
   it('lets a LinHan row read on Beijing time take over the row stored on its town’s zone, by wall clock, town and wording', () => {
     expect(sameInstantIdentityPolicy('linhan')).toBeUndefined();

@@ -59,6 +59,7 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
   ['switch off', 'failed_attempt'],
   ['customer wants to change location', 'failed_attempt'],
   ['route not completed', 'failed_attempt'],
+  // On the delivery run only (`1003`); on the way to the delivery office (`1002`) it is a delay.
   ['traffic, strike, bad weather', 'failed_attempt'],
   ['user not at home', 'failed_attempt'],
   ['wrong address', 'failed_attempt'],
@@ -91,16 +92,20 @@ export function imilePhrase(wording: string): string {
   return wording.replace(/【[^】]*】/g, ' ').toLocaleLowerCase('en-US').replace(/\s+/g, ' ').trim().replace(/\s*\.$/, '');
 }
 
+/** Drivers' reasons iMile also gives a parcel held up before its delivery run. */
+const DELAYS: ReadonlySet<string> = new Set(['traffic, strike, bad weather']);
+
 /** What iMile's own sentences say: a stage, null for a scan that moves nothing, undefined for a sentence they do not know. */
-function phraseStage(wording: string): Stage | null | undefined {
+function phraseStage(code: string, wording: string): Stage | null | undefined {
   const phrase = imilePhrase(wording);
+  if (DELAYS.has(phrase) && code !== DELIVERY) return 'in_transit';
   if (PHRASES.has(phrase)) return PHRASES.get(phrase)!;
   return OPENINGS.find(([opening]) => opening.test(phrase))?.[1];
 }
 
 /** The stage iMile's code and sentences give a scan, null for one that moves nothing, undefined when neither decides. */
 export function imileMappedStage(code: string, wording: string): Stage | null | undefined {
-  const phrase = phraseStage(wording);
+  const phrase = phraseStage(code, wording);
   if (phrase === null) return null;
   return DECISIVE.get(code) ?? phrase ?? CODES.get(code);
 }

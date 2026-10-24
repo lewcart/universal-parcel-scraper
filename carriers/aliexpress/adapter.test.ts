@@ -285,6 +285,21 @@ describe('Cainiao projection', () => {
     }
   });
 
+  it('words a step whose standard wording is the "Carrier update" placeholder with its own', () => {
+    const scan = (standerdDesc: string, desc: string) => parseCainiaoTrackingResponse({ module: [{
+      mailNo: 'LP00000000000001', latestTrace: { actionCode: 'SC_TRANS_OUTBOUND_SUCCESS', standerdDesc, desc },
+      detailList: [{ actionCode: 'SC_TRANS_OUTBOUND_SUCCESS', standerdDesc, desc }],
+    }] }, 'LP00000000000001');
+    expect(scan('Carrier update', '[Example City] Package left sorting center of transit')).toMatchObject({
+      last_status_text: 'Package left sorting center of transit',
+      events: [{ location: 'Example City', description: 'Package left sorting center of transit', provider_code: 'SC_TRANS_OUTBOUND_SUCCESS' }],
+    });
+    expect(scan('Carrier update', '').events?.[0]?.description).toBe('Carrier update');
+    // Any other standard wording stays ahead of the scan's own.
+    expect(scan('Departed from sorting center', 'Package left sorting center of transit').events?.[0]?.description)
+      .toBe('Departed from sorting center');
+  });
+
   it('reads each scan at its own GMT offset and ignores the Beijing-based epoch', () => {
     // The fixture's epoch `time` values read timeStr as GMT+8, as the live API does.
     expect(delivered.events?.map((event) => event.time)).toEqual([

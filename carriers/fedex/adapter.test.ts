@@ -103,6 +103,11 @@ describe('FedEx status vocabulary', () => {
     expect(fedexStage('In FedEx possession — Package available for clearance')).toBe('customs');
     expect(fedexStage('International shipment release - Import')).toBe('in_transit');
     expect(fedexStage('International shipment release - Export')).toBe('in_transit');
+    expect(fedexStage('At FedEx origin facility')).toBe('in_transit');
+    expect(fedexStage('Left FedEx origin facility')).toBe('in_transit');
+    expect(fedexStage('Delivery option requested')).toBe('in_transit');
+    // A delivery left at the door stays a delivery.
+    expect(fedexStage('Delivered — Left at front door. Package delivered to recipient address')).toBe('delivered');
     expect(fedexStatus('DL', 'On FedEx vehicle for delivery')).toBe('delivered');
     expect(fedexStatus('OD', 'Delivered')).toBe('out_for_delivery');
     // Unrecognized wording only means "moving" once the shipment has scans.

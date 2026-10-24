@@ -91,6 +91,11 @@ const IN_TRANSIT_TERMS = [
   'at destination sort facility',
   // Customs let the parcel go: "International shipment release - Import" (or "- Export").
   'international shipment release',
+  // FedEx's origin facility after the pickup: "At FedEx origin facility", "Left FedEx origin facility".
+  'fedex origin facility',
+  'left fedex',
+  // A delivery option the recipient asked for (code RR) while the parcel still travels.
+  'delivery option requested',
 ];
 
 /**

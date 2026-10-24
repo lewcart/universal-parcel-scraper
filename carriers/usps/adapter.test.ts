@@ -344,17 +344,30 @@ describe('USPS lookup steps', () => {
     body: null, error: null, truncated: false, base64Encoded: false,
   };
 
-  it('stops after a bound outage redirect without calling it missing or repeating verification', async () => {
+  it('reads twice more after a bound outage redirect and ends as unavailability, not a missing parcel', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
       trawlReply(INTERSTITIAL_PAGE, DELIVERED_NUMBER, [outageReply]));
     const { recorder, records } = stepRecorder();
     await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ kind: 'indeterminate', reason: 'maintenance_page' });
-    expect(fetcher).toHaveBeenCalledTimes(1);
-    expect(records).toEqual(['trawl:indeterminate', 'lookup:trawl:indeterminate']);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(records).toEqual(['trawl:indeterminate', 'trawl:indeterminate', 'trawl:indeterminate', 'lookup:trawl:indeterminate']);
     expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({
       captureResponses: [uspsTrackingUrl(DELIVERED_NUMBER)],
     });
+  });
+
+  it('reads on after an outage redirect until the history loads', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE, DELIVERED_NUMBER, [outageReply]))
+      .mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE))
+      .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+    const step = vi.fn();
+    const result = await new USPSTracker({ trawl: new TrawlClient(TRAWL_URL), recorder: { step, lookup: vi.fn() } }).fetch(DELIVERED_NUMBER);
+    expect(result.events).toHaveLength(5);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(step).toHaveBeenNthCalledWith(2, expect.objectContaining({ step: 'trawl', outcome: 'challenge',
+      fallbackError: expect.objectContaining({ reason: 'maintenance_page' }) }));
   });
 
   it.each([

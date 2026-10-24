@@ -119,7 +119,8 @@ describe('standalone tracker', () => {
     expect(answer.source).toBe('Ship24');
     expect(answer.result.events).toHaveLength(2);
     expect(answer.attempts.map(attempt => attempt.kind)).toEqual(['indeterminate', 'ok']);
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    // Three browser reads, each redirected, then Ship24.
+    expect(fetcher).toHaveBeenCalledTimes(4);
   });
 
   it('detects a USPS routing barcode as typed and gives providers only its package identifier', async () => {

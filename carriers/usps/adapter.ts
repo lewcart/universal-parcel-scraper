@@ -31,6 +31,12 @@ const MAX_EVENTS_TO_RETURN = 100;
 /** Pages a second browser read within the same budget can complete. */
 const RECOVERABLE_PAGES = new Set(['incomplete_page', 'interstitial_page']);
 
+/** A read the verification wrapper sent to the outage page. The redirect concerns that read:
+ * a later one loads tracking about as often as after the interstitial, whose blank wrapper it leaves. */
+function outageRedirect(error: unknown): boolean {
+  return error instanceof IndeterminateError && error.reason === 'maintenance_page';
+}
+
 /** The number as typed, upper case and without the spaces, dots and dashes of a printed label. */
 function cleanUSPSNumber(raw: string): string {
   return raw.toLocaleUpperCase('en-US').replace(/[\s.-]/g, '');
@@ -283,11 +289,11 @@ export class USPSTracker {
       recorder: this.#recorder,
     }, [
       { id: 'trawl', run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
-      { id: 'trawl', recovers: error => error instanceof ChallengeError && RECOVERABLE_PAGES.has(error.reason ?? ''),
+      { id: 'trawl', recovers: error => (error instanceof ChallengeError && RECOVERABLE_PAGES.has(error.reason ?? '')) || outageRedirect(error),
         run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
       // A second read stays on the interstitial about as often as a first one, so
       // a third read passes as often as the second.
-      { id: 'trawl', recovers: error => error instanceof ChallengeError && error.reason === 'interstitial_page',
+      { id: 'trawl', recovers: error => (error instanceof ChallengeError && error.reason === 'interstitial_page') || outageRedirect(error),
         run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
     ]);
     // A typed routing barcode opens with the recipient's ZIP code. The package

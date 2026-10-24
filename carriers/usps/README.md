@@ -39,10 +39,12 @@ FLARESOLVERR_URL for browser fallback')`.
    as HTML.
 
 The verification wrapper can stay blank when its tracking request redirects to
-USPS's service outage page. The service captures that exact redirect as temporary
-unavailability, so enabled providers can take over without repeating the same
-outage. An unresolved verification page remains a challenge; a complete matching
-history takes precedence over an earlier outage reply.
+USPS's service outage page. The service captures that exact redirect. It concerns one
+read, not the service: a later read loads the tracking page about as often as after the
+interstitial, so the lookup reads again as it does after one. A lookup whose every read
+is redirected ends as temporary unavailability, and enabled providers take over. An
+unresolved verification page remains a challenge; a complete matching history takes
+precedence over an earlier outage reply.
 
 Parsing, in order:
 
@@ -86,8 +88,9 @@ Parsing, in order:
   telemetry retains the first failure. The bot check's blank interstitial, an untitled
   page holding only its script, which the browser can capture before the script reloads
   into the tracking page, gets up to two more: a second read stays on it about as often as
-  a first one. Other challenges, identity errors and rate limits are not repeated. Pasted
-  legacy query links remain supported.
+  a first one. A read redirected to the outage page gets the same two. Other challenges,
+  identity errors and rate limits are not repeated. Pasted legacy query links remain
+  supported.
 
 ## Mobile API leads
 

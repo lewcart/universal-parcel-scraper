@@ -16,7 +16,11 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
 - The text is split into fields and phrases, and facility words ("hub", "Paketzentrum",
   "sort centre") are dropped. What is left is matched against town names, and translations
   for larger towns ("Genf", "Cologne"). A translation of three Latin letters is left out: it
-  is a code or a stray transliteration more often than a name ("Lon" for Lognes).
+  is a code or a stray transliteration more often than a name ("Lon" for Lognes). Translations
+  include old names, so nothing confirming it, only a city's of 100,000 people places a town
+  (Trenton was "Mill Hill"). A town found by a translation keeps the carrier's words for its own
+  name: "Asuncion del Paraguay" is "Asuncion". Each half of a bilingual name counts
+  ("Biel/Bienne"), but not a direction that halves a district's ("Neustadt/Süd").
 - A town is looked up at the start or the end of a name, and between other words when it is
   a city of 100,000 people where the parcel is ("Example Reading Station Lockers"), or
   something else in the text confirms it.
@@ -24,20 +28,25 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   is a town where the text or the parcel is, or a city and the shorter name names no town
   there: "Cartagena de Indias" is in Colombia, "San Jose de Costa Rica" in Costa Rica, but
   "East London MC" on a British parcel is in London. A town within 50 km of the longer name
-  may still be the one meant ("NEW DELHI").
+  may still be the one meant ("NEW DELHI"). Elsewhere, a town nothing but a country confirms
+  is no word of a longer name some town has, unless it is a city of 100,000 people where the
+  text or the parcel is: "Mill Hill Post Office" is not in Hill.
 - A country after the last dash is taken off, as DHL Express prints it ("BENIN CITY -
   NIGERIA", "AMSTERDAM - NETHERLANDS, THE"). Georgia stays: it is also a US state.
 - Chinese, Japanese and Korean names match in their own script. "广东省深圳市" is read as
   a province followed by a city, and a county-level city after its prefecture's city, in
   the same province, is where the scan is: "浙江省金华市义乌市" is Yiwu. A town's name can
   start a facility's ("义乌转运中心"); a word for a facility or a part of town ("中心",
-  "新城") names no town.
+  "新城") names no town. Latin letters next to such script are a word: "Changsha市".
 - Bigger towns win, and context breaks ties: a country written in the text, a state,
   province or canton, by code or by name ("STERLING - Virginia - USA", "CURITIBA - PR"), a
   Swiss postcode, then the countries of neighbouring scans, the parcel's destination and
   its carriers' countries. `placesForEvents` reads those from the catalog for the carrier
   ids in `carriers`: the countries a carrier delivers in, unless they are more than six, and
   the country of its clock. `carrierCountries` adds countries by code.
+- Towns of one name in one country, more than 50 km apart and neither twice the other's size,
+  are told apart by the scans around them: Royal Mail's "Kennington DO" between London's
+  scans is in London, by Ashford in Kent. Alone, the scan gets no place.
 - Context does not outweigh a city of a million people, or a town of 100,000 ten times the
   size of the namesake context picks, when it lies nearer the way between the scans around
   it: "Warsaw" between Lviv and New York is in Poland.
@@ -46,7 +55,8 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
 - Two letters after the town are a country when a town of that name is there ("MONTE CARLO
   MC"), or when the parcel is. Otherwise they may be a province or an office: "PINEROLO
   (TO)" is in the province of Turin, not Tonga, and Royal Mail's "Norwich MC" is a mail
-  centre, not Monaco. The town's own province settles it, then a town of that name where the
+  centre, not Monaco. A depot's number in brackets can follow the code ("Vilvoorde - BE
+  (depot 0001)"). The town's own province settles it, then a town of that name where the
   parcel is, then, for a code no comma or bracket sets apart, any town of that name. With no
   town at all, a code in brackets or after a space is no country on a parcel known to be
   elsewhere, and the scan gets no place.
@@ -57,8 +67,10 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
 - A field that only names a region is that region: it places a town of that name only if
   the town lies in it, and otherwise places the region's country ("Guangdong Province").
   The words of a region's name are not towns elsewhere: "Cabo Delgado" is in Mozambique,
-  not "Delgado" in El Salvador. A region the parcel's countries have wins over a namesake
-  abroad.
+  not "Delgado" in El Salvador, nor is a region's name a small town of its country outside
+  it ("Mid Wales MC" is not Wales in Yorkshire). A region the parcel's countries have wins over
+  a namesake abroad. Carriers still print some regions' former names: "Distrito Federal" is
+  Mexico City's on a Mexican parcel and Brasília's on a Brazilian one.
 - A town nothing confirms needs 15,000 people. Otherwise the scan gets no place: a wrong
   dot is worse than none. Postcodes only confirm a name, never stand in for one.
 - A town only its name places, in a country nothing else puts the parcel in, is a namesake
@@ -145,7 +157,8 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   sites stay on their town.
 - A scan that names an airport is placed at it, when the airport is within 60 km of the
   town: by its code in brackets ("Frankfurt Airport (FRA)"), by a word of its name that is
-  neither the town nor the country ("LONDON-HEATHROW"), or as the town's one airport when
+  neither the town nor the country ("LONDON-HEATHROW"), by the words of its name together
+  ("Chicago O Hare"), or as the town's one airport when
   the text says airport ("LIEGE AIRPORT"). The place keeps the town as its name and returns
   the airport as `site`.
 - A code with an airport word ("JFK Airport") or the airport's country or state ("BNE, AU")
@@ -159,6 +172,7 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   ("POA" is Poá). Otherwise the code is no town nothing else confirms ("CAN" is no Çan in
   Turkey).
 - A country's three-letter code alone ("ITA") is that country, when the parcel is there.
+  Elsewhere it is no town nothing else confirms: "ITA" is not Itá in Paraguay.
 - A UPU office of exchange ("DEFRAA": a country's two letters, an airport's code, an office
   letter) is in the town of the airport its code names, when the airport is in that
   country.

@@ -127,6 +127,8 @@ const NAMESAKE_THOUSANDS = 100;
 const PART_OF_NAME_KM = 50;
 // The most words of a town's name looked up between other words.
 const MIDDLE_WORDS = 3;
+// Towns of one name in one country whose scores are this close (twice the people at most) are told apart by the scans around them.
+const TWIN_SCORE = Math.log10(2);
 // A town of that size this many times larger than its namesake in a country the parcel is in keeps its name.
 const DOMINANT_TIMES = 10;
 // Scans that record paperwork, which an office can file where the parcel is not.
@@ -392,11 +394,10 @@ interface Token { key: string; start: number; end: number }
  */
 interface Phrase { key: string; text: string; rank: number; start: number; end: number; whole: boolean; middle?: boolean }
 
-const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u;
-
 function tokens(text: string): Token[] {
-  return [...text.matchAll(/[\p{L}\p{N}]+/gu)].flatMap((match) => {
-    if (CJK.test(match[0])) return [];
+  // Chinese, Japanese and Korean script is read by `cjkPhrases`. Latin letters next to it are
+  // still a word: "Changsha市".
+  return [...text.matchAll(/(?:(?![\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}])[\p{L}\p{N}])+/gu)].flatMap((match) => {
     // "BARCELONA2": a depot number glued to the town.
     const word = /\p{L}/u.test(match[0]) ? match[0].replace(/\d+$/u, '') : match[0];
     const key = nameKey(word);
@@ -519,7 +520,11 @@ function candidates(data: Gazetteer, key: string, carriers: readonly string[]): 
  * A place, and whether the scan's own text says where it is rather than the town's name
  * alone. For a town: how many thousand people it has, and whether other towns share its name.
  */
-interface Located { place: EventPlace; text: boolean; thousands?: number; shared?: boolean }
+interface Located {
+  place: EventPlace; text: boolean; thousands?: number; shared?: boolean;
+  /** Towns of the same name in the same country, far apart, that the text tells apart from `place` no better. */
+  twins?: readonly EventPlace[];
+}
 
 /**
  * Turns one carrier location ("ZUERICH, CH", "Härkingen 4622", "Agence DPD de
@@ -527,7 +532,9 @@ interface Located { place: EventPlace; text: boolean; thousands?: number; shared
  * place we can be confident about. A wrong dot is worse than no dot.
  */
 export function locatePlace(location: string | null | undefined, hints: PlaceHints = {}): EventPlace | null {
-  return locate(location, hints)?.place ?? null;
+  const found = locate(location, hints);
+  // Alone, a name two towns of a country share alike says neither.
+  return found && !found.twins ? found.place : null;
 }
 
 /** `split` reads a country the text names apart from its town; without it the whole text is the town's. */
@@ -570,13 +577,16 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   let looseCountry = false;
 
   // A trailing code without a comma ("ZUERICH CH"), or one that is also a state
-  // or canton ("KOELN, DE", "Buchs SG"): a hint either way.
-  const trailing = /[\s,;]+([A-Z]{2})$/.exec(rest)?.[1];
+  // or canton ("KOELN, DE", "Buchs SG"): a hint either way. A depot's number can
+  // follow it: "Example Town - IT (depot 0001)".
+  const end = /[\s,;]+([A-Z]{2})(?:\s*\((?:\p{L}+\s+)?\d+\))?$/u.exec(rest);
+  const trailing = end?.[1];
   if (!country && trailing && data.countries.has(trailing)) {
-    rest = rest.slice(0, -trailing.length).replace(/[\s,;-]+$/, '');
+    const before = rest.slice(0, end.index + end[0].indexOf(trailing));
+    rest = before.replace(/[\s,;-]+$/, '');
     hinted.unshift(trailing);
     admin.push(trailing);
-    if (!/,|;/.test(text.slice(0, -trailing.length)) && !ambiguousAddressCodes.has(trailing)) {
+    if (!/,|;/.test(before) && !ambiguousAddressCodes.has(trailing)) {
       country = trailing;
       looseCountry = true;
     }
@@ -618,9 +628,15 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   const outer = regions.filter((region) => !regions.some((other) => other.field === region.field
     && other.start < region.end && other.end > region.start && other.end - other.start > region.end - region.start));
 
-  let best: { place: Candidate; score: number; text: string; field: number; end: number; backed: boolean; shared: boolean } | null = null;
+  // "ITA" alone is Italy's code more often than Itá: a town of a country's three letters needs confirming.
+  const countryCoded = COUNTRY_CODES.has(text);
+  let best: { place: Candidate; score: number; text: string; key: string; field: number; end: number; backed: boolean; shared: boolean } | null = null;
+  const scored: { place: Candidate; score: number; key: string }[] = [];
   // Whether the text names a town at all, even one nothing confirms.
   let namesTown = false;
+  // The carrier's words for each town by its own name: "Asuncion del Paraguay" is Asunción, by any of its names.
+  const ownWords = new Map<string, string>();
+  const townId = (place: Candidate) => `${place.country}|${place.latitude}|${place.longitude}|${place.name}`;
   for (const [fieldIndex, list] of fieldPhrases.entries()) {
     for (const phrase of list) {
       const own = data.regions.get(phrase.key) ?? [];
@@ -647,6 +663,9 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
       const anyHere = all.some((place) => !place.hub && here(place));
       const longerTowns = longer.flatMap((other) => candidates(data, other.key, carriers))
         .filter((place) => !place.hub && (here(place) || (!anyHere && place.thousands >= NAMESAKE_THOUSANDS)));
+      // Elsewhere too, for a town nothing but its country confirms that is no city there: "Mill Hill Post
+      // Office" is not in Hill.
+      const longerAnywhere = longer.flatMap((other) => candidates(data, other.key, carriers)).filter((place) => !place.hub);
       const towns = all.filter((place) => (place.hub ? !longer.length : !longerTowns.length
         || longerTowns.some((other) => distanceKm(place.latitude, place.longitude, other.latitude, other.longitude) <= PART_OF_NAME_KM)));
       namesTown ||= towns.length > 0;
@@ -663,6 +682,10 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
             && scope.some((other) => other.country === region.country && other.admin1 === region.admin1));
         if (within.length && !inside(within) && !namesake(within)) continue;
         if (named.length && !inside(named) && !(fieldIndex === 0 && namesake(named))) continue;
+        // Nor does a region's name name a small town of its country outside it: "Mid Wales MC"
+        // is no village called Wales in England.
+        const home = own.filter((region) => region.country === place.country);
+        if (home.length && !inside(home) && !namesake(home)) continue;
         const adminCodes = [place.admin1, place.admin2].filter(Boolean);
         const adminMatch = admin.some((code) => adminCodes.includes(code) || ADMIN_CODES[place.country]?.[code] === place.admin1)
           || regions.some((region) => region.country === place.country && region.admin1 === place.admin1
@@ -675,18 +698,25 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
         const postcodeMatch = postcode !== null && postcode.country === place.country
           && distanceKm(postcode.latitude, postcode.longitude, place.latitude, place.longitude) < 30;
         const confirmed = inCountry || hint >= 0 || adminMatch || postcodeMatch;
-        if (!confirmed && place.thousands < UNCONFIRMED_MIN_THOUSANDS) continue;
+        if (!confirmed && (place.thousands < UNCONFIRMED_MIN_THOUSANDS || (countryCoded && !place.hub))) continue;
+        // A town's other names include old ones (Trenton was Mill Hill): nothing confirming it, only a city's are known enough.
+        if (!confirmed && place.alternate && place.thousands < NAMESAKE_THOUSANDS) continue;
         // Between other words, a town is a city where the parcel is, or something else confirms
         // it: "Queen Elizabeth Olympic Park" is not in Elizabeth, New Jersey.
         if (phrase.middle && !place.hub && !place.own && !adminMatch && !postcodeMatch
           && !((inCountry || hint >= 0) && place.thousands >= NAMESAKE_THOUSANDS)) continue;
+        if (longerAnywhere.length && !place.hub && !adminMatch && !postcodeMatch
+          && !((inCountry || hint >= 0) && place.thousands >= NAMESAKE_THOUSANDS)
+          && longerAnywhere.every((other) => distanceKm(place.latitude, place.longitude, other.latitude, other.longitude) > PART_OF_NAME_KM)) continue;
+        if (!place.alternate && !ownWords.has(townId(place))) ownWords.set(townId(place), phrase.text);
         const score = Math.log10(Math.max(place.thousands, .3) * 1000)
           + (place.alternate ? 0 : 1.8)
           + (inCountry ? 4 : hint >= 0 ? 2.5 - Math.min(hint, 3) * .4 : 0)
           + (adminMatch ? 3 : 0) + (postcodeMatch ? 3 : 0) + (place.own ? 3 : 0)
           - phrase.rank * .3 - fieldIndex * .5;
+        scored.push({ place, score, key: phrase.key });
         if (!best || score > best.score) {
-          best = { place, score, text: phrase.text, field: fieldIndex, end: phrase.end, backed: inCountry || adminMatch || postcodeMatch, shared: towns.length > 1 };
+          best = { place, score, text: phrase.text, key: phrase.key, field: fieldIndex, end: phrase.end, backed: inCountry || adminMatch || postcodeMatch, shared: towns.length > 1 };
         }
       }
     }
@@ -694,8 +724,14 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
 
   if (best) {
     const county = countyIn(data, fieldPhrases[best.field] ?? [], best, carriers);
-    const { place, text: carrierWords } = county ?? best;
+    const { place, text: carrierWords } = county
+      ?? { place: best.place, text: (best.place.alternate && ownWords.get(townId(best.place))) || best.text };
     const airport = place.hub ? null : airportFor(data, rest, fields[best.field] ?? rest, place, carrierWords, country);
+    // Keep the carrier's spelling unless it is shouting: "La Crau", but "Köln" for "KOELN".
+    const name = (town: Candidate) => !town.named && /\p{Ll}/u.test(carrierWords) ? carrierWords : town.name;
+    const twins = county || place.hub ? [] : scored.filter((other) => other.key === best.key && other.place.country === place.country
+      && !other.place.hub && other.place.alternate === place.alternate && best.score - other.score < TWIN_SCORE
+      && distanceKm(place.latitude, place.longitude, other.place.latitude, other.place.longitude) > PART_OF_NAME_KM);
     return {
       text: best.backed,
       thousands: place.thousands,
@@ -705,10 +741,12 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
         longitude: round(airport?.longitude ?? place.longitude),
         precision: 'city',
         country: place.country,
-        // Keep the carrier's spelling unless it is shouting: "La Crau", but "Köln" for "KOELN".
-        name: !place.named && /\p{Ll}/u.test(carrierWords) ? carrierWords : place.name,
+        name: name(place),
         ...(place.site ? { site: place.site } : airport ? { site: airport.name } : {}),
       },
+      ...(twins.length ? { twins: twins.map(({ place: twin }) => ({
+        latitude: round(twin.latitude), longitude: round(twin.longitude), precision: 'city' as const, country: twin.country, name: name(twin),
+      })) } : {}),
     };
   }
   // "SCSEZA": a UPU office of exchange, in the town of the airport its code names.
@@ -761,7 +799,7 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
 
 /**
  * The airport a scan names, near the town it names: by its code in brackets
- * ("Frankfurt Airport (FRA)"), by a word of its own name ("LONDON-HEATHROW"),
+ * ("Frankfurt Airport (FRA)"), by its own name ("LONDON-HEATHROW", "Chicago O Hare"),
  * or as the one airport of the town when the text says airport ("LIEGE AIRPORT").
  * `text` is the location without the country it names, `field` the part of it
  * the town was read from: in "Soyapango, San Salvador" the region is no airport.
@@ -776,8 +814,13 @@ function airportFor(data: Gazetteer, text: string, field: string, town: Candidat
     const named = nearby.find((airport) => airport.code === code);
     if (named) return named;
   }
-  const distinct = nearby.filter((airport) => nameKey(airport.name).split(' ')
-    .some((word) => word.length >= 5 && !AIRPORT_NAME_WORDS.has(word) && !townWords.has(word) && fieldWords.has(word)));
+  // "Chicago O Hare": the words of its own name, together.
+  const fieldName = ` ${tokens(field).map((token) => token.key).filter((word) => !AIRPORT_NAME_WORDS.has(word)).join(' ')} `;
+  const distinct = nearby.filter((airport) => {
+    const own = nameKey(airport.name).split(' ').filter((word) => !AIRPORT_NAME_WORDS.has(word) && !townWords.has(word));
+    return own.some((word) => word.length >= 5 && fieldWords.has(word))
+      || (own.join('').length >= 4 && fieldName.includes(` ${own.join(' ')} `));
+  });
   if (distinct.length === 1) return distinct[0]!;
   if (![...words].some((word) => AIRPORT_WORDS.has(word))) return null;
   const serving = nearby.filter((airport) => [...townWords].some((word) => word.length >= 3
@@ -861,8 +904,10 @@ function countryCodePlace(data: Gazetteer, text: string, countries: readonly str
 /** The town an airport serves, by the name OurAirports gives it ("Sydney (Mascot)"), when it lies within 60 km. */
 function airportTown(airport: Airport, carriers: readonly string[]): Located | null {
   const town = locate(airport.town, { countries: [airport.country], carriers }, false);
-  return town && town.place.precision === 'city' && town.place.country === airport.country
-    && distanceKm(town.place.latitude, town.place.longitude, airport.latitude, airport.longitude) <= AIRPORT_MAX_KM ? town : null;
+  // Of towns that share the name, the airport's.
+  const place = town && [town.place, ...town.twins ?? []].find((place) => place.precision === 'city' && place.country === airport.country
+    && distanceKm(place.latitude, place.longitude, airport.latitude, airport.longitude) <= AIRPORT_MAX_KM);
+  return town && place ? { ...town, place, twins: undefined } : null;
 }
 
 /** A scan at an airport: the airport's point, under the name of the town it serves. */
@@ -1124,9 +1169,21 @@ export function placesForEvents(
     return ownPlace(location, cachedPlace(location, [...neighbours, ...base.filter((code) => !neighbours.includes(code))], carriers)
       ?? (telling(first[index]!, index) ? first[index]! : null), index);
   });
-  const dropped = namesakes(settled);
+  // Of towns a country shares a name between, the one nearer the scans around it: "Kennington"
+  // among London's scans. With no scan around to tell, none.
+  const told = settled.map((found, index) => {
+    if (!found?.twins) return found;
+    const holds = (entry: Located | null, at: number) => telling(entry, at) && !entry!.twins && entry!.place.precision === 'city';
+    const around = [nearest(settled, index, -1, holds)?.place, nearest(settled, index, 1, holds)?.place]
+      .filter((other): other is EventPlace => Boolean(other));
+    if (!around.length) return null;
+    const way = (place: EventPlace) => around.reduce((sum, other) => sum + distanceKm(place.latitude, place.longitude, other.latitude, other.longitude), 0);
+    const [place] = [found.place, ...found.twins].sort((left, right) => way(left) - way(right));
+    return { ...found, place: place!, twins: undefined };
+  });
+  const dropped = namesakes(told);
   const places = locations.map((location, index) => {
-    const found = settled[index];
+    const found = told[index];
     if (!found || !location || dropped.has(index)) return null;
     return atPoint(found.place, points[index] ?? pointAt.get(location.trim()));
   });

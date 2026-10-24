@@ -4,6 +4,8 @@
 
 const letters = { ß: 'ss', æ: 'ae', Æ: 'ae', ø: 'o', Ø: 'o', œ: 'oe', Œ: 'oe', ł: 'l', Ł: 'l', đ: 'd', Đ: 'd', ı: 'i', þ: 'th', ð: 'd' };
 const german = { ä: 'ae', ö: 'oe', ü: 'ue', Ä: 'ae', Ö: 'oe', Ü: 'ue' };
+// Halves that only point within a town ("Neustadt/Süd"), not a name of their own.
+const directions = new Set(['nord', 'sud', 'ost', 'west', 'north', 'south', 'east', 'mitte', 'zentrum', 'centre', 'center']);
 
 /**
  * Lower case, no accents, words separated by single spaces:
@@ -27,13 +29,18 @@ export function nameKey(name) {
 /**
  * Every key a name answers to, including the German transliteration carriers
  * print in capitals ("ZUERICH", "KOELN") and each half of a bilingual name
- * ("Biel/Bienne").
+ * ("Biel/Bienne"). A half of three Latin letters or fewer, or a direction, is
+ * no name.
  * @param {string} name
  * @returns {string[]}
  */
 export function nameKeys(name) {
   const keys = new Set([nameKey(name), nameKey(name.replace(/[äöüÄÖÜ]/g, (letter) => german[/** @type {keyof typeof german} */ (letter)]))]);
-  if (name.includes('/')) for (const part of name.split('/')) keys.add(nameKey(part));
+  if (name.includes('/')) {
+    for (const part of name.split('/').map(nameKey)) {
+      if ((part.length > 3 || /[^a-z0-9 ]/.test(part)) && !directions.has(part)) keys.add(part);
+    }
+  }
   keys.delete('');
   return [...keys];
 }

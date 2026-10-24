@@ -29,6 +29,8 @@ describe('locatePlace', () => {
     expectPlace('Paris, Île-de-France, FR', { country: 'FR', name: 'Paris', latitude: 48.85, longitude: 2.35 });
     expectPlace('LONDON', { country: 'GB', name: 'London', latitude: 51.51, longitude: -0.13 });
     expectPlace('BARCELONA2', { country: 'ES', name: 'Barcelona', latitude: 41.39, longitude: 2.16 });
+    // A depot's number after the country code.
+    expectPlace('Vilvoorde - BE (depot 0001)', { country: 'BE', name: 'Vilvoorde', latitude: 50.93, longitude: 4.43 });
   });
 
   it('uses states and provinces to pick the right town of a shared name', () => {
@@ -94,6 +96,10 @@ describe('locatePlace', () => {
     expect(place('LONDON-HEATHROW - UK')).toMatchObject({ country: 'GB', name: 'London', site: 'London Heathrow Airport', latitude: 51.471, longitude: -0.46 });
     expect(place('HELSINKI-VANTAAN LENTOASEMA')).toMatchObject({ country: 'FI', name: 'Helsinki', site: 'Helsinki Vantaa Airport' });
     expect(place('LIEGE AIRPORT')).toMatchObject({ country: 'BE', name: 'Liège', site: 'Liège Airport' });
+    // An airport of a city that has several, by the words of its own name.
+    expect(place('Chicago O Hare Airport')).toMatchObject({ country: 'US', name: 'Chicago', site: "Chicago O'Hare International Airport", latitude: 41.979 });
+    expect(place('Chicago Midway Airport')).toMatchObject({ country: 'US', site: 'Chicago Midway International Airport' });
+    expect(place('Chicago Airport')?.site).toBeUndefined();
     // Roissy is the airport, not Roissy-en-Brie on the other side of Paris.
     expect(place('ROISSY COURRIER INTERNATIONAL')).toMatchObject({ country: 'FR', name: 'Roissy-en-France', site: 'Charles de Gaulle International Airport' });
     expect(place('EAST MIDLANDS - UK')).toMatchObject({ country: 'GB', site: 'East Midlands Airport' });
@@ -176,7 +182,8 @@ describe('locatePlace', () => {
 
   it("reads a country's three-letter code as that country where the parcel is", () => {
     expect(place('ITA', ['IT'])).toMatchObject({ precision: 'country', country: 'IT', name: 'Italy' });
-    expect(place('ITA')?.country).not.toBe('IT');
+    // Alone, the code is no town of those letters either: not Itá in Paraguay.
+    expect(place('ITA')).toBeNull();
     expect(placesForEvents(['Milano', 'ITA', 'Roma'])[1]).toMatchObject({ precision: 'country', country: 'IT' });
   });
 
@@ -207,7 +214,8 @@ describe('locatePlace', () => {
     // DPD's Swiss depot is in Buchs in the canton of Zurich; any other Buchs still has to say so.
     expect(locatePlace('Buchs, CH', { carriers: ['dpd'] })).toMatchObject({ country: 'CH', name: 'Buchs', latitude: 47.452, longitude: 8.43 });
     expect(locatePlace('Buchs SG', { carriers: ['dpd'] })).toMatchObject({ latitude: 47.167, longitude: 9.478 });
-    expect(place('Buchs, CH')).toMatchObject({ latitude: 47.167, longitude: 9.478 });
+    // Without the carrier, the country alone names none of its three Buchs; the scans around one tell it.
+    expect(place('Buchs, CH')).toBeNull();
     // DHL's parcel centre is in Staufenberg in Lower Saxony, not the town in Hesse.
     expect(locatePlace('Staufenberg', { countries: ['DE'], carriers: ['dhl-ecommerce'] })).toMatchObject({ country: 'DE', latitude: 51.372, longitude: 9.634 });
     expect(place('Staufenberg', ['DE'])).toMatchObject({ country: 'DE', latitude: 50.662, longitude: 8.732 });
@@ -220,6 +228,8 @@ describe('locatePlace', () => {
     expectPlace('Zhejiang Province Jinhua City', { country: 'CN', name: 'Jinhua', latitude: 29.11, longitude: 119.64 });
     expectPlace('東京都', { country: 'JP', name: 'Tokyo', latitude: 35.69, longitude: 139.69 });
     expectPlace('서울', { country: 'KR', name: 'Seoul', latitude: 37.57, longitude: 126.98 });
+    // A name in Latin letters with the Chinese word for city.
+    expectPlace('Changsha市 00000001', { country: 'CN', name: 'Changsha', latitude: 28.2, longitude: 112.97 });
   });
 
   it('reads a Chinese address down to the county-level city it names after its prefecture', () => {
@@ -258,7 +268,14 @@ describe('locatePlace', () => {
     expect(place('Cartagena de Indias')).toMatchObject({ country: 'CO', latitude: 10.398 });
     expect(place('San Jose de Costa Rica')).toMatchObject({ country: 'CR' });
     // A country code the text writes settles which: Atena is a name of Athens.
-    expect(place('Atena Lucana - IT (depot 0001)')?.country).not.toBe('GR');
+    expect(place('Atena Lucana - IT (depot 0001)')).toMatchObject({ country: 'IT', name: 'Atena Lucana' });
+    // A town named after its country is named after itself: Asunción, not Paraguay.
+    expect(place('Asuncion del Paraguay')).toMatchObject({ precision: 'city', country: 'PY', name: 'Asuncion' });
+    // Nor is a town nothing confirms the end of a longer name a place has elsewhere: Mill Hill is no Hill,
+    // and only a city's other names are known enough alone. Trenton was once Mill Hill.
+    expect(place('Mill Hill Example Office', ['GB'])).toBeNull();
+    expect(place('Mill Hill Example Office')).toBeNull();
+    expect(place('Mill Hill, NJ')).toMatchObject({ country: 'US', name: 'Mill Hill' });
     // A town near the longer name may still be the one meant.
     expect(place('NEW DELHI IN', ['IT'])).toMatchObject({ country: 'IN' });
   });
@@ -276,6 +293,12 @@ describe('locatePlace', () => {
     expect(place('Cabo Delgado Province')).toMatchObject({ precision: 'country', country: 'MZ' });
     expect(place('Morona-Santiago Province')).toMatchObject({ precision: 'country', country: 'EC' });
     expect(place('Santa Catarina', ['BR'])).toMatchObject({ precision: 'country', country: 'BR' });
+    // By its old name too, in whichever country the parcel is.
+    expect(place('Distrito Federal', ['MX'])).toMatchObject({ precision: 'country', country: 'MX' });
+    expect(place('Distrito Federal', ['BR'])).toMatchObject({ precision: 'country', country: 'BR' });
+    expect(place('Distrito Federal')).toBeNull();
+    // Nor for a small town of its country outside it: no Wales in Yorkshire.
+    expect(locatePlace('Mid Wales MC', { carriers: ['royal-mail'], countries: ['GB'] })).toBeNull();
     // A town named like the region it lies in is still that town.
     expect(place('Example, Moscow')).toMatchObject({ precision: 'city', country: 'RU', name: 'Moscow' });
     expectPlace('Frankfurt (Oder)', { country: 'DE', name: 'Frankfurt (Oder)', latitude: 52.35, longitude: 14.55 });
@@ -361,6 +384,12 @@ describe('locatePlace', () => {
     expect(locatePlace(undefined)).toBeNull();
   });
 
+  it("reads no town from a direction, which only halves a district's name", () => {
+    for (const location of ['SUD', 'EXAMPLE NORD (001)', 'CHR-FR SUD (000)']) expect(place(location), location).toBeNull();
+    expect(place('Neustadt/Süd')).toMatchObject({ country: 'DE', name: 'Neustadt/Süd' });
+    expect(place('Biel/Bienne')).toMatchObject({ country: 'CH', name: 'Biel/Bienne' });
+  });
+
   it('reads no town from a three-letter alternate name, a code more often than a name', () => {
     // GeoNames gives Lognes "Lon" and Jizhou "Chi": a British office of exchange is no French town.
     for (const location of ['LON E ET BEA', 'CHI', 'BIN']) expect(place(location), location).toBeNull();
@@ -444,6 +473,17 @@ describe('placesForEvents', () => {
     // A hub on the way is no detour, and a parcel nothing is known about keeps what its scans say.
     expect(route(['Shenzhen', 'Liège', 'Paris'], { carriers: ['la-poste'] })).toEqual(['Shenzhen, CN', 'Liège, BE', 'Paris, FR']);
     expect(route(['Mount Pleasant MC'])).toEqual(['Mount Pleasant, US']);
+  });
+
+  it('tells towns of one name in one country apart by the scans around them', () => {
+    const royalMail = { carriers: ['royal-mail'] };
+    const kennington = (locations: string[]) => placesForEvents(locations, royalMail)[locations.indexOf('Kennington DO')];
+    // In London between London's scans, in Kent by Ashford.
+    expect(kennington(['Croydon MC', 'Kennington DO', 'Mount Pleasant MC'])).toMatchObject({ country: 'GB', name: 'Kennington', latitude: 51.488 });
+    expect(kennington(['Ashford DO', 'Kennington DO'])).toMatchObject({ country: 'GB', name: 'Kennington', latitude: 51.167 });
+    // With nothing around to tell, neither.
+    expect(kennington(['Kennington DO'])).toBeNull();
+    expect(locatePlace('Kennington DO', { ...royalMail, countries: ['GB'] })).toBeNull();
   });
 
   it('keeps a world city in its own country when a namesake would take it off the way', () => {

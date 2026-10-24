@@ -38,6 +38,9 @@ const CHINESE_PROVINCES = {
   21: '宁夏', 22: '北京', 23: '上海', 24: '山西', 25: '山东', 26: '陕西', 28: '天津', 29: '云南', 30: '广东', 31: '海南',
   32: '四川', 33: '重庆',
 };
+// Names carriers still print that GeoNames gives in English or as renamed: Mexico City was
+// the Distrito Federal until 2016, and Brasília's is the Distrito Federal of Brazil.
+const REGION_ALIASES = { 'MX.09': ['distrito federal'], 'BR.07': ['distrito federal'] };
 // What a region's name adds to the place it names: "Inner Mongolia Autonomous Region", "Gyeonggi-do".
 const REGION_WORDS = /\s+(autonomous region|special administrative region|region|province|prefecture|voivodeship|oblast|do)$/;
 // Without those words, some names are only a direction or a common word ("Central Region", "Capital Region").
@@ -186,6 +189,7 @@ for (const [id, name, ascii] of admin1Codes) {
   const keys = new Set([...nameKeys(name), ...nameKeys(ascii)]);
   for (const key of [...keys]) if (!GENERIC_REGIONS.has(key.replace(REGION_WORDS, ''))) keys.add(key.replace(REGION_WORDS, ''));
   if (country === 'CN' && CHINESE_PROVINCES[admin1]) keys.add(CHINESE_PROVINCES[admin1]);
+  for (const alias of REGION_ALIASES[id] ?? []) keys.add(alias);
   regions.push({ country, admin1, keys: [...keys].filter((key) => key.length >= 2) });
 }
 

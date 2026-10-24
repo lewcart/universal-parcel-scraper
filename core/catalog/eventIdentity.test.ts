@@ -172,6 +172,13 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...stored, location: 'Other Post Office' }, stored)).toBe(false);
   });
 
+  it('lets a universal copy that lost a "Country" label take over its stored row', () => {
+    const policy = sameInstantIdentityPolicy('unknown', { supportsScanMatching: true });
+    const stored = { stage: 'in_transit', description: 'Item in transfer - please wait', location: 'Country, EXAMPLELAND', providerCode: '' };
+    expect(policy?.matches?.({ ...stored, location: 'EXAMPLELAND' }, stored)).toBe(true);
+    expect(policy?.matches?.({ ...stored, location: 'OTHERLAND' }, stored)).toBe(false);
+  });
+
   it('matches a Cainiao scan whose town has left its wording for its location', () => {
     expect(sameInstantIdentityPolicy('aliexpress')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('aliexpress', { supportsScanMatching: true });

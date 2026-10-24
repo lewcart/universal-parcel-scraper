@@ -39,6 +39,11 @@ it('keeps scan locations from the API while excluding a delivery-service label a
   }
   expect(parse('from the operational headquarters in EXAMPLE TOWN (Example Region)')?.location).toBe('EXAMPLE TOWN (Example Region)');
   expect(parse('dalla sede operativa di EXAMPLE TOWN (XX)')?.location).toBe('EXAMPLE TOWN (XX)');
+  // Correios Brazil's "País" label before a unit abroad, translated.
+  expect(parse('Country, EXAMPLELAND')?.location).toBe('EXAMPLELAND');
+  expect(parse('Country, International Treatment Unit')?.location).toBe('International Treatment Unit');
+  expect(parse('País - EXAMPLELAND')?.location).toBe('EXAMPLELAND');
+  expect(parse('Country Club Road, Example City')?.location).toBe('Country Club Road, Example City');
   for (const location of ['Example System Park, US', 'Centro Di Smistamento Example Town', 'Example Data Center Road, Example City']) {
     expect(parse(location)?.location).toBe(location);
   }

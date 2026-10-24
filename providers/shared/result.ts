@@ -52,15 +52,17 @@ const NOT_PLACES = /^(?:(?:[A-Z]{2}, )?system(?:, system)*|(?:uni )?data cent(?:
 const DEPOT_PREFIX = /^(?:dalla sede operativa di|from the operational headquarters in)\s+/i;
 // Royal Mail appends a Post Office branch's postcode in brackets ("Example Post Office [ZZ9 9ZZ]"), which providers copy.
 const BRACKETED_POSTCODE = /\s*\[\s*[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\s*\]$/i;
+// Correios Brazil labels a unit abroad with "País", which providers translate: "Country, CHILE".
+const COUNTRY_LABEL = /^(?:country|pa[ií]s)\s*[,:-]\s*/i;
 
 /**
  * The place a provider reports for a scan, without the words before a depot's
- * town or a branch's postcode, which can narrow down a sender's or recipient's
- * area, unless it is a label that names no place, holds private delivery
- * details or is Posti's "abroad" label.
+ * town, a branch's postcode, which can narrow down a sender's or recipient's
+ * area, or a "Country" label, unless it is a label that names no place, holds
+ * private delivery details or is Posti's "abroad" label.
  */
 export function place(value: unknown): string {
-  const location = text(value).slice(0, 200).replace(DEPOT_PREFIX, '').replace(BRACKETED_POSTCODE, '');
+  const location = text(value).slice(0, 200).replace(DEPOT_PREFIX, '').replace(BRACKETED_POSTCODE, '').replace(COUNTRY_LABEL, '');
   return location && !NOT_PLACES.test(location) && !hasPrivateDeliveryDetails(location) && !isPostiAbroadLabel(location)
     ? location : '';
 }

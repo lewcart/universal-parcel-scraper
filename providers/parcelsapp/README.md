@@ -73,8 +73,9 @@ step exists for future protocol changes.
 - API scans retain their reported location. Chronopost's delivery-service label in that
   field is excluded because it names a service, not a place, and so is Posti's "ULKOMAILLA"
   ("abroad"). A Post Office branch's postcode, which Royal Mail appends in brackets and
-  ParcelsApp copies, is left out, as Royal Mail's own adapter does. A repeat without a
-  place keeps the location another copy of the same scan reported.
+  ParcelsApp copies, is left out, as Royal Mail's own adapter does, and so is the "Country"
+  label ParcelsApp translates from Correios Brazil's "País" before a unit abroad. A repeat
+  without a place keeps the location another copy of the same scan reported.
 - Identity: the API reply does not echo the number, so a direct result is bound to the
   single POST that sent it. A different `correctId` is rejected as an unverified alias.
   A browser capture must render exactly one matching `Tracking number` row in the result

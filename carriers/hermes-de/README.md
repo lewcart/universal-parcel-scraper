@@ -38,6 +38,14 @@ stored as UTC.
   purpose. Only a parcel whose own barcode fails the checksum questions it.
   Change `hermes-de-2` only once a second such barcode turns up, and first
   look for what the two share, such as a leading range with its own check.
+- Hermes Gepäckversand, the luggage service Deutsche Bahn offers its
+  travellers, is tracked by its order number, as its
+  [FAQ](https://www.myhermes.de/deutsche-bahn-gepaeckservice-faq) says. The
+  label with the barcode is printed only when the luggage is handed over. The
+  search resolves the order number like a reference, to a piece whose
+  `parcelAttributes.parcelCategory` is `LUGGAGE`; Hermes's own scan text then
+  speaks of luggage. Detection leaves order numbers out like other references:
+  they are plain runs of digits that other carriers print too.
 - Stages come from the `parcelStatus` enum, no carrier wording rules. The enum
   is stable, and wording would only add a chance to be wrong. The enum was read
   from the carrier's public bundle `gcp-prd.my-deliveries.de/tnt/bundle/tnt-bundle-v2.js`.

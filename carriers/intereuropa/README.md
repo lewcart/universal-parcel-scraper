@@ -21,6 +21,14 @@ and airlines.
 lookups on Intereuropa's tracker show. The Croatian site links an older form at
 `orders.intereuropa.si/ietracking`, which takes a number of up to thirteen characters.
 
+## Why there is no adapter
+
+The tracker on `www.intereuropa.si` shows a shipment's statuses only after a reCAPTCHA check on
+each search. The older form the Croatian site links, `orders.intereuropa.si/ietracking`, answers
+its `GetPaketInfo.aspx?Input={number}` lookup without one, but it lists only an order's piece
+barcodes, with no status, date or place, even for orders whose scans archived lookups of the
+main tracker show. So Intereuropa stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

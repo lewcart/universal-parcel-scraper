@@ -13903,7 +13903,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "far-international",
+      "localClocks": true
     },
     "canaryUrl": "https://www.far800.com/",
     "trackingUrlTemplate": "https://www.far800.com/logistics/result?key={trackingNumber}",

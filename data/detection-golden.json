@@ -73575,6 +73575,14 @@
     ]
   },
   {
+    "input": "FARGO2600243284YQ",
+    "carrier": "far-international",
+    "confidence": "high",
+    "candidates": [
+      "far-international"
+    ]
+  },
+  {
     "input": "FARZZ0000000001YQ",
     "carrier": "far-international",
     "confidence": "high",

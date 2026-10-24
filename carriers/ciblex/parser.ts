@@ -9,6 +9,8 @@ import { classifyCiblexStatus, comparableText, isCiblexNotice } from './status.j
 export function normalizeCiblexTrackingNumber(raw: string): string {
   const number = raw.replace(/\s/g, '');
   if (!/^(?:\d{14}|\d{24})$/.test(number)) throw new InvalidInputError('Ciblex', 'Ciblex requires exactly 14 or 24 digits');
+  // Ciblex shows other shipments' scans under a placeholder such as all zeros.
+  if (/^(\d)\1+$/.test(number)) throw new InvalidInputError('Ciblex', 'Ciblex numbers are not one digit repeated');
   return number;
 }
 

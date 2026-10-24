@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { load } from 'cheerio';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { IndeterminateError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, InvalidInputError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import {
   CiblexTracker,
@@ -81,6 +81,12 @@ describe('Ciblex anonymous tracking input', () => {
       '99000000000000000000001',
       '9900000000000000000000001',
     ]) expect(() => normalizeCiblexTrackingNumber(value)).toThrow('14 or 24 digits');
+  });
+
+  it('rejects placeholders of one digit repeated', () => {
+    for (const value of ['00000000000000', '99999999999999', '0'.repeat(24)]) {
+      expect(() => normalizeCiblexTrackingNumber(value)).toThrow(InvalidInputError);
+    }
   });
 });
 

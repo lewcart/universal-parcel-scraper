@@ -527,6 +527,8 @@ describe('classifyWording', () => {
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
     expect(wordingStage('Not yet picked up by the last-mile carrier')).not.toBe('in_transit');
     expect(wordingStage('Not yet received by last mile provider')).not.toBe('in_transit');
+    // Only the day's delivery is Royal Mail's round; a later day is still a forecast.
+    expect(wordingStage('Due to be delivered tomorrow')).toBe('in_transit');
     // A notice the carrier failed to send is no scan; a failed delivery still is.
     for (const wording of ['REMINDER EMAIL SENT FAILED', 'SMS notification failed', 'Failed to send notification for collection']) {
       expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'pending', source: 'none' });
@@ -778,6 +780,8 @@ describe('classifyWording', () => {
       ['Parcel received by UniUni', 'in_transit'],
       ['The courier will deliver the parcel soon. Additional details are available in the app, email or SMS.', 'out_for_delivery'],
       ['Item received by Royal Mail', 'accepted'],
+      // Royal Mail's delivery round, relayed by universal providers.
+      ['Due to be delivered today', 'out_for_delivery'], ['Due to be delivered today by', 'out_for_delivery'],
       ['Sender advised item dropped off at parcel locker', 'accepted'], ['Dropped off at Postbox', 'accepted'],
       ['The shipment has been taken over by one of our operators at the post office.', 'accepted'],
       ['The shipment has been taken over at the post office point', 'accepted'],

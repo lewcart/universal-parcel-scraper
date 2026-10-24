@@ -202,6 +202,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^your parcel is in the air and is heading your way$|^your parcel's left the transfer country and is back on the move$|^touchdown! your parcel has landed$|^collected from the airline for processing$|^your parcel's on an interstate journey\. we'll keep you updated as it travels$/.test(text)) return 'in_transit';
   if (/^it's happening, your parcel will be delivered today\. get ready$|^parcel out for final mile carrier delivery$/.test(text)) return 'out_for_delivery';
   if (/^parcel unsafe to leave at address$/.test(text)) return 'failed_attempt';
+  // Royal Mail's delivery-round scans (EVGPD, EVKPD), as universal providers relay them: the
+  // delivery today is its out-for-delivery scan, not a forecast.
+  if (/^due to be delivered today(?: by\b.*)?$/.test(text)) return 'out_for_delivery';
   // Every rule below reads only what happened, never a delivery still to come.
   const reported = deliveryForecastRemainder(text);
   if (reported !== undefined) return reported ? trackingLanguageStage(reported) : undefined;

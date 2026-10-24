@@ -7,6 +7,7 @@ import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { createTracker } from '../../facade/index.js';
+import { dateLocalClocks } from '../../places/index.js';
 import { adapter, YYPOST_API, YYPOST_CALLBACK, YYPOST_PAGE, yypostLookupUrl, YypostTracker } from './adapter.js';
 import { normalizeYypostNumber, parseYypost } from './parser.js';
 import { statusMap, yypostStage } from './status.js';
@@ -33,9 +34,10 @@ const jsonp = (body: unknown) => `${YYPOST_CALLBACK}(${JSON.stringify(body)})`;
 const reply = (body: string, init: ResponseInit = {}) => new Response(body,
   { ...init, headers: { 'Content-Type': 'text/html; charset=utf-8', ...init.headers } });
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
-const scan = (date: string, description: string, location = '') => ({
+// A row of YYpost's own, with a synthetic code of its; the onward network's rows carry none.
+const scan = (date: string, description: string, location = '', code = 'ZZ') => ({
   track_occur_date: date, track_location: location, track_description: description, track_description_en: description,
-  track_code: '', track_status: '', time_zone: null, utc_offset: null,
+  track_code: code, track_status: '', time_zone: null, utc_offset: null,
 });
 
 describe('YYpost HTTP adapter', () => {
@@ -59,7 +61,7 @@ describe('YYpost HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('reads the scans on their wall clocks, with the places, the onward number and none of the merchant’s details', () => {
+  it('reads its scans on their wall clocks, with the places, the onward number and none of the merchant’s details', () => {
     const result = parseYypost(fixture('in-transit'), PARCEL);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
       last_status_text: 'Import customs clearance completed', last_update: null, last_update_local: '2026-05-12T07:48:00',
@@ -72,24 +74,51 @@ describe('YYpost HTTP adapter', () => {
       // The row listed twice counts once.
       ['2026-05-09T11:43:00', 'HKG', 'Handover to airline', 'in_transit'],
       ['2026-05-08T17:00:00', 'HKG', 'Export customs clearance completed', 'in_transit'],
-      ['2026-05-07T17:24:00', undefined, 'create, Shipment order created', 'registered'],
+      // Ecoscooting's own row, on Spain's clock.
+      [undefined, undefined, 'create, Shipment order created', 'registered'],
       ['2026-05-06T23:50:00', 'SHENZHEN', 'Has left the warehouse', 'in_transit'],
       ['2026-05-06T15:55:00', 'SHENZHEN', 'Has been put into storage', 'accepted'],
     ]);
-    expect(result.events!.every((event) => event.stage_source === 'carrier_map' && !('time' in event) && !('provider_code' in event))).toBe(true);
+    expect(result.events![6]).toMatchObject({ time: '2026-05-07T17:24:00+02:00' });
+    expect(result.events!.every((event) => event.stage_source === 'carrier_map' && !('provider_code' in event)
+      && ('time' in event) !== ('local_time' in event))).toBe(true);
     const json = JSON.stringify(result);
     for (const excluded of ['SAMPLEORDER0001', '900000', '800000', 'QGWC', '目的国清关完成']) expect(json).not.toContain(excluded);
   });
 
   it('keeps the parcel where it was when the shipment order comes after it left the warehouse', () => {
     const result = parseYypost(changed((item) => {
-      item.details = [scan('2026-05-07 17:24:00', 'create, Shipment order created'), scan('2026-05-06 23:50:00', 'Has left the warehouse', 'SHENZHEN'),
+      item.details = [scan('2026-05-07 17:24:00', 'create, Shipment order created', '', ''), scan('2026-05-06 23:50:00', 'Has left the warehouse', 'SHENZHEN'),
         scan('2026-05-06 15:55:00', 'Has been put into storage', 'SHENZHEN')];
     }), PARCEL);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'create, Shipment order created',
-      last_update_local: '2026-05-07T17:24:00' });
+      last_update: '2026-05-07T17:24:00+02:00' });
+    expect(result).not.toHaveProperty('last_update_local');
     const ordered = parseYypost(changed((item) => { item.details = [scan('2026-05-07 17:24:00', 'create, Shipment order created')]; }), PARCEL);
     expect(ordered).toMatchObject({ status: 'pending', current_stage: 'registered' });
+  });
+
+  it('dates the rows Ecoscooting writes, without a code of YYpost’s or a place, on Spain’s clock when it carries the parcel on', () => {
+    const relayed = (channel: string, ...details: Row[]) => parseYypost(changed((item) => {
+      item.channel_hawbcode = channel;
+      item.details = details;
+    }), PARCEL);
+    const winter = relayed(ONWARD, scan('2026-01-07 17:24:00', 'Sample Partner Note', '', ''), scan('2026-01-06 23:50:00', 'Has left the warehouse', 'SHENZHEN'));
+    expect(winter.events![0]).toEqual({ time: '2026-01-07T17:24:00+01:00', description: 'Sample Partner Note' });
+    expect(winter).toMatchObject({ last_update: '2026-01-07T17:24:00+01:00' });
+    // Dating by place leaves the instant alone and still dates YYpost's own rows.
+    const dated = dateLocalClocks('yypost', winter);
+    expect(dated.events![0]).toEqual(winter.events![0]);
+    expect(dated.events![1]).toMatchObject({ time: '2026-01-06T23:50:00+08:00', time_zone: 'Asia/Shanghai' });
+    // A coded or placed row is YYpost's, and another onward network's row keeps its wall clock.
+    const own = [scan('2026-05-07 17:24:00', 'Sample Status Note'), scan('2026-05-07 16:24:00', 'Sample Status Note', 'SAMPLE TOWN', '')];
+    expect(relayed(ONWARD, ...own).events!.map((event) => [event.local_time, event.time]))
+      .toEqual([['2026-05-07T17:24:00', undefined], ['2026-05-07T16:24:00', undefined]]);
+    for (const channel of ['SAMPLEREF0001', '']) {
+      const other = relayed(channel, scan('2026-05-07 17:24:00', 'Sample Partner Note', '', ''));
+      expect(other.events).toEqual([{ local_time: '2026-05-07T17:24:00', description: 'Sample Partner Note' }]);
+      expect(other).toMatchObject({ last_update: null, last_update_local: '2026-05-07T17:24:00' });
+    }
   });
 
   it('checks every clock, stages new wording through the shared rules, and drops who took a delivery', () => {

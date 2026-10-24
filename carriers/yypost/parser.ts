@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon';
-import { normalizeTrackingNumber } from '../../core/detection/index.js';
+import { detectCarrierMatch, normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { countryCode } from '../../core/time/index.js';
-import { clean } from '../../core/transport/index.js';
+import { countryCode, isoTime } from '../../core/time/index.js';
+import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { yypostStage } from './status.js';
 
@@ -22,6 +22,10 @@ const MAX_EVENTS = 100;
 const POSTCODE_RUN = /(^|[^\p{L}\p{N}])\d{4,6}(?![\p{L}\p{N}])/gu;
 // Who took a delivered parcel, as a delivery line can name them.
 const RECEIVER = /\s*[,;:.\-–]?\s*\b(?:(?:signed|received|collected|accepted)(?:\s+for)?\s+by|signatory|signature)\b.*$/i;
+// The clocks of onward networks whose rows YYpost relays on them, by the
+// carrier the onward number belongs to. Ecoscooting's order creation falls to
+// the second of Ecoscooting's own record of it on Spain's clock.
+const ONWARD_CLOCKS: Readonly<Record<string, string>> = { ecoscooting: 'Europe/Madrid' };
 
 /** A YYpost parcel number; anything else is not one its tracker answers. */
 export function normalizeYypostNumber(raw: string): string {
@@ -78,6 +82,12 @@ export function parseYypost(payload: unknown, raw: string): CarrierResult {
   if (!Array.isArray(rows)) throw new SchemaError(PROVIDER, 'YYpost returned a parcel with invalid scans');
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'YYpost returned an oversized history');
 
+  const channel = normalizeTrackingNumber(text(item, 'channel_hawbcode', 64));
+  const onward = REFERENCE.test(channel) && channel !== number ? channel : '';
+  const detected = onward ? detectCarrierMatch(onward) : null;
+  const onwardClock = detected?.confidence === 'high' && Object.hasOwn(ONWARD_CLOCKS, detected.carrier)
+    ? ONWARD_CLOCKS[detected.carrier] : undefined;
+
   const seen = new Set<string>();
   const events: CarrierEvent[] = [];
   for (const row of rows) {
@@ -92,8 +102,10 @@ export function parseYypost(payload: unknown, raw: string): CarrierResult {
     if (seen.has(key)) continue;
     seen.add(key);
     const staged = yypostStage(description);
+    // A row without a code of YYpost's or a place is the onward network's, on that network's clock.
+    const relayed = onwardClock && !cleanScalar(row.track_code, 40) && !location ? isoTime(local, onwardClock) : null;
     events.push({
-      local_time: local,
+      ...(relayed ? { time: relayed.iso } : { local_time: local }),
       ...(location ? { location } : {}),
       description,
       ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
@@ -106,17 +118,16 @@ export function parseYypost(payload: unknown, raw: string): CarrierResult {
   const staged = events.find((event) => event.stage && event.stage !== 'registered') ?? events.find((event) => event.stage);
   const stage = staged?.stage as Stage | undefined;
   const country = countryCode(text(item, 'destination_country', 8));
-  const channel = normalizeTrackingNumber(text(item, 'channel_hawbcode', 64));
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: staged!.stage_source } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time!,
+    last_update: newest.time ?? null,
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
     expected_delivery: null,
     ...(country ? { destination_country: country } : {}),
     // The number of the network that carries the parcel on; the hand-off decides who that is.
-    ...(REFERENCE.test(channel) && channel !== number ? { delivery_tracking_number: channel } : {}),
+    ...(onward ? { delivery_tracking_number: onward } : {}),
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };

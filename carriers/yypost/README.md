@@ -20,13 +20,18 @@ CN.
 
 - Only the entry whose `server_hawbcode` is the whole number asked is read.
 - Scans are wall clocks without a zone: the reply's `time_zone` and `utc_offset` are empty, and
-  the rows at the destination's airport are as likely on its clock as on China's. Every scan
-  keeps its wall clock, in the tracker's order, and its place dates it.
+  the rows at the destination's airport are as likely on its clock as on China's. YYpost's scans
+  keep their wall clocks, in the tracker's order, and their places date them.
+- A row without a scan code or a place is the onward network's, on that network's clock. When
+  the onward number is Ecoscooting's, such a row is dated on Spain's clock: so read, its
+  shipment order falls to the second of Ecoscooting's own record of it, while China's clock,
+  which the row's neighbours would give it, puts it hours earlier.
 - Scans are English wording from YYpost's warehouse in Shenzhen, its air line through Hong Kong
   and the destination's clearance, staged by the wording recorded in
-  [statuses.json](statuses.json), then the shared rules. Scan codes and the parcel's summary
-  status, which repeats the newest scan's, are not read. The line's shipment order, recorded
-  after the parcel has left the warehouse, is no step back.
+  [statuses.json](statuses.json), then the shared rules. Scan codes only mark a row as
+  YYpost's, and the parcel's summary status, which repeats the newest scan's, is not read. The
+  onward network's shipment order, recorded after the parcel has left the warehouse, is no step
+  back.
 - `channel_hawbcode`, the onward network's number, becomes `delivery_tracking_number`, and the
   hand-off decides who is asked: for a Portuguese `CNPRT` number, Cainiao's last mile there.
 - The tracker's unknown-number answer is a not-found. Its "Parameter error" is a schema

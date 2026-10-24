@@ -11,7 +11,9 @@ describe('YYpost live retrieval', () => {
     expect(answer).toMatchObject({ carrier: 'yypost', source: 'yypost' });
     expect(answer.attempts[0]).toMatchObject({ source: 'yypost', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
-    expect(answer.result.events.every((event) => event.description && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(event.local_time)))).toBe(true);
+    // YYpost's scans keep their wall clocks; an onward network's row it relays can carry an instant instead.
+    expect(answer.result.events.every((event) => event.description && (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(event.local_time))
+      || /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(String(event.time))))).toBe(true);
   }, 45_000);
 
   it.skipIf(!process.env.YYPOST_UNKNOWN_NUMBER)('reads an unknown number as not found', async () => {

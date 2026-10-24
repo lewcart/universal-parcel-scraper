@@ -1,7 +1,7 @@
 {
   "carrier": "yypost",
   "entries": [
-    {"wording": "create, Shipment order created", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "The line's shipment order, recorded once the parcel has left the warehouse."},
+    {"wording": "create, Shipment order created", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "The onward network's shipment order, recorded once the parcel has left the warehouse."},
     {"wording": "Has been put into storage", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "Taken into YYpost's warehouse in Shenzhen."},
     {"wording": "Has left the warehouse", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Export customs clearance completed", "stage": "in_transit", "language": "en", "confirmedBy": "live"},

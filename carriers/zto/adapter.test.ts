@@ -35,6 +35,14 @@ describe('ZTO', () => {
     expect(result).toMatchObject({ current_stage: 'delivered', history_truncated: true,
       last_update: '2031-04-18T12:00:00Z', events: [{ stage: 'delivered' }, { stage: 'out_for_delivery' }] });
     expect(JSON.stringify(result)).not.toContain('PRIVATE');
+    const moving = found(); moving.result.items[0]!.traces = [
+      { traceTime: Date.UTC(2031, 3, 17, 8), traceTypeCode: 'TRANSITING', traceTypeDesc: '运输中', traceSiteName: 'Example hub', traceDescText: 'PRIVATE' }];
+    expect(parseZto(moving, number)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
+      events: [{ stage: 'in_transit', stage_source: 'carrier_map' }] });
+    for (const [code, stage] of [['RECEIVED', 'accepted'], ['ARRIVED', 'ready_for_pickup'], ['ABNORMAL', 'exception']] as const) {
+      moving.result.items[0]!.traces[0]!.traceTypeCode = code;
+      expect(parseZto(moving, number)).toMatchObject({ current_stage: stage, current_stage_source: 'carrier_map' });
+    }
     const clock = found(); clock.result.items[0]!.traces[0]!.traceTime = NaN;
     expect(() => parseZto(clock, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });

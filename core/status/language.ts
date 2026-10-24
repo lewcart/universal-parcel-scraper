@@ -371,6 +371,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^courier pick up$/.test(text)) return 'accepted';
   // A Chinese forwarder's collection from the sender, as ParcelsApp relays it.
   if (/^shipment pick ?up$/.test(text)) return 'accepted';
+  // A Chinese courier's (业务员) collection from the sender, as providers translate it.
+  if (/^(?:the )?salesperson (?:has )?(?:collects|collected|picks up|picked up) (?:the )?(?:package|parcel|shipment)$/.test(text)) return 'accepted';
   // Nova Poshta's English as providers relay it: the shipment registered, then its departure from the branch,
   // numbered or not.
   if (/^registered and being prepared$/.test(text)) return 'registered';

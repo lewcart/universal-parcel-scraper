@@ -24,10 +24,14 @@ describe('placeTimeZone', () => {
     expect(zoneOf('UNITED STATES')).toBe('America/New_York');
   });
 
-  it('reads an airport its code alone names, which places nothing on a map', () => {
+  it('reads an airport its code names, alone, with an airport word or with its country', () => {
     expect(locatePlace('AMS')).toBeNull();
     expect(airportTimeZone('AMS')).toBe('Europe/Amsterdam');
     expect(airportTimeZone('Ams')).toBeNull();
+    expect(airportTimeZone('JFK Airport')).toBe('America/New_York');
+    expect(airportTimeZone('BNE, AU')).toBe('Australia/Brisbane');
+    expect(airportTimeZone('BNE, NZ')).toBeNull();
+    expect(airportTimeZone('Example Airport')).toBeNull();
   });
 });
 
@@ -56,6 +60,17 @@ describe('dateLocalClocks', () => {
       { local_time: '2026-10-20T09:00:00', description: 'Sorted' },
     ] });
     expect(result.events!.map((event) => event.time_zone)).toEqual(['Asia/Shanghai', 'Europe/Madrid', 'Europe/Madrid']);
+  });
+
+  it('dates a scan at an airport its code and an airport word name on that airport’s clock, not its neighbour’s', () => {
+    const result = dateLocalClocks('evri', { status: 'in_transit', destination_country: 'US', events: [
+      { local_time: '2026-10-21T08:00:00', description: 'Arrived at the destination airport', location: 'JFK Airport' },
+      { local_time: '2026-10-20T15:00:00', description: 'Left the hub', location: 'Birmingham' },
+    ] });
+    expect(result.events!.map(dated)).toEqual([
+      ['2026-10-21T08:00:00-04:00', 'America/New_York', 'place'],
+      ['2026-10-20T15:00:00+01:00', 'Europe/London', 'place'],
+    ]);
   });
 
   it('takes a town of the same country around a scan that names only a country with several zones', () => {

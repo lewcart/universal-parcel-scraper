@@ -145,6 +145,64 @@ describe('locatePlace', () => {
       .map((found) => found?.name)).toEqual(['Milan', 'Milan', 'Bologna', 'Bologna']);
   });
 
+  it('puts a code with an airport word, or with its country or state, at that airport', () => {
+    expect(place('JFK Airport')).toMatchObject({ country: 'US', name: 'New York', site: 'John F. Kennedy International Airport' });
+    expect(place('JFK International Airport')).toMatchObject({ country: 'US', site: 'John F. Kennedy International Airport' });
+    expect(place('JFK Airport, NY')).toMatchObject({ country: 'US', site: 'John F. Kennedy International Airport' });
+    expect(place('BNE, AU')).toMatchObject({ country: 'AU', name: 'Brisbane', site: 'Brisbane International Airport' });
+    expect(place('BNE - AUSTRALIA')).toMatchObject({ country: 'AU', name: 'Brisbane', site: 'Brisbane International Airport' });
+    // Whatever town elsewhere has the letters: San in Mali, Ord in Nebraska.
+    expect(place('SAN Airport')).toMatchObject({ country: 'US', name: 'San Diego', site: 'San Diego International Airport' });
+    expect(place('ORD, US')).toMatchObject({ country: 'US', name: 'Chicago', site: "Chicago O'Hare International Airport" });
+    // A town of 100,000 people with the letters keeps them, unless the text says airport.
+    expect(place('POA, BR')).toMatchObject({ country: 'BR', name: 'Poá' });
+    expect(place('POA, BR')?.site).toBeUndefined();
+    expect(place('POA Airport')).toMatchObject({ country: 'BR', name: 'Porto Alegre', site: 'Porto Alegre-Salgado Filho International Airport' });
+    // A country or state the airport is not in names no airport.
+    expect(place('JFK Airport, CA')?.site).toBeUndefined();
+    expect(place('BNE, NZ')).toMatchObject({ precision: 'country', country: 'NZ' });
+  });
+
+  it('puts a UPU office of exchange in the town of the airport its code names', () => {
+    expectPlace('DEFRAA', { country: 'DE', name: 'Frankfurt am Main', latitude: 50.12, longitude: 8.68 });
+    expectPlace('SCSEZA', { country: 'SC', name: 'Victoria', latitude: -4.62, longitude: 55.45 });
+    expect(place('PLWAWA, PL')).toMatchObject({ precision: 'city', country: 'PL', name: 'Warsaw' });
+    expect(place('DEFRAA')?.site).toBeUndefined();
+    // An airport of another country, and towns of six letters.
+    expect(place('GBLALA')).toBeNull();
+    expect(place('ARUSHA')).toMatchObject({ country: 'TZ', name: 'Arusha' });
+    expect(place('TRNAVA')).toMatchObject({ country: 'SK', name: 'Trnava' });
+  });
+
+  it("reads a country's three-letter code as that country where the parcel is", () => {
+    expect(place('ITA', ['IT'])).toMatchObject({ precision: 'country', country: 'IT', name: 'Italy' });
+    expect(place('ITA')?.country).not.toBe('IT');
+    expect(placesForEvents(['Milano', 'ITA', 'Roma'])[1]).toMatchObject({ precision: 'country', country: 'IT' });
+  });
+
+  it("puts a bare airport code at its airport where the parcel's way bears it out", () => {
+    const at = (locations: string[], options?: Parameters<typeof placesForEvents>[1]) =>
+      placesForEvents(locations, options).map((found) => found && `${found.site ?? found.name}, ${found.country}`);
+    // A hub between the scans around it, or on the way to the destination.
+    expect(at(['Shenzhen', 'HKG', 'AMS', 'Lisboa'])).toEqual([
+      'Shenzhen, CN', 'Hong Kong International Airport, HK', 'Amsterdam Airport Schiphol, NL', 'Lisboa, PT',
+    ]);
+    expect(at(['Shenzhen', 'DOH', 'Paris'])[1]).toBe('Hamad International Airport, QA');
+    expect(at(['Chicago', 'ORD', 'New York'])[1]).toBe("Chicago O'Hare International Airport, US");
+    expect(at(['Shenzhen', 'HKG'], { destinationCountry: 'PT' })[1]).toBe('Hong Kong International Airport, HK');
+    // In the parcel's country.
+    expect(at(['ZRH'], { destinationCountry: 'CH' })).toEqual(['Zürich Airport, CH']);
+    // Guangzhou's airport on a parcel from China, not Çan in Turkey.
+    expect(at(['CAN'], { carriers: ['four-px'], destinationCountry: 'DZ' })).toEqual(['Guangzhou Baiyun International Airport, CN']);
+    // Off the way, or with nothing around it, the code places nothing.
+    expect(at(['Milano', 'SAT', 'Roma'])[1]).toBeNull();
+    expect(at(['EZE'])).toEqual([null]);
+    expect(at(['CDG'])).toEqual([null]);
+    // A country's code where the parcel is, and a town of 100,000 people, keep their meaning.
+    expect(at(['Toronto', 'CAN', 'Ottawa'], { destinationCountry: 'CA' })[1]).toBe('Canada, CA');
+    expect(at(['São Paulo', 'POA'], { destinationCountry: 'BR' })[1]).toBe('Poá, BR');
+  });
+
   it("knows a carrier's own hub by the name the carrier gives it", () => {
     // DPD's Swiss depot is in Buchs in the canton of Zurich; any other Buchs still has to say so.
     expect(locatePlace('Buchs, CH', { carriers: ['dpd'] })).toMatchObject({ country: 'CH', name: 'Buchs', latitude: 47.452, longitude: 8.43 });

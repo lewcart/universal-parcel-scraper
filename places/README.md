@@ -100,7 +100,8 @@ persist them or serve a parcel when place resolution fails.
 several zones, its state's or province's (the US, Canada, Australia, Brazil) or the zone whose
 principal place in the tz database's `zone.tab` lies nearest. A place that names only such a
 country takes the zone most of its people live on. `airportTimeZone` reads an airport its code
-alone names ("AMS"): such a code places nothing on the map, but it tells a forwarder's clock.
+names, alone ("AMS"), with an airport word ("JFK Airport") or with its country ("BNE, AU"): a
+bare code the parcel's way does not bear out places nothing, but it tells a forwarder's clock.
 
 `dateLocalClocks(carrier, result)` dates the scans a carrier gives on a wall clock in no stated
 zone (`local_time`). The zone comes from the scan's place, read with the scans around it; else
@@ -132,8 +133,21 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   town: by its code in brackets ("Frankfurt Airport (FRA)"), by a word of its name that is
   neither the town nor the country ("LONDON-HEATHROW"), or as the town's one airport when
   the text says airport ("LIEGE AIRPORT"). The place keeps the town as its name and returns
-  the airport as `site`. A bare code ("CDG") places nothing: three letters are too often
-  something else.
+  the airport as `site`.
+- A code with an airport word ("JFK Airport") or the airport's country or state ("BNE, AU")
+  is that airport, whatever town elsewhere has its letters, unless a town of 100,000 people
+  in that country has them ("POA, BR" is Poá).
+- A bare code ("CDG") places nothing alone: three letters are too often something else.
+  Among a parcel's scans it is the airport when the way bears it out: the airport is in a
+  country of the parcel or of the scans around it, within 300 km of one of them, or no more
+  than 3,000 km off the way between them, or between the scan before and the destination (a
+  hub such as Doha between China and Europe). A town of 100,000 people keeps its letters
+  ("POA" is Poá). Otherwise the code is no town nothing else confirms ("CAN" is no Çan in
+  Turkey).
+- A country's three-letter code alone ("ITA") is that country, when the parcel is there.
+- A UPU office of exchange ("DEFRAA": a country's two letters, an airport's code, an office
+  letter) is in the town of the airport its code names, when the airport is in that
+  country.
 - A station named by an airport's code and a number, as iMile names its Italian ones ("BLQ
   01"), is in that airport's town, when the parcel is in the airport's country. Elsewhere the
   code places nothing.

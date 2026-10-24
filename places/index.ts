@@ -128,6 +128,9 @@ const AWAY_DETOUR_KM = 300;
 // No parcel travels faster than a plane, and two hours absorb a scan clock's rounding and delays.
 const PLANE_KMH = 1000;
 const CLOCK_SLACK_HOURS = 2;
+// An airport only its bare code names is on the parcel's way when it takes it no further off than this:
+// a hub such as Doha between China and Europe.
+const AIRPORT_DETOUR_KM = 3000;
 
 // Swiss Post scans end in the site's six-digit number: "Zürich Briefzentrum 801050".
 const FACILITIES = new Map(facilityList.map((facility) => [`${facility.country}:${facility.code}`, facility]));
@@ -282,12 +285,17 @@ function regionNear(country: string, latitude: number, longitude: number): strin
 }
 
 /**
- * The zone of an airport its IATA code alone names ("AMS"), as forwarders write
- * their air legs. Such a code places nothing on a map, but it can still tell a
- * scan's clock.
+ * The zone of an airport a scan names by its IATA code: alone ("AMS"), as
+ * forwarders write their air legs, with an airport word ("JFK Airport") or with
+ * the airport's country or state ("BNE, AU"). A bare code places nothing on a
+ * map unless the parcel's way bears it out (`placesForEvents`), but it can
+ * still tell a scan's clock.
  */
-export function airportTimeZone(code: string): string | null {
-  const airport = /^[A-Z]{3}$/.test(code.trim()) ? gazetteer().airports.get(code.trim()) : undefined;
+export function airportTimeZone(location: string): string | null {
+  const data = gazetteer();
+  const text = location.trim();
+  const { country, place } = trackingPlace(text);
+  const airport = airportCode(data, text) ?? codedAirport(data, country ? place : text, country)?.airport;
   return airport ? placeTimeZone({ ...airport, precision: 'city', name: airport.town }) : null;
 }
 
@@ -512,6 +520,15 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   const carriers = hints.carriers ?? [];
   const station = stationPlace(data, text, context, carriers);
   if (station) return station;
+  // "CAN" on a parcel to Canada: a country's three-letter code, where the parcel is, is that country.
+  const countryCode = split ? countryCodePlace(data, text, context) : null;
+  if (countryCode) return countryCode;
+  // "JFK Airport", "BNE, AU": the airport a code names, whatever town has its letters ("SAN" in Mali),
+  // unless a town of 100,000 people has them where the airport is ("POA, BR" is Poá).
+  const airportNamed = split ? codedAirport(data, rest, country) : null;
+  const atNamedAirport = airportNamed && (airportNamed.worded || townThousands(data, airportNamed.airport) < NAMESAKE_THOUSANDS)
+    ? atAirport(airportNamed.airport, carriers) : null;
+  if (atNamedAirport) return atNamedAirport;
   const hinted = [...context];
   const admin: string[] = [];
   const postcodes: string[] = [];
@@ -653,6 +670,9 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
       },
     };
   }
+  // "SCSEZA": a UPU office of exchange, in the town of the airport its code names.
+  const office = split ? officePlace(data, rest, carriers) : null;
+  if (office) return office;
   // A hub named after a city that shares a country's name: GIG Logistics' "BENIN HUB"
   // is in Benin City. On a parcel in the city's country, and not in the named one, the
   // city it is, when it is a large one.
@@ -732,18 +752,103 @@ const STATION = /^([A-Z]{3})[\s_-]?\d{1,2}$/;
 /**
  * The town of a station a carrier names by an airport's code and a number, as iMile names its
  * Italian ones ("BLQ 01" would be Bologna's), when the parcel is in the airport's country. A
- * bare code places nothing, and neither does a code whose airport is in a country nothing puts
+ * bare code places nothing here, and neither does a code whose airport is in a country nothing puts
  * the parcel in: three letters are too often something else.
  */
 function stationPlace(data: Gazetteer, text: string, countries: readonly string[], carriers: readonly string[]): Located | null {
-  const code = STATION.exec(text)?.[1];
-  const airport = code && !FACILITY_WORDS.has(code.toLowerCase()) ? data.airports.get(code) : undefined;
-  if (!airport || !countries.includes(airport.country)) return null;
-  const town = locate(airport.town, { countries: [airport.country], carriers }, false);
-  if (!town || town.place.precision !== 'city' || town.place.country !== airport.country
-    || distanceKm(town.place.latitude, town.place.longitude, airport.latitude, airport.longitude) > AIRPORT_MAX_KM) return null;
-  return { ...town, text: true };
+  const airport = airportCode(data, STATION.exec(text)?.[1] ?? '');
+  const town = airport && countries.includes(airport.country) ? airportTown(airport, carriers) : null;
+  return town && { ...town, text: true };
 }
+
+/** The airport of an IATA code as carriers write one: three capitals that are no facility word ("HUB"). */
+function airportCode(data: Gazetteer, code: string): Airport | undefined {
+  return /^[A-Z]{3}$/.test(code) && !FACILITY_WORDS.has(code.toLowerCase()) ? data.airports.get(code) : undefined;
+}
+
+/**
+ * The airport a scan names by its code, with words that say so: an airport word ("JFK
+ * Airport", "JFK International Airport"), or the airport's own country or state after it
+ * ("BNE, AU", "JFK, NY"). `rest` is the text without the country it names, `country` that
+ * country. `worded` tells the first kind.
+ */
+function codedAirport(data: Gazetteer, rest: string, country: string | null): { airport: Airport; worded: boolean } | null {
+  const [field = '', ...others] = rest.split(/[,;|()]|\s+-\s+/).map((part) => part.trim()).filter(Boolean);
+  const words = field.match(/[\p{L}\p{N}]+/gu) ?? [];
+  const airports = words.flatMap((word) => airportCode(data, word) ?? []);
+  if (airports.length !== 1) return null;
+  const [airport] = airports as [Airport];
+  const keys = words.filter((word) => word !== airport.code).map(nameKey);
+  if (!keys.every((key) => AIRPORT_WORDS.has(key) || AIRPORT_NAME_WORDS.has(key)) || (country && country !== airport.country)) return null;
+  const worded = keys.some((key) => AIRPORT_WORDS.has(key));
+  const region = others.length ? regionNear(airport.country, airport.latitude, airport.longitude) : null;
+  if (!others.every((other) => other === airport.country || other === region)) return null;
+  return worded || country || others.length ? { airport, worded } : null;
+}
+
+/** How many thousand people the largest town with an airport's code for its name has in the airport's country. */
+function townThousands(data: Gazetteer, airport: Airport): number {
+  const places = [data.keys.get(nameKey(airport.code)) ?? []].flat().map((entry) => entry < 0 ? ~entry : entry);
+  return Math.max(0, ...places.filter((index) => data.codes[data.country[index]!] === airport.country).map((index) => data.population[index]!));
+}
+
+/** The country a text names by its three-letter code alone ("ITA"), on a parcel in that country. */
+function countryCodePlace(data: Gazetteer, text: string, countries: readonly string[]): Located | null {
+  const country = /^[A-Z]{3}$/.test(text) ? COUNTRY_CODES.get(text) : undefined;
+  const area = country && countries.includes(country) ? data.countries.get(country) : undefined;
+  return area ? { text: true, place: { latitude: area.latitude, longitude: area.longitude, precision: 'country', country: country!, name: area.name } } : null;
+}
+
+/** The town an airport serves, by the name OurAirports gives it ("Sydney (Mascot)"), when it lies within 60 km. */
+function airportTown(airport: Airport, carriers: readonly string[]): Located | null {
+  const town = locate(airport.town, { countries: [airport.country], carriers }, false);
+  return town && town.place.precision === 'city' && town.place.country === airport.country
+    && distanceKm(town.place.latitude, town.place.longitude, airport.latitude, airport.longitude) <= AIRPORT_MAX_KM ? town : null;
+}
+
+/** A scan at an airport: the airport's point, under the name of the town it serves. */
+function atAirport(airport: Airport, carriers: readonly string[]): Located | null {
+  const town = airportTown(airport, carriers);
+  return town && {
+    ...town, text: true,
+    place: { ...town.place, latitude: round(airport.latitude), longitude: round(airport.longitude), site: airport.name },
+  };
+}
+
+/**
+ * The town of a UPU office of exchange, by its code: its country, the code of its town's
+ * airport and a letter for the office ("SCSEZA" is the Seychelles' office by Mahé airport).
+ * The airport has to be in that country. Text that is a town comes first: "ARUSHA" is no
+ * Argentinian office.
+ */
+function officePlace(data: Gazetteer, text: string, carriers: readonly string[]): Located | null {
+  const [, country, code] = /^([A-Z]{2})([A-Z]{3})[A-Z0-9]$/.exec(text) ?? [];
+  const airport = airportCode(data, code ?? '');
+  const town = airport && airport.country === country ? airportTown(airport, carriers) : null;
+  return town && { ...town, text: true };
+}
+
+// ISO 3166-1 alpha-3 country codes, which some carriers write for a country: "CAN" is Canada as
+// often as Guangzhou's airport.
+const COUNTRY_CODES = new Map(`
+  ABW:AW AFG:AF AGO:AO AIA:AI ALA:AX ALB:AL AND:AD ARE:AE ARG:AR ARM:AM ASM:AS ATA:AQ ATF:TF ATG:AG AUS:AU
+  AUT:AT AZE:AZ BDI:BI BEL:BE BEN:BJ BES:BQ BFA:BF BGD:BD BGR:BG BHR:BH BHS:BS BIH:BA BLM:BL BLR:BY BLZ:BZ
+  BMU:BM BOL:BO BRA:BR BRB:BB BRN:BN BTN:BT BVT:BV BWA:BW CAF:CF CAN:CA CCK:CC CHE:CH CHL:CL CHN:CN CIV:CI
+  CMR:CM COD:CD COG:CG COK:CK COL:CO COM:KM CPV:CV CRI:CR CUB:CU CUW:CW CXR:CX CYM:KY CYP:CY CZE:CZ DEU:DE
+  DJI:DJ DMA:DM DNK:DK DOM:DO DZA:DZ ECU:EC EGY:EG ERI:ER ESH:EH ESP:ES EST:EE ETH:ET FIN:FI FJI:FJ FLK:FK
+  FRA:FR FRO:FO FSM:FM GAB:GA GBR:GB GEO:GE GGY:GG GHA:GH GIB:GI GIN:GN GLP:GP GMB:GM GNB:GW GNQ:GQ GRC:GR
+  GRD:GD GRL:GL GTM:GT GUF:GF GUM:GU GUY:GY HKG:HK HMD:HM HND:HN HRV:HR HTI:HT HUN:HU IDN:ID IMN:IM IND:IN
+  IOT:IO IRL:IE IRN:IR IRQ:IQ ISL:IS ISR:IL ITA:IT JAM:JM JEY:JE JOR:JO JPN:JP KAZ:KZ KEN:KE KGZ:KG KHM:KH
+  KIR:KI KNA:KN KOR:KR KWT:KW LAO:LA LBN:LB LBR:LR LBY:LY LCA:LC LIE:LI LKA:LK LSO:LS LTU:LT LUX:LU LVA:LV
+  MAC:MO MAF:MF MAR:MA MCO:MC MDA:MD MDG:MG MDV:MV MEX:MX MHL:MH MKD:MK MLI:ML MLT:MT MMR:MM MNE:ME MNG:MN
+  MNP:MP MOZ:MZ MRT:MR MSR:MS MTQ:MQ MUS:MU MWI:MW MYS:MY MYT:YT NAM:NA NCL:NC NER:NE NFK:NF NGA:NG NIC:NI
+  NIU:NU NLD:NL NOR:NO NPL:NP NRU:NR NZL:NZ OMN:OM PAK:PK PAN:PA PCN:PN PER:PE PHL:PH PLW:PW PNG:PG POL:PL
+  PRI:PR PRK:KP PRT:PT PRY:PY PSE:PS PYF:PF QAT:QA REU:RE ROU:RO RUS:RU RWA:RW SAU:SA SDN:SD SEN:SN SGP:SG
+  SGS:GS SHN:SH SJM:SJ SLB:SB SLE:SL SLV:SV SMR:SM SOM:SO SPM:PM SRB:RS SSD:SS STP:ST SUR:SR SVK:SK SVN:SI
+  SWE:SE SWZ:SZ SXM:SX SYC:SC SYR:SY TCA:TC TCD:TD TGO:TG THA:TH TJK:TJ TKL:TK TKM:TM TLS:TL TON:TO TTO:TT
+  TUN:TN TUR:TR TUV:TV TWN:TW TZA:TZ UGA:UG UKR:UA UMI:UM URY:UY USA:US UZB:UZ VAT:VA VCT:VC VEN:VE VGB:VG
+  VIR:VI VNM:VN VUT:VU WLF:WF WSM:WS XKX:XK YEM:YE ZAF:ZA ZMB:ZM ZWE:ZW
+`.trim().split(/\s+/).map((pair) => pair.split(':') as [string, string]));
 
 /**
  * The town of the Indian PIN code a scan ends with. A foreign airport's code, alone or
@@ -755,7 +860,7 @@ function pinPlace(data: Gazetteer, text: string): EventPlace | null {
   // Russian, Chinese and other six-digit postcodes come with their own script.
   if (!pin || /[^\x20-\x7e]/.test(text)) return null;
   for (const [, prefix, code] of text.matchAll(/\b([A-Z]{2})?([A-Z]{3})\b/g)) {
-    const airport = FACILITY_WORDS.has(code!.toLowerCase()) ? undefined : data.airports.get(code!);
+    const airport = airportCode(data, code!);
     if (airport && airport.country !== 'IN' && (!prefix || prefix === airport.country)) return null;
   }
   pincodes ??= JSON.parse(readFileSync(PINCODES, 'utf8')) as Pincodes;
@@ -844,7 +949,7 @@ export function placesForEvents(
   } = {},
 ): (EventPlace | null)[] {
   const base = [...new Set([destinationCountry, ...carrierCountries, ...carriers.flatMap(carrierHomes)].filter((code): code is string => Boolean(code)))];
-  const first = locations.map((location) => cachedPlace(location, base, carriers));
+  const looked = locations.map((location) => cachedPlace(location, base, carriers));
   // A carrier can place some scans of an office and not others: they all share it.
   const pointAt = new Map<string, EventPoint>();
   locations.forEach((location, index) => {
@@ -861,6 +966,37 @@ export function placesForEvents(
     for (let at = index + step; at >= 0 && at < list.length; at += step) if (holds(list[at]!, at)) return list[at]!;
     return null;
   };
+  // A bare airport code ("HKG") is the airport where the parcel's way bears it out: in a country the
+  // parcel or the scans around it are in, within 300 km of one of those scans, or on the way between
+  // them or on to the destination. Otherwise it is no town nothing confirms either ("CAN" is no Çan in
+  // Turkey). A town of 100,000 people keeps its name ("POA" is Poá), and a code that is also a country's,
+  // where the parcel is ("CAN" on a parcel to Canada), may mean that country.
+  const data = gazetteer();
+  const holds = (found: Located | null, at: number) => found !== null && !airportCode(data, locations[at]?.trim() ?? '')
+    && (found.text || found.place.precision === 'city');
+  const airports = new Map<number, Located | null>();
+  locations.forEach((location, index) => {
+    const airport = airportCode(data, location?.trim() ?? '');
+    const town = looked[index];
+    if (!airport || (town?.place.precision === 'city' && (town.thousands ?? 0) >= NAMESAKE_THOUSANDS)) return;
+    const before = nearest(looked, index, -1, holds)?.place;
+    const after = nearest(looked, index, 1, holds)?.place;
+    const around = [before, after].filter((other): other is EventPlace => Boolean(other));
+    const countries = [...base, ...around.map((other) => other.country)];
+    const country = COUNTRY_CODES.get(airport.code);
+    if (country && country !== airport.country && countries.includes(country)) return;
+    const found = atAirport(airport, carriers);
+    const at = found?.place;
+    const onWay = !at ? Infinity : before && after
+      ? reach(before, at) + reach(after, at) - distanceKm(before.latitude, before.longitude, after.latitude, after.longitude)
+      : before && destinationCountry
+        ? reach(before, at) + countryDistanceKm(destinationCountry, at.latitude, at.longitude) - countryDistanceKm(destinationCountry, before.latitude, before.longitude)
+        : Infinity;
+    if (at && (countries.includes(airport.country) || around.some((other) => reach(other, at) <= AWAY_DETOUR_KM) || onWay <= AIRPORT_DETOUR_KM)) {
+      airports.set(index, found);
+    } else if (!anchored(town ?? null)) airports.set(index, null);
+  });
+  const first = looked.map((found, index) => airports.has(index) ? airports.get(index)! : found);
   // The scans a town's name alone places, where the scans around them say it is a namesake.
   const namesakes = (list: readonly (Located | null)[]): Set<number> => {
     const found = new Set<number>();
@@ -909,6 +1045,7 @@ export function placesForEvents(
   };
   const settled = locations.map((location, index) => {
     if (!location?.trim()) return null;
+    if (airports.has(index)) return first[index]!;
     const before = nearest(first, index, -1, telling)?.place.country;
     const after = nearest(first, index, 1, telling)?.place.country;
     const neighbours = [...new Set([before, after].filter((code): code is string => Boolean(code)))];

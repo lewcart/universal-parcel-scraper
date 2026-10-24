@@ -21,6 +21,17 @@
     "adapter": "post-haste",
     "steps": [
       "direct"
+    ],
+    "requirements": [
+      {
+        "field": "trackingUrl",
+        "validator": "freightwaysCapabilityUrl",
+        "optional": true,
+        "label": "Post Haste tracking link",
+        "type": "url",
+        "placeholder": "https://receiver.posthaste.co.nz/?consignmentid=CU..\u2026",
+        "help": "The link in the shipping email names the sender's account, which some parcels need to be found."
+      }
     ]
   },
   "capabilities": [
@@ -71,6 +82,23 @@
     ]
   },
   "links": [
+    {
+      "domains": [
+        "receiver.posthaste.co.nz"
+      ],
+      "pathPattern": "^/?$",
+      "query": "(?:^|&)consignmentid=CU\\.\\.([A-Z0-9]{4,40})\\.[A-Z0-9]\\.[A-Z0-9]{3,16}\\.\\d{1,3}(?=&|$)",
+      "keepsCapabilityUrl": true
+    },
+    {
+      "domains": [
+        "receiver.posthaste.co.nz",
+        "posthaste.co.nz"
+      ],
+      "pathPattern": "^/(?:[a-z]+/servlet/ITNG_TAndTServlet/?)?$",
+      "query": "^(?=(?:.*&)?customer_(?:number|id)=[A-Z0-9]{3,16}(?:&|$))(?:.*&)?consignment_id(?:_ref)?=([A-Z0-9]{4,40})(?=&|$)",
+      "keepsCapabilityUrl": true
+    },
     {
       "domains": [
         "posthaste.co.nz",

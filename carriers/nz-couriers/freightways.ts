@@ -7,6 +7,7 @@
 import { DateTime } from 'luxon';
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
+import { readFreightwaysTrackingUrl } from '../../core/catalog/urls.js';
 import { isValidSscc, normalizeTrackingNumber } from '../../core/detection/index.js';
 import {
   ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError, TransportError,
@@ -31,6 +32,8 @@ const CONSIGNMENT = /^\d?[A-Z]{2,6}(?!0+$)\d{6,8}$/;
 // The sender's account number, which the reply puts before a customer printed
 // label's consignment number: digits, or letters and digits.
 const ACCOUNT = /^[A-Z0-9]+$/;
+// A consignment number the lookup takes with the sender's account.
+const ACCOUNT_CONSIGNMENT = /^[A-Z0-9]{4,40}$/;
 // The tracker's lookup refuses a query of fewer than six characters.
 const MIN_QUERY = 6;
 const MAX_ITEMS = 50;
@@ -40,6 +43,7 @@ const ZONE = 'Pacific/Auckland';
 const ESTIMATE = /^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+(\d{1,2})\s+([A-Za-z]+)$/i;
 const REDIRECTS = [301, 302, 303, 307, 308];
 const VALIDATION = /"title"\s*:\s*"REQUEST_VALIDATION_ERROR"/;
+const LABEL_CREATED = /^label created$/i;
 // Bot checks CloudFront or a firewall could put in place of the reply.
 const CHALLENGE = /_cf_chl_opt|cf-turnstile|<title>\s*Just a moment|AwsWafIntegration|awswaf\.com|gokuProps|Request blocked/i;
 
@@ -59,29 +63,36 @@ export interface FreightwaysNetwork {
 
 /**
  * The number as the tracker's lookup takes it: a ticket's product code and
- * number, or a label or a customer printed label's consignment number alone.
+ * number, a label or a customer printed label's consignment number alone, or
+ * a consignment number with the sender's account. A consignment number asked
+ * alone keeps the account a link names, which the reply must then name.
  */
 export type FreightwaysQuery =
   | { kind: 'ticket'; number: string; code: string; query: string }
-  | { kind: 'label' | 'consignment'; number: string; query: string };
+  | { kind: 'label'; number: string; query: string }
+  | { kind: 'consignment'; number: string; query: string; account?: string }
+  | { kind: 'account'; number: string; account: string; query: string };
 
 const withoutZeros = (value: string) => value.replace(/^0+/, '');
 
 /**
- * The lookups for one number, in order. A ticket, label or SSCC goes as the
- * tracking page sends it: without the number's leading zeros, except in a
- * 20-digit barcode. A customer printed label's consignment number goes whole,
- * after the ticket its layout may also fit, which the lookup then does not
- * hold. Anything else is not a number the network's tracker reads.
+ * The lookups for one number, in order. With the sender's account, from a
+ * link that names it, the consignment number goes first with the account, as
+ * the receiver site asks it. A ticket, label or SSCC goes as the tracking page
+ * sends it: without the number's leading zeros, except in a 20-digit barcode.
+ * A customer printed label's consignment number goes whole, after the ticket
+ * its layout may also fit, which the lookup then does not hold. Anything else
+ * is not a number the network's tracker reads.
  */
-export function freightwaysQueries(network: FreightwaysNetwork, raw: string): FreightwaysQuery[] {
+export function freightwaysQueries(network: FreightwaysNetwork, raw: string, account?: string): FreightwaysQuery[] {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
   const ticket = network.ticket.exec(number);
   const query = ticket ? withoutZeros(ticket[2]!) : network.label.test(number) ? withoutZeros(number) : isValidSscc(number) ? number : '';
   const queries: FreightwaysQuery[] = [];
+  if (account && ACCOUNT.test(account) && ACCOUNT_CONSIGNMENT.test(number)) queries.push({ kind: 'account', number, account, query: number });
   // The lookup refuses a ticket number that is too short once its zeros are dropped.
   if (query.length >= MIN_QUERY) queries.push(ticket ? { kind: 'ticket', number, code: ticket[1]!, query } : { kind: 'label', number, query });
-  if (CONSIGNMENT.test(number)) queries.push({ kind: 'consignment', number, query: number });
+  if (CONSIGNMENT.test(number)) queries.push({ kind: 'consignment', number, query: number, ...(account ? { account } : {}) });
   if (!queries.length) throw new InvalidInputError(network.provider, `${network.provider} numbers are ${network.numbers}`);
   return queries;
 }
@@ -104,12 +115,14 @@ function text(provider: string, row: Record<string, unknown>, key: string, maxLe
  * whole number asked: a ticket's product code and number, or the label alone.
  * The ticket number and a short label may come with or without their leading zeros.
  * A customer printed label's consignment number comes after the sender's
- * account number.
+ * account number, which must be the account a link names.
  */
 function sameConsignment(value: string, asked: FreightwaysQuery): boolean {
   const parts = value.toUpperCase().split(/\s+/).filter(Boolean);
   if (asked.kind === 'ticket') return parts.length === 2 && parts[0] === asked.code && withoutZeros(parts[1]!) === asked.query;
-  if (asked.kind === 'consignment') return parts.at(-1) === asked.number && (parts.length === 1 || parts.length === 2 && ACCOUNT.test(parts[0]!));
+  if (asked.kind === 'consignment' || asked.kind === 'account') {
+    return parts.at(-1) === asked.number && (parts.length === 1 || parts.length === 2 && (asked.account ? parts[0] === asked.account : ACCOUNT.test(parts[0]!)));
+  }
   return parts.length === 1 && (asked.query.length === 20 ? parts[0] === asked.query : withoutZeros(parts[0]!) === asked.query);
 }
 
@@ -129,7 +142,8 @@ interface Scan { event: CarrierEvent; at: number; index: number; network: string
 /**
  * One scan. `createdOn` is an instant in UTC. Its attachments (a signature
  * with the name of whoever signed, a delivery photo), the authority-to-leave
- * tag, the barcode and the driver are not kept.
+ * tag, the barcode and the driver are not kept. The lookup with the sender's
+ * account gives the label's creation without a type; its wording stages it.
  */
 function projectScan(provider: string, row: unknown, index: number): Scan {
   if (!isRecord(row)) throw new SchemaError(provider, `${provider} returned an invalid scan`);
@@ -137,7 +151,8 @@ function projectScan(provider: string, row: unknown, index: number): Scan {
   const subtype = text(provider, row, 'eventSubType', 16).toUpperCase();
   const description = text(provider, row, 'status');
   const at = explicitOffsetTime(row.createdOn);
-  if (!type || !description || !at) throw new SchemaError(provider, `${provider} returned a scan without its type, wording or time`);
+  const typed = type || (!subtype && LABEL_CREATED.test(description));
+  if (!typed || !description || !at) throw new SchemaError(provider, `${provider} returned a scan without its type, wording or time`);
   const code = subtype ? `${type}/${subtype}` : type;
   const location = place(provider, row);
   const staged = nzCouriersStage(code, description);
@@ -145,7 +160,7 @@ function projectScan(provider: string, row: unknown, index: number): Scan {
     time: at.iso,
     ...(location ? { location } : {}),
     description,
-    provider_code: code,
+    ...(code ? { provider_code: code } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };
   return { event, at: at.timestamp, index, network: text(provider, row, 'carrierName', 40) };
@@ -169,13 +184,14 @@ function estimate(provider: string, data: Record<string, unknown>, first: number
 /**
  * The reply of the `tracking-events` lookup for one number, which answers
  * HTTP 204 for a number it does not find. A consignment must name the whole
- * number asked. Each of its parcels has its own scans; they are kept
- * together, newest first. Another catalog network that made the newest scan
- * becomes the delivery carrier.
+ * number asked, and the sender's account when it was asked with one. Each of
+ * its parcels has its own scans; they are kept together, newest first.
+ * Another catalog network that made the newest scan becomes the delivery
+ * carrier.
  */
-export function parseFreightways(network: FreightwaysNetwork, payload: unknown, raw: string): CarrierResult {
+export function parseFreightways(network: FreightwaysNetwork, payload: unknown, raw: string, account?: string): CarrierResult {
   const { provider } = network;
-  const readings = freightwaysQueries(network, raw);
+  const readings = freightwaysQueries(network, raw, account);
   if (!isRecord(payload)) throw new SchemaError(provider, `${provider} returned an invalid consignment`);
   if (typeof payload.shortConsignmentId !== 'string') throw new SchemaError(provider, `${provider} returned a consignment without its number`);
   const consignment = clean(payload.shortConsignmentId, 80);
@@ -193,7 +209,7 @@ export function parseFreightways(network: FreightwaysNetwork, payload: unknown, 
     item.trackingEvents.forEach((row, position) => {
       const scan = projectScan(provider, row, index++);
       // The page shows a parcel's label only when it opens its history.
-      if (position > 0 && scan.event.description!.toLowerCase() === 'label created') return;
+      if (position > 0 && LABEL_CREATED.test(scan.event.description!)) return;
       const key = JSON.stringify([scan.event.time, scan.event.provider_code, scan.event.description, scan.event.location ?? '']);
       if (seen.has(key)) return;
       seen.add(key);
@@ -232,8 +248,16 @@ export function freightwaysApi(network: FreightwaysNetwork): string {
   return `https://public-website.ep-prod.freightways.co.nz/public-website/v1/carriers/${network.path}/tracking-events`;
 }
 
-/** The address of a network's lookup: a ticket as its product code and number, a label or consignment number alone. */
+/**
+ * The address of a network's lookup: a ticket as its product code and number,
+ * a label or consignment number alone, or a consignment number under the
+ * sender's account, in the receiver site's lookup.
+ */
 export function freightwaysLookupUrl(network: FreightwaysNetwork, asked: FreightwaysQuery): string {
+  if (asked.kind === 'account') {
+    return `https://public-website.ep-prod.freightways.co.nz/public-website/v2/carriers/${network.path}/customers/`
+      + `${encodeURIComponent(asked.account)}/consignments/${encodeURIComponent(asked.query)}/tracking-events`;
+  }
   const params = asked.kind === 'ticket'
     ? new URLSearchParams({ searchType: 'TK', ticketProductCode: asked.code, query: asked.query })
     : new URLSearchParams({ query: asked.query });
@@ -250,18 +274,32 @@ function json(provider: string, body: string): unknown {
 }
 
 /**
+ * The sender's account named by a network's tracking link; a link of another
+ * network or another number is invalid input.
+ */
+function accountOf(network: FreightwaysNetwork, raw: string, trackingUrl: string): string {
+  try {
+    return readFreightwaysTrackingUrl(trackingUrl, raw, network.carrier).account;
+  } catch (cause) {
+    throw new InvalidInputError(network.provider, cause instanceof TypeError ? cause.message : `${network.provider} cannot read the tracking link`, { cause });
+  }
+}
+
+/**
  * The group's tracker for one network. A number that fits both a ticket and a
  * customer printed label's consignment number is asked as the ticket first,
- * then whole when the lookup does not hold the ticket.
+ * then whole when the lookup does not hold the ticket. A tracking link that
+ * names the sender's account is asked with it first.
  */
 export class FreightwaysTracker {
   constructor(private readonly network: FreightwaysNetwork,
     private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
 
-  async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
+  async fetch(raw: string, context: TrackingContext = {}, trackingUrl?: string | null): Promise<CarrierResult> {
     const { network } = this;
     const { provider } = network;
-    const queries = freightwaysQueries(network, raw);
+    const account = trackingUrl ? accountOf(network, raw, trackingUrl) : undefined;
+    const queries = freightwaysQueries(network, raw, account);
     /** One lookup's consignment, or null when the lookup does not hold the number. */
     const lookup = async (asked: FreightwaysQuery, signal: AbortSignal, timeoutMs: number): Promise<CarrierResult | null> => {
       const { response, bytes } = await fetchBounded(freightwaysLookupUrl(network, asked), { signal, headers: {
@@ -277,7 +315,7 @@ export class FreightwaysTracker {
         throw new TransportError(provider, `${provider} rejected the tracking lookup`, { status: 400 });
       }
       if (response.status === 204) return null;
-      return parseFreightways(network, json(provider, decodeText(bytes)), asked.number);
+      return parseFreightways(network, json(provider, decodeText(bytes)), asked.number, account);
     };
     const read = async (signal: AbortSignal, remainingMs: number): Promise<CarrierResult> => {
       const deadline = Date.now() + remainingMs;
@@ -294,13 +332,13 @@ export class FreightwaysTracker {
   }
 }
 
-/** A network's adapter: one direct lookup, without recognition. */
+/** A network's adapter: one direct step, without recognition, with the tracking link when there is one. */
 export function freightwaysAdapter(network: FreightwaysNetwork): AdapterFactory {
   return (environment) => {
     const tracker = new FreightwaysTracker(network, { fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
     return {
       id: network.carrier, recordsSteps: true, steps: ['direct'],
-      track: (input, context) => tracker.fetch(input.number, context),
+      track: (input, context) => tracker.fetch(input.number, context, input.trackingUrl),
     };
   };
 }

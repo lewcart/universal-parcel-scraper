@@ -43,9 +43,9 @@ parser ([freightways.ts](../nz-couriers/freightways.ts)).
 
 - A customer printed label is read only by its consignment number, in the layouts New Zealand
   Couriers' adapter reads ([README](../nz-couriers/README.md)), so a number of another carrier's
-  layout, such as Purolator's three letters and nine digits, is refused, and a label the lookup
-  finds only with the sender's account reads as not found. Contract bags and manifest references
-  are not read.
+  layout, such as Purolator's three letters and nine digits, is refused. A label the lookup
+  finds only with the sender's account needs the tracking link that names it, as for New Zealand
+  Couriers. Contract bags and manifest references are not read.
 - A consignment the tracker no longer holds reads as not found.
 - No weight or service.
 

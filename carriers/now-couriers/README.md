@@ -31,9 +31,9 @@ under Now Couriers' name, with the group's tracker and parser
 ## Limitations
 
 - A customer printed label is read only by its consignment number, in the layouts New Zealand
-  Couriers' adapter reads ([README](../nz-couriers/README.md)), and a label the lookup finds
-  only with the sender's account reads as not found. Contract bags and manifest references are
-  not read.
+  Couriers' adapter reads ([README](../nz-couriers/README.md)). A label the lookup finds only
+  with the sender's account needs the tracking link that names it, as for New Zealand Couriers.
+  Contract bags and manifest references are not read.
 - A consignment the tracker no longer holds reads as not found.
 - No weight or service.
 

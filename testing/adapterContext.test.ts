@@ -19,10 +19,12 @@ import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { AdapterRegistry, type AdapterEnvironment, type AdapterFactory, type CarrierAdapter, type TrackingContext, type TrackingInput } from '../core/adapter/index.js';
 import { trackCarrier } from '../core/adapter/track.js';
 import { activeRequirements } from '../core/catalog/index.js';
+import { carrierLinkRules } from '../core/catalog/linkRules.js';
 import { normalizeTrackingNumber } from '../core/detection/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../core/telemetry/index.js';
 import { loadNumberCorpusFiles } from '../core/testing/corpus.js';
 import { TrawlClient } from '../core/transport/trawl.js';
+import type { CarrierId } from '../generated/catalog.js';
 import { REGISTRY } from '../generated/registry.js';
 import { adapter as parcelsApp } from '../providers/parcelsapp/adapter.js';
 import { adapter as postalNinja } from '../providers/postal-ninja/adapter.js';
@@ -79,7 +81,7 @@ const UNSAMPLED: Readonly<Record<string, readonly string[]>> = {
   'speed-and-safe': ['00000000'],
 };
 
-function credential(validator: string, number: string): string {
+function credential(validator: string, number: string, carrier: string): string {
   switch (validator) {
     case 'swissPostcode': case 'swissOrFrancePostcode': case 'internationalPostcode': return '8000';
     case 'francePostcode': case 'colisPrivePostcode': return '75001';
@@ -91,6 +93,10 @@ function credential(validator: string, number: string): string {
       return `https://customeriberia.dachser.com/customerarea/utilidades/seguimiento-publico/detalle?numeroUnico=${number}&hash=AAAAAAAA`;
     case 'instaboxCapabilityUrl':
       return `https://track.instabox.com/sv/${number}?authCode=${'A'.repeat(32)}`;
+    case 'freightwaysCapabilityUrl': {
+      const receiver = carrierLinkRules(carrier as CarrierId).find((rule) => rule.keepsCapabilityUrl)!.domains[0];
+      return `https://${receiver}/?consignmentid=CU..${number}.Z.0000000.1`;
+    }
     default: throw new Error(`No synthetic credential for ${validator}`);
   }
 }
@@ -102,7 +108,7 @@ function carrierInputs(carrier: string): TrackingInput[] {
     const number = normalizeTrackingNumber(raw);
     const input: TrackingInput = { number };
     for (const requirement of activeRequirements(carrier, number)) {
-      const value = credential(requirement.validator, number);
+      const value = credential(requirement.validator, number, carrier);
       if (requirement.field === 'trackingUrl') input.trackingUrl = value; else input.postcode = value;
     }
     return input;

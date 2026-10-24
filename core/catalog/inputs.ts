@@ -4,6 +4,7 @@ import { isValidMondialRelayBarcode } from '../detection/index.js';
 import { validateDachserTrackingUrl } from './urls.js';
 import { validatePlanzerSharedUrl } from './urls.js';
 import { validateInstaboxTrackingUrl } from './urls.js';
+import { validateFreightwaysTrackingUrl } from './urls.js';
 import { DELIVERY_POSTCODE, colisPrivePostcode, deliveryPostcodeText } from './postcode.js';
 
 export {
@@ -103,6 +104,9 @@ export function normalizeCarrierInputs(
         break;
       case 'instaboxCapabilityUrl':
         supplied[field] = validateInstaboxTrackingUrl(value, trackingNumber);
+        break;
+      case 'freightwaysCapabilityUrl':
+        supplied[field] = validateFreightwaysTrackingUrl(value, trackingNumber, carrierId);
         break;
       case 'swissPostcode':
         if (!/^\d{4}$/.test(value)) {

@@ -13,6 +13,7 @@ import { sameInstantIdentityPolicy as dhl } from '../../carriers/dhl/identity.js
 import { sameInstantIdentityPolicy as dhlEcommerce } from '../../carriers/dhl-ecommerce/identity.js';
 import { sameInstantIdentityPolicy as dhlExpress } from '../../carriers/dhl-express/identity.js';
 import { sameInstantIdentityPolicy as dpd } from '../../carriers/dpd/app.js';
+import { sameInstantIdentityPolicy as dpdGermany } from '../../carriers/dpd-de/identity.js';
 import { sameInstantIdentityPolicy as dpdFrance } from '../../carriers/dpd-fr/identity.js';
 import { sameInstantIdentityPolicy as fedex } from '../../carriers/fedex/identity.js';
 import { sameInstantIdentityPolicy as hermesGermany } from '../../carriers/hermes-de/identity.js';
@@ -81,10 +82,17 @@ export interface SameInstantIdentityPolicy {
    * carries that row, and the match is unique both ways.
    */
   readonly matchWallClock?: boolean;
+  /**
+   * The source answers from two feeds that date one scan apart, one to the
+   * minute and one to the second, in their own wording. A scan takes over a
+   * stored row less than a minute away that `matches` accepts, when no event
+   * of the batch carries that row and the match is unique both ways.
+   */
+  readonly matchWithinMinute?: boolean;
 }
 
 const policies: ReadonlyMap<string, SameInstantIdentityPolicy> = new Map(
-  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhl, dhlEcommerce, dhlExpress, dpd, dpdFrance, fedex, hermesGermany, imile, indiaPost, inpost, jdLogistics, jrt, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postnord, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, thhy, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
+  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhl, dhlEcommerce, dhlExpress, dpd, dpdGermany, dpdFrance, fedex, hermesGermany, imile, indiaPost, inpost, jdLogistics, jrt, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postnord, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, thhy, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
 );
 
 const wording = (scan: SameInstantScan) => scan.description.replace(/\s+/g, ' ').trim().toLowerCase();

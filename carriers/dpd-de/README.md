@@ -51,6 +51,13 @@ country.
   service is not asked: a cold session takes tens of seconds to open.
 - Scan offsets take precedence over local clocks. Germany and Switzerland
   share the same civil-clock rules for the supported tracking history.
+- Each answer comes from one service, so a consumer can store one parcel's
+  scans from both. The app service dates a scan to the minute, the guest API
+  to the second, up to a minute apart, in other words, and only the guest
+  API's scans carry DPD's code. The identity policy (`identity.ts`) lets a scan
+  from one service take over the other's stored row for it: the same stage,
+  less than a minute apart, the same place or none, and the match unique both
+  ways.
 - The Swiss page fallback is not used for German lookups.
 
 ## App service

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import type { TrackingContext } from '../../core/adapter/index.js';
+import { sameInstantIdentityPolicy } from '../../core/catalog/eventIdentity.js';
 import { dpdParcelNumber } from '../../core/detection/dpd.js';
 import { parseTrackingInput } from '../../core/detection/index.js';
 import { IndeterminateError, NotFoundError } from '../../core/errors/index.js';
@@ -185,5 +186,31 @@ describe('DPD Germany abroad', () => {
     await expect(trackAbroad(missing, { AT: missing })(NUMBER, 'AT', {})).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(trackAbroad(missing, {})(NUMBER, 'CZ', {})).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(trackAbroad(missing, { AT: outage })(NUMBER, 'AT', {})).rejects.toMatchObject({ message: 'Sample outage' });
+  });
+});
+
+describe('DPD Germany scan identity', () => {
+  const policy = sameInstantIdentityPolicy('dpd-de', { supportsScanMatching: true })!;
+  const matches = policy.matches!;
+  const app = { stage: 'in_transit', description: 'At parcel delivery centre.', location: 'Musterstadt, DE', providerCode: '' };
+  const guest = { stage: 'in_transit', description: 'At delivery center', location: '', providerCode: 'AT_DELIVERY_CENTER' };
+
+  it('lets a scan from one service take over the other service\'s row for it, less than a minute away', () => {
+    expect(policy).toMatchObject({ storedSources: ['dpd-de'], requireProviderCode: false, matchEachScan: true, matchWithinMinute: true });
+    expect(matches(guest, app)).toBe(true);
+    expect(matches(app, guest)).toBe(true);
+    expect(matches({ ...guest, location: 'MUSTERSTADT, DE' }, app)).toBe(true);
+    expect(matches(
+      { stage: 'ready_for_pickup', description: 'Ready for collection', location: '', providerCode: 'AVAILABLE_FOR_COLLECTION' },
+      { stage: 'ready_for_pickup', description: 'Delivered by driver to DPD Pickup parcelshop/ station.', location: 'Musterstadt, DE', providerCode: '' },
+    )).toBe(true);
+  });
+
+  it('keeps scans of one service, of other stages or of other places apart', () => {
+    expect(matches(guest, { ...guest, description: 'Your parcel arrived at our depot', providerCode: 'ORI' })).toBe(false);
+    expect(matches(app, { ...app, description: 'In transit.' })).toBe(false);
+    expect(matches({ ...guest, stage: 'out_for_delivery' }, app)).toBe(false);
+    expect(matches({ ...guest, stage: '' }, { ...app, stage: '' })).toBe(false);
+    expect(matches({ ...guest, location: 'Andere Stadt, DE' }, app)).toBe(false);
   });
 });

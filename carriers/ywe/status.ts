@@ -5,15 +5,17 @@ import statuses from './statuses.json' with { type: 'json' };
 interface Entry { readonly wording?: string; readonly stage?: string }
 const ENTRIES: readonly Entry[] = statuses.entries;
 
-// A hub's code ("LAX01") and a failed delivery's reason ("[Restricted Address]") vary within one wording.
+// A hub's code ("LAX01"), a failed delivery's reason ("[Restricted Address]") and the place a
+// delivery was left ("(Front door)") vary within one wording.
 const HUB = /\b[a-z]{3}\d{2}\b/g;
 const REASON = /\[[^\]]{1,80}\]/g;
-const key = (normalized: string) => normalized.replace(HUB, '<hub>').replace(REASON, '[<reason>]');
+const PLACE = /\([^)]{1,80}\)/g;
+const key = (normalized: string) => normalized.replace(HUB, '<hub>').replace(REASON, '[<reason>]').replace(PLACE, '(<place>)');
 
 /**
  * YWE's scans are English wording from its US hubs and delivery stations.
- * The map is the wording recorded in `statuses.json`, whatever hub or reason
- * it names; other wording goes to the shared rules. The tracker's category
+ * The map is the wording recorded in `statuses.json`, whatever hub, reason or
+ * place it names; other wording goes to the shared rules. The tracker's category
  * is not read: it files a delivery station's receipt under Alert.
  */
 const WORDINGS: ReadonlyMap<string, Stage> = new Map(ENTRIES.filter((entry) => entry.wording && entry.stage)

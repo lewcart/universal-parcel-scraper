@@ -77,11 +77,18 @@ describe('YWE HTTP adapter', () => {
     for (const excluded of ['PRIVATE', 'Returned"', 'Alert', 'Awaiting"']) expect(json).not.toContain(excluded);
   });
 
-  it('maps the recorded wording whatever hub or reason it names, and stages new wording through the shared rules', () => {
+  it('maps the recorded wording whatever hub, reason or place it names, and stages new wording through the shared rules', () => {
     expect(yweStage('Container picked up by YWE,JFK02 Awaiting Item.')).toEqual({ stage: 'accepted', source: 'carrier_map' });
     expect(yweStage('Parcel received by in ORD01.')).toEqual({ stage: 'accepted', source: 'carrier_map' });
     expect(yweStage('Parcel delivery abnormal [Business Closed].Parcel will be returned to the warehouse.'))
       .toEqual({ stage: 'failed_attempt', source: 'carrier_map' });
+    expect(yweStage('Parcel has been delivered.(Sample Place)')).toEqual({ stage: 'delivered', source: 'carrier_map' });
+    // The place a delivery was left stays in its wording.
+    const left = parseYwe(changed((entry) => {
+      entry.events = [scan('Parcel has been delivered.(Sample Place)', { timestamp: Date.UTC(2026, 4, 16, 16), category: 'Deliverd', operationTip: '07' })];
+    }), PARCEL);
+    expect(left).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
+      last_status_text: 'Parcel has been delivered.(Sample Place)', delivered_at: '2026-05-16T09:00:00-07:00' });
     const worded = parseYwe(changed((entry) => {
       entry.events = [scan('Delivered, signed by SAMPLE RECIPIENT', { timestamp: Date.UTC(2026, 4, 16, 16), category: 'Deliverd', operationTip: '04' }),
         scan('Parcel is out for delivery.'), scan('Sample Status Note', { timestamp: Date.UTC(2026, 4, 16, 14), operationTip: 'A1' })];

@@ -18,7 +18,8 @@ for numbers of YWE and fourteen digits.
 - A scan is epoch milliseconds with the hub's `timeZone` offset, so every scan has an instant at
   the offset the tracker states. The page shows the same offset beside each scan.
 - Scans are English wording from YWE's US hubs and delivery stations, staged by the wording
-  recorded in [statuses.json](statuses.json), whatever hub code or failure reason it names, then
+  recorded in [statuses.json](statuses.json), whatever hub code, failure reason or drop-off place
+  it names, then
   the shared rules. The category the page groups parcels by is not read: it files a delivery
   station's receipt under Alert. The scan code becomes `provider_code`.
 - A scan's place is its town, state and country. Its street lines, the proof-of-delivery photos,

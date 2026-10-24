@@ -74,6 +74,9 @@ describe('national postal lookup candidates', () => {
     ['DK', 'postnord'], ['Denmark', 'postnord'], ['NO', 'bring-posten'], ['Norway', 'bring-posten'],
     ['BR', 'correios-br'], ['Brazil', 'correios-br'],
     ['IT', 'poste-italiane'], ['Italy', 'poste-italiane'],
+    ['RS', 'posta-srbije'], ['Serbia', 'posta-srbije'], ['SI', 'posta-slovenije'], ['Slovenia', 'posta-slovenije'],
+    ['CY', 'cyprus-post'], ['Cyprus', 'cyprus-post'], ['MT', 'maltapost'], ['Malta', 'maltapost'],
+    ['LU', 'post-luxembourg'], ['Luxembourg', 'post-luxembourg'], ['HU', 'magyar-posta'], ['Hungary', 'magyar-posta'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);
   });

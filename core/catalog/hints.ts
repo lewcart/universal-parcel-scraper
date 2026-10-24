@@ -61,18 +61,22 @@ const CATALOG_NAMES = new Set([
 // Česká pošta dates its rows to the day, and ELTA's clocks name no zone.
 // PostNord's and Bring's carry offsets. Chunghwa Post follows mail from abroad
 // under the sending post's number for six months, though not tracked letters
-// from France, and dates its own scans on Taiwan time. The host also checks adapter
-// availability and required inputs before making a request.
+// from France, and dates its own scans on Taiwan time. Pošta Srbije, Pošta
+// Slovenije, Cyprus Post, MaltaPost, POST Luxembourg and Magyar Posta follow mail
+// from abroad under the sending post's number; Magyar Posta's lookup opens a
+// browser. The host also checks adapter availability and required inputs before
+// making a request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AT', 'austrian-post'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
   ['BE', 'bpost'], ['BG', 'bulgarian-posts'], ['BR', 'correios-br'], ['BY', 'belpost'], ['CA', 'canada-post'],
-  ['CH', 'swiss-post'], ['CU', 'correos-cuba'], ['CZ', 'ceska-posta'], ['DE', 'dhl'], ['DK', 'postnord'], ['DZ', 'algerie-poste'],
+  ['CH', 'swiss-post'], ['CU', 'correos-cuba'], ['CY', 'cyprus-post'], ['CZ', 'ceska-posta'], ['DE', 'dhl'], ['DK', 'postnord'], ['DZ', 'algerie-poste'],
   ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FO', 'posta-faroe'], ['FR', 'la-poste'],
-  ['GB', 'royal-mail'], ['GR', 'elta'], ['HR', 'hrvatska-posta'], ['IE', 'an-post'], ['IS', 'posturinn'],
+  ['GB', 'royal-mail'], ['GR', 'elta'], ['HR', 'hrvatska-posta'], ['HU', 'magyar-posta'], ['IE', 'an-post'], ['IS', 'posturinn'],
   ['IT', 'poste-italiane'], ['JO', 'jordan-post'], ['JP', 'japan-post'], ['KE', 'posta-kenya'], ['LT', 'lietuvos-pastas'],
-  ['LV', 'latvijas-pasts'], ['MA', 'barid-al-maghrib'], ['MK', 'posta-north-macedonia'], ['NL', 'spring-gds'],
-  ['NO', 'bring-posten'], ['PH', 'phlpost'], ['PL', 'poczta-polska'], ['PT', 'ctt'], ['RO', 'posta-romana'],
-  ['SA', 'saudi-post'], ['SE', 'postnord'], ['SK', 'slovenska-posta'], ['SV', 'correos-el-salvador'], ['TW', 'chunghwa-post'], ['UA', 'ukrposhta'],
+  ['LU', 'post-luxembourg'], ['LV', 'latvijas-pasts'], ['MA', 'barid-al-maghrib'], ['MK', 'posta-north-macedonia'], ['MT', 'maltapost'],
+  ['NL', 'spring-gds'],
+  ['NO', 'bring-posten'], ['PH', 'phlpost'], ['PL', 'poczta-polska'], ['PT', 'ctt'], ['RO', 'posta-romana'], ['RS', 'posta-srbije'],
+  ['SA', 'saudi-post'], ['SE', 'postnord'], ['SI', 'posta-slovenije'], ['SK', 'slovenska-posta'], ['SV', 'correos-el-salvador'], ['TW', 'chunghwa-post'], ['UA', 'ukrposhta'],
   ['US', 'usps'], ['UY', 'correo-uruguayo'], ['UZ', 'uzbekistan-post'], ['ZA', 'south-african-post-office'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });

@@ -51,8 +51,10 @@ event sends the item to, cash-on-delivery documents and the service's own ids ar
 ## Limitations
 
 The service drops an item's history some time after delivery, after which it answers like an
-unknown number. Items sent to Serbia from abroad and Post Express shipments were not seen with
-history, so their coverage is unconfirmed. The answer has no delivery estimate or pickup point.
+unknown number. An item sent to Serbia from abroad answers under the sending post's number with
+the inward exchange office's and Serbian offices' scans, so a parcel to Serbia is handed to it.
+Post Express shipments were not seen with history, so their coverage is unconfirmed. The answer
+has no delivery estimate or pickup point.
 
 ## Links
 

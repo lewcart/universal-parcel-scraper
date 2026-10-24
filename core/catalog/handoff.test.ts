@@ -45,7 +45,7 @@ describe('general delivery handoff candidates', () => {
   it.each([['FI', 'posti'], ['CH', 'swiss-post'], ['FR', 'la-poste'], ['US', 'usps'], ['SE', 'postnord'], ['Sweden', 'postnord'],
     ['AU', 'australia-post'], ['Australia', 'australia-post'], ['PL', 'poczta-polska'], ['Poland', 'poczta-polska'],
     ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta'], ['IT', 'poste-italiane'], ['Italy', 'poste-italiane'],
-    ['TW', 'chunghwa-post'], ['Taiwan', 'chunghwa-post']])(
+    ['TW', 'chunghwa-post'], ['Taiwan', 'chunghwa-post'], ['RS', 'posta-srbije'], ['Serbia', 'posta-srbije']])(
     'proposes one national post for a checksum-valid postal reference going to %s', (destination_country, target) => {
       expect(deliveryHandoff('spring-gds', 'LX123456785NL', { destination_country }))
         .toEqual({ carrier: target, number: 'LX123456785NL', basis: 'destination' });

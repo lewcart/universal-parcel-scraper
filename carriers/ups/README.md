@@ -1,8 +1,9 @@
 # UPS
 
-Global UPS tracking from the site's own `GetStatus` JSON, read through a browser because
-Akamai blocks plain HTTP. Parcels handed to a national post for the last mile are still
-reported from the UPS record.
+Global UPS tracking from UPS's official Track API when the deployment has an app on
+developer.ups.com, and otherwise from the site's own `GetStatus` JSON, read through a browser
+because Akamai blocks plain HTTP. Parcels handed to a national post for the last mile are
+still reported from the UPS record.
 
 ## How it works
 
@@ -11,7 +12,19 @@ Detection selects UPS only when the last digit matches the check digit over the 
 characters after `1Z` (a letter counts as its ASCII code minus 63, mod 10; weights 1, 2
 from the left); a mismatch stays a suggestion.
 
-1. `trawl` (whenever a browser service is configured): loads
+1. `api` (only with `UPS_CLIENT_ID` and `UPS_CLIENT_SECRET`): the official Track API
+   ([api.ts](api.ts)), with the credentials of an app that has the Tracking API product.
+   - Buy a token with `POST https://onlinetools.ups.com/security/v1/oauth/token` (client
+     credentials over Basic auth) and keep it until a minute before it ends. Lookups share
+     one token request.
+   - `GET /api/track/v1/details/{number}` with the token, a fresh `transId` and
+     `transactionSrc`. It gets at most 15 s, and never more than half the lookup's time.
+   - UPS's not-found answer (warning `TW0001`, alone or with HTTP 404) and a check-digit
+     refusal end the lookup. Any other failure, a refusal of the credentials included,
+     goes on to the browser.
+   - `UPS_API_URL` points the step at another host, such as UPS's Customer Integration
+     Environment `https://wwwcie.ups.com`. It must be https; otherwise the step fails.
+2. `trawl` (whenever a browser service is configured): loads
    `https://www.ups.com/track?loc=en_US&tracknum=…&requester=ST/trackdetails` with
    `captureResponses` on `POST https://webapis.ups.com/track/api/Track/GetStatus?loc=en_US`
    and parses the latest matching reply the page itself received. A refusal or malformed
@@ -20,7 +33,7 @@ from the left); a mismatch stays a suggestion.
    and, once delivered, where, with no history. That answer is marked `summary_only`, so
    an enabled provider can supply the history.
    Its ship-to town is the recipient's, never the banner's place.
-2. `direct` (only without a browser service): plain HTTP with an in-memory cookie jar.
+3. `direct` (only without a browser service): plain HTTP with an in-memory cookie jar.
    - Fetch the tracking page, check it set the `X-XSRF-TOKEN-ST` cookie, then POST
      `GetStatus` with that value as the `X-XSRF-TOKEN` header. Cache the session.
    - A cached session that gets rejected fetches the page once and retries; a second
@@ -35,6 +48,16 @@ rendered status, after that wait.
 
 ## Notes
 
+- The API's reply becomes the same result as the page's: the same codes, stages, clock
+  rules and ship-to country. Its towns come in capitals and its places as codes; they are
+  written like the page's ("Koeln, Germany", "Des Moines, IA, United States"), so a scan
+  read once from each source stays one scan. The API names no access point, so its result
+  has no `pickup_point`.
+- Credentials UPS refuses (HTTP 400, 401 or 403 for a token, or a second 401 on a fresh
+  token) fail the step at once for ten minutes, as a transport failure, instead of asking
+  again on every lookup. Errors carry neither the credentials nor the token.
+- The status type (`D`, `I`, `P`, `M`, `X`) sets the status only when the newest scan's code
+  is unmapped.
 - Lookups are serialized per adapter instance: the jar and XSRF token are shared, and two
   concurrent refreshes produce a session that belongs to neither.
 - Direct HTTP 401/403/419, or a page with no token, raise `UPSSessionRejected` (a
@@ -90,9 +113,10 @@ rendered status, after that wait.
 - The app scan-identity policy updates a scan when UPS adds its location, provided its
   exact instant, wording and known stage agree. Conflicting locations and distinct
   messages at one instant remain separate. Wording is compared with HTML escapes decoded.
-  Two scans with activity codes must share the code rather than the stage; a scan stored
-  before codes were kept was staged by its wording, so a coded scan need not share its
-  stage.
+  Two scans with activity codes must share the code rather than the stage, and their town
+  rather than their wording: the API leaves out the page's second sentence ("— Your
+  package is on the way"). A scan stored before codes were kept was staged by its
+  wording, so a coded scan need not share its stage.
 - The rendered-page parser reads only the active progress-bar milestone. Reading the whole
   bar classified label-created parcels as out for delivery. The banner's one event has no
   code; "Label Created", "On the Way", "Out for Delivery" and "Delivered" get their stage from
@@ -136,14 +160,16 @@ it can replace browser retrieval. Application configuration and tokens stay outs
 
 - No delivery window or dimensions. The weight field comes back empty.
 - No sender name: `senderShipperNumber` is the shipper's account number.
-- Without a browser service there is no history.
+- Without API credentials or a browser service there is no history.
 - The ship-to address beyond its country, the signatory, the proof-of-delivery link and the
   access point's attention name, hours and coordinates are in the reply but never kept; a
   test asserts it.
 
 ## Testing
 
-No dedicated live test. The wrong-number canary in
+`UPS_CLIENT_ID=… UPS_CLIENT_SECRET=… npm run test:carriers:live -- carriers/ups/api.live.test.ts`
+checks the credentials on a synthetic number; `UPS_LIVE_TRACKING_NUMBER=…` adds a real
+shipment read through the API alone. The wrong-number canary in
 [`testing/browserProtectedCarriers.live.test.ts`](../../testing/browserProtectedCarriers.live.test.ts)
 accepts either a clean no-result or the exact challenge error above:
 `npm run test:carriers:live -- testing/browserProtectedCarriers.live.test.ts`.

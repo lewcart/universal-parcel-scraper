@@ -16,6 +16,7 @@
     "mode": "automatic",
     "adapter": "ups",
     "steps": [
+      "api",
       "direct",
       "trawl"
     ],

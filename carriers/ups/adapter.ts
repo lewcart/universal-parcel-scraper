@@ -14,7 +14,8 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { calendarDay } from '../../core/time/index.js';
 import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { UPS_PROGRESS_STATUS, upsActivityStage, upsBannerStage, upsStatus, upsUncodedScanStage } from './status.js';
+import { UPSApiClient, upsApiCredentials, upsApiNotFound, upsApiNotices, type UPSApiCredentials } from './api.js';
+import { UPS_PROGRESS_STATUS, UPS_STATUS_TYPE, upsActivityStage, upsBannerStage, upsStatus, upsUncodedScanStage } from './status.js';
 import { decodeEntities } from './text.js';
 
 const TRACKING_BASE = 'https://www.ups.com/track';
@@ -26,6 +27,9 @@ const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Geck
 // the page gives come well inside it, and a longer wait only holds up the caller's sync.
 const DEFAULT_TIMEOUT_MS = 45_000;
 const DEFAULT_DIRECT_TIMEOUT_MS = 20_000;
+// The official API answers within a second or two. Its step gets at most this, and at most
+// half of what is left, so the page can still answer after it.
+const API_TIMEOUT_MS = 15_000;
 // How long the browser may wait for the page's own status call after the page settles.
 const SETTLE_TIMEOUT_MS = 15_000;
 // Retain the latest bounded sequence of matching replies.
@@ -244,6 +248,15 @@ function isFinalAnswer(error: unknown): boolean {
     || carrierErrorKind(error) === 'rate_limited';
 }
 
+/**
+ * Whether the page may answer after the official API failed: always, except
+ * when the API refused the number or has no record of it. A throttle or an
+ * outage of the API says nothing about the page.
+ */
+function recoversFromApi(error: unknown): boolean {
+  return !(error instanceof InvalidInputError || error instanceof NotFoundError);
+}
+
 /** Headers from a captured response are case-insensitive, like HTTP headers. */
 function capturedHttpError(status: number, headers: Record<string, string>): Error {
   if (status === 404 || status === 410) {
@@ -323,9 +336,17 @@ function text(value: unknown, maxLength?: number): string {
 type ScanClock = Pick<CarrierEvent, 'time'> & { local_time?: string; provider_time_text?: string };
 
 /** UPS's offset of a scan's place, in minutes. */
-function statedOffset(activity: JsonObject): number | null {
-  const offset = /^([+-])(0\d|1[0-4]):([0-5]\d)$/.exec(cleanScalar(activity.gmtOffset));
+function statedOffset(stated: string): number | null {
+  const offset = /^([+-])(0\d|1[0-4]):([0-5]\d)$/.exec(stated);
   return offset ? (offset[1] === '-' ? -1 : 1) * (Number(offset[2]) * 60 + Number(offset[3])) : null;
+}
+
+/** The UTC pair, `gmtDate` (YYYYMMDD) and `gmtTime` (HH:MM:SS; the API's schema also shows HMMSS), as an ISO wall clock. */
+function utcPair(activity: JsonObject): string | null {
+  const date = /^(\d{4})(\d{2})(\d{2})$/.exec(cleanScalar(activity.gmtDate));
+  const time = /^(\d{1,2}):?([0-5]\d):?([0-5]\d)$/.exec(cleanScalar(activity.gmtTime));
+  if (!date || !time || Number(time[1]) > 23) return null;
+  return `${date[1]}-${date[2]}-${date[3]}T${time[1]!.padStart(2, '0')}:${time[2]}:${time[3]}`;
 }
 
 /**
@@ -338,8 +359,24 @@ function statedOffset(activity: JsonObject): number | null {
  * A local pair without an offset stays a `local_time`, a scan UPS dates by
  * its day alone, as it does some drop-offs, keeps that day, other text stays
  * as UPS wrote it, and a scan with no clock at all, like some label scans,
- * gets none.
+ * gets none. The page's reply and the official API write the local pair
+ * differently and the rest alike, so one scan gets one time from either.
  */
+function scanClock(activity: JsonObject, local: string | null, day: string | null, raw: string): ScanClock {
+  const stated = cleanScalar(activity.gmtOffset);
+  const offset = statedOffset(stated);
+  const utc = utcPair(activity);
+  if (utc) {
+    const shown = offset ? DateTime.fromISO(utc, { zone: 'utc' }).setZone(FixedOffsetZone.instance(offset)) : null;
+    return { time: shown?.isValid && local && shown.toFormat("yyyy-MM-dd'T'HH:mm") === local.slice(0, 16)
+      ? shown.toISO({ suppressMilliseconds: true }) : `${utc}+00:00` };
+  }
+  if (local) return /^[+-]\d{2}:\d{2}$/.test(stated) ? { time: `${local}${stated}` } : { local_time: local };
+  if (day) return { local_time: day };
+  return raw ? { provider_time_text: raw } : {};
+}
+
+/** The clock of a scan in the page's reply, whose local pair reads `08/04/2026` and `9:12 A.M.`. */
 function activityClock(activity: JsonObject): ScanClock {
   const localDate = cleanScalar(activity.date);
   const localTime = cleanScalar(activity.time);
@@ -349,23 +386,19 @@ function activityClock(activity: JsonObject): ScanClock {
   const local = dateMatch && timeMatch && hour >= 1 && hour <= 12
     ? `${dateMatch[3]}-${dateMatch[1]}-${dateMatch[2]}T${String(hour % 12 + (timeMatch[3]!.toUpperCase() === 'P' ? 12 : 0)).padStart(2, '0')}:${timeMatch[2]}:00`
     : null;
-  const offset = statedOffset(activity);
-  const gmtDate = cleanScalar(activity.gmtDate);
-  const gmtTime = cleanScalar(activity.gmtTime);
-  if (/^\d{8}$/.test(gmtDate) && /^\d{2}:\d{2}:\d{2}$/.test(gmtTime)) {
-    const utc = `${gmtDate.slice(0, 4)}-${gmtDate.slice(4, 6)}-${gmtDate.slice(6, 8)}T${gmtTime}`;
-    const shown = offset ? DateTime.fromISO(utc, { zone: 'utc' }).setZone(FixedOffsetZone.instance(offset)) : null;
-    return { time: shown?.isValid && shown.toFormat("yyyy-MM-dd'T'HH:mm':00'") === local
-      ? shown.toISO({ suppressMilliseconds: true }) : `${utc}+00:00` };
-  }
-  if (local) {
-    const stated = cleanScalar(activity.gmtOffset);
-    return /^[+-]\d{2}:\d{2}$/.test(stated) ? { time: `${local}${stated}` } : { local_time: local };
-  }
   const day = dateMatch && !localTime ? calendarDay(Number(dateMatch[3]), Number(dateMatch[1]), Number(dateMatch[2])) : null;
-  if (day) return { local_time: day };
-  const raw = clean(`${localDate} ${localTime}`);
-  return raw ? { provider_time_text: raw } : {};
+  return scanClock(activity, local, day, clean(`${localDate} ${localTime}`));
+}
+
+/** The clock of a scan in the official API's reply, whose local pair reads `20260804` and `091204`. */
+function apiActivityClock(activity: JsonObject): ScanClock {
+  const localDate = cleanScalar(activity.date);
+  const localTime = cleanScalar(activity.time);
+  const dateMatch = /^(\d{4})(\d{2})(\d{2})$/.exec(localDate);
+  const timeMatch = /^([01]\d|2[0-3])([0-5]\d)([0-5]\d)$/.exec(localTime);
+  const day = dateMatch ? calendarDay(Number(dateMatch[1]), Number(dateMatch[2]), Number(dateMatch[3])) : null;
+  const local = day && timeMatch ? `${day}T${timeMatch[1]}:${timeMatch[2]}:${timeMatch[3]}` : null;
+  return scanClock(activity, local, localTime ? null : day, clean(`${localDate} ${localTime}`));
 }
 
 const MONTHS: Record<string, number> = {
@@ -524,6 +557,116 @@ function accessPoint(detail: JsonObject): string {
   return [name, street, more, town].filter(Boolean).join('\n');
 }
 
+const ENGLISH_REGIONS = new Intl.DisplayNames(['en'], { type: 'region' });
+
+/** A town UPS's API writes in capitals, written as its page shows it: "DES MOINES" is "Des Moines". */
+function townCase(town: string): string {
+  return /\p{Ll}/u.test(town) ? town
+    : town.toLocaleLowerCase('en-US').replace(/(^|[\s\-.(/])(\p{L})/gu, (_, before: string, letter: string) => before + letter.toLocaleUpperCase('en-US'));
+}
+
+/**
+ * A scan's place in the API's reply, written as the page writes it: the town,
+ * the state or province, and the country's English name ("Des Moines, IA,
+ * United States", "Koeln, Germany"). The street and postcode are never read.
+ */
+function apiPlace(location: unknown): string {
+  const address = isRecord(location) && isRecord(location.address) ? location.address : null;
+  if (!address) return '';
+  const code = cleanScalar(address.countryCode || address.country, 8).toUpperCase();
+  const country = /^[A-Z]{2}$/.test(code) ? ENGLISH_REGIONS.of(code) ?? code : text(address.country, 60);
+  return [townCase(text(address.city, 80)), text(address.stateProvince, 40), country].filter(Boolean).join(', ');
+}
+
+/** A YYYYMMDD date of the API's `deliveryDate` list, by type, in this order. */
+function apiDeliveryDate(detail: JsonObject, ...types: string[]): string | null {
+  const dates = Array.isArray(detail.deliveryDate) ? detail.deliveryDate.filter(isRecord) : [];
+  for (const type of types) {
+    const match = /^(\d{4})(\d{2})(\d{2})$/.exec(cleanScalar(dates.find((entry) => cleanScalar(entry.type).toUpperCase() === type)?.date));
+    const day = match ? calendarDay(Number(match[1]), Number(match[2]), Number(match[3])) : null;
+    if (day) return day;
+  }
+  return null;
+}
+
+/**
+ * The official Track API's answer (`GET /api/track/v1/details/{number}`), as
+ * the same shipment the page's reply makes: the scans with their activity
+ * codes, the status, the scheduled day, the service, the destination country
+ * and the USPS number of a parcel handed to the post office. The addresses
+ * beyond their country, the recipient, signature, photo, proof of delivery,
+ * payments and references are never read, and neither is the access point,
+ * which the API does not name.
+ */
+export function parseUPSApiResponse(payload: unknown, trackingNumber: string): CarrierResult {
+  const shipments = isRecord(payload) && isRecord(payload.trackResponse) && Array.isArray(payload.trackResponse.shipment)
+    ? payload.trackResponse.shipment.filter(isRecord) : null;
+  if (!shipments) throw new SchemaError('UPS', 'UPS API returned an invalid tracking response');
+  const packages = shipments.flatMap((shipment) => (Array.isArray(shipment.package) ? shipment.package.filter(isRecord) : []));
+  if (packages.length === 0) {
+    if (upsApiNotFound(upsApiNotices(payload))) throw new NotFoundError('UPS');
+    throw new SchemaError('UPS', 'UPS API returned no package');
+  }
+  const expected = trackingNumber.toUpperCase();
+  const named = packages.filter((item) => cleanScalar(item.trackingNumber).toUpperCase() === expected);
+  // One number was asked for: of several packages, only the one that names it answers.
+  if (packages.length > 1 && named.length !== 1) throw new SchemaError('UPS', 'UPS did not return the requested parcel');
+  const detail = named[0] ?? packages[0]!;
+  const returned = cleanScalar(detail.trackingNumber).toUpperCase();
+  if (returned && returned !== expected) throw new SchemaError('UPS', 'UPS did not return the requested parcel');
+  const events: CarrierEvent[] = [];
+  for (const raw of Array.isArray(detail.activity) ? detail.activity : []) {
+    if (!isRecord(raw)) continue;
+    const scanStatus = isRecord(raw.status) ? raw.status : {};
+    const description = text(scanStatus.description);
+    if (!description) continue;
+    const code = cleanScalar(scanStatus.code, 8).toUpperCase();
+    const stage = code ? upsActivityStage(code) : upsUncodedScanStage(description);
+    events.push({
+      ...apiActivityClock(raw),
+      location: apiPlace(raw.location),
+      description,
+      ...(/^[A-Z0-9]{1,4}$/.test(code) ? { provider_code: code } : {}),
+      ...(stage ? { stage, stage_source: 'carrier_map' } : {}),
+    });
+  }
+  // The API lists the newest scan first; its code outranks the status type.
+  const newest = events[0];
+  const stage = newest?.stage as Stage | undefined;
+  const current = isRecord(detail.currentStatus) ? detail.currentStatus : {};
+  const statusText = newest?.description
+    || text(current.description)
+    || text(current.simplifiedTextDescription)
+    || 'Tracking information received';
+  const type = cleanScalar(current.type, 4).toUpperCase();
+  const status: CarrierStatus = stage ? languageStageStatus(stage) : (Object.hasOwn(UPS_STATUS_TYPE, type)
+    ? UPS_STATUS_TYPE[type]!
+    : upsStatus([current.description, current.simplifiedTextDescription, statusText].map((value) => text(value)).join(' '), events.length > 0));
+  const delivered = stage ? stage === 'delivered' : status === 'delivered';
+  const deliveredAt = delivered ? newest?.time : undefined;
+  const addresses = Array.isArray(detail.packageAddress) ? detail.packageAddress.filter(isRecord) : [];
+  const destination = addresses.find((entry) => cleanScalar(entry.type).toUpperCase() === 'DESTINATION');
+  const country = destination && isRecord(destination.address) ? cleanScalar(destination.address.countryCode, 8).toUpperCase() : '';
+  const service = isRecord(detail.service) ? clean(text(detail.service.description, 200).replace(/[®™℠]/g, ' '), 80) : '';
+  // A parcel UPS hands to the U.S. Postal Service names its USPS number among the alternate numbers.
+  const postal = (Array.isArray(detail.alternateTrackingNumber) ? detail.alternateTrackingNumber.filter(isRecord) : [])
+    .filter((entry) => cleanScalar(entry.type).toUpperCase().startsWith('USPS'))
+    .map((entry) => uspsPackageIdentifier(cleanScalar(entry.number)))
+    .find(Boolean) ?? null;
+  return {
+    status,
+    ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),
+    last_status_text: statusText,
+    last_update: newest?.time ?? null,
+    expected_delivery: delivered ? null : apiDeliveryDate(detail, 'RDD', 'SDD'),
+    ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
+    ...(/^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}),
+    ...(service ? { service_name: service } : {}),
+    ...(postal ? { delivery_carrier: 'usps', delivery_tracking_number: postal } : {}),
+    events,
+  };
+}
+
 export interface UPSTrackerOptions {
   timeoutMs?: number;
   directTimeoutMs?: number;
@@ -531,12 +674,15 @@ export interface UPSTrackerOptions {
   trawl?: TrawlClient | null;
   fetcher?: typeof fetch;
   recorder?: StepRecorder;
+  /** The deployment's app on developer.ups.com, or null without one. */
+  api?: UPSApiCredentials | null;
 }
 
 export class UPSTracker {
   readonly timeoutMs: number;
   readonly directTimeoutMs: number;
   readonly #trawl: TrawlClient | null;
+  readonly #api: UPSApiClient | null;
   readonly #fetcher: typeof fetch | undefined;
   readonly #recorder: StepRecorder;
   readonly #serialize = singleFlight();
@@ -549,6 +695,7 @@ export class UPSTracker {
       options.directTimeoutMs ?? DEFAULT_DIRECT_TIMEOUT_MS,
     ));
     this.#trawl = options.trawl ?? null;
+    this.#api = options.api ? new UPSApiClient(options.api, options.fetcher) : null;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
   }
@@ -567,15 +714,23 @@ export class UPSTracker {
 
   async #lookup(number: string, context: TrackingContext): Promise<CarrierResult> {
     const trawl = this.#trawl;
+    const api = this.#api;
     // The direct page, kept so it can still be read when no browser service
     // exists and the structured call was refused.
     const page: { html: string | null } = { html: null };
     return runSteps<CarrierResult>({
       // Without a caller's budget the browser tier leaves the service its own time
       // and the request the allowance to bring the answer back.
-      carrier: 'ups', budgetMs: context.budgetMs ?? this.timeoutMs + (trawl ? TRAWL_TRANSPORT_ALLOWANCE_MS : 0), signal: context.signal,
+      carrier: 'ups',
+      budgetMs: context.budgetMs ?? (api ? API_TIMEOUT_MS : 0) + this.timeoutMs + (trawl ? TRAWL_TRANSPORT_ALLOWANCE_MS : 0),
+      signal: context.signal,
       recorder: this.#recorder,
     }, [
+      {
+        id: 'api',
+        enabled: api !== null,
+        run: ({ remainingMs, signal }) => this.#officialResult(api!, number, Math.min(API_TIMEOUT_MS, Math.floor(remainingMs / 2)), signal),
+      },
       {
         id: 'direct',
         // Plain HTTP serves only deployments without a browser service. Since
@@ -583,6 +738,7 @@ export class UPSTracker {
         // every session a browser did not establish, so with a browser the
         // structured answer is read from the page's own call instead.
         enabled: trawl === null,
+        recovers: recoversFromApi,
         run: async ({ remainingMs, signal }) => {
           try {
             return await this.#directResult(number, page, { signal, deadline: performance.now() + remainingMs });
@@ -611,6 +767,7 @@ export class UPSTracker {
       {
         id: 'trawl',
         enabled: trawl !== null,
+        recovers: recoversFromApi,
         run: async ({ remainingMs, signal }) => {
           // The skip is recorded as this step's failure, under its own error type.
           const held = statusHeldMs(trawl!);
@@ -703,6 +860,13 @@ export class UPSTracker {
     return this.#structuredResult(number, await session.fetchStatus(number, bounds));
   }
 
+  async #officialResult(api: UPSApiClient, number: string, timeoutMs: number, signal: AbortSignal): Promise<CarrierResult> {
+    const result = parseUPSApiResponse(await api.track(number, signal, Math.max(1, timeoutMs)), number);
+    result.tracking_url = upsTrackingUrl(number);
+    result.tracking_source = 'official-api-response';
+    return result;
+  }
+
   #structuredResult(number: string, payload: unknown): CarrierResult {
     const result = parseUPSTrackingResponse(payload, number);
     result.tracking_url = upsTrackingUrl(number);
@@ -719,16 +883,19 @@ export class UPSTracker {
 }
 
 export const adapter: AdapterFactory = (environment) => {
+  const api = upsApiCredentials(environment.env);
   const tracker = new UPSTracker({
     fetcher: environment.fetcher,
     trawl: environment.trawl,
     recorder: environment.recorder,
+    api,
   });
   return {
     id: 'ups',
-    // `direct` is plain HTTP and runs only without a browser service. `trawl`
-    // is the browser, which also reads the page's own status call.
-    steps: ['direct', 'trawl'],
+    // `api` is UPS's official Track API and runs only with a deployment's app
+    // credentials. `direct` is plain HTTP and runs only without a browser
+    // service. `trawl` is the browser, which also reads the page's own status call.
+    steps: [...(api ? ['api'] : []), 'direct', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
   };
 };

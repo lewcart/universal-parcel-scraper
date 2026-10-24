@@ -2,7 +2,7 @@
  * UPS status vocabulary.
  *
  * Nearly every scan in UPS's `GetStatus` reply carries a two-character
- * `actCode`. The code is the stable key: one wording can stand for two codes
+ * `actCode`, the official Track API's `status.code`. The code is the stable key: one wording can stand for two codes
  * ("Arrived at Facility" is both the origin scan `OR` and an arrival `AR`), and
  * the wording arrives HTML-escaped and reworded. The adapter maps the code to a
  * stage and leaves a scan with an unmapped code to the shared wording
@@ -53,6 +53,19 @@ export const UPS_PROGRESS_STATUS: Readonly<Record<string, CarrierStatus>> = {
   outfordelivery: 'out_for_delivery',
   delivered: 'delivered',
   exception: 'exception',
+};
+
+/**
+ * The official Track API's status `type` letter: delivered, in transit, picked
+ * up, manifest (a label, no parcel yet) and exception. Like the progress token,
+ * it decides only when the newest scan's code is unmapped.
+ */
+export const UPS_STATUS_TYPE: Readonly<Record<string, CarrierStatus>> = {
+  D: 'delivered',
+  I: 'in_transit',
+  P: 'in_transit',
+  M: 'pending',
+  X: 'exception',
 };
 
 /**

@@ -22,6 +22,31 @@ describe('classifyWording', () => {
     },
   );
 
+  it.each(["Il va être retourné à l'expéditeur", "Retour à l'expéditeur en cours", "Votre colis est en cours de retour vers l'expéditeur",
+    "Le colis sera livré à son expéditeur", 'Die Sendung wird an den Absender zurückgesendet', 'Die Sendung ist auf dem Rückweg zum Absender',
+    'Sendung wird retourniert', 'Il pacco sarà restituito al mittente', 'In restituzione al mittente',
+    'Het pakket wordt teruggestuurd naar de afzender', 'Przesyłka zostanie zwrócona do nadawcy', 'Zwrot do nadawcy',
+    'Devolver a origen', 'Will be returned to the shipper', 'Your parcel will be returned to its origin', 'Return in progress'])(
+    'keeps a return under way nonterminal in any language: %s', wording => {
+      expect(classifyWording(wording)).toEqual({ stage: 'exception', source: 'wording:language' });
+    },
+  );
+
+  it.each(["Votre colis est livré à son expéditeur à la suite d'un retour.", "Le colis est livré à l'expéditeur",
+    "Colis en retour, livré à l'expéditeur", 'Paket wurde an den Absender zugestellt', 'Die Sendung wurde dem Absender zugestellt',
+    'Il pacco è stato consegnato al mittente', 'Het pakket is afgeleverd bij de afzender', 'Teruggestuurd naar afzender',
+    'Przesyłka doręczona do nadawcy', 'Przesyłka zwrócona do nadawcy', 'The return was handed over to the sender'])(
+    'reads a parcel delivered back to its sender as returned, not delivered: %s', wording => {
+      expect(classifyWording(wording)).toEqual({ stage: 'returned', source: 'wording:language' });
+    },
+  );
+
+  it('still reads deliveries to come to the recipient as forecasts', () => {
+    expect(wordingStage('Die Sendung wird morgen zugestellt')).toBe('in_transit');
+    expect(wordingStage('Uw pakket wordt vandaag bezorgd')).toBe('in_transit');
+    expect(wordingStage('Die Sendung konnte nicht zugestellt werden und wurde an den Absender zurückgeschickt')).toBe('returned');
+  });
+
   it.each(['Returned to sender', 'Has been returned to the sender', 'Delivered back to sender',
     'Delivered to the shipper', 'Has been delivered back to the sender',
     'Has already been returned to sender', 'The item was not delivered and has been returned to sender',
@@ -161,7 +186,8 @@ describe('classifyWording', () => {
       ['Il pacco non è stato affidato al corriere: mancata consegna', 'failed_attempt'],
       ["Le colis n'a pas encore été remis au destinataire", 'pending'],
       ["Le colis n'a pas été remis à la douane", 'customs'],
-      ["Le colis n'a pas encore été remis à l'expéditeur", 'pending'],
+      // A return not back with the sender yet reads like English "not yet returned to sender".
+      ["Le colis n'a pas encore été remis à l'expéditeur", 'exception'],
       ['Das Paket wurde noch nicht an den Empfänger übergeben', 'pending'],
       ['Das Paket wurde nicht an die Packstation übergeben', 'pending'],
       ['Das Paket wurde nicht an den Zoll übergeben', 'customs'],

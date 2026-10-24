@@ -1,6 +1,11 @@
 import type { Stage } from '../../generated/catalog.js';
 import type { CarrierStatus } from '../result/index.js';
 
+/** Where an English return goes back to. */
+const ORIGIN = String.raw`(?:the |its |their )?(?:sender|shipper|origin)\b`;
+/** A return to come, under way, negated or uncertain. */
+const ENGLISH_RETURN_UNDER_WAY = new RegExp(String.raw`\breturn(?:ing)? (?:back )?to ${ORIGIN}|\b(?:will|would|should|shall|must|may|might|can|could|ought to|needs? to|to) (?:(?:not|never|yet|still|already|soon|shortly|eventually|possibly|probably) )*(?:be|have been) returned (?:back )?to ${ORIGIN}|\b(?:not|never)(?: yet| already| still)? (?:(?:have|has|be|been|being) )*returned (?:back )?to ${ORIGIN}|\bbeing returned (?:back )?to ${ORIGIN}|\b(?:on (?:its|the) way|in transit|en route) back to ${ORIGIN}|\breturn (?:has been |was |is )?(?:initiated|requested|started|in progress|under ?way)\b|\b(?:start(?:s|ed|ing)?|begin(?:s|ning)?|began) (?:the |a )?return(?:ing)?\b`);
+
 /** Instructions, uncertainty and a return in progress do not prove sender delivery. */
 export function nonterminalEnglishReturn(description: string): boolean {
   const text = description.toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ')
@@ -9,7 +14,7 @@ export function nonterminalEnglishReturn(description: string): boolean {
   // Bind the negative or modal to this sender-delivery phrase. A previous
   // failed recipient delivery does not negate an affirmative sender return.
   if (/\b(?:will|would|should|shall|must|may|might|can|could|ought to|needs? to|to) (?:(?:not|never|yet|still|already|soon|shortly|eventually|possibly|probably) )*(?:be|have been) delivered (?:back )?to (?:the )?(?:sender|shipper)\b|\b(?:not|never)(?: yet| already| still)? (?:(?:have|has|be|been|being) )*delivered (?:back )?to (?:the )?(?:sender|shipper)\b|\bbeing delivered (?:back )?to (?:the )?(?:sender|shipper)\b/.test(text)) return true;
-  return /\breturn(?:ing)? to (?:the )?sender\b|\b(?:will|would|should|shall|must|may|might|can|could|ought to|needs? to|to) (?:(?:not|never|yet|still|already|soon|shortly|eventually|possibly|probably) )*(?:be|have been) returned to (?:the )?sender\b|\b(?:not|never)(?: yet| already| still)? (?:(?:have|has|be|been|being) )*returned to (?:the )?sender\b|\bbeing returned to (?:the )?sender\b|\breturn (?:has been )?(?:initiated|requested|started)\b/.test(text);
+  return ENGLISH_RETURN_UNDER_WAY.test(text);
 }
 
 function comparable(description: string): string {
@@ -26,8 +31,8 @@ const SENTENCE = String.raw`(?:[^.;!?]|\.(?=\S))`;
  */
 const DELIVERY_FORECAST = new RegExp(`(?:${[
   String.raw`\b(?:will|would|shall|should|may|might|must|won't|can(?! ?not\b)|could(?! not\b))(?: (?:not|now|then|still|also|likely|probably|possibly|hopefully|soon|shortly|only|normally|usually|again|today|tomorrow))* be delivered\b(?! (?:back )?to (?:the )?(?:sender|shipper)\b)`,
-  String.raw`\b(?:sera|seront|serait|seraient|va etre|vont etre|doit etre|doivent etre|devrait etre|devraient etre|pourra etre|pourront etre|pourrait etre)(?: \w+){0,2}? livree?s?\b(?! a l'expediteur)`,
-  String.raw`\b(?:wird|werden|soll|sollte|sollen|sollten)\b${SENTENCE}*?(?<!\bnicht )\bzugestellt\b`,
+  String.raw`\b(?:sera|seront|serait|seraient|va etre|vont etre|doit etre|doivent etre|devrait etre|devraient etre|pourra etre|pourront etre|pourrait etre)(?: \w+){0,2}? livree?s?\b(?! a (?:l'|son |leur |votre )expediteur)`,
+  String.raw`\b(?:wird|werden|soll|sollte|sollen|sollten)\b(?!${SENTENCE}*?\babsender\b)${SENTENCE}*?(?<!\bnicht )\bzugestellt\b`,
   String.raw`\bvoraussichtlich\w*\b${SENTENCE}*?\b(?:zugestellt|zustellung)\b|\b(?:zustellung|zustelltermin) (?:(?:ist|erfolgt) )?(?:voraussichtlich|geplant)\b`,
   String.raw`\b(?:sara|saranno|verra|verranno|potra essere|potrebbe essere|dovrebbe essere|dovra essere)(?: \w+){0,2}? consegnat[oaie]\b(?! al mittente)`,
   String.raw`(?<!\bnao )\b(?:sera|seran|serao|va a ser|van a ser|vai ser|vao ser)(?: (?:hoy|manana|hoje|amanha|pronto|proximamente|brevemente|en breve|em breve))? (?:entregad[oa]s?|repartid[oa]s?|entregues?)\b(?! (?:al|ao|a la|a) (?:remitente|remetente|origen|origem)\b)|\bse (?:le |te |lo |la |les )?entregaran?\b`,
@@ -44,6 +49,42 @@ export function deliveryForecastRemainder(description: string): string | undefin
   const text = comparable(description);
   const rest = text.replace(DELIVERY_FORECAST, ' ');
   return rest === text ? undefined : comparable(rest.replace(/^[\s,;:.!?]+|[\s,;:]+$/g, ''));
+}
+
+/** The sender a French, German, Italian, Dutch or Polish return goes back to, after its preposition. */
+const SENDER = String.raw`(?:(?:a|chez|vers) (?:l'|son |leur |votre )expediteur|(?:an (?:den )?|zum |zu (?:den |dem )?|dem |den )absender|(?:al|verso il) mittente|(?:naar|bij|aan) (?:de )?afzender|do nadawcy)\b`;
+/**
+ * A return announced, under way or negated in French, German, Italian, Dutch,
+ * Polish, or Spanish and Portuguese instructions: the parcel is not back yet
+ * ("Il va être retourné à l'expéditeur", "Retour en cours", "Die Sendung wird
+ * an den Absender zurückgesendet", "Devolver a origen").
+ */
+const RETURN_UNDER_WAY = new RegExp([
+  String.raw`\b(?:sera|seront|serait|seraient|va etre|vont etre|doit etre|doivent etre|devrait etre|devraient etre|pourra etre|pourront etre|pourrait etre|en train d'etre)(?: \w+){0,2}? (?:retourne|renvoye|reexpedie|restitue|rendu|livre|remis)e?s? ${SENDER}`,
+  String.raw`\bn'(?:a|ont|est|sont)(?: toujours)? (?:pas|jamais)(?: encore)? (?:ete )?(?:retourne|renvoye|restitue|rendu|livre|remis)e?s? ${SENDER}`,
+  String.raw`\b(?:va|vont|doit|doivent) (?:\w+ )?(?:retourner|repartir|revenir) ${SENDER}|\ben (?:cours de |cours d'acheminement )?(?:retour|renvoi|reexpedition)\b|\b(?:en (?:cours d'acheminement|route)|achemine) ${SENDER}|\bretour (?:a l'expediteur |vers l'expediteur |expediteur )?(?:en cours|initie|demande|programme|prevu)\b`,
+  String.raw`\b(?:wird|werden|soll|sollte|sollen|muss|kann)(?: (?!(?:und|oder|wurde|wurden|ist|sind|war|hat)\b)[\w'-]+){0,6}? (?:retourniert|zuruck(?:gesendet|geschickt|gegeben|geleitet|befordert)|absender (?:\w+ )?(?:zugestellt|ubergeben|gesendet|geschickt))\b|\bauf dem (?:ruckweg|weg zuruck)\b|\b(?:rucksendung|retoure) (?:an (?:den )?absender )?(?:eingeleitet|veranlasst|beauftragt|angekundigt|unterwegs|in bearbeitung)\b`,
+  String.raw`\b(?:sara|saranno|verra|verranno|deve essere|dovra essere|dovrebbe essere|potra essere|potrebbe essere|sta per essere)(?: \w+){0,2}? (?:restituit|res|rinviat|rispedit|ritornat|consegnat)[oaie] ${SENDER}|\bin (?:corso di |fase di )?(?:restituzione|rientro|reso|ritorno)\b|\breso (?:al mittente )?(?:in corso|avviato|iniziato)\b|\bin (?:viaggio|transito) ${SENDER}`,
+  String.raw`\b(?:wordt|worden|zal|zullen|gaat)\b(?: \w+){0,4}? (?:(?:teruggestuurd|teruggezonden|geretourneerd|retour (?:gestuurd|gezonden)|terug (?:gestuurd|gezonden))\b|(?:afgeleverd|bezorgd) (?:bij|aan) de afzender\b|(?:bij|aan) de afzender (?:afgeleverd|bezorgd)\b)|\bonderweg (?:terug )?${SENDER}|\bretour (?:naar (?:de )?afzender )?(?:onderweg|in behandeling)\b`,
+  String.raw`\b(?:zostanie|zostana|bedzie|beda)(?: \w+){0,2}? (?:zwrocon|odeslan|doreczon|zwracan)[aeyi] ${SENDER}|\bzwrot (?:przesylki )?do nadawcy\b(?! (?:zakonczon|doreczon|zrealizowan)\w*)|\bw drodze (?:powrotnej )?do nadawcy\b|\bprzekazan[aeyi] do zwrotu\b`,
+  String.raw`\bdevolver (?:al|a|a la|ao) (?:remitente|remetente|origen|origem)\b|\b(?:retornando|regresando|volviendo) (?:al|a|ao) (?:remitente|remetente|origen|origem)\b`,
+].join('|'), 'g');
+/** A parcel back with its sender in those languages, also worded as a delivery to the sender. */
+const RETURN_COMPLETED = new RegExp([
+  String.raw`\b(?:retourne|renvoye|restitue|rendu|livre|remis|distribue)e?s? ${SENDER}`,
+  String.raw`\b(?:an (?:den )?|dem )absender (?:\w+ )?(?:zugestellt|ubergeben|ausgehandigt|ausgeliefert)\b`,
+  String.raw`\b(?:consegnat|restituit|recapitat|riconsegnat)[oaie] al mittente\b`,
+  String.raw`\b(?:teruggestuurd|teruggezonden|geretourneerd|retour (?:gestuurd|gezonden)|terug (?:gestuurd|gezonden))(?: \w+){0,2}? (?:naar|aan) (?:de )?afzender\b|\b(?:afgeleverd|bezorgd|aangeboden) (?:bij|aan) de afzender\b`,
+  String.raw`\b(?:zwrocon|doreczon|odeslan|wydan)[aeyi] (?:do )?nadawcy\b|\bodebran[aeyi] przez nadawce\b|\bzwrot (?:przesylki )?do nadawcy (?:zakonczon|doreczon|zrealizowan)`,
+].join('|'));
+
+/**
+ * A return still to come or under way, unless the same scan also says the
+ * parcel reached its sender ("Colis en retour, livré à l'expéditeur").
+ */
+function returnUnderWay(text: string): boolean {
+  const rest = text.replace(RETURN_UNDER_WAY, ' ');
+  return rest !== text && !RETURN_COMPLETED.test(rest);
 }
 
 /** What a carrier does once it has the parcel. */
@@ -218,8 +259,10 @@ export function trackingLanguageStage(description: string): Stage | undefined {
 
   // Specific negatives, future steps and handoffs precede broad delivery words.
   if (nonterminalEnglishReturn(text)) return 'exception';
+  if (returnUnderWay(text)) return 'exception';
   // Spanish and Portuguese returns still under way, announced or negated.
   if (/\b(?:en|em) (?:proceso de |processo de )?devolu(?:cion|cao)\b|^devolu(?:cion|cao)$|\bdevolu(?:cion|cao) (?:en curso|em curso|iniciada|solicitada|en transito|em transito)\b|\bdevolu(?:cion|cao) (?:al|ao|a la|a) (?:remitente|remetente|origen|origem)\b(?! (?:completad|finalizad|concluid|entregad|entregue|realizad|efectuad|efetuad))|\ben camino (?:de vuelta |de regreso )?(?:al|hacia el) remitente\b|\b(?:a caminho (?:de volta )?(?:do|ao)|em transito para o) remetente\b|\b(?:siendo|sendo|a ser) (?:(?:devuelt|devolvid)[oa]s?|entregad[oa]s? al remitente|entregues? ao remetente)\b|\b(?:no|nao) (?:(?:ha|han|se|fue|foi|foram|sido|ser|sera|puede|pode|pudo|podido|todavia|aun|ainda|ya|ja) )*(?:(?:devuelt|devolvid)[oa]s?|entregad[oa]s? al remitente|entregues? ao remetente)\b|\b(?:sera|seran|serao|va a ser|vai ser|puede ser|pode ser|debe ser|deve ser|devera ser) (?:(?:pronto|proximamente|en breve|em breve|brevemente) )?(?:(?:devuelt|devolvid)[oa]s?|entregad[oa]s? al remitente|entregues? ao remetente)\b|\bse (?:le )?devolvera\b/.test(text)) return 'exception';
+  if (RETURN_COMPLETED.test(text) || /\breturn (?:was |has been )?(?:successfully )?(?:handed (?:over|back)|delivered) to (?:the )?(?:sender|shipper)\b/.test(text)) return 'returned';
   if (/returned to (?:the )?sender|retour(?:ne)? a l'expediteur|zuruck an (?:den )?absender|an (?:den )?absender zuruck|retour a l'expediteur|reso al mittente|restituit[oa] al mittente|delivered (?:back )?to (?:the )?(?:sender|shipper)/.test(text)) return 'returned';
   if (/^(?:(?:envio|paquete|pedido|objeto|encomenda|pacote|remessa) )?(?:devuelt|devolvid)[oa]$|\b(?:devuelt|devolvid|retornad)[oa]s? (?:al|ao|a la|a) (?:remitente|remetente|origen|origem)\b|\bentregad[oa]s? al remitente\b|\bentregues? ao remetente\b|\bdevolu(?:cion|cao) (?:(?:al|ao|a la|a) (?:remitente|remetente|origen|origem) )?(?:completad|finalizad|concluid|entregad|entregue|realizad|efectuad|efetuad)/.test(text)) return 'returned';
   // A new attempt announced on its own reschedules the round; with the reason

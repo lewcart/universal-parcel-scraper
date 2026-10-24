@@ -14,15 +14,18 @@ import {
   UpstreamHttpError,
 } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { runSteps } from '../../core/runner/index.js';
+import { runSteps, type StepContext } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { calendarDay, explicitOffsetTime } from '../../core/time/index.js';
 import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
+import { FedExApiClient, fedexApiCredentials, type FedExApiCredentials } from './api.js';
 import { FEDEX_CODE_STAGE, fedexStage, fedexStatus, statusForStage } from './status.js';
 
 /**
- * FedEx, through the tracking reply the public page reads itself.
+ * FedEx, through its official Track API when the deployment has keys for it
+ * (see `api.ts`), then through the tracking reply the public page reads itself.
+ * Both replies become one shipment model, read by the same rules.
  *
  * The page at `fedextrack/?trknbr=` is a shell: every byte of tracking data
  * arrives as `POST https://api.fedex.com/track/v2/shipments`, a
@@ -46,6 +49,8 @@ const DEFAULT_TIMEOUT_MS = 90_000;
 const SETTLE_TIMEOUT_MS = 15_000;
 // Captured replies beyond this many are noise, never the answer.
 const MAX_CAPTURED = 20;
+// The official API's share of a lookup; it answers in about a second.
+const API_TIMEOUT_MS = 15_000;
 const MAX_EVENTS_TO_INSPECT = 500;
 const MAX_EVENTS_TO_RETURN = 100;
 const HOUR_MS = 3_600_000;
@@ -120,9 +125,29 @@ function newestFirst(scans: readonly ListedScan[]): CarrierEvent[] {
   return ordered.map((scan) => scan.event);
 }
 
-function scanDescription(scan: JsonObject): string {
-  const status = clean(scan.status);
-  const details = clean(scan.scanDetails);
+/**
+ * The API's clock for a scan: an ISO time with its offset. A step FedEx dates
+ * by its day alone, which the tracking page sends as midnight without an offset,
+ * keeps that day in `local_time`, as it does there.
+ */
+function apiClock(value: unknown): Pick<CarrierEvent, 'time'> & { local_time?: string } {
+  const raw = cleanScalar(value, 64);
+  const parsed = explicitOffsetTime(raw);
+  if (parsed) return { time: parsed.iso };
+  const day = /^(\d{4})-(\d{2})-(\d{2})(?:T00:00(?::00)?)?$/.exec(raw);
+  const local = day ? calendarDay(Number(day[1]), Number(day[2]), Number(day[3])) : null;
+  return local ? { local_time: local } : {};
+}
+
+/** A scan's place as the tracking page writes it: the town, then its state or province, else its country. */
+function apiPlace(value: unknown): string {
+  if (!isRecord(value)) return '';
+  const city = clean(value.city, 80);
+  const region = clean(value.stateOrProvinceCode, 40) || clean(value.countryCode, 8);
+  return city && region ? `${city}, ${region}` : city;
+}
+
+function scanDescription(status: string, details: string): string {
   if (details && !status.toLocaleLowerCase('en-US').includes(details.toLocaleLowerCase('en-US'))) {
     return clean(`${status} — ${details}`);
   }
@@ -143,14 +168,15 @@ function deliveredAt(value: unknown): string | null {
 /**
  * The hold location, read only while the parcel waits there: its name, then
  * its street and its town on their own lines when FedEx gives both. These are
- * the `halCmpnyName` and `halAddress` the page reads for a held parcel. The
- * recipient and shipper blocks are never a fallback, and a residential hold
- * address is someone's home, so it is never projected.
+ * the `halCmpnyName` and `halAddress` the page reads for a held parcel, or the
+ * API's `holdAtLocation`. The recipient and shipper blocks are never a
+ * fallback, and a residential hold address is someone's home, so it is never
+ * projected.
  */
-function holdLocation(shipment: JsonObject): string {
-  const name = clean(shipment.halCmpnyName, 200);
-  const address: JsonObject = isRecord(shipment.halAddress) ? shipment.halAddress : {};
-  if (!name || shipment.halresidential === true || address.residential === true) return '';
+function holdLocation(nameValue: unknown, addressValue: unknown, residential: boolean): string {
+  const name = clean(nameValue, 200);
+  const address: JsonObject = isRecord(addressValue) ? addressValue : {};
+  if (!name || residential || address.residential === true) return '';
   const street = Array.isArray(address.streetLines)
     ? address.streetLines.map((line) => clean(line, 120)).filter(Boolean)
     : [];
@@ -181,8 +207,8 @@ const USPS_TRACKING_ID = /\btracking id\s*:?\s*(\d{22}|\d{26})\b/i;
  * it: the one the scan names, else, for a 20-digit Ground Economy number whose
  * check digit passes, that number with 92 in front. Otherwise null.
  */
-function uspsHandoff(scans: readonly JsonObject[], number: string): string | null {
-  const texts = scans.map((scan) => `${clean(scan.status)} ${clean(scan.scanDetails)}`)
+function uspsHandoff(scans: readonly FedExScan[], number: string): string | null {
+  const texts = scans.map((scan) => scan.wording)
     .filter((text) => USPS_HAS_PARCEL.test(text) && !USPS_NEGATED.test(text));
   if (texts.length === 0) return null;
   for (const text of texts) {
@@ -204,6 +230,80 @@ function notLocated(): CarrierResult {
     last_update: null,
     expected_delivery: null,
     events: [],
+  };
+}
+
+/** One scan, from either reply. */
+interface FedExScan {
+  /** Its status, then the detail it adds. */
+  description: string;
+  /** Both, as plain words for the status map and the USPS handoff. */
+  wording: string;
+  /** Its code, uppercased. */
+  code: string;
+  clock: Pick<CarrierEvent, 'time'> & { local_time?: string };
+  location: string;
+}
+
+/** A shipment as either reply gives it, its scans in FedEx's order, newest first. */
+interface FedExShipment {
+  scans: readonly FedExScan[];
+  statusText: string;
+  statusCode: string;
+  statusDetails: string;
+  estimate: unknown;
+  deliveredAt: unknown;
+  /** The hold location, whether or not the parcel waits there yet. */
+  holdLocation: string;
+}
+
+function shipmentResult(shipment: FedExShipment, number: string): CarrierResult {
+  const listed: ListedScan[] = [];
+  const seen = new Set<string>();
+  for (const [index, scan] of shipment.scans.entries()) {
+    if (!scan.description) continue;
+    const stage = FEDEX_CODE_STAGE[scan.code] ?? fedexStage(scan.wording) ?? undefined;
+    const { clock } = scan;
+    // A delivered scan names its signatory; the event keeps the fact, not the name.
+    const event: CarrierEvent = {
+      ...clock,
+      ...(scan.location ? { location: scan.location } : {}),
+      description: stage === 'delivered' ? 'Delivered' : scan.description,
+      ...(stage ? { stage } : {}),
+    };
+    const identity = JSON.stringify([clock.time ?? clock.local_time ?? '', event.location ?? '', event.description]);
+    if (seen.has(identity)) continue;
+    seen.add(identity);
+    listed.push({ event, index, day: clock.local_time ?? '' });
+  }
+  const trimmed = newestFirst(listed).slice(0, MAX_EVENTS_TO_RETURN);
+  const newest = trimmed[0];
+  const { statusText: keyStatus, statusDetails } = shipment;
+  const keyStatusCD = shipment.statusCode.toUpperCase();
+  const statusText = keyStatus || newest?.description || 'Tracking information received';
+  const wording = fedexStage(`${keyStatus} ${statusDetails}`);
+  const afterCutoff = keyStatusCD === 'DY' && newest?.stage === 'accepted'
+    && AFTER_CUTOFF.test(newest.description ?? '') && !(wording && statusForStage(wording) === 'exception');
+  const stage = afterCutoff ? 'accepted' : FEDEX_CODE_STAGE[keyStatusCD] ?? wording ?? undefined;
+  const status = afterCutoff ? 'in_transit' : fedexStatus(keyStatusCD, `${keyStatus} ${statusDetails}`, trimmed.length > 0);
+  const delivered = stage === 'delivered';
+  const estimate = delivered ? null : expectedDelivery(shipment.estimate);
+  const pickupPoint = stage === 'ready_for_pickup' ? shipment.holdLocation : '';
+  const postal = uspsHandoff(shipment.scans, number);
+  return {
+    status,
+    ...(stage ? { current_stage: stage } : {}),
+    last_status_text: delivered ? 'Delivered' : statusText,
+    last_update: newest?.time || null,
+    // A newest scan dated by its day alone has no instant, only that day.
+    ...(!newest?.time && typeof newest?.local_time === 'string' ? { last_update_local: newest.local_time } : {}),
+    expected_delivery: estimate,
+    ...(delivered && deliveredAt(shipment.deliveredAt)
+      ? { delivered_at: deliveredAt(shipment.deliveredAt) } : {}),
+    ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
+    ...(postal ? { delivery_carrier: 'usps', delivery_tracking_number: postal } : {}),
+    ...(trimmed.length === 0 ? { summary_only: true } : {}),
+    events: trimmed,
   };
 }
 
@@ -248,56 +348,86 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
     }
     throw new SchemaError('FedEx', 'FedEx returned no usable tracking status');
   }
-  const listed: ListedScan[] = [];
-  const seen = new Set<string>();
-  for (const [index, raw] of scans.slice(0, MAX_EVENTS_TO_INSPECT).entries()) {
-    const description = scanDescription(raw);
-    if (!description) continue;
-    const statusCD = cleanScalar(raw.statusCD).toLocaleUpperCase('en-US');
-    const stage = FEDEX_CODE_STAGE[statusCD]
-      ?? fedexStage(`${clean(raw.status)} ${clean(raw.scanDetails)}`)
-      ?? undefined;
-    const clock = scanClock(raw);
-    const location = clean(raw.scanLocation);
-    // A delivered scan names its signatory; the event keeps the fact, not the name.
-    const event: CarrierEvent = {
-      ...clock,
-      ...(location ? { location } : {}),
-      description: stage === 'delivered' ? 'Delivered' : description,
-      ...(stage ? { stage } : {}),
-    };
-    const identity = JSON.stringify([clock.time ?? clock.local_time ?? '', event.location ?? '', event.description]);
-    if (seen.has(identity)) continue;
-    seen.add(identity);
-    listed.push({ event, index, day: clock.local_time ?? '' });
+  return shipmentResult({
+    scans: scans.slice(0, MAX_EVENTS_TO_INSPECT).map((raw) => ({
+      description: scanDescription(clean(raw.status), clean(raw.scanDetails)),
+      wording: `${clean(raw.status)} ${clean(raw.scanDetails)}`,
+      code: cleanScalar(raw.statusCD).toLocaleUpperCase('en-US'),
+      clock: scanClock(raw),
+      location: clean(raw.scanLocation),
+    })),
+    statusText: keyStatus,
+    statusCode: keyStatusCD,
+    statusDetails,
+    estimate: shipment.estDeliveryDt,
+    deliveredAt: shipment.actDeliveryDt,
+    holdLocation: holdLocation(shipment.halCmpnyName, shipment.halAddress, shipment.halresidential === true),
+  }, number);
+}
+
+/** The time of the first `dateAndTimes` entry of one of these types, in that order. */
+function apiDate(result: JsonObject, ...types: string[]): unknown {
+  const dates = Array.isArray(result.dateAndTimes) ? result.dateAndTimes.filter(isRecord) : [];
+  for (const type of types) {
+    const found = dates.find((entry) => cleanScalar(entry.type).toUpperCase() === type);
+    if (found) return found.dateTime;
   }
-  const trimmed = newestFirst(listed).slice(0, MAX_EVENTS_TO_RETURN);
-  const newest = trimmed[0];
-  const statusText = keyStatus || newest?.description || 'Tracking information received';
-  const wording = fedexStage(`${keyStatus} ${statusDetails}`);
-  const afterCutoff = keyStatusCD.toUpperCase() === 'DY' && newest?.stage === 'accepted'
-    && AFTER_CUTOFF.test(newest.description ?? '') && !(wording && statusForStage(wording) === 'exception');
-  const stage = afterCutoff ? 'accepted' : FEDEX_CODE_STAGE[keyStatusCD.toUpperCase()] ?? wording ?? undefined;
-  const status = afterCutoff ? 'in_transit' : fedexStatus(keyStatusCD, `${keyStatus} ${statusDetails}`, trimmed.length > 0);
-  const delivered = stage === 'delivered';
-  const estimate = delivered ? null : expectedDelivery(shipment.estDeliveryDt);
-  const pickupPoint = stage === 'ready_for_pickup' ? holdLocation(shipment) : '';
-  const postal = uspsHandoff(scans.slice(0, MAX_EVENTS_TO_INSPECT), number);
-  return {
-    status,
-    ...(stage ? { current_stage: stage } : {}),
-    last_status_text: delivered ? 'Delivered' : statusText,
-    last_update: newest?.time || null,
-    // A newest scan dated by its day alone has no instant, only that day.
-    ...(!newest?.time && typeof newest?.local_time === 'string' ? { last_update_local: newest.local_time } : {}),
-    expected_delivery: estimate,
-    ...(delivered && deliveredAt(shipment.actDeliveryDt)
-      ? { delivered_at: deliveredAt(shipment.actDeliveryDt) } : {}),
-    ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
-    ...(postal ? { delivery_carrier: 'usps', delivery_tracking_number: postal } : {}),
-    ...(trimmed.length === 0 ? { summary_only: true } : {}),
-    events: trimmed,
-  };
+  return undefined;
+}
+
+/**
+ * The official Track API's answer (`POST /track/v1/trackingnumbers`). It reads
+ * the scans, the latest status, the delivery dates and the hold location; the
+ * recipient, shipper, signatory, package and service blocks are never read.
+ */
+export function parseFedExApiResponse(payload: unknown, trackingNumber: string): CarrierResult {
+  const number = normalizeFedExTrackingNumber(trackingNumber);
+  const complete = isRecord(payload) && isRecord(payload.output) && Array.isArray(payload.output.completeTrackResults)
+    ? payload.output.completeTrackResults.filter(isRecord) : null;
+  if (!complete) throw new SchemaError('FedEx', 'FedEx API returned an invalid tracking response');
+  const bound = (value: unknown) => cleanScalar(value).replace(/[\s.-]/g, '').toLocaleUpperCase('en-US') === number;
+  const results = complete.filter((entry) => bound(entry.trackingNumber))
+    .flatMap((entry) => Array.isArray(entry.trackResults) ? entry.trackResults.filter(isRecord) : [])
+    .filter((result) => bound(isRecord(result.trackingNumberInfo) ? result.trackingNumberInfo.trackingNumber : undefined));
+  if (results.length !== 1) {
+    throw new SchemaError('FedEx', results.length === 0
+      ? 'FedEx did not return the requested parcel'
+      : 'FedEx returned several shipments for this number');
+  }
+  const result = results[0]!;
+  const code = errorCode(result.error);
+  if (/AUTHENTICAT|AUTHORIZATION/.test(code)) {
+    throw new InputRequiredError('FedEx', 'recipient verification', 'FedEx requires recipient verification for this shipment');
+  }
+  if (/TRACKINGNUMBER|NOTFOUND|NOT FOUND|NO TRACKING/.test(code)) return notLocated();
+  const scans = Array.isArray(result.scanEvents) ? result.scanEvents.filter(isRecord) : [];
+  const latest: JsonObject = isRecord(result.latestStatusDetail) ? result.latestStatusDetail : {};
+  const statusText = clean(latest.description);
+  const statusCode = cleanScalar(latest.code);
+  if (scans.length === 0 && !statusText && !statusCode) {
+    throw new SchemaError('FedEx', 'FedEx returned no usable tracking status');
+  }
+  const reasons = Array.isArray(latest.ancillaryDetails)
+    ? latest.ancillaryDetails.filter(isRecord).map((detail) => clean(detail.reasonDescription)).filter(Boolean) : [];
+  const hold: JsonObject = isRecord(result.holdAtLocation) ? result.holdAtLocation : {};
+  const held: JsonObject = isRecord(hold.locationContactAndAddress) ? hold.locationContactAndAddress : {};
+  const estimateWindow = isRecord(result.estimatedDeliveryTimeWindow) && isRecord(result.estimatedDeliveryTimeWindow.window)
+    ? result.estimatedDeliveryTimeWindow.window : {};
+  return shipmentResult({
+    scans: scans.slice(0, MAX_EVENTS_TO_INSPECT).map((raw) => ({
+      description: scanDescription(clean(raw.eventDescription), clean(raw.exceptionDescription)),
+      wording: `${clean(raw.eventDescription)} ${clean(raw.exceptionDescription)}`,
+      code: cleanScalar(raw.eventType).toLocaleUpperCase('en-US'),
+      clock: apiClock(raw.date),
+      location: apiPlace(raw.scanLocation),
+    })),
+    statusText,
+    statusCode,
+    statusDetails: reasons.join(' '),
+    estimate: apiDate(result, 'ESTIMATED_DELIVERY') ?? estimateWindow.ends,
+    deliveredAt: apiDate(result, 'ACTUAL_DELIVERY'),
+    holdLocation: holdLocation(isRecord(held.contact) ? held.contact.companyName : undefined, held.address, false),
+  }, number);
 }
 
 /**
@@ -320,6 +450,8 @@ export interface FedExTrackerOptions {
   timeoutMs?: number;
   /** The browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
+  /** The deployment's FedEx API project, or null without one. */
+  api?: FedExApiCredentials | null;
   fetcher?: typeof fetch;
   recorder?: StepRecorder;
 }
@@ -327,6 +459,7 @@ export interface FedExTrackerOptions {
 export class FedExTracker {
   readonly timeoutMs: number;
   readonly #trawl: TrawlClient | null;
+  readonly #api: FedExApiClient | null;
   readonly #fetcher: typeof fetch | undefined;
   readonly #recorder: StepRecorder;
 
@@ -336,32 +469,51 @@ export class FedExTracker {
     }
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.#trawl = options.trawl ?? null;
+    this.#api = options.api ? new FedExApiClient(options.api, options.fetcher) : null;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
   }
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeFedExTrackingNumber(trackingNumber);
-    // Plain HTTP probes were rejected; the dedicated route uses the browser.
+    // Plain HTTP to the page's own API is refused; without FedEx API keys only the browser reads it.
     const trawl = this.#trawl;
-    if (!trawl) {
+    const api = this.#api;
+    if (!trawl && !api) {
       throw new ChallengeError(
         'FedEx',
         'FedEx challenged direct tracking; configure FLARESOLVERR_URL for browser fallback',
       );
     }
+    const browserMs = (remainingMs: number) => Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs)));
     return runSteps<CarrierResult>({
       // Without a caller's budget the lookup leaves the service its own time and
       // the request the allowance to bring the answer back.
-      carrier: 'fedex', budgetMs: context.budgetMs ?? this.timeoutMs + TRAWL_TRANSPORT_ALLOWANCE_MS, signal: context.signal,
+      carrier: 'fedex',
+      budgetMs: context.budgetMs ?? (api ? API_TIMEOUT_MS : 0) + (trawl ? this.timeoutMs + TRAWL_TRANSPORT_ALLOWANCE_MS : 0),
+      signal: context.signal,
       recorder: this.#recorder,
     }, [
-      { id: 'trawl', run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
-      // The service discards a context whose tracking call was refused, so a
-      // second read starts a fresh one: Akamai's 403 is intermittent.
-      { id: 'trawl', recovers: (error) => error instanceof ChallengeError && error.reason === 'api_denied' && error.status === 403,
-        run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
+      // FedEx's own API answers in a second; it leaves the browser at least half the budget.
+      ...(api ? [{ id: 'api', run: ({ remainingMs, signal }: StepContext) => this.#apiResult(api, number,
+        Math.max(1, Math.floor(Math.min(API_TIMEOUT_MS, trawl ? remainingMs / 2 : remainingMs))), signal) }] : []),
+      ...(trawl ? [
+        // The page answers what the API could not, except a shipment the recipient must verify.
+        { id: 'trawl', recovers: (error: unknown) => !(error instanceof InputRequiredError),
+          run: ({ remainingMs, signal }: StepContext) => this.#trawlResult(trawl, number, browserMs(remainingMs), signal) },
+        // The service discards a context whose tracking call was refused, so a
+        // second read starts a fresh one: Akamai's 403 is intermittent.
+        { id: 'trawl', recovers: (error: unknown) => error instanceof ChallengeError && error.reason === 'api_denied' && error.status === 403,
+          run: ({ remainingMs, signal }: StepContext) => this.#trawlResult(trawl, number, browserMs(remainingMs), signal) },
+      ] : []),
     ]);
+  }
+
+  async #apiResult(api: FedExApiClient, number: string, timeoutMs: number, signal: AbortSignal): Promise<CarrierResult> {
+    const result = parseFedExApiResponse(await api.track(number, signal, timeoutMs), number);
+    result.tracking_url = fedexTrackingUrl(number);
+    result.tracking_source = 'official-api-response';
+    return result;
   }
 
   /**
@@ -461,15 +613,18 @@ export class FedExTracker {
 }
 
 export const adapter: AdapterFactory = (environment) => {
+  const api = fedexApiCredentials(environment.env);
   const tracker = new FedExTracker({
     fetcher: environment.fetcher,
     trawl: environment.trawl,
+    api,
     recorder: environment.recorder,
   });
   return {
     id: 'fedex', recordsSteps: true,
-    // Browser-backed direct tracking; universal recovery belongs to the caller.
-    steps: ['trawl'],
+    // FedEx's own API when the deployment has keys for it, then the browser;
+    // universal recovery belongs to the caller.
+    steps: [...(api ? ['api'] : []), 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
     recognizeWithBrowser: (number, context) => recognizeFromBrowserLookup(() => tracker.fetch(number, context)),
   };

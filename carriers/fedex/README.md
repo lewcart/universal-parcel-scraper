@@ -1,7 +1,8 @@
 # FedEx
 
-Global FedEx tracking from the site's own tracking API, captured through a browser. Akamai
-often refuses even real browser sessions, so this adapter is unreliable and the router's
+Global FedEx tracking from FedEx's official Track API when the deployment has keys for it,
+and from the site's own tracking API, captured through a browser. Akamai often refuses even
+real browser sessions, so without keys this adapter is unreliable and the router's
 universal-provider fallback does a lot of the work.
 
 ## How it works
@@ -18,11 +19,18 @@ without its `92` channel, whose check digit passes with the `92` in front. The a
 not enforce that check, so a number someone insists on still reaches FedEx. Every shape stays shared: any
 22 digits fit Austrian Post, Estafeta and USPS, and a USPS `420` barcode can carry zeros
 where the 34-digit layout expects them; it still selects USPS when its package identifier
-would. Without a browser service it fails at once with
+would. Without API keys or a browser service it fails at once with
 `ChallengeError('FedEx challenged direct tracking; configure FLARESOLVERR_URL for browser
 fallback')`.
 
-1. `trawl`: loads `https://www.fedex.com/fedextrack/?trknbr=…` (a shell) with
+1. `api` (only with `FEDEX_API_KEY` and `FEDEX_SECRET_KEY`): the API key and secret key of a
+   project with the Track API on [developer.fedex.com](https://developer.fedex.com/), whose
+   production keys need a FedEx shipping account. `FEDEX_API_URL=https://apis-sandbox.fedex.com`
+   points sandbox keys at the sandbox. The keys buy an OAuth token (`POST /oauth/token`,
+   client credentials, an hour long), kept until a minute before it ends, which reads
+   `POST /track/v1/trackingnumbers` with `includeDetailedScans`. Neither call is bot-gated.
+   The step gets at most 15 s, and at most half the budget when the browser follows.
+2. `trawl`: loads `https://www.fedex.com/fedextrack/?trknbr=…` (a shell) with
    `captureResponses` on `POST https://api.fedex.com/track/v2/shipments` and parses the
    captured replies newest first. The browser service retains a bounded sequence of matching
    requests and replies through automatic verification and history loading, with time left
@@ -37,6 +45,21 @@ fallback')`.
 
 ## Notes
 
+- The API's reply becomes the same shipment as the page's: `latestStatusDetail` `code` and
+  `description` for the package, `scanEvents` `eventType`, `eventDescription` and
+  `exceptionDescription` for each scan, `ACTUAL_DELIVERY` and `ESTIMATED_DELIVERY` from
+  `dateAndTimes` (else the end of `estimatedDeliveryTimeWindow`), and `holdAtLocation`. Every
+  rule below applies to both. A scan's place is its town and its state or province, else its
+  country, as the page writes it; its street and postcode are never read. A scan dated
+  midnight without an offset keeps its day, as the page's pickup does. Its `NOTFOUND` answer
+  is final; any other API failure except recipient verification goes on to the browser.
+- A token FedEx stops accepting (401) is replaced once. Keys FedEx refuses are a
+  `TransportError` with reason `credentials_rejected` and are not offered again for 10 min.
+  429 is `RateLimitedError`, 5xx `UpstreamHttpError`. No failure carries the request, which
+  holds the keys or the token.
+- A scan read from the API takes over, in place, the row the page's reply stored at the same
+  instant with the same stage (and the reverse), so a parcel switching between them is not
+  announced twice.
 - The newest captured reply decides. A captured 401/403 is a `ChallengeError`, so routing
   applies cooldown and fallback; it is not hidden behind an older 200 from the same page.
 - A status without usable scans is a partial summary. Compatible history from an earlier
@@ -114,8 +137,6 @@ application identifiers and issued tokens stay outside the repository.
   token: 403. The token endpoint is open; the data endpoint is bot-gated.
 - Legacy `trackingCal/track`: 403 for non-browser clients; its `api.ecom.fedex.com` route
   answers 404.
-- Official developer API (`apis.fedex.com`): needs per-deployment credentials, so it cannot
-  serve anonymous lookups. Reconsider if the browser path stays unreliable.
 - Copying cookies into a fresh browser context: acceptance does not carry over, while the
   original context keeps working. Hence the retained session in TRAWL.
 - Retries in the same context after a 403: replies carry no `Retry-After`, and retries did
@@ -134,6 +155,7 @@ application identifiers and issued tokens stay outside the repository.
   time.
 - Sender, recipient, signatory, service description, weight and dimensions are in the reply
   but never read; a test asserts it.
+- The API parser and its fixture follow FedEx's published Track API schema.
 - The anonymous reply carries the hold-location fields, but no held parcel's reply has been
   captured, so their parsing follows the page bundle. For a hold arranged after shipping
   (exception codes `A12`, `A13`, `015`) FedEx's page shows a guest only the town; if the reply
@@ -141,6 +163,7 @@ application identifiers and issued tokens stay outside the repository.
 
 ## Testing
 
-`npm run test:carriers:live -- carriers/fedex` with
-`FEDEX_LIVE_TRACKING_NUMBER` and `FLARESOLVERR_URL` set. The missing-browser check runs
-without either.
+`npm run test:carriers:live -- carriers/fedex` with `FEDEX_LIVE_TRACKING_NUMBER` and
+`FLARESOLVERR_URL` set tracks it through the browser; with `FEDEX_API_KEY` and
+`FEDEX_SECRET_KEY` instead, through the API alone. The missing-browser check runs without
+any of them.

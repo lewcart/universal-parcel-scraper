@@ -13,6 +13,7 @@ import { sameInstantIdentityPolicy as dhlEcommerce } from '../../carriers/dhl-ec
 import { sameInstantIdentityPolicy as dhlExpress } from '../../carriers/dhl-express/identity.js';
 import { sameInstantIdentityPolicy as dpd } from '../../carriers/dpd/app.js';
 import { sameInstantIdentityPolicy as dpdFrance } from '../../carriers/dpd-fr/identity.js';
+import { sameInstantIdentityPolicy as fedex } from '../../carriers/fedex/identity.js';
 import { sameInstantIdentityPolicy as hermesGermany } from '../../carriers/hermes-de/identity.js';
 import { sameInstantIdentityPolicy as indiaPost } from '../../carriers/india-post/app.js';
 import { sameInstantIdentityPolicy as inpost } from '../../carriers/inpost/identity.js';
@@ -78,7 +79,7 @@ export interface SameInstantIdentityPolicy {
 }
 
 const policies: ReadonlyMap<string, SameInstantIdentityPolicy> = new Map(
-  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhlEcommerce, dhlExpress, dpd, dpdFrance, hermesGermany, indiaPost, inpost, jdLogistics, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
+  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhlEcommerce, dhlExpress, dpd, dpdFrance, fedex, hermesGermany, indiaPost, inpost, jdLogistics, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
 );
 
 const wording = (scan: SameInstantScan) => scan.description.replace(/\s+/g, ' ').trim().toLowerCase();

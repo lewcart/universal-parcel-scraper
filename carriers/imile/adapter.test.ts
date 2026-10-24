@@ -380,6 +380,18 @@ describe('iMile HTTP adapter', () => {
     // A waybill dated before 2024 or a bare counter is not preferred.
     for (const number of ['6010123000001', '3010124000001']) expect(detectCarrierMatch(number).preferred ?? [], number).not.toContain('imile');
   });
+
+  it('suggests iMile for 49 and twelve digits, which its tracker answered for Italian parcels, beside the other fourteen-digit carriers', () => {
+    for (const number of ['49000000000017', '49 0000 0000 0017']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low',
+        candidates: expect.arrayContaining(['imile', 'brt', 'dpd']) });
+      expect(detectCarrierMatch(number).preferred ?? [], number).not.toContain('imile');
+    }
+    expect(recognitionAskedCarriers('49000000000017', { countryHint: 'IT' }).slice(0, 2)).toEqual(['brt', 'imile']);
+    for (const number of ['48000000000017', '4900000000017', '490000000000017']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('imile');
+    }
+  });
 });
 
 describe('Cainiao’s leg in front of iMile’s history', () => {

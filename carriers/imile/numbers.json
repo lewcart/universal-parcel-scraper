@@ -459,6 +459,31 @@
         ]
       },
       "note": "Archived lookup on iMile's tracker; the service reply captured with it is empty, and the AP prefix is a Cainiao partner reference."
+    },
+    {
+      "number": "49000000000017",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-24",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "ciblex",
+          "seur",
+          "brt",
+          "dhl-ecommerce-uk",
+          "dpd-be",
+          "dpd-de",
+          "dpd-nl",
+          "dpd-pt",
+          "dpd-uk",
+          "imile"
+        ]
+      },
+      "note": "Made-up number in the shape of parcels for Italy that the app tracked: 49 and twelve digits, which iMile's own tracker answered with their history. No public page shows a whole number in this shape, and fourteen digits are shared with DPD, BRT and others, so iMile is only a suggestion."
     }
   ]
 }

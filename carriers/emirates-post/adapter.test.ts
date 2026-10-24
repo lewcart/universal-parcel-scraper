@@ -60,6 +60,18 @@ describe('Emirates Post page projection', () => {
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|sender|receiver|contact|reference|proof|https:/i);
   });
 
+  it('takes the destination country from the wording that names where the item is sent', () => {
+    expect(parseEmiratesPost(page(), NUMBER)).not.toHaveProperty('destination_country');
+    const data = item(); data.events = [
+      scan('22/10/2026 09:37:00 AM', 'P-10', 'Arrived at MALDIVES', 'MVMLEA'),
+      scan('15/10/2026 12:42:04 PM', 'P-9', 'Shipped to MALDIVES', 'DUBAI SORTING CENTRE'),
+    ];
+    expect(parseEmiratesPost(page(document(data)), NUMBER)).toMatchObject({ destination_country: 'MV' });
+    // A city names no country.
+    data.events = [scan('15/10/2026 12:42:04 PM', 'P-9', 'Shipped to SAMPLE CITY', 'DUBAI SORTING CENTRE')];
+    expect(parseEmiratesPost(page(document(data)), NUMBER)).not.toHaveProperty('destination_country');
+  });
+
   it('preserves a stated offset even when the office names a UAE city', () => {
     const data = item(); data.events = [scan('2026-04-05T12:05:00+05:00', 'P-53', 'Delivered', 'Dubai')];
     expect(parseEmiratesPost(page(document(data)), NUMBER).events![0]).toMatchObject({ time: '2026-04-05T12:05:00+05:00' });

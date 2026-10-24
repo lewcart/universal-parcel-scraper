@@ -4,7 +4,7 @@ import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/de
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus } from '../../core/status/index.js';
-import { explicitOffsetTime, zonedTime } from '../../core/time/index.js';
+import { countryCode, explicitOffsetTime, zonedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { emiratesPostStage } from './status.js';
@@ -17,6 +17,9 @@ const MAX_EVENTS = 2000;
 // keeps its own wall clock; neither the issuer nor the destination dates it.
 const UAE_PLACE = /\b(?:Dubai|Abu[ -]+Dhabi|Sharjah|Ajman|Fujairah|Umm[ -]+Al[ -]+Quwain|Ras[ -]+Al[ -]+Khaimah)\b/i;
 const WALL = /^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2} (?:AM|PM)$/;
+// "Shipped to SEYCHELLES", "Arrived at SEYCHELLES": the wording ends with where the item goes,
+// a country or a city.
+const SENT_TO = /^(?:Shipped to|Arrived at)\s+(.+)$/i;
 
 export function normalizeEmiratesPostNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
@@ -91,8 +94,10 @@ export function parseEmiratesPost(html: string, raw: string): CarrierResult {
   }
   const newest = events[0];
   if (!newest) throw new NoHistoryError(PROVIDER);
+  const destination = events.map((event) => countryCode(SENT_TO.exec(event.description ?? '')?.[1])).find(Boolean);
   return { status: classified ? languageStageStatus(classified.stage) : 'unknown',
     ...(classified ? { current_stage: classified.stage, current_stage_source: classified.source } : {}),
     last_status_text: current.description, provider_code: current.code, last_update: newest.time ?? null,
-    ...(newest.local_time ? { last_update_local: newest.local_time } : {}), timezone: 'UTC', events };
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}), ...(destination ? { destination_country: destination } : {}),
+    timezone: 'UTC', events };
 }

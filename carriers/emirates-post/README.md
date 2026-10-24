@@ -27,6 +27,8 @@ link.
 The page's order is retained across offices with different clocks. Naive timestamps keep their
 wall clock; an explicitly named UAE city also gets a deduced Dubai instant with its place basis.
 Foreign and unidentified offices keep local time. An offset the source states is preserved.
+The destination country comes from the wording that ends with where the item is sent ("Shipped
+to", "Arrived at"), when it names a country rather than a city.
 Sender, receiver, contact details, reference fields and event links are omitted.
 
 The Android app (`ae.emiratespost.retailapp`) has a guest `TrackAwbDetails` route on

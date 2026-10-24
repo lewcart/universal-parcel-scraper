@@ -118,7 +118,11 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   // the language rules instead of reading as a delivery.
   if (/\bdelivered\b|delivery completed/i.test(description)
     && [undefined, 'delivered'].includes(trackingLanguageStage(description))) return 'delivered';
-  if (/ready for (?:pickup|collection)|available for (?:pickup|collection)/i.test(description)) return 'ready_for_pickup';
+  // An order ready for the courier to collect from its sender is a registration, as the shared
+  // rules read it, whatever transit code a provider files it under.
+  if (/ready for (?:pickup|collection)|available for (?:pickup|collection)/i.test(description)) {
+    return trackingLanguageStage(description) === 'registered' ? 'registered' : 'ready_for_pickup';
+  }
   // "The status will be updated once shipment is out for delivery" is not the round itself.
   if (/out for delivery/i.test(description)
     && !/(?:once|when|as soon as) (?:the |your )?(?:shipment|parcel|package|item) is out for delivery/i.test(description)) return 'out_for_delivery';

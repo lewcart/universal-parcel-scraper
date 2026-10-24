@@ -137,6 +137,8 @@ const TWIN_SCORE = Math.log10(2);
 const DOMINANT_TIMES = 10;
 // Scans that record paperwork, which an office can file where the parcel is not.
 const PAPERWORK_STAGES = new Set(['registered', 'pending', 'customs']);
+// Of those, the scans that register the parcel.
+const REGISTRATION_STAGES = new Set(['registered', 'pending']);
 // Such a scan in a town this far off the way between the parcel's handling scans was filed elsewhere.
 const AWAY_DETOUR_KM = 300;
 // No parcel travels faster than a plane, and two hours absorb a scan clock's rounding and delays.
@@ -357,7 +359,9 @@ function instant(time: string | null | undefined): number | null {
  * - the parcel would have flown faster than a plane between it and the
  *   handling scan before or after it;
  * - the handling scans around it are in other countries, and the parcel
- *   only comes to its country later.
+ *   only comes to its country later;
+ * - it registers the parcel in a country it names alone, after the parcel
+ *   was handled elsewhere and before it was handled there.
  */
 function awayScans(
   places: readonly (EventPlace | null)[],
@@ -387,7 +391,9 @@ function awayScans(
     const elsewhere = (other: number | undefined) => other === undefined || places[other]!.country !== place.country;
     const ahead = () => after !== undefined && elsewhere(before) && elsewhere(after)
       && places.some((later, at) => at > after && later?.country === place.country && !paperwork(at));
-    if (offWay() || flown(before) || flown(after) || ahead()) away.add(index);
+    const unreached = () => place.precision === 'country' && REGISTRATION_STAGES.has(stages[index] ?? '') && before !== undefined
+      && !handled.some((at) => at < index && places[at]!.country === place.country);
+    if (offWay() || flown(before) || flown(after) || ahead() || unreached()) away.add(index);
   });
   return away;
 }

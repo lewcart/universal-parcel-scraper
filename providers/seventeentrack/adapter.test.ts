@@ -68,6 +68,14 @@ describe('17TRACK result parsing', () => {
     expect(parse17TrackResponse(payload, number).current_stage).toBe('in_transit');
   });
 
+  it('reads an order ready for the courier to collect as registered, not ready for the recipient', () => {
+    const description = 'Order information has been received and ready for pickup';
+    expect(parse17TrackResponse(postalHistory([postalScan('InTransit_Other', description)]), number)).toMatchObject({
+      current_stage: 'registered', events: [{ stage: 'registered', provider_code: 'InTransit_Other' }] });
+    expect(parse17TrackResponse(postalHistory([postalScan('AvailableForPickup_Other', 'Ready for pickup at the post office')]), number))
+      .toMatchObject({ current_stage: 'ready_for_pickup' });
+  });
+
   it('reads an exact voided label as a problem despite the generic transit code', () => {
     const label = { ...postalScan('InfoReceived', 'Shipping Label Created'),
       time_iso: '2026-09-19T12:22:00+08:00', time_utc: '2026-09-19T04:22:00Z' };

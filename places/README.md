@@ -122,7 +122,9 @@ is away when:
 - the parcel would have had to fly faster than 1,000 km/h, give or take two hours, between it
   and the handling scan before or after it. Clocks without an offset prove nothing;
 - the handling scans around it are in other countries, and the parcel only comes to its
-  country later.
+  country later;
+- it registers the parcel (`registered` or `pending`) in a country it names alone, after the
+  parcel was handled elsewhere and before it was handled there.
 
 A country between two handling scans abroad can be the way through: a Hong Kong hub between
 Shenzhen and Leipzig stays.

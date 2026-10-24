@@ -247,6 +247,8 @@ describe('classifyWording', () => {
       '5 jours restants pour retirer le colis en Locker',
       'Delivered to an access point location and awaiting customer pickup.',
     ]) expect(classifyWording(wording)).toEqual({ stage: 'ready_for_pickup', source: 'wording:language' });
+    // An order ready for the courier to collect from its sender is a registration.
+    expect(classifyWording('Order information has been received and ready for pickup')).toEqual({ stage: 'registered', source: 'wording:language' });
     // Travelling to the pickup point, or handed back to the seller, is not availability.
     expect(wordingStage('Colis en cours de livraison au point de retrait')).toBe('in_transit');
     expect(wordingStage('Colis mis à disposition du vendeur suite à un retour')).toBe('returned');
@@ -458,6 +460,9 @@ describe('classifyWording', () => {
       ['Em distribuição', 'out_for_delivery'],
       ['Está a ser entregue', 'out_for_delivery'],
       ['Chegada ao centro de distribuição', 'in_transit'],
+      ['In viaggio', 'in_transit'],
+      ['Przesyłka w drodze', 'in_transit'],
+      ['Pakket is onderweg', 'in_transit'],
       ['Entregado al transportista', 'in_transit'],
       ['Entregue à transportadora', 'in_transit'],
       ['Entregado en el punto de recogida', 'ready_for_pickup'],

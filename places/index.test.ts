@@ -581,5 +581,10 @@ describe('placesForEvents', () => {
       .toEqual([null, 'Strasbourg, FR', 'Berlin, DE', 'Warsaw, PL']);
     expect(scans([['Shenzhen', 'in_transit', '2026-01-05T10:00:00Z'], ['Hong Kong International Hub', 'in_transit', '2026-01-06T21:04:00Z'],
       ['Leipzig', 'in_transit', '2026-01-07T09:00:00Z']])).toEqual(['Shenzhen, CN', 'Hong Kong, HK', 'Leipzig, DE']);
+    // A registration in the country a provider names alone, while the parcel is still being handled at origin.
+    expect(scans([['Shenzhen', 'accepted', '2026-01-05T10:00:00Z'], ['Guangzhou', 'in_transit', '2026-01-05T20:00:00Z'],
+      ['DE', 'registered', '2026-01-06T06:05:00Z']])).toEqual(['Shenzhen, CN', 'Guangzhou, CN', null]);
+    expect(scans([['Frankfurt', 'in_transit', '2026-01-05T10:00:00Z'], ['DE', 'registered', '2026-01-05T12:00:00Z']]))
+      .toEqual(['Frankfurt, DE', 'Germany, DE']);
   });
 });

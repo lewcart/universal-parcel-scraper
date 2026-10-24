@@ -866,6 +866,8 @@ describe("universal providers' answers", () => {
       'Parcel to be taken to a Yodel Store', 'The parcel has reached the ParcelShop', 'Barcode scanning', 'Packaged']) expect(answer('unknown', null, wording), wording).toEqual(gap);
     // Only the whole wording: a receipt that names its receiver, or another number, is not left out.
     for (const wording of ['Item received by Royal Mail']) expect(answer('unknown', null, wording), wording).toEqual(mapped('accepted'));
+    // Royal Mail's sender drop-offs, relayed without their carrier.
+    for (const wording of ['Sender advised item dropped off at parcel locker', 'Dropped off at Postbox']) expect(answer('unknown', null, wording), wording).toEqual(mapped('accepted'));
     for (const wording of ['111', 'Received at Example Store']) expect(answer('unknown', null, wording), wording).toEqual(unknown);
   });
 });

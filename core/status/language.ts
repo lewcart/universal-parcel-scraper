@@ -308,8 +308,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/\bletrejott a rendszerunkben\b.*\bfelado meg nem adta at\b/.test(text)) return 'registered';
   if (/preparation chez.*expediteur|preparation.*expediteur|preparazione.*mittente|being prepared.*sender|(?:shipper|sender)(?: that)? (?:they are|is|are) preparing|beim absender.*vorbereitet|warehouse of the sender|shippers warehouse|entrepot de l'expediteur|lager des absenders|magazzino del mittente|demande d'envoi.*prise en compte|collection request.*(?:received|recorded)|^(?:the |your )?collection (?:has been |was )?registered$|abholauftrag.*erfasst|richiesta.*ritiro.*registrata/.test(text)) return 'registered';
   // The sender's order or data reached the carrier, not the parcel: "Order submitted, pending to
-  // receive", "Sender preparing item", "Shipping info sent to BRT".
-  if (/\border submitted(?:,| and)? pending (?:to )?rece(?:iv|ipt)|\bshipment data uploaded\b|^sender preparing item\b|^shipping info(?:rmation)? sent to (?!(?:the |your? )?(?:recipient|customer|consignee|addressee|buyer)\b)|\bwe have received your shipment information\b|\bhemos recibido la informacion de su envio\b|\bwe will pick up (?:the|your) (?:package|parcel) from the sender\b|^booked for collection$|\bpending shipping by (?:the )?(?:seller|sender|shipper|merchant)\b|\bshipment order created\b/.test(text)) return 'registered';
+  // receive", Royal Mail's "Sender preparing item" and "Sender has despatched item", "Shipping info sent to BRT".
+  if (/\border submitted(?:,| and)? pending (?:to )?rece(?:iv|ipt)|\bshipment data uploaded\b|^sender preparing item\b|^sender has despatched item$|^shipping info(?:rmation)? sent to (?!(?:the |your? )?(?:recipient|customer|consignee|addressee|buyer)\b)|\bwe have received your shipment information\b|\bhemos recibido la informacion de su envio\b|\bwe will pick up (?:the|your) (?:package|parcel) from the sender\b|^booked for collection$|\bpending shipping by (?:the )?(?:seller|sender|shipper|merchant)\b|\bshipment order created\b/.test(text)) return 'registered';
   // A Shenzhen forwarder's pre-advice from the shipper, before its warehouse has the parcel.
   if (/^forecast has been received$/.test(text)) return 'registered';
   // The carrier has not had the parcel yet: "Shipment not yet received or
@@ -416,6 +416,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // SEUR pickup point, a collection carried out, and its English "Has been put into storage". A bare "Item
   // received" names no receiver and stays unread.
   if (/^item received by royal mail$|\btaken over by one of our operators\b|\bwe've received your (?:parcel|package|item) at the parcel ?shop\b|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:was|has been) dropped off at (?:the |a )?parcel ?shop$|^(?![^,]*\b(?:recipient|consignee|receiver|customer|addressee|buyer|pick ?up point|parcel ?shop|locker|destination)\b)[a-z][\w&' -]{0,40} has received the goods(?:, [^,]{1,40}){0,2}\.?$|^the shipment has been deposited at a seur pickup point$|^(?:the |your )?collection (?:has been |was )?(?:carried out|completed)$|^已入库|^(?:(?:the |your )?(?:item|parcel|package|shipment) )?(?:has been |was )?put into storage$/.test(text)) return 'accepted';
+  // Royal Mail's sender drop-offs at a parcel locker and a postbox, as providers relay them.
+  if (/^sender advised item dropped off at parcel locker$|^dropped off at postbox$/.test(text)) return 'accepted';
   // Poste Italiane's drop-off at a Punto Poste in English ("presa in carico presso il Punto Poste").
   if (/^(?:the )?shipment has been taken over at the post office point$/.test(text)) return 'accepted';
   // TNT Italy's drop-off at a FedEx Location, awaiting the courier, as providers relay it.

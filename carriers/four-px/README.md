@@ -16,7 +16,10 @@ The portal displays each scan's `tkDateStr` with `tkTimezone`, an offset or,
 for some partners' scans, a zone name. The adapter uses that pair because
 `tkDate` carries different clock digits. A scan without a zone, or with a zone
 name the clock database does not know, is retained as `local_time`, without an
-invented instant.
+invented instant. The one exception is "Order information has been transmitted to
+…": 4PX sends the partner the order data when its facility measures the parcel
+and keeps the facility's clock for it, but labels it with the partner's zone, so
+it takes the offset of 4PX's own facility scans.
 
 Event codes map to stages. `FPX_O_IR` and `FPX_O_IRI` relay whatever step a
 partner reported, from a label to an arrival abroad, so their wording decides.

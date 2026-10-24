@@ -66,6 +66,21 @@ describe('4PX result projection', () => {
     expect(result.delivered_at).toBeUndefined();
   });
 
+  it('reads the order data sent to a partner on the facility\'s clock, not the partner\'s zone it is labelled with', () => {
+    const payload = fixture();
+    const tracks = payload.data[0].tracks;
+    const transmitted = { ...tracks.at(-5), tkCode: 'FPX_O_IR', tkDesc: 'Order information has been transmitted to dpd.',
+      tkDateStr: '2026-03-08 14:30:06', tkTimezone: 'UTC+02:00' };
+    payload.data[0].tracks = [...tracks.slice(0, -5), transmitted, ...tracks.slice(-5)];
+    const events = parse(payload, NUMBER).events!;
+    expect(events.find((event) => event.description?.startsWith('Order information'))?.time).toBe('2026-03-08T14:30:06+08:00');
+    // A partner's own label keeps its zone, and without a facility scan so does the transmission.
+    expect(events.find((event) => event.provider_code === 'FPX_O_IRI')?.time).toBe('2026-03-04T14:30:03-04:00');
+    payload.data[0].tracks = payload.data[0].tracks.filter((raw: { tkCode: string }) => !raw.tkCode.startsWith('FPX_C_'));
+    expect(parse(payload, NUMBER).events!.find((event) => event.description?.startsWith('Order information'))?.time)
+      .toBe('2026-03-08T14:30:06+02:00');
+  });
+
   it('reads a scan whose zone is named rather than offset', () => {
     const payload = fixture();
     payload.data[0].tracks[0].tkTimezone = 'UTCAmerica/Vancouver';

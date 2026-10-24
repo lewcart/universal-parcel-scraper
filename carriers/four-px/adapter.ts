@@ -48,6 +48,18 @@ function partnerOf(card: unknown): string | undefined {
   return name ? carrierIdFromPartner(name, clean(card.website, 200)) : undefined;
 }
 
+// 4PX sends a partner the order data when its facility measures the parcel and
+// records that on the facility's clock, but labels the row with the partner's
+// zone: "Order information has been transmitted to dpd." reads three seconds
+// after the +08:00 measurement, labelled +02:00.
+const TRANSMITTED = /^order information has been transmitted to /i;
+
+/** The offset 4PX's own facility scans (`FPX_C_…`) carry, if any. */
+function facilityZone(tracks: unknown[]): string | undefined {
+  return tracks.map((raw) => (isRecord(raw) && clean(raw.tkCode, 64).startsWith('FPX_C_') ? clean(raw.tkTimezone, 64) : ''))
+    .find((zone) => /^UTC[+-]\d{2}:\d{2}$/.test(zone));
+}
+
 // A partner's qualifier left on its wording, as DPD's `NABN` or `SHOP`
 // ("…Notification was left._nabn").
 const QUALIFIER = /(?<=[a-z.])_[a-z]{2,8}$/i;
@@ -80,6 +92,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
   let pickupPoint: string | undefined;
+  const facility = facilityZone(item.tracks);
   for (const raw of item.tracks) {
     if (!isRecord(raw)) throw new SchemaError('4PX');
     const wording = clean(raw.tkDesc, 1000);
@@ -90,7 +103,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
       continue;
     }
     const description = clean(wording.replace(QUALIFIER, ''), 500);
-    const time = eventTime(raw);
+    const time = eventTime(facility && TRANSMITTED.test(description) ? { ...raw, tkTimezone: facility } : raw);
     const location = clean(raw.tkLocation, 200);
     const code = clean(raw.tkCode, 64);
     const key = JSON.stringify([time, description, location, code]);

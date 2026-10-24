@@ -429,6 +429,11 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // DPD Poland's scans as ParcelsApp words them: the sender's drop-off at a pickup point, and the pickup
   // point handing the parcel to DPD's courier, not a delivery round.
   if (/^sending the (?:package|parcel) at the pick ?up point$|^handing over the (?:package|parcel) to the courier$/.test(text)) return 'accepted';
+  // Its arrival at the delivering branch of the DPD country it was sent to, after the sorting centre there.
+  if (/^acceptance of the (?:package|parcel) at the delivery branch abroad$/.test(text)) return 'in_transit';
+  // A forwarder's receipt at its warehouse in the sending country, as 17TRACK relays it before the
+  // parcel departs that warehouse.
+  if (/^(?:package|parcel) received (?:&|and) scanned at (?:the )?carrier's domestic warehouse$/.test(text)) return 'accepted';
   // Admitted by the carrier: Correos's "Admitido", Correos Express's "Admitido en
   // oficina". Admission still to come is registered above.
   if (/(?<!\b(?:no|nao) )\badmitid[oa]s?\b|\badmision en origen\b/.test(text)) return 'accepted';

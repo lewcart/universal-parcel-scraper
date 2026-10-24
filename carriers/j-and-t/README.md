@@ -61,6 +61,9 @@ approval.
   universal providers.
 - The Philippine router answers code `500` and the Malaysian one `490`; Thailand and
   Vietnam need an account, and the websites ask for CAPTCHA or phone digits.
+- Singapore's tracker, `vipgw.jtexpress.sg/jtsvip/api/trackingList.do`, asks for a Tencent
+  CAPTCHA while its `captchaSwitch` is on. Its support chat looks a waybill up without one,
+  but posts every lookup into the chat log, so it is not used either.
 - The website's portal link stays on the Philippine tracking page.
 
 J&T Indonesia's help centre says its waybills usually start with two letters, such as `JO`

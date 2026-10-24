@@ -12,6 +12,7 @@ import {
 } from './adapter.js';
 import { trackingLocationCountry, trackingPlace } from '../../places/trackingLocation.js';
 import { classifyPosteItalianeStatus } from './status.js';
+import { sameInstantIdentityPolicy } from './identity.js';
 import { TrawlClient, type TrawlCapturedResponse } from '../../core/transport/trawl.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 
@@ -279,8 +280,71 @@ describe('Poste Italiane response parsing', () => {
       ['in_transit', 'CENTRO DI PROVA', '2026-01-02T21:30:00.000Z'],
       ['accepted', 'PROVA 99', '2026-01-01T10:00:00.000Z'],
     ]);
+    // The movements' ends of sentences read after the label the page gives their box.
+    expect(result.events?.map((event) => event.description)).toEqual([
+      'la spedizione sarà disponibile per il ritiro presso l\'Ufficio Postale a partire dal 04/01/26',
+      'In transito',
+      'Presa in carico da un nostro operatore presso l\'Ufficio Postale',
+    ]);
     const serialized = JSON.stringify(result);
     for (const secret of ['VIA DI PROVA', '00000', '9999', '08:20', 'frazionario']) expect(serialized).not.toContain(secret);
+  });
+
+  it('words registered mail\'s movements as the official page heads them, by their box', () => {
+    const REGISTERED = JSON.parse(readFileSync(new URL('./fixtures/registered-mail.json', import.meta.url), 'utf8')) as {
+      listaMovimenti: Array<Record<string, unknown>>;
+    };
+    const [intake, sorted] = REGISTERED.listaMovimenti as [Record<string, unknown>, Record<string, unknown>];
+    const read = (movements: Array<Record<string, unknown>>, stato = '5') => parsePosteItalianeTrackingResponse(
+      { ...REGISTERED, stato, listaMovimenti: movements }, '99000000001-0');
+    const delivered = read([
+      { ...intake, statoLavorazione: 'a seguito di acquisto da poste.it' },
+      sorted,
+      { ...sorted, dataOra: 1767427200000, statoLavorazione: 'in data', box: '4' },
+      { ...sorted, dataOra: 1767427215000, statoLavorazione: 'con successo in data', box: 5 },
+    ]);
+    expect(delivered).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Consegnata con successo' });
+    expect(delivered.events?.map((event) => [event.description, event.stage])).toEqual([
+      ['Consegnata con successo', 'delivered'],
+      ['In consegna', 'out_for_delivery'],
+      ['In transito', 'in_transit'],
+      ['Presa in carico a seguito di acquisto da poste.it', 'registered'],
+    ]);
+    expect(read([{ ...intake, statoLavorazione: 'da un nostro operatore' }, { ...sorted, statoLavorazione: 'presso il paese estero in data' }], '3')
+      .events?.map((event) => [event.description, event.stage])).toEqual([
+      ['In transito presso il paese estero', 'in_transit'],
+      ['Presa in carico da un nostro operatore', 'accepted'],
+    ]);
+    // A full sentence, a fragment without a known box and an unknown box keep their wording.
+    expect(read([
+      { ...intake, statoLavorazione: 'la spedizione è in transito', box: '3' },
+      { ...sorted, statoLavorazione: 'in data', box: undefined },
+      { ...sorted, dataOra: 1767427200000, statoLavorazione: 'con successo in data', box: '9' },
+    ], '3').events?.map((event) => event.description)).toEqual(['con successo in data', 'in data', 'la spedizione è in transito']);
+  });
+
+  it('lets a later return outrank a delivery, as for a parcel left at a pickup point and not collected', () => {
+    const outbound = [
+      movement('la spedizione è in consegna', 1767225600000),
+      movement('la spedizione è stata consegnata', 1767312000000),
+    ];
+    for (const stato of ['5', '4', '6']) {
+      // The return scan itself, or a movement on the way back, whatever the flags say.
+      for (const back of [
+        [movement('in restituzione al mittente', 1767398400000), movement('la spedizione è in consegna', 1767484800000)],
+        [{ ...movement('la spedizione è in transito', 1767398400000), flagRitorno: true }],
+      ]) {
+        expect(parsePosteItalianeTrackingResponse(parcel({ stato, flagRitorno: false, listaMovimenti: [...outbound, ...back] }), TRACKING_NUMBER))
+          .toMatchObject({ status: 'exception', current_stage: 'returned', last_status_text: back.at(-1)!.statoLavorazione, expected_delivery: null });
+      }
+    }
+    // Movements before the delivery, or after it without a return, leave it delivered.
+    const delivered = [movement('in restituzione al mittente', 1767139200000), ...outbound];
+    expect(parsePosteItalianeTrackingResponse(parcel({ listaMovimenti: delivered }), TRACKING_NUMBER))
+      .toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+    expect(parsePosteItalianeTrackingResponse(parcel({
+      listaMovimenti: [...outbound, { ...movement('la spedizione è in transito', 1767398400000), flagRitorno: false }],
+    }), TRACKING_NUMBER)).toMatchObject({ status: 'delivered', current_stage: 'delivered' });
   });
 
   it('follows an item from abroad under the sending post\'s S10 number', async () => {
@@ -442,6 +506,27 @@ describe('Poste Italiane response parsing', () => {
       listaMovimenti: [movement('la spedizione è in consegna', 1767484800000)],
     }), TRACKING_NUMBER);
     expect(active.expected_delivery).toBe('2026-01-02');
+  });
+});
+
+describe('Poste Italiane scan identity', () => {
+  it('lets a registered-mail movement stored as the end of its sentence take the sentence in place', () => {
+    const matches = sameInstantIdentityPolicy.matches!;
+    const stored = { stage: 'registered', description: 'da un nostro operatore presso l\'Ufficio Postale', location: 'UFFICIO DI PROVA', providerCode: '' };
+    const incoming = { ...stored, stage: 'accepted', description: 'Presa in carico da un nostro operatore presso l\'Ufficio Postale' };
+    expect(matches(incoming, stored)).toBe(true);
+    expect(matches(incoming, incoming)).toBe(true);
+    const pairs: Array<[string, string]> = [['in data', 'In transito'], ['in data', 'In consegna'], ['con successo in data', 'Consegnata con successo']];
+    for (const [fragment, sentence] of pairs) {
+      expect(matches({ ...stored, description: sentence }, { ...stored, description: fragment })).toBe(true);
+    }
+    for (const different of [
+      { ...stored, description: 'in data' },
+      { ...stored, location: 'ALTRO UFFICIO' },
+    ]) expect(matches(incoming, different)).toBe(false);
+    // The sentence does not turn back into its fragment, nor into another box's sentence.
+    expect(matches(stored, incoming)).toBe(false);
+    expect(matches({ ...stored, description: 'Consegnata con successo' }, { ...stored, description: 'in data' })).toBe(false);
   });
 });
 

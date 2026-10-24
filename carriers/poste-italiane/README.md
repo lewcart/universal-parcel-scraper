@@ -104,9 +104,20 @@ Italiane for a number issued abroad.
   to the sender; that delivery carries the return flag (`flagRitorno`) and reads as
   `returned`. Without per-movement flags, the envelope flag and an earlier return scan
   decide.
+- A return scan or a movement with the return flag after the newest delivery outranks it,
+  whatever `stato` says: a parcel left at a pickup point and not collected goes back to the
+  sender, and reads as `returned`.
 - Stages come from Italian `statoLavorazione` wording. Both the typographic and the ASCII
   apostrophe are accepted (`e' stata consegnata` appears live). Unmapped wording gets no
   stage rather than a regex catch-all guess; the sync records it for review.
+- Registered mail words a movement as the end of a sentence, such as "da un nostro operatore
+  presso l'Ufficio Postale" or "in data". The official page heads it with its `box`'s
+  milestone (2 Presa in carico, 3 In transito, 4 In consegna, 5 Consegnata, 6 In restituzione
+  al mittente) and prints the date after it. The adapter writes the label and the rest without
+  the trailing "in data", since the scan's time carries the date: "Presa in carico da un nostro
+  operatore presso l'Ufficio Postale", "In consegna", "Consegnata con successo". The stage
+  follows the sentence, so box 4's "in data" is out for delivery. A movement stored as the bare
+  fragment takes the sentence in place (`identity.ts`).
 - A failed round that names the day the next one starts from is a failed attempt, not that
   coming round.
 - Customs release wording maps to `in_transit`.
@@ -134,6 +145,9 @@ Italiane for a number issued abroad.
 
 - No event location for a scan at a post office's street address without its office name.
 - Day-resolution estimate only.
+- The duties and postal fee an import owes (`oneri`) and their payment state
+  (`statoOneri`, such as `PAGATO` or `FINESTRA_PAGAMENTO_CHIUSA`) are not read: the result has
+  no field for them.
 - Poste's tracker also answers those codes with other digits before the `C`. No parcel shows
   one yet, so neither detection nor the adapter takes them.
 

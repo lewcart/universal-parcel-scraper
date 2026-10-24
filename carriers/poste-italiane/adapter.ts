@@ -9,7 +9,7 @@ import { isRecord } from '../../core/types.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
-import { classifyPosteItalianeStatus } from './status.js';
+import { classifyPosteItalianeStatus, posteItalianeMovementWording } from './status.js';
 
 // Protocol provenance:
 // - Prior art (structure + vocabulary, verified independently below, MIT):
@@ -142,13 +142,13 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
   }> = [];
   const seen = new Set<string>();
   rawMovements.filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
-    const wording = clean(rawEvent.statoLavorazione, 500);
+    const wording = posteItalianeMovementWording(clean(rawEvent.statoLavorazione, 500), rawEvent.box);
     const time = parsedTime(rawEvent.dataOra);
     if (!time || !wording) return;
     const identity = `${time.iso}\u0000${wording}`;
     if (seen.has(identity)) return;
     seen.add(identity);
-    const classified = classifyPosteItalianeStatus(rawEvent.statoLavorazione);
+    const classified = classifyPosteItalianeStatus(wording);
     parsed.push({
       // A post-office scan names its office, which becomes the location; the
       // office's address, postcode and hours are not kept. Other scans keep
@@ -176,6 +176,20 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
   if (rawMovements.length > 0 && events.length === 0) {
     throw new SchemaError('Poste Italiane', 'Poste Italiane returned unusable tracking history');
   }
+  // A return after the newest delivery outranks it: a parcel left at a pickup
+  // point and not collected goes back to the sender.
+  const delivery = parsed.findIndex((item) => item.classified?.stage === 'delivered');
+  const returnedSince = delivery > 0
+    && parsed.slice(0, delivery).some((item) => item.returnTrip === true || item.classified?.stage === 'returned');
+  const sentBack = (): CarrierResult => ({
+    status: 'exception',
+    current_stage: 'returned',
+    last_status_text: events[0]?.description ?? 'Returned',
+    last_update: events[0]?.time ?? null,
+    expected_delivery: null,
+    ...product,
+    events,
+  });
   // Envelope stato "5" forces delivered; otherwise the newest mapped event wins
   // and unmapped wording stays unknown with its raw text preserved.
   if (payload.stato === '5' || payload.stato === 5) {
@@ -183,11 +197,12 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
     // carries the return flag; without per-movement flags, the envelope flag
     // and an earlier return scan say the same.
     const newest = parsed[0];
-    const backToSender = newest?.returnTrip
-      ?? (payload.flagRitorno === true && parsed.slice(1).some((item) => item.classified?.stage === 'returned'));
+    const backToSender = returnedSince || (newest?.returnTrip
+      ?? (payload.flagRitorno === true && parsed.slice(1).some((item) => item.classified?.stage === 'returned')));
+    if (backToSender) return sentBack();
     return {
-      status: backToSender ? 'exception' : 'delivered',
-      current_stage: backToSender ? 'returned' : 'delivered',
+      status: 'delivered',
+      current_stage: 'delivered',
       last_status_text: events[0]?.description ?? 'Delivered',
       last_update: events[0]?.time ?? null,
       expected_delivery: null,
@@ -195,6 +210,7 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
       events,
     };
   }
+  if (returnedSince) return sentBack();
   const latest = parsed.find((item) => item.classified);
   if (!latest) {
     if (events.length > 0) {

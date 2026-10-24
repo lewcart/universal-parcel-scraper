@@ -252,6 +252,14 @@ describe('status map answers', () => {
     expect(answer('poste-italiane', null, 'da un nostro operatore presso l’ufficio postale')).toEqual(mapped('accepted'));
     expect(answer('poste-italiane', null, 'la spedizione è stata presa in carico')).toEqual(mapped('registered'));
     expect(answer('poste-italiane', null, 'a seguito di acquisto da poste.it')).toEqual(mapped('registered'));
+    // Registered mail's movements under the label the official page gives their box.
+    expect(answer('poste-italiane', null, "Presa in carico da un nostro operatore presso l'Ufficio Postale")).toEqual(mapped('accepted'));
+    expect(answer('poste-italiane', null, 'Presa in carico a seguito di acquisto da poste.it')).toEqual(mapped('registered'));
+    expect(answer('poste-italiane', null, 'In transito')).toEqual(mapped('in_transit'));
+    expect(answer('poste-italiane', null, 'In transito presso il paese estero')).toEqual(mapped('in_transit'));
+    expect(answer('poste-italiane', null, 'In consegna')).toEqual(mapped('out_for_delivery'));
+    expect(answer('poste-italiane', null, 'Consegnata con successo')).toEqual(mapped('delivered'));
+    expect(answer('poste-italiane', null, 'Presa in carico')).toEqual(unknown);
   });
 
   it("answers Cainiao's action codes, and the wording the queue holds without one", () => {

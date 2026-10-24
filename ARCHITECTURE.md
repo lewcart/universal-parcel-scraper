@@ -110,7 +110,8 @@ The tracker then tries the carrier's
 dedicated adapter, and after that the fallbacks the caller enabled, in the coverage order.
 A direct answer marked `summary_only` or `history_truncated` asks them too. The first
 fallback with more scans that names no other carrier and is not behind the carrier's state
-replaces it; a scan relayed twice in two wordings counts once. A checksum-valid S10 number is
+replaces it; another network of the carrier's brand (`gofo` for `gofo-fr`) is not another
+carrier, and a scan relayed twice in two wordings counts once. A checksum-valid S10 number is
 one postal item for every operator that carries it, so a fallback for it may name any of them.
 A clock without an offset may be any instant from 14 hours before its wall time to 12 hours
 after, so a history whose newest scan is older at every reading loses. A delivered or returned

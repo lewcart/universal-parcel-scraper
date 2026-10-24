@@ -4,6 +4,7 @@
  * lookups themselves apply the same rule.
  */
 import { deliveryHandoff } from '../catalog/handoff.js';
+import { carrierBrand } from '../catalog/networks.js';
 import { isValidS10TrackingNumber } from '../detection/index.js';
 import { EXPLICIT_OFFSET_PATTERN, explicitOffsetTime } from '../time/index.js';
 import { eventTimestamp } from '../time/result.js';
@@ -82,6 +83,16 @@ function reached(answer: ResolvedResult, direct: ResolvedResult, stage: string):
 }
 
 /**
+ * Whether a provider names one of `carriers`. A brand's networks can share a number's shape and
+ * providers name the brand ("gofo" for a GOFO France parcel), so another network of the same
+ * brand counts as that carrier.
+ */
+function namesOneOf(named: string, carriers: readonly string[]): boolean {
+  const brand = carrierBrand(named);
+  return carriers.some((id) => id === named || (brand !== undefined && carrierBrand(id) === brand));
+}
+
+/**
  * Whether a provider's answer should replace a partial direct one. It must hold more scans, name
  * no other carrier than `carriers` (any carrier when null), and not be behind the carrier's own
  * state. Clocks rule a provider out when even its latest reading is before the carrier's earliest
@@ -93,7 +104,7 @@ function reached(answer: ResolvedResult, direct: ResolvedResult, stage: string):
  */
 function fuller(answer: ResolvedResult, direct: ResolvedResult, carriers: readonly string[] | null): boolean {
   if (scanCount(answer) <= scanCount(direct)) return false;
-  if (carriers && typeof answer.discovered_carrier === 'string' && !carriers.includes(answer.discovered_carrier)) return false;
+  if (carriers && typeof answer.discovered_carrier === 'string' && !namesOneOf(answer.discovered_carrier, carriers)) return false;
   const ours = newestSpan(direct);
   const theirs = newestSpan(answer);
   if (ours && theirs && theirs.latest + SAME_SCAN_MS < ours.earliest) return false;
@@ -152,7 +163,7 @@ export function isPartialAnswer(result: CarrierResult): boolean {
  * A fallback's answer in place of the carrier's partial one, `direct`, with the carrier's own facts
  * the fallback lacks, or null when the carrier's answer stands. The fallback must hold more scans,
  * name no carrier other than `carrier`, the one the carrier hands the parcel to or the partner it
- * names, and not be behind the carrier's state. A checksum-valid S10 number is one postal item for
+ * names, or another network of their brand, and not be behind the carrier's state. A checksum-valid S10 number is one postal item for
  * every operator that carries it, so a fallback for it may name any of them.
  */
 export function fillPartialAnswer<T extends CarrierResult>(carrier: string, number: string, direct: CarrierResult, answer: T): T | null {

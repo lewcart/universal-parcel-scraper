@@ -37,6 +37,14 @@ describe('partial carrier answers', () => {
     expect(fillPartialAnswer('ups', NUMBER, { ...summary, last_update: '2026-01-04T09:00:00Z' }, history)).toBeNull();
   });
 
+  it('take a history that names another network of the carrier\'s brand', () => {
+    expect(fillPartialAnswer('gofo-fr', NUMBER, summary, { ...history, discovered_carrier: 'gofo' })).not.toBeNull();
+    expect(fillPartialAnswer('dpd', NUMBER, summary, { ...history, discovered_carrier: 'dpd-de' })).not.toBeNull();
+    expect(fillPartialAnswer('gofo-fr', NUMBER, summary, { ...history, discovered_carrier: 'gls-fr' })).toBeNull();
+    // A carrier whose id merely starts like a brand is not one of its networks.
+    expect(fillPartialAnswer('dhl', NUMBER, summary, { ...history, discovered_carrier: 'dhlink' })).toBeNull();
+  });
+
   it('keep the carrier\'s delivery over a history that has not reached it', () => {
     const delivered = { ...summary, status: 'delivered', last_status_text: 'Delivered', last_update: '2026-01-02T08:00:00Z' } as const;
     expect(fillPartialAnswer('ups', NUMBER, delivered, history)).toBeNull();

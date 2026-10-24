@@ -30,9 +30,8 @@ for numbers of YWE and fourteen digits.
 ## Numbers
 
 Its labels carry YWE and fourteen digits. A lookup on YWE's own tracker, archived by the Wayback
-Machine, shows a parcel's US history under such a number. A parcel the app tracked had the same
-layout, YWE's tracker answered it and a universal provider filed it under YWE. No other carrier's
-rule takes the layout, so `ywe-1` has high confidence. Colis Privé's twelve characters and a
+Machine, shows a parcel's US history under such a number, and the tracker still answers it. No
+other carrier's rule takes the layout, so `ywe-1` has high confidence. Colis Privé's twelve characters and a
 postcode would fit it, so its rule leaves the layout out. Yanwen's own tracker did not know the
 archived number; Yanwen's US last-mile numbers of `YW`, a hub code and twelve digits stay with
 [Yanwen](../yanwen/README.md).

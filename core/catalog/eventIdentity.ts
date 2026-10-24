@@ -39,6 +39,8 @@ import { sameInstantIdentityPolicy as yanwen } from '../../carriers/yanwen/app.j
 import { sameInstantIdentityPolicy as yunExpress } from '../../carriers/yunexpress/identity.js';
 import { sameInstantIdentityPolicy as ztoInternational } from '../../carriers/zto-international/identity.js';
 import { sameInstantIdentityPolicy as universal } from '../../providers/shared/app.js';
+import { CARRIER_DEFINITIONS } from './definitions.js';
+import type { CarrierDefinition } from './types.js';
 
 /** Scan evidence available to the app before it reuses a stored identity. */
 export interface SameInstantScan {
@@ -79,12 +81,36 @@ const policies: ReadonlyMap<string, SameInstantIdentityPolicy> = new Map(
   [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhlEcommerce, dhlExpress, dpd, dpdFrance, hermesGermany, indiaPost, inpost, jdLogistics, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, posMalaysia, postlogistics, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
 );
 
+const wording = (scan: SameInstantScan) => scan.description.replace(/\s+/g, ' ').trim().toLowerCase();
+
+/** One scan read twice: the same wording and place, and codes that agree when both carry one. */
+function sameScan(incoming: SameInstantScan, stored: SameInstantScan): boolean {
+  return wording(incoming) !== '' && wording(incoming) === wording(stored)
+    && incoming.location.trim() === stored.location.trim()
+    && (!incoming.providerCode || !stored.providerCode || incoming.providerCode === stored.providerCode);
+}
+
+/**
+ * A carrier that gives wall clocks in no stated zone has them dated on a
+ * deduced one (`dateLocalClocks`). When a release deduces a better zone, such
+ * as the airport a scan names, the scan shows its stored row's wall clock
+ * under another offset and takes that row over.
+ */
+function localClockPolicy(sourceCarrierId: string, policy: SameInstantIdentityPolicy | undefined): SameInstantIdentityPolicy | undefined {
+  const definition = Object.hasOwn(CARRIER_DEFINITIONS, sourceCarrierId)
+    ? (CARRIER_DEFINITIONS as Record<string, CarrierDefinition>)[sourceCarrierId] : undefined;
+  if (!definition?.tracking.localClocks || policy?.matchWallClock) return policy;
+  return policy ? { ...policy, matchWallClock: true } : {
+    sourceCarrierId, storedSources: [sourceCarrierId], requireProviderCode: false, matchEachScan: true, matches: sameScan, matchWallClock: true,
+  };
+}
+
 /** Unlisted sources cannot identify a reworded scan by its instant alone. */
 export function sameInstantIdentityPolicy(
   sourceCarrierId: string,
   options: { supportsScanMatching?: boolean } = {},
 ): SameInstantIdentityPolicy | undefined {
-  const policy = policies.get(sourceCarrierId);
+  const policy = localClockPolicy(sourceCarrierId, policies.get(sourceCarrierId));
   // Older app versions only check the clock and provider code.
   return policy?.matches && !options.supportsScanMatching ? undefined : policy;
 }

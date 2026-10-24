@@ -9,16 +9,17 @@ describe('same-instant identity policies', () => {
     });
   });
 
+  // A carrier giving wall clocks in no stated zone also matches a scan a better deduced zone re-dates.
   it.each([
-    ['ctt', 'UTC'],
-    ['canada-post', 'Etc/GMT+5'],
-    ['royal-mail', 'Europe/London'],
-    ['parcelforce', 'Europe/London'],
-    ['la-poste', 'Europe/Paris'],
-    ['posta-slovenije', 'Europe/Ljubljana'],
-  ])('requires %s scans to retain their provider code, and lets a scan take its own offset', (source, zone) => {
+    ['ctt', 'UTC', {}],
+    ['canada-post', 'Etc/GMT+5', { matchWallClock: true }],
+    ['royal-mail', 'Europe/London', { matchWallClock: true }],
+    ['parcelforce', 'Europe/London', {}],
+    ['la-poste', 'Europe/Paris', {}],
+    ['posta-slovenije', 'Europe/Ljubljana', { matchWallClock: true }],
+  ])('requires %s scans to retain their provider code, and lets a scan take its own offset', (source, zone, wallClock) => {
     expect(sameInstantIdentityPolicy(source)).toEqual({
-      sourceCarrierId: source, storedSources: [source], requireProviderCode: true, relabelledFrom: zone,
+      sourceCarrierId: source, storedSources: [source], requireProviderCode: true, relabelledFrom: zone, ...wallClock,
     });
   });
 
@@ -266,6 +267,28 @@ describe('same-instant identity policies', () => {
     ]) expect(policy?.matches?.(incoming, different)).toBe(false);
     expect(policy?.matches?.({ ...stored, providerCode: 'SD' }, stored)).toBe(false);
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+
+  it('lets a scan a better deduced zone re-dates take over its row, for a carrier giving wall clocks in no stated zone', () => {
+    expect(sameInstantIdentityPolicy('evri')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('evri', { supportsScanMatching: true });
+    expect(policy).toMatchObject({
+      sourceCarrierId: 'evri', storedSources: ['evri'], requireProviderCode: false, matchEachScan: true, matchWallClock: true,
+    });
+    const stored = { stage: 'in_transit', description: 'Your parcel has arrived at the airport', location: 'XYZ Airport', providerCode: '' };
+    const incoming = { ...stored, description: ' your parcel has arrived  at the airport', location: 'XYZ Airport ' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(stored, incoming)).toBe(true);
+    expect(policy?.matches?.({ ...incoming, providerCode: 'A1' }, stored)).toBe(true);
+    for (const different of [
+      { ...stored, description: 'Your parcel has left the airport' },
+      { ...stored, location: 'Sample Hub' },
+      { ...stored, location: '' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, providerCode: 'A1' }, { ...stored, providerCode: 'B2' })).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+    // A carrier whose scans carry their own offsets keeps no policy.
+    expect(sameInstantIdentityPolicy('dhl', { supportsScanMatching: true })).toBeUndefined();
   });
 
   it('lets a LinHan row read on Beijing time take over the row stored on its town’s zone, by wall clock, town and wording', () => {

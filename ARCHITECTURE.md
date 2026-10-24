@@ -346,7 +346,10 @@ policy's `relabelledFrom` names the zone a source once put on every wall clock: 
 whose wall clock now carries another offset takes over the row stored under the old label,
 by provider code and location. A policy's `matchWallClock` serves a source whose feeds put
 different offsets on one scan's wall clock: a scan takes over the row showing its wall clock
-under another offset, by location and wording. A universal provider's scan has no code to
+under another offset, by location and wording. Every carrier flagged `tracking.localClocks`
+has it, so a scan a release dates on a better deduced zone takes over its stored row; one
+with no policy of its own gets one that matches only that way or by the same wording and
+location at the same instant. A universal provider's scan has no code to
 relabel by: the app leaves it out as a copy of its stored row when its instant moved by whole
 quarter hours, up to 14 hours, with the same wording, and that row keeps the old instant
 until a re-key.

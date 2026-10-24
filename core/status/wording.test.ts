@@ -615,6 +615,10 @@ describe('classifyWording', () => {
       ['Prerregistrado', 'registered'],
       ['admitido.. el envío ha tenido admisión en origen.', 'accepted'],
       ['ADMITIDO EN OFICINA DE CORREOS', 'accepted'],
+      // USPS before its acceptance scan, and CTT's acceptance.
+      ['Shipment Received, Package Acceptance Pending, ZIP Code 10001', 'registered'],
+      ['Aceite', 'accepted'],
+      ['Aceite. O envio foi aceite. O processo de envio foi iniciado.', 'accepted'],
       // DHL Express's round.
       ['shipment is out with courier for delivery', 'out_for_delivery'],
       // A cancellation, as carriers' codes file it.
@@ -629,7 +633,7 @@ describe('classifyWording', () => {
     // not these steps. Too specific or too bare to read: Paack's origin
     // scan, a Turkish "entered", Swiss Post's forward order.
     for (const wording of ['Return cancelled', 'Pickup cancelled', 'Hold cancelled', 'Pickup order cancelled',
-      'Return shipment created', 'No admitido', 'Out with driver for pickup',
+      'Return shipment created', 'No admitido', 'Out with driver for pickup', 'O pedido de devolução foi aceite',
       "in paack's distribution centre", 'girildi', 'order triggered by recipient: forward']) {
       expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'pending', source: 'none' });
     }

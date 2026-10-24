@@ -14,6 +14,7 @@
  * apresentação à Alfândega" and "O envio está em desalfandegamento".
  */
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const EVENT_STATUS: Record<number, ClassifiedStatus> = {
   1: { status: 'pending', stage: 'registered' },
@@ -32,3 +33,13 @@ const EVENT_STATUS: Record<number, ClassifiedStatus> = {
 export function classifyCttStatus(stateId: unknown): ClassifiedStatus | undefined {
   return typeof stateId === 'number' && Number.isSafeInteger(stateId) ? EVENT_STATUS[stateId] : undefined;
 }
+
+/**
+ * What the map says about one scan: its `StateId`, as the adapter writes it.
+ * Every scan carries one, so wording alone gets nothing; an id the map does not
+ * know stays open for review.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code) => code !== null && /^[1-9]\d{0,3}$/.test(code) ? EVENT_STATUS[Number(code)]?.stage : undefined,
+  gaps: [],
+};

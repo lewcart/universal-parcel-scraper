@@ -291,6 +291,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // The sender still has to hand the parcel over: "Pendiente de entregar a TIPSA".
   if (/\bpendiente de (?:entregar|entrega|recepcion|admision|recibir) (?:a|al|en|por) (?:la |el )?(?:agencia|transportista|operador|correos|seur|mrw|nacex|tipsa|ctt|gls|dhl|dpd|ups|fedex|envialia|zeleris|paack|inpost|celeritas)\b|\bpendiente de (?:recepcion|admision)\b|\baguarda entrada\b|\bpendente de (?:rececao|recepcao|entrada)\b/.test(text)) return 'registered';
   if (/or awaiting processing|ou en attente de traitement|oder wartet auf.*bearbeitung|o in attesa di elaborazione/.test(text)) return 'registered';
+  // USPS's "Shipment Received, Package Acceptance Pending": the item reached USPS before its acceptance scan, as USPS's map reads it.
+  if (/^shipment received,? package acceptance pending\b/.test(text)) return 'registered';
   if (/will be transported|\barrange (?:a )?(?:truck|train|rail|road) transfer\b|sera (?:transporte|achemine)|wird.*transportiert|sara trasportat/.test(text)) return 'in_transit';
   if (/will be available|sera disponible|(?:sera|va etre|doit etre) (?:distribue|remis|mis en (?:livraison|distribution))|wird.*verfugbar|sara disponibile|to be delivered|a livrer|noch zuzustellen|da consegnare|(?:once|when|as soon as) (?:the |your )?(?:shipment|parcel|package|item) is out for delivery/.test(text)) return 'in_transit';
   if (/\bestara disponi(?:ble|vel)\b|\bpor entregar\b|\bpendiente de (?:entrega|entregar|reparto)\b|\bpendente de entrega\b|\b(?:aguarda|aguardando|a aguardar) (?:a )?entrega\b|\bsera (?:enviad|transportad|expedid|encaminhad)[oa]s?\b/.test(text)) return 'in_transit';
@@ -447,6 +449,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // Admitted by the carrier: Correos's "Admitido", Correos Express's "Admitido en
   // oficina". Admission still to come is registered above.
   if (/(?<!\b(?:no|nao) )\badmitid[oa]s?\b|\badmision en origen\b/.test(text)) return 'accepted';
+  // Accepted by CTT: its "Aceite" state, and "O envio foi aceite" in its scans. A return request accepted is no parcel.
+  if (/^aceite(?:\.|$)|\b(?:envio|objeto|objecto|encomenda|remessa) foi aceite\b/.test(text)) return 'accepted';
   // A cross-dock transfer, a flight taking off or landing, a tally in a bonded
   // warehouse, a hand-over to the last mile being prepared or to an airline, a
   // parcel bagged, unbagged or consolidated onto a master air waybill, and a

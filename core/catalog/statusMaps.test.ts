@@ -389,6 +389,15 @@ describe('status map answers', () => {
     expect(answer('an-post', null, 'Your item has been delivered')).toEqual(unknown);
   });
 
+  it("answers CTT's StateId codes, and leaves wording without one open", () => {
+    expect(answer('ctt', '2', 'Aceite')).toEqual(mapped('accepted'));
+    expect(answer('ctt', '10', 'Synthetic customs wording')).toEqual(mapped('customs'));
+    expect(answer('ctt', '12', 'Entregue')).toEqual(mapped('delivered'));
+    expect(answer('ctt', '99', 'Entregue')).toEqual(unknown);
+    expect(answer('ctt', '02', 'Aceite')).toEqual(unknown);
+    expect(answer('ctt', null, 'Aceite')).toEqual(unknown);
+  });
+
   it("answers China Post by its scan code, and by the state label that replaced a scan's text", () => {
     expect(answer('china-post', '461', '已到达【美国】投递局')).toEqual(mapped('in_transit'));
     expect(answer('china-post', 'EXB', '出口海关/留存待验')).toEqual(mapped('customs'));
@@ -590,6 +599,9 @@ describe("universal providers' answers", () => {
   it('answer by the wording rules the providers apply, as the app files their scans under unknown', () => {
     expect(answer('unknown', null, 'Processed at EXAMPLE CITY - FRANCE')).toEqual(mapped('in_transit'));
     expect(answer('unknown', null, 'Shipment information received')).toEqual(mapped('registered'));
+    // USPS's scan before its acceptance, and CTT's acceptance, as ParcelsApp relays them.
+    expect(answer('unknown', null, 'Shipment Received, Package Acceptance Pending, ZIP Code 10001')).toEqual(mapped('registered'));
+    expect(answer('unknown', null, 'Aceite. O envio foi aceite. O processo de envio foi iniciado.')).toEqual(mapped('accepted'));
     expect(answer('unknown', null, 'Clearance processing complete at EXAMPLE GATEWAY - USA')).toEqual(mapped('in_transit'));
     expect(answer('unknown', null, "  Colis en préparation chez l'expéditeur ")).toEqual(mapped('registered'));
     expect(answer('unknown', null, 'Delivered')).toEqual(mapped('delivered'));

@@ -36,7 +36,8 @@ carrier.
   shipment.
 - Only the integer `StateId` is mapped, never the localized Portuguese `State` text. It is
   also returned as `provider_code`. An unmapped `StateId` gets no stage and the sync records
-  the raw wording.
+  the raw wording. The app's review asks the same map by that code (`statusMap`); wording
+  without a code stays open there.
 - A timestamp's `Z` is no offset: the digits are the wall clock where the scan happened
   (`clock.ts`). The tracker is an OutSystems app whose DateTime values travel as UTC strings,
   and its page shows the digits unconverted in any browser zone. UPU's tracking has the same

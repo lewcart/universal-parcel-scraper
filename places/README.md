@@ -134,6 +134,9 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   the text says airport ("LIEGE AIRPORT"). The place keeps the town as its name and returns
   the airport as `site`. A bare code ("CDG") places nothing: three letters are too often
   something else.
+- A station named by an airport's code and a number, as iMile names its Italian ones ("BLQ
+  01"), is in that airport's town, when the parcel is in the airport's country. Elsewhere the
+  code places nothing.
 - `hubs.json` lists hubs named after a place that is not their town ("ROISSY" is the
   Charles de Gaulle airport, not Roissy-en-Brie), with the town and airport they stand for,
   and hubs the gazetteer cannot place by name, with their point and its source: in a village

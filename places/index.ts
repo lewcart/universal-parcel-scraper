@@ -510,6 +510,8 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   let rest = explicit.country ? explicit.place : text;
   const context = hints.countries ?? [];
   const carriers = hints.carriers ?? [];
+  const station = stationPlace(data, text, context, carriers);
+  if (station) return station;
   const hinted = [...context];
   const admin: string[] = [];
   const postcodes: string[] = [];
@@ -723,6 +725,25 @@ function airportFor(data: Gazetteer, text: string, field: string, town: Candidat
 }
 
 const round = (value: number) => Math.round(value * 1000) / 1000;
+
+// A station a carrier names by its town's airport code and a number: "BLQ 01", "NAP02".
+const STATION = /^([A-Z]{3})[\s_-]?\d{1,2}$/;
+
+/**
+ * The town of a station a carrier names by an airport's code and a number, as iMile names its
+ * Italian ones ("BLQ 01" would be Bologna's), when the parcel is in the airport's country. A
+ * bare code places nothing, and neither does a code whose airport is in a country nothing puts
+ * the parcel in: three letters are too often something else.
+ */
+function stationPlace(data: Gazetteer, text: string, countries: readonly string[], carriers: readonly string[]): Located | null {
+  const code = STATION.exec(text)?.[1];
+  const airport = code && !FACILITY_WORDS.has(code.toLowerCase()) ? data.airports.get(code) : undefined;
+  if (!airport || !countries.includes(airport.country)) return null;
+  const town = locate(airport.town, { countries: [airport.country], carriers }, false);
+  if (!town || town.place.precision !== 'city' || town.place.country !== airport.country
+    || distanceKm(town.place.latitude, town.place.longitude, airport.latitude, airport.longitude) > AIRPORT_MAX_KM) return null;
+  return { ...town, text: true };
+}
 
 /**
  * The town of the Indian PIN code a scan ends with. A foreign airport's code, alone or

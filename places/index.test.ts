@@ -129,6 +129,22 @@ describe('locatePlace', () => {
     for (const location of ['Cuernavaca, Mexico', 'HSINCHU - TAIWAN', 'Soyapango, San Salvador']) expect(place(location)?.site, location).toBeUndefined();
   });
 
+  it("puts a station named by an airport's code and a number in that airport's town, where the parcel is", () => {
+    expectPlace('BLQ 01', { country: 'IT', name: 'Bologna', latitude: 44.49, longitude: 11.34 }, ['IT']);
+    expectPlace('NAP02', { country: 'IT', name: 'Napoli', latitude: 40.85, longitude: 14.27 }, ['AE', 'IT']);
+    // The station is in the town, not at the airport.
+    expect(place('BLQ 01', ['IT'])?.site).toBeUndefined();
+    // A bare code, a code whose airport is abroad, and one no country backs place nothing.
+    expect(place('BLQ', ['IT'])).toBeNull();
+    expect(place('BLQ 01', ['FR'])).toBeNull();
+    expect(place('BLQ 01')).toBeNull();
+    // Three letters no airport has, or a station number too long for one.
+    expect(place('QQX 03', ['IT'])).toBeNull();
+    expect(place('BLQ 0123', ['IT'])).toBeNull();
+    expect(placesForEvents(['Milan center', 'Milan center', 'BLQ 01', 'BLQ 01'], { destinationCountry: 'IT', carriers: ['imile'] })
+      .map((found) => found?.name)).toEqual(['Milan', 'Milan', 'Bologna', 'Bologna']);
+  });
+
   it("knows a carrier's own hub by the name the carrier gives it", () => {
     // DPD's Swiss depot is in Buchs in the canton of Zurich; any other Buchs still has to say so.
     expect(locatePlace('Buchs, CH', { carriers: ['dpd'] })).toMatchObject({ country: 'CH', name: 'Buchs', latitude: 47.452, longitude: 8.43 });

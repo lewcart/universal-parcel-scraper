@@ -760,7 +760,7 @@ describe('classifyWording', () => {
       ['Example Forwarding has received the goods, Example Town, CN.', 'accepted'],
       // DPD Poland's scans as ParcelsApp words them.
       ['Sending the package at the pickup point', 'accepted'], ['Handing over the package to the courier', 'accepted'],
-      ['Acceptance of the package at the delivery branch abroad', 'in_transit'],
+      ['Acceptance of the package at the delivery branch abroad', 'in_transit'], ['Release for delivery abroad', 'out_for_delivery'],
       // A forwarder's warehouse receipt, as 17TRACK relays it.
       ["Package received & scanned at carrier's domestic warehouse.", 'accepted'],
       // DAI Post's own words, relayed by universal providers.

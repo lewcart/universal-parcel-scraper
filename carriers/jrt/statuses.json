@@ -1,10 +1,10 @@
 {
   "carrier": "jrt",
   "entries": [
-    {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "live", "note": "The platform writes this row itself for an order without scans, on its creation time."},
+    {"wording": "货物电子信息已经收到", "language": "zh", "english": "The electronic cargo information has been received", "stage": "registered", "confirmedBy": "live", "note": "The platform writes this row itself for an order without scans, on its creation time. The English is the row's on BYHD's tracker."},
     {"wording": "Shipment information received", "language": "en", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-10-16"},
-    {"wording": "到达收货点", "language": "zh", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-16", "note": "The first scan in JRT's hands; GZYL's tenant of the same platform words it \"Arrive at the cross border receiving point\"."},
-    {"wording": "货物离开操作中心", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-16", "note": "GZYL's tenant of the same platform words it \"Goods leave the operation center\"."},
+    {"wording": "到达收货点", "language": "zh", "english": "Arrived at the receiving point", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-16", "note": "The first scan in JRT's hands; GZYL's tenant of the same platform words it \"Arrive at the cross border receiving point\". The English is Tianhui Hengyuan's and KUN Express's for their arrival on the platform."},
+    {"wording": "货物离开操作中心", "language": "zh", "english": "Goods leave the operation center", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-16", "note": "GZYL's tenant of the same platform words it \"Goods leave the operation center\"."},
     {"wording": "Shipment arrived at facility", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-16"},
     {"wording": "货物已交机场,等待航班安排中 Cargo delivered to airport, pending flight arrangement", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-17", "note": "Handed to the airport to wait for a flight. It is not a delivery to the recipient, though the translation reads \"delivered\"."},
     {"wording": "货物已交机场,预计…号的航班 Goods delivered to airport, scheduled on flight of the …", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-17", "note": "Handed to the airport, with the day of the flight booked in both halves (\"预计11号的航班\", \"of the 11rd\"); the map reads each day as an ellipsis."},

@@ -68,6 +68,11 @@ inputs for every checksum validator that `node scripts/checksum-vectors.mjs` rew
 the stage it means and says how that was confirmed, by a live reply or the carrier's own
 documentation for instance. A note explains the entries that are not obvious.
 
+A carrier that words a scan only in another language than English can give the entry an
+`english` the adapter shows instead. It comes from evidence, such as the carrier's own English
+page or another tenant of the same platform, which the note names. The map still stages the
+scan by the carrier's wording, and answers the English too.
+
 Some adapter tests replay these entries against the carrier's status map. Wording no carrier
 map covers falls to the shared classifier in [core/status](core/status/wording.ts), which
 has its own tests against audited histories.

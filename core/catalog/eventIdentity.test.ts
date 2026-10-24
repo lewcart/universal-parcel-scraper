@@ -326,6 +326,31 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
   });
 
+  it.each([
+    ['jrt', 'accepted', '到达收货点', 'Arrived at the receiving point', 'ARRIVAL'],
+    ['jrt', 'registered', '货物电子信息已经收到', 'The electronic cargo information has been received', ''],
+    ['thhy', 'in_transit', '货物离开操作中心', 'Goods leave the operation center', 'SHIPMENT'],
+  ])('lets a %s row shown in English take over the row stored in the carrier’s Chinese, by place and code', (source, stage, chinese, english, code) => {
+    expect(sameInstantIdentityPolicy(source)).toBeUndefined();
+    const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
+    expect(policy).toEqual({
+      sourceCarrierId: source, storedSources: [source], requireProviderCode: false, matchEachScan: true, matches: expect.any(Function),
+    });
+    const stored = { stage, description: chinese, location: 'Sample Town', providerCode: code };
+    const incoming = { ...stored, description: ` ${english.toUpperCase()} `, location: 'Sample Town ' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    // The other way round, should a release show the carrier's wording again.
+    expect(policy?.matches?.(stored, incoming)).toBe(true);
+    for (const different of [
+      { ...stored, description: '合成的记录' },
+      { ...stored, location: 'Another Town' },
+      { ...stored, location: '' },
+      { ...stored, description: english },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, providerCode: 'CO_C_CR' }, { ...stored, providerCode: 'SYNTHETIC' })).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+
   it('lets a YunExpress row read on China’s clock take over the row stored on another zone, by wall clock, place and wording', () => {
     expect(sameInstantIdentityPolicy('yunexpress')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('yunexpress', { supportsScanMatching: true });

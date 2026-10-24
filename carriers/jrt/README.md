@@ -26,6 +26,10 @@ browser is needed, and no portal link is published.
   airport row books a flight on a day it names in both halves; [status.ts](status.ts) reads the
   day as an ellipsis. `已交服务商` (handed to the delivering carrier) and `货物已交机场` (handed to
   the airport) stay in transit, though their translations read "delivered".
+- JRT words its arrival, its departure and the platform's own row only in Chinese. They show the
+  English the platform's other tenants give them, the `english` of their entries in
+  [statuses.json](statuses.json), and the map stages them by either wording. A row stored in
+  Chinese is taken over by its English at the same instant and place ([identity.ts](identity.ts)).
 - Lines into Europe end with DHL. After the hand-off the tracker copies DHL's rows into its own
   history, in lower case English. The record names neither a channel nor DHL's number, so
   nothing is handed over.

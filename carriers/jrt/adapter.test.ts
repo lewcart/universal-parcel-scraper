@@ -25,11 +25,12 @@ describe('JRT tracking adapter', () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('no-track'))).mockResolvedValueOnce(html(page('page-registered')));
     const result = await adapter(environment(fetcher)).track({ number: REFERENCE });
     expect(result).toMatchObject({
-      status: 'pending', current_stage: 'registered', current_stage_source: 'carrier_map', last_status_text: '货物电子信息已经收到',
+      status: 'pending', current_stage: 'registered', current_stage_source: 'carrier_map',
+      last_status_text: 'The electronic cargo information has been received',
       last_update: '2026-03-02T14:34:18+08:00', destination_country: 'CH', canonical_tracking_number: 'JRT0000000000ZZ',
     });
     expect(result.events).toEqual([
-      { time: '2026-03-02T14:34:18+08:00', description: '货物电子信息已经收到', stage: 'registered', stage_source: 'carrier_map' },
+      { time: '2026-03-02T14:34:18+08:00', description: 'The electronic cargo information has been received', stage: 'registered', stage_source: 'carrier_map' },
     ]);
     expect(JSON.stringify(result)).not.toContain('Synthetic Recipient');
     expect(fetcher.mock.calls.map(([url, init]) => [String(url), init?.method])).toEqual([
@@ -70,9 +71,10 @@ describe('JRT tracking adapter', () => {
       ['货物已交机场,预计9号的航班 Goods delivered to airport, scheduled on flight of the 9rd', 'in_transit', 'carrier_map'],
       ['货物已交机场,等待航班安排中 Cargo delivered to airport, pending flight arrangement', 'in_transit', 'carrier_map'],
       ['the instruction data for this shipment have been provided by the sender to dhl electronically', 'registered', 'carrier_map'],
-      ['货物离开操作中心', 'in_transit', 'carrier_map'],
-      ['到达收货点', 'accepted', 'carrier_map'],
-      ['货物电子信息已经收到', 'registered', 'carrier_map'],
+      // The rows JRT words only in Chinese show the English of the platform's other tenants.
+      ['Goods leave the operation center', 'in_transit', 'carrier_map'],
+      ['Arrived at the receiving point', 'accepted', 'carrier_map'],
+      ['The electronic cargo information has been received', 'registered', 'carrier_map'],
     ]);
     expect(JSON.stringify(result)).not.toContain('Synthetic Recipient');
   });
@@ -89,7 +91,11 @@ describe('JRT tracking adapter', () => {
   });
 
   it('maps every wording it lists as a whole phrase, whatever day the airport row books', () => {
-    for (const entry of statuses.entries) expect(statusMap.stage(null, normalizeStatusWording(entry.wording)), entry.wording).toBe(entry.stage);
+    for (const entry of statuses.entries) {
+      for (const wording of 'english' in entry && entry.english ? [entry.wording, entry.english] : [entry.wording]) {
+        expect(statusMap.stage(null, normalizeStatusWording(wording)), wording).toBe(entry.stage);
+      }
+    }
     const answer = (description: string) => statusMapAnswer({ carrier: 'jrt', providerCode: null, description });
     expect(answer('货物已交机场,预计18号的航班 Goods delivered to airport, scheduled on flight of the 18th')).toEqual({ kind: 'mapped', stage: 'in_transit' });
     // A hand-over to the delivering carrier, not a delivery.
@@ -103,8 +109,10 @@ describe('JRT tracking adapter', () => {
     ]) expect(answer(description), description).toEqual({ kind: 'unknown' });
   });
 
-  it('maps the platform’s own row, and links no plain-HTTP page', () => {
-    expect(statusMapAnswer({ carrier: 'jrt', providerCode: null, description: '货物电子信息已经收到' })).toEqual({ kind: 'mapped', stage: 'registered' });
+  it('maps the platform’s own row in Chinese and in the English shown for it, and links no plain-HTTP page', () => {
+    for (const description of ['货物电子信息已经收到', 'The electronic cargo information has been received']) {
+      expect(statusMapAnswer({ carrier: 'jrt', providerCode: null, description })).toEqual({ kind: 'mapped', stage: 'registered' });
+    }
     expect(adapter(environment(vi.fn<typeof fetch>()))).toMatchObject({ id: 'jrt', recordsSteps: true, steps: ['direct', 'retry'] });
     expect(carrier.portal).not.toHaveProperty('url');
     expect(carrier.portal).not.toHaveProperty('searchUrl');

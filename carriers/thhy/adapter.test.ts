@@ -43,7 +43,8 @@ describe('Tianhui Hengyuan tracking adapter', () => {
       { time: '2026-03-05T06:30:57+08:00', description: '送交出口', location: '海关', provider_code: 'CO_C_CR', stage: 'customs', stage_source: 'carrier_map' },
     ]);
     expect(result.events!.slice(-2)).toEqual([
-      { time: '2026-03-02T16:30:57+08:00', description: '货物离开操作中心', location: 'GZ', provider_code: 'SHIPMENT', stage: 'in_transit', stage_source: 'carrier_map' },
+      // Its departure, worded only in Chinese, shows the English of the platform's other tenants.
+      { time: '2026-03-02T16:30:57+08:00', description: 'Goods leave the operation center', location: 'GZ', provider_code: 'SHIPMENT', stage: 'in_transit', stage_source: 'carrier_map' },
       { time: '2026-03-02T16:15:01+08:00', description: 'Arrived at the receiving point', location: 'GZ', provider_code: 'ARRIVAL', stage: 'accepted', stage_source: 'carrier_map' },
     ]);
     expect(result.events!.every((event) => event.stage)).toBe(true);
@@ -58,8 +59,17 @@ describe('Tianhui Hengyuan tracking adapter', () => {
     await expect(adapter(environment(unknown)).recognize!('NOTFOUND000002')).resolves.toEqual({ known: false });
   });
 
-  it('maps every wording it lists by wording alone, and the app reads the map', () => {
-    for (const entry of statuses.entries) expect(statusMap.stage(null, normalizeStatusWording(entry.wording)), entry.wording).toBe(entry.stage);
+  it('maps every wording it lists by wording alone, and the English shown for it, and the app reads the map', () => {
+    for (const entry of statuses.entries) {
+      for (const wording of 'english' in entry && entry.english ? [entry.wording, entry.english] : [entry.wording]) {
+        expect(statusMap.stage(null, normalizeStatusWording(wording)), wording).toBe(entry.stage);
+      }
+    }
+    for (const description of ['货物离开操作中心', 'Goods leave the operation center']) {
+      expect(statusMapAnswer({ carrier: 'thhy', providerCode: 'SHIPMENT', description })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    }
+    expect(statusMapAnswer({ carrier: 'thhy', providerCode: null, description: 'The electronic cargo information has been received' }))
+      .toEqual({ kind: 'mapped', stage: 'registered' });
     expect(statusMapAnswer({ carrier: 'thhy', providerCode: 'CO_C_CR', description: '送交出口' })).toEqual({ kind: 'mapped', stage: 'customs' });
     expect(statusMapAnswer({ carrier: 'thhy', providerCode: 'CO_C_CR', description: '送交境外进口海关' })).toEqual({ kind: 'mapped', stage: 'customs' });
     expect(statusMapAnswer({ carrier: 'thhy', providerCode: 'CO_C_CR', description: 'Packages ready for delivery on the next working day' }))

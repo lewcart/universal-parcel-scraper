@@ -24,6 +24,11 @@ browser is needed, and no portal link is published.
   Beijing time is held back.
 - A row's kind code (`ARRIVAL`, `SHIPMENT`, `CO_C_CR`) is kept as the provider code; it groups
   many wordings, so the stage comes from the wording in [status.ts](status.ts).
+- The forwarder's departure and the platform's own row come only in Chinese. They show the
+  English the platform's other tenants give them, the `english` of their entries in
+  [statuses.json](statuses.json), and the map stages them by either wording. A row stored in
+  Chinese is taken over by its English at the same instant and place ([identity.ts](identity.ts)).
+  The custom track product's Chinese rows keep their wording: no English for them is known.
 - Scan times are wall clocks without an offset, on the tracker's Beijing clock abroad too, as
   [GZYL's](../gzyl/README.md) are, and are read on it.
 

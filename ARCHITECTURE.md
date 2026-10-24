@@ -286,6 +286,12 @@ fallback decisions without mistaking them for explicit maps.
 Each carrier's `statuses.json` records the codes and wordings seen from that carrier and the
 stage each one means. [CORPUS.md](CORPUS.md) describes those records.
 
+An adapter prefers the carrier's own English, through its locale or an English endpoint. A
+carrier with none can show an entry's `english` in place of a wording it gives only in another
+language ([english.ts](core/status/english.ts)): the stage still comes from the carrier's
+wording, the map answers both, and `translatedScanPolicy()` lets the English scan take over the
+row the app stored in the carrier's wording. A wording without known English keeps it.
+
 A carrier can declare a `statusMap` next to its map in `status.ts`: the stage its map gives
 one provider code and wording, and the codes and wordings it leaves without a stage on
 purpose, each with a note. [statusMaps.ts](core/catalog/statusMaps.ts) registers them by

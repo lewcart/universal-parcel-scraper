@@ -35,6 +35,11 @@ export interface HualeiTenant {
   readonly origin: string;
   /** The stage the carrier's map gives a row, by its kind code (null without one) and `normalizeStatusWording` wording. */
   readonly stage: (code: string | null, wording: string) => Stage | undefined;
+  /**
+   * The English a row the tenant words only in Chinese is shown in, by the same
+   * code and wording. The stage still comes from the tenant's own wording.
+   */
+  readonly english?: (code: string | null, wording: string) => string | undefined;
   /** The wording and place of a row whose text carries both, before the shared cleaning. */
   readonly split?: (content: string, location: string) => { readonly content: string; readonly location: string };
   /** Rows keep their wall clocks: some rows the tracker copies from another carrier come on that carrier's clock. */
@@ -200,11 +205,12 @@ function stageOf(tenant: HualeiTenant, code: string, description: string): { sta
  * the collection to the delivery: a row written well before its own clock is
  * a forecast, not a scan, and so is a row dated after the lookup on the
  * trackers' clock. Identical rows count once, and so do rows the tenant says
- * repeat another.
+ * repeat another. A row the tenant has English for is staged and deduplicated
+ * by its own wording, then shown in English.
  */
 function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number): { events: CarrierEvent[]; truncated: boolean } {
   const seen = new Set<string>();
-  const kept: { clock: string; index: number; event: CarrierEvent }[] = [];
+  const kept: { clock: string; index: number; event: CarrierEvent; english?: string }[] = [];
   rows.forEach((row, index) => {
     const local = wallClock(row.clock, tenant.provider);
     const placed = isoTime(local, HUALEI_ZONE)!;
@@ -220,7 +226,8 @@ function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number)
     seen.add(key);
     const staged = stageOf(tenant, row.code, description);
     const reading = tenant.clock?.(row) ?? (tenant.wallClocks ? 'wall' : 'platform');
-    kept.push({ clock: local, index, event: {
+    const english = wording ? tenant.english?.(row.code || null, normalizeStatusWording(wording)) : undefined;
+    kept.push({ clock: local, index, ...(english ? { english } : {}), event: {
       ...(reading === 'platform' ? { time: placed.iso } : { local_time: reading === 'day' ? local.slice(0, 10) : local }), description,
       ...(location ? { location } : {}),
       ...(row.code ? { provider_code: row.code } : {}),
@@ -233,7 +240,7 @@ function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number)
     && repeats(entry.event.description!, other.event.description!))) : kept;
   // Rows come newest first; rows on one clock keep the reply's order.
   unique.sort((a, b) => (a.clock === b.clock ? a.index - b.index : a.clock < b.clock ? 1 : -1));
-  const events = unique.map(({ event }) => event);
+  const events = unique.map(({ event, english }) => (english ? { ...event, description: english } : event));
   return { events: events.slice(0, MAX_EVENTS), truncated: events.length > MAX_EVENTS };
 }
 

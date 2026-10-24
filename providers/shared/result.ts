@@ -190,9 +190,9 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^we have received the shipment from the sender[.!]?$/i.test(value)) return 'accepted';
   // An export warehouse receiving the parcel after the origin's sorting centre has sent it on.
   if (/^received at (?:the )?origin warehouse[.!]?$/i.test(value)) return 'in_transit';
-  // Scans aggregators relay in the network's words: Italian "in viaggio" (on its way), a checkpoint passed,
-  // and the network's receipt of the sender's confirmation that the shipment is being prepared.
-  if (/^in viaggio[.!]?$|^item has passed a checkpoint[.!]?$/i.test(value)) return 'in_transit';
+  // Scans aggregators relay in the network's words: a checkpoint passed, and the network's receipt of
+  // the sender's confirmation that the shipment is being prepared.
+  if (/^item has passed a checkpoint[.!]?$/i.test(value)) return 'in_transit';
   if (/^confirmation of preparation of the shipment received[.!]?$/i.test(value)) return 'registered';
   // Correios Brazil's scans in an aggregator's English for an item posted abroad. Correios' receipt follows
   // the posting and the export, so it is transit here; the recipient still owes customs their tax number.

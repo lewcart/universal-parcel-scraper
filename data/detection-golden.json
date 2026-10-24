@@ -16306,6 +16306,16 @@
     ]
   },
   {
+    "input": "14542696",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "14546206533-3",
     "carrier": "unknown",
     "confidence": "low",
@@ -64510,6 +64520,30 @@
     ]
   },
   {
+    "input": "AB 04816950",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-ecommerce-es",
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it",
+      "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "AB 07494351",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
+  },
+  {
     "input": "AB000081772LT",
     "carrier": "intl-post",
     "confidence": "high",
@@ -80234,6 +80268,17 @@
     "candidates": []
   },
   {
+    "input": "LW 05286031",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
+  },
+  {
     "input": "LW225825809HR",
     "carrier": "hrvatska-posta",
     "confidence": "high",
@@ -81658,6 +81703,17 @@
     ]
   },
   {
+    "input": "N10W 00814641",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
     "input": "N20527879",
     "carrier": "dtdc",
     "confidence": "high",
@@ -82030,6 +82086,21 @@
   },
   {
     "input": "NH0117289752",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ],
+    "asked": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ]
+  },
+  {
+    "input": "NI25 03728987",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -88566,6 +88637,17 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "SH 02319901",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "SH0064860286837",

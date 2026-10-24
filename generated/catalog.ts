@@ -8591,6 +8591,46 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "castle-parcels": {
+    "displayName": "Castle Parcels",
+    "color": "#154434",
+    "aliases": [
+      "CastleParcels"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "castle-parcels"
+    },
+    "canaryUrl": "https://receiver.castleparcels.co.nz/",
+    "trackingUrlTemplate": "https://receiver.castleparcels.co.nz/?track={trackingNumber}",
+    "trackingSearchUrl": "https://receiver.castleparcels.co.nz/",
+    "linkRules": [
+      {
+        "domains": [
+          "castleparcels.co.nz"
+        ],
+        "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+        "params": [
+          "consignment_id_ref",
+          "consignment_id",
+          "label_number"
+        ]
+      },
+      {
+        "domains": [
+          "receiver.castleparcels.co.nz"
+        ],
+        "pathPattern": "^/?$",
+        "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
+      }
+    ],
+    "detectionRules": []
+  },
   "castores": {
     "displayName": "Transportes Castores",
     "color": "#c72628",
@@ -22055,6 +22095,46 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "now-couriers": {
+    "displayName": "Now Couriers",
+    "color": "#facf07",
+    "aliases": [
+      "NowCouriers"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "now-couriers"
+    },
+    "canaryUrl": "https://receiver.nowcouriers.co.nz/",
+    "trackingUrlTemplate": "https://receiver.nowcouriers.co.nz/?track={trackingNumber}",
+    "trackingSearchUrl": "https://receiver.nowcouriers.co.nz/",
+    "linkRules": [
+      {
+        "domains": [
+          "nowcouriers.co.nz"
+        ],
+        "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+        "params": [
+          "consignment_id_ref",
+          "consignment_id",
+          "label_number"
+        ]
+      },
+      {
+        "domains": [
+          "receiver.nowcouriers.co.nz"
+        ],
+        "pathPattern": "^/?$",
+        "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
+      }
+    ],
+    "detectionRules": []
+  },
   "nox": {
     "displayName": "nox",
     "color": "#fadb00",
@@ -22132,6 +22212,24 @@ export const CARRIER_CATALOG = {
         "params": [
           "query"
         ]
+      },
+      {
+        "domains": [
+          "nzcouriers.co.nz"
+        ],
+        "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+        "params": [
+          "consignment_id_ref",
+          "consignment_id",
+          "label_number"
+        ]
+      },
+      {
+        "domains": [
+          "receiver.nzcouriers.co.nz"
+        ],
+        "pathPattern": "^/?$",
+        "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
       }
     ],
     "detectionRules": []
@@ -24393,6 +24491,24 @@ export const CARRIER_CATALOG = {
         "params": [
           "query"
         ]
+      },
+      {
+        "domains": [
+          "posthaste.co.nz"
+        ],
+        "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+        "params": [
+          "consignment_id_ref",
+          "consignment_id",
+          "label_number"
+        ]
+      },
+      {
+        "domains": [
+          "receiver.posthaste.co.nz"
+        ],
+        "pathPattern": "^/?$",
+        "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
       }
     ],
     "detectionRules": []
@@ -32575,6 +32691,7 @@ export const CARRIER_IDS = [
   "cacesa",
   "campost",
   "cargus",
+  "castle-parcels",
   "castores",
   "cbl-logistica",
   "ccfs",
@@ -32920,6 +33037,7 @@ export const CARRIER_IDS = [
   "northline",
   "nova-global",
   "nova-poshta",
+  "now-couriers",
   "nox",
   "nz-couriers",
   "oak-harbor",
@@ -33374,6 +33492,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cacesa": [],
   "campost": [],
   "cargus": [],
+  "castle-parcels": [],
   "castores": [],
   "cbl-logistica": [],
   "ccfs": [],
@@ -33719,6 +33838,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "northline": [],
   "nova-global": ["nova-global-1"],
   "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],
+  "now-couriers": [],
   "nox": ["nox-1"],
   "nz-couriers": [],
   "oak-harbor": [],

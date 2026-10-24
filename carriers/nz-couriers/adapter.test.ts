@@ -167,10 +167,12 @@ describe('New Zealand Couriers HTTP adapter', () => {
   });
 
   it('counts a customer printed label only when its consignment number is the whole number asked', () => {
-    for (const shortId of [`0000000 ${CUSTOMER}`, CUSTOMER.toLowerCase(), ` 0000000  ${CUSTOMER} `]) {
+    // The sender's account is digits, or letters and digits.
+    for (const shortId of [`0000000 ${CUSTOMER}`, `ZZZZZZ0 ${CUSTOMER}`, CUSTOMER.toLowerCase(), ` 0000000  ${CUSTOMER} `]) {
       expect(parseNzCouriers(changed('delivered', (body) => { body.shortConsignmentId = shortId; }), CUSTOMER).events, shortId).toHaveLength(5);
     }
-    for (const shortId of ['0000000 ZZZZ12345', '0000000 ZZZZ0123456', 'ZZZZ 012345', '0000000', `ZZ00000 ${CUSTOMER}`, `0000000 ${CUSTOMER} 1`]) {
+    for (const shortId of ['0000000 ZZZZ12345', '0000000 ZZZZ0123456', 'ZZZZ 012345', '0000000', `ZZ-00000 ${CUSTOMER}`,
+      `0000000 0000000 ${CUSTOMER}`, `0000000 ${CUSTOMER} 1`]) {
       expect(() => parseNzCouriers(changed('delivered', (body) => { body.shortConsignmentId = shortId; }), CUSTOMER), shortId)
         .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'New Zealand Couriers answered for another consignment' }));
     }

@@ -1,5 +1,4 @@
-import type { AdapterFactory } from '../../core/adapter/index.js';
-import { FreightwaysTracker, freightwaysApi } from '../nz-couriers/adapter.js';
+import { freightwaysAdapter, freightwaysApi, FreightwaysTracker } from '../nz-couriers/freightways.js';
 import { POST_HASTE } from './parser.js';
 
 /**
@@ -13,10 +12,4 @@ export class PostHasteTracker extends FreightwaysTracker {
   constructor(options: ConstructorParameters<typeof FreightwaysTracker>[1] = {}) { super(POST_HASTE, options); }
 }
 
-export const adapter: AdapterFactory = (environment) => {
-  const tracker = new PostHasteTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
-  return {
-    id: 'post-haste', recordsSteps: true, steps: ['direct'],
-    track: (input, context) => tracker.fetch(input.number, context),
-  };
-};
+export const adapter = freightwaysAdapter(POST_HASTE);

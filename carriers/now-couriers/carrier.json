@@ -1,0 +1,92 @@
+{
+  "id": "now-couriers",
+  "displayName": "Now Couriers",
+  "aliases": [
+    "NowCouriers"
+  ],
+  "region": {
+    "countries": [
+      "NZ"
+    ]
+  },
+  "brand": {
+    "color": "#facf07"
+  },
+  "selectable": true,
+  "timezone": "Pacific/Auckland",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "now-couriers",
+    "steps": [
+      "direct"
+    ]
+  },
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "delivered_at",
+    "delivery_partner",
+    "offset_timestamps"
+  ],
+  "portal": {
+    "url": "https://receiver.nowcouriers.co.nz/?track={trackingNumber}",
+    "searchUrl": "https://receiver.nowcouriers.co.nz/",
+    "canaryUrl": "https://receiver.nowcouriers.co.nz/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "progress_rail",
+      "parcel_count",
+      "signatory",
+      "proof_of_delivery",
+      "delivery_instructions"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "provider_code",
+      "eta",
+      "delivered_at",
+      "delivery_partner"
+    ],
+    "discarded": [
+      "progress_rail",
+      "parcel_count",
+      "signatory",
+      "proof_of_delivery",
+      "delivery_instructions"
+    ],
+    "unavailable": [
+      "weight",
+      "service_name",
+      "delivery_tracking_number"
+    ]
+  },
+  "links": [
+    {
+      "domains": [
+        "nowcouriers.co.nz"
+      ],
+      "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+      "params": [
+        "consignment_id_ref",
+        "consignment_id",
+        "label_number"
+      ]
+    },
+    {
+      "domains": [
+        "receiver.nowcouriers.co.nz"
+      ],
+      "pathPattern": "^/?$",
+      "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
+    }
+  ],
+  "detection": []
+}

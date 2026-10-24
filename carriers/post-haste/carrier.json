@@ -80,6 +80,24 @@
       "params": [
         "query"
       ]
+    },
+    {
+      "domains": [
+        "posthaste.co.nz"
+      ],
+      "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+      "params": [
+        "consignment_id_ref",
+        "consignment_id",
+        "label_number"
+      ]
+    },
+    {
+      "domains": [
+        "receiver.posthaste.co.nz"
+      ],
+      "pathPattern": "^/?$",
+      "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
     }
   ],
   "detection": []

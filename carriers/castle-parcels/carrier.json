@@ -1,0 +1,92 @@
+{
+  "id": "castle-parcels",
+  "displayName": "Castle Parcels",
+  "aliases": [
+    "CastleParcels"
+  ],
+  "region": {
+    "countries": [
+      "NZ"
+    ]
+  },
+  "brand": {
+    "color": "#154434"
+  },
+  "selectable": true,
+  "timezone": "Pacific/Auckland",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "castle-parcels",
+    "steps": [
+      "direct"
+    ]
+  },
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "delivered_at",
+    "delivery_partner",
+    "offset_timestamps"
+  ],
+  "portal": {
+    "url": "https://receiver.castleparcels.co.nz/?track={trackingNumber}",
+    "searchUrl": "https://receiver.castleparcels.co.nz/",
+    "canaryUrl": "https://receiver.castleparcels.co.nz/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "progress_rail",
+      "parcel_count",
+      "signatory",
+      "proof_of_delivery",
+      "delivery_instructions"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "provider_code",
+      "eta",
+      "delivered_at",
+      "delivery_partner"
+    ],
+    "discarded": [
+      "progress_rail",
+      "parcel_count",
+      "signatory",
+      "proof_of_delivery",
+      "delivery_instructions"
+    ],
+    "unavailable": [
+      "weight",
+      "service_name",
+      "delivery_tracking_number"
+    ]
+  },
+  "links": [
+    {
+      "domains": [
+        "castleparcels.co.nz"
+      ],
+      "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+      "params": [
+        "consignment_id_ref",
+        "consignment_id",
+        "label_number"
+      ]
+    },
+    {
+      "domains": [
+        "receiver.castleparcels.co.nz"
+      ],
+      "pathPattern": "^/?$",
+      "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
+    }
+  ],
+  "detection": []
+}

@@ -1,8 +1,8 @@
 # Post Haste
 
 Post Haste is a Freightways courier that picks up and delivers parcels across New Zealand.
-Tracked through the Freightways lookup under Post Haste's name, which New Zealand Couriers'
-adapter also reads.
+Tracked through the Freightways lookup under Post Haste's name, with the group's tracker and
+parser ([freightways.ts](../nz-couriers/freightways.ts)).
 
 ## How it works
 
@@ -14,7 +14,7 @@ adapter also reads.
    scans, oldest first.
 
 - An unknown number is an empty HTTP 204. A 404 or a redirect is a moved route.
-- A consignment number, a sender's letters then digits, often fits a ticket's layout. Such a
+- A consignment number, a sender's letters and digits, often fits a ticket's layout. Such a
   number is asked as a ticket first, then whole when the ticket gets a 204, in one step.
 - The reply's `shortConsignmentId` must be the number asked: the ticket's product code and
   number, the label alone, or a consignment number after the sender's account number.
@@ -27,12 +27,13 @@ adapter also reads.
 - The tracking page on posthaste.co.nz asks the same consignment through its web agency's proxy,
   `web-api.freightways.makerdesign.co.nz/track`. Post Haste's receiver site carries the direct
   lookup in its script, and New Zealand Couriers' page makes it, so the adapter asks Freightways
-  directly with New Zealand Couriers' tracker and parser
-  ([adapter.ts](../nz-couriers/adapter.ts), [parser.ts](../nz-couriers/parser.ts)).
+  directly.
 - Scan times are UTC instants, kept as they are. Scan types share New Zealand Couriers' status
   map.
 - Each scan names the Freightways network that made it. When the newest is another catalog
   carrier's, such as New Zealand Couriers, that carrier becomes the delivery carrier.
+- A customer printed label's consignment number is found only under the network that issued
+  it, so one asked under another Freightways network reads as not found.
 - The reply's `ETA`, which the page does not show, is a weekday and a date without a year. It is
   dated from the parcel's first scan and kept only when the weekday agrees.
 - Signatures with the signatory's name, delivery photos, the authority-to-leave tag, the
@@ -40,9 +41,11 @@ adapter also reads.
 
 ## Limitations
 
-- A customer printed label is read only by a consignment number of letters then six to eight
-  digits, as on the labels seen, so a number of another carrier's layout, such as Purolator's
-  three letters and nine digits, is refused. Contract bags and manifest references are not read.
+- A customer printed label is read only by its consignment number, in the layouts New Zealand
+  Couriers' adapter reads ([README](../nz-couriers/README.md)), so a number of another carrier's
+  layout, such as Purolator's three letters and nine digits, is refused, and a label the lookup
+  finds only with the sender's account reads as not found. Contract bags and manifest references
+  are not read.
 - A consignment the tracker no longer holds reads as not found.
 - No weight or service.
 
@@ -58,9 +61,9 @@ shared by many carriers, so no rule claims either.
 
 ## Links
 
-The site's search box sends a number to `posthaste.co.nz/track?query={number}`. The older servlet
-at `/phl/servlet/ITNG_TAndTServlet` needs the product code and ticket number as separate
-parameters, so it is not read.
+The site's search box sends a number to `posthaste.co.nz/track?query={number}`. The receiver site,
+`receiver.posthaste.co.nz`, and the older servlet at `/phl/servlet/ITNG_TAndTServlet` are read as
+for New Zealand Couriers ([README](../nz-couriers/README.md)).
 
 ## Testing
 

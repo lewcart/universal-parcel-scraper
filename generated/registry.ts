@@ -75,6 +75,7 @@ import { adapter as cacesa } from '../carriers/cacesa/adapter.js';
 import { adapter as canadaPost } from '../carriers/canada-post/adapter.js';
 import { adapter as canpar } from '../carriers/canpar/adapter.js';
 import { adapter as cargus } from '../carriers/cargus/adapter.js';
+import { adapter as castleParcels } from '../carriers/castle-parcels/adapter.js';
 import { adapter as castores } from '../carriers/castores/adapter.js';
 import { adapter as cblLogistica } from '../carriers/cbl-logistica/adapter.js';
 import { adapter as ccfs } from '../carriers/ccfs/adapter.js';
@@ -390,6 +391,7 @@ import { adapter as norskGlobal } from '../carriers/norsk-global/adapter.js';
 import { adapter as northline } from '../carriers/northline/adapter.js';
 import { adapter as novaGlobal } from '../carriers/nova-global/adapter.js';
 import { adapter as novaPoshta } from '../carriers/nova-poshta/adapter.js';
+import { adapter as nowCouriers } from '../carriers/now-couriers/adapter.js';
 import { adapter as nox } from '../carriers/nox/adapter.js';
 import { adapter as nzCouriers } from '../carriers/nz-couriers/adapter.js';
 import { adapter as nzPost } from '../carriers/nz-post/adapter.js';
@@ -697,6 +699,7 @@ export const REGISTRY: RegistryDefinition = {
     "canada-post": canadaPost,
     "canpar": canpar,
     "cargus": cargus,
+    "castle-parcels": castleParcels,
     "castores": castores,
     "cbl-logistica": cblLogistica,
     "ccfs": ccfs,
@@ -1012,6 +1015,7 @@ export const REGISTRY: RegistryDefinition = {
     "northline": northline,
     "nova-global": novaGlobal,
     "nova-poshta": novaPoshta,
+    "now-couriers": nowCouriers,
     "nox": nox,
     "nz-couriers": nzCouriers,
     "nz-post": nzPost,
@@ -1342,6 +1346,7 @@ export const REGISTRY: RegistryDefinition = {
     "canada-post": "canada-post",
     "canpar": "canpar",
     "cargus": "cargus",
+    "castle-parcels": "castle-parcels",
     "castores": "castores",
     "cbl-logistica": "cbl-logistica",
     "ccfs": "ccfs",
@@ -1734,6 +1739,7 @@ export const REGISTRY: RegistryDefinition = {
     "northline": "northline",
     "nova-global": "nova-global",
     "nova-poshta": "nova-poshta",
+    "now-couriers": "now-couriers",
     "nox": "nox",
     "nz-couriers": "nz-couriers",
     "nz-post": "nz-post",

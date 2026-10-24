@@ -577,6 +577,26 @@ describe('carrier links limited to some pages of their host', () => {
       expect(parseTrackingInput(`${page}123456789`).carrier).not.toBe('tnt');
     }
   });
+
+  it('reads the Freightways networks’ receiver and ITNG links, keeping a customer printed label’s consignment number', () => {
+    for (const [carrier, domain, code] of [
+      ['nz-couriers', 'nzcouriers.co.nz', 'nzc'],
+      ['post-haste', 'posthaste.co.nz', 'phl'],
+      ['castle-parcels', 'castleparcels.co.nz', 'cpl'],
+      ['now-couriers', 'nowcouriers.co.nz', 'now'],
+    ] as const) {
+      const read = (url: string, trackingNumber: string) => expect(parseTrackingInput(url), url)
+        .toMatchObject({ trackingNumber, carrier, confidence: 'high', source: 'link' });
+      read(`https://receiver.${domain}/?consignmentid=CU..ZZZ047193.Z.0000000.1`, 'ZZZ047193');
+      read(`https://receiver.${domain}/?consignmentId=CU..ZZZZ0471935.Z.ZZZZZZ0.1`, 'ZZZZ0471935');
+      read(`https://receiver.${domain}/?track=ZZ%2004719352`, 'ZZ 04719352');
+      read(`https://receiver.${domain}/?Key_Type=Charge&label_number=04719352`, '04719352');
+      read(`https://tools.${domain}/${code}/servlet/ITNG_TAndTServlet?page=1&VCCA=Enabled&Key_Type=CustomerLabel`
+        + '&customer_number=0000000&consignment_id=ZZZ047193', 'ZZZ047193');
+      // A ticket's or charge label's composite names no number a tracker reads.
+      expect(parseTrackingInput(`https://receiver.${domain}/?track=FW.TK..ZZ.04719352`).carrier).not.toBe(carrier);
+    }
+  });
 });
 
 describe('delivering partners\' links', () => {

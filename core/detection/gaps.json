@@ -543,6 +543,18 @@
     "reason": "Three letters, eight digits and a letter appear only in lookups on Cargus's former site from 2014 to 2016, so no rule claims a layout that looks retired."
   },
   {
+    "carrier": "castle-parcels",
+    "pattern": "^(?:[A-Z]{2,4}|[A-Z]\\d{1,2}[A-Z]?|[A-Z]{2}\\d{2})\\d{8}$",
+    "kind": "by_design",
+    "reason": "A courier ticket's product code and number; Post Haste and New Zealand Couriers print tickets in the same layout, so nothing in the number points to Castle Parcels alone."
+  },
+  {
+    "carrier": "castle-parcels",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight-digit charge labels are shared by many carriers, and nothing in the number points to Castle Parcels."
+  },
+  {
     "carrier": "castores",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
@@ -2513,6 +2525,12 @@
     "pattern": "^\\d[A-Z]{3}\\d{5,11}$",
     "kind": "by_design",
     "reason": "A digit, three letters and digits is also the shape of Sameday, DHL eCommerce Netherlands and other carriers' numbers, and nothing in it points to Northline."
+  },
+  {
+    "carrier": "now-couriers",
+    "pattern": "^[A-Z]{2,3}\\d{8}$",
+    "kind": "by_design",
+    "reason": "A courier ticket's product code and number; the other Freightways networks print tickets in the same layout, so nothing in the number points to Now Couriers alone."
   },
   {
     "carrier": "nox",

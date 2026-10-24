@@ -8589,6 +8589,46 @@
     ],
     "detectionRules": []
   },
+  "castle-parcels": {
+    "displayName": "Castle Parcels",
+    "color": "#154434",
+    "aliases": [
+      "CastleParcels"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "castle-parcels"
+    },
+    "canaryUrl": "https://receiver.castleparcels.co.nz/",
+    "trackingUrlTemplate": "https://receiver.castleparcels.co.nz/?track={trackingNumber}",
+    "trackingSearchUrl": "https://receiver.castleparcels.co.nz/",
+    "linkRules": [
+      {
+        "domains": [
+          "castleparcels.co.nz"
+        ],
+        "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+        "params": [
+          "consignment_id_ref",
+          "consignment_id",
+          "label_number"
+        ]
+      },
+      {
+        "domains": [
+          "receiver.castleparcels.co.nz"
+        ],
+        "pathPattern": "^/?$",
+        "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
+      }
+    ],
+    "detectionRules": []
+  },
   "castores": {
     "displayName": "Transportes Castores",
     "color": "#c72628",
@@ -22053,6 +22093,46 @@
       }
     ]
   },
+  "now-couriers": {
+    "displayName": "Now Couriers",
+    "color": "#facf07",
+    "aliases": [
+      "NowCouriers"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "now-couriers"
+    },
+    "canaryUrl": "https://receiver.nowcouriers.co.nz/",
+    "trackingUrlTemplate": "https://receiver.nowcouriers.co.nz/?track={trackingNumber}",
+    "trackingSearchUrl": "https://receiver.nowcouriers.co.nz/",
+    "linkRules": [
+      {
+        "domains": [
+          "nowcouriers.co.nz"
+        ],
+        "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+        "params": [
+          "consignment_id_ref",
+          "consignment_id",
+          "label_number"
+        ]
+      },
+      {
+        "domains": [
+          "receiver.nowcouriers.co.nz"
+        ],
+        "pathPattern": "^/?$",
+        "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
+      }
+    ],
+    "detectionRules": []
+  },
   "nox": {
     "displayName": "nox",
     "color": "#fadb00",
@@ -22130,6 +22210,24 @@
         "params": [
           "query"
         ]
+      },
+      {
+        "domains": [
+          "nzcouriers.co.nz"
+        ],
+        "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+        "params": [
+          "consignment_id_ref",
+          "consignment_id",
+          "label_number"
+        ]
+      },
+      {
+        "domains": [
+          "receiver.nzcouriers.co.nz"
+        ],
+        "pathPattern": "^/?$",
+        "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
       }
     ],
     "detectionRules": []
@@ -24391,6 +24489,24 @@
         "params": [
           "query"
         ]
+      },
+      {
+        "domains": [
+          "posthaste.co.nz"
+        ],
+        "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+        "params": [
+          "consignment_id_ref",
+          "consignment_id",
+          "label_number"
+        ]
+      },
+      {
+        "domains": [
+          "receiver.posthaste.co.nz"
+        ],
+        "pathPattern": "^/?$",
+        "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
       }
     ],
     "detectionRules": []

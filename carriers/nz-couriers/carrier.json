@@ -79,6 +79,24 @@
       "params": [
         "query"
       ]
+    },
+    {
+      "domains": [
+        "nzcouriers.co.nz"
+      ],
+      "pathPattern": "^/[a-z]+/servlet/ITNG_TAndTServlet/?$",
+      "params": [
+        "consignment_id_ref",
+        "consignment_id",
+        "label_number"
+      ]
+    },
+    {
+      "domains": [
+        "receiver.nzcouriers.co.nz"
+      ],
+      "pathPattern": "^/?$",
+      "query": "(?:^|&)(?:consignmentid|track|query|consignment_id_ref|consignment_id|label_number)=(?:CU\\.\\.)?([^&.]+)(?=[.&]|$)"
     }
   ],
   "detection": []

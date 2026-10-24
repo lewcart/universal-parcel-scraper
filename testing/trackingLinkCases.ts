@@ -148,6 +148,13 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'post-haste', number: '00000000000000000000',
     route: /^https:\/\/posthaste\.co\.nz\/(?:track\/\?query=00000000000000000000|\?s=00000000000000000000&track=true)$/,
     marker: /Parcel Tracking History|Use Advanced Tracking for detailed tracking options/i },
+  // The receiver page looks the number in its address up and says when it finds no match.
+  { carrier: 'castle-parcels', number: '00000000000000000000',
+    route: /^https:\/\/receiver\.castleparcels\.co\.nz\/\?track=00000000000000000000$/,
+    marker: /We cannot find a match for the tracking ID entered|Tracking ID can contain both letters/i },
+  { carrier: 'now-couriers', number: '00000000000000000000',
+    route: /^https:\/\/receiver\.nowcouriers\.co\.nz\/\?track=00000000000000000000$/,
+    marker: /We cannot find a match for the tracking ID entered|Tracking ID can contain both letters/i },
   { carrier: 'poczta-polska', number: '00000000000000000001',
     route: /^https:\/\/emonitoring\.poczta-polska\.pl\//,
     marker: /Tracking|Enter.*number|Search/i },

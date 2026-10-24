@@ -1,7 +1,9 @@
 # New Zealand Couriers
 
 New Zealand Couriers is a Freightways courier that picks up and delivers parcels across New
-Zealand. Tracked through the lookup its tracking page makes.
+Zealand. Tracked through the lookup its tracking page makes. The lookup's tracker and parser
+are the group's, in [freightways.ts](freightways.ts): Post Haste, Castle Parcels and Now
+Couriers use them under their own names.
 
 ## How it works
 
@@ -17,13 +19,16 @@ Zealand. Tracked through the lookup its tracking page makes.
   redirect is a moved route.
 - The lookup refuses a query of fewer than six characters with HTTP 400, so a ticket number of
   five digits once its zeros are dropped is not asked as a ticket.
-- A customer printed label's consignment number, a sender's letters then digits, can fit a
+- A customer printed label's consignment number, a sender's letters and digits, can fit a
   ticket's layout. Such a number is asked as a ticket first, then whole when the ticket gets a
   204, in one step.
 - The reply's `shortConsignmentId` must be the number asked: the ticket's product code and
   number, or the label alone. A label can also find a customer printed label whose
   consignment number it is, which is another consignment. A customer printed label's
-  consignment number, letters then digits, comes after the sender's account number.
+  consignment number comes after the sender's account number, of digits
+  or of letters and digits.
+- A customer printed label's consignment number is found only under the network that issued
+  it, so one asked under another Freightways network reads as not found.
 - Recognition is off. The lookup tells a known consignment from an unknown one, but other
   carriers share eight and nine digits and SSCCs, Post Haste prints the same ticket layout,
   and the lookup answers for Freightways' other networks too, so a known answer would not show
@@ -48,11 +53,14 @@ Zealand. Tracked through the lookup its tracking page makes.
 
 ## Limitations
 
-- A customer printed label is read only by a consignment number of letters then six to eight
-  digits, as on the labels seen; one of digits alone reads as a label. A longer run of digits
+- A customer printed label is read only by a consignment number of letters, sometimes after a
+  digit, then six to eight digits; one of digits alone reads as a label. A longer run of digits
   is refused, so a number of another carrier's layout, such as Purolator's three letters and
-  nine digits, is refused rather than asked and answered as unknown. The page's search for an account and consignment number
-  did not find labels whose consignments the lookup still holds.
+  nine digits, is refused rather than asked and answered as unknown.
+- The lookup does not find every customer printed label by its consignment number alone. The
+  receiver site asks for one with the sender's account number too, at
+  `v2/carriers/{network}/customers/{account}/consignments/{consignment}/tracking-events`, and a
+  tracking number does not carry the account.
 - Contract bags, manifest references and other barcodes are not read.
 - A consignment the tracker no longer holds reads as not found.
 - No weight or service.
@@ -70,8 +78,17 @@ digits are shared by many carriers, so no rule claims them.
 
 ## Links
 
-The search box sends a number to `nzcouriers.co.nz/track?query={number}`. The older servlet at
-`/nzc/servlet/ITNG_TAndTServlet` takes a ticket as two parameters, so it is not read.
+The links of the four Freightways networks take the same forms, each on its own domain:
+
+- The search box sends a number to `nzcouriers.co.nz/track?query={number}`.
+- The receiver site, `receiver.nzcouriers.co.nz`, takes a number as `?track=` or `?query=`, and a
+  consignment as `?consignmentid=` with its composite id. A customer printed label's id,
+  `CU..{consignment}.{letter}.{account}.{n}`, gives its consignment number; the account is not
+  kept. A ticket's or charge label's composite id is not read.
+- The older servlet, `/{code}/servlet/ITNG_TAndTServlet` on any of the domain's hosts, gives a
+  customer printed label's consignment number from `consignment_id` or `consignment_id_ref`,
+  and a charge label from `label_number`. A ticket, which it takes as two parameters, is not
+  read.
 
 ## Testing
 

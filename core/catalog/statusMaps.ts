@@ -76,6 +76,7 @@ import { statusMap as c3x } from '../../carriers/c3x/status.js';
 import { statusMap as cacesa } from '../../carriers/cacesa/status.js';
 import { statusMap as canadaPost } from '../../carriers/canada-post/status.js';
 import { statusMap as cargus } from '../../carriers/cargus/status.js';
+import { statusMap as castleParcels } from '../../carriers/castle-parcels/status.js';
 import { statusMap as castores } from '../../carriers/castores/status.js';
 import { statusMap as cblLogistica } from '../../carriers/cbl-logistica/status.js';
 import { statusMap as ccfs } from '../../carriers/ccfs/status.js';
@@ -351,6 +352,7 @@ import { statusMap as noest } from '../../carriers/noest/status.js';
 import { statusMap as norskGlobal } from '../../carriers/norsk-global/status.js';
 import { statusMap as northline } from '../../carriers/northline/status.js';
 import { statusMap as novaGlobal } from '../../carriers/nova-global/status.js';
+import { statusMap as nowCouriers } from '../../carriers/now-couriers/status.js';
 import { statusMap as nox } from '../../carriers/nox/status.js';
 import { statusMap as nzCouriers } from '../../carriers/nz-couriers/status.js';
 import { statusMap as oakHarbor } from '../../carriers/oak-harbor/status.js';
@@ -574,7 +576,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'atlantic-courier': atlanticCourier, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'best-overnite-express': bestOverniteExpress, 'better-trucks': betterTrucks, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, blueex, bombino,
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, bpost, 'bringer-parcel': bringerParcel, brt, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
-  byhd, c3x, cacesa, 'canada-post': canadaPost, cargus, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
+  byhd, c3x, cacesa, 'canada-post': canadaPost, cargus, 'castle-parcels': castleParcels, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, 'citylink-express': citylinkExpress, citymail,
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
@@ -615,7 +617,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'mds-collivery': mdsCollivery, meest, 'meihoo-pegasus': meihooPegasus, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
   'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mrw, mtscn, mylerz, nacex, naqel, nationex,
   'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,
-  northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
+  northline, 'nova-global': novaGlobal, 'now-couriers': nowCouriers, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
   'pakistan-post': pakistanPost, palletways, 'pandu-logistics': panduLogistics, paperfly, paquetexpress, parcelpoint, passport,

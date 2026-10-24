@@ -1,5 +1,5 @@
 import type { CarrierResult } from '../../core/result/index.js';
-import { freightwaysQuery, parseFreightways, type FreightwaysNetwork, type FreightwaysQuery } from '../nz-couriers/parser.js';
+import { freightwaysQuery, parseFreightways, type FreightwaysNetwork, type FreightwaysQuery } from '../nz-couriers/freightways.js';
 
 export const PROVIDER = 'Post Haste';
 // A courier ticket or Express Pack: a product code of two to four letters,
@@ -10,7 +10,7 @@ const TICKET = /^([A-Z]{2,4})(\d{5,8})$/;
 // Charge labels have eight digits.
 const LABEL = /^\d{8}$/;
 
-/** Post Haste on the Freightways group's tracking lookup, which New Zealand Couriers' adapter also reads. */
+/** Post Haste on the Freightways group's tracking lookup. */
 export const POST_HASTE: FreightwaysNetwork = {
   carrier: 'post-haste', provider: PROVIDER, path: 'PostHaste', ticket: TICKET, label: LABEL,
   numbers: 'a ticket, an eight-digit charge label, an SSCC or a customer printed label',

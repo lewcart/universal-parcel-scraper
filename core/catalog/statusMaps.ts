@@ -475,6 +475,7 @@ import { statusMap as speedy } from '../../carriers/speedy/status.js';
 import { statusMap as spxBr } from '../../carriers/spx-br/status.js';
 import { statusMap as spxId } from '../../carriers/spx-id/status.js';
 import { statusMap as spxMy } from '../../carriers/spx-my/status.js';
+import { statusMap as spxSg } from '../../carriers/spx-sg/status.js';
 import { statusMap as spxTh } from '../../carriers/spx-th/status.js';
 import { statusMap as spxTw } from '../../carriers/spx-tw/status.js';
 import { statusMap as spxVn } from '../../carriers/spx-vn/status.js';
@@ -638,7 +639,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
-  'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy,
+  'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-sg': spxSg,
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, techlink, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,

@@ -28618,7 +28618,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-sg"
     },
     "canaryUrl": "https://spx.sg/track",
     "trackingUrlTemplate": "https://spx.sg/track?{trackingNumber}",

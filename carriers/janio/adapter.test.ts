@@ -91,8 +91,8 @@ describe('Janio HTTP adapter', () => {
     const ninja = changed('in-transit', IN_TRANSIT, (entry) => { entry.external_tracking_nos = { ninjavan: 'NLSGAA00000000' }; });
     expect(deliveryHandoff('janio', IN_TRANSIT, parseJanio(ninja, IN_TRANSIT)))
       .toEqual({ carrier: 'ninja-van', number: 'NLSGAA00000000', basis: 'partner' });
-    // SPX Singapore has no adapter of its own; the providers can still follow its reference.
-    expect(deliveryHandoff('janio', IN_TRANSIT, parseJanio(fixture('in-transit'), IN_TRANSIT))).toBeNull();
+    expect(deliveryHandoff('janio', IN_TRANSIT, parseJanio(fixture('in-transit'), IN_TRANSIT)))
+      .toEqual({ carrier: 'spx-sg', number: 'SPXSG000000000000', basis: 'partner' });
     expect(deliveryHandoff('janio', DELIVERED, parseJanio(fixture('delivered'), DELIVERED))).toBeNull();
   });
 

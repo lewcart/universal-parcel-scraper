@@ -2,9 +2,9 @@
 
 SPX Express Indonesia is Shopee's delivery network in Indonesia. It collects from sellers,
 sorts through its own hubs and delivers to the door. Tracked through the lookup its tracker
-makes. `spx-my`, `spx-th`, `spx-vn`, `spx-ph` and `spx-br` cover SPX's other networks, whose
-numbers carry their own country codes; `spx-id/regional.ts` holds the lookup and parser the
-four Southeast Asian order lookups share.
+makes. `spx-my`, `spx-sg`, `spx-th`, `spx-vn`, `spx-ph` and `spx-br` cover SPX's other networks,
+whose numbers carry their own country codes; `spx-id/regional.ts` holds the lookup and parser
+the five Southeast Asian order lookups share.
 
 ## How it works
 

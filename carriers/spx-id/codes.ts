@@ -3,7 +3,7 @@ import type { CarrierStatusMap, IntentionalStatusGap } from '../../core/status/s
 
 /**
  * SPX's tracking codes, as the order lookup of its trackers in Indonesia,
- * Malaysia, Thailand and Vietnam gives them. Only codes seen in those replies
+ * Malaysia, Singapore, Thailand and Vietnam gives them. Only codes seen in those replies
  * are mapped, and a network changes the few it reads differently. A failed
  * pickup leaves the parcel with its seller, export and import clearance are
  * transit milestones, assigning a driver is not yet a delivery round, and every
@@ -18,7 +18,8 @@ export const SPX_CODES: ReadonlyMap<string, Stage> = new Map([
   ['F098', 'accepted'], // Dropped off at a drop-off point.
   ['F100', 'accepted'], // Collected from the seller.
   ['F110', 'in_transit'], ['F199', 'in_transit'], // On the way to SPX's warehouse abroad.
-  ['F200', 'in_transit'], ['F206', 'in_transit'], ['F230', 'in_transit'], ['F239', 'in_transit'], ['F299', 'in_transit'], // Warehouse abroad.
+  ['F200', 'in_transit'], ['F206', 'in_transit'], ['F210', 'in_transit'], ['F219', 'in_transit'], ['F230', 'in_transit'], ['F239', 'in_transit'],
+  ['F299', 'in_transit'], // Warehouse abroad.
   ['F300', 'in_transit'], // With the forwarder.
   ['F339', 'in_transit'], ['F341', 'in_transit'], ['F360', 'in_transit'], ['F399', 'in_transit'], // Clearance, departure and arrival.
   ['F419', 'in_transit'], ['F420', 'in_transit'], // Handed to the domestic network.

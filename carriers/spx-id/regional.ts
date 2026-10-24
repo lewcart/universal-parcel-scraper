@@ -1,8 +1,8 @@
 /**
- * The order lookup SPX's trackers in Indonesia, Malaysia, Thailand and Vietnam
- * make, the same one the Brazilian tracker makes. Each network passes its host,
- * language, number layouts and status map; `spx-my`, `spx-th` and `spx-vn`
- * share this module with `spx-id`.
+ * The order lookup SPX's trackers in Indonesia, Malaysia, Singapore, Thailand
+ * and Vietnam make, the same one the Brazilian tracker makes. Each network
+ * passes its host, language, number layouts and status map; `spx-my`, `spx-sg`,
+ * `spx-th` and `spx-vn` share this module with `spx-id`.
  */
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';

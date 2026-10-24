@@ -528,6 +528,7 @@ import { adapter as spxBr } from '../carriers/spx-br/adapter.js';
 import { adapter as spxId } from '../carriers/spx-id/adapter.js';
 import { adapter as spxMy } from '../carriers/spx-my/adapter.js';
 import { adapter as spxPh } from '../carriers/spx-ph/adapter.js';
+import { adapter as spxSg } from '../carriers/spx-sg/adapter.js';
 import { adapter as spxTh } from '../carriers/spx-th/adapter.js';
 import { adapter as spxTw } from '../carriers/spx-tw/adapter.js';
 import { adapter as spxVn } from '../carriers/spx-vn/adapter.js';
@@ -1152,6 +1153,7 @@ export const REGISTRY: RegistryDefinition = {
     "spx-id": spxId,
     "spx-my": spxMy,
     "spx-ph": spxPh,
+    "spx-sg": spxSg,
     "spx-th": spxTh,
     "spx-tw": spxTw,
     "spx-vn": spxVn,
@@ -1918,7 +1920,7 @@ export const REGISTRY: RegistryDefinition = {
     "spx-id": "spx-id",
     "spx-my": "spx-my",
     "spx-ph": "spx-ph",
-    "spx-sg": "universal",
+    "spx-sg": "spx-sg",
     "spx-th": "spx-th",
     "spx-tw": "spx-tw",
     "spx-vn": "spx-vn",

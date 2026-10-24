@@ -31,6 +31,12 @@ partner API manual defines them, else as the trackers' English pages do, and kee
 Like the trackers, the current status follows the newest scan while the parcel's state only
 says it is on its way. Scan clocks are UTC instants.
 
+A parcel bound for one of BOX NOW's transfer hubs, such as the hub that passes Vinted's parcels
+on to another country's network, ends "delivered" there: a warehouse whose address reads
+"transfer" or named as a BOX NOW hub. That delivery is read as a hand-over, in transit, without
+the hub's country, a delivery time or the estimate. The reply names no number for the next leg.
+A merchant's warehouse, where a return ends, keeps the delivery.
+
 The estimate is kept as the day the trackers print, in Athens, while the parcel is on its way.
 The pickup point is the destination locker's name, once the parcel waits there or was
 collected from it. The locker's address, photo, notes and coordinates, the pickup deadline,

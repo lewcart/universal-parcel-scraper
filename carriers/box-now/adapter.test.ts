@@ -52,6 +52,29 @@ describe('BOX NOW HTTP adapter', () => {
     }
   });
 
+  it('reads a delivery into a transfer hub as a hand-over to the next network, not a delivery', () => {
+    const hub = { id: '300', title: null, name: 'BOX NOW - EXAMPLE PARTNER HUB', addressLine1: 'transfer', addressLine2: 'EXAMPLE PARTNER',
+      postalCode: '66666', country: 'HR', image: null, note: '', type: 'warehouse', deliveryPartnerParcelId: null };
+    const handed = (destination: Record<string, unknown>) => {
+      const payload = fixture('delivered') as { data: [{ destination: unknown; etaDate?: string; events: Record<string, unknown>[] }] };
+      payload.data[0].destination = destination;
+      payload.data[0].etaDate = '2026-03-04T00:00:00Z';
+      payload.data[0].events.splice(4, 2, { type: 'delivered', locationDisplayName: String(destination.name), createTime: '2026-03-04T17:05:00.000Z' });
+      return parseBoxNow(payload, DELIVERED);
+    };
+    for (const destination of [hub, { ...hub, addressLine1: 'Transfer', name: 'Example Transfer Point' }, { ...hub, addressLine1: '1 Sample Road' }]) {
+      const result = handed(destination);
+      expect(result, destination.name).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', expected_delivery: null,
+        last_status_text: 'Parcel has been handed over at a transfer hub for onward delivery' });
+      expect(result.events![0]).toMatchObject({ provider_code: 'delivered', stage: 'in_transit', location: destination.name });
+      // The hub's country is not where the parcel is going, and nothing was delivered.
+      for (const field of ['delivered_at', 'destination_country', 'pickup_point']) expect(result, field).not.toHaveProperty(field);
+    }
+    // A merchant's warehouse, where a return ends, takes the delivery.
+    const merchant = handed({ ...hub, name: 'Example Shop Warehouse', addressLine1: '1 Sample Road', addressLine2: 'Sampletown' });
+    expect(merchant).toMatchObject({ status: 'delivered', current_stage: 'delivered', delivered_at: '2026-03-04T17:05:00Z', destination_country: 'HR' });
+  });
+
   it('keeps the estimate as an Athens day only while the parcel is on its way', () => {
     const moving = parseBoxNow(fixture('in-transit'), IN_TRANSIT);
     expect(moving).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Parcel is in one of our warehouses',

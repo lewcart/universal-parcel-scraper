@@ -93296,6 +93296,14 @@
     ]
   },
   {
+    "input": "YWE00001563351639",
+    "carrier": "ywe",
+    "confidence": "high",
+    "candidates": [
+      "ywe"
+    ]
+  },
+  {
     "input": "YWLAS010024580083",
     "carrier": "yanwen",
     "confidence": "high",

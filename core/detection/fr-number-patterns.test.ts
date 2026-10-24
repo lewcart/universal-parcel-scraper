@@ -34,6 +34,17 @@ describe('French carrier number candidates', () => {
     expect(detectCarrierMatch('XWLAX000000075001').candidates).toEqual(['colis-prive']);
   });
 
+  it("names YWE for YWE and fourteen digits, without reading a postcode into them", () => {
+    for (const number of ['YWE00000000075001', 'ywe 0000 0000 075001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'ywe', confidence: 'high', candidates: ['ywe'] });
+    }
+    for (const number of ['YWE0000000075001', 'YWE000000000075001', 'YWF00000000075001', 'YWE00000000075001US']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('ywe');
+    }
+    // Twelve characters and a postcode that do not open with YWE and fourteen digits stay Colis Privé's.
+    expect(detectCarrierMatch('YWE0000000A075001').candidates).toEqual(['colis-prive']);
+  });
+
   it("does not read a postcode into GOFO's 13-digit numbers", () => {
     // GF or CI, a country code and thirteen digits: the last five look like a French postcode.
     for (const number of ['GFUS0000000075001', 'GFNL0000000075001', 'GFES0000000075001', 'CIDE0000000075001']) {

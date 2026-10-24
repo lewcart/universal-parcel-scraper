@@ -2023,6 +2023,7 @@ export const REGISTRY: RegistryDefinition = {
     "yunda": "yunda",
     "yunexpress": "yunexpress",
     "yurtici-kargo": "yurtici-kargo",
+    "ywe": "universal",
     "yypost": "yypost",
     "z-leading": "universal",
     "zajil": "zajil",

@@ -1478,7 +1478,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^(?!YW[A-Z]{3}\\d{12}$|(?:GF|CI)[A-Z]{2}\\d{13}$|CNG\\d{14}$)[A-Z0-9]{12}(?:(?:0[1-9]|[1-8]\\d|9[0-5]|97|98)\\d{3}|[BL][1-9]\\d{3})$",
+        "pattern": "^(?!YW[A-Z]{3}\\d{12}$|YWE\\d{14}$|(?:GF|CI)[A-Z]{2}\\d{13}$|CNG\\d{14}$)[A-Z0-9]{12}(?:(?:0[1-9]|[1-8]\\d|9[0-5]|97|98)\\d{3}|[BL][1-9]\\d{3})$",
         "confidence": "low"
       },
       {
@@ -32007,6 +32007,44 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "ywe": {
+    "displayName": "YWE",
+    "color": "#80ca35",
+    "aliases": [
+      "YanwenExpress",
+      "YWE Logistics"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.yanwenexpress.com/tracking.html",
+    "trackingUrlTemplate": "https://www.yanwenexpress.com/tracking.html?label={trackingNumber}",
+    "trackingSearchUrl": "https://www.yanwenexpress.com/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "www.yanwenexpress.com",
+          "yanwenexpress.com"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "label"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^YWE\\d{14}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "yypost": {
     "displayName": "YYpost",
     "color": "#0000cc",
@@ -33085,6 +33123,7 @@ export const CARRIER_IDS = [
   "yilong-logistics",
   "yimidida",
   "yurtici-kargo",
+  "ywe",
   "yypost",
   "z-leading",
   "zajil",
@@ -33882,6 +33921,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "yilong-logistics": ["yilong-logistics-1"],
   "yimidida": [],
   "yurtici-kargo": [],
+  "ywe": ["ywe-1"],
   "yypost": ["yypost-1"],
   "z-leading": [],
   "zajil": [],

@@ -1,0 +1,52 @@
+{
+  "id": "ywe",
+  "displayName": "YWE",
+  "aliases": [
+    "YanwenExpress",
+    "YWE Logistics"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#80ca35"
+  },
+  "selectable": true,
+  "timezone": "UTC",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.yanwenexpress.com/tracking.html?label={trackingNumber}",
+    "searchUrl": "https://www.yanwenexpress.com/tracking.html",
+    "canaryUrl": "https://www.yanwenexpress.com/tracking.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.yanwenexpress.com",
+        "yanwenexpress.com"
+      ],
+      "pathPattern": "^/tracking\\.html$",
+      "params": [
+        "label"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "ywe-1",
+      "pattern": "^YWE\\d{14}$",
+      "confidence": "high"
+    }
+  ]
+}

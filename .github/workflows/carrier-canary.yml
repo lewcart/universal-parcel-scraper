@@ -115,7 +115,8 @@ jobs:
     needs: gate
     if: ${{ needs.gate.outputs.run == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # The serial suite must finish before its reporter can list failed checks.
+    timeout-minutes: 40
     outputs:
       failures: ${{ steps.adapters.outputs.failures }}
     steps:

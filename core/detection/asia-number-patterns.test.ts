@@ -157,6 +157,16 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     }
   });
 
+  it('names KTD for KTDWE and ten digits without a recognition lookup, and only that layout', () => {
+    for (const number of ['KTDWE0000000017', 'ktdwe 00000 00017']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'ktd', confidence: 'high', candidates: ['ktd'] });
+      expect(recognitionCandidates(number), number).toEqual([]);
+    }
+    for (const number of ['KTDWE000000017', 'KTDWE00000000017', 'KTDWA0000000017', 'KTD0000000017', 'KTDWE0000000017CN']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('ktd');
+    }
+  });
+
   it('names MeiHoo Pegasus for MYH, nine digits and CN, and only that layout', () => {
     for (const number of ['MYH900000001CN', 'myh 900 000 001 cn']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'meihoo-pegasus', confidence: 'high', candidates: ['meihoo-pegasus'] });

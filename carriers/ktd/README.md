@@ -8,8 +8,10 @@ with FBA lines, dedicated small-parcel lines and air freight.
 ## Numbers
 
 Its parcels carry KTDWE and ten digits, the shape a universal provider files under KTD. No
-tracker of 跨通达 confirms the shape, and 快通达国际快递 also goes by KTD, so the rule has low
-confidence. No public number has been found, so the corpus holds a synthetic one.
+other carrier uses the prefix, so detection selects KTD: a parcel need not wait for a provider
+to name it, and recognition, which asks only carriers with an adapter, could not. No tracker of
+跨通达 confirms the shape. 快通达国际快递 also goes by KTD, but its own numbers are KTD and ten
+digits, without WE. No public number has been found, so the corpus holds a synthetic one.
 
 ## Links
 

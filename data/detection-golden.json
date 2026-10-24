@@ -78410,8 +78410,8 @@
   },
   {
     "input": "KTDWE9900000001",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ktd",
+    "confidence": "high",
     "candidates": [
       "ktd"
     ]

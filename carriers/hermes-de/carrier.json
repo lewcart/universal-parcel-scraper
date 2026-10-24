@@ -27,6 +27,7 @@
   },
   "capabilities": [
     "history",
+    "location",
     "eta",
     "sender_name",
     "delivered_at",
@@ -42,6 +43,7 @@
     "shows": [
       "status",
       "history",
+      "location",
       "eta",
       "sender_name",
       "pickup_point",
@@ -52,6 +54,7 @@
     "scraped": [
       "status",
       "history",
+      "location",
       "eta",
       "sender_name",
       "delivered_at",
@@ -63,9 +66,7 @@
       "recipient_address",
       "delivery_instructions"
     ],
-    "unavailable": [
-      "location"
-    ]
+    "unavailable": []
   },
   "links": [
     {

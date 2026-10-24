@@ -82,6 +82,11 @@ stored as UTC.
 - Display text is `historyText`, with the mapped milestone description as
   fallback. The row's `status` field only holds generic buckets
   (`HAPPY`/`FINISHED`).
+- Rows have no location field, so the place comes from the wording: the depot
+  that took the parcel over or prepared it, the destination region, the
+  destination country abroad, or the town of a ParcelShop's address on a
+  ParcelShop row. Hermes's own depots and ParcelShops are in Germany, so their
+  places end with it. No other address in the wording is read.
 - The postcode-protected endpoint that returns the delivery address is never
   called: the app doesn't store addresses and this carrier needs no postcode
   otherwise.
@@ -90,7 +95,8 @@ stored as UTC.
 
 ## Limitations
 
-- History rows carry no scan location.
+- A row whose wording names no depot, region, country or ParcelShop has no
+  location.
 - A partner whose tracking links have no catalog rule, Austrian Post's for
   one, or a link to a home page leaves the partner unnamed.
 - History expires: an old delivered number answers 404, shown as not found.

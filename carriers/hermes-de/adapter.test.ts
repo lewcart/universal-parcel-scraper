@@ -48,7 +48,7 @@ describe('Hermes Germany', () => {
   });
 
   it('covers every capability declared in carrier.json', () => {
-    expect(capabilities).toEqual(['history', 'eta', 'sender_name', 'delivered_at', 'pickup_point', 'provider_code',
+    expect(capabilities).toEqual(['history', 'location', 'eta', 'sender_name', 'delivered_at', 'pickup_point', 'provider_code',
       'delivery_partner', 'delivery_tracking_number']);
     const result = parseHermesGermanyResponse(delivered(), NUMBER);
     expect(result.events?.length).toBeGreaterThan(0);
@@ -60,6 +60,43 @@ describe('Hermes Germany', () => {
     expect(parseHermesGermanyResponse(atShop('PARCELSHOP_READY_FOR_COLLECTION'), NUMBER).pickup_point).toBeTruthy();
     expect(parseHermesGermanyResponse(abroad('https://tracking.postnord.com/en/?id=00370000000000000017'), NUMBER))
       .toMatchObject({ delivery_carrier: 'postnord', delivery_tracking_number: '00370000000000000017' });
+  });
+
+  it('places a row where its wording names the depot, the destination or the ParcelShop', () => {
+    const at = (hour: number) => `2026-09-0${hour}T09:00:00Z`;
+    const result = parseHermesGermanyResponse([{
+      barcode: NUMBER,
+      parcelProgress: [
+        { parcelStatus: 'PARCELSHOP_DROP_OFF', timestamp: at(1),
+          historyText: 'The Shipment was dropped off by the sender in the ParcelShop. Example Kiosk, Beispielweg 1, 12345 Musterhausen.' },
+        { parcelStatus: 'TAKEN_OVER_BY_HERMES', timestamp: at(2),
+          historyText: 'The shipment was taken over by Hermes in Beispieldorf (Musterstadt) and is prepared for further shipping.' },
+        { parcelStatus: 'SORTED', timestamp: at(3), historyText: 'The shipment was prepared in Neu-Beispielburg for further shipping.' },
+        { parcelStatus: 'ARRIVED_IN_DESTINATION_REGION', timestamp: at(4), historyText: 'The shipment has arrived in the destination region Musterstadt.' },
+        { parcelStatus: 'INTERNATIONAL_ARRIVED_IN_COUNTRY', timestamp: at(5),
+          historyText: 'The shipment has arrived in the destination country Spain and is prepared for the further shipping.' },
+        { parcelStatus: 'INTERNATIONAL_SORTED', timestamp: at(6), historyText: 'The shipment was prepared for further shipping (Spain).' },
+        { parcelStatus: 'PARCELSHOP_READY_FOR_COLLECTION', timestamp: at(7),
+          historyText: 'The shipment is ready for pick up in the Hermes parcel shop Example Kiosk, Beispielweg 2, 54321 Bad Beispiel-Ost max. 7 working days.' },
+        { parcelStatus: 'DELIVERY_TOUR_STARTED', timestamp: at(8), historyText: 'The shipment was loaded into the delivery vehicle and is expected to be delivered today.' },
+      ],
+    }], NUMBER);
+    expect(result.events?.map((event) => event.location ?? null).reverse()).toEqual([
+      'Musterhausen, Germany', 'Beispieldorf (Musterstadt), Germany', 'Neu-Beispielburg, Germany', 'Musterstadt, Germany',
+      'Spain', 'Spain', 'Bad Beispiel-Ost, Germany', null,
+    ]);
+    const german = parseHermesGermanyResponse([{
+      barcode: NUMBER,
+      parcelProgress: [
+        { parcelStatus: 'SORTED', timestamp: at(1), historyText: 'Die Sendung wurde in Beispielburg für den Weiterversand vorbereitet.' },
+        { parcelStatus: 'PARCELSHOP_DROP_OFF', timestamp: at(2),
+          historyText: 'Die Sendung wurde vom Absender im PaketShop Example Kiosk, Beispielweg 1, 12345 Musterhausen abgegeben.' },
+        // Only a ParcelShop row's address is read.
+        { parcelStatus: 'DELIVERED_NEIGHBOUR', timestamp: at(3), historyText: 'Zugestellt an Beispielweg 3, 12345 Musterhausen.' },
+      ],
+    }], NUMBER);
+    expect(german.events?.map((event) => event.location ?? null).reverse())
+      .toEqual(['Beispielburg, Germany', 'Musterhausen, Germany', null]);
   });
 
   it('ignores the pre-announcement preference booking', () => {

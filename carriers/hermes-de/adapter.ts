@@ -76,6 +76,40 @@ function parcelShop(parcel: Record<string, unknown>, latest: { metadata?: Milest
   return [name, clean(address.street, 120), town].filter(Boolean).join('\n');
 }
 
+// Rows carry no location field, but their wording names the depot, the
+// destination region or country, or the ParcelShop's address.
+const DEPOT_PLACES = [
+  /\btaken over by Hermes in (.+?) and is prepared\b/i,
+  /\bprepared in (.+?) for further shipping\b/i,
+  /\barrived in the destination region (.+?)\.?$/i,
+  /^Die Sendung wurde in (.+?) für den Weiterversand vorbereitet\b/i,
+];
+const COUNTRY_PLACES = [
+  /\barrived in the destination country (.+?)(?: and is prepared\b|\.?$)/i,
+  /\bprepared for further shipping \(([^()]+)\)/i,
+];
+// The town after the postcode closing a ParcelShop's address, before the
+// collection deadline the ready-for-pickup wording appends.
+const SHOP_TOWN = /,\s*\d{5}\s+([^\d,]+?)(?:\s+max\.\s.*|\s+abgegeben)?\.?\s*$/;
+
+/**
+ * Where a row's wording puts the parcel. Hermes's own depots and ParcelShops
+ * are in Germany; a country abroad is named alone.
+ */
+function wordedPlace(text: string, code: string): string | null {
+  const place = (pattern: RegExp) => clean(pattern.exec(text)?.[1], 120);
+  for (const pattern of DEPOT_PLACES) {
+    const depot = place(pattern);
+    if (depot) return `${depot}, Germany`;
+  }
+  for (const pattern of COUNTRY_PLACES) {
+    const country = place(pattern);
+    if (country) return country;
+  }
+  const town = code.startsWith('PARCELSHOP_') ? place(SHOP_TOWN) : '';
+  return town ? `${town}, Germany` : null;
+}
+
 /**
  * The partner abroad Hermes handed the parcel to and its number there, from the
  * link the tracking page shows as the international delivery partner. Both stand
@@ -134,12 +168,14 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
     // historyText is the carrier's display wording; the `status` field only
     // carries generic HAPPY/FINISHED buckets and is never display text.
     const rawText = clean(entry.historyText);
+    const location = wordedPlace(rawText, entry.parcelStatus);
     events.push({
       timestamp: date.toMillis(),
       metadata,
       event: {
         time,
         description: rawText || metadata?.description || 'Hermes tracking update',
+        ...(location ? { location } : {}),
         // An unmapped code is left to the shared wording classifier.
         ...(metadata ? { stage: metadata.stage } : {}),
         provider_code: entry.parcelStatus,

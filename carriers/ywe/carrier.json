@@ -17,18 +17,56 @@
   "timezone": "UTC",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ywe",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "provider_code",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.yanwenexpress.com/tracking.html?label={trackingNumber}",
     "searchUrl": "https://www.yanwenexpress.com/tracking.html",
     "canaryUrl": "https://www.yanwenexpress.com/tracking.html",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "eta_window",
+      "coordinates",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivered_at",
+      "provider_code"
+    ],
+    "discarded": [
+      "address",
+      "eta_window",
+      "coordinates",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "destination_country",
+      "delivery_partner",
+      "sender_name",
+      "recipient_name",
+      "pickup_point"
+    ]
   },
   "links": [
     {

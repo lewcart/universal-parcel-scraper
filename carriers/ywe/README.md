@@ -1,8 +1,31 @@
 # YWE
 
 YWE is YanwenExpress, a US last-mile network for parcels flown in from China, whose site is
-yanwenexpress.com. Universal providers name it YWE. Its parcels use enabled universal providers;
-there is no dedicated adapter.
+yanwenexpress.com. Universal providers name it YWE. The adapter reads the tracker's own lookup
+for numbers of YWE and fourteen digits.
+
+## How it works
+
+1. `direct`: the tracking page asks `GET https://www.yanwenexpress.com/server?label=<number>`
+   without a cookie, key or CAPTCHA, and the adapter sends the same request.
+2. `retry`: one more read when the first fails to connect or hangs. The first gets half of the
+   budget.
+
+## Notes
+
+- The reply is a list with an entry per number asked. Only the entry whose `expressCode` is the
+  whole number asked is read.
+- A scan is epoch milliseconds with the hub's `timeZone` offset, so every scan has an instant at
+  the offset the tracker states. The page shows the same offset beside each scan.
+- Scans are English wording from YWE's US hubs and delivery stations, staged by the wording
+  recorded in [statuses.json](statuses.json), whatever hub code or failure reason it names, then
+  the shared rules. The category the page groups parcels by is not read: it files a delivery
+  station's receipt under Alert. The scan code becomes `provider_code`.
+- A scan's place is its town, state and country. Its street lines, the proof-of-delivery photos,
+  the delivery window and the driver's position, which the page asks for separately, are not read.
+- A number the tracker has nothing for comes back with its `expressCode` alone, which is no
+  history rather than a missing parcel: the tracker answers any number that way. Redirects,
+  404s and browser checks are never read as a missing parcel.
 
 ## Numbers
 
@@ -14,17 +37,11 @@ postcode would fit it, so its rule leaves the layout out. Yanwen's own tracker d
 archived number; Yanwen's US last-mile numbers of `YW`, a hub code and twelve digits stay with
 [Yanwen](../yanwen/README.md).
 
-## Retrieval
-
-The tracking page asks `GET https://www.yanwenexpress.com/server?label=<number>` without a cookie,
-key or CAPTCHA. The JSON reply is a list with the parcel's `expressCode` and its events, each with
-epoch milliseconds, a `timeZone` offset, a place and a category. An adapter could read it; until
-then universal providers track the carrier.
-
 ## Links
 
 `www.yanwenexpress.com/tracking.html?label=` followed by the number opens a parcel.
 
 ## Testing
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+Set `YWE_TRACKING_NUMBER` and optionally `YWE_UNKNOWN_NUMBER` outside the repository, then run
+`npm run test:carriers:live -- carriers/ywe`.

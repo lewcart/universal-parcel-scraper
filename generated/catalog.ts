@@ -32021,7 +32021,7 @@ export const CARRIER_CATALOG = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ywe"
     },
     "canaryUrl": "https://www.yanwenexpress.com/tracking.html",
     "trackingUrlTemplate": "https://www.yanwenexpress.com/tracking.html?label={trackingNumber}",

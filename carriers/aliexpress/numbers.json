@@ -1001,6 +1001,21 @@
         ]
       },
       "note": "Made-up number in the shape of a parcel from China that Cainiao's tracker answered and Ekart's did not know. Its three letters are no merchant code Ekart is known to use, so the shape only suggests Ekart."
+    },
+    {
+      "number": "RTZ5P00D00000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-24",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Made-up number in the shape of an AliExpress parcel to Italy that Cainiao's tracker answered with its own line-haul, customs and last-mile notice scans. The thirteen characters after RTZ have the layout of Poste Italiane's 5P codes, which Poste's tracker did not know yet and which it does not take with RTZ before them, so the shape only suggests AliExpress."
     }
   ]
 }

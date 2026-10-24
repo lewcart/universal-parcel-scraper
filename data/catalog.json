@@ -274,6 +274,10 @@
         "confidence": "low"
       },
       {
+        "pattern": "^RTZ5P\\d{2}D\\d{8}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^\\d{3}[A-Z]\\d{8}[A-Z]$",
         "confidence": "low"
       },

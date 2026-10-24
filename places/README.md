@@ -35,7 +35,8 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   NIGERIA", "AMSTERDAM - NETHERLANDS, THE"). Georgia stays: it is also a US state.
 - Chinese, Japanese and Korean names match in their own script. "广东省深圳市" is read as
   a province followed by a city, and a county-level city after its prefecture's city, in
-  the same province, is where the scan is: "浙江省金华市义乌市" is Yiwu. A town's name can
+  the same province, is where the scan is: "浙江省金华市义乌市" is Yiwu, and so is a town
+  (镇, 乡) after its city. A town's name can
   start a facility's ("义乌转运中心"); a word for a facility or a part of town ("中心",
   "新城") names no town. Latin letters next to such script are a word: "Changsha市".
 - Bigger towns win, and context breaks ties: a country written in the text, a state,
@@ -59,7 +60,12 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   (depot 0001)"). The town's own province settles it, then a town of that name where the
   parcel is, then, for a code no comma or bracket sets apart, any town of that name. With no
   town at all, a code in brackets or after a space is no country on a parcel known to be
-  elsewhere, and the scan gets no place.
+  elsewhere, and the scan gets no place. MC and DO after a name that is no town of Monaco or
+  the Dominican Republic are Royal Mail's, on any carrier's parcel: its mail centre or a
+  British town of that name, else the United Kingdom for a name with a British region in it
+  ("Mid Wales MC"), else no place.
+- A field with only facility words and a country's name ("DPD GERMANY DE") places that
+  country, when the text's code or the parcel puts the parcel there.
 - A US military post office ("Fpo, AE", "APO AP 96001") names a region of the US armed
   forces, not a country: AE there is not the Emirates, and the base can be anywhere in the
   region. The scan gets no place, and `trackingPlace` and `trackingLocationCountry` give it
@@ -72,7 +78,8 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   a namesake abroad. Carriers still print some regions' former names: "Distrito Federal" is
   Mexico City's on a Mexican parcel and Brasília's on a Brazilian one.
 - A town nothing confirms needs 15,000 people. Otherwise the scan gets no place: a wrong
-  dot is worse than none. Postcodes only confirm a name, never stand in for one.
+  dot is worse than none. Postcodes only confirm a name, never stand in for one. A name a
+  division's word follows ("Houjie District") is no town GeoNames counts no people in.
 - A town only its name places, in a country nothing else puts the parcel in, is a namesake
   when it is far from the other scans: more than 6,000 km off the way between the scans
   around it that hold ("Cornwall" in Ontario between two scans in England), or, where the
@@ -159,11 +166,13 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   town: by its code in brackets ("Frankfurt Airport (FRA)"), by a word of its name that is
   neither the town nor the country ("LONDON-HEATHROW"), by the words of its name together
   ("Chicago O Hare"), or as the town's one airport when
-  the text says airport ("LIEGE AIRPORT"). The place keeps the town as its name and returns
-  the airport as `site`.
+  the text says airport ("LIEGE AIRPORT"). With an airport word, the words of one airport's
+  name that no town has place it alone ("O Hare Airport"), when they are two words or six
+  letters. The place keeps the town as its name and returns the airport as `site`.
 - A code with an airport word ("JFK Airport") or the airport's country or state ("BNE, AU")
   is that airport, whatever town elsewhere has its letters, unless a town of 100,000 people
-  in that country has them ("POA, BR" is Poá).
+  in that country has them ("POA, BR" is Poá). An operator in brackets does not change that
+  ("MUC(DE-POST), DE").
 - A bare code ("CDG") places nothing alone: three letters are too often something else.
   Among a parcel's scans it is the airport when the way bears it out: the airport is in a
   country of the parcel or of the scans around it, within 300 km of one of them, or no more
@@ -195,7 +204,8 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   Brazil's "ShiYan", whose wording names Shenzhen, is in Shenzhen's Shiyan, not the city in Hubei.
   MRW's "Meres (Plataforma)" is its platform in Meres, Asturias, not the town in Turkey.
   Royal Mail's mail centres named after an area ("Thames Valley MC", in Swindon, not Valley
-  on Anglesey) count on Royal Mail and Parcelforce parcels.
+  on Anglesey) count on Royal Mail and Parcelforce parcels, and on any parcel with MC after
+  the name.
 - A carrier's own coordinates, supplied through the `points` option, move a scan
   to the facility when they are within 30 km of the town its text names. Scans with the same
   text share a point, so a carrier that places some scans of an office keeps them together.
@@ -205,7 +215,9 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
 `node scripts/generate-places.mjs` builds `places.tsv.br`: GeoNames towns of 1,000 people
 or more and first-level regions, the postal localities of Switzerland, Liechtenstein, their
 neighbours and the Benelux, the Canadian municipalities postal areas are named after (Canada
-Post still addresses Scarborough and North York, now part of Toronto), Swiss and
+Post still addresses Scarborough and North York, now part of Toronto), the municipalities of
+some European countries and Taiwan that no town is named after, the town seats of Guangdong and
+Zhejiang, Swiss and
 Liechtenstein postcodes, OurAirports airports with
 scheduled service, and the Natural Earth country label points in `countries.json`.
 Decisions about what to include are commented in the script.

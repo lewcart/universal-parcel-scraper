@@ -2,7 +2,8 @@
 // free-text locations carriers print into map places.
 //
 // Sources, downloaded into a cache directory on the first run:
-// - GeoNames cities1000, first-level regions and postal codes, CC BY 4.0: https://www.geonames.org
+// - GeoNames cities1000, first-level regions, postal codes and some countries' full dumps
+//   for their municipalities, CC BY 4.0: https://www.geonames.org
 // - OurAirports airports, public domain: https://ourairports.com/data/
 // - Country label points from places/countries.json (Natural Earth, public domain)
 //
@@ -38,6 +39,20 @@ const CHINESE_PROVINCES = {
   21: '宁夏', 22: '北京', 23: '上海', 24: '山西', 25: '山东', 26: '陕西', 28: '天津', 29: '云南', 30: '广东', 31: '海南',
   32: '四川', 33: '重庆',
 };
+// Municipalities of 1,000 people or more that no town of the gazetteer is named after, by the
+// level each country keeps them at in its full GeoNames dump: "Kabelsketal" is a municipality
+// of villages by Leipzig, and Portuguese carriers still name the parishes merged in 2013.
+// Taiwan's towns are its districts and townships.
+const DIVISIONS = {
+  AT: ['ADM3'], CH: ['ADM3'], DE: ['ADM4'], ES: ['ADM3'], FR: ['ADM4'], IT: ['ADM3'], NL: ['ADM2'], PL: ['ADM3'],
+  PT: ['ADM3', 'ADM3H'], TW: ['ADM3'],
+};
+const DIVISION_FROM = 1_000;
+// Towns (镇) and townships (乡) by their seats, in the Chinese provinces most cross-border parcels
+// leave from, Guangdong and Zhejiang: "麻涌镇", "Mayong Town". All of China's would be 12,000 places.
+const TOWNSHIPS = { CN: ['30', '02'] };
+// The words Chinese and Japanese close a division's name with: "蘆竹區" is Luzhu.
+const CJK_DIVISION = /[省市区县縣區镇鎮乡鄉]$/u;
 // Names carriers still print that GeoNames gives in English or as renamed: Mexico City was
 // the Distrito Federal until 2016, and Brasília's is the Distrito Federal of Brazil.
 const REGION_ALIASES = { 'MX.09': ['distrito federal'], 'BR.07': ['distrito federal'] };
@@ -158,6 +173,92 @@ for (const country of LOCALITY_COUNTRIES) {
   }
 }
 
+/**
+ * A division's name as a town's: "Gemeente Best" is Best, "Pfeffenhausen, Markt" Pfeffenhausen,
+ * "Adrada, La" La Adrada, "Yingge District" Yingge. A union of parishes and Vienna's districts
+ * name no town.
+ */
+function divisionName(name) {
+  if (/^(Uni[ãa]o das freguesias|Gemeindebezirk)\b/iu.test(name)) return null;
+  const bare = name.replace(/^(Gemeente|Gmina)\s+/u, '');
+  const article = /^(.+),\s*(El|La|Los|Las|Els|Les|A|As|O|Os|Sa|Ses|Es|L')$/u.exec(bare);
+  if (article) return article[2].endsWith("'") ? `${article[2]}${article[1]}` : `${article[2]} ${article[1]}`;
+  return bare.replace(/,.*$/u, '')
+    .replace(/\s+(Mountain Indigenous (District|Township)|Urban Township|Rural Township|District|Township|City)$/u, '').trim();
+}
+
+/** A name's Chinese or Japanese forms, with and without the word for its division ("蘆竹區", "蘆竹"). */
+function cjkNames(alternates) {
+  const names = new Set();
+  for (const other of alternates.split(',')) {
+    if (!cjk(other)) continue;
+    names.add(other);
+    const bare = other.replace(CJK_DIVISION, '');
+    if (bare.length >= 2) names.add(bare);
+  }
+  return names;
+}
+
+// Places by any of their names, as the divisions are added.
+const byName = new Map();
+function addNames(place) {
+  for (const key of new Set([...place.primary, ...place.alternate])) {
+    byName.set(`${place.country}:${key}`, [...byName.get(`${place.country}:${key}`) ?? [], place]);
+  }
+}
+for (const place of places) addNames(place);
+const byWord = new Map();
+for (const place of places) {
+  for (const key of place.primary) {
+    const word = `${place.country}:${key.split(' ')[0]}`;
+    byWord.set(word, [...byWord.get(word) ?? [], place]);
+  }
+}
+/**
+ * A place already known by a name within `km`, by another of its names ("Seville" is Sevilla), or
+ * spelling out what a division abbreviates ("Kirchheim b.München" is Kirchheim bei München).
+ * A division's point can lie further from its town's: a place of its name and region with as many
+ * people, give or take half, is the same ("Andújar").
+ */
+function knownPlace(country, name, point, km, division) {
+  const keys = nameKeys(name);
+  const base = nameKey(name.replace(/\s*\(.*$/u, '').replace(/\s+\p{Ll}{1,3}\.\s*.*$/u, ''));
+  const near = (place) => distanceKm(point, [place.lat, place.lon]) < km;
+  const same = (place) => near(place) || (division !== undefined && place.admin1 === division.admin1
+    && distanceKm(point, [place.lat, place.lon]) < 100 && Math.max(place.population, division.population) <= 2 * Math.min(place.population, division.population));
+  return keys.flatMap((key) => byName.get(`${country}:${key}`) ?? []).find(same)
+    ?? (base ? [...byKey.get(`${country}:${base}`) ?? [], ...(byWord.get(`${country}:${base.split(' ')[0]}`) ?? [])
+      .filter((place) => place.primary.some((key) => key === base || key.startsWith(`${base} `)))].find(near) : undefined);
+}
+
+for (const country of [...new Set([...Object.keys(DIVISIONS), ...Object.keys(TOWNSHIPS)])].sort()) {
+  const levels = new Set(DIVISIONS[country] ?? []);
+  const townships = new Set(TOWNSHIPS[country] ?? []);
+  const dump = unzip(await download(`dump-${country}.zip`, `https://download.geonames.org/export/dump/${country}.zip`), `${country}.txt`);
+  for (const [, rawName, ascii, alternates, lat, lon, featureClass, feature, , , admin1, admin2, , , population] of lines(dump)) {
+    const division = featureClass === 'A' && levels.has(feature) && Number(population) >= DIVISION_FROM;
+    const seat = townships.has(admin1) && featureClass === 'P' && feature === 'PPLA4';
+    if (!division && !seat) continue;
+    const name = division ? divisionName(rawName) : rawName;
+    if (!name || !latin(name)) continue;
+    const point = [round(lat), round(lon)];
+    const names = CJK_COUNTRIES.has(country) ? cjkNames(alternates) : new Set();
+    const town = knownPlace(country, name, point, seat ? 5 : 15, division ? { admin1, population: Number(population) } : undefined);
+    if (town) {
+      // Its Chinese name, which a town too small for translations lacks.
+      for (const other of names) if (!town.primary.includes(other) && !town.alternate.includes(other)) town.alternate.push(other);
+      continue;
+    }
+    const plain = division ? divisionName(ascii) ?? name : ascii;
+    const place = {
+      name, ascii: plain, country, admin1, admin2: country === 'FR' || country === 'IT' ? admin2 : '', lat: point[0], lon: point[1],
+      population: Number(population) || 0, primary: [...new Set([...nameKeys(name), ...nameKeys(plain)])], alternate: [...names],
+    };
+    remember(place);
+    addNames(place);
+  }
+}
+
 const admin1Codes = lines(await readFile(await download('admin1CodesASCII.txt', 'https://download.geonames.org/export/dump/admin1CodesASCII.txt'), 'utf8'));
 
 // Canada Post still addresses mail to the cities Toronto absorbed ("SCARBOROUGH -
@@ -226,5 +327,5 @@ const compressed = brotliCompressSync(text, { params: {
 } });
 await writeFile(output, compressed);
 console.log(`places.tsv.br: ${countries.length} countries, ${regions.length} regions, ${airports.length} airports, ${listed} GeoNames places, `
-  + `${places.length - listed} postal localities, ${postcodes.size} postcodes, ${Math.round(text.length / 1024)} KB, `
+  + `${places.length - listed} other localities, ${postcodes.size} postcodes, ${Math.round(text.length / 1024)} KB, `
   + `${Math.round(compressed.length / 1024)} KB compressed`);

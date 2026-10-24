@@ -15,7 +15,9 @@
  * the Canary Islands (ES-CN) and the Azores (PT-20), by their towns and the
  * names of the islands. A carrier that writes only "SPAIN" after a town leaves
  * the town to tell them apart. A name the rest of the country also has is left
- * out, whatever its size: the mainland stays the reading for a name both have.
+ * out, unless the island town has ten times the people: the mainland stays the
+ * reading for a name both have, but Ponta Delgada is the Azores' city, not the
+ * parish on Madeira.
  *
  * Town keys must match `townKey` in core/time.
  * `--check` fails when the committed file is stale.
@@ -70,9 +72,16 @@ function render() {
     return `  ${code}: '${[...names].sort().join('|')}',`;
   });
   const islands = Object.entries(ISLANDS).map(([code, { country, admin1, names: islandNames }]) => {
-    const elsewhere = new Set(towns.filter((row) => row[3] === country && row[4] !== admin1).flatMap(keys));
-    const names = new Set([...islandNames.map(townKey), ...towns.filter((row) => row[3] === country && row[4] === admin1).flatMap(keys)]
-      .filter((key) => !elsewhere.has(key)));
+    const elsewhere = new Map();
+    for (const town of towns.filter((row) => row[3] === country && row[4] !== admin1)) {
+      for (const key of keys(town)) elsewhere.set(key, Math.max(elsewhere.get(key) ?? 0, Number(town[8])));
+    }
+    // An island's own name stays unless a town of 10,000 people elsewhere has it: São Miguel is
+    // no former parish of Lisbon.
+    const names = new Set(islandNames.map(townKey).filter((key) => (elsewhere.get(key) ?? 0) < 10));
+    for (const town of towns.filter((row) => row[3] === country && row[4] === admin1)) {
+      for (const key of keys(town)) if (!elsewhere.has(key) || Number(town[8]) >= 10 * Math.max(elsewhere.get(key), 1)) names.add(key);
+    }
     return `  '${code}': '${[...names].sort().join('|')}',`;
   });
   return [

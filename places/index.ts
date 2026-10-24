@@ -62,6 +62,8 @@ interface Gazetteer {
   airports: Map<string, Airport>;
   /** The places of each country, filled when first asked for. */
   byCountry: Map<string, number[]>;
+  /** Airports by the words of their names that are neither generic nor their town's ("o hare"), filled when first asked for. */
+  airportNames: Map<string, Airport[]>;
 }
 
 const DATA = new URL('./places.tsv.br', import.meta.url);
@@ -197,6 +199,7 @@ function gazetteer(): Gazetteer {
     country: new Uint16Array(count), admin1: new Uint16Array(count), admin2: new Uint16Array(count),
     latitude: new Float32Array(count), longitude: new Float32Array(count), population: new Uint32Array(count),
     keys: new Map(), postcodes: new Map(), countries: new Map(), regions: new Map(), regionNames: new Map(), airports: new Map(), byCountry: new Map(),
+    airportNames: new Map(),
   };
   const codeIndex = new Map<string, number>();
   const code = (value: string) => {
@@ -615,6 +618,11 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   }
 
   const fields = rest.split(/[,;|()]|\s+-\s+/).map((field) => field.trim()).filter(Boolean);
+  // "O Hare Airport": an airport by its own name, with no town to look near.
+  const ownAirport = split && fields.length === 1 ? airportByName(data, fields[0]!, country) : null;
+  const atOwnAirport = ownAirport ? atAirport(ownAirport, carriers) : null;
+  if (atOwnAirport) return atOwnAirport;
+  const fieldTokens = fields.map((field) => tokens(field));
   const fieldPhrases = fields.map((field, index) => {
     const list = phrases(field);
     // "Frankfurt (Oder)": a town whose name has brackets of its own.
@@ -705,6 +713,9 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
         // it: "Queen Elizabeth Olympic Park" is not in Elizabeth, New Jersey.
         if (phrase.middle && !place.hub && !place.own && !adminMatch && !postcodeMatch
           && !((inCountry || hint >= 0) && place.thousands >= NAMESAKE_THOUSANDS)) continue;
+        // A name a division's word follows is that division's, not a town GeoNames counts no
+        // people in: "Houjie District" is no town of Houjie.
+        if (place.thousands === 0 && !place.hub && DIVISION_WORDS.has(fieldTokens[fieldIndex]!.find((token) => token.start >= phrase.end)?.key ?? '')) continue;
         if (longerAnywhere.length && !place.hub && !adminMatch && !postcodeMatch
           && !((inCountry || hint >= 0) && place.thousands >= NAMESAKE_THOUSANDS)
           && longerAnywhere.every((other) => distanceKm(place.latitude, place.longitude, other.latitude, other.longitude) > PART_OF_NAME_KM)) continue;
@@ -767,9 +778,15 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   // names where the parcel is settles it; so does any town, for a code no comma or bracket
   // sets apart. A code of that kind with no town at all is then no place either.
   if (rest && (looseCountry || coded) && !context.includes(country!)) {
+    // Carriers Royal Mail hands parcels to write its sites its way: "Thames Valley MC" is its
+    // centre in Swindon whatever the carrier, and "Mid Wales MC" somewhere in Wales.
+    const royalMail = looseCountry && (country === 'MC' || country === 'DO');
+    const british = royalMail ? locate(rest, { countries: ['GB', ...context], carriers: [...carriers, 'royal-mail'] }) : null;
+    if (british?.place.precision === 'city' && british.place.country === 'GB') return british;
     // Past a comma or a bracket, only a town known on its own: no hamlet where the parcel is.
     const town = locate(rest, looseCountry ? hints : { carriers });
     if (town?.place.precision === 'city' && (looseCountry || context.includes(town.place.country))) return town;
+    if (royalMail) return regions.some((region) => region.country === 'GB') ? countryPlace(data, 'GB', true) : null;
     if ((looseCountry || bracketed) && context.length) return null;
   }
   // India Post ends an office's name with its PIN code, and abbreviates some names
@@ -782,6 +799,12 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   // on a Brazilian parcel, though Cape Verde has one too.
   // A code nothing backs is a guess: it tells the scans around it nothing.
   const guessed = Boolean(rest) && (looseCountry || bracketed) && !context.includes(country!);
+  // "DPD GERMANY DE": a carrier's operation in a country it names, where the parcel is. Two
+  // letters are no name: "FR0059" is a depot.
+  country ??= fields.map((field) => tokens(field).filter((token) => !FACILITY_WORDS.has(token.key))
+    .map((token) => field.slice(token.start, token.end)).join(' '))
+    .filter((words) => !/^[A-Z]{2}$/.test(words)).map(trackingPlace)
+    .find((named) => named.country && !named.place && hinted.includes(named.country))?.country ?? null;
   if (!country) {
     const named = fieldPhrases.flatMap((list) => list.filter((phrase) => phrase.whole && phrase.key.length >= 4
       && !VAGUE_REGIONS.has(phrase.key)).map((phrase) => {
@@ -791,10 +814,33 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
     }));
     country = named.find((set) => set.size === 1)?.values().next().value ?? null;
   }
-  const area = country ? data.countries.get(country) : null;
-  return area && country
-    ? { text: !guessed, place: { latitude: area.latitude, longitude: area.longitude, precision: 'country', country, name: area.name } }
-    : null;
+  return country ? countryPlace(data, country, !guessed) : null;
+}
+
+function countryPlace(data: Gazetteer, country: string, text: boolean): Located | null {
+  const area = data.countries.get(country);
+  return area ? { text, place: { latitude: area.latitude, longitude: area.longitude, precision: 'country', country, name: area.name } } : null;
+}
+
+/**
+ * The airport a field names by the words of its name, with a word that says it is one, when no
+ * town has them: "O Hare Airport" is Chicago's, though Halle is also called Hare, and "Boston
+ * Airport" no airport of Manchester-Boston. Only a name of two words or six letters one airport has.
+ */
+function airportByName(data: Gazetteer, field: string, country: string | null): Airport | null {
+  const keys = tokens(field).map((token) => token.key);
+  if (!keys.some((key) => AIRPORT_WORDS.has(key))) return null;
+  const name = keys.filter((key) => !AIRPORT_WORDS.has(key) && !AIRPORT_NAME_WORDS.has(key)).join(' ');
+  if (!name.includes(' ') && name.length < 6) return null;
+  if (!data.airportNames.size) {
+    for (const airport of data.airports.values()) {
+      const town = new Set(nameKey(airport.town).split(' '));
+      const own = nameKey(airport.name).split(' ').filter((word) => word && !AIRPORT_NAME_WORDS.has(word) && !town.has(word)).join(' ');
+      if (own) data.airportNames.set(own, [...data.airportNames.get(own) ?? [], airport]);
+    }
+  }
+  const named = data.keys.has(name) ? [] : (data.airportNames.get(name) ?? []).filter((airport) => !country || airport.country === country);
+  return named.length === 1 ? named[0]! : null;
 }
 
 /**
@@ -846,15 +892,15 @@ function stationPlace(data: Gazetteer, text: string, countries: readonly string[
 }
 
 /**
- * A county-level city or a county a Chinese address names after the city found, in the same
- * province and within 150 km of it: "浙江省金华市义乌市" is Yiwu, not Jinhua.
+ * A county-level city, a county or a town a Chinese address names after the city found, in the
+ * same province and within 150 km of it: "浙江省金华市义乌市" is Yiwu, not Jinhua.
  */
 function countyIn(
   data: Gazetteer, list: readonly Phrase[], found: { place: Candidate; text: string; end: number }, carriers: readonly string[],
 ): { place: Candidate; text: string } | null {
   if (!/\p{Script=Han}市$/u.test(found.text)) return null;
   for (const phrase of list) {
-    if (phrase.start < found.end || !/\p{Script=Han}[市县]$/u.test(phrase.text)) continue;
+    if (phrase.start < found.end || !/\p{Script=Han}[市县镇乡鎮鄉]$/u.test(phrase.text)) continue;
     const town = candidates(data, phrase.key, carriers).find((place) => place.country === found.place.country
       && place.admin1 === found.place.admin1 && !place.hub
       && distanceKm(place.latitude, place.longitude, found.place.latitude, found.place.longitude) <= COUNTY_MAX_KM);
@@ -884,7 +930,9 @@ function codedAirport(data: Gazetteer, rest: string, country: string | null): { 
   if (!keys.every((key) => AIRPORT_WORDS.has(key) || AIRPORT_NAME_WORDS.has(key)) || (country && country !== airport.country)) return null;
   const worded = keys.some((key) => AIRPORT_WORDS.has(key));
   const region = others.length ? regionNear(airport.country, airport.latitude, airport.longitude) : null;
-  if (!others.every((other) => other === airport.country || other === region)) return null;
+  // An operator in brackets says nothing against the airport: "MUC(DE-POST), DE".
+  const operator = (other: string) => tokens(other).every((token) => FACILITY_WORDS.has(token.key) || token.key === airport.country.toLowerCase());
+  if (!others.every((other) => other === airport.country || other === region || operator(other))) return null;
   return worded || country || others.length ? { airport, worded } : null;
 }
 

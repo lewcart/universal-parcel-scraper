@@ -62,6 +62,11 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
   number and a letter. Its clock does not follow the site, so the adapter does not read it.
 - "AWB Info & POD" rows are proof-access links, not scans, and are dropped. Phone controls are
   stripped from remarks, and delivered scans read `Delivered`.
+- The English remarks name some sites in Chinese with their English name in brackets,
+  `【<Chinese>（<English>）】`; the remark keeps the English name. The stage still reads the whole
+  remark. A remark SF words in Chinese only, such as the distance left on a `310` scan, keeps it:
+  no English for it is known. The app lets the scan take over the row stored with the Chinese
+  name when each is the only one at that instant.
 - Not used: [SF International](https://www.sf-international.com/us/en/support/querySupport/waybill)
   (Tencent verification) and the Mainland China portal (GeeTest plus phone verification).
 - Not used: SF's Android apps. `com.sf.hmto` posts to

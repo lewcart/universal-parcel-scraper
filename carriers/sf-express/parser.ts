@@ -48,6 +48,11 @@ function remarkText(raw: unknown): string {
   return clean($.root().text(), 1_000);
 }
 
+// The English remarks name some sites in Chinese with their English name in
+// brackets after it, as 【<Chinese>（<English>）】. The English name stays.
+const BILINGUAL_SITE = /【([^【】（）()]*\p{Script=Han}[^【】（）()]*)[（(]([^【】（）()\p{Script=Han}]*\p{Script=Latin}[^【】（）()\p{Script=Han}]*)[）)]】/gu;
+const englishSites = (text: string): string => text.replace(BILINGUAL_SITE, (_, _chinese: string, english: string) => `【${english.trim()}】`);
+
 /** Parse the anonymous Taiwan routes endpoint, never a logged-in waybill detail. */
 export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const number = normalizeSfExpressNumber(trackingNumber);
@@ -82,7 +87,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     if (!/^[A-Z0-9_-]{1,64}$/.test(code)) throw new SchemaError(PROVIDER, 'SF Express returned an invalid operation code');
     const status = sfExpressEventStatus(code, reason, text);
     const event: CarrierEvent = { time, provider_code: code,
-      description: status?.status === 'delivered' ? 'Delivered' : text,
+      description: status?.status === 'delivered' ? 'Delivered' : englishSites(text),
       ...(status ? { stage: status.stage } : {}),
     };
     const key = JSON.stringify([local, event.description, code, reason]);

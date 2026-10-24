@@ -162,6 +162,19 @@ describe('SF Express public route parsing', () => {
     expect(JSON.stringify(result)).not.toMatch(/Synthetic Person|private|opr_phone|zoneCode|promiseTime|waybillNo/);
   });
 
+  it('keeps the English name of a site the English remark also names in Chinese', () => {
+    const value = copy(); const routes = value.result[0]!.routes;
+    routes[2]!.remark = 'The shipment has arrived at 【Sample Town】 and is ready for transportation to 【样本中转场99R（ZZ Sample Gateway 99R ）】';
+    routes[3]!.remark = 'Arrived at 【样本营业点(Sample Point)】, then 【样本站】 and 【样本（站）】';
+    const events = parse(value, NUMBER).events!;
+    expect(events[3]).toMatchObject({
+      description: 'The shipment has arrived at 【Sample Town】 and is ready for transportation to 【ZZ Sample Gateway 99R】',
+      provider_code: fixture.result[0]!.routes[2]!.opCode,
+    });
+    // A site without an English name keeps its Chinese one.
+    expect(events[2]?.description).toBe('Arrived at 【Sample Point】, then 【样本站】 and 【样本（站）】');
+  });
+
   it('bounds retained and inspected scans, deduplicates exact repeats and sorts like the portal', () => {
     const value = copy(); value.result[0]!.routes.reverse(); value.result[0]!.routes.push(value.result[0]!.routes[0]!);
     expect(parse(value, NUMBER).events).toHaveLength(6);

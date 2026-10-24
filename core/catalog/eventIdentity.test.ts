@@ -363,6 +363,26 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
   });
 
+  it('lets a CNE row read on Beijing time take over the row stored on its place’s zone, by wall clock, place, wording and code', () => {
+    expect(sameInstantIdentityPolicy('cne')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('cne', { supportsScanMatching: true });
+    expect(policy).toMatchObject({
+      sourceCarrierId: 'cne', storedSources: ['cne'], requireProviderCode: false, matchEachScan: true, matchWallClock: true,
+    });
+    const stored = { stage: 'in_transit', description: 'Arrived at destination', location: 'EXAMPLELAND', providerCode: '2' };
+    const incoming = { ...stored, description: ' arrived at  Destination', location: 'EXAMPLELAND ' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(stored, incoming)).toBe(true);
+    expect(policy?.matches?.({ ...incoming, providerCode: '' }, stored)).toBe(true);
+    for (const different of [
+      { ...stored, description: 'Handled by local carrier' },
+      { ...stored, location: 'Example City' },
+      { ...stored, location: '' },
+      { ...stored, providerCode: '3' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+
   it('lets an MRW hub scan gain its bracketed label', () => {
     expect(sameInstantIdentityPolicy('mrw')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('mrw', { supportsScanMatching: true });

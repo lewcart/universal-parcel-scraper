@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { carrierDefinition } from '../../core/catalog/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { dateLocalClocks } from '../../places/index.js';
 import { adapter, CneTracker } from './adapter.js';
 import { normalizeCneNumber, parseCne } from './parser.js';
 
@@ -97,6 +98,37 @@ describe('CNE response projection', () => {
       payload.trackingEventList.push({ date: '2026-02-11 09:00:00', details, place: 'Example City', state: '2' });
       expect(parseCne(payload, HANDOFF_NUMBER).events?.[0]).toMatchObject({ stage: 'in_transit', stage_source: 'carrier_map' });
     }
+  });
+
+  it('reads its labels for the destination network’s arrival and hand-over on Beijing time, and leaves its other rows abroad on wall clocks', () => {
+    const payload = handoffFixture();
+    payload.Response_Info.status = '2'; payload.Response_Info.Destination = 'CH';
+    payload.trackingEventList.splice(4);
+    payload.trackingEventList.push(
+      { date: '2026-02-05 08:05:00', place: 'Zurich Airport - Switzerland', details: 'Arrived at Import Airport', state: 2 },
+      { date: '2026-02-06 03:44:00', place: 'EXAMPLELAND', details: 'Arrived at destination', state: 2 },
+      { date: '2026-02-06 04:14:00', place: 'EXAMPLELAND', details: 'HANDLED BY LOCAL CARRIER；Example partner note.', state: 2 },
+      { date: '2026-02-06 09:30:00', place: 'Zurich', details: 'Accepted, Hub Facility', state: 2 },
+    );
+    const result = parseCne(payload, HANDOFF_NUMBER);
+    expect(result.events?.slice(0, 4).map(event => [event.description, event.time, event.local_time])).toEqual([
+      // A partner's own wording keeps its wall clock, and so does the import airport's row.
+      ['Accepted, Hub Facility', undefined, '2026-02-06T09:30:00'],
+      ['HANDLED BY LOCAL CARRIER；Example partner note.', '2026-02-06T04:14:00+08:00', undefined],
+      ['Arrived at destination', '2026-02-06T03:44:00+08:00', undefined],
+      ['Arrived at Import Airport', undefined, '2026-02-05T08:05:00'],
+    ]);
+    // Places date the wall clocks; the rows CNE writes on Beijing time keep their instants.
+    const dated = dateLocalClocks('cne', result);
+    expect(dated.events?.slice(0, 4).map(event => [event.time, event.time_zone])).toEqual([
+      ['2026-02-06T09:30:00+01:00', 'Europe/Zurich'],
+      ['2026-02-06T04:14:00+08:00', undefined],
+      ['2026-02-06T03:44:00+08:00', undefined],
+      ['2026-02-05T08:05:00+01:00', 'Europe/Zurich'],
+    ]);
+    payload.trackingEventList.pop();
+    expect(parseCne(payload, HANDOFF_NUMBER)).toMatchObject({ last_update: '2026-02-06T04:14:00+08:00' });
+    expect(parseCne(payload, HANDOFF_NUMBER)).not.toHaveProperty('last_update_local');
   });
 
   it('names no carrier for a supplier outside the catalog and follows no unnamed transfer', () => {

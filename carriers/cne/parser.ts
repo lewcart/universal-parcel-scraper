@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { classifyWording, languageStageStatus, type Stage } from '../../core/status/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 
@@ -38,6 +38,11 @@ const CODES: Readonly<Record<string, Stage>> = {
 const PARTNERS: Readonly<Record<string, string>> = {
   'DE DHL': 'dhl', 'Royal Mail': 'royal-mail', 'US SPX': 'speedx', USPS: 'usps',
 };
+// CNE's own labels for the destination network's arrival and hand-over, which it
+// writes on Beijing time: read so, they fall in the minute of that network's own
+// scans of the step. Its other rows abroad can keep the destination's clock.
+const BEIJING_LABELS: ReadonlySet<string> = new Set(['arrived at destination', 'handled by local carrier']);
+const BEIJING = 'Asia/Shanghai';
 
 export function normalizeCneNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
@@ -53,22 +58,27 @@ function scanTime(value: string) {
 }
 
 // CNE's clocks name no zone, and its legs cross zones: a valid one stays a
-// wall clock in `local_time`, never placed in a zone.
-function scanClock(value: string): { time?: string; local_time?: string; provider_time_text?: string } {
+// wall clock in `local_time`, never placed in a zone, unless its label is one
+// CNE writes on Beijing time.
+function scanClock(value: string, label: string): { time?: string; local_time?: string; provider_time_text?: string } {
   const instant = scanTime(value);
   if (instant) return { time: instant.iso };
   const wall = DateTime.fromFormat(value, 'yyyy-MM-dd HH:mm:ss', { zone: 'UTC' });
   // Luxon rolls 24:00:00 over to the next day; only a clock that reads back unchanged is kept.
   if (wall.isValid && wall.toFormat('yyyy-MM-dd HH:mm:ss') === value) {
-    return { local_time: wall.toISO({ includeOffset: false, suppressMilliseconds: true }) };
+    const local = wall.toISO({ includeOffset: false, suppressMilliseconds: true });
+    // China keeps one offset all year: every valid wall clock is an instant there.
+    return BEIJING_LABELS.has(label.toLowerCase()) ? { time: isoTime(local, BEIJING)!.iso } : { local_time: local };
   }
   return value ? { provider_time_text: value } : {};
 }
 
+// Last-mile partners write "label；explanation".
+const labelOf = (description: string) => description.split('；')[0]!.trim() || description;
+
 function stageOf(description: string, code: string): { stage: Stage; source: string } | undefined {
-  // Last-mile partners write "label；explanation". The explanation can announce
-  // a later step ("It will be out for delivery"), so only the label is read.
-  const label = description.split('；')[0]!.trim() || description;
+  // The explanation can announce a later step ("It will be out for delivery"), so only the label is read.
+  const label = labelOf(description);
   const exact = WORDING_ANY_CASE.get(description.toLowerCase()) ?? WORDING_ANY_CASE.get(label.toLowerCase());
   if (exact) return { stage: exact, source: 'carrier_map' };
   const worded = classifyWording(label, 'pending');
@@ -87,7 +97,7 @@ function scan(raw: unknown): CarrierEvent {
   const description = clean(raw.details, 1000), clock = clean(raw.date, 64);
   const location = clean(raw.place, 200), code = cleanScalar(raw.state);
   const mapped = stageOf(description, code);
-  return { description, ...(location ? { location } : {}), ...scanClock(clock),
+  return { description, ...(location ? { location } : {}), ...scanClock(clock, labelOf(description)),
     ...(mapped ? { stage: mapped.stage, stage_source: mapped.source } : {}),
     ...(code ? { provider_code: code } : {}) };
 }

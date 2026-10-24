@@ -82,6 +82,14 @@ describe('SFC HTTP adapter', () => {
     expect(JSON.stringify(result)).not.toMatch(/Sample (?:Recipient|Driver)|Sampletown|(?<!JMX)0{10}(?!1)|000 000 0000|MON-FRI|LP0000|sample\.invalid|SMPLEXP|WX0000|Estimated/);
   });
 
+  it('counts a delivery notice SFC writes again within a minute once, at the earlier clock', () => {
+    const notices = (...dates: string[]) => parseSfc(changed('in-transit', (body) => {
+      body.trackingList.splice(4, 0, ...dates.map((date) => ({ date, location: ' ', statu: 'Delivery notice' })));
+    }), IN_TRANSIT).events!.filter((event) => event.description === 'Delivery notice').map((event) => event.local_time);
+    expect(notices('2026-05-09 04:34:32', '2026-05-09 04:34:31')).toEqual(['2026-05-09T04:34:31']);
+    expect(notices('2026-05-09 04:35:32', '2026-05-09 04:34:31')).toEqual(['2026-05-09T04:35:32', '2026-05-09T04:34:31']);
+  });
+
   it('keeps an SFC number’s history at customs, with the partner’s number but no partner it cannot name', () => {
     const result = parseSfc(fixture('in-transit'), IN_TRANSIT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',

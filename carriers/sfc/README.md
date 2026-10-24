@@ -39,6 +39,9 @@ the destination country. Tracked through the lookup its tracking page makes.
   page's default, are not.
 - The expected flight departure and arrival are written before they happen and are no scans:
   the adapter drops them.
+- The delivery notice SFC writes as the parcel leaves its warehouse names no step. SFC can write
+  it again a second from the first; a notice within a minute after another at the same place
+  counts once, at the earlier clock.
 - Scans carry wall clocks with no zone: China's for SFC's legs and the destination's for the
   partner's, so they stay `local_time`.
 - The shop's reference, the service, the weight, the sender's country and the proof of delivery

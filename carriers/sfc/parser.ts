@@ -7,7 +7,8 @@ import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { countryCode } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { ESTIMATE, sfcStage, sfcSummaryStage } from './status.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { ESTIMATE, NOTICE, sfcStage, sfcSummaryStage } from './status.js';
 
 export const PROVIDER = 'SFC';
 // A long history is a few kilobytes.
@@ -113,6 +114,18 @@ function projectRow(row: unknown): { key: string; event: CarrierEvent; handover?
   return { key: JSON.stringify([local, description, location]), event, ...(handover ? { handover } : {}) };
 }
 
+// SFC can write its delivery notice again a second from the first, as the
+// parcel leaves its warehouse. A notice within a minute after another at the
+// same place counts once, at the earlier clock.
+const NOTICE_REPEAT_MS = 60_000;
+
+function withoutRepeatedNotices(events: CarrierEvent[]): CarrierEvent[] {
+  const at = (event: CarrierEvent) => Date.parse(`${event.local_time as string}Z`);
+  const notice = (event: CarrierEvent) => normalizeStatusWording(event.description ?? '') === NOTICE;
+  return events.filter((event) => !notice(event) || !events.some((other) => notice(other)
+    && (other.location ?? '') === (event.location ?? '') && at(other) < at(event) && at(event) - at(other) <= NOTICE_REPEAT_MS));
+}
+
 /** The scans: a list, or an object keyed by position that may also carry `track_status`, as the page reads them. */
 function rowsOf(list: unknown): unknown[] {
   if (list === null || list === undefined) return [];
@@ -165,15 +178,16 @@ export function parseSfc(payload: unknown, raw: string): CarrierResult {
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'SFC returned an oversized history');
 
   const seen = new Set<string>();
-  const events: CarrierEvent[] = [];
+  const scans: CarrierEvent[] = [];
   const handovers: Handover[] = [];
   for (const row of rows) {
     const scan = projectRow(row);
     if (!scan || seen.has(scan.key)) continue;
     seen.add(scan.key);
-    events.push(scan.event);
+    scans.push(scan.event);
     if (scan.handover) handovers.push(scan.handover);
   }
+  const events = withoutRepeatedNotices(scans);
   if (!events.length) throw new NoHistoryError(PROVIDER);
   // Newest first, as the page lists them; an oldest-first reply is turned round.
   const oldestFirst = (events[0]!.local_time as string) < (events.at(-1)!.local_time as string);

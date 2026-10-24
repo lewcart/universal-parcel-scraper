@@ -38,6 +38,9 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
 // delivers it and that courier's number.
 const HANDOVER = /^last mile courier\s*=>/;
 
+/** SFC's delivery notice, written as the parcel leaves its warehouse: it names no step of its own. */
+export const NOTICE = 'delivery notice';
+
 /** The departure or arrival SFC expects for the flight, written before it: no scan, so the adapter drops it. */
 export const ESTIMATE = /^estimated time of international flight (?:departure|arrival)\b/i;
 
@@ -80,7 +83,7 @@ export const statusMap: CarrierStatusMap = {
     wording: 'estimated time of international flight arrival',
     note: 'The arrival SFC expects for the flight, dated at that arrival before it: no scan, so the adapter drops the row.',
   }, {
-    wording: 'delivery notice',
+    wording: NOTICE,
     note: "Written at the same instant as the departure from SFC's warehouse: it names no step of its own.",
   }],
 };

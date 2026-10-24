@@ -9,8 +9,8 @@ import { normalizeGeodisPlNumber, parseGeodisPlHistory, parseGeodisPlSummary } f
 import { geodisPlStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = 'PL1234567890123457';
-const OTHER = 'PL1234567890123463';
+const NUMBER = 'PL1234067890123457';
+const OTHER = 'PL1234067890123463';
 const UNKNOWN = 'PL9999999999999999';
 const LATER = Date.parse('2026-12-01T00:00:00Z');
 
@@ -31,7 +31,7 @@ describe('GEODIS Poland HTTP adapter', () => {
   it('reads the search page and then the history for the whole number, through the supplied transport', async () => {
     const fetcher = site(search(), history('history-in-transit'));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new GeodisPlTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' pl 1234-5678-9012-3457 ', { budgetMs: 1000.5 }))
+    await expect(new GeodisPlTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' pl 1234-0678-9012-3457 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'in_transit', destination_country: 'DE' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     const [[searchUrl, searchInit], [historyUrl, historyInit]] = fetcher.mock.calls as [[string, RequestInit], [string, RequestInit]];
@@ -45,7 +45,7 @@ describe('GEODIS Poland HTTP adapter', () => {
     expect(JSON.stringify([searchInit.headers, historyInit.headers])).not.toMatch(/cookie|token/i);
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'geodis-pl', step: 'direct', outcome: 'ok' }));
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
-    expect(geodisPlSearchUrl('pl1234567890123457')).toBe(searchUrl);
+    expect(geodisPlSearchUrl('pl1234067890123457')).toBe(searchUrl);
     expect(geodisPlHistoryUrl(NUMBER)).toBe(historyUrl);
   });
 
@@ -198,7 +198,7 @@ describe('GEODIS Poland HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: NUMBER }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeGeodisPlNumber('pl 1234 5678 9012 3457')).toBe(NUMBER);
+    expect(normalizeGeodisPlNumber('pl 1234 0678 9012 3457')).toBe(NUMBER);
   });
 
   it('sends a read that failed to reach the site once more', async () => {

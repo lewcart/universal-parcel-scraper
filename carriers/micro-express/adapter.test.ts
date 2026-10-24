@@ -8,7 +8,7 @@ import { microExpressWording, normalizeMicroExpressNumber, parseMicroExpress } f
 import { microExpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ME1234567890124ABC';
+const DELIVERED = 'ME1234560890124ABC';
 const IN_TRANSIT = 'ME0000000000000ABC';
 const UNKNOWN = 'ME0000000000000AAA';
 
@@ -33,7 +33,7 @@ describe('Micro Express HTTP adapter', () => {
   it('posts the whole number in capitals to the Track Item page’s lookup once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new MicroExpressTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' me 1234567890124 abc ', { budgetMs: 1000.5 }))
+    await expect(new MicroExpressTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' me 1234560890124 abc ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
@@ -131,7 +131,7 @@ describe('Micro Express HTTP adapter', () => {
       (_data: Data, body: Reply) => { delete (body as Row).data; },
       (_data: Data, body: Reply) => { body.data = 'shipment' as never; },
       (data: Data) => { delete data.tracking_number; },
-      (data: Data) => { data.tracking_number = ['ME1234567890124ABC']; },
+      (data: Data) => { data.tracking_number = ['ME1234560890124ABC']; },
       (data: Data) => { data.tracking_log = 'scans' as never; },
       (data: Data) => { data.tracking_log = Array.from({ length: 501 }, () => data.tracking_log[0]!); },
       (data: Data) => { data.tracking_log[0] = 'scan' as never; },
@@ -196,7 +196,7 @@ describe('Micro Express HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeMicroExpressNumber('me 12345 67890 124-abc')).toBe(DELIVERED);
+    expect(normalizeMicroExpressNumber('me 12345 60890 124-abc')).toBe(DELIVERED);
     // A letter or digit can end the number.
     expect(normalizeMicroExpressNumber('ME00000000000000AB')).toBe('ME00000000000000AB');
   });

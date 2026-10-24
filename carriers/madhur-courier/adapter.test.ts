@@ -10,7 +10,7 @@ import { madhurMappedStage, madhurStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = 'P123456789';
-const IN_TRANSIT = '1234567891';
+const IN_TRANSIT = '1234067891';
 const UNKNOWN = '0000000000';
 const SESSION = '/(S(abcdefghijklmnopqrstuvwx))/CNoteTracking';
 const SESSION_URL = `https://madhurcouriers.in${SESSION}`;

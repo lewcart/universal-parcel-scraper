@@ -11,7 +11,7 @@ import { ajexWording, normalizeAjexNumber, parseAjex } from './parser.js';
 import { ajexStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'AJA123456789013';
+const DELIVERED = 'AJA123406789013';
 const IN_TRANSIT = 'A1234567890';
 const UNKNOWN = 'AJA000000000000';
 const OLD_FORMAT = 'AJS000000000000';
@@ -209,7 +209,7 @@ describe('AJEX HTTP adapter', () => {
   it('counts a shipment only when it names the number asked', () => {
     expect(() => parseAjex(fixture('delivered'), UNKNOWN))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'AJEX answered for another shipment' }));
-    expect(() => parseAjex(changed('delivered', (shipment) => { shipment.waybillNumber = 'AJA12345678901'; }), DELIVERED))
+    expect(() => parseAjex(changed('delivered', (shipment) => { shipment.waybillNumber = 'AJA12340678901'; }), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(() => parseAjex(changed('delivered', (_shipment, reply) => { reply.data = []; }), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
@@ -292,7 +292,7 @@ describe('AJEX HTTP adapter', () => {
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     await expect(carrier(fetcher).track({ number: DELIVERED }, { budgetMs: 0 })).rejects.toMatchObject({ kind: 'budget' });
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeAjexNumber('aja 1234-5678-9013')).toBe(DELIVERED);
+    expect(normalizeAjexNumber('aja 1234-0678-9013')).toBe(DELIVERED);
   });
 
   it('tries once more after a failed connection, and ends a hanging read inside the budget', async () => {

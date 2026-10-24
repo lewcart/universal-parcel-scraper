@@ -10,7 +10,7 @@ import { normalizeGoboltNumber, parseGobolt } from './parser.js';
 import { goboltStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '123456789013';
+const DELIVERED = '123406789013';
 const IN_TRANSIT = 'ABCDEF123456';
 const UNKNOWN = '000000000000';
 
@@ -153,7 +153,7 @@ describe('GoBolt HTTP adapter', () => {
   it('counts a shipment only when it names the number asked', () => {
     expect(() => parseGobolt(fixture('in-transit'), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'GoBolt answered for another shipment' }));
-    expect(() => parseGobolt(changed('delivered', (body) => { body.tracking_number = '12345678901'; }), DELIVERED))
+    expect(() => parseGobolt(changed('delivered', (body) => { body.tracking_number = '12340678901'; }), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(parseGobolt(changed('in-transit', (body) => { body.tracking_number = IN_TRANSIT.toLowerCase(); }), IN_TRANSIT).events).toHaveLength(3);
   });
@@ -161,7 +161,7 @@ describe('GoBolt HTTP adapter', () => {
   it('rejects a changed reply', () => {
     for (const change of [
       (body: Reply) => { delete (body as Row).tracking_number; },
-      (body: Reply) => { body.tracking_number = 123456789013; },
+      (body: Reply) => { body.tracking_number = 123406789013; },
       (body: Reply) => { body.transit_steps = 'steps' as never; },
       (body: Reply) => { body.transit_steps = Array.from({ length: 501 }, () => body.transit_steps[0]!); },
       (body: Reply) => { body.transit_steps[0] = 'step' as never; },

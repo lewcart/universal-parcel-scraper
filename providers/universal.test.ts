@@ -5,7 +5,7 @@ import type { LookupRecord, StepRecord, StepRecorder } from '../core/telemetry/i
 import { TrawlClient } from '../core/transport/index.js';
 import { UniversalTracker, UniversalTrackingError, universalPlan, universalSources, UNIVERSAL_SOURCES } from './universal.js';
 
-const number = 'ZZ12345678900';
+const number = 'ZZ12340678900';
 const identity = (value = number) => `<div class="tracking-info"><div class="parcel"><table class="parcel-attributes"><tr><td>Tracking number</td><td>${value}</td></tr></table></div></div>`;
 const track17 = {
   meta: { code: 200 }, shipments: [{ number, code: 200, shipment: {

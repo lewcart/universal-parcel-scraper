@@ -223,7 +223,7 @@ describe('standalone tracker', () => {
 
   it('asks the next five carriers only when none of the first five knows the number', async () => {
     // A 14-digit number seven carriers can be asked about, best first.
-    const number = '12345678901231';
+    const number = '12340678901250';
     const carriers = ['hermes-de', 'dpd', 'dpd-de', 'seur', 'brt', 'ciblex', 'delhivery'];
     const unknown = async () => ({ known: false });
     const knows = async () => ({ known: true });

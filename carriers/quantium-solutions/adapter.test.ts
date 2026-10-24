@@ -11,7 +11,7 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = 'RQ123456789SG';
 const PARTNER = 'ZZ000000000XX';
-const IN_TRANSIT = '1234567891';
+const IN_TRANSIT = '1234067891';
 const UNKNOWN = 'UQ000000000TH';
 
 type Shipment = Record<string, unknown> & { history: unknown };
@@ -33,7 +33,7 @@ describe('Quantium Solutions HTTP adapter', () => {
   it('asks the tracking page’s stored query for the whole number in capitals once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(json(fixture('in-transit')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new QuantiumTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 123-456 7891 ', { budgetMs: 1000.5 }))
+    await expect(new QuantiumTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 123-406 7891 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'customs' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;

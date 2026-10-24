@@ -44,7 +44,7 @@ describe('Chronopost direct tracking', () => {
     const result = parseChronopostTrackingXml(fixture, number);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit',
       last_update: '2026-01-04T18:38:28+01:00', delivery_carrier: 'dpd-de',
-      delivery_tracking_number: '12345678901235C', destination_country: 'DE' });
+      delivery_tracking_number: '12340678901235R', destination_country: 'DE' });
     expect(result.events).toHaveLength(7);
     expect(result.events?.map(event => event.provider_code)).toEqual(['SM', 'TP', 'O', 'TS', 'SC', 'DB', 'DC']);
     expect(result.events?.[1]).toMatchObject({ location: 'EXAMPLE DEPOT - DE (depot 0001)', time: '2026-01-04T18:09:18+01:00' });
@@ -303,9 +303,9 @@ describe('Chronopost direct tracking', () => {
   });
 
   it.each([
-    ['GEO/12345678901235A', 'DE'], ['12345678901235C', 'DE'], ['GEO/12345678901235C', 'GB'],
+    ['GEO/12340678901235A', 'DE'], ['12340678901235R', 'DE'], ['GEO/12340678901235R', 'GB'],
   ])('does not assign the German network from %s and %s alone', (reference, country) => {
-    const result = parseChronopostTrackingXml(fixture.replace('GEO/12345678901235C', reference)
+    const result = parseChronopostTrackingXml(fixture.replace('GEO/12340678901235R', reference)
       .replace('EXAMPLE CITY - DE', `EXAMPLE CITY - ${country}`), number);
     expect(result.delivery_carrier).toBeUndefined();
     expect(result.delivery_tracking_number).toBe(reference.replace('GEO/', ''));
@@ -321,12 +321,12 @@ describe('Chronopost direct tracking', () => {
   it('drops the reference that repeats the skybill, and keeps a partner reference beside it', () => {
     const own = '<infoCompList><name>Numéro partenaire</name><value>GEO/XT123456799248R</value></infoCompList>';
     for (const reference of ['GEO/XT123456799248R', `GEO/${number}`]) {
-      const result = parseChronopostTrackingXml(fixture.replace('GEO/12345678901235C', reference), number);
+      const result = parseChronopostTrackingXml(fixture.replace('GEO/12340678901235R', reference), number);
       expect(result.delivery_tracking_number).toBeUndefined();
       expect(result.delivery_carrier).toBeUndefined();
     }
     expect(parseChronopostTrackingXml(fixture.replace('<infoCompList><name>Rang</name>', `${own}<infoCompList><name>Rang</name>`), number))
-      .toMatchObject({ delivery_carrier: 'dpd-de', delivery_tracking_number: '12345678901235C' });
+      .toMatchObject({ delivery_carrier: 'dpd-de', delivery_tracking_number: '12340678901235R' });
   });
 
   it('refuses conflicting partner references and destination countries', () => {
@@ -468,12 +468,12 @@ describe('Chronopost direct tracking', () => {
     { fetcher, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null, env: {} });
     const response = await createTracker({ registry, providers: [] }).track({ number, carrier: 'chronopost' });
     expect(response).toMatchObject({ carrier: 'chronopost', source: 'chronopost', handoff: {
-      carrier: 'dpd-de', number: '12345678901235C', confirmed: known }, attempts: [
+      carrier: 'dpd-de', number: '12340678901235R', confirmed: known }, attempts: [
       { source: 'chronopost', kind: 'ok' }, { source: 'dpd-de', kind: known ? 'ok' : 'not_found' },
     ] });
     expect(response.result.events).toHaveLength(7);
     expect(Boolean(response.handoff?.result)).toBe(known);
-    expect(partner).toHaveBeenCalledWith({ number: '12345678901235C' },
+    expect(partner).toHaveBeenCalledWith({ number: '12340678901235R' },
       expect.objectContaining({ signal: expect.any(AbortSignal), budgetMs: expect.any(Number) }));
     expect(fetcher).toHaveBeenCalledOnce();
   });

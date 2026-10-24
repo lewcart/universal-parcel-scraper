@@ -14,7 +14,7 @@ import { franchExpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 // The fixtures' consignment; the page has no consignment for the other number.
-const NUMBER = '12345678902';
+const NUMBER = '12340678902';
 const UNKNOWN = '00000000000';
 const TOKEN = 'synthetic-token-aaaaaaaaaaaaaaaaaaaaaaaaaaa';
 const CHECK = '<!DOCTYPE html><html><head><title>Just a moment...</title></head><body><script>window._cf_chl_opt={}</script></body></html>';
@@ -45,7 +45,7 @@ describe('Franch Express tracking adapter', () => {
   it('posts the form’s query to the lookup, then opens the AWB History page with its token, through the supplied transport', async () => {
     const fetcher = site();
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new FranchExpressTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678 902 ', { budgetMs: 1000.5 }))
+    await expect(new FranchExpressTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 0678 902 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'in_transit' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     const [[lookupUrl, lookupInit], [url, init]] = fetcher.mock.calls as [[string, RequestInit], [string, RequestInit]];
@@ -195,7 +195,7 @@ describe('Franch Express tracking adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: NUMBER }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeFranchExpressNumber('123-4567-8902')).toBe(NUMBER);
+    expect(normalizeFranchExpressNumber('123-4067-8902')).toBe(NUMBER);
   });
 
   it('tries once more after a network failure', async () => {

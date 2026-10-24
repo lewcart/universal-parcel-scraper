@@ -12,7 +12,7 @@ import { appleExpressStage, appleExpressStateStage, isAppleExpressNotice, status
 import statuses from './statuses.json' with { type: 'json' };
 
 const ORDER = '12345679';
-const REFERENCE = 'APPL1234567890124';
+const REFERENCE = 'APPL1234067890124';
 const LISTED = '123456789';
 const CAINIAO = 'CACAINIAO12345678901';
 const UNKNOWN = '00000000';
@@ -283,7 +283,7 @@ describe('Apple Express HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: ORDER }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeAppleExpressNumber('appl 1234 5678 90124')).toEqual({ number: REFERENCE, kind: 'reference' });
+    expect(normalizeAppleExpressNumber('appl 1234 0678 90124')).toEqual({ number: REFERENCE, kind: 'reference' });
     expect(normalizeAppleExpressNumber(LISTED)).toEqual({ number: LISTED, kind: 'order' });
   });
 

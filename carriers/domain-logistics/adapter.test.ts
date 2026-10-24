@@ -11,7 +11,7 @@ import { normalizeDomainLogisticsNumber, parseDomainLogistics } from './parser.j
 import { domainLogisticsMappedStage, domainLogisticsStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const ORDER = '123456789013';
+const ORDER = '123406789013';
 const UNKNOWN = '000000000000';
 
 type Row = Record<string, unknown>;
@@ -31,7 +31,7 @@ describe('Domain Logistics HTTP adapter', () => {
   it('asks the tracking page’s lookup for the whole number once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new DomainLogisticsTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678-9013 ', { budgetMs: 1000.5 }))
+    await expect(new DomainLogisticsTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 0678-9013 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
@@ -164,7 +164,7 @@ describe('Domain Logistics HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: ORDER }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeDomainLogisticsNumber('1234 5678 9013')).toBe(ORDER);
+    expect(normalizeDomainLogisticsNumber('1234 0678 9013')).toBe(ORDER);
     expect(normalizeDomainLogisticsNumber('abc123def')).toBe('ABC123DEF');
   });
 

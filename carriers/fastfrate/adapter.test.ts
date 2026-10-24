@@ -9,9 +9,9 @@ import { normalizeFastfrateNumber, parseFastfrate } from './parser.js';
 import { fastfrateMappedStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '1234567892';
-const IN_TRANSIT = '123456789';
-const UNKNOWN = '12345678';
+const DELIVERED = '1234067892';
+const IN_TRANSIT = '123406789';
+const UNKNOWN = '12340678';
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8');
 const fixture = (name: string) => JSON.parse(text(name)) as Record<string, unknown> & { timeline: Record<string, unknown>[] };
 const reply = (body: string, status = 200, type = 'application/json; charset=utf-8') =>
@@ -127,7 +127,7 @@ describe('Fastfrate tracking adapter', () => {
     // The service answers for the number it read, and a missing one reads as 0.
     expect(() => parseFastfrate(fixture('delivered'), IN_TRANSIT))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: expect.stringContaining('another probill') }));
-    for (const probill of [0, 1234567891]) {
+    for (const probill of [0, 1234067891]) {
       expect(() => parseFastfrate({ ...fixture('delivered'), probillNumber: probill }, DELIVERED), String(probill))
         .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     }
@@ -141,15 +141,15 @@ describe('Fastfrate tracking adapter', () => {
     expect(() => parseFastfrate(estimateOnly, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
     const row = (patch: Record<string, unknown>) => ({ ...fixture('in-transit'),
       timeline: [{ ...fixture('in-transit').timeline[1], ...patch }] });
-    for (const payload of [null, [], 'Probill not found', {}, { probillNumber: 12345678 }, { ...fixture('not-found'), timeline: null },
-      { ...fixture('not-found'), probillNumber: '12345678' }, { ...fixture('not-found'), probillNumber: null },
-      { ...fixture('not-found'), probillNumber: 12345678.5 }, { ...fixture('in-transit'), timeline: ['Picked Up'] },
+    for (const payload of [null, [], 'Probill not found', {}, { probillNumber: 12340678 }, { ...fixture('not-found'), timeline: null },
+      { ...fixture('not-found'), probillNumber: '12340678' }, { ...fixture('not-found'), probillNumber: null },
+      { ...fixture('not-found'), probillNumber: 12340678.5 }, { ...fixture('in-transit'), timeline: ['Picked Up'] },
       row({ description: '' }), row({ description: 42 }), row({ timeStamp: null }), row({ timeStamp: '2026-11-02T24:30:00' }),
       row({ timeStamp: '2026-02-30T14:30:00' }), row({ timeStamp: '2026-11-02T14:30:00Z' }), row({ timeStamp: '11/02/2026 14:30' }),
       row({ city: { name: 'Sampleton' } }), row({ province: 1 }),
       { ...fixture('in-transit'), timeline: Array.from({ length: 301 }, () => fixture('in-transit').timeline[1]) }]) {
       expect(() => parseFastfrate(payload, payload && typeof payload === 'object' && 'probillNumber' in payload
-        && payload.probillNumber === 12345678 ? UNKNOWN : IN_TRANSIT), JSON.stringify(payload)?.slice(0, 120))
+        && payload.probillNumber === 12340678 ? UNKNOWN : IN_TRANSIT), JSON.stringify(payload)?.slice(0, 120))
         .toThrow(expect.objectContaining({ kind: 'schema' }));
     }
   });
@@ -160,7 +160,7 @@ describe('Fastfrate tracking adapter', () => {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeFastfrateNumber('12345-67892')).toBe(DELIVERED);
+    expect(normalizeFastfrateNumber('12340-67892')).toBe(DELIVERED);
     expect(normalizeFastfrateNumber('123456')).toBe('123456');
     expect(carrier(fetcher).recognize).toBeUndefined();
   });
@@ -171,7 +171,7 @@ describe('Fastfrate tracking adapter', () => {
       ['<html><head><title>Access Denied</title></head><body>Blocked</body></html>', 'challenge'],
       ['<!doctype html><html lang="en"><head><title>LTL Shipment Tracker - Fastfrate</title></head><body><app-root></app-root></body></html>', 'schema'],
       ['', 'schema'],
-      ['{"probillNumber":12345678,"timeline":', 'schema'],
+      ['{"probillNumber":12340678,"timeline":', 'schema'],
       ['{"errors":{"ProbillNumber":["The value is not valid."]},"status":400}', 'schema'],
     ] as const) {
       const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(body, 200, 'text/html'));

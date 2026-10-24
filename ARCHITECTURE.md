@@ -59,7 +59,8 @@ down with it.
 
 Placeholder numbers never reach a carrier or a provider. Apart from a letter prefix and
 suffix, these are six or more digits that repeat one digit or run straight up or down, such
-as 123456789. An S10 item counts when its serial is one, which covers the UPU's own example.
+as 123456789, or a run of nine or more with one digit after it, as a check digit would be. An
+S10 item counts when its serial is one, which covers the UPU's own example.
 Many trackers keep test labels and stray scans under these numbers and show them to anyone
 who asks, and providers merge them into one history. The registry's adapters and
 `UniversalTracker.fetchSource()` refuse them before any request: a lookup fails as

@@ -8,7 +8,7 @@ import { parseAveritt } from './parser.js';
 import { averittMappedStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '0123456785';
+const DELIVERED = '0123056785';
 const IN_TRANSIT = '0234567891';
 const AGED = '0345678902';
 const ABSENT = '0999999990';

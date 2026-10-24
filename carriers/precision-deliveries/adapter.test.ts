@@ -10,7 +10,7 @@ import { normalizePrecisionNumber, parsePrecision, precisionMissing } from './pa
 import { precisionStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ASL1234567891';
+const DELIVERED = 'ASL1234067891';
 const IN_TRANSIT = 'PRE12345678901';
 const UNKNOWN = 'ASL0000000000';
 const TOKEN = 'syntheticsessiontoken00000000000';
@@ -259,7 +259,7 @@ describe('Precision Deliveries HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizePrecisionNumber('asl 123-456-7891')).toBe(DELIVERED);
+    expect(normalizePrecisionNumber('asl 123-406-7891')).toBe(DELIVERED);
     expect(normalizePrecisionNumber('pre12345678901')).toBe(IN_TRANSIT);
   });
 

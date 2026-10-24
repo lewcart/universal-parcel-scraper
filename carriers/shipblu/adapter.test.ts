@@ -9,7 +9,7 @@ import { normalizeShipbluNumber, parseShipblu, shipbluOrderType } from './parser
 import { shipbluStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '1234567890124';
+const DELIVERED = '1234560890124';
 const IN_TRANSIT = '3100000000000';
 const RETURN = '2123456789012';
 const UNKNOWN = '1000000000000';
@@ -31,12 +31,12 @@ describe('ShipBlu HTTP adapter', () => {
   it('asks the tracking page’s lookup for the whole number in English once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new ShipbluTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678 90124 ', { budgetMs: 1000.5 }))
+    await expect(new ShipbluTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5608 90124 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(`${SHIPBLU_API}delivery-order/${DELIVERED}/?pin=`);
-    expect(String(url)).toBe('https://api.shipblu.com/api/v1/delivery-order/1234567890124/?pin=');
+    expect(String(url)).toBe('https://api.shipblu.com/api/v1/delivery-order/1234560890124/?pin=');
     expect(init).toMatchObject({ method: 'GET', redirect: 'manual', signal: expect.any(AbortSignal),
       headers: { Accept: 'application/json', 'Accept-Language': 'en', 'User-Agent': 'SyntheticHost/1.0' } });
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'shipblu', step: 'direct', outcome: 'ok' }));
@@ -260,7 +260,7 @@ describe('ShipBlu HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeShipbluNumber('1234-5678-90124')).toBe(DELIVERED);
+    expect(normalizeShipbluNumber('1234-5608-90124')).toBe(DELIVERED);
     expect(normalizeShipbluNumber('1234567')).toBe('1234567');
     expect(normalizeShipbluNumber(`1${'0'.repeat(39)}`)).toHaveLength(40);
     expect(() => normalizeShipbluNumber('4000000000000')).toThrow(/cash collections|1, 2, 31 or 32/);

@@ -11,13 +11,15 @@ describe('placeholder numbers', () => {
       '123456', '1234567890', '12345678901234', '0123456789', '23456789', '987654321', '9876543210987', 'ASL1234567890',
       // An S10 item by its serial: zeros or the UPU's example, with the check digit or a wrong one.
       'RR123456785CN', 'EB000000005CN', 'ML000000001MH', 'cio 0000000 5nl', '1234 5678 90',
+      // A run of nine or more with one digit after it, as a check digit would be.
+      '2345678903', '98765432102', 'ASL0123456789017', '3456 7890 15',
     ]) expect(isPlaceholderNumber(number), number).toBe(true);
   });
 
   it('leaves issued-looking numbers, short ones and letters inside the digits alone', () => {
     for (const number of [
-      '00000', '12345', '0000000001', '1234567891', '1234567809', '100000000', 'TH0101000000A', 'JJD000000000000000000001',
-      '1Z0000000000000000', 'A1B2C3D4E5', 'EB000000014CN', 'RR123456799GB', '12345678901235', 'TESTA1', '',
+      '00000', '12345', '0000000001', '123456780', '2345678013', '23456789124', '100000000', 'TH0101000000A',
+      'JJD000000000000000000001', '1Z0000000000000000', 'A1B2C3D4E5', 'EB000000014CN', 'RR123456799GB', 'TESTA1', '',
     ]) expect(isPlaceholderNumber(number), number).toBe(false);
   });
 

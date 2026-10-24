@@ -18,6 +18,12 @@ const REFERENCE = 'SHOP-REF-0009';
 const READ_AT = Date.parse('2026-03-20T04:00:00Z');
 const AFTER = Date.parse('2026-04-01T04:00:00Z');
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
+/** The record with each row written at its own clock, rather than all at the order's creation. */
+const asWritten = (reply: unknown) => {
+  const copy = structuredClone(reply) as [{ data: [{ trackDetails: Record<string, string>[] }] }];
+  for (const row of copy[0].data[0].trackDetails) row.track_createdate = row.track_date!;
+  return copy;
+};
 const page = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
 const json = (body: unknown) => new Response(JSON.stringify(body), { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
 const html = (body: string) => new Response(body, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
@@ -34,8 +40,24 @@ describe('Meiteshun Logistics tracking adapter', () => {
     expect(adapter(environment(fetcher))).toMatchObject({ id: 'mtscn', recordsSteps: true, steps: ['direct', 'retry'] });
   });
 
-  it('reads the script written ahead as wall clocks, holding back the rows still ahead', () => {
-    const result = parseMtscnTrack(fixture('track'), NUMBER, READ_AT)!;
+  it('holds back the script written at the order’s creation, its delivery included', () => {
+    const result = parseMtscnTrack(fixture('track'), NUMBER, AFTER)!;
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'item inbound in sorting center',
+      service_name: 'Synthetic Small Parcel', destination_country: 'US' });
+    // Rows written within twelve hours of their own clock stand.
+    expect(result.events).toEqual([
+      { time: '2026-03-02T12:56:49+08:00', description: 'item inbound in sorting center', location: 'ShenZhen', stage: 'in_transit', stage_source: 'carrier_map' },
+      {
+        time: '2026-03-01T18:16:00+08:00', description: 'The package has been collected and is ready to be sent to the distribution center',
+        stage: 'accepted', stage_source: 'carrier_map',
+      },
+    ]);
+    // Every row ahead: the order exists, with nothing to show yet.
+    expect(() => parseMtscnTrack(fixture('track'), NUMBER, Date.parse('2026-03-01T00:00:00Z'))).toThrow(NoHistoryError);
+  });
+
+  it('reads rows written as they happen as wall clocks on Beijing time, holding back the rows still ahead', () => {
+    const result = parseMtscnTrack(asWritten(fixture('track')), NUMBER, READ_AT)!;
     expect(result).toMatchObject({
       status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
       last_status_text: 'Arriving at the mail processing center', last_update: '2026-03-19T09:10:22+08:00',
@@ -58,12 +80,10 @@ describe('Meiteshun Logistics tracking adapter', () => {
     expect(result.delivery_carrier).toBeUndefined();
     // Asked by the shipper's reference, the order's own number comes back.
     expect(parseMtscnTrack(fixture('track'), REFERENCE, READ_AT)!.canonical_tracking_number).toBe(NUMBER);
-    // Every row ahead: the order exists, with nothing to show yet.
-    expect(() => parseMtscnTrack(fixture('track'), NUMBER, Date.parse('2026-03-01T00:00:00Z'))).toThrow(NoHistoryError);
   });
 
   it('keeps the recipient’s town from the destination rows, never the postcode or the name', () => {
-    const result = parseMtscnTrack(fixture('track'), NUMBER, AFTER)!;
+    const result = parseMtscnTrack(asWritten(fixture('track')), NUMBER, AFTER)!;
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', last_update: '2026-03-27T21:51:15+08:00' });
     expect(result.events!.slice(0, 3)).toEqual([
       { time: '2026-03-27T21:51:15+08:00', description: 'Delivered', location: 'Sampletown', stage: 'delivered', stage_source: 'carrier_map' },

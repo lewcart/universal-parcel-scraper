@@ -309,7 +309,9 @@ explanatory reasons and future delivery instructions do not establish a new mile
 A delivery still to come (a forecast, a notice, an instruction or a duty-payment condition:
 "will be delivered", "sera livré", "wird morgen zugestellt", "sarà consegnato", "será entregado")
 is no scan. The classifier reads only the rest of the sentence, so a notice alone takes the
-caller's fallback with `none` and never steps a parcel back to registered.
+caller's fallback with `none` and never steps a parcel back to registered. A row a tracker
+wrote well before its own clock, as forwarders that write a whole timeline when an order is
+created do, is a forecast too, and the adapter leaves it out.
 Customs that cleared or released a parcel puts it back in transit; holds, inspections,
 submissions and a clearance still to come or negated stay `customs`. A customs problem is an
 `exception`.

@@ -85,6 +85,26 @@ describe('Hualei track interface', () => {
     }
   });
 
+  it('holds back a timeline written ahead: a row written well before its own clock is no scan', () => {
+    // The order's whole script, written at its creation; the delivery's row came with the delivery.
+    const script = (delivery?: string) => edited((record) => {
+      for (const row of record.trackDetails) row.track_createdate = '2026-03-01 18:00:00';
+      if (delivery) record.trackDetails.unshift({ ...record.trackDetails[0], track_content: 'Delivered', track_date: '2026-03-07 10:00:00', track_createdate: delivery });
+    });
+    const after = Date.parse('2026-03-10T00:00:00Z');
+    // The first row, four hours after the order, is kept; the rest, a day and more ahead, are not.
+    expect(parseHualeiTrack(script(), NUMBER, GZYL, after)?.events?.map((event) => event.description)).toEqual(['Order information received']);
+    expect(parseHualeiTrack(script('2026-03-07 18:30:00'), NUMBER, GZYL, after)).toMatchObject({ current_stage: 'delivered',
+      events: [expect.objectContaining({ description: 'Delivered' }), expect.objectContaining({ description: 'Order information received' })] });
+    // A destination clock up to twelve hours ahead of the platform's is still a scan written as it happened.
+    expect(parseHualeiTrack(script('2026-03-06 22:00:00'), NUMBER, GZYL, after)).toMatchObject({ current_stage: 'delivered' });
+    expect(parseHualeiTrack(script('2026-03-02 10:00:00'), NUMBER, GZYL, after)).toMatchObject({ current_stage: 'registered' });
+    // A creation time it cannot read is no evidence either way.
+    for (const unread of ['soon', 7, null]) {
+      expect(parseHualeiTrack(edited((record) => { for (const row of record.trackDetails) row.track_createdate = unread; }), NUMBER, GZYL, after)?.events).toHaveLength(7);
+    }
+  });
+
   it('counts identical rows once, keeps the reply’s order on one clock, and bounds the history', () => {
     const repeated = edited((record) => {
       record.trackDetails = [row('2026-03-03 10:00:00', 'Second'), row('2026-03-03 10:00:00', 'First'), row('2026-03-03 10:00:00', 'Second')];

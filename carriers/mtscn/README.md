@@ -23,9 +23,10 @@ answers.
 
 - Every order follows one script from the collection in Shenzhen to the delivery, whatever the
   destination, and all of its rows are written when the order is created, dated ahead. A buyer
-  reported a parcel the script showed as delivered that never came. The adapter shows the rows
-  as the tracker does: a row dated after the lookup on Beijing time is held back, and an order
-  whose rows are all ahead has no history yet. The record's own summary status is not read.
+  reported a parcel the script showed as delivered that never came. A row written more than
+  twelve hours before its own clock is a forecast, not a scan, and is held back, as is a row
+  dated after the lookup on Beijing time. An order whose rows are all held back has no history
+  yet. The record's own summary status is not read.
 - Scan times are wall clocks without an offset, on the tracker's Beijing clock at the destination
   too, as [GZYL's](../gzyl/README.md) are, and are read on it.
 - A row's place is inside its text, before a comma (`ShenZhen`, `Hong Kong`, the destination's

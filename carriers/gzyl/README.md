@@ -31,10 +31,12 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
   inconclusive. [BYHD's](../byhd/README.md) page hides the number it found an order by, so there
   a lone record counts for the one number the page's form echoes back.
 - GZYL writes a shipment's timeline ahead: every row carries the same creation time, days before
-  most of the scan times. The tracker's latest row was never later than the lookup, but the
-  adapter does not rely on that: a row dated after the lookup on Beijing time is held back, and
-  an order whose rows are all ahead has no history yet. The record's own summary status is not
-  read; the stage comes from the rows kept.
+  most of the scan times. A row the track interface says was written more than twelve hours
+  before its own clock is a forecast, not a scan, and is held back on every tenant; the margin
+  leaves room for a destination's clock, up to six hours ahead of Beijing's. The page shows no
+  creation times, so a row dated after the lookup on Beijing time is held back too. An order
+  whose rows are all held back has no history yet. The record's own summary status is not read;
+  the stage comes from the rows kept.
 - Rows carry wall clocks without an offset, abroad too, on the trackers' Beijing clock: rows
   at the destination were shown up to seven hours before their clock read as UTC, earlier than
   the destination's own clock allows. Every row is read on Beijing time, as on the other tenants

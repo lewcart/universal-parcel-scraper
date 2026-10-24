@@ -20,9 +20,10 @@ answers only from China, and the adapter never visits it.
 ## Notes
 
 - An order's rows are written when it is created, dated ahead, from the collection in
-  Guangzhou to the delivery round; the delivery row comes later. A row dated after the lookup
-  on Beijing time is held back, and an order whose rows are all ahead has no history yet. The
-  record's own summary status is not read.
+  Guangzhou to the delivery round; the delivery row comes later, written after its clock. A row
+  written more than twelve hours before its own clock is a forecast, not a scan, and is held
+  back, as is a row dated after the lookup on Beijing time. An order whose rows are all held
+  back has no history yet. The record's own summary status is not read.
 - Scan times are wall clocks without an offset and stay `local_time`. The rows written ahead
   follow the tracker's Beijing clock, as [GZYL's](../gzyl/README.md) do, but the delivery row
   reads as the destination's clock: on Beijing time it would put a delivery before six in the

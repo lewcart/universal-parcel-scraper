@@ -20,6 +20,12 @@ const UNKNOWN = 'JH9900000002CN';
 const READ_AT = Date.parse('2026-03-14T04:00:00Z');
 const AFTER = Date.parse('2026-03-21T04:00:00Z');
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
+/** The record with each row written at its own clock, rather than at the order's creation. */
+const asWritten = (reply: unknown) => {
+  const copy = structuredClone(reply) as [{ data: [{ trackDetails: Record<string, string>[] }] }];
+  for (const row of copy[0].data[0].trackDetails) row.track_createdate = row.track_date!;
+  return copy;
+};
 const page = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
 const html = (body: string) => new Response(body, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
@@ -37,8 +43,19 @@ describe('Jiuhao International tracking adapter', () => {
     expect(adapter(environment(fetcher))).toMatchObject({ id: 'jhgj', recordsSteps: true, steps: ['direct', 'retry'] });
   });
 
-  it('reads the script written ahead as wall clocks, holding back the rows still ahead', () => {
-    const result = parseJhgjTrack(fixture('track'), NUMBER, READ_AT)!;
+  it('holds back the script written at the order’s creation, and reads the delivery written after it', () => {
+    expect(parseJhgjTrack(fixture('track'), NUMBER, AFTER)!.events).toEqual([
+      { local_time: '2026-03-01T21:10:05', description: '广州处理中心已收寄', location: '广州市', stage: 'accepted', stage_source: 'carrier_map' },
+    ]);
+    const result = parseJhgjTrack(fixture('track-delivered'), NUMBER, AFTER)!;
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update_local: '2026-03-20T11:20:00' });
+    expect(result.events!.map((event) => event.description)).toEqual(['Delivered', '广州处理中心已收寄']);
+    // Every row ahead: the order exists, with nothing to show yet.
+    expect(() => parseJhgjTrack(fixture('track'), NUMBER, Date.parse('2026-03-01T00:00:00Z'))).toThrow(NoHistoryError);
+  });
+
+  it('reads rows written as they happen as wall clocks, holding back the rows still ahead', () => {
+    const result = parseJhgjTrack(asWritten(fixture('track')), NUMBER, READ_AT)!;
     expect(result).toMatchObject({
       status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map', last_status_text: 'Arrive at Airport',
       last_update: null, last_update_local: '2026-03-13T08:42:36', service_name: 'JH合成专线PD', destination_country: 'PL',
@@ -58,12 +75,10 @@ describe('Jiuhao International tracking adapter', () => {
     expect(result).not.toHaveProperty('delivery_carrier');
     // Asked by the shipper's reference, the order's own number comes back.
     expect(parseJhgjTrack(fixture('track'), REFERENCE, READ_AT)!.canonical_tracking_number).toBe(NUMBER);
-    // Every row ahead: the order exists, with nothing to show yet.
-    expect(() => parseJhgjTrack(fixture('track'), NUMBER, Date.parse('2026-03-01T00:00:00Z'))).toThrow(NoHistoryError);
   });
 
   it('reads the delivery added later, keeping the recipient’s town and never the postcode, name or signatory', async () => {
-    const result = parseJhgjTrack(fixture('track-delivered'), NUMBER, AFTER)!;
+    const result = parseJhgjTrack(asWritten(fixture('track-delivered')), NUMBER, AFTER)!;
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', last_update_local: '2026-03-20T11:20:00' });
     expect(result.events).toHaveLength(16);
     expect(result.events!.slice(0, 5)).toEqual([

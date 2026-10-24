@@ -81,6 +81,9 @@ const MAX_EVENTS = 100;
 // a comma would ask for several.
 const NUMBER = /^(?=.{6,40}$)[A-Z0-9]+(?:-[A-Z0-9]+)*$/;
 const CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
+// A row's clock can be its destination's, up to six hours ahead of Beijing's: one written more
+// than twelve hours before its own clock was written ahead.
+const WRITTEN_AHEAD_MS = 12 * 3_600_000;
 // The service's answer when it holds no row for the number: an unknown number,
 // or an order whose rows the interface does not list. Only the page tells which.
 const NO_TRACK = '未查询到轨迹';
@@ -169,8 +172,21 @@ export function hualeiScanText(value: string, maxLength = 500): string {
     .replace(/^[\s,，:：;；/]+|[\s,，:：;；/]+$/g, '');
 }
 
-/** One row as the reply gives it: its wall clock, text, place and kind code. */
-export interface HualeiRow { readonly clock: string; readonly content: string; readonly location: string; readonly code: string }
+/**
+ * One row as the reply gives it: its wall clock, text, place and kind code, and
+ * the platform's clock when it was written, which only the track interface gives.
+ */
+export interface HualeiRow {
+  readonly clock: string; readonly content: string; readonly location: string; readonly code: string; readonly written?: string;
+}
+
+/** Whether a row was written well before its own clock, as part of a timeline written ahead. */
+function writtenAhead(row: HualeiRow, local: string): boolean {
+  const match = CLOCK.exec(row.written ?? '');
+  if (!match) return false;
+  const written = DateTime.fromISO(`${match[1]}T${match[2]}`, { zone: 'UTC' });
+  return written.isValid && written.toMillis() + WRITTEN_AHEAD_MS < DateTime.fromISO(local, { zone: 'UTC' }).toMillis();
+}
 
 function stageOf(tenant: HualeiTenant, code: string, description: string): { stage: Stage; source: string } | undefined {
   const mapped = tenant.stage(code || null, normalizeStatusWording(description));
@@ -180,9 +196,11 @@ function stageOf(tenant: HualeiTenant, code: string, description: string): { sta
 }
 
 /**
- * The rows as scans, newest first. A row dated after the lookup on the
- * trackers' clock is not a scan yet: tenants write whole timelines ahead.
- * Identical rows count once, and so do rows the tenant says repeat another.
+ * The rows as scans, newest first. Tenants write whole timelines ahead, from
+ * the collection to the delivery: a row written well before its own clock is
+ * a forecast, not a scan, and so is a row dated after the lookup on the
+ * trackers' clock. Identical rows count once, and so do rows the tenant says
+ * repeat another.
  */
 function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number): { events: CarrierEvent[]; truncated: boolean } {
   const seen = new Set<string>();
@@ -190,7 +208,7 @@ function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number)
   rows.forEach((row, index) => {
     const local = wallClock(row.clock, tenant.provider);
     const placed = isoTime(local, HUALEI_ZONE)!;
-    if (placed.timestamp > readAt) return;
+    if (placed.timestamp > readAt || writtenAhead(row, local)) return;
     const parts = tenant.split?.(row.content, row.location) ?? row;
     const place = hualeiScanText(parts.location, 200);
     const wording = hualeiScanText(parts.content);
@@ -267,6 +285,8 @@ function trackRow(raw: unknown, provider: string): HualeiRow {
   return {
     clock: text(raw, 'track_date', provider, 64), content: text(raw, 'track_content', provider),
     location: text(raw, 'track_location', provider, 200), code: text(raw, 'track_kind', provider, 64),
+    // A creation time it cannot read is no evidence either way.
+    written: typeof raw.track_createdate === 'string' ? clean(raw.track_createdate, 64) : '',
   };
 }
 

@@ -35,7 +35,7 @@ describe('GZYL tracking adapter', () => {
     expect(instance).toMatchObject({ id: 'gzyl', recordsSteps: true, steps: ['direct', 'retry'] });
   });
 
-  it('reads the English timeline GZYL writes ahead, up to the lookup', () => {
+  it('reads the English timeline GZYL writes, up to the lookup', () => {
     const result = parseGzylTrack(fixture('track'), NUMBER, READ_AT)!;
     expect(result).toMatchObject({
       status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',
@@ -94,7 +94,8 @@ describe('GZYL tracking adapter', () => {
 
     const reply = structuredClone(fixture('track')) as [{ data: [{ trackDetails: Record<string, string>[] }] }];
     const details = reply[0].data[0].trackDetails;
-    details.splice(1, 0, { ...details[1]!, track_content: 'Package is on the way Sampletown 00000', track_date: '2026-03-06 10:00:00' });
+    details.splice(1, 0, { ...details[1]!, track_content: 'Package is on the way Sampletown 00000', track_date: '2026-03-06 10:00:00',
+      track_createdate: '2026-03-06 10:00:00' });
     const result = parseGzylTrack(reply, NUMBER, READ_AT)!;
     expect(result.events![0]).toMatchObject({ description: 'Package is on the way', location: 'Sampletown', stage: 'in_transit' });
     expect(result.last_status_text).toBe('Package is on the way');

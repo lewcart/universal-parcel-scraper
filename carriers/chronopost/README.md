@@ -35,6 +35,8 @@ must pass the shared DPD check-character validation. These shapes suggest a
 lookup, not carrier ownership. Asked directly, as when a provider names
 Chronopost, the adapter also takes the fourteen digits without their check
 character, as DPD's notices print them: Chronopost answers either form.
+XN and twelve digits suggest Chronopost alone: its tracker answers that shape,
+which no public source documents.
 
 Chronopost also answers for other posts' letter and parcel items that pass
 through one of its hubs, often with that single scan. La Poste delivers those

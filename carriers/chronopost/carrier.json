@@ -95,6 +95,11 @@
       "id": "chronopost-4",
       "pattern": "^(?:(?:PZ|XR|XT|XU|XW|XY)\\d{9}[A-Z]{2}|[A-Z]{2}\\d{9}(?:RV|VF))$",
       "confidence": "low"
+    },
+    {
+      "id": "chronopost-xn",
+      "pattern": "^XN\\d{12}$",
+      "confidence": "low"
     }
   ]
 }

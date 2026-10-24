@@ -92824,6 +92824,17 @@
     ]
   },
   {
+    "input": "XN246813579024",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "XR123456785TS",
     "carrier": "chronopost",
     "confidence": "high",

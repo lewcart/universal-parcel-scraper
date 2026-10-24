@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { AdapterRegistry } from '../../core/adapter/index.js';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
-import { recognitionCandidates } from '../../core/catalog/recognition.js';
+import { recognitionAskedCarriers, recognitionCandidates } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NotFoundError } from '../../core/errors/index.js';
 import { resolveResult } from '../../core/result/resolve.js';
@@ -378,10 +378,14 @@ describe('Chronopost direct tracking', () => {
     expect(normalizeChronopostNumber('xt 123456799 ts')).toBe(number);
     expect(normalizeChronopostNumber('12345678901234E')).toBe('12345678901234E');
     expect(normalizeChronopostNumber('1234 5678 9012 34')).toBe('12345678901234');
-    for (const invalid of ['12345678901234A', '6A00000000000', '1234567890123', number + '<tag>']) {
+    expect(normalizeChronopostNumber('xn 2468 1357 9024')).toBe('XN246813579024');
+    for (const invalid of ['12345678901234A', '6A00000000000', '1234567890123', 'XN24681357902', 'XN2468135790246', 'XM246813579024', number + '<tag>']) {
       expect(() => normalizeChronopostNumber(invalid)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     }
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'chronopost', confidence: 'high' });
+    expect(detectCarrierMatch('XN246813579024')).toEqual({ carrier: 'unknown', confidence: 'low', candidates: ['chronopost'], preferred: [] });
+    expect(recognitionAskedCarriers('XN246813579024')[0]).toBe('chronopost');
+    for (const other of ['XN24681357902', 'XN2468135790246', 'XM246813579024']) expect(detectCarrierMatch(other).candidates).not.toContain('chronopost');
     expect(recognitionCandidates('RA123456785IR').map(candidate => candidate.carrier)).toContain('chronopost');
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(fixture));
     const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });

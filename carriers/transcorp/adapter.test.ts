@@ -8,7 +8,7 @@ import { normalizeTranscorpNumber, parseTranscorp } from './parser.js';
 import { statusMap, transcorpStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '1234567890';
+const DELIVERED = '1234567891';
 const IN_TRANSIT = '0123456789';
 const UNKNOWN = '0000000000';
 const COMPONENT = 'text/x-component';
@@ -113,7 +113,7 @@ describe('Transcorp HTTP adapter', () => {
     expect(() => parse(fixture('not-found'), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'Elite answered for another number' }));
     // The message names another reference.
-    expect(() => parse(fixture('not-found').replace('reference 0000000000', 'reference 1234567890'), UNKNOWN))
+    expect(() => parse(fixture('not-found').replace('reference 0000000000', 'reference 1234567891'), UNKNOWN))
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     // The shipment is another one.
     expect(() => parse(editShipment(fixture('delivered'), (shipment) => { shipment.houseWaybillNumber = UNKNOWN; }), DELIVERED))
@@ -151,7 +151,7 @@ describe('Transcorp HTTP adapter', () => {
     }
     // An unknown message.
     expect(() => parse(fixture('not-found').replace(NOT_FOUND, 'something else'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'schema' }));
-    expect(() => parse('{"references":"1234567890"}', DELIVERED, 'application/json')).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => parse('{"references":"1234567891"}', DELIVERED, 'application/json')).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parse('<!DOCTYPE html><html><body>Track Shipments</body></html>', DELIVERED, 'text/html'))
       .toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parse('', DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
@@ -210,7 +210,7 @@ describe('Transcorp HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeTranscorpNumber('123-456-7890')).toBe(DELIVERED);
+    expect(normalizeTranscorpNumber('123-456-7891')).toBe(DELIVERED);
   });
 
   it('sends a read that failed to reach the site once more', async () => {

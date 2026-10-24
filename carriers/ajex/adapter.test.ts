@@ -11,7 +11,7 @@ import { ajexWording, normalizeAjexNumber, parseAjex } from './parser.js';
 import { ajexStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'AJA123456789012';
+const DELIVERED = 'AJA123456789013';
 const IN_TRANSIT = 'A1234567890';
 const UNKNOWN = 'AJA000000000000';
 const OLD_FORMAT = 'AJS000000000000';
@@ -292,7 +292,7 @@ describe('AJEX HTTP adapter', () => {
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     await expect(carrier(fetcher).track({ number: DELIVERED }, { budgetMs: 0 })).rejects.toMatchObject({ kind: 'budget' });
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeAjexNumber('aja 1234-5678-9012')).toBe(DELIVERED);
+    expect(normalizeAjexNumber('aja 1234-5678-9013')).toBe(DELIVERED);
   });
 
   it('tries once more after a failed connection, and ends a hanging read inside the budget', async () => {

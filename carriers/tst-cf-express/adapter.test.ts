@@ -8,7 +8,7 @@ import { checkTstCfLookup, parseTstCf, TST_CF_LOOKUP, TST_CF_ORIGIN, TST_CF_RESU
 import { statusMap, tstCfMappedStage, tstCfStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const KNOWN = '1234567890';
+const KNOWN = '1234567891';
 const OTHER = '0000000000';
 const SAIA = '12345678901';
 const SESSION = 'PHPSESSID=syntheticsession000000000000';
@@ -53,7 +53,7 @@ describe('TST-CF Express tracking adapter', () => {
   it('sends the whole PRO to the URL tracing address and reads its session’s results page', async () => {
     const fetcher = site();
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new TstCfTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 123 456 7890 ', { budgetMs: 3000.5 }))
+    await expect(new TstCfTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 123 456 7891 ', { budgetMs: 3000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     const [[lookupUrl, lookupInit], [resultsUrl, resultsInit]] = fetcher.mock.calls as [[string, RequestInit], [string, RequestInit]];
@@ -93,7 +93,7 @@ describe('TST-CF Express tracking adapter', () => {
     expect(canadian.delivery_carrier).toBeUndefined();
     for (const html of [page('delivered').replace('EXAMPLE CITY, OH', 'Not Available'),
       page('delivered').replace('EXAMPLE CITY, OH', 'EXAMPLE CITY, ZZ'),
-      page('delivered').replace(SAIA, '1234567890'),
+      page('delivered').replace(SAIA, '1234567891'),
       page('delivered').replace('Saia Shipment ID', 'Partner Shipment ID')]) {
       expect(parseTstCf(html, KNOWN).delivery_tracking_number).toBeUndefined();
     }
@@ -120,11 +120,11 @@ describe('TST-CF Express tracking adapter', () => {
   it('binds a completed pickup through the PRO its status names', () => {
     expect(parseTstCf(page('pickup'), KNOWN)).toEqual({
       status: 'in_transit', current_stage: 'accepted', current_stage_source: 'carrier_map',
-      last_status_text: 'Pickup completed, pro 123-4567890 assigned', last_update: null, expected_delivery: null,
+      last_status_text: 'Pickup completed, pro 123-4567891 assigned', last_update: null, expected_delivery: null,
       weight_kg: 362.874, service_name: 'Road', summary_only: true, events: [],
     });
-    for (const html of [page('pickup').replace('pro 123-4567890 assigned', 'pro 000-0000000 assigned'),
-      page('pickup').replace(', pro 123-4567890 assigned', '')]) {
+    for (const html of [page('pickup').replace('pro 123-4567891 assigned', 'pro 000-0000000 assigned'),
+      page('pickup').replace(', pro 123-4567891 assigned', '')]) {
       expect(failure(() => parseTstCf(html, KNOWN))).toMatchObject({ kind: 'indeterminate' });
     }
   });
@@ -171,7 +171,7 @@ describe('TST-CF Express tracking adapter', () => {
       page('delivered').replace('<th>Pro#</th>', '<th>Numéro</th>'),
       page('delivered').replace('<td colspan="2"><label>Saia', '<td colspan="2">x</td><td><label>Saia'),
       page('delivered').replace('<td>&nbsp;</td>', '<td>Other</td>'),
-      page('delivered').replace(/(<tr class="fs-14">\s*<td>1234567890<\/td>[\s\S]*?<\/tr>)/, '$1$1'),
+      page('delivered').replace(/(<tr class="fs-14">\s*<td>1234567891<\/td>[\s\S]*?<\/tr>)/, '$1$1'),
       page('delivered').replace('01/06/2026', '02/31/2026'),
       page('delivered').replace('01/12/2026 @ 08:30', '01/12/2026 @ 24:30'),
       page('delivered').replace('01/12/2026 @ 08:30', '2026-01-12 08:30'),

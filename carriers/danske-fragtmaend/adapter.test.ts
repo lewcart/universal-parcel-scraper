@@ -10,7 +10,7 @@ import { normalizeDanskeFragtmaendNumber, parseDanskeFragtmaend } from './parser
 import { danskeFragtmaendStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ZZ123456';
+const DELIVERED = 'ZZ123457';
 const IN_TRANSIT = 'ZZ654321';
 const UNKNOWN = 'ZZ000000';
 const COLLI = `00000000000000000002${DELIVERED}`;
@@ -93,7 +93,7 @@ describe('Danske Fragtmænd tracking adapter', () => {
     expect(() => parseDanskeFragtmaend(fixture('delivered'), `00000000000000000002${IN_TRANSIT}`))
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(() => parseDanskeFragtmaend(fixture('delivered'), IN_TRANSIT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(parseDanskeFragtmaend(edited('delivered', (body) => { body.ConsignmentNote.ConsignmentNumber = 'zz123456'; }), DELIVERED).events)
+    expect(parseDanskeFragtmaend(edited('delivered', (body) => { body.ConsignmentNote.ConsignmentNumber = 'zz123457'; }), DELIVERED).events)
       .toHaveLength(7);
   });
 
@@ -216,8 +216,8 @@ describe('Danske Fragtmænd tracking adapter', () => {
       await expect(carrier(fetcher).recognize!(number)).resolves.toEqual({ known: false });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeDanskeFragtmaendNumber(' 0000 0000 0000 0000 0002 zz123456 ')).toEqual({ number: COLLI, kind: 'colli' });
-    expect(normalizeDanskeFragtmaendNumber('zz-123-456')).toEqual({ number: DELIVERED, kind: 'consignment' });
+    expect(normalizeDanskeFragtmaendNumber(' 0000 0000 0000 0000 0002 zz123457 ')).toEqual({ number: COLLI, kind: 'colli' });
+    expect(normalizeDanskeFragtmaendNumber('zz-123-457')).toEqual({ number: DELIVERED, kind: 'consignment' });
   });
 
   it('recognizes a known collicode and an unknown one from plain HTTP, and does not ask about a bare consignment number', async () => {

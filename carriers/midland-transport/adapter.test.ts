@@ -12,7 +12,7 @@ import { normalizeMidlandNumber, parseMidland } from './parser.js';
 import { midlandMappedStage, midlandStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '1234567890123456';
+const DELIVERED = '1234567890123457';
 const IN_TRANSIT = '0000000000000000';
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
@@ -35,7 +35,7 @@ describe('Midland Transport HTTP adapter', () => {
   it('opens the tracking page for the number in English through the supplied transport', async () => {
     const fetcher = answering(() => html(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new MidlandTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678 9012 3456 ', { budgetMs: 1000.5 }))
+    await expect(new MidlandTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678 9012 3457 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [[url, init]] = fetcher.mock.calls as [[string, RequestInit]];
@@ -197,7 +197,7 @@ describe('Midland Transport HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeMidlandNumber('1234-5678-9012-3456')).toBe(DELIVERED);
+    expect(normalizeMidlandNumber('1234-5678-9012-3457')).toBe(DELIVERED);
   });
 
   it('answers a number filed under Midland Transport, and leaves sixteen digits unclaimed', async () => {

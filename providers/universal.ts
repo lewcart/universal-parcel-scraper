@@ -18,8 +18,9 @@
  */
 import type { AdapterEnvironment, CarrierAdapter, TrackingContext } from '../core/adapter/index.js';
 import { normalizeTrackingNumber } from '../core/detection/normalize.js';
+import { isPlaceholderNumber } from '../core/detection/placeholder.js';
 import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../core/detection/usps.js';
-import { BudgetExceededError, IndeterminateError } from '../core/errors/index.js';
+import { BudgetExceededError, IndeterminateError, InvalidInputError } from '../core/errors/index.js';
 import type { CarrierResult } from '../core/result/index.js';
 import { NOOP_RECORDER } from '../core/telemetry/index.js';
 import { TrawlClient } from '../core/transport/index.js';
@@ -139,6 +140,10 @@ export class UniversalTracker {
         { reason: 'usps_routing_barcode' });
     }
     const number = pic ?? normalized;
+    // Providers merge other people's shipments under a placeholder such as 123456789.
+    if (isPlaceholderNumber(number)) {
+      throw new InvalidInputError(source, 'A placeholder number is not sent', { reason: 'placeholder_number' });
+    }
     const result = this.options.browserLookup && (source === 'Postal Ninja' || source === 'Ship24')
       ? await this.options.browserLookup(source, number)
       : await this.provider(source).track({ number, postcode: postcode ?? null, timezone: timezone ?? null, countryHint: countryHint ?? null,

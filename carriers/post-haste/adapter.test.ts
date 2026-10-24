@@ -9,7 +9,7 @@ import { adapter, POST_HASTE_API, PostHasteTracker } from './adapter.js';
 import { parsePostHaste, postHasteQuery } from './parser.js';
 import { statusMap } from './status.js';
 
-const DELIVERED = 'ZZZZ 01234567';
+const DELIVERED = 'ZZZZ 01234566';
 const IN_TRANSIT = '01234567';
 const UNKNOWN = '00000000000000000000';
 
@@ -34,13 +34,13 @@ describe('Post Haste HTTP adapter', () => {
   it('asks the Freightways lookup under Post Haste’s name once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new PostHasteTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch('zzzz-01234567', { budgetMs: 1000.5 }))
+    await expect(new PostHasteTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch('zzzz-01234566', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
     expect(POST_HASTE_API).toBe(NZ_COURIERS_API.replace('/NZCouriers/', '/PostHaste/'));
     // The ticket number loses its leading zeros, as on the group's tracking pages.
-    expect(String(url)).toBe(`${POST_HASTE_API}?searchType=TK&ticketProductCode=ZZZZ&query=1234567`);
+    expect(String(url)).toBe(`${POST_HASTE_API}?searchType=TK&ticketProductCode=ZZZZ&query=1234566`);
     expect(init).toMatchObject({ redirect: 'manual', signal: expect.any(AbortSignal),
       headers: { Accept: 'application/json', 'User-Agent': 'SyntheticHost/1.0' } });
     expect(init!.method ?? 'GET').toBe('GET');
@@ -107,14 +107,14 @@ describe('Post Haste HTTP adapter', () => {
   });
 
   it('counts a consignment only when it names the whole number asked', () => {
-    expect(parsePostHaste(changed('delivered', (body) => { body.shortConsignmentId = 'zzzz 1234567'; }), 'ZZZZ01234567').events).toHaveLength(4);
+    expect(parsePostHaste(changed('delivered', (body) => { body.shortConsignmentId = 'zzzz 1234566'; }), 'ZZZZ01234566').events).toHaveLength(4);
     expect(parsePostHaste(changed('in-transit', (body) => { body.shortConsignmentId = '1234567'; }), IN_TRANSIT).events).toHaveLength(4);
     // The ticket's layout fits a customer printed label's consignment number too.
-    expect(parsePostHaste(changed('delivered', (body) => { body.shortConsignmentId = '0000000 ZZZZ01234567'; }), DELIVERED).events).toHaveLength(4);
+    expect(parsePostHaste(changed('delivered', (body) => { body.shortConsignmentId = '0000000 ZZZZ01234566'; }), DELIVERED).events).toHaveLength(4);
     for (const [shortId, number] of [
-      ['ZZZ 01234567', DELIVERED],
+      ['ZZZ 01234566', DELIVERED],
       ['ZZZZ 01234568', DELIVERED],
-      ['01234567', DELIVERED],
+      ['01234566', DELIVERED],
       // A customer printed label whose consignment number is the label asked.
       ['0000000 01234567', IN_TRANSIT],
       ['ZZZZ 01234567', IN_TRANSIT],
@@ -172,7 +172,7 @@ describe('Post Haste HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(postHasteQuery('zzzz 01234567')).toEqual({ kind: 'ticket', number: 'ZZZZ01234567', code: 'ZZZZ', query: '1234567' });
+    expect(postHasteQuery('zzzz 01234566')).toEqual({ kind: 'ticket', number: 'ZZZZ01234566', code: 'ZZZZ', query: '1234566' });
     expect(postHasteQuery('0123-4567')).toEqual({ kind: 'label', number: '01234567', query: '1234567' });
   });
 

@@ -86,7 +86,7 @@ describe('universal discovery chain', () => {
   });
 
   it('continues to another provider when prioritized 17TRACK returns no history', async () => {
-    const postalNumber = 'LZ000000005CN';
+    const postalNumber = 'LZ000000014CN';
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url).startsWith('https://parcelsapp.com/')
       ? new Response('', { status: 503 })
       : browserResponse('17TRACK', { meta: { code: 200 }, shipments: [{ number: postalNumber, code: 400, shipment: null }] },
@@ -99,7 +99,7 @@ describe('universal discovery chain', () => {
   });
 
   it('reaches the real UPU factory only after richer lookups fail for an eligible postal number', async () => {
-    const postalNumber = 'EB000000005CN';
+    const postalNumber = 'EB000000014CN';
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url).includes('globaltracktrace.ptc.post')
       ? Response.json([{ ID: postalNumber, Events: [{ EventCd: 'EMA', EventNm: 'Posting/Collection',
         EventDT: '2026-09-20T10:00:00Z' }] }])
@@ -225,13 +225,13 @@ describe('universal discovery chain', () => {
   });
 
   it('asks providers for the zero a letter O stands for in an S10 serial, however the caller stored it', async () => {
-    const history = { data: { tracking_number: 'CI000000005NL',
+    const history = { data: { tracking_number: 'CI000000014NL',
       events: [{ timestamp: '2026-09-10T10:00:00+02:00', status: 'Delivered', dispatch_code_id: 7 }] } };
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(history));
     const tracker = new UniversalTracker({ providers: ['Ship24'], fetcher });
-    await expect(tracker.fetchSource('Ship24', 'CIO00000005NL', 20_000)).resolves.toMatchObject({ current_stage: 'delivered' });
-    await expect(tracker.fetch('cio 0000000 5nl')).resolves.toMatchObject({ current_stage: 'delivered' });
-    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).pathname)).toEqual(Array(2).fill('/api/parcels/CI000000005NL'));
+    await expect(tracker.fetchSource('Ship24', 'CIO00000014NL', 20_000)).resolves.toMatchObject({ current_stage: 'delivered' });
+    await expect(tracker.fetch('cio 0000001 4nl')).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).pathname)).toEqual(Array(2).fill('/api/parcels/CI000000014NL'));
   });
 
   it('sends no provider a USPS routing barcode without a single package identifier, nor either reading', async () => {
@@ -254,6 +254,24 @@ describe('universal discovery chain', () => {
         for (const { error } of (chain as UniversalTrackingError).failures) {
           expect(error).toMatchObject({ kind: 'indeterminate', reason: 'usps_routing_barcode' });
         }
+      }
+    }
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(browserLookup).not.toHaveBeenCalled();
+  });
+
+  it('sends no provider a placeholder number, under which they merge other shipments', async () => {
+    const providers = ['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU'] as const;
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('no request expected'));
+    const browserLookup = vi.fn().mockRejectedValue(new Error('no lookup expected'));
+    for (const options of [{ trawlUrl: 'http://browser.test' }, { browserLookup }]) {
+      const tracker = new UniversalTracker({ providers: [...providers], enablePostalNinja: true, fetcher, ...options });
+      for (const typed of ['1234567890', '0000000000000', 'rr 0000 0000 5 cn']) {
+        for (const source of providers) {
+          await expect(tracker.fetchSource(source, typed, 20_000))
+            .rejects.toMatchObject({ kind: 'invalid_input', provider: source, reason: 'placeholder_number' });
+        }
+        await expect(tracker.fetch(typed)).rejects.toBeInstanceOf(UniversalTrackingError);
       }
     }
     expect(fetcher).not.toHaveBeenCalled();

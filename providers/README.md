@@ -51,6 +51,9 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   the Mailer ID layout does not settle) is never sent, as typed or as either reading:
   `fetchSource()` throws `indeterminate` with reason `usps_routing_barcode` before any
   request. [ARCHITECTURE.md](../ARCHITECTURE.md) has the split rule.
+  A placeholder number, such as zeros or 123456789 (`isPlaceholderNumber`), is never
+  sent either: providers merge other shipments under it, so `fetchSource()` throws
+  `invalid_input` with reason `placeholder_number` before any request.
 - A supplied postcode is passed to every provider; ParcelsApp and 17TRACK use it. The
   carrier's time zone is passed too. It is used only for scans with no trustworthy zone of
   their own. So is the carrier's catalog id: 17TRACK asks again for that carrier when its own

@@ -13,7 +13,7 @@ import { fleetopticsStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = 'FOAESH1234567';
-const IN_TRANSIT = 'FDYNS00000000000';
+const IN_TRANSIT = 'FDYNS00000000001';
 const OUT = 'FCLR000000000000';
 const UNKNOWN = 'FOAESH0000000';
 // A Monday morning in Toronto, after every fixture's rows.

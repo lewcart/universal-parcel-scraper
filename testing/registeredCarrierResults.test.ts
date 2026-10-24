@@ -26,26 +26,26 @@ const cases = [
   { carrier: 'delhivery', number: '0000000000001', fixture: 'delivered.json' },
   { carrier: 'aramex', number: '00000000001', fixture: 'delivered.html', unresolved: true },
   { carrier: 'four-px', number: '4PX0000000000001CN', fixture: 'delivered.json', unresolved: true },
-  { carrier: 'singapore-post', number: 'CZ000000005SG', fixture: 'speedpost.json', unresolved: true },
-  { carrier: 'korea-post', number: 'EE000000005KR', fixture: 'delivered.html', unresolved: true },
-  { carrier: 'yamato', number: '123456789012', fixture: 'delivered.html', unresolved: true },
-  { carrier: 'yanwen', number: 'UK000000005YP', fixture: 'delivered.html' },
+  { carrier: 'singapore-post', number: 'CZ000000014SG', fixtureNumber: 'CZ000000005SG', fixture: 'speedpost.json', unresolved: true },
+  { carrier: 'korea-post', number: 'EE000000014KR', fixtureNumber: 'EE000000005KR', fixture: 'delivered.html', unresolved: true },
+  { carrier: 'yamato', number: '123456789023', fixtureNumber: '1234-5678-9012', fixture: 'delivered.html', unresolved: true },
+  { carrier: 'yanwen', number: 'UK000000014YP', fixtureNumber: 'UK000000005YP', fixture: 'delivered.html' },
   { carrier: 'dtdc', number: 'N00000001', fixture: 'delivered.json' },
   { carrier: 'yunexpress', number: 'YT0000000000000001', fixture: 'in-transit.json', unresolved: true },
   { carrier: 'postnord', number: '00573000000000000001', fixture: 'delivered.json' },
   { carrier: 'bpost', number: '000000000000000000000001', fixture: 'delivered.json' },
   { carrier: 'purolator', number: '100000000001', fixture: 'delivered.json', unresolved: true },
   { carrier: 'yto', number: 'YT0000000000001', fixture: 'delivered.json' },
-  { carrier: 'correios-br', number: 'AA000000005BR', fixture: 'delivered.json' },
+  { carrier: 'correios-br', number: 'AA000000014BR', fixtureNumber: 'AA000000005BR', fixture: 'delivered.json' },
   { carrier: 'yunda', number: '0000000000001', fixture: 'delivered.json' },
-  { carrier: 'ems', number: 'EB000000005CN', fixture: 'positive.html', unresolved: true },
-  { carrier: 'spring-gds', number: 'LX123456785NL', fixture: 'delivered.json', unresolved: true },
+  { carrier: 'ems', number: 'EB000000014CN', fixture: 'positive.html', unresolved: true },
+  { carrier: 'spring-gds', number: 'LX123456799NL', fixtureNumber: 'LX123456785NL', fixture: 'delivered.json', unresolved: true },
   { carrier: 'uniuni', number: 'UUS0000000000000001', fixture: 'delivered.json', unresolved: true },
   { carrier: 'ctt-express', number: '0000000000000000000001', fixture: 'pickup.json', unresolved: true },
-  { carrier: 'pos-malaysia', number: 'RR000000005MY', fixture: 'international.json', unresolved: true },
+  { carrier: 'pos-malaysia', number: 'RR000000014MY', fixtureNumber: 'RR000000005MY', fixture: 'international.json', unresolved: true },
   { carrier: 'canpar', number: 'C000000000000000000001', fixture: 'delivered.json', unresolved: true },
-  { carrier: 'ninja-van', number: 'NLMYA00000000', fixture: 'returned.json', unresolved: true },
-  { carrier: 'correos-chile', number: 'SX000000005CL', fixture: 'customs.json', unresolved: true },
+  { carrier: 'ninja-van', number: 'NLMYA00000001', fixtureNumber: 'NLMYA00000000', fixture: 'returned.json', unresolved: true },
+  { carrier: 'correos-chile', number: 'SX000000014CL', fixtureNumber: 'SX000000005CL', fixture: 'customs.json', unresolved: true },
   { carrier: 'gofo', number: 'GFUS00000000000001', fixture: 'delivered.json', unresolved: true },
   { carrier: 'ecoscooting', number: '000000000000000001', fixture: 'delivered.json', unresolved: true },
   { carrier: 'landmark-global', number: 'LTN00000001N1', fixture: 'delivered.html', unresolved: true },
@@ -57,7 +57,7 @@ const cases = [
   { carrier: 'estafeta', number: '9000000001', fixture: 'delivered-lookup.html', unresolved: true },
   { carrier: 'canada-post', number: '0073938000999999', fixture: 'delivered.json', unresolved: true },
   { carrier: 'nacex', number: '9900/99000002', fixture: 'history.html', unresolved: true },
-  { carrier: 'ukrposhta', number: 'RR000000005UA', fixture: 'delivered.json', unresolved: true },
+  { carrier: 'ukrposhta', number: 'RR000000014UA', fixtureNumber: 'RR000000005UA', fixture: 'delivered.json', unresolved: true },
   { carrier: 'seur', number: '9900002', fixture: 'history.json', unresolved: true },
   { carrier: 'brt', number: '99000000000002', fixture: 'history.html', unresolved: true },
   { carrier: 'landmark-global', number: 'LTN000000009', fixture: 'in-transit-nine-digit.html', unresolved: true },
@@ -74,6 +74,8 @@ const cases = [
 
 function setup(entry: typeof cases[number], transform = (body: string) => body) {
   let body = readFileSync(new URL(`../carriers/${entry.carrier}/fixtures/${entry.fixture}`, import.meta.url), 'utf8');
+  // A fixture written for a placeholder number answers here for a number lookups accept.
+  if (entry.fixtureNumber) body = body.replaceAll(entry.fixtureNumber, entry.number);
   if (entry.carrier === 'four-px') {
     const value = JSON.parse(body);
     for (const scan of value.data[0].tracks) scan.tkTimezone = '';

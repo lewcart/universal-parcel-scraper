@@ -2,7 +2,7 @@
   "code": "1",
   "msg": "请求成功",
   "data": {
-    "waybill_sn": "YYZ00 00000000 0000",
+    "waybill_sn": "YYZ00 00000000 0001",
     "order_sn": "SAMPLEORDER0001",
     "company": "Sample Trading Co",
     "region_code": "YYZ",

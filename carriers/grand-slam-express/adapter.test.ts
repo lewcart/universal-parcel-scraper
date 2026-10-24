@@ -9,7 +9,7 @@ import { grandSlamWording, normalizeGrandSlamNumber, parseGrandSlam } from './pa
 import { grandSlamMappedStage, grandSlamStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = '000000000';
+const NUMBER = '000000001';
 const OTHER = '999999999';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const envelope = (html: string, error = '') => ({ Error: error, Data: '', Result: html });
@@ -200,7 +200,7 @@ describe('Grand Slam Express tracking adapter', () => {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeGrandSlamNumber('000-000-000')).toBe(NUMBER);
+    expect(normalizeGrandSlamNumber('000-000-001')).toBe(NUMBER);
   });
 
   it.each([[302, 'transport'], [403, 'challenge'], [429, 'rate_limited'], [404, 'transport'], [410, 'transport'],

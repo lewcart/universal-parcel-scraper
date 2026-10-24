@@ -10,7 +10,7 @@ import { normalizeEstesForwardingNumber, parseEstesForwarding } from './parser.j
 import { estesForwardingStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '1234567';
+const DELIVERED = '1234568';
 const IN_TRANSIT = '7654321';
 const UNKNOWN = '0000000';
 
@@ -204,7 +204,7 @@ describe('Estes Forwarding Worldwide HTTP adapter', () => {
 
   it('rejects numbers EFW does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['123456', '12345678', '1234567890123', 'A123456', '1234567%', `1234567${'0'.repeat(60)}`]) {
+    for (const number of ['123456', '12345678', '1234567890123', 'A123456', '1234568%', `1234568${'0'.repeat(60)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

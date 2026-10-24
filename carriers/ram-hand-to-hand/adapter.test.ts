@@ -9,7 +9,7 @@ import { normalizeRamNumber, parseRam, ramLine } from './parser.js';
 import { ramMappedStage, ramStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'RAM00000000';
+const DELIVERED = 'RAM00000001';
 const IN_TRANSIT = 'K0000000';
 const UNKNOWN = 'CAT000000';
 
@@ -183,7 +183,7 @@ describe('RAM HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeRamNumber('ram 0000-0000')).toBe(DELIVERED);
+    expect(normalizeRamNumber('ram 0000-0001')).toBe(DELIVERED);
   });
 
   it('ends a hanging read inside the budget', async () => {

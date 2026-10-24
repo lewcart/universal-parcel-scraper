@@ -13,7 +13,7 @@ import { dxWording, normalizeDxNumber, normalizeDxPostcode, parseDxFreight, pars
 import { dxMappedStage, dxStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'L1234567';
+const DELIVERED = 'L1234566';
 const IN_TRANSIT = '12345678';
 const POSTCODE = 'ZZ1 1ZZ';
 const page = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
@@ -42,7 +42,7 @@ describe('DX Freight tracking adapter', () => {
   it('sends the number and postcode as the tracking page does, then reads the menu and history in the session the lookup opened', async () => {
     const fetcher = tracker();
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new DxTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' l123 4567 ', ' zz1   1zz ', { budgetMs: 1000.5 }))
+    await expect(new DxTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' l123 4566 ', ' zz1   1zz ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(3);
     const [lookupUrl, lookup] = fetcher.mock.calls[0]!;

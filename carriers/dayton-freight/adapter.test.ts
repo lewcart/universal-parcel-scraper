@@ -12,7 +12,7 @@ import { normalizeDaytonNumber, parseDayton, printedPro } from './parser.js';
 import { daytonStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '12345678';
+const DELIVERED = '12345679';
 const IN_TRANSIT = '9000000001';
 const UNKNOWN = '99000000';
 
@@ -178,7 +178,7 @@ describe('Dayton Freight HTTP adapter', () => {
       return [delivery_carrier ?? null, delivery_tracking_number ?? null];
     };
     expect(partner('SEFL', '123-456-789')).toEqual(['southeastern-freight-lines', '123456789']);
-    expect(partner('oakh', 12345678)).toEqual(['oak-harbor', '12345678']);
+    expect(partner('oakh', 12345679)).toEqual(['oak-harbor', '12345679']);
     expect(partner('DFXP', IN_TRANSIT)).toEqual([null, null]);
     expect(partner('MANI', 'SAMPLE1')).toEqual([null, null]);
     expect(partner('PYLE', '')).toEqual([null, null]);
@@ -265,12 +265,12 @@ describe('Dayton Freight HTTP adapter', () => {
 
   it('rejects numbers Dayton Freight does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['123456', '0123456', '12345678901', '000000000000', 'ABCDEFGH', '1234567X', `12345678${'9'.repeat(60)}`]) {
+    for (const number of ['123456', '0123456', '12345678901', '000000000000', 'ABCDEFGH', '1234567X', `12345679${'9'.repeat(60)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    for (const number of ['1234567', '12345678', '123456789', '1234567890', '00001234567', '01234567890']) {
+    for (const number of ['1234567', '12345679', '123456789', '1234567890', '00001234567', '01234567890']) {
       expect(normalizeDaytonNumber(number), number).toBe(number);
     }
   });

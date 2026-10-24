@@ -10,7 +10,7 @@ import { euroexpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 // The synthetic code every fixture is for, and the address the lookup redirects it to.
-const CODE = '123456789';
+const CODE = '123456780';
 const OTHER = '000000000';
 const LOOKUP = `${EUROEXPRESS_API}?trackingNumber=${CODE}`;
 const ROUTE = `/package-metadata/track?trackingNumber=${CODE}`;
@@ -38,7 +38,7 @@ describe('EuroExpress HTTP adapter', () => {
   it('asks the tracking page\'s lookup for the whole code and follows its redirect, through the supplied transport', async () => {
     const fetcher = answering(reply('delivered'));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new EuroexpressTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 123 456 789 ', { budgetMs: 1000.5 }))
+    await expect(new EuroexpressTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 123 456 780 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([LOOKUP, `https://app-api.euroexpress.ba${ROUTE}`]);
     for (const [, init] of fetcher.mock.calls) {
@@ -111,7 +111,7 @@ describe('EuroExpress HTTP adapter', () => {
   it('binds the reply to the whole code asked', () => {
     expect(() => parseEuroexpress(reply('delivered'), OTHER))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'EuroExpress answered for another shipment' }));
-    for (const sifra of [null, '', 123456789, ['123456789']]) {
+    for (const sifra of [null, '', 123456780, ['123456780']]) {
       expect(() => parseEuroexpress(changed('delivered', (payload) => { payload.sifra = sifra; }), CODE), JSON.stringify(sifra))
         .toThrow(expect.objectContaining({ kind: 'schema' }));
     }
@@ -224,7 +224,7 @@ describe('EuroExpress HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: CODE }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeEuroexpressNumber(' 123-456-789 ')).toBe(CODE);
+    expect(normalizeEuroexpressNumber(' 123-456-780 ')).toBe(CODE);
   });
 
   it('routes a code filed under EuroExpress, or in a tracker link, to the adapter', async () => {

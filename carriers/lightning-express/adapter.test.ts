@@ -11,7 +11,7 @@ import { lightningExpressWaybill, normalizeLightningExpressNumber, parseLightnin
 import { lightningExpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'YYZ00000000000000';
+const DELIVERED = 'YYZ00000000000001';
 const MOVING = 'YYZ123000000001234';
 const UNKNOWN = 'ZZZ00000000000000';
 
@@ -48,9 +48,9 @@ describe('Lightning Express HTTP adapter', () => {
   });
 
   it('spaces a number before its last twelve and its last four characters, as the page’s script does', () => {
-    expect(lightningExpressWaybill(DELIVERED)).toBe('YYZ00 00000000 0000');
+    expect(lightningExpressWaybill(DELIVERED)).toBe('YYZ00 00000000 0001');
     expect(lightningExpressWaybill('yyz123 0000 0000 1234')).toBe('YYZ123 00000000 1234');
-    expect(normalizeLightningExpressNumber('YYZ00 00000000 0000')).toBe(DELIVERED);
+    expect(normalizeLightningExpressNumber('YYZ00 00000000 0001')).toBe(DELIVERED);
   });
 
   it('turns each stamped milestone into a wall-clock scan, newest first, and keeps no client, note or photo', () => {
@@ -108,10 +108,10 @@ describe('Lightning Express HTTP adapter', () => {
     expect(() => parseLightningExpress(fixture('in-transit'), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'Lightning Express answered for another order' }));
     // A number that only starts like the one asked is another order.
-    expect(() => parseLightningExpress(changed('delivered', (data) => { data.waybill_sn = 'YYZ00 00000000 00001'; }), DELIVERED))
+    expect(() => parseLightningExpress(changed('delivered', (data) => { data.waybill_sn = 'YYZ00 00000000 00011'; }), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     // The spacing and case of the echoed number do not matter.
-    expect(parseLightningExpress(changed('delivered', (data) => { data.waybill_sn = 'yyz0000000000000 0'; }), DELIVERED).events).toHaveLength(4);
+    expect(parseLightningExpress(changed('delivered', (data) => { data.waybill_sn = 'yyz0000000000000 1'; }), DELIVERED).events).toHaveLength(4);
     // The page shows the message of any other code; none has been seen, so it proves nothing.
     expect(() => parseLightningExpress({ code: '0', msg: '合成错误', data: null }, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(() => parseLightningExpress({ code: 0, msg: '', data: null }, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
@@ -183,7 +183,7 @@ describe('Lightning Express HTTP adapter', () => {
 
   it('routes a number the caller names Lightning Express’s to the adapter', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(fixture('delivered')));
-    await expect(createTracker({ fetcher, providers: [], env: {} }).track({ number: 'YYZ00 00000000 0000', carrier: 'lightning-express' }, { budgetMs: 3000 }))
+    await expect(createTracker({ fetcher, providers: [], env: {} }).track({ number: 'YYZ00 00000000 0001', carrier: 'lightning-express' }, { budgetMs: 3000 }))
       .resolves.toMatchObject({ carrier: 'lightning-express', source: 'lightning-express', result: { current_stage: 'delivered' } });
     expect(fetcher.mock.calls.some(([url]) => String(url) === lightningExpressUrl(DELIVERED))).toBe(true);
   });
@@ -195,9 +195,9 @@ describe('Lightning Express numbers', () => {
       expect(detectCarrierMatch(number).candidates ?? []).not.toContain('lightning-express');
       expect(recognitionAskedCarriers(number)).not.toContain('lightning-express');
     }
-    const link = 'https://www.lightningexpressca.com/track.html?id=YYZ00%2000000000%200000';
+    const link = 'https://www.lightningexpressca.com/track.html?id=YYZ00%2000000000%200001';
     // The link keeps the number as the page spaced it; a lookup normalizes it.
-    expect(parseTrackingInput(link)).toMatchObject({ trackingNumber: 'YYZ00 00000000 0000', carrier: 'lightning-express', source: 'link' });
+    expect(parseTrackingInput(link)).toMatchObject({ trackingNumber: 'YYZ00 00000000 0001', carrier: 'lightning-express', source: 'link' });
   });
 });
 

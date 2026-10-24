@@ -10,7 +10,7 @@ import { normalizeJanioNumber, parseJanio } from './parser.js';
 import { janioStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'JNTH000000000000';
+const DELIVERED = 'JNTH000000000001';
 const IN_TRANSIT = 'JNSG000000000000';
 const RELATED = 'JNHK000000000000';
 const UNKNOWN = 'JNMY000000000000';
@@ -215,7 +215,7 @@ describe('Janio HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeJanioNumber('jnth 0000-0000-0000')).toBe(DELIVERED);
+    expect(normalizeJanioNumber('jnth 0000-0000-0001')).toBe(DELIVERED);
   });
 
   it('sends a read that failed to reach the service once more', async () => {

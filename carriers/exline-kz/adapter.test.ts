@@ -10,7 +10,7 @@ import { normalizeExlineNumber, parseExline } from './parser.js';
 import { exlineStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '0000000000';
+const DELIVERED = '0000000001';
 const IN_TRANSIT = '1234567890';
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8');
 type Scan = Record<string, unknown>;
@@ -32,7 +32,7 @@ describe('Exline tracking adapter', () => {
   it('posts the whole number to the tracking page’s lookup once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(text('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new ExlineTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 000 000-0000 ', { budgetMs: 1000.5 }))
+    await expect(new ExlineTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 000 000-0001 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;

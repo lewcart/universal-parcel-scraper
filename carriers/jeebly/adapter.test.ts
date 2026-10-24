@@ -10,7 +10,7 @@ import { normalizeJeeblyNumber, parseJeebly, type JeeblyService } from './parser
 import { jeeblyMappedStage, jeeblyStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'JB1234567';
+const DELIVERED = 'JB1234568';
 const IN_TRANSIT = 'JBP123456';
 const UNKNOWN = 'JB0000000';
 
@@ -40,7 +40,7 @@ describe('Jeebly HTTP adapter', () => {
   it('submits the tracking form with the whole number under the scheduled service first, through the supplied transport', async () => {
     const fetcher = byService({ Scheduled: 'delivered.html' });
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new JeeblyTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' jb 123-4567 ', { budgetMs: 1000.5 }))
+    await expect(new JeeblyTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' jb 123-4568 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0] as [string, RequestInit];
@@ -171,7 +171,7 @@ describe('Jeebly HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeJeeblyNumber(' jb-123 4567 ')).toBe(DELIVERED);
+    expect(normalizeJeeblyNumber(' jb-123 4568 ')).toBe(DELIVERED);
     expect(normalizeJeeblyNumber('jb123456')).toBe('JB123456');
     expect(normalizeJeeblyNumber('jbp123456')).toBe(IN_TRANSIT);
   });

@@ -8,7 +8,7 @@ import { normalizeGaashNumber, parseGaash } from './parser.js';
 import { gaashStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'GAIH12345678';
+const DELIVERED = 'GAIH12345679';
 const IN_TRANSIT = 'PH1234567890';
 const UNKNOWN = 'GWD000000000';
 const NONCE = 'abcdef0000';
@@ -272,7 +272,7 @@ describe('GAASH HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeGaashNumber('gaih 1234-5678')).toBe(DELIVERED);
+    expect(normalizeGaashNumber('gaih 1234-5679')).toBe(DELIVERED);
   });
 
   it('ends a hanging read inside the budget and tries it once more', async () => {

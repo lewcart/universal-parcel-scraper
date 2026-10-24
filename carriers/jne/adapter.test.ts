@@ -9,7 +9,7 @@ import { jneScan, normalizeJneNumber, parseJne } from './parser.js';
 import { jneMappedStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'JT12345678901';
+const DELIVERED = 'JT12345678902';
 const IN_TRANSIT = '100200300400500';
 const UNKNOWN = 'JT99999999999';
 
@@ -42,7 +42,7 @@ describe('JNE HTTP adapter', () => {
   it('mints a guest token, then posts the number and the app client to the lookup', async () => {
     const fetcher = fetcherFor(() => reply(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new JneTracker({ fetcher, recorder }).fetch(' jt1234-5678901 ', { budgetMs: 2000 }))
+    await expect(new JneTracker({ fetcher, recorder }).fetch(' jt1234-5678902 ', { budgetMs: 2000 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     const [loginUrl, loginInit] = fetcher.mock.calls[0]!;
@@ -163,7 +163,7 @@ describe('JNE HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeJneNumber(' jt1234-5678901 ')).toBe(DELIVERED);
+    expect(normalizeJneNumber(' jt1234-5678902 ')).toBe(DELIVERED);
   });
 
   it('routes a JT number detected as JNE to the adapter', async () => {
@@ -176,7 +176,7 @@ describe('JNE HTTP adapter', () => {
 
 describe('JNE numbers', () => {
   it('claims JT consignments at high confidence', () => {
-    expect(detectCarrierMatch('JT12345678901')).toMatchObject({ carrier: 'jne', confidence: 'high' });
+    expect(detectCarrierMatch('JT12345678902')).toMatchObject({ carrier: 'jne', confidence: 'high' });
   });
 });
 

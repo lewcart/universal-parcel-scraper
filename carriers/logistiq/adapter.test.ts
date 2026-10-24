@@ -10,7 +10,7 @@ import { logistiqWording, normalizeLogistiqNumber, parseLogistiq } from './parse
 import { logistiqStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ABCDEFG123456789';
+const DELIVERED = 'ABCDEFG123456780';
 const IN_TRANSIT = 'ABCDEFG000000000';
 const UNKNOWN = 'ABCDEFGHI000000000';
 

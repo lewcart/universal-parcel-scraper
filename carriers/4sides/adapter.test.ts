@@ -9,7 +9,7 @@ import { foursidesWording, normalizeFoursidesNumber, parseFoursides } from './pa
 import { foursidesStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'FS123456789RU';
+const DELIVERED = 'FS123456779RU';
 const IN_TRANSIT = 'FE123456789RU';
 const UNKNOWN = 'FS000000000RU';
 
@@ -210,7 +210,7 @@ describe('4Sides HTTP adapter', () => {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeFoursidesNumber(' fs 123.456.789 ru ')).toBe(DELIVERED);
+    expect(normalizeFoursidesNumber(' fs 123.456.779 ru ')).toBe(DELIVERED);
   });
 
   it('routes a number filed under 4Sides to the adapter, and detection leaves the layout to postal numbers', async () => {

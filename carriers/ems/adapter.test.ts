@@ -9,7 +9,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { REGISTRY } from '../../generated/registry.js';
 import { EmsTracker, normalizeEmsTrackingNumber, parse } from './adapter.js';
 
-const NUMBER = 'EB000000005CN';
+const NUMBER = 'EB000000014CN';
 const fixture = (name = 'positive') => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
 function withLastStatus(status: string): string {
   const $ = load(fixture());
@@ -146,7 +146,7 @@ describe('EMS retrieval and registration', () => {
     expect(registry.adapterIdFor('ems')).toBe('ems');
     const instance = registry.for('ems')!;
     expect(instance.steps).toEqual(['direct']);
-    await expect(instance.track({ number: 'eb 000.000-005 cn' })).resolves.toMatchObject({ current_stage: 'customs' });
+    await expect(instance.track({ number: 'eb 000.000-014 cn' })).resolves.toMatchObject({ current_stage: 'customs' });
     await instance.track({ number: NUMBER });
     expect(fetcher).toHaveBeenCalledTimes(2);
     for (const [url, init] of fetcher.mock.calls) {
@@ -200,7 +200,7 @@ describe('EMS retrieval and registration', () => {
   });
 
   it('is selectable through the catalog or its official link while retaining national number detection', () => {
-    expect(normalizeEmsTrackingNumber('eb 000.000-005 cn')).toBe(NUMBER);
+    expect(normalizeEmsTrackingNumber('eb 000.000-014 cn')).toBe(NUMBER);
     expect(carrierDefinition('ems')).toMatchObject({ selectable: true, tracking: { adapter: 'ems' } });
     const url = CARRIERS.ems.trackingUrl!(NUMBER);
     expect(parseTrackingInput(url)).toMatchObject({ carrier: 'ems', trackingNumber: NUMBER, source: 'link', confidence: 'high' });

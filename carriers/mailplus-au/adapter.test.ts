@@ -13,7 +13,7 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const LODGED = 'MPX123456789';
 const PARTNER = 'ZZZZ00000000FPP00000';
-const COLLECTED = 'MPXL000000';
+const COLLECTED = 'MPXL000001';
 const UNKNOWN = 'MPX000000000';
 
 type Row = Record<string, unknown>;
@@ -157,7 +157,7 @@ describe('MailPlus HTTP adapter', () => {
     expect(() => parseMailplus({ ...fixture('delivered'), tracked_barcode: 'MPX000000000' }, LODGED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(() => parseMailplus(fixture('delivered'), 'ZZZZ00000000FPP00001')).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(() => parseMailplus(fixture('in-transit'), PARTNER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(parseMailplus({ ...fixture('in-transit'), tracked_barcode: 'mpxl000000' }, COLLECTED)).toMatchObject({ current_stage: 'in_transit' });
+    expect(parseMailplus({ ...fixture('in-transit'), tracked_barcode: 'mpxl000001' }, COLLECTED)).toMatchObject({ current_stage: 'in_transit' });
   });
 
   it('reads a parcel without dated events as no history', () => {
@@ -248,7 +248,7 @@ describe('MailPlus HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: LODGED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeMailplusNumber('mpxl 000-000')).toBe(COLLECTED);
+    expect(normalizeMailplusNumber('mpxl 000-001')).toBe(COLLECTED);
   });
 
   it('tries a read that hangs once more, and ends inside the budget', async () => {

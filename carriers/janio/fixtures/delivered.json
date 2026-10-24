@@ -1,6 +1,6 @@
 [
   {
-    "tracking_no": "JNTH000000000000",
+    "tracking_no": "JNTH000000000001",
     "version": "V2",
     "early_est_date": null,
     "est_date": null,
@@ -93,7 +93,7 @@
     ],
     "external_tracking_nos": {
       "jtms_sg_fm_janio": "000000000000000",
-      "scg": "JNTH000000000000"
+      "scg": "JNTH000000000001"
     }
   }
 ]

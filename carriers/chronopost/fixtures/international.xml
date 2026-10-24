@@ -9,7 +9,7 @@
             <code>DC </code><eventDate>2026-01-01T11:51:21+01:00</eventDate>
             <eventLabel>Colis en cours de préparation chez l'expéditeur</eventLabel><officeLabel>Web Services</officeLabel>
             <infoCompList><name>Rang</name><value>1/1</value></infoCompList>
-            <infoCompList><name>Numéro partenaire</name><value>GEO/12345678901234E</value></infoCompList>
+            <infoCompList><name>Numéro partenaire</name><value>GEO/12345678901235C</value></infoCompList>
             <infoCompList><name>Point de livraison</name><value>SYNTHETIC SHOP - 1 EXAMPLE STREET - 00000 - EXAMPLE CITY - DE</value></infoCompList>
           </events>
           <events>
@@ -43,7 +43,7 @@
             <infoCompList><name>Type du message</name><value>Colis collecté</value></infoCompList>
             <infoCompList><name>Média utilisé</name><value>E-mail</value></infoCompList>
           </events>
-          <skybillNumber>XT123456785TS</skybillNumber>
+          <skybillNumber>XT123456799TS</skybillNumber>
         </listEventInfoComp>
       </return>
     </ns2:trackSkybillV2Response>

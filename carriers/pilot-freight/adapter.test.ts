@@ -12,7 +12,7 @@ import { normalizePilotNumber, parsePilot } from './parser.js';
 import { pilotStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '123456789';
+const DELIVERED = '123456780';
 const IN_TRANSIT = '987654321';
 const UNKNOWN = '111222333';
 
@@ -238,7 +238,7 @@ describe('Pilot Freight Services HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    for (const [typed, number] of [[' 123-456-789 ', DELIVERED], ['987 654 321', IN_TRANSIT]]) {
+    for (const [typed, number] of [[' 123-456-780 ', DELIVERED], ['987 654 321', IN_TRANSIT]]) {
       expect(normalizePilotNumber(typed!), typed).toBe(number);
     }
   });

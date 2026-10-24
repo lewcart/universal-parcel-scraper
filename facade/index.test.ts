@@ -71,8 +71,8 @@ describe('standalone tracker', () => {
     const posti = vi.fn().mockResolvedValue({ known: true });
     const chronopost = vi.fn().mockResolvedValue({ known: false });
     const tracker = createTracker({ providers: [], registry: recognizers({ posti, chronopost }, lookup) });
-    expect(tracker.detect('RR123456785FI')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    await expect(tracker.track({ number: 'RR123456785FI' })).resolves.toMatchObject({
+    expect(tracker.detect('RR123456799FI')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    await expect(tracker.track({ number: 'RR123456799FI' })).resolves.toMatchObject({
       carrier: 'posti', source: 'posti', attempts: [{ source: 'posti', kind: 'ok' }],
     });
     expect(posti).toHaveBeenCalledOnce();
@@ -397,8 +397,8 @@ describe('standalone tracker', () => {
       Array.from({ length: count }, (_, day) => [`2026-01-0${day + 1}T${hour}:00Z`, 'In transit']);
     /** Two days in transit, then the given scan on the third. */
     const ending = (status: string): Scan[] => [...days(2), ['2026-01-03T09:00:00Z', status]];
-    const postal = 'RR123456785GB';
-    const chinaPost = 'LZ123456785CN';
+    const postal = 'RR123456799GB';
+    const chinaPost = 'LZ123456799CN';
     const UPU_LABELS: Record<string, string> = { EMA: 'Posting/collection', EMC: 'Departure from outward office of exchange',
       EMD: 'Arrival at inward office of exchange' };
     /**
@@ -608,7 +608,9 @@ describe('standalone tracker', () => {
 
     it('takes a fuller provider history over China Post\'s guest window, and keeps China Post\'s answer beside it', async () => {
       // China Post's own adapter reads a synthetic trace: the newest three of forty scans, ending in delivery, and the dated acceptance.
-      const fixture = (name: string) => readFileSync(new URL(`../carriers/china-post/fixtures/${name}.json`, import.meta.url), 'utf8');
+      // The fixture's placeholder number becomes one lookups accept.
+      const fixture = (name: string) => readFileSync(new URL(`../carriers/china-post/fixtures/${name}.json`, import.meta.url), 'utf8')
+        .replaceAll('LZ123456785CN', chinaPost);
       let trace = fixture('delivered');
       const app = vi.fn<typeof fetch>().mockImplementation(async (url) => new Response(
         String(url).endsWith(CHINA_POST_CHECK_PATH) ? fixture('check-open') : trace,

@@ -9,12 +9,12 @@ import { borderExpressNumber, parseBorderExpress } from './parser.js';
 import { borderExpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '00000000';
+const DELIVERED = '00000001';
 const IN_TRANSIT = 'ZZZZ000001';
 // The second unit's label of the consignment on its way.
 const LABEL = 'ZZZZBX00000000001002';
 const UNKNOWN = 'ZZZZ000000';
-const VERIFICATION_ID = '00000000-0000-0000-0000-000000000000';
+const VERIFICATION_ID = '00000001-0000-0000-0000-000000000000';
 const COOKIE = 'qt-verification=SyntheticCookie000';
 
 type Row = Record<string, unknown>;

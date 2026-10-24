@@ -133,12 +133,12 @@
       }
     ],
     "PudoDetails": "Sample Pickup Shop , 1 Sample Street  SAMPLE TOWN",
-    "TrackingNumber": "GAIH12345678",
-    "HAWB": "GAIH12345678",
-    "SearchTrackingNumber": "GAIH12345678"
+    "TrackingNumber": "GAIH12345679",
+    "HAWB": "GAIH12345679",
+    "SearchTrackingNumber": "GAIH12345679"
   },
   "parcel-status-data": {
-    "Hawb": "GAIH12345678",
+    "Hawb": "GAIH12345679",
     "CourierName": "Sample Couriers (shops)",
     "CourierCode": 5,
     "AgentName": "SAMPLESHOP",

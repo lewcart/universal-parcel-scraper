@@ -12,7 +12,7 @@ import { adapter, EmiratesPostTracker } from './adapter.js';
 import { EMIRATES_POST_MAX_BYTES, emiratesPostUrl, normalizeEmiratesPostNumber, parseEmiratesPost } from './parser.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = 'ZZ000000005AE';
+const NUMBER = 'ZZ000000028AE';
 const OTHER = 'ZZ000000014AE';
 const DOMESTIC = '1000000000001';
 const status = (code = 'P-53', descriptionEn = 'Delivered') => ({ code, descriptionEn });
@@ -39,7 +39,7 @@ const environment = (trawl: TrawlClient) => ({ recorder: NOOP_RECORDER, trawl, b
 
 describe('Emirates Post page projection', () => {
   it('keeps whole S10 and domestic identifiers separate from format ownership', () => {
-    expect(normalizeEmiratesPostNumber('zz 000 000 005 ae')).toBe(NUMBER);
+    expect(normalizeEmiratesPostNumber('zz 000 000 028 ae')).toBe(NUMBER);
     expect(normalizeEmiratesPostNumber('ZZ000000005CN')).toBe('ZZ000000005CN');
     expect(normalizeEmiratesPostNumber(DOMESTIC)).toBe(DOMESTIC);
     expect(emiratesPostUrl(NUMBER)).toBe(`https://www.emiratespost.ae/all-services/track-a-package/step-two?q=${NUMBER}`);

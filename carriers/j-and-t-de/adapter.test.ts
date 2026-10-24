@@ -12,7 +12,7 @@ import { jAndTDeStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 // Synthetic waybills in J&T Express Germany's layout; none is a real parcel.
-const DELIVERED = 'JTDE123456789012';
+const DELIVERED = 'JTDE123456789013';
 const RETURNED = 'JTDE012345678901';
 const UNKNOWN = 'JTDE000000000000';
 

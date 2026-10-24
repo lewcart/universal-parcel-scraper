@@ -10,7 +10,7 @@ import { normalizeForwardAirNumber, parseForwardAir } from './parser.js';
 import { forwardAirStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '12345678';
+const DELIVERED = '12345679';
 const IN_TRANSIT = '87654321';
 const UNKNOWN = '11111111';
 

@@ -14,7 +14,7 @@ import { statusMap, straightshipStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = 'STRTD123456789';
-const IN_TRANSIT = 'STRCA1234567890123';
+const IN_TRANSIT = 'STRCA1234567890124';
 const ATTEMPTED = 'STRTD12345678901234567';
 const RETURNED = 'STRCA0000000000000';
 const UNKNOWN = 'STRTD000000000';
@@ -162,7 +162,7 @@ describe('Straightship HTTP adapter', () => {
       withRows(Array.from({ length: 301 }, () => row('2026-10-16 10:00:00', 'Loading')).join('')),
       fixture('in-transit').replace('<th>City</th>', '<th>Location</th>'),
       fixture('in-transit').replace('Canada B2C Shipment Tracking', 'Shipment Tracking'),
-      '<html><head><title>Straightship - Tracking STRCA1234567890123</title></head><body><p>Tracking</p></body></html>',
+      '<html><head><title>Straightship - Tracking STRCA1234567890124</title></head><body><p>Tracking</p></body></html>',
     ]) {
       expect(() => parseStraightship(html, IN_TRANSIT, NOW)).toThrow(expect.objectContaining({ kind: 'schema' }));
     }
@@ -205,7 +205,7 @@ describe('Straightship HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeStraightshipNumber('strca 1234 5678 90123')).toBe(IN_TRANSIT);
+    expect(normalizeStraightshipNumber('strca 1234 5678 90124')).toBe(IN_TRANSIT);
   });
 
   it('tries a read that hangs once more, and ends inside the budget', async () => {
@@ -250,8 +250,8 @@ describe('Straightship numbers', () => {
   });
 
   it('offers Straightship for STSH, two letters and eleven digits, and names it once its tracker knows the parcel', async () => {
-    const number = 'STSHAB12345678901';
-    expect(detectCarrierMatch('stsh ab 1234 5678 901')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    const number = 'STSHAB12345678902';
+    expect(detectCarrierMatch('stsh ab 1234 5678 902')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch(number).candidates).toContain('straightship');
     expect(recognitionAskedCarriers(number)[0]).toBe('straightship');
     expect(normalizeStraightshipNumber(number)).toBe(number);

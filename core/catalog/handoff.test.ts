@@ -55,7 +55,7 @@ describe('general delivery handoff candidates', () => {
     const regions = Array.from({ length: 26 * 26 }, (_, index) => String.fromCharCode(65 + Math.floor(index / 26), 65 + (index % 26)));
     // Registered, tracked letter, parcel, EMS and customs-label items issued abroad.
     const proposals = regions.flatMap((destination_country) => ['RA', 'LX', 'CP', 'EA', 'UA'].map((service) =>
-      deliveryHandoff('aliexpress', `${service}123456785CN`, { destination_country }))).filter((proposal) => proposal !== null);
+      deliveryHandoff('aliexpress', `${service}123456799CN`, { destination_country }))).filter((proposal) => proposal !== null);
     expect(proposals.map(({ carrier }) => carrier)).toContain('australia-post');
     for (const { carrier, number } of proposals) {
       const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('offline'));
@@ -248,15 +248,15 @@ describe('delivery partners that look up only their own references', () => {
       .toEqual({ carrier: 'poste-italiane', number: plate, basis: 'partner' });
     expect(hasDirectHandoffAdapter('poste-italiane', '990001A000001')).toBe(true);
     // The check mirrors the adapter, which refuses any other reference before a request.
-    for (const number of ['LF123456780DE', '1Z1234567890123454']) expect(hasDirectHandoffAdapter('poste-italiane', number)).toBe(false);
+    for (const number of ['LF123456790DE', '1Z1234567890123454']) expect(hasDirectHandoffAdapter('poste-italiane', number)).toBe(false);
     const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('offline'));
     vi.stubGlobal('fetch', fetcher);
     const registry = new AdapterRegistry(REGISTRY, { fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
     const outcome = (number: string) => (async () => registry.for('poste-italiane')!.track({ number, postcode: null }, { budgetMs: 2_000 }))()
       .then(() => null, (caught: unknown) => carrierErrorKind(caught));
-    for (const number of ['LF123456780DE', '1Z1234567890123454']) expect(await outcome(number)).toBe('invalid_input');
+    for (const number of ['LF123456790DE', '1Z1234567890123454']) expect(await outcome(number)).toBe('invalid_input');
     expect(fetcher).not.toHaveBeenCalled();
-    for (const number of [plate, '990001A000001', 'LF123456785DE']) expect(await outcome(number)).not.toBe('invalid_input');
+    for (const number of [plate, '990001A000001', 'LF123456799DE']) expect(await outcome(number)).not.toBe('invalid_input');
     expect(fetcher).toHaveBeenCalled();
   });
 

@@ -9,7 +9,7 @@ import { normalizeChronodialiNumber, parseChronodiali } from './parser.js';
 import { chronodialiStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'CHPU1234567890123456789';
+const DELIVERED = 'CHPU1234567890123456780';
 const IN_TRANSIT = 'CD1234567890';
 const UNKNOWN = 'CHPU0000000000000000000';
 
@@ -169,7 +169,7 @@ describe('Chronodiali HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeChronodialiNumber('chpu 1234-5678-9012-3456-789')).toBe(DELIVERED);
+    expect(normalizeChronodialiNumber('chpu 1234-5678-9012-3456-780')).toBe(DELIVERED);
   });
 
   it('sends a read that fails to reach the service once more within the budget', async () => {

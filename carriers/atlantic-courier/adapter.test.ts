@@ -9,7 +9,7 @@ import { normalizeAtlanticCourierNumber, parseAtlanticCourier } from './parser.j
 import { atlanticCourierStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = '0000000000';
+const NUMBER = '0000000001';
 const OTHER = '0000000';
 const page = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
 const reply = (body: string, status = 200) => new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
@@ -219,7 +219,7 @@ describe('Atlantic International Express tracking adapter', () => {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeAtlanticCourierNumber('0000-000-000')).toBe(NUMBER);
+    expect(normalizeAtlanticCourierNumber('0000-000-001')).toBe(NUMBER);
     expect(normalizeAtlanticCourierNumber('000000')).toBe('000000');
   });
 

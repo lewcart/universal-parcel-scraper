@@ -10,7 +10,7 @@ import { isPostaFaroeHomeScan, normalizePostaFaroeNumber, parsePostaFaroe } from
 import { postaFaroeMappedStage, postaFaroeStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const INBOUND = 'CY123456785NL';
+const INBOUND = 'CY123456799NL';
 const HOME = 'RR000000005FO';
 const UNKNOWN = 'RR123456785FO';
 const MAIL = '00000000000000000000';
@@ -31,7 +31,7 @@ describe('Posta tracking adapter', () => {
   it('asks the tracker for the whole number once, as its page does, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(text('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new PostaFaroeTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' cy 123 456 785 nl ', { budgetMs: 1000.5 }))
+    await expect(new PostaFaroeTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' cy 123 456 799 nl ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;

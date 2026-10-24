@@ -13,7 +13,7 @@ import { normalizeMaritimeOntarioNumber, parseMaritimeOntarioBill, readMaritimeO
 import { maritimeOntarioMappedStage, maritimeOntarioStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'F1234567';
+const DELIVERED = 'F1234568';
 const IN_TRANSIT = 'F0000000';
 const VIEWER = 'https://cp.m-o.com/trace/external_bill_viewer.msw';
 const AJAX = 'https://cp.m-o.com/trace/bill_details_ajax.msw';
@@ -44,7 +44,7 @@ describe('Maritime-Ontario TM4Web adapter', () => {
   it('posts the whole trace form with the freight bill, then asks the trace and the bill in the session it opened', async () => {
     const fetcher = portal();
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new MaritimeOntarioTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' f123 4567 ', { budgetMs: 1000.5 }))
+    await expect(new MaritimeOntarioTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' f123 4568 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(3);
     const [[viewer, form], [trace, traceInit], [bill, billInit]] = fetcher.mock.calls as [[string, RequestInit], [string, RequestInit], [string, RequestInit]];
@@ -233,7 +233,7 @@ describe('Maritime-Ontario TM4Web adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeMaritimeOntarioNumber('f1234567')).toBe(DELIVERED);
+    expect(normalizeMaritimeOntarioNumber('f1234568')).toBe(DELIVERED);
     expect(normalizeMaritimeOntarioNumber(' F-000 0000 ')).toBe(IN_TRANSIT);
   });
 

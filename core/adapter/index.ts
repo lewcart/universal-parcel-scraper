@@ -7,6 +7,7 @@
  * declares its steps; it reaches the network only through what the
  * `AdapterEnvironment` provides, and it reports through the `StepRecorder`.
  */
+import { isPlaceholderNumber } from '../detection/placeholder.js';
 import { BudgetExceededError, CarrierError, carrierErrorKind, InvalidInputError } from '../errors/index.js';
 import { normalizeCarrierResult, type CarrierResult } from '../result/index.js';
 import type { StepRecorder } from '../telemetry/index.js';
@@ -210,9 +211,34 @@ export interface RegistryDefinition {
 }
 
 /**
+ * The adapter, refusing placeholder numbers before it is asked: trackers show
+ * other people's shipments under them. Its lookup fails as invalid input and
+ * its recognition answers unknown, without a request.
+ */
+function refusingPlaceholders(adapter: CarrierAdapter): CarrierAdapter {
+  const refusal = () => new InvalidInputError(adapter.id, 'A placeholder number is not looked up', { reason: 'placeholder_number' });
+  const recognize = adapter.recognize?.bind(adapter);
+  const recognizeWithBrowser = adapter.recognizeWithBrowser?.bind(adapter);
+  // Arguments pass through as given: an adapter can tell a lookup without a context.
+  return {
+    id: adapter.id,
+    steps: adapter.steps,
+    ...(adapter.recordsSteps !== undefined && { recordsSteps: adapter.recordsSteps }),
+    track: async (...args) => {
+      if (isPlaceholderNumber(args[0].number)) throw refusal();
+      return adapter.track(...args);
+    },
+    ...(recognize && { recognize: async (...args: Parameters<typeof recognize>) =>
+      isPlaceholderNumber(args[0]) ? { known: false } : recognize(...args) }),
+    ...(recognizeWithBrowser && { recognizeWithBrowser: async (...args: Parameters<typeof recognizeWithBrowser>) =>
+      isPlaceholderNumber(args[0]) ? { known: false, lastActivityAt: null } : recognizeWithBrowser(...args) }),
+  };
+}
+
+/**
  * One adapter instance per adapter id for the process lifetime, created on
  * first use so a broken provider module cannot prevent unrelated carriers
- * from syncing.
+ * from syncing. Each refuses placeholder numbers.
  */
 export class AdapterRegistry {
   private readonly instances = new Map<string, CarrierAdapter>();
@@ -237,7 +263,7 @@ export class AdapterRegistry {
     if (!factory) return null;
     let instance = this.instances.get(adapterId);
     if (!instance) {
-      instance = factory(this.environment);
+      instance = refusingPlaceholders(factory(this.environment));
       this.instances.set(adapterId, instance);
     }
     return instance;

@@ -10,7 +10,7 @@ import { jetlineMappedStage, jetlineStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = '123456789';
-const IN_TRANSIT = '12345678';
+const IN_TRANSIT = '12345679';
 const UNKNOWN = '000000000';
 const ANSWER = '/track.aspx?trackId=AAAAAAAAAAAAAAAAAAAAAA==';
 const ANSWER_URL = `https://www.jetlinecouriers.in${ANSWER}`;

@@ -9,7 +9,7 @@ import { normalizeFastfrateNumber, parseFastfrate } from './parser.js';
 import { fastfrateMappedStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '1234567890';
+const DELIVERED = '1234567892';
 const IN_TRANSIT = '123456789';
 const UNKNOWN = '12345678';
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8');
@@ -160,7 +160,7 @@ describe('Fastfrate tracking adapter', () => {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeFastfrateNumber('12345-67890')).toBe(DELIVERED);
+    expect(normalizeFastfrateNumber('12345-67892')).toBe(DELIVERED);
     expect(normalizeFastfrateNumber('123456')).toBe('123456');
     expect(carrier(fetcher).recognize).toBeUndefined();
   });

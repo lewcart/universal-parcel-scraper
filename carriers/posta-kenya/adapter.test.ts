@@ -9,7 +9,7 @@ import { normalizePostaKenyaNumber, parsePostaKenyaAnswer, parsePostaKenyaResult
 import { postaKenyaStage, postaKenyaWordingStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'EE000000005KE';
+const DELIVERED = 'EE000000014KE';
 const INBOUND = 'CP000000005DE';
 const UNKNOWN = 'RR000000005KE';
 const RESULT = 'https://postglobal.posta.co.ke/postglobaltrack/TrackResult.aspx?type=I';
@@ -43,7 +43,7 @@ describe('Posta Kenya tracking adapter', () => {
   it('opens the form, posts the whole code with its state and reads the result in the session the answer opened', async () => {
     const fetcher = site();
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new PostaKenyaTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' ee 000 000 005 ke ', { budgetMs: 1000.5 }))
+    await expect(new PostaKenyaTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' ee 000 000 014 ke ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher.mock.calls.map(([url, init]) => `${init?.method} ${String(url)}`)).toEqual([
       `GET ${POSTA_KENYA_TRACK}`, `POST ${POSTA_KENYA_TRACK}`, `GET ${RESULT}`]);
@@ -176,15 +176,15 @@ describe('Posta Kenya tracking adapter', () => {
   });
 
   it('rejects answers and result pages for another item, and changed pages', () => {
-    expect(() => parsePostaKenyaAnswer(answer('answer', 'EE000000005SN'), DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => parsePostaKenyaAnswer(answer('answer', 'EE000000014SN'), DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parsePostaKenyaAnswer(answer('not-found', DELIVERED), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => postaKenyaFormFields(page('form').replace('name="ImgBtnTrack"', 'name="Sample"'), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'schema' }));
     // The tracker stores some codes in lower case, which still name the item.
     expect(parsePostaKenyaResult(page('delivered'), DELIVERED).status).toBe('delivered');
     const changed = [
-      edited('delivered', (text) => text.replace('>ee000000005ke<', '>EE000000005SN<')),
-      edited('delivered', (text) => text.replace('>ee000000005ke<', '><')),
+      edited('delivered', (text) => text.replace('>ee000000014ke<', '>EE000000014SN<')),
+      edited('delivered', (text) => text.replace('>ee000000014ke<', '><')),
       edited('delivered', (text) => text.replace('<td width="15%">Origin</td>', '<td width="15%">Shipment ID</td>')),
       edited('delivered', (text) => text.replace('Item Events', 'Sample Section')),
       edited('delivered', (text) => text.replace('Item Details', 'Sample Section')),
@@ -214,7 +214,7 @@ describe('Posta Kenya tracking adapter', () => {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizePostaKenyaNumber(' ee-000-000-005 ke ')).toBe(DELIVERED);
+    expect(normalizePostaKenyaNumber(' ee-000-000-014 ke ')).toBe(DELIVERED);
     expect(() => parsePostaKenyaResult(page('delivered'), 'EE000000004KE')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     // A lookup tells known from unknown, but it is slower than recognition's budget.
     expect(carrier(fetcher).recognize).toBeUndefined();

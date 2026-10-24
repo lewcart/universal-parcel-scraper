@@ -9,7 +9,7 @@ import { parseZrExpress, zrExpressRequestNumber } from './parser.js';
 import { statusMap, zrExpressStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '12-345678-ZR';
+const DELIVERED = '12-345679-ZR';
 const IN_TRANSIT = '12-3456789012-ZR';
 const UNKNOWN = '00-000000-ZR';
 const COMPONENT = 'text/x-component';
@@ -106,7 +106,7 @@ describe('ZR Express HTTP adapter', () => {
     ]) {
       expect(() => parse(body, DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
     }
-    expect(() => parse('{"tn":"12-345678-ZR"}', DELIVERED, 'application/json')).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => parse('{"tn":"12-345679-ZR"}', DELIVERED, 'application/json')).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parse('', DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
@@ -157,7 +157,7 @@ describe('ZR Express HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(zrExpressRequestNumber('12 345 678 zr')).toBe(DELIVERED);
+    expect(zrExpressRequestNumber('12 345 679 zr')).toBe(DELIVERED);
     expect(zrExpressRequestNumber('12-3456789-zr')).toBe('12-3456789-ZR');
     expect(zrExpressRequestNumber('123456789012ZR')).toBe(IN_TRANSIT);
   });

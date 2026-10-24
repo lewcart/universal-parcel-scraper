@@ -9,7 +9,7 @@ import { normalizeEvdemoNumber, parseEvdemo } from './parser.js';
 import { evdemoMappedStage, evdemoStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '123456789012';
+const DELIVERED = '123456789013';
 const OTHER = '000000000000';
 
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
@@ -22,7 +22,7 @@ describe('Evdemo Lojistik HTTP adapter', () => {
   it('opens the tracking page with the number in its address, as the form and links do', async () => {
     const fetcher = replying(() => html(text('delivered.html')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new EvdemoTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678 9012 ', { budgetMs: 1000.5 }))
+    await expect(new EvdemoTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678 9013 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0] as [string, RequestInit];
@@ -99,9 +99,9 @@ describe('Evdemo Lojistik HTTP adapter', () => {
   it('keeps only a page that names the whole number asked', () => {
     expect(() => parseEvdemo(text('delivered.html'), OTHER))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'Evdemo Lojistik answered for another shipment' }));
-    expect(() => parseEvdemo(text('delivered.html').replace('>123456789012</span>', '>12345678901</span>'), DELIVERED))
+    expect(() => parseEvdemo(text('delivered.html').replace('>123456789013</span>', '>12345678901</span>'), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'Evdemo Lojistik answered for another shipment' }));
-    expect(() => parseEvdemo(text('delivered.html').replace('>123456789012</span>', '></span>'), DELIVERED))
+    expect(() => parseEvdemo(text('delivered.html').replace('>123456789013</span>', '></span>'), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'schema', message: 'Evdemo Lojistik did not name the shipment' }));
   });
 
@@ -153,7 +153,7 @@ describe('Evdemo Lojistik HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeEvdemoNumber(' 123-456-789-012 ')).toBe(DELIVERED);
+    expect(normalizeEvdemoNumber(' 123-456-789-013 ')).toBe(DELIVERED);
   });
 
   it('tries a read that hangs once more, inside the budget', async () => {

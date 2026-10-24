@@ -9,7 +9,7 @@ import { normalizeDroppNumber, parseDropp } from './parser.js';
 import { DROPP_STEPS, droppStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'DR000000000AA';
+const DELIVERED = 'DR000000010AA';
 const IN_TRANSIT = 'DR000000000BB';
 const HOME = 'DR000000000CC';
 const UNKNOWN = 'DR0000000000000';
@@ -152,7 +152,7 @@ describe('Dropp HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeDroppNumber('dr 000-000-000 aa')).toBe(DELIVERED);
+    expect(normalizeDroppNumber('dr 000-000-010 aa')).toBe(DELIVERED);
   });
 
   it('sends a read that failed to reach the service once more', async () => {

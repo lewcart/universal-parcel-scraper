@@ -11,7 +11,7 @@ import { jAndTAuStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 // Synthetic waybills in J&T Express Australia's layout; none is a real parcel.
-const DELIVERED = 'JTAU123456789012';
+const DELIVERED = 'JTAU123456789013';
 const IN_TRANSIT = 'JTAU012345678901';
 const UNKNOWN = 'JTAU000000000000';
 

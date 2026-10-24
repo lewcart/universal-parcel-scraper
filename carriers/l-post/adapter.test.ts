@@ -10,7 +10,7 @@ import { lPostResult, normalizeLPostNumber, parseLPostOrder } from './parser.js'
 import { lPostStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = 'ABC12345678';
+const NUMBER = 'ABC12345679';
 const UNKNOWN = 'ABC00000000';
 
 type Row = Record<string, unknown>;
@@ -42,7 +42,7 @@ describe('L-POST HTTP adapter', () => {
   it('asks the page’s backend for the whole number in capitals, then for that order’s history, through the supplied transport', async () => {
     const fetcher = routes(() => reply(order('order-pickup-delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new LPostTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' abc 1234-5678 ', { budgetMs: 1000.5 }))
+    await expect(new LPostTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' abc 1234-5679 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([L_POST_ORDER_URL, L_POST_HISTORY_URL]);
     for (const [, init] of fetcher.mock.calls) {
@@ -130,7 +130,7 @@ describe('L-POST HTTP adapter', () => {
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(() => parseLPostOrder(order('order-pickup-delivered', (details) => { details.OrderNumber = `${NUMBER} ${UNKNOWN}`; }), NUMBER))
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(parseLPostOrder(order('order-pickup-delivered', (details) => { details.OrderNumber = 'abc12345678 '; }), NUMBER).number).toBe(NUMBER);
+    expect(parseLPostOrder(order('order-pickup-delivered', (details) => { details.OrderNumber = 'abc12345679 '; }), NUMBER).number).toBe(NUMBER);
   });
 
   it('rejects a changed reply', () => {
@@ -218,7 +218,7 @@ describe('L-POST HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: NUMBER }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeLPostNumber('abc 1234.5678')).toBe(NUMBER);
+    expect(normalizeLPostNumber('abc 1234.5679')).toBe(NUMBER);
   });
 
   it('ends a hanging lookup inside its budget', async () => {

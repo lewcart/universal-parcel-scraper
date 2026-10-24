@@ -9,7 +9,7 @@ import { normalizeTanzaniaPostsNumber, parseTanzaniaPostsPanel, parseTanzaniaPos
 import { statusMap, tanzaniaPostsStage, tanzaniaPostsWordingStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'EE000000005TZ';
+const DELIVERED = 'EE000000014TZ';
 const MOVING = 'RR000000005TZ';
 const UNKNOWN = 'AA000000005TZ';
 const UNPAID = 'CP000000005TZ';
@@ -36,7 +36,7 @@ describe('Tanzania Posts Corporation tracking adapter', () => {
   it('posts the whole code to the search form’s lookup, as the page does', async () => {
     const fetcher = site();
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new TanzaniaPostsTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' ee 000 000 005 tz ', { budgetMs: 1000.5 }))
+    await expect(new TanzaniaPostsTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' ee 000 000 014 tz ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
@@ -163,12 +163,12 @@ describe('Tanzania Posts Corporation tracking adapter', () => {
   it('rejects a panel for another item and a changed panel', () => {
     expect(() => parseTanzaniaPostsReply(reply(fixture('delivered.html')), MOVING)).toThrow(expect.objectContaining({ kind: 'schema' }));
     // The tracker may store a code in lower case, which still names the item.
-    expect(parseTanzaniaPostsPanel(edited('delivered.html', (text) => text.replace('EE000000005TZ', 'ee000000005tz')), DELIVERED).status)
+    expect(parseTanzaniaPostsPanel(edited('delivered.html', (text) => text.replace('EE000000014TZ', 'ee000000014tz')), DELIVERED).status)
       .toBe('delivered');
     const changed = [
-      edited('delivered.html', (text) => text.replace('Barcode: EE000000005TZ', 'Barcode:  ')),
-      edited('delivered.html', (text) => text.replace('Barcode: EE000000005TZ', 'Barcode: EE000000005TZX')),
-      edited('delivered.html', (text) => text.replace('</table></div>', '<tr><td>Barcode: EE000000005TZ</td></tr></table></div>')),
+      edited('delivered.html', (text) => text.replace('Barcode: EE000000014TZ', 'Barcode:  ')),
+      edited('delivered.html', (text) => text.replace('Barcode: EE000000014TZ', 'Barcode: EE000000014TZX')),
+      edited('delivered.html', (text) => text.replace('</table></div>', '<tr><td>Barcode: EE000000014TZ</td></tr></table></div>')),
       edited('delivered.html', (text) => text.replace('</table></div>', '<tr><td>Origin:</td><td>Arusha</td></tr></table></div>')),
       edited('delivered.html', (text) => text.replace('<th> Weight Kgs</th>', '<th> Sample</th>')),
       edited('delivered.html', (text) => text.replace('<td> Document </td>', '')),
@@ -190,7 +190,7 @@ describe('Tanzania Posts Corporation tracking adapter', () => {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeTanzaniaPostsNumber(' ee-000-000-005 tz ')).toBe(DELIVERED);
+    expect(normalizeTanzaniaPostsNumber(' ee-000-000-014 tz ')).toBe(DELIVERED);
     expect(normalizeTanzaniaPostsNumber('CP000000005DE')).toBe('CP000000005DE');
     expect(() => parseTanzaniaPostsReply(reply(fixture('delivered.html')), 'EE000000004TZ')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     // A lookup tells known from unknown, but it is slower than recognition's budget.

@@ -22,7 +22,7 @@ const CUSTOMS = 'QZ0000000050';
 const ABSENT = 'QZ9999999990';
 const ONFORWARDED = 'QZ0000000068';
 // NZ Post's label for the parcel Aramex hands on.
-const HANDED_ON = 'XD123456785NZ';
+const HANDED_ON = 'XD123456799NZ';
 const ENDPOINT = `${ARAMEX_NZ_ORIGIN}/umbraco/api/TrackingApi/GetTrackingData`;
 const NZ_POST_ENDPOINT = 'https://tools.nzpost.co.nz/tracking/api/parceltrack/parcels';
 // A parsed fixture that tests change in place.
@@ -147,7 +147,7 @@ describe('Aramex New Zealand tracking adapter', () => {
     expect(result.events![0]).toEqual({ time: '2026-05-13T06:20:41+12:00', description: 'Delivery onforwarded', location: 'Southvale', provider_code: 'RUR', stage: 'in_transit', stage_source: 'carrier_map' });
     expect(JSON.stringify(result)).not.toContain('rural agent');
     // Spaces and case do not matter, and NZ Post's courier label counts too.
-    for (const [label, expected] of [[' xd 123 456 785 nz ', HANDED_ON], ['0000000000000017AKL001AS', '0000000000000017AKL001AS']] as const) {
+    for (const [label, expected] of [[' xd 123 456 799 nz ', HANDED_ON], ['0000000000000017AKL001AS', '0000000000000017AKL001AS']] as const) {
       expect(parseAramexNz(edited('onforwarded', (result) => { result.OnforwardLabelNumber = label; }), ONFORWARDED), label)
         .toMatchObject({ delivery_carrier: 'nz-post', delivery_tracking_number: expected });
     }
@@ -156,8 +156,8 @@ describe('Aramex New Zealand tracking adapter', () => {
       ['flag as text', (result: Reply) => { result.IsNZPostOnforward = 'true'; }],
       ['no label', (result: Reply) => { result.OnforwardLabelNumber = ''; }],
       ['label not text', (result: Reply) => { result.OnforwardLabelNumber = { label: HANDED_ON }; }],
-      ['broken check digit', (result: Reply) => { result.OnforwardLabelNumber = 'XD123456784NZ'; }],
-      ['part of the label', (result: Reply) => { result.OnforwardLabelNumber = 'XD123456785'; }],
+      ['broken check digit', (result: Reply) => { result.OnforwardLabelNumber = 'XD123456798NZ'; }],
+      ['part of the label', (result: Reply) => { result.OnforwardLabelNumber = 'XD123456799'; }],
       ['another post’s item', (result: Reply) => { result.OnforwardLabelNumber = 'RA123456785CH'; }],
       ['an Aramex label', (result: Reply) => { result.OnforwardLabelNumber = TRANSIT; }],
     ] as const) {

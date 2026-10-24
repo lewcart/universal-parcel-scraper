@@ -37,9 +37,6 @@ empty table, whether the label is not scanned yet or was never issued. That
 page is an answer without history, never proof of absence. Form errors, blank
 responses, redirects and generic HTTP errors remain inconclusive.
 
-The tracker also shows other shipments' scans under placeholders such as all
-zeros, so a number of one repeated digit is refused as invalid input.
-
 ## Testing
 
 Set `CIBLEX_TRACKING_NUMBER` outside the repository and optionally

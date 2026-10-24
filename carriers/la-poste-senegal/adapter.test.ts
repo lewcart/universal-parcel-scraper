@@ -9,7 +9,7 @@ import { normalizeLaPosteSenegalNumber, parseLaPosteSenegal } from './parser.js'
 import { laPosteSenegalMappedStage, laPosteSenegalStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const INBOUND = 'CP000000005FR';
+const INBOUND = 'CP000000014FR';
 const IN_TRANSIT = 'EE000000005SN';
 const UNKNOWN = 'LX000000005SN';
 type Row = Record<string, unknown>;
@@ -30,7 +30,7 @@ describe('La Poste du Sénégal tracking adapter', () => {
   it('asks the home page’s lookup for the whole code once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(text('inbound-delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new LaPosteSenegalTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' cp 000 000 005 fr ', { budgetMs: 1000.5 }))
+    await expect(new LaPosteSenegalTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' cp 000 000 014 fr ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;

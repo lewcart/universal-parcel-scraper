@@ -12,7 +12,7 @@ import { normalizePyleNumber, parsePyle } from './parser.js';
 import { pyleStage, pyleWordingStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '123456789';
+const DELIVERED = '123456780';
 const IN_TRANSIT = '987654321';
 const UNKNOWN = '111111111';
 

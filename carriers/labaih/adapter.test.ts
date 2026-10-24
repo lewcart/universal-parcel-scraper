@@ -11,7 +11,7 @@ import { labaihWording, normalizeLabaihNumber, parseLabaih } from './parser.js';
 import { labaihStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = '12345678901234';
+const NUMBER = '12345678901235';
 const OTHER = '00000000000000';
 // The shop, its reference and the recipient's district, which the result must not keep.
 const PRIVATE = /Sample Shop|Sample Item|REF0|Sample District|Sample Street|whatsapp/i;
@@ -38,7 +38,7 @@ describe('LaBaih tracking page', () => {
   it('asks for the English page of the number through the supplied transport', async () => {
     const fetcher = serving(fixture('in-transit'));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new LabaihTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678-9012.34 ', { budgetMs: 1000.5 }))
+    await expect(new LabaihTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1234 5678-9012.35 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'in_transit', last_update_local: '2026-10-16T08:05:00' });
     expect(fetcher).toHaveBeenCalledOnce();
     const [[url, init]] = fetcher.mock.calls as [[string, RequestInit]];
@@ -191,7 +191,7 @@ describe('LaBaih tracking page', () => {
     await expect(new LabaihTracker({ fetcher: unused }).fetch(NUMBER, { signal: AbortSignal.abort(new Error('cancelled')) }))
       .rejects.toThrow('cancelled');
     expect(unused).not.toHaveBeenCalled();
-    expect(normalizeLabaihNumber(' 1234-5678 9012.34 ')).toBe(NUMBER);
+    expect(normalizeLabaihNumber(' 1234-5678 9012.35 ')).toBe(NUMBER);
     let signal: AbortSignal | undefined;
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       signal = init?.signal ?? undefined;

@@ -3,7 +3,7 @@
     "shipmentStatus": {
       "result": [
         {
-          "pro": "123456789",
+          "pro": "123456780",
           "billOfLadingNumber": "SAMPLEBOL001",
           "purchaseOrder": "PO-SAMPLE-1",
           "status": "INVOICED",

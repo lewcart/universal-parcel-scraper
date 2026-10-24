@@ -26,10 +26,10 @@ describe('consumer dispatch', () => {
     const universal = { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) } as unknown as UniversalTracker;
     const registry = new AdapterRegistry({ factories: { test: () => ({ id: 'test', steps: ['direct'], track }) },
       carriers: { test: 'test', fallback: 'universal' } }, environment);
-    await trackCarrier('test', { number: 'cio 0000000 5nl', postcode: '00000' }, { registry, universal });
-    expect(track).toHaveBeenCalledWith({ number: 'CI000000005NL', postcode: '00000' });
-    await trackCarrier('fallback', { number: 'CIO00000005NL' }, { registry, universal });
-    expect(universal.fetch).toHaveBeenCalledWith('CI000000005NL', undefined, { signal: undefined, budgetMs: undefined }, undefined, 'fallback');
+    await trackCarrier('test', { number: 'cio 0000001 4nl', postcode: '00000' }, { registry, universal });
+    expect(track).toHaveBeenCalledWith({ number: 'CI000000014NL', postcode: '00000' });
+    await trackCarrier('fallback', { number: 'CIO00000014NL' }, { registry, universal });
+    expect(universal.fetch).toHaveBeenCalledWith('CI000000014NL', undefined, { signal: undefined, budgetMs: undefined }, undefined, 'fallback');
   });
 
   it('records one lookup and leaves an adapter that owns its steps to record them', async () => {
@@ -80,6 +80,32 @@ describe('consumer dispatch', () => {
       expect(held.remainingMs()).toBeGreaterThan(2 ** 31 - 1_000);
       expect(held.remainingMs()).toBeLessThanOrEqual(2 ** 31 - 1);
     }
+  });
+
+  it('refuses a placeholder number before any adapter is asked, and hands every other number on as given', async () => {
+    // Methods that read their own adapter keep it.
+    class Adapter {
+      readonly id = 'test';
+      readonly steps = ['direct'];
+      readonly asked: unknown[][] = [];
+      async track(...args: unknown[]) { this.asked.push(args); return { status: 'delivered' }; }
+      async recognize(...args: unknown[]) { this.asked.push(args); return { known: true }; }
+      async recognizeWithBrowser(...args: unknown[]) { this.asked.push(args); return { known: true, lastActivityAt: null }; }
+    }
+    const instance = new Adapter();
+    const registry = new AdapterRegistry({ factories: { test: () => instance as never }, carriers: { test: 'test' } }, environment);
+    const adapter = registry.for('test')!;
+    for (const number of ['0000000000', 'TBA000000000000', '123456789', 'rr 123456785 cn']) {
+      const refusal = { kind: 'invalid_input', provider: 'test', reason: 'placeholder_number' };
+      await expect(trackCarrier('test', { number }, { registry, universal: {} as UniversalTracker })).rejects.toMatchObject(refusal);
+      await expect(adapter.track({ number })).rejects.toMatchObject(refusal);
+      await expect(adapter.recognize!(number)).resolves.toEqual({ known: false });
+      await expect(adapter.recognizeWithBrowser!(number)).resolves.toEqual({ known: false, lastActivityAt: null });
+    }
+    expect(instance.asked).toEqual([]);
+    await expect(adapter.track({ number: 'TEST0001' })).resolves.toEqual({ status: 'delivered' });
+    await expect(adapter.recognize!('TEST0001')).resolves.toEqual({ known: true });
+    expect(instance.asked).toEqual([[{ number: 'TEST0001' }], ['TEST0001']]);
   });
 
   it('uses the consumer-configured universal chain only for universal carriers, naming the carrier', async () => {

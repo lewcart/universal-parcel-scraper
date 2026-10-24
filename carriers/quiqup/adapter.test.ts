@@ -10,7 +10,7 @@ import { normalizeQuiqupNumber, parseQuiqup } from './parser.js';
 import { quiqupStage, quiqupWording, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '12345678';
+const DELIVERED = '12345679';
 const IN_TRANSIT = '1234567';
 const UNKNOWN = '23456789';
 
@@ -185,7 +185,7 @@ describe('Quiqup HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeQuiqupNumber(' 1234-5678 ')).toBe(DELIVERED);
+    expect(normalizeQuiqupNumber(' 1234-5679 ')).toBe(DELIVERED);
   });
 
   it('ends a hanging read inside the budget', async () => {

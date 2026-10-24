@@ -9,7 +9,7 @@ import { normalizeProshipsNumber, parseProships, parseProshipsNonce, proshipsWor
 import { proshipsMappedStage, proshipsStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ML000000001MH';
+const DELIVERED = 'ML000000011MH';
 const CUSTOMS = 'ML000000002MH';
 const UNKNOWN = '0000000000000';
 const NONCE = '0a1b2c3d4e';
@@ -195,7 +195,7 @@ describe('ProShips HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: CUSTOMS }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeProshipsNumber(' ml 000-000-001 mh ')).toBe(DELIVERED);
+    expect(normalizeProshipsNumber(' ml 000-000-011 mh ')).toBe(DELIVERED);
   });
 
   it('tries a read that hangs once more inside the budget', async () => {

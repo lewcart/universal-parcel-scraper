@@ -9,7 +9,7 @@ import { normalizeFourSeventyTwoNumber, parseFourSeventyTwo } from './parser.js'
 import { DIGITIZED, fourSeventyTwoMappedStage, fourSeventyTwoStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'RN000000005CO';
+const DELIVERED = 'RN000000014CO';
 const RETURNED = 'YG000000005CO';
 const INBOUND = 'RR000000005SG';
 const UNKNOWN = 'MN000000005CO';
@@ -29,7 +29,7 @@ describe('4-72 tracking adapter', () => {
   it('asks the tracking page’s two routes for the whole guía, through the supplied transport', async () => {
     const fetcher = routes(text('search'), text('events-delivered'));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new FourSeventyTwoTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' rn 000 000 005 co ', { budgetMs: 1000.5 }))
+    await expect(new FourSeventyTwoTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' rn 000 000 014 co ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(fetcher.mock.calls.map(([url]) => String(url)).sort()).toEqual([
@@ -136,7 +136,7 @@ describe('4-72 tracking adapter', () => {
   it('rejects changed replies and answers for another guía', () => {
     const changed: Array<[string, string]> = [
       [card(UNKNOWN), text('events-delivered')],
-      [card('RN000000005C'), text('events-delivered')],
+      [card('RN000000014C'), text('events-delivered')],
       [text('search').replace(/<h3>Número de Guía[^<]*<\/h3>/, '<h3>Sample heading</h3>'), text('events-delivered')],
       [text('search'), text('events-delivered').replace('<th scope="col">Evento</th>', '<th scope="col">Estado</th>')],
       [text('search'), table('<tr><td>2/02/2026 08:00:00</td><td>PO.SAMPLE</td><td>Admitido</td></tr>')],

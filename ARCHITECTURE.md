@@ -57,6 +57,15 @@ its only way to the network, and no framework or app import is allowed. The regi
 one adapter per process, on first use, so a carrier that fails to load cannot take the others
 down with it.
 
+Placeholder numbers never reach a carrier or a provider. Apart from a letter prefix and
+suffix, these are six or more digits that repeat one digit or run straight up or down, such
+as 123456789. An S10 item counts when its serial is one, which covers the UPU's own example.
+Many trackers keep test labels and stray scans under these numbers and show them to anyone
+who asks, and providers merge them into one history. The registry's adapters and
+`UniversalTracker.fetchSource()` refuse them before any request: a lookup fails as
+`invalid_input` with reason `placeholder_number`, and recognition answers unknown. Detection
+still reads their shape, and `isPlaceholderNumber` lets a consumer refuse one at its own form.
+
 Shared text helpers accept strings and, for scalar codes and identifiers, finite numbers.
 Provider identifiers are normalized whole before comparison; display-text limits must not
 erase a different identifier's suffix. Numeric identifiers require an exact, nonnegative integer.

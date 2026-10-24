@@ -9,7 +9,7 @@ import { normalizeVimenpaqNumber, parseVimenpaq, VIMENPAQ, VIMENPAQ_API } from '
 import { statusMap, vimenpaqStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'AAA0000000000';
+const DELIVERED = 'AAA0000000001';
 const IN_TRANSIT = 'BBB0000000000';
 const TRACKING = 'TBA000000000000';
 const UNKNOWN = 'CCC0000000000';
@@ -33,7 +33,7 @@ describe('Vimenpaq HTTP adapter', () => {
   it('posts the whole number in capitals to the app tracking page’s lookup once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new VimenpaqTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' aaa 0000-000 000 ', { budgetMs: 1000.5 }))
+    await expect(new VimenpaqTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' aaa 0000-000 001 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
@@ -107,7 +107,7 @@ describe('Vimenpaq HTTP adapter', () => {
     const held = changed('in-transit', (guide) => { guide.Tracking = TRACKING; });
     expect(parseVimenpaq(held, TRACKING).events).toHaveLength(3);
     expect(() => parseVimenpaq(held, `${TRACKING}0`)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(parseVimenpaq(changed('delivered', (guide) => { guide.NumeroGuia = ' AAA0000000000   '; }), DELIVERED).events).toHaveLength(6);
+    expect(parseVimenpaq(changed('delivered', (guide) => { guide.NumeroGuia = ' AAA0000000001   '; }), DELIVERED).events).toHaveLength(6);
   });
 
   it('rejects a changed reply', () => {

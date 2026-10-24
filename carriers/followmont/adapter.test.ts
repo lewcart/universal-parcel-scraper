@@ -9,7 +9,7 @@ import { followmontBookingWindow, normalizeFollowmontNumber, parseFollowmontBook
 import { followmontMappedStage, followmontStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '12345678';
+const DELIVERED = '12345679';
 const IN_TRANSIT = 'P123456789';
 const BOOKED = 'U1234567';
 const UNKNOWN = '0000000';
@@ -40,7 +40,7 @@ describe('Followmont HTTP adapter', () => {
     const fetcher = routed(() => reply(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
     const lookup = new FollowmontTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0', now: () => NOW });
-    await expect(lookup.fetch(' 1234-5678 ', { budgetMs: 1000.5 })).resolves.toMatchObject({ current_stage: 'delivered' });
+    await expect(lookup.fetch(' 1234-5679 ', { budgetMs: 1000.5 })).resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0] as [string, RequestInit];
     expect(url).toBe(FOLLOWMONT_TRACE_API);

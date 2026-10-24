@@ -12,7 +12,7 @@ import { normalizeMrlNumber, parseMrl } from './parser.js';
 import { mrlMappedStage, mrlStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'CAAA000000';
+const DELIVERED = 'CAAA000001';
 const IN_TRANSIT = 'CAAA123456';
 const UNKNOWN = 'CZZZ000000';
 
@@ -45,7 +45,7 @@ describe('MRL Global HTTP adapter', () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(`${MRL_TRACKING}?connoteno=${IN_TRANSIT}`);
-    expect(mrlTrackingUrl(DELIVERED)).toBe('https://www.mrlglobal.com/tracking/?connoteno=CAAA000000');
+    expect(mrlTrackingUrl(DELIVERED)).toBe('https://www.mrlglobal.com/tracking/?connoteno=CAAA000001');
     expect(init).toMatchObject({ method: 'GET', redirect: 'manual', signal: expect.any(AbortSignal),
       headers: { Accept: 'text/html', 'User-Agent': 'SyntheticHost/1.0' } });
     expect(init!.body).toBeUndefined();

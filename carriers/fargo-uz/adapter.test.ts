@@ -9,7 +9,7 @@ import { normalizeFargoUzNumber, parseFargoUz } from './parser.js';
 import { fargoUzMappedStage, fargoUzStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'TEZ123456';
+const DELIVERED = 'TEZ123457';
 const IN_TRANSIT = 'TEZ1234567';
 const UNKNOWN = 'TEZ000000';
 
@@ -33,7 +33,7 @@ describe('Fargo tracking adapter', () => {
   it('asks the tracker for the whole track ID once, as its page does, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(text('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new FargoUzTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' tez 123-456 ', { budgetMs: 1000.5 }))
+    await expect(new FargoUzTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' tez 123-457 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
@@ -165,7 +165,7 @@ describe('Fargo tracking adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeFargoUzNumber(' tez-123 456 ')).toBe(DELIVERED);
+    expect(normalizeFargoUzNumber(' tez-123 457 ')).toBe(DELIVERED);
     expect(normalizeFargoUzNumber('tez1234567')).toBe(IN_TRANSIT);
     expect(normalizeFargoUzNumber('TEZ1234567890')).toBe('TEZ1234567890');
   });

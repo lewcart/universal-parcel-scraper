@@ -12,7 +12,7 @@ import { speedAndSafeStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 // The fixtures' consignment; the ERP holds nothing under the other one.
-const NUMBER = '00000000';
+const NUMBER = '00000001';
 const OTHER = '000000000';
 
 type Row = Record<string, unknown>;
@@ -36,7 +36,7 @@ describe('Gokulam Speed & Safe tracking adapter', () => {
   it('asks the ERP’s status lookup for the whole number once, through the supplied transport', async () => {
     const fetcher = answering(fixture('in-transit'));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new SpeedAndSafeTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 0000-0000 ', { budgetMs: 1000.5 }))
+    await expect(new SpeedAndSafeTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 0000-0001 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'in_transit' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
@@ -139,7 +139,7 @@ describe('Gokulam Speed & Safe tracking adapter', () => {
   it('binds every row to the whole number asked', () => {
     const named = (consignmentno: string) => changed('delivered', (rows) => { rows[3]!.consignmentno = consignmentno; });
     for (const consignmentno of [`Sampleton-Testpur( Example Nagar )-${OTHER}`, 'Sampleton-Testpur( Example Nagar )-0000000',
-      'Sampleton-Testpur( Example Nagar )-00000000-0', 'Sampleton-Testpur( Example Nagar )']) {
+      'Sampleton-Testpur( Example Nagar )-00000001-0', 'Sampleton-Testpur( Example Nagar )']) {
       expect(() => parseSpeedAndSafe(named(consignmentno), NUMBER), consignmentno)
         .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'Gokulam Speed & Safe answered for another consignment' }));
     }
@@ -223,7 +223,7 @@ describe('Gokulam Speed & Safe tracking adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: NUMBER }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeSpeedAndSafeNumber('0000 0000')).toBe(NUMBER);
+    expect(normalizeSpeedAndSafeNumber('0000 0001')).toBe(NUMBER);
     expect(() => parseSpeedAndSafe(fixture('in-transit'), OTHER)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
   });
 

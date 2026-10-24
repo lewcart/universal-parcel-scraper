@@ -2,7 +2,7 @@
   "status": true,
   "data": {
     "cp_name": "Logistiqcp",
-    "waybill": "ABCDEFG123456789",
+    "waybill": "ABCDEFG123456780",
     "order_reference_number": "SAMPLE-ORDER-0001",
     "channel_id": 1,
     "delivery_type": "FORWARD",

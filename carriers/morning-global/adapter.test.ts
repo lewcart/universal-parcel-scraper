@@ -9,7 +9,7 @@ import { morningGlobalWording, normalizeMorningGlobalNumber, parseMorningGlobal,
 import { morningGlobalMappedStage, morningGlobalStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'QQ000000001MG';
+const DELIVERED = 'QQ000000011MG';
 const IN_TRANSIT = 'QQ000000002MG';
 const NO_HISTORY = 'QQ000000003PH01';
 const UNKNOWN = 'QQ000000000MG';

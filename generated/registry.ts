@@ -1493,6 +1493,7 @@ export const REGISTRY: RegistryDefinition = {
     "exmate": "exmate",
     "express-one": "express-one",
     "fan-courier": "fan-courier",
+    "far-international": "universal",
     "fargo-courier": "fargo-courier",
     "fargo-uz": "fargo-uz",
     "fastdrop": "fastdrop",

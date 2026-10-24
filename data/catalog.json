@@ -13885,6 +13885,45 @@
       }
     ]
   },
+  "far-international": {
+    "displayName": "FAR International",
+    "color": "#003b75",
+    "aliases": [
+      "FAR International Logistics",
+      "Far International Logistics",
+      "泛远国际",
+      "泛远国际物流"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.far800.com/",
+    "trackingUrlTemplate": "https://www.far800.com/logistics/result?key={trackingNumber}",
+    "trackingSearchUrl": "https://www.far800.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.far800.com"
+        ],
+        "pathPattern": "^/logistics/result/?$",
+        "params": [
+          "key"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^FAR[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
   "fargo-courier": {
     "displayName": "Fargo Courier",
     "color": "#0a4436",

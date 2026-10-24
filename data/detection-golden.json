@@ -73575,6 +73575,14 @@
     ]
   },
   {
+    "input": "FARZZ0000000001YQ",
+    "carrier": "far-international",
+    "confidence": "high",
+    "candidates": [
+      "far-international"
+    ]
+  },
+  {
     "input": "FC2404051641097",
     "carrier": "unknown",
     "confidence": "low",

@@ -13887,6 +13887,45 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "far-international": {
+    "displayName": "FAR International",
+    "color": "#003b75",
+    "aliases": [
+      "FAR International Logistics",
+      "Far International Logistics",
+      "泛远国际",
+      "泛远国际物流"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.far800.com/",
+    "trackingUrlTemplate": "https://www.far800.com/logistics/result?key={trackingNumber}",
+    "trackingSearchUrl": "https://www.far800.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.far800.com"
+        ],
+        "pathPattern": "^/logistics/result/?$",
+        "params": [
+          "key"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^FAR[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
   "fargo-courier": {
     "displayName": "Fargo Courier",
     "color": "#0a4436",
@@ -32665,6 +32704,7 @@ export const CARRIER_IDS = [
   "exmate",
   "express-one",
   "fan-courier",
+  "far-international",
   "fargo-courier",
   "fargo-uz",
   "fastdrop",
@@ -33463,6 +33503,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "exmate": ["exmate-1"],
   "express-one": [],
   "fan-courier": ["fan-courier-1"],
+  "far-international": ["far-international-1"],
   "fargo-courier": ["fargo-courier-1"],
   "fargo-uz": [],
   "fastdrop": [],

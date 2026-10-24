@@ -1,0 +1,53 @@
+{
+  "id": "far-international",
+  "displayName": "FAR International",
+  "aliases": [
+    "FAR International Logistics",
+    "Far International Logistics",
+    "泛远国际",
+    "泛远国际物流"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#003b75"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.far800.com/logistics/result?key={trackingNumber}",
+    "searchUrl": "https://www.far800.com/",
+    "canaryUrl": "https://www.far800.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.far800.com"
+      ],
+      "pathPattern": "^/logistics/result/?$",
+      "params": [
+        "key"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "far-international-1",
+      "pattern": "^FAR[A-Z]{2}\\d{10}YQ$",
+      "confidence": "high"
+    }
+  ]
+}

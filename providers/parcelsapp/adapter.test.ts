@@ -1898,9 +1898,10 @@ describe('ParcelsApp result parsing', () => {
       scan('2026-10-16T00:00:00Z', 'FOR DELIVERY'),
       scan('2026-10-15T21:00:00Z', 'DEPARTED', 'EXAMPLE ORIGIN (991)'),
     ])).toEqual([
+      // The round has no time, but it follows the morning's arrival at the depot.
       { time: '2026-10-16T13:19:00.000Z', local_time: undefined, stage: 'delivered' },
-      { time: '2026-10-16T05:17:00.000Z', local_time: undefined, stage: 'in_transit' },
       { time: undefined, local_time: '2026-10-16', stage: 'out_for_delivery' },
+      { time: '2026-10-16T05:17:00.000Z', local_time: undefined, stage: 'in_transit' },
       { time: '2026-10-15T19:00:00.000Z', local_time: undefined, stage: 'in_transit' },
     ]);
     // Whatever zone routing passes, and in winter on +01:00.

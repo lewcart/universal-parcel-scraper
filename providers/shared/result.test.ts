@@ -31,6 +31,29 @@ describe('shared provider result', () => {
     expect(result([event(at(22 * 3_600_000), 'Arrived at sorting center')!], 'ParcelsApp').events?.[0]?.time).toBe(at(22 * 3_600_000));
   });
 
+  it('puts a step dated by its day alone above the newest scan of its day at an earlier stage', () => {
+    const scan = (clock: string, description: string, stage: string) => ({
+      ...(clock.length === 10 ? { local_time: clock } : { time: clock }), description, stage, stage_source: 'carrier_map',
+    });
+    const order = (events: ReturnType<typeof scan>[], preserveOrder = false) => result(events, 'ParcelsApp', preserveOrder)
+      .events?.map(({ description }) => description);
+    const history = [
+      scan('2026-01-06T09:00:00-05:00', 'Departed sorting center', 'in_transit'),
+      scan('2026-01-05', 'Picked up', 'accepted'),
+      scan('2026-01-05T20:41:00-05:00', 'Arrived at sorting center', 'in_transit'),
+      scan('2026-01-05T09:17:00-05:00', 'Shipment information sent', 'registered'),
+      scan('2026-01-04T10:00:00-05:00', 'Order created', 'pending'),
+    ];
+    expect(order(history)).toEqual(['Departed sorting center', 'Arrived at sorting center', 'Picked up', 'Shipment information sent', 'Order created']);
+    // With no scan of its day at an earlier stage, or no stage, it stays below the day's timed scans.
+    expect(order([history[1]!, history[2]!, { ...history[3]!, stage: 'accepted' }])).toEqual([
+      'Arrived at sorting center', 'Shipment information sent', 'Picked up',
+    ]);
+    expect(order([{ ...history[1]!, stage: 'exception' }, history[3]!])).toEqual(['Shipment information sent', 'Picked up']);
+    // A provider whose order stands keeps it.
+    expect(order([history[3]!, history[1]!], true)).toEqual(['Shipment information sent', 'Picked up']);
+  });
+
   it("reads Chronopost's notice to the recipient without the message type and medium appended to it", () => {
     const notice = 'Destinataire informé par SMS ou mail';
     for (const relayed of [`${notice}. Type du message : Retard Média utilisé : E-mail`, `${notice} Type du message : Echec de livraison`]) {

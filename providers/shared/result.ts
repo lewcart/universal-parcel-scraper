@@ -14,6 +14,7 @@ import { deliveryForecastRemainder, nonterminalEnglishReturn } from '../../core/
 import type { Stage } from '../../generated/catalog.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import { IndeterminateError, InvalidInputError } from '../../core/errors/index.js';
+import { PROGRESS } from '../../core/result/partial.js';
 import { isPostiAbroadLabel } from '../../carriers/posti/identity.js';
 import { anPostWordingStage } from '../../carriers/an-post/status.js';
 import { CHRONOPOST_NOTIFICATION } from '../../carriers/chronopost/status.js';
@@ -372,6 +373,28 @@ function moment(value: CarrierEvent): string {
   return value.time ?? (typeof value.local_time === 'string' ? value.local_time : '');
 }
 
+const dayAlone = (value: CarrierEvent) => !value.time && typeof value.local_time === 'string' && value.local_time.length === 10;
+
+/**
+ * Newest first. A step dated by its day alone, sorted below its day's timed
+ * scans, could be any time that day: it goes above the newest of them at an
+ * earlier stage, as FedEx's pickup above the shipment information sent that
+ * morning.
+ */
+function newestFirst(events: CarrierEvent[]): CarrierEvent[] {
+  const sorted = events.sort((a, b) => moment(b).localeCompare(moment(a)));
+  for (const step of sorted.filter(dayAlone)) {
+    const rank = PROGRESS[step.stage as Stage];
+    if (rank === undefined) continue;
+    const earlier = sorted.find((other) => !dayAlone(other) && moment(other).startsWith(`${step.local_time}T`)
+      && (PROGRESS[other.stage as Stage] ?? rank) < rank);
+    if (!earlier) continue;
+    sorted.splice(sorted.indexOf(step), 1);
+    sorted.splice(sorted.indexOf(earlier), 0, step);
+  }
+  return sorted;
+}
+
 export function result(events: CarrierEvent[], source: UniversalSource, preserveOrder = false): CarrierResult {
   // Wall times sort alongside UTC instants only approximately; providers that
   // omit offsets everywhere pass preserveOrder instead.
@@ -385,8 +408,7 @@ export function result(events: CarrierEvent[], source: UniversalSource, preserve
     // A carrier's copy can lack the place another copy of the same scan reported.
     scans.set(key, !event.location && earlier?.location ? { ...event, location: earlier.location } : event);
   }
-  const unique = [...scans.values()]
-    .sort((a, b) => preserveOrder ? 0 : moment(b).localeCompare(moment(a))).slice(0, 100);
+  const unique = (preserveOrder ? [...scans.values()] : newestFirst([...scans.values()])).slice(0, 100);
   // A well-formed reply with no scan left after notices and private details proves nothing about the parcel.
   if (!unique.length) throw new IndeterminateError(source, 'No usable tracking events');
   const currentEvent = unique.find((e) => e.stage && e.stage !== 'pending');

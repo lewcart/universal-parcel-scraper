@@ -16,7 +16,7 @@ import { resolveResult, type ResolvedEvent, type ResolvedResult } from './resolv
  * How far along a parcel is, for comparing two answers about it. Stages a parcel
  * moves between in either order share a rank; `exception` has none.
  */
-const PROGRESS: Partial<Record<Stage, number>> = {
+export const PROGRESS: Partial<Record<Stage, number>> = {
   pending: 0, registered: 1, accepted: 2, in_transit: 3, customs: 3,
   out_for_delivery: 4, failed_attempt: 4, ready_for_pickup: 4, delivered: 5, returned: 5,
 };

@@ -335,7 +335,9 @@ date such a scan on a deduced zone with `dateLocalClocks()` ([places](places/REA
 its place, the nearest scan with a place, the destination the carrier delivers in, else the
 carrier's home clock. The scan keeps `local_time` and gains `time_zone` and
 `time_zone_basis`, so a consumer can tell a deduced instant from one the carrier stated. A
-scan dated by its day alone keeps that day. A carrier that gives such scans no clock by design,
+scan dated by its day alone keeps that day. A universal provider's result lists it above the
+newest scan of its day at an earlier stage, else below the day's timed scans, and a consumer
+dating it by its neighbours follows that order. A carrier that gives such scans no clock by design,
 as BRT does a delivery round or a portal that lists its history under day headings, sets
 `tracking.dateOnlyScans`: a consumer need not ask fallback providers for a clock no copy has. A
 carrier whose scans usually carry a clock and only sometimes lack one leaves it unset. A

@@ -56,15 +56,31 @@ const DEPOT_PREFIX = /^(?:dalla sede operativa di|from the operational headquart
 const BRACKETED_POSTCODE = /\s*\[\s*[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\s*\]$/i;
 // Correios Brazil labels a unit abroad with "País", which providers translate: "Country, CHILE".
 const COUNTRY_LABEL = /^(?:country|pa[ií]s)\s*[,:-]\s*/i;
+// China Post's feed, which providers relay, can give a scan's status where its place belongs,
+// at times with the place after it in 【】: "Departure from【Example】", "Out For Delivery",
+// "99999 DELIVERED". The feed cuts long values, and an unclosed 【 holds a cut name.
+const STATUS_PLACE = /^(?:arri[vy]al at|departure from|dispatching|received by carrier|in transit|out for delivery|(?:(?:export|import) )?customs clearance completed|(?:\d[\d ]*(?:[A-Z]{2} )?)?delivered)(?: (?:destination )?airport| processing cent(?:er|re))?\s*(?:【(?:([^【】]*)】.*|[^【】]*))?$/i;
+// A full Canadian or British postcode after a town, which can narrow down a recipient's area.
+const FULL_POSTCODE = /\s+(?:[A-Z]\d[A-Z] ?\d[A-Z]\d|[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2})$/i;
+
+/** The place a status given as a location names in 【】, '' when it names none, or undefined for any other location. */
+function statusPlace(location: string): string | undefined {
+  const status = STATUS_PLACE.exec(location);
+  if (!status) return undefined;
+  const named = (status[1] ?? '').replace(FULL_POSTCODE, '').trim();
+  return /\p{L}/u.test(named) ? named : '';
+}
 
 /**
  * The place a provider reports for a scan, without the words before a depot's
  * town, a branch's postcode, which can narrow down a sender's or recipient's
- * area, or a "Country" label, unless it is a label that names no place, holds
- * private delivery details or is Posti's "abroad" label.
+ * area, a "Country" label or a status given before the place, unless it is a
+ * label that names no place, holds private delivery details or is Posti's
+ * "abroad" label.
  */
 export function place(value: unknown): string {
-  const location = text(value).slice(0, 200).replace(DEPOT_PREFIX, '').replace(BRACKETED_POSTCODE, '').replace(COUNTRY_LABEL, '');
+  const read = text(value).slice(0, 200).replace(DEPOT_PREFIX, '').replace(BRACKETED_POSTCODE, '').replace(COUNTRY_LABEL, '');
+  const location = statusPlace(read) ?? read;
   return location && !NOT_PLACES.test(location) && !hasPrivateDeliveryDetails(location) && !isPostiAbroadLabel(location)
     ? location : '';
 }

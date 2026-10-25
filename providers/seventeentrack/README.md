@@ -176,7 +176,9 @@ carrier.
   so the reply stays conclusive. India Post's own adapter places take-offs.
 - Original scan text is kept. The English interface does not translate descriptions.
 - Each scan keeps the `location` 17TRACK reports, unless it holds private delivery details or
-  is Posti's "ULKOMAILLA" ("abroad"), which names no place.
+  is Posti's "ULKOMAILLA" ("abroad"), which names no place. China Post's feed can give the
+  scan's status there, at times with the place after it in 【】 ("Departure from【Example】");
+  the scan keeps only that place, without a full Canadian or British postcode, or none.
 - At most 20 carrier legs and 1000 events. Per-event `address` is never read, and of
   `shipping_info` only the recipient's country, for an NZ Post or Swiss Post leg: the
   address can be the recipient's street.

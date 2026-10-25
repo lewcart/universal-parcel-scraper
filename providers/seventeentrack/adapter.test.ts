@@ -133,6 +133,22 @@ describe('17TRACK result parsing', () => {
     expect(result.events?.[0]?.description).toBe(stage === 'delivered' ? 'Delivered' : description);
   });
 
+  it("reads the place China Post's feed gives after a status, and no place for a status alone", () => {
+    const located = (location: string) => parse17TrackResponse(
+      postalHistory([{ ...postalScan('InTransit_Other', 'In transit'), location }]), number).events?.[0]?.location;
+    expect(located('Departure from【深圳】')).toBe('深圳');
+    expect(located('Received by Carrier 【深圳】')).toBe('深圳');
+    expect(located('In Transit【深圳】, 快件在该国内转运中')).toBe('深圳');
+    expect(located('Arriyal at Processing Center【Example City 99999】')).toBe('Example City 99999');
+    expect(located('Dispatching【Example City X9X9X9】')).toBe('Example City');
+    expect(located('Arrival at【US】')).toBe('US');
+    for (const status of ['Departure from Airport', 'Arrival at Destination Airport', 'Export Customs Clearance Completed',
+      'Out For Delivery', 'In Transit', '99999 DELIVERED', '9999 PA DELIVERED', 'Delivered【99/999】', 'Departure from Processing Center【Example Ci']) {
+      expect(located(status), status).toBeUndefined();
+    }
+    for (const location of ['Example Transit Hub', 'Arrival Hall, Example City', 'EXAMPLE CITY, CA 99999']) expect(located(location)).toBe(location);
+  });
+
   it('does not convert stale tracking or unknown codes into shipment progress', () => {
     expect(parse17TrackResponse(postalHistory([postalScan('Future_Unknown')]), number).current_stage).toBe('pending');
     expect(parse17TrackResponse(postalHistory([postalScan('InTransit_Other')]), number).status).toBe('in_transit');

@@ -81,6 +81,10 @@ UTAPI's status code staged stays open there, since the stored scan does not keep
 US parcels handed to USPS carry a USPS number, with or without the 420 routing
 prefix. Detection offers DHL eCommerce next to USPS for the `9261` and `9361`
 families and Webtrack's answer attributes the parcel.
+`GM` numbers shorter than the sixteen to eighteen digits detection selects DHL eCommerce for
+are DHL's too: its guide to tracking labels gives eCommerce IDs from ten characters, typically
+starting with `GM`. Other carriers' generic rules fit eight to fifteen digits after two letters,
+so detection only suggests DHL eCommerce first for them.
 eBay International Standard Delivery's `ESUS` numbers are a low suggestion shared with
 [Asendia](../asendia/README.md), since eBay names Webtrack for them and Asendia carries some.
 S10 numbers starting `UU` and ending `DE` are a low suggestion too. The `U` range marks

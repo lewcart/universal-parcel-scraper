@@ -71,6 +71,18 @@ describe('evidence-backed tracking formats', () => {
     expect(detectCarrierMatch('GM1234567890123456')).toMatchObject({ carrier: 'dhl-ecommerce', confidence: 'high' });
   });
 
+  it.each(['GM10293847', 'GM1029384756', 'GM10293847561', 'GM102938475610293'])(
+    'suggests DHL eCommerce first for a shorter GM number without selecting it: %s',
+    (number) => {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['dhl-ecommerce'] });
+      expect(detectCarrierMatch(number).candidates[0]).toBe('dhl-ecommerce');
+    },
+  );
+
+  it.each(['GM1029384', 'GX1029384756'])('does not suggest DHL eCommerce for %s', (number) => {
+    expect(detectCarrierMatch(number).candidates).not.toContain('dhl-ecommerce');
+  });
+
   it.each([
     ['https://allegro.pl/allegrodelivery/sledzenie-paczki?numer=', 'A0000000A1', 'allegro-one'],
     ['https://allegro.pl/kampania/one/kurier/sledzenie-paczki?numer=', 'AD00000000', 'allegro-one'],

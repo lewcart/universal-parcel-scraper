@@ -107,6 +107,12 @@
       "confidence": "high"
     },
     {
+      "id": "dhl-ecommerce-8",
+      "pattern": "^GM[0-9]{8,15}$",
+      "confidence": "low",
+      "preferred": true
+    },
+    {
       "id": "dhl-ecommerce-2",
       "pattern": "^[0-9]{16,17}$",
       "confidence": "low"

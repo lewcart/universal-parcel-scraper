@@ -73888,6 +73888,17 @@
     ]
   },
   {
+    "input": "FMP5P00D00000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
     "input": "FMPP0000000001",
     "carrier": "ekart",
     "confidence": "high",
@@ -74703,6 +74714,26 @@
     "candidates": []
   },
   {
+    "input": "GM1203000045",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-ecommerce",
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ],
+    "preferred": [
+      "dhl-ecommerce"
+    ],
+    "asked": [
+      "dhl-ecommerce",
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ]
+  },
+  {
     "input": "GM1234567890123456",
     "carrier": "dhl-ecommerce",
     "confidence": "high",
@@ -74716,6 +74747,22 @@
     "confidence": "high",
     "candidates": [
       "dhl-ecommerce"
+    ]
+  },
+  {
+    "input": "GM99999999999",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-ecommerce",
+      "la-poste"
+    ],
+    "preferred": [
+      "dhl-ecommerce"
+    ],
+    "asked": [
+      "dhl-ecommerce",
+      "la-poste"
     ]
   },
   {

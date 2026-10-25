@@ -2123,6 +2123,24 @@
     "reason": "Cainiao's PA references have twelve characters, which Colis Privé accepts, in the label shape of two letters and ten digits Aramex Australia and Aramex New Zealand share; all four stay suggestions."
   },
   {
+    "shape": "GM followed by ten digits",
+    "carriers": [
+      "dhl-ecommerce",
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ],
+    "reason": "DHL eCommerce's shorter GM numbers can have twelve characters, which Colis Privé accepts, in the label shape of two letters and ten digits Aramex Australia and Aramex New Zealand share; the GM prefix puts DHL eCommerce first and all four stay suggestions."
+  },
+  {
+    "shape": "GM followed by eleven digits",
+    "carriers": [
+      "dhl-ecommerce",
+      "la-poste"
+    ],
+    "reason": "La Poste accepts any two characters followed by 11 digits, which also covers DHL eCommerce's shorter GM numbers; the GM prefix puts DHL eCommerce first and both stay suggestions."
+  },
+  {
     "shape": "9{3}A9{8}A",
     "carriers": [
       "aliexpress",

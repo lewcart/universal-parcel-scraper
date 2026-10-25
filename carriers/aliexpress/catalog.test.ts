@@ -126,13 +126,14 @@ describe('partner numbers Cainiao follows', () => {
 
   it.each(['AP00000000000001', 'CNUSUP00000000001', 'CNBR00000000001', 'CNMEX0000000001', 'CACAINIAO00000000001',
     'RLV00000001', 'RLDW00000001', 'JNCN000000000001', 'ECSC00AARO00000001', 'PA0000000001', 'F00000000000001',
-    '9C0000I000001', 'RTZ5P00D00000001'])('asks Cainiao about %s', (value) => {
+    '9C0000I000001', 'RTZ5P00D00000001', 'FMP5P00D00000001'])('asks Cainiao about %s', (value) => {
     expect(detectCarrierMatch(value)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: [] });
     expect(recognitionAskedCarriers(value)).toContain('aliexpress');
   });
 
   it.each(['AP0000000000001', 'CNES00000000001', 'RL00000001', 'PA1000000001', 'F10000000000001', '9C0000A000001',
-    'RTZ5P00D0000001', 'RTZ0P00D00000001', 'RTZ5X00D00000001', 'RTX5P00D00000001', '5P00D00000001'])(
+    'RTZ5P00D0000001', 'RTZ0P00D00000001', 'RTZ5X00D00000001', 'RTX5P00D00000001', '5P00D00000001',
+    'FMP5P00D0000001', 'FMP1UW1AAAAAAAAA'])(
     'does not suggest AliExpress for %s', (value) => {
       expect(detectCarrierMatch(value).candidates).not.toContain('aliexpress');
     },

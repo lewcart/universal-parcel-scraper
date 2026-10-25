@@ -60,6 +60,44 @@
       "note": "Official documentation example, not a real shipment."
     },
     {
+      "number": "GM99999999999",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://web.archive.org/web/20250125061940/https://www.dhl.com/global-en/home/tracking/id-labels.html",
+        "date": "2025-01-25",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "la-poste"
+        ]
+      },
+      "note": "DHL's guide to its tracking labels gives it as a DHL eCommerce example, not a real shipment: eCommerce IDs typically start with GM and run from ten to thirty-nine characters. Shorter than the sixteen to eighteen digits the high-confidence rule takes, so the GM prefix only puts DHL eCommerce first."
+    },
+    {
+      "number": "GM1203000045",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-25",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "colis-prive",
+          "aramex-au",
+          "aramex-nz"
+        ]
+      },
+      "note": "Made-up number in the shape of a DHL Parcel International Direct parcel from the United States to Australia that Webtrack answered with its history up to the hand-over to the Australian partner."
+    },
+    {
       "number": "0031043534391627906195625053434",
       "role": "full_barcode",
       "evidence": "official_documentation_example",

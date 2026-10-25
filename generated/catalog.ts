@@ -280,6 +280,10 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
+        "pattern": "^FMP5P\\d{2}D\\d{8}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^\\d{3}[A-Z]\\d{8}[A-Z]$",
         "confidence": "low"
       },
@@ -703,6 +707,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^GM[0-9]{16,18}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^GM[0-9]{8,15}$",
+        "confidence": "low",
+        "preferred": true
       },
       {
         "pattern": "^[0-9]{16,17}$",
@@ -33449,14 +33458,14 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "swiss-post-cargo": ["swiss-post-cargo-sscc","swiss-post-cargo-pl-reference"],
   "quickpac": ["quickpac-1"],
   "planzer": ["planzer-1","planzer-2"],
-  "aliexpress": ["aliexpress-1","aliexpress-cnfr","aliexpress-2","aliexpress-lp-reference","aliexpress-ap-reference","aliexpress-cnbr","aliexpress-cnmex","aliexpress-cnusup","aliexpress-cacainiao","aliexpress-rl","aliexpress-jncn","aliexpress-ecsc-aaro","aliexpress-pa","aliexpress-f","aliexpress-9c-i","aliexpress-rtz","aliexpress-sda-waybill","aliexpress-ty","aliexpress-mi","aliexpress-xx"],
+  "aliexpress": ["aliexpress-1","aliexpress-cnfr","aliexpress-2","aliexpress-lp-reference","aliexpress-ap-reference","aliexpress-cnbr","aliexpress-cnmex","aliexpress-cnusup","aliexpress-cacainiao","aliexpress-rl","aliexpress-jncn","aliexpress-ecsc-aaro","aliexpress-pa","aliexpress-f","aliexpress-9c-i","aliexpress-rtz","aliexpress-fmp","aliexpress-sda-waybill","aliexpress-ty","aliexpress-mi","aliexpress-xx"],
   "sunyou": ["sunyou-1","sunyou-2","sunyou-3"],
   "hermes": ["hermes-delivery-note"],
   "spring-gds": ["spring-gds-1","spring-gds-2","spring-gds-3"],
   "postlogistics": ["postlogistics-dashed-reference","postlogistics-compact-reference"],
   "dachser": [],
   "dhl": ["dhl-1","dhl-14","dhl-16","dhl-15","dhl-9","dhl-8","dhl-10","dhl-3","dhl-13","dhl-12","dhl-7"],
-  "dhl-ecommerce": ["dhl-ecommerce-1","dhl-ecommerce-2","dhl-ecommerce-4","dhl-ecommerce-5","dhl-ecommerce-6","dhl-ecommerce-7"],
+  "dhl-ecommerce": ["dhl-ecommerce-1","dhl-ecommerce-8","dhl-ecommerce-2","dhl-ecommerce-4","dhl-ecommerce-5","dhl-ecommerce-6","dhl-ecommerce-7"],
   "ups": ["ups-1","ups-3","ups-2"],
   "amazon-logistics": ["amazon-logistics-1"],
   "amazon-shipping": [],

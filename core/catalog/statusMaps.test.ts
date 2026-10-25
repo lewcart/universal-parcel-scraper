@@ -1094,6 +1094,17 @@ describe('status map answers', () => {
     expect(answer('dhl-ecommerce-uk', null, 'Synthetic scan wording')).toEqual(unknown);
   });
 
+  it('answers DTDC by a status label kept as its wording, and leaves a delivery without its leg out on purpose', () => {
+    expect(answer('dtdc', 'softdata_upload', 'Booked')).toEqual(mapped('registered'));
+    expect(answer('dtdc', 'pickup_completed', 'Picked Up')).toEqual(mapped('accepted'));
+    expect(answer('dtdc', 'outfordelivery', 'Out For Delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('dtdc', null, 'RTO Booked')).toEqual(mapped('exception'));
+    expect(answer('dtdc', null, 'Delivered')).toEqual(gap);
+    // A stored delivery was staged by its leg; the internal code does not tell the leg either.
+    expect(answer('dtdc', 'delivered', 'Delivered')).toEqual(unknown);
+    expect(answer('dtdc', 'in_transit', 'Synthetic scan wording')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

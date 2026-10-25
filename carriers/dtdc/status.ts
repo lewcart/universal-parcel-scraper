@@ -1,4 +1,5 @@
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const STATUS = new Map<string, ClassifiedStatus>([
   ['Pickup Awaited', { status: 'pending', stage: 'registered' }],
@@ -16,3 +17,17 @@ const STATUS = new Map<string, ClassifiedStatus>([
 export function dtdcStatus(wording: string): ClassifiedStatus | undefined {
   return STATUS.get(wording);
 }
+
+const STAGE_BY_WORDING = new Map<string, Stage>([...STATUS].map(([label, status]) => [normalizeStatusWording(label), status.stage]));
+const DELIVERED = normalizeStatusWording('Delivered');
+
+/**
+ * What the map says about one scan: its wording, when that is one of the status labels the
+ * parser reads. The scan's own label, which the parser reads first, is not stored; a scan worded
+ * with a label carries the same step in it. A delivery is a return on the return leg, which the
+ * map is not asked by.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => (wording === DELIVERED ? undefined : STAGE_BY_WORDING.get(wording)),
+  gaps: [{ wording: DELIVERED, note: "Delivered on the forward leg, or returned to the sender on the return leg: the map is not asked by the scan's leg." }],
+};

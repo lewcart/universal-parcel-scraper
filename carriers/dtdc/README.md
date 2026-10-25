@@ -12,6 +12,9 @@ a separate dated snapshot when it is absent from the scan list.
 Return booking and movement keep active stages so later progress can be synced.
 Only delivery on the return leg completes the return; it does not set a recipient
 delivery time.
+The stored scan does not keep the status label the parser reads first, so the parcel
+app's review (`statusMap`) stages a scan only when its wording is such a label, and
+gives a delivery no stage there, since it is not asked by the leg.
 
 ## Limitations
 

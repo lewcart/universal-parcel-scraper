@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // The official portal's statusCodes.json describes both regional code sets.
 // Its presentation TYPE can label pickup as Created and damage or handoff as Delivered.
@@ -22,3 +23,6 @@ add(['LOST', 'MSPK', 'UD', 'ONHD'], 'exception', 'exception');
 export function classifyOntracStatus(code: string): ClassifiedStatus | undefined {
   return stages[code];
 }
+
+/** What the map says about one scan: its event code, which alone stages it. */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? classifyOntracStatus(code)?.stage : undefined), gaps: [] };

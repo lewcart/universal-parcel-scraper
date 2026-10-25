@@ -1231,6 +1231,18 @@ describe('status map answers', () => {
     expect(answer('geodis', null, 'Synthetic scan')).toEqual(unknown);
   });
 
+  it("answers OnTrac by its event code, and leaves a copy without one open", () => {
+    expect(answer('ontrac', 'EXRL', 'On its way to OnTrac')).toEqual(mapped('registered'));
+    expect(answer('ontrac', 'ORIG', 'Origin Scan')).toEqual(mapped('in_transit'));
+    expect(answer('ontrac', 'NFRP', 'Order has been transferred to another carrier')).toEqual(mapped('in_transit'));
+    expect(answer('ontrac', 'OFDL', 'Out for Delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('ontrac', 'NDMI', 'Incomplete address. Please contact us')).toEqual(mapped('failed_attempt'));
+    expect(answer('ontrac', 'DLVD', 'Package Delivered')).toEqual(mapped('delivered'));
+    expect(answer('ontrac', 'ONHD', 'Details needed. Please contact us')).toEqual(mapped('exception'));
+    expect(answer('ontrac', 'ZZZZ', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('ontrac', null, 'Package Delivered')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

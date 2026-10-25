@@ -134,6 +134,29 @@ describe('Allegro One HTTP adapter', () => {
     ]);
   });
 
+  it('reads a parcel taken back once its pick-up time expired as a return under way, unless it goes to a point again', () => {
+    const payload = fixture('ready');
+    payload.status.unshift(
+      { eventTimestamp: '2026-10-08T10:04:51Z', description: 'Parcel has been picked up from point by courier' },
+      { eventTimestamp: '2026-10-07T18:00:12Z', description: 'Time for parcel pick-up has expired' },
+    );
+    expect(parseAllegroOne(payload, READY)).toMatchObject({ status: 'exception', current_stage: 'exception',
+      last_status_text: 'Parcel has been picked up from point by courier' });
+    const back = structuredClone(payload);
+    back.status.unshift({ eventTimestamp: '2026-10-09T08:12:40Z', description: 'Parcel has been returned to the sender' });
+    expect(parseAllegroOne(back, READY).events!.slice(0, 3).map((event) => event.stage)).toEqual(['returned', 'exception', 'exception']);
+    payload.status.unshift(
+      { eventTimestamp: '2026-10-09T09:40:18Z', description: 'Parcel is awaiting pick-up' },
+      { eventTimestamp: '2026-10-09T04:22:15Z', description: 'Parcel has been accepted at the branch' },
+    );
+    expect(parseAllegroOne(payload, READY).events!.slice(0, 4).map((event) => [event.description, event.stage])).toEqual([
+      ['Parcel is awaiting pick-up', 'ready_for_pickup'],
+      ['Parcel has been accepted at the branch', 'in_transit'],
+      ['Parcel has been picked up from point by courier', 'in_transit'],
+      ['Time for parcel pick-up has expired', 'exception'],
+    ]);
+  });
+
   it('reads the scans after a return to the sender as the way back', () => {
     const result = parseAllegroOne(fixture('sent-back'), SENT_BACK);
     expect(result).toMatchObject({ status: 'exception', current_stage: 'returned', current_stage_source: 'carrier_map',

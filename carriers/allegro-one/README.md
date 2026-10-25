@@ -22,8 +22,10 @@ through the service Allegro's tracking page asks on Allegro's edge gateway.
   For the older ALE form an empty list is `NoHistoryError`.
 - A courier's collection, such as "Parcel has been picked up from point by courier", is the
   sender's drop-off collected until the parcel has waited at a point for its recipient. After
-  that it is the uncollected parcel taken back and is staged `in_transit`: one such parcel was
-  sent to a point again, so it is not read as a return.
+  that it is the uncollected parcel taken back, staged by where the later scans say it went: a
+  return to the sender makes it `exception`, a return under way, and a new delivery to a point
+  or the door `in_transit`. Until a scan says, it is `exception` once the pick-up time has
+  expired, since Allegro then sends the parcel back, and `in_transit` before that.
 - Once a scan says the parcel went back to the sender, the later scans are its way back and are
   staged `returned`, a delivery to the sender included.
 - A refused request (HTTP 400 or 406), the gateway's "Feature unavailable" 404 for a retired

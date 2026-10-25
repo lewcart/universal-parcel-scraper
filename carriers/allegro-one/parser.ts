@@ -5,7 +5,7 @@ import { classifyWording, languageStageStatus, type Stage } from '../../core/sta
 import { explicitOffsetTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { allegroOneStage } from './status.js';
+import { allegroOnePickUpExpired, allegroOneStage } from './status.js';
 
 export const PROVIDER = 'Allegro One';
 // A parcel's reply is a list of short scans; a few kilobytes.
@@ -30,6 +30,20 @@ interface Scan {
   readonly event: CarrierEvent & { time: string; description: string };
   readonly at: number;
   readonly index: number;
+}
+
+// The scans of a parcel on its way to a recipient again.
+const ONWARD: ReadonlySet<string> = new Set(['out_for_delivery', 'failed_attempt', 'ready_for_pickup', 'delivered']);
+
+/**
+ * Whether a parcel taken back from its point goes to the sender. The first
+ * later scan that says where it went, the return or a new delivery, decides;
+ * until one does, the pick-up time having run out at the point does, since
+ * Allegro sends such a parcel back.
+ */
+function takenBackToSender(later: readonly CarrierEvent[], expired: boolean): boolean {
+  const next = later.find(({ stage }) => stage === 'returned' || (stage !== undefined && ONWARD.has(stage)));
+  return next ? next.stage === 'returned' : expired;
 }
 
 function projectScan(row: unknown, index: number): Scan {
@@ -84,18 +98,23 @@ export function parseAllegroOne(payload: unknown, raw: string): CarrierResult {
   const oldestFirst = scans.length > 1 && scans[0]!.at < scans.at(-1)!.at;
   scans.sort((left, right) => right.at - left.at || (oldestFirst ? right.index - left.index : left.index - right.index));
   // Once the parcel has waited at a point, a courier collecting it is the
-  // uncollected parcel taken back, on its way to another point or to the
-  // sender, not the sender's drop-off accepted. Once it is sent back, every
-  // later movement is the way back: its delivery reaches the sender, not the
-  // recipient.
+  // uncollected parcel taken back, not the sender's drop-off accepted: a
+  // return under way when it goes back to the sender, in transit when it goes
+  // to a point or the door again. Once it is sent back, every later movement
+  // is the way back: its delivery reaches the sender, not the recipient.
+  const chronological = scans.map((scan) => scan.event).reverse();
   let waited = false;
+  let expired = false;
   let returning = false;
-  for (const { event } of [...scans].reverse()) {
-    if (waited && event.stage === 'accepted') event.stage = 'in_transit';
+  chronological.forEach((event, index) => {
+    if (waited && event.stage === 'accepted') {
+      event.stage = takenBackToSender(chronological.slice(index + 1), expired) ? 'exception' : 'in_transit';
+    }
     if (returning && event.stage && event.stage !== 'exception') event.stage = 'returned';
-    if (event.stage === 'ready_for_pickup') waited = true;
+    if (event.stage === 'ready_for_pickup') [waited, expired] = [true, false];
+    if (allegroOnePickUpExpired(event.description)) expired = true;
     if (event.stage === 'returned') returning = true;
-  }
+  });
   const newest = scans[0]!.event;
   const current = newest.stage
     ? { stage: newest.stage as Stage, source: 'carrier_map' }

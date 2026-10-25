@@ -16,7 +16,7 @@ export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
   'Parcel has been picked up by the courier': 'accepted',
   // A courier collected the sender's drop-off from the locker or the point.
   // After the parcel has waited at a point for its recipient, the parser reads
-  // a courier's collection as the parcel taken back.
+  // a courier's collection as the parcel taken back, to the sender or onward.
   'Parcel has been picked up from parcel locker by courier': 'accepted',
   'Parcel has been picked up from point by courier': 'accepted',
   'Courier has transferred the parcel to the warehouse': 'in_transit',
@@ -53,10 +53,16 @@ export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
 };
 
 const SCANS = new Map(Object.entries(ALLEGRO_ONE_SCANS).map(([wording, stage]) => [normalizeStatusWording(wording), stage]));
+const PICK_UP_EXPIRED = normalizeStatusWording('Time for parcel pick-up has expired');
 
 /** The stage a scan's wording gives it, if any. */
 export function allegroOneStage(wording: string): Stage | undefined {
   return SCANS.get(normalizeStatusWording(wording));
+}
+
+/** Whether a scan says the recipient's time to collect the parcel at its point ran out. */
+export function allegroOnePickUpExpired(wording: string): boolean {
+  return normalizeStatusWording(wording) === PICK_UP_EXPIRED;
 }
 
 /** The tracker's scans carry a wording and no status code. */

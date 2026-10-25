@@ -83,6 +83,7 @@ describe('same-instant identity policies', () => {
     ['poczta-polska', 'registered', 'Electronic item data received', 'Elektroniczny Nadawca', 'Placówka Pocztowa Example Town'],
     ['posti', 'in_transit', 'Item has been registered The item can be registered several times during delivery.', 'ULKOMAILLA', 'EXAMPLE CITY'],
     ['posti', 'delivered', 'Item delivered to the recipient.', 'ULKOMAILLA', 'EXAMPLE CITY'],
+    ['posti', 'in_transit', 'The item is in transport The item was picked up from the original location.', 'Posti kuljetus', 'EXAMPLE CITY'],
   ])('lets a %s scan that lost "%s" take over its stored row', (source, stage, description, dropped, place) => {
     expect(sameInstantIdentityPolicy(source)).toBeUndefined();
     const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });

@@ -109,6 +109,9 @@ describe('Posti projection', () => {
     const data = fixture('delivered-abroad');
     hit(data).events = [{ eventDescription: 'Item has been registered', city: ' ulkomailla ', timestamp: '2026-01-13T16:00:00Z' }];
     expect(parse(data, 'CE123456785FI').events?.[0]?.location).toBe('');
+    // Nor is "Posti kuljetus" ("Posti transport"), on a scan between two sites, a place.
+    hit(data).events = [{ eventDescription: 'The item is in transport', city: 'Posti kuljetus', timestamp: '2026-01-13T16:00:00Z' }];
+    expect(parse(data, 'CE123456785FI').events?.[0]?.location).toBe('');
   });
 
   it('rejects wrong, duplicate and multi-parcel identities', () => {

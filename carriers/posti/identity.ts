@@ -1,13 +1,20 @@
 import type { SameInstantIdentityPolicy, SameInstantScan } from '../../core/catalog/eventIdentity.js';
 import { matchesDroppedLocation } from '../../core/catalog/locationIdentity.js';
 
+const label = (location: string) => location.replace(/\s+/g, ' ').trim().toLocaleUpperCase('fi-FI');
+
 /**
  * Whether a scan's town is Posti's "ULKOMAILLA" ("abroad"), which it gives,
  * untranslated, to scans outside Finland. It names no place, and the public
  * reply carries no country to put in its stead.
  */
 export function isPostiAbroadLabel(location: string): boolean {
-  return location.replace(/\s+/g, ' ').trim().toLocaleUpperCase('fi-FI') === 'ULKOMAILLA';
+  return label(location) === 'ULKOMAILLA';
+}
+
+/** Whether a scan's town names no place: the abroad label, or "Posti kuljetus" ("Posti transport") on a scan between two sites. */
+export function isPostiPlacelessLabel(location: string): boolean {
+  return isPostiAbroadLabel(location) || label(location) === 'POSTI KULJETUS';
 }
 
 const normalized = (value: string) => value.replace(/\s+/g, ' ').trim().toLocaleLowerCase('fi-FI');
@@ -23,10 +30,10 @@ function stoppedStatus(incoming: SameInstantScan, stored: SameInstantScan): bool
   return false;
 }
 
-// Scans stored with that label as their location lose it and keep their row,
+// Scans stored with such a label as their location lose it and keep their row,
 // as do scans stored with a status run into its explanation.
 export const sameInstantIdentityPolicy: SameInstantIdentityPolicy = {
   sourceCarrierId: 'posti', storedSources: ['posti'], requireProviderCode: false,
   matchEachScan: true,
-  matches: (incoming, stored) => matchesDroppedLocation(incoming, stored, isPostiAbroadLabel) || stoppedStatus(incoming, stored),
+  matches: (incoming, stored) => matchesDroppedLocation(incoming, stored, isPostiPlacelessLabel) || stoppedStatus(incoming, stored),
 };

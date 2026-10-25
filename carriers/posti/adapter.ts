@@ -9,7 +9,7 @@ import type { StepRecorder } from '../../core/telemetry/index.js';
 import { explicitOffsetTime } from '../../core/time/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { isPostiAbroadLabel } from './identity.js';
+import { isPostiPlacelessLabel } from './identity.js';
 import { postiEventStage, postiStatus } from './status.js';
 
 const TOKEN_URL = 'https://auth-service.posti.fi/api/v1/anonymous_token';
@@ -137,7 +137,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
       // The status and its explanation are separate sentences, and the status often has no stop.
       description: reason && description ? `${/[.!?]$/.test(description) ? description : `${description}.`} ${reason}` : description || reason,
       time: explicitOffsetTime(event.timestamp)?.iso ?? '',
-      location: isPostiAbroadLabel(city) ? '' : city,
+      location: isPostiPlacelessLabel(city) ? '' : city,
       stage: postiEventStage(description),
     };
   }).sort((left, right) => (Date.parse(right.time || '') || 0) - (Date.parse(left.time || '') || 0)).slice(0, 100);

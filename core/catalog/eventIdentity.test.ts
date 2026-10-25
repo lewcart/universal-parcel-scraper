@@ -504,6 +504,7 @@ describe('same-instant identity policies', () => {
     ['jrt', 'accepted', '到达收货点', 'Arrived at the receiving point', 'ARRIVAL'],
     ['jrt', 'registered', '货物电子信息已经收到', 'The electronic cargo information has been received', ''],
     ['thhy', 'in_transit', '货物离开操作中心', 'Goods leave the operation center', 'SHIPMENT'],
+    ['thhy', 'customs', '送交出口', 'Presented to export customs', 'CO_C_CR'],
     ['yto', 'accepted', '业务员收件', 'Picked up', '310'],
     ['china-post', 'out_for_delivery', '派送中', 'Out for delivery', 'O_014'],
     ['china-post', 'in_transit', '邮件到达【示例市揽投部】', 'Arrival', '713'],

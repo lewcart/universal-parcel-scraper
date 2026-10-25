@@ -28,7 +28,8 @@ browser is needed, and no portal link is published.
   English the platform's other tenants give them, the `english` of their entries in
   [statuses.json](statuses.json), and the map stages them by either wording. A row stored in
   Chinese is taken over by its English at the same instant and place ([identity.ts](identity.ts)).
-  The custom track product's Chinese rows keep their wording: no English for them is known.
+  The custom track product's Chinese rows show English too: ParcelsApp's for China Post's same
+  label where it has one, else a plain rendering. Their locations keep the product's wording.
 - Scan times are wall clocks without an offset, on the tracker's Beijing clock abroad too, as
   [GZYL's](../gzyl/README.md) are, and are read on it.
 

@@ -50,10 +50,9 @@ function displayedShipmentNumber(value: string): string {
 }
 
 /**
- * The timeline prints `DD/MM/YYYY` and no clock, so there is no instant to
- * parse: `core/time` deliberately has no day-only policy. The raw string stays
- * the event time and this helper only produces a sort key, rejecting
- * impossible dates such as 31/02.
+ * The timeline prints `DD/MM/YYYY` and no clock, so a scan keeps its day alone
+ * in `local_time`. This helper gives the day's sort key, rejecting impossible
+ * dates such as 31/02.
  */
 function dateKey(value: string): number | null {
   const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
@@ -151,17 +150,17 @@ export function parseColisPriveTrackingHtml(
   const seen = new Set<string>();
   $('.tableHistoriqueColis tr.bandeauText').each((index, element) => {
     const row = $(element);
-    const time = clean(row.children('td[headers="th-date"]').first().text(), 32);
     const description = clean(row.children('td[headers="th-statut"]').first().text());
-    const timestamp = dateKey(time);
+    const timestamp = dateKey(clean(row.children('td[headers="th-date"]').first().text(), 32));
     if (timestamp === null || !description) return;
-    const identity = `${time}\0${description}`;
+    const day = new Date(timestamp).toISOString().slice(0, 10);
+    const identity = `${day}\0${description}`;
     if (seen.has(identity)) return;
     seen.add(identity);
     const classified = classifyStatus(description);
     parsedEvents.push({
       event: {
-        time,
+        local_time: day,
         location: '',
         description,
         // Unmapped wording carries no stage: the sync classifies and records it.
@@ -188,7 +187,8 @@ export function parseColisPriveTrackingHtml(
   return {
     status,
     last_status_text: statusText,
-    last_update: events[0]?.time ?? null,
+    last_update: null,
+    ...(events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
     expected_delivery: expected,
     timezone: TIMEZONE,
     events,

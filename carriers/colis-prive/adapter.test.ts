@@ -155,31 +155,32 @@ describe('Colis Privé HTML normalization', () => {
     expect(result).toMatchObject({
       status: 'exception',
       last_status_text: 'Nous avons tenté de livrer votre colis.',
-      last_update: '28/08/2026',
+      last_update: null,
+      last_update_local: '2026-08-28',
       expected_delivery: null,
       timezone: 'Europe/Paris',
     });
     expect(result.events).toEqual([
       {
-        time: '28/08/2026',
+        local_time: '2026-08-28',
         location: '',
         description: 'Nous avons tenté de livrer votre colis.',
         stage: 'failed_attempt',
       },
       {
-        time: '28/08/2026',
+        local_time: '2026-08-28',
         location: '',
         description: 'Votre colis est en cours de distribution par le livreur',
         stage: 'out_for_delivery',
       },
       {
-        time: '26/08/2026',
+        local_time: '2026-08-26',
         location: '',
         description: 'Votre colis est arrivé sur notre agence régionale de distribution.',
         stage: 'in_transit',
       },
       {
-        time: '25/08/2026',
+        local_time: '2026-08-25',
         location: '',
         description: "Votre colis est en cours de préparation par l'expéditeur.",
         stage: 'registered',
@@ -228,7 +229,7 @@ describe('Colis Privé HTML normalization', () => {
     }), PUBLIC_SYNTHETIC_CREDENTIAL);
     expect(result.status).toBe('unknown');
     expect(result.events).toEqual([{
-      time: '29/08/2026',
+      local_time: '2026-08-29',
       location: '',
       description: 'Un nouveau libellé du transporteur',
     }]);
@@ -277,7 +278,7 @@ describe('Colis Privé tracker', () => {
     }));
 
     await expect(new ColisPriveTracker({ timeoutMs: 1_000 }).fetch(PUBLIC_SYNTHETIC_CREDENTIAL))
-      .resolves.toMatchObject({ status: 'exception', last_update: '28/08/2026' });
+      .resolves.toMatchObject({ status: 'exception', last_update_local: '2026-08-28' });
 
     const requested = new URL(String(fetcher.mock.calls[0]?.[0]));
     expect(requested.searchParams.get('numColis')).toBe(PUBLIC_SYNTHETIC_CREDENTIAL);

@@ -1484,7 +1484,9 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 740
+      "recognitionRank": 740,
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://colisprive.com/moncolis/pages/DetailColis.aspx",
     "trackingUrlTemplate": "https://colisprive.com/moncolis/pages/DetailColis.aspx?numColis={trackingNumber}&lang=fr",
@@ -1521,7 +1523,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "geodis"
+      "adapter": "geodis",
+      "localClocks": true
     },
     "canaryUrl": "https://espace-client.geodis.com/services/destinataires/",
     "trackingUrlTemplate": "https://espace-client.geodis.com/services/destinataires/#/fr/suivi/{trackingNumber}",

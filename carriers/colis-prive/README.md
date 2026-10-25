@@ -39,9 +39,9 @@ recipient's postcode.
 - `.divDesti` is removed before any text is read, not filtered afterwards — a
   later selector can forget a filter, not a removal.
 - A page for another shipment is a schema error, never a result.
-- The timeline prints `DD/MM/YYYY` with no clock. The raw string stays the event
-  time; `dateKey()` only builds a sort key and rejects impossible dates. Same-day
-  events keep page order.
+- The timeline prints `DD/MM/YYYY` with no clock, so each scan keeps its day alone in
+  `local_time` and the catalog marks its scans as dated by day by design. `dateKey()`
+  rejects impossible dates. Same-day events keep page order.
 - Wording only, no status codes. Exception and return phrases are checked before
   delivery ones, because "nous avons tenté de livrer" contains "livrer".
 - "subi un retard" maps to `failed_attempt`.

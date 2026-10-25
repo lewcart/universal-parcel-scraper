@@ -12,7 +12,7 @@ import { parseDHLTrackingResponse } from '../carriers/dhl/adapter.js';
 // Spanish and Portuguese cover the delivery-side milestones only.
 const contrasts: { expected: Stage; en: string; fr: string; de: string; it: string; es?: string; pt?: string }[] = [
   { expected: 'returned', en: 'Returned to sender', fr: "Retourné à l'expéditeur",
-    de: 'Zurück an den Absender', it: 'Restituito al mittente', es: 'Devuelto al remitente', pt: 'Devolvido ao remetente' },
+    de: 'An den Absender zurückgesendet', it: 'Restituito al mittente', es: 'Devuelto al remitente', pt: 'Devolvido ao remetente' },
   { expected: 'failed_attempt', en: 'Delivery attempt failed', fr: 'Échec de la tentative de livraison',
     de: 'Zustellversuch fehlgeschlagen', it: 'Tentativo di consegna non riuscito',
     es: 'Intento de entrega fallido', pt: 'Tentativa de entrega falhada' },

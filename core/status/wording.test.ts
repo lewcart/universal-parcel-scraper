@@ -26,7 +26,9 @@ describe('classifyWording', () => {
     "Le colis sera livré à son expéditeur", 'Die Sendung wird an den Absender zurückgesendet', 'Die Sendung ist auf dem Rückweg zum Absender',
     'Sendung wird retourniert', 'Il pacco sarà restituito al mittente', 'In restituzione al mittente',
     'Het pakket wordt teruggestuurd naar de afzender', 'Przesyłka zostanie zwrócona do nadawcy', 'Zwrot do nadawcy',
-    'Devolver a origen', 'Will be returned to the shipper', 'Your parcel will be returned to its origin', 'Return in progress'])(
+    'Devolver a origen', 'Will be returned to the shipper', 'Your parcel will be returned to its origin', 'Return in progress',
+    "Retour à l'expéditeur", 'Retour expéditeur', 'Zurück an Absender', 'Rücksendung an den Absender', 'Ritorno al mittente',
+    'Retour afzender', 'Terug naar de afzender', 'Retorno al remitente'])(
     'keeps a return under way nonterminal in any language: %s', wording => {
       expect(classifyWording(wording)).toEqual({ stage: 'exception', source: 'wording:language' });
     },
@@ -35,7 +37,9 @@ describe('classifyWording', () => {
   it.each(["Votre colis est livré à son expéditeur à la suite d'un retour.", "Le colis est livré à l'expéditeur",
     "Colis en retour, livré à l'expéditeur", 'Paket wurde an den Absender zugestellt', 'Die Sendung wurde dem Absender zugestellt',
     'Il pacco è stato consegnato al mittente', 'Het pakket is afgeleverd bij de afzender', 'Teruggestuurd naar afzender',
-    'Przesyłka doręczona do nadawcy', 'Przesyłka zwrócona do nadawcy', 'The return was handed over to the sender'])(
+    'Przesyłka doręczona do nadawcy', 'Przesyłka zwrócona do nadawcy', 'The return was handed over to the sender',
+    "Retour à l'expéditeur effectué", "Retour à l'expéditeur, livré à l'expéditeur", 'Rücksendung an Absender zugestellt',
+    'Sendung an den Absender zurückgesendet', 'Zwrócono do nadawcy'])(
     'reads a parcel delivered back to its sender as returned, not delivered: %s', wording => {
       expect(classifyWording(wording)).toEqual({ stage: 'returned', source: 'wording:language' });
     },
@@ -75,7 +79,10 @@ describe('classifyWording', () => {
   it('keeps missed delivery attempts and returns out of exception', () => {
     expect(wordingStage('Delivery attempt, recipient absent')).toBe('failed_attempt');
     expect(wordingStage('Non livré, destinataire absent')).toBe('failed_attempt');
-    expect(wordingStage('Retour à l\'expéditeur')).toBe('returned');
+    // Like "Return to sender", the bare noun says where the parcel goes, not that it got there:
+    // the return is under way until a scan says it reached the sender.
+    expect(wordingStage('Retour à l\'expéditeur')).toBe('exception');
+    expect(wordingStage('Retourné à l\'expéditeur')).toBe('returned');
   });
 
   it('reads missed rounds worded around the attempt, the absent recipient or a closed business', () => {

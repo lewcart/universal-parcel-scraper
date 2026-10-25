@@ -93,7 +93,7 @@ describe('Algérie Poste tracking adapter', () => {
     expect(unnamed).toEqual({ status: 'unknown', last_status_text: null, last_update: null, last_update_local: '2026-06-02',
       expected_delivery: null, events: [{ local_time: '2026-06-02', location: 'Centre de Tri Sample' }] });
     expect(parseAlgeriePoste(withRows(row('2026-06-02 10:00', 'Retour à l\'expéditeur', 'Sample')), UNKNOWN))
-      .toMatchObject({ current_stage: 'returned', current_stage_source: expect.stringMatching(/^wording:/) });
+      .toMatchObject({ current_stage: 'exception', current_stage_source: expect.stringMatching(/^wording:/) });
     const sample = parseAlgeriePoste(withRows(row('2026-06-02 10:00', 'Sample counter scan', 'Sample')), UNKNOWN);
     expect(sample).toMatchObject({ status: 'unknown', last_status_text: 'Sample counter scan' });
     expect(sample.events![0]).toEqual({ local_time: '2026-06-02T10:00:00', location: 'Sample', description: 'Sample counter scan' });

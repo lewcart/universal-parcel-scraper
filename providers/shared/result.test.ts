@@ -54,6 +54,11 @@ describe('shared provider result', () => {
     expect(order([history[3]!, history[1]!], true)).toEqual(['Shipment information sent', 'Picked up']);
   });
 
+  it("reads a copy of SunYou's departure without the last-mile number, as SunYou's own result does", () => {
+    expect(event('2026-01-07T12:45:00+08:00', 'Departed Sunyou Facility, Carrier Tracking Number:  ZZ000000005GB'))
+      .toMatchObject({ description: 'Departed Sunyou Facility' });
+  });
+
   it("reads Chronopost's notice to the recipient without the message type and medium appended to it", () => {
     const notice = 'Destinataire informé par SMS ou mail';
     for (const relayed of [`${notice}. Type du message : Retard Média utilisé : E-mail`, `${notice} Type du message : Echec de livraison`]) {

@@ -35,7 +35,7 @@ for the last mile. This folder covers the journey up to that handoff.
   hand-off then goes by the destination's national post where the catalog has one, else by the
   number's issuer.
 - The departure's wording ends with that reference ("Carrier Tracking Number: …"). It is left
-  out of the scan, since the hand-off carries it.
+  out of the scan, since the hand-off carries it, and out of a universal provider's copy too.
 - `delivered_at` is the time of the newest scan when that scan is a delivery.
 - Numbers are `SY` and eleven digits, or `SY`, two letters and nine digits (`SYUS`, `SYGB`, `SYRM`,
   `SYAE` and others). `SYMY` numbers seen in archives answer not found.

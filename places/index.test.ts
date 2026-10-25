@@ -75,6 +75,11 @@ describe('locatePlace', () => {
     // No town before the code, on a parcel known elsewhere: no country either.
     expect(place('Example Unit MC', ['GB'])).toBeNull();
     expect(place('UFFICIO POSTALE (TO)', ['IT'])).toBeNull();
+    // A code that is also a state or canton, in brackets as after a comma: Delaware has no Bad Bevensen.
+    expect(place('Bad Bevensen')).toBeNull();
+    expect(place('Bad Bevensen (DE)')).toEqual(place('Bad Bevensen, DE'));
+    expect(place('Bad Bevensen (DE)')).toMatchObject({ precision: 'city', country: 'DE', name: 'Bad Bevensen' });
+    expect(place('Bad Bevensen (FR)')).toBeNull();
     // The parcel's own country is one.
     expect(place('MOKRONOS DOLNY (PL)', ['PL'])).toMatchObject({ precision: 'country', country: 'PL' });
     expect(place('Example Hub, CH', ['FR'])).toMatchObject({ precision: 'country', country: 'CH' });

@@ -66,9 +66,11 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   (TO)" is in the province of Turin, not Tonga, and Royal Mail's "Norwich MC" is a mail
   centre, not Monaco. A depot's number in brackets can follow the code ("Vilvoorde - BE
   (depot 0001)"). The town's own province settles it, then a town of that name where the
-  parcel is, then, for a code no comma or bracket sets apart, any town of that name. With no
-  town at all, a code in brackets or after a space is no country on a parcel known to be
-  elsewhere, and the scan gets no place. MC and DO after a name that is no town of Monaco or
+  parcel is, then, for a code no comma or bracket sets apart, any town of that name. A code
+  that is also a US state or a Swiss canton only favours its country's towns, after a comma
+  or in brackets alike ("Bad Bevensen, DE", "Bad Bevensen (DE)"). With no town at all, a
+  code in brackets or after a space is no country on a parcel known to be elsewhere, and the
+  scan gets no place. MC and DO after a name that is no town of Monaco or
   the Dominican Republic are Royal Mail's, on any carrier's parcel: its mail centre or a
   British town of that name, else the United Kingdom for a name with a British region in it
   ("Mid Wales MC"), else no place.

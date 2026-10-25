@@ -595,16 +595,16 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   let looseCountry = false;
 
   // A trailing code without a comma ("ZUERICH CH"), or one that is also a state
-  // or canton ("KOELN, DE", "Buchs SG"): a hint either way. A depot's number can
-  // follow it: "Example Town - IT (depot 0001)".
-  const end = /[\s,;]+([A-Z]{2})(?:\s*\((?:\p{L}+\s+)?\d+\))?$/u.exec(rest);
-  const trailing = end?.[1];
+  // or canton ("KOELN, DE", "Buchs SG", "Bad Bevensen (DE)"): a hint either way. A depot's
+  // number can follow it: "Example Town - IT (depot 0001)".
+  const end = /(?:[\s,;]+([A-Z]{2})|\s*\(([A-Z]{2})\))(?:\s*\((?:\p{L}+\s+)?\d+\))?$/u.exec(rest);
+  const trailing = end?.[1] ?? end?.[2];
   if (!country && trailing && data.countries.has(trailing)) {
-    const before = rest.slice(0, end.index + end[0].indexOf(trailing));
-    rest = before.replace(/[\s,;-]+$/, '');
+    const before = rest.slice(0, end!.index + end![0].indexOf(trailing));
+    rest = before.replace(/[\s,;(-]+$/, '');
     hinted.unshift(trailing);
     admin.push(trailing);
-    if (!/,|;/.test(before) && !ambiguousAddressCodes.has(trailing)) {
+    if (end![1] && !/,|;/.test(before) && !ambiguousAddressCodes.has(trailing)) {
       country = trailing;
       looseCountry = true;
     }

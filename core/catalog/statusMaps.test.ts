@@ -736,6 +736,14 @@ describe('status map answers', () => {
     expect(answer('inpost', null, 'Something new')).toEqual(unknown);
   });
 
+  it('answers an InPost scan stored with its code by the code, whatever its wording', () => {
+    expect(answer('inpost', 'FMD.1001', 'Nadana przez Paczkomat')).toEqual(mapped('accepted'));
+    expect(answer('inpost', 'EOL.1001', 'Synthetic wording')).toEqual(mapped('delivered'));
+    expect(answer('inpost', 'LMD.3013', 'Synthetic wording')).toEqual(gap);
+    expect(answer('inpost', 'INF.9001', 'Possible delivery delay')).toEqual(gap);
+    expect(answer('inpost', 'NEW.9999', 'Ready for collection')).toEqual(unknown);
+  });
+
   it('answers PostNord by its code, narrowed by the wording of a milestone or a hold', () => {
     expect(answer('postnord', 'EN_ROUTE', 'The shipment item has been dropped off by sender.')).toEqual(mapped('accepted'));
     expect(answer('postnord', 'EN_ROUTE', 'The delivery of the shipment item is in progress.')).toEqual(mapped('out_for_delivery'));

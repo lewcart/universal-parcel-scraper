@@ -85,6 +85,8 @@ describe('InPost response parsing', () => {
       ['Registered', 'registered', '2026-05-01T08:00:00+02:00'],
     ]);
     expect(result.events?.map((event) => event.location)).toEqual(['Exampletown (DE)', 'Exampletown (DE)', 'EXAMPLE HUB (PL)', '']);
+    // Each scan keeps its own code, which the parcel app's review reads.
+    expect(result.events?.every((event) => /^[A-Z]{3}\.\d{4}$/.test(event.provider_code ?? ''))).toBe(true);
     expect(result).toMatchObject({ delivered_at: '2026-05-04T10:00:00+02:00', destination_country: 'DE' });
   });
 
@@ -144,7 +146,7 @@ describe('InPost response parsing', () => {
     expect(result).toMatchObject({ status: 'unknown', last_status_text: 'Something new' });
     // No explicit mapping means no stage at all: the sync classifies the raw
     // wording and records where the final stage came from.
-    expect(result.events?.[0]).toMatchObject({ description: 'Something new' });
+    expect(result.events?.[0]).toMatchObject({ description: 'Something new', provider_code: 'NEW.9999' });
     expect(result.events?.[0]?.stage).toBeUndefined();
   });
 

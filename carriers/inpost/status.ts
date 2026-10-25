@@ -80,16 +80,22 @@ for (const { code, wording } of HUB_WORDINGS) {
   STAGE_BY_WORDING.set(wording, STAGE_BY_WORDING.has(wording) && STAGE_BY_WORDING.get(wording) !== stage ? undefined : stage);
 }
 
+/** Why a redirect or a delay notice has no stage of its own, by its code. */
+const KEEPER_NOTES = new Map(HUB_WORDINGS.filter(({ code }) => keepsInpostStage(code)).map(({ code, note }) => [code, note]));
+
 /**
- * What the map says about one scan. A hub scan keeps its wording but not the code that staged
- * it, so the wording stages it through the code it comes with; a scan without wording keeps
- * its code as its wording. A redirect or a delay notice takes the stage of the scan before it,
- * which the stored scan does not keep.
+ * What the map says about one scan. A hub scan keeps its code, which stages it; a copy without
+ * one is staged by its wording through the code it comes with, and a scan the hub sent without
+ * wording keeps its code as its wording. A redirect or a delay notice takes the stage of the scan
+ * before it, which the stored scan does not keep.
  */
 export const statusMap: CarrierStatusMap = {
-  stage: (_code, wording) => {
-    const code = wording.toLocaleUpperCase('en-US');
-    return HUB_CODE.test(code) ? classifyInpostStatus(code)?.stage : STAGE_BY_WORDING.get(wording);
+  stage: (code, wording) => {
+    const hubCode = (code && HUB_CODE.test(code) ? code : wording).toLocaleUpperCase('en-US');
+    return HUB_CODE.test(hubCode) ? classifyInpostStatus(hubCode)?.stage : STAGE_BY_WORDING.get(wording);
   },
-  gaps: HUB_WORDINGS.filter(({ code }) => keepsInpostStage(code)).map(({ wording, note }) => ({ wording, note })),
+  gaps: [
+    ...[...STAGE_KEEPERS].map((code) => ({ code, note: KEEPER_NOTES.get(code) ?? 'Takes the stage of the scan before it, which the stored scan does not keep.' })),
+    ...HUB_WORDINGS.filter(({ code }) => keepsInpostStage(code)).map(({ wording, note }) => ({ wording, note })),
+  ],
 };

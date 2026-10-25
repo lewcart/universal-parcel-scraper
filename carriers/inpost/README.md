@@ -29,9 +29,11 @@ GB). Tracked through the keyless `inposteasy.com` hub API; no postcode or link n
   courier for delivery as out for delivery, and a refusal as a failed attempt.
 - An unmapped code gets no stage: the phase prefix does not decide it. The result is
   `unknown` with the raw wording kept, and the sync records it for review.
-- Scans keep their wording, not their code. The parcel app's review asks the same map
-  (`statusMap`) by that wording, through the code `statuses.json` records it with; a
-  redirect or a delay notice stays without a stage there, since it takes the stage before it.
+- Scans keep their wording and their code (`provider_code`). The parcel app's review asks the
+  same map (`statusMap`) by the code, and a copy without one by its wording, through the code
+  `statuses.json` records it with; a redirect or a delay notice stays without a stage there,
+  since it takes the stage before it. Adding the code changes no stored scan's identity, which
+  the app keys on its time, place and wording.
 - Timestamps are kept exactly as sent with their offset. An offset-less value is dropped,
   not stamped with `Europe/Warsaw`, because four countries share this endpoint.
 - The hub words every parcel's scans in Polish, whatever its country or the

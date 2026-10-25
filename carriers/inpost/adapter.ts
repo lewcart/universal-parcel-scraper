@@ -105,6 +105,7 @@ export function parseInpostTrackingResponse(payload: unknown, trackingNumber: st
         time: time.iso,
         location: /^null\b/i.test(place) ? '' : place,
         description,
+        ...(eventCode ? { provider_code: eventCode } : {}),
         ...(eventClassified ? { stage: eventClassified.stage } : {}),
       },
       code: eventCode,

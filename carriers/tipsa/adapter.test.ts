@@ -108,6 +108,7 @@ describe('TIPSA shipment page', () => {
 
   it('leaves unknown labels to the shared wording rules', () => {
     expect(tipsaStatus('DEVUELTO')).toEqual({ status: 'exception', stage: 'returned' });
+    expect(tipsaStatus('Devolver a Origen')).toEqual({ status: 'exception', stage: 'exception' });
     expect(tipsaStatus('NUEVO REPARTO')).toBeUndefined();
     const page = DETAIL.replaceAll('>ENTREGADO<', '>NUEVO REPARTO<');
     const result = parseTipsaDetail(page, NUMBER);

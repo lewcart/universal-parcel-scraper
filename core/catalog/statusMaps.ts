@@ -295,6 +295,7 @@ import { statusMap as idsLogistik } from '../../carriers/ids-logistik/status.js'
 import { statusMap as ilyangLogis } from '../../carriers/ilyang-logis/status.js';
 import { statusMap as imile } from '../../carriers/imile/status.js';
 import { statusMap as indahLogistik } from '../../carriers/indah-logistik/status.js';
+import { statusMap as indiaPost } from '../../carriers/india-post/status.js';
 import { statusMap as inpost } from '../../carriers/inpost/status.js';
 import { statusMap as instabox } from '../../carriers/instabox/status.js';
 import { statusMap as integralPack } from '../../carriers/integral-pack/status.js';
@@ -589,6 +590,7 @@ import { statusMap as tstCfExpress } from '../../carriers/tst-cf-express/status.
 import { statusMap as tufesa } from '../../carriers/tufesa/status.js';
 import { statusMap as twsExpress } from '../../carriers/tws-express/status.js';
 import { statusMap as ubiSmartParcel } from '../../carriers/ubi-smart-parcel/status.js';
+import { statusMap as ukrposhta } from '../../carriers/ukrposhta/status.js';
 import { statusMap as unitedDeliveryService } from '../../carriers/united-delivery-service/status.js';
 import { statusMap as uniuni } from '../../carriers/uniuni/status.js';
 import { statusMap as upaya } from '../../carriers/upaya/status.js';
@@ -673,7 +675,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, heppner, hepsijet, hermes, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress, 'hongkong-post': hongkongPost,
   'houng-ah-loun': houngAhLoun, hovership, 'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, 'ilyang-logis': ilyangLogis, imile,
-  'indah-logistik': indahLogistik, inpost, instabox, 'integral-pack': integralPack, intelcom, 'internet-express': internetExpress, interrapidisimo,
+  'indah-logistik': indahLogistik, 'india-post': indiaPost, inpost, instabox, 'integral-pack': integralPack, intelcom, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-au': jAndTAu, 'j-and-t-de': jAndTDe, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, 'japan-post': japanPost, jcex, 'jd-logistics': jdLogistics, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
@@ -713,7 +715,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, techlink, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, 'the-courier-guy': theCourierGuy, thhy, tiki, tipsa, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,
   trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
-  'ubi-smart-parcel': ubiSmartParcel,
+  'ubi-smart-parcel': ubiSmartParcel, ukrposhta,
   'united-delivery-service': unitedDeliveryService, uniuni, upaya, ups, urbano, urvaam, usps,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, 'viettel-post': viettelPost,
   vimenpaq, 'vinted-go': vintedGo, vozovoz, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl, xpressbees,

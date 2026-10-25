@@ -15,6 +15,7 @@
  * https://github.com/bivu-m/njs-tracker-scraper as the starting point.
  */
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import { cleanScalar } from '../../core/transport/index.js';
 
 function statusKey(value: unknown): string {
@@ -110,3 +111,44 @@ export function classifyIndiaPostEvent(...values: unknown[]): ClassifiedStatus {
   ])) return { status: 'in_transit', stage: 'in_transit' };
   return { status: 'unknown', stage: 'in_transit' };
 }
+
+// India Post now sends bare codes in `event` (seen 2026-09-22 after a refresh);
+// rows synced earlier carry its prose. Only codes seen live are spelled out.
+const EVENT_TEXT: Record<string, string> = {
+  ITEM_BOOK: 'Item Booked',
+  BAG_CLOSE: 'Bag Closed',
+  BAG_DISPATCH: 'Bag Dispatched',
+  BAG_FORWARD: 'Bag Forwarded',
+  TMO_RECEIVE: 'Received at Transit Mail Office',
+  ITEM_RECEIVE: 'Item Received',
+  CUSTOM_RECEIVE: 'Item Presented to Customs',
+  CUSTOM_RETURN: 'Item Returned from Customs',
+  TRANSFER_OOE: 'Transferred to Office of Exchange',
+};
+
+/** Readable text for a code-shaped event such as `BAG_DISPATCH`; prose passes through. */
+export function indiaPostEventText(raw: string): string {
+  if (!/^[A-Za-z]+(?:_[A-Za-z0-9]+)+$/.test(raw)) return raw;
+  const code = raw.toUpperCase();
+  return EVENT_TEXT[code] ?? code.toLowerCase().split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+// The code a spelled-out wording stands for: the adapter classified the code, which can read
+// differently, as `TRANSFER_OOE` does.
+const EVENT_CODES = new Map(Object.entries(EVENT_TEXT).map(([code, text]) => [normalizeStatusWording(text), code]));
+
+/**
+ * What the map says about one scan: its `event_type` code and wording, read as the adapter reads a
+ * row whose remarks add nothing. A remark, which the stored scan does not keep, can give a row
+ * another stage, such as a return or an exception. The adapter keeps a row it does not recognize
+ * in transit so no scan is dropped; the map leaves that row open, so the app's review shows the
+ * India Post wording no rule knows instead of a stage nothing read.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    const classified = classifyIndiaPostEvent(code, wording, EVENT_CODES.get(wording));
+    return classified.status === 'unknown' ? undefined : classified.stage;
+  },
+  gaps: [],
+};

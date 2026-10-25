@@ -653,7 +653,7 @@ describe('status map answers', () => {
     expect(answer('yto', null, 'Delivered')).toEqual(unknown);
   });
 
-  it.each(['app', '', 'india-post', '__proto__', 'toString', 'Unknown'])('does not know %s', (carrier) => {
+  it.each(['app', '', 'india', '__proto__', 'constructor', 'toString', 'Unknown'])('does not know %s', (carrier) => {
     expect(answer(carrier, 'DLO', 'Delivered')).toEqual(unknown);
   });
 
@@ -1285,6 +1285,39 @@ describe('status map answers', () => {
     // A delivery without the portal's code, and the neutral update in place of free-form wording, stay open.
     expect(answer('correos-chile', null, 'ENVIO ENTREGADO')).toEqual(unknown);
     expect(answer('correos-chile', '006', 'Actualización del envío')).toEqual(unknown);
+  });
+
+  it('answers India Post by its event code and wording as the adapter read the row, and leaves a row no rule knows open', () => {
+    expect(answer('india-post', 'ItemBooked', 'Item Booked')).toEqual(mapped('accepted'));
+    expect(answer('india-post', 'CustomReceive', 'Item Presented to Customs')).toEqual(mapped('customs'));
+    expect(answer('india-post', 'CustomReturn', 'Item Returned from Customs')).toEqual(mapped('in_transit'));
+    expect(answer('india-post', 'ExportCustoms', 'Out of Export Customs')).toEqual(mapped('in_transit'));
+    expect(answer('india-post', 'DeliveryAttempted', 'Delivery Attempted')).toEqual(mapped('failed_attempt'));
+    expect(answer('india-post', 'ItemDelivered', 'Item Delivered')).toEqual(mapped('delivered'));
+    expect(answer('india-post', 'ReturnToSender', 'Return To Sender')).toEqual(mapped('returned'));
+    // The code stages a row its wording alone does not, and a spelled-out code reads as the code did.
+    expect(answer('india-post', 'ItemReceived', 'Received')).toEqual(mapped('in_transit'));
+    expect(answer('india-post', 'ItemTransfered', 'Transferred to Office of Exchange')).toEqual(mapped('in_transit'));
+    // A flight keeps its own reading, whatever its wording.
+    expect(answer('india-post', 'AircraftTakeOff', 'Aircraft Departure')).toEqual(mapped('in_transit'));
+    expect(answer('india-post', 'AircraftTakeOff', 'Flight ZZ0102 departed: Frankfurt Airport (FRA) → CDG')).toEqual(mapped('in_transit'));
+    expect(answer('india-post', 'MailArrived', 'Flight ZZ0102 arrived: FRA → Paris Charles de Gaulle Airport (CDG)')).toEqual(mapped('in_transit'));
+    // The adapter keeps such a row in transit; the map leaves it open.
+    expect(answer('india-post', 'SyntheticEvent', 'Synthetic Event')).toEqual(unknown);
+    expect(answer('india-post', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
+  it('answers Ukrposhta by its code, and a delivery worded as a return as returned', () => {
+    expect(answer('ukrposhta', '10100', 'Registered')).toEqual(mapped('accepted'));
+    expect(answer('ukrposhta', '89000', 'Item presented to customs')).toEqual(mapped('customs'));
+    expect(answer('ukrposhta', '21700', 'Return: Arrived to the Branch')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('ukrposhta', '31200', "Returned to Sender (Due to Recipient's Refusal)")).toEqual(mapped('exception'));
+    expect(answer('ukrposhta', '48000', 'Final delivery')).toEqual(mapped('delivered'));
+    expect(answer('ukrposhta', '41000', 'Return: Delivered to Sender')).toEqual(mapped('returned'));
+    expect(answer('ukrposhta', '41000', 'Повернення. Вручено відправнику')).toEqual(mapped('returned'));
+    // A code the table does not know stays open, and so does wording without a code, which neither source sends.
+    expect(answer('ukrposhta', '99999', 'Final delivery')).toEqual(unknown);
+    expect(answer('ukrposhta', null, 'Final delivery')).toEqual(unknown);
   });
 
   it('answers Heppner by the English wording it stores, and leaves its neutral update open', () => {

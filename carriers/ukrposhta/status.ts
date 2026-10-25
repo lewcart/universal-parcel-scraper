@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const CODES: Record<string, ClassifiedStatus> = {
   '10601': { status: 'pending', stage: 'registered' },
@@ -36,3 +37,19 @@ export function ukrposhtaStatus(code: string): ClassifiedStatus | undefined {
 export function ukrposhtaReturnCue(label: string): boolean {
   return /^Return: /i.test(label) || /^Returned to Sender(?:\s|\()/i.test(label) || /^Повернення[.:]/i.test(label);
 }
+
+/**
+ * What the map says about one scan: its code, as the parser reads it, and a delivery whose own
+ * wording starts a return, such as "Return: Delivered to Sender", as returned. The stored scan
+ * keeps neither the reason code that makes a scan an exception (65 and 66) nor the earlier scan
+ * that started a return leg, so a delivery in that leg worded as a delivery reads as delivered.
+ * A code the table does not know stays open for the app's review; both sources give every scan a
+ * code.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    const stage = code === null ? undefined : ukrposhtaStatus(code)?.stage;
+    return stage === 'delivered' && ukrposhtaReturnCue(wording) ? 'returned' : stage;
+  },
+  gaps: [],
+};

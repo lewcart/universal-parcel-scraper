@@ -49,6 +49,9 @@ Outcomes:
 - Most rows have no stable status code. `event_type`, `event` and `remarks` are joined into one normalized
   key and matched by substring, most specific first. Unrecognized rows keep an `in_transit` stage with
   an `unknown` status, so no scan is dropped and no terminal stage is invented.
+  The parcel app's review (`statusMap`) reads a stored scan's code and wording the same way, without
+  the remarks it does not keep, which can give a row another stage. It leaves an unrecognized row
+  open, so the review shows wording no rule knows.
 - `CUSTOM_RECEIVE` is customs. `CUSTOM_RETURN`, "Out of Export Customs" and "released by export Customs" mean customs handed
   the item back: in transit, not returned to sender.
 - `tracked_at` without an offset is read as `Asia/Kolkata`. `synced_at` is returned as

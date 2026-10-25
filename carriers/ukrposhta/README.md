@@ -47,6 +47,9 @@ clocks a daylight-saving change skips or repeats keep their local digits. Scans
 retain native order. See [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md)
 for unresolved history handling. A return decision starts a separate leg; later
 transport remains active until a delivery scan completes that leg.
+The parcel app's review (`statusMap`) answers a stored scan by its code, and a
+delivery worded as a return as returned. It cannot see a scan's reason code, which
+can make it an exception, or the return leg of a delivery worded as a delivery.
 
 Both sources read the same domestic records. When the status API does not know a
 domestic barcode the browser is not asked. An international reference still gets

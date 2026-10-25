@@ -19,7 +19,7 @@ import {
   UpstreamHttpError,
 } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { classifyIndiaPostEvent } from './status.js';
+import { classifyIndiaPostEvent, indiaPostEventText } from './status.js';
 
 // Protocol provenance (inspected 2026-09-01):
 // https://github.com/bivu-m/njs-tracker-scraper
@@ -109,28 +109,6 @@ function parseTrackingRequest(html: string): JsonObject {
     }
   }
   throw new SchemaError('India Post', 'India Post returned an invalid tracking history');
-}
-
-// India Post now sends bare codes in `event` (seen 2026-09-22 after a refresh);
-// rows synced earlier carry its prose. Only codes seen live are spelled out.
-const EVENT_TEXT: Record<string, string> = {
-  ITEM_BOOK: 'Item Booked',
-  BAG_CLOSE: 'Bag Closed',
-  BAG_DISPATCH: 'Bag Dispatched',
-  BAG_FORWARD: 'Bag Forwarded',
-  TMO_RECEIVE: 'Received at Transit Mail Office',
-  ITEM_RECEIVE: 'Item Received',
-  CUSTOM_RECEIVE: 'Item Presented to Customs',
-  CUSTOM_RETURN: 'Item Returned from Customs',
-  TRANSFER_OOE: 'Transferred to Office of Exchange',
-};
-
-/** Readable text for a code-shaped event such as `BAG_DISPATCH`; prose passes through. */
-function eventText(raw: string): string {
-  if (!/^[A-Za-z]+(?:_[A-Za-z0-9]+)+$/.test(raw)) return raw;
-  const code = raw.toUpperCase();
-  return EVENT_TEXT[code] ?? code.toLowerCase().split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
 // India Post's code for a flight leaving, in `event_type`. The wording beside
@@ -382,7 +360,7 @@ export function parseIndiaPostTrackingHtml(
     const local = foreign && 'local' in foreign ? foreign : null;
     const takeOff = providerCode === TAKE_OFF_CODE;
     const flight = flightDetails(providerCode, rawEvent.remarks, office);
-    const description = flight?.description ?? (takeOff ? 'Aircraft Departure' : eventText(clean(rawEvent.event)));
+    const description = flight?.description ?? (takeOff ? 'Aircraft Departure' : indiaPostEventText(clean(rawEvent.event)));
     if (!(time || local) || !description) return;
     const pincode = /^\d{6}$/.test(clean(rawEvent.pincode, 6))
       ? clean(rawEvent.pincode, 6)

@@ -746,6 +746,15 @@ describe('status map answers', () => {
     expect(answer('postnord', null, 'The shipment item has been delivered.')).toEqual(unknown);
   });
 
+  it("answers Colis Privé by its French wording, a missed delivery before the delivery it names", () => {
+    expect(answer('colis-prive', null, "Votre colis est en cours de préparation par l'expéditeur.")).toEqual(mapped('registered'));
+    expect(answer('colis-prive', null, 'Votre colis est arrivé sur notre agence régionale de distribution.')).toEqual(mapped('in_transit'));
+    expect(answer('colis-prive', null, 'Votre colis est en cours de distribution par le livreur')).toEqual(mapped('out_for_delivery'));
+    expect(answer('colis-prive', null, 'Nous avons tenté de livrer votre colis.')).toEqual(mapped('failed_attempt'));
+    expect(answer('colis-prive', null, 'Votre colis a été livré.')).toEqual(mapped('delivered'));
+    expect(answer('colis-prive', null, 'Un nouveau libellé du transporteur')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

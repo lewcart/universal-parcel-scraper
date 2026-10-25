@@ -103,6 +103,7 @@ import { statusMap as citymail } from '../../carriers/citymail/status.js';
 import { statusMap as cjLogistics } from '../../carriers/cj-logistics/status.js';
 import { statusMap as cjPacket } from '../../carriers/cj-packet/status.js';
 import { statusMap as closerLogistics } from '../../carriers/closer-logistics/status.js';
+import { statusMap as colisPrive } from '../../carriers/colis-prive/status.js';
 import { statusMap as connectCouriers } from '../../carriers/connect-couriers/status.js';
 import { statusMap as coordinadora } from '../../carriers/coordinadora/status.js';
 import { statusMap as copaCourier } from '../../carriers/copa-courier/status.js';
@@ -596,7 +597,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   byhd, c3x, cacesa, 'canada-post': canadaPost, cargus, 'castle-parcels': castleParcels, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, 'citylink-express': citylinkExpress, citymail,
-  'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
+  'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'colis-prive': colisPrive, 'connect-couriers': connectCouriers, coordinadora,
   'copa-courier': copaCourier, corre,
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, ctt, 'ctt-express': cttExpress, cttyex,

@@ -10,6 +10,7 @@
  * the adapter emits the row with no stage and the sync classifies it.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import { clean } from '../../core/transport/index.js';
 import type { Stage } from '../../generated/catalog.js';
 
@@ -106,3 +107,6 @@ export function classifyStatus(description: string): ClassifiedStatus {
   if (includesAny(value, IN_TRANSIT_PHRASES)) return { status: 'in_transit', stage: 'in_transit' };
   return { status: 'unknown' };
 }
+
+/** What the map says about one scan: Colis Privé's rows carry no code, so their wording stages them. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => classifyStatus(wording).stage, gaps: [] };

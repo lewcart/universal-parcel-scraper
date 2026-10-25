@@ -57,7 +57,9 @@ country.
   API's scans carry DPD's code. The identity policy (`identity.ts`) lets a scan
   from one service take over the other's stored row for it: the same stage,
   less than a minute apart, the same place or none, and the match unique both
-  ways.
+  ways. The guest API's hand-over, "Parcel handed to DPD", is the first
+  depot's scan the app calls "In transit.", and the two match whatever stage
+  each reads.
 - The Swiss page fallback is not used for German lookups.
 
 ## App service

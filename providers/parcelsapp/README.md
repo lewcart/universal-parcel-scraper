@@ -397,6 +397,11 @@ step exists for future protocol changes.
   Post's "+11:00", as does EMS's copy under the office's code. A posting that only its
   office's capital places therefore borrows the clock of its feed's other scans, as a wall
   clock does (step 3 of Wall clocks), and takes the capital's only when there is none.
+  A UPU or EMS scan whose place puts it only in another country of several clocks
+  ("CURITIBA, Brazil") is read on the clock most of that country's people live on: Correos
+  Chile dates a posting UPU names in Santiago, and Correios Brazil an arrival in Curitiba,
+  at the same digits on their own clocks. The US, Canada and Australia are left to their
+  states, and a state's code ("EXAMPLE CITY, MN") names no country.
 - CTT's copies ("Portugal Post - Portugal CTT") have the digits of CTT's own tracker, the
   clock where each scan happened, under a UTC label. An office of exchange or a CTT site
   names its own clock ("GBLALA - …" London's, "PTLISE - …" Lisbon's). ParcelsApp drops

@@ -1879,6 +1879,24 @@ describe('ParcelsApp result parsing', () => {
     ] }, number, identity()).events?.[0]?.time).toBe('2026-10-06T16:28:00.000Z');
   });
 
+  it("reads the postal feeds' scans in a country of several clocks that their place names alone on its main clock", () => {
+    // Correos Chile's own posting and Correios Brazil's arrival have these digits at -03:00.
+    const times = (states: Record<string, unknown>[], carriers = ['Universal Postal Union', 'EMS']) => parseParcelsAppResponse(
+      { carriers, originCode: 'CL', destinationCode: 'BR', states }, number, identity()).events?.map(({ time }) => time);
+    expect(times([
+      { date: '2026-09-29T08:06:00Z', status: 'Item presented to import Customs', carrier: 0, location: 'EXAMPLE CITY, Brazil' },
+      { date: '2026-09-29T08:05:00+00:00', status: 'Arrived at inward office of exchange', carrier: 1, location: 'EXAMPLE CITY, Brazil' },
+      { date: '2026-09-14T17:28:00Z', status: 'Departed country of origin', carrier: 0, location: 'SANTIAGO EXAMPLE, Chile' },
+      { date: '2026-09-14T08:18:00Z', status: 'Arrived at international sorting center in country of origin', carrier: 0, location: 'SANTIAGO EXAMPLE, Chile' },
+      { date: '2026-09-11T10:43:00Z', status: 'Posting/Collection', carrier: 0, location: 'SANTIAGO EXAMPLE, Chile' },
+    ])).toEqual([
+      '2026-09-29T11:06:00.000Z', '2026-09-29T11:05:00.000Z', '2026-09-14T20:28:00.000Z', '2026-09-14T11:18:00.000Z', '2026-09-11T13:43:00.000Z',
+    ]);
+    // A state's code is no country: "MN" is not Mongolia here.
+    expect(times([{ date: '2026-09-29T08:06:00Z', status: 'Arrival at inward office of exchange', carrier: 0, location: 'EXAMPLE CITY, MN' }]))
+      .toEqual(['2026-09-29T08:06:00.000Z']);
+  });
+
   it('reads an Australian posting its office\'s capital names on its feed\'s clock first', () => {
     // Live shape: UPU names the office "BRISBANE" and EMS gives its code for the posting
     // Australia Post received in New South Wales at +11:00, Sydney's summer clock.

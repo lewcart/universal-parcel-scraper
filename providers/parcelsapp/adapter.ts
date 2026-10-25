@@ -27,6 +27,7 @@ import {
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { militaryPostOffice } from '../../places/trackingLocation.js';
+import { hasSeveralClocks, mainZone } from '../../places/zones.js';
 import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { cttyexChinaStep } from '../../carriers/cttyex/status.js';
@@ -833,6 +834,23 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   return zone !== 'UTC' && !(typeof name === 'string' && carrierNameCountryZone(name)) ? zone : undefined;
 }
 
+// Countries whose states or provinces the steps read, where a town alone can be hours from the main clock.
+const REGIONAL_CLOCKS = new Set(['AU', 'CA', 'US']);
+
+/**
+ * The clock of a postal feed's scan that its place puts only in a country of
+ * several clocks ("CURITIBA, Brazil", "SANTIAGO EXAMPLE, Chile"): the one most
+ * of the country's people live on. UPU's and EMS's dates are the office's wall
+ * clock under a UTC label: Correos Chile dates its posting and Correios Brazil
+ * its arrival in Curitiba at the same digits, three hours later as instants.
+ * A state or province's code ("EXAMPLE CITY, MN") is no country here.
+ */
+function postalCountryZone(name: unknown, location: string): string | null {
+  const country = countryCode(lastPlace(location));
+  return POSTAL_FEEDS.has(nameKey(name)) && country && hasSeveralClocks(country) && !REGIONAL_CLOCKS.has(country) && !regionClock(location)
+    ? mainZone(country) : null;
+}
+
 /**
  * The zone a scan's place gives it: null for a DHL Express facility the rule
  * cannot place, and undefined for a scan only a guess can place (`guessedZone`).
@@ -864,6 +882,8 @@ function siteZone(payload: Record<string, unknown>, state: Record<string, unknow
     : countryTimeZone(place) ?? (countryCode(place) === 'AU' ? australianZone(location, capitals) : null);
   if (located) return located;
   if (region) return region.zone;
+  const postal = postalCountryZone(name, location);
+  if (postal) return postal;
   if (POSTAL_FEEDS.has(key) && POSTAL_ORIGIN_LEG.test(status.trim())) {
     const origin = replyOrigin(payload, number);
     return countryTimeZone(origin) ?? (origin === 'AU' ? australianZone(location, capitals) : null) ?? undefined;

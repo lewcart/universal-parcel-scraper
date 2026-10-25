@@ -128,6 +128,11 @@ export function regionZone(country: string, region: string): string | null {
   return null;
 }
 
+/** Whether a country keeps several zones, among which a scan's place must choose. */
+export function hasSeveralClocks(country: string): boolean {
+  return Object.hasOwn(COUNTRY_CLOCKS, country);
+}
+
 /** The zone of a country that keeps one, or the one most of its people live on; null for an unknown code. */
 export function mainZone(country: string): string | null {
   return MAIN_CLOCKS[country] ?? SINGLE_CLOCKS[country] ?? countryTimeZone(country);

@@ -76,6 +76,10 @@ const UNITS: Readonly<Record<DPDCountry, { carrier: string; name: string; adject
 };
 /** Units read through the guest API alone, with no page or app tier after it. */
 const GUEST_ONLY: ReadonlySet<DPDCountry> = new Set(['BE', 'NL']);
+/** Guest statuses at the delivery depot or after it. Before it, the status's country can be the sender's. */
+const DELIVERY_SIDE: ReadonlySet<string> = new Set([
+  'AT_DELIVERY_CENTER', 'PARCEL_OUT_FOR_DELIVERY', 'AVAILABLE_FOR_COLLECTION', 'UNSUCCESSFUL_DELIVERY_ATTEMPT', 'DELIVERED',
+]);
 const DEFAULT_TIMEOUT_MS = 90_000;
 /** How long a failed guest login answers new lookups before the next attempt. */
 const TOKEN_FAILURE_MEMORY_MS = 30_000;
@@ -687,6 +691,8 @@ export interface DPDTrackerOptions {
   shops?: DPDParcelShops;
   /** Tracks a parcel the German tiers place in another country, from that country's code. */
   abroad?: DPDAbroad;
+  /** The carrier that delivers a parcel the guest tier places in another country from its delivery depot on, by that country's code. */
+  handsTo?: Readonly<Record<string, string>>;
 }
 
 export type DPDAbroad = (number: string, country: string, context: TrackingContext) => Promise<CarrierResult>;
@@ -720,6 +726,7 @@ export class DPDTracker {
   private readonly app?: DPDAppTier;
   private readonly shops?: DPDParcelShops;
   private readonly abroad?: DPDAbroad;
+  private readonly handsTo?: Readonly<Record<string, string>>;
   #accessToken = '';
   #accessTokenExpiresAt = 0;
   #basicToken = '';
@@ -740,6 +747,7 @@ export class DPDTracker {
     this.app = options.app;
     this.shops = options.shops;
     this.abroad = options.abroad;
+    this.handsTo = options.handsTo;
   }
 
   async fetch(raw: string, postcode = '', context: TrackingContext = {}): Promise<CarrierResult> {
@@ -941,6 +949,11 @@ export class DPDTracker {
       }
     }
     if (this.country !== 'CH') requireGuestActivity(payload, result);
+    const current = isRecord(payload.status) ? payload.status : {};
+    const placed = known(current.countryCode).toUpperCase();
+    if (this.handsTo && Object.hasOwn(this.handsTo, placed) && DELIVERY_SIDE.has(known(current.description).toUpperCase())) {
+      result.delivery_carrier = this.handsTo[placed];
+    }
     // Without verified scans DPD gives each milestone once, with its newest
     // date and no place: the scans between, and earlier rounds of a milestone,
     // are missing. Enabled providers may hold them.

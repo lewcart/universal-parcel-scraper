@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../app.js';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter } from './adapter.js';
 import { statusMap } from './status.js';
@@ -78,12 +79,14 @@ describe('DPD Belgium guest tracking', () => {
 
   it('returns every declared capability across the fixtures', async () => {
     const produced = new Set<string>();
-    for (const name of ['delivered.json', 'out-for-delivery.json', 'rerouted.json']) {
-      const result = await dpdBe(guest(Response.json(fixture(name)))).track({ number: NUMBER });
+    const replies = ['delivered.json', 'out-for-delivery.json', 'rerouted.json'].map(name => Response.json(fixture(name)));
+    for (const reply of [...replies, placed('CH')]) {
+      const result = await dpdBe(guest(reply)).track({ number: NUMBER });
       if (result.events?.length) produced.add('history');
       if (result.expected_delivery) produced.add('eta');
       if (result.delivered_at) produced.add('delivered_at');
       if (result.events?.some(event => event.provider_code)) produced.add('provider_code');
+      if (result.delivery_carrier) produced.add('delivery_partner');
     }
     expect([...produced].sort()).toEqual([...CAPABILITIES].sort());
   });
@@ -99,7 +102,30 @@ describe('DPD Belgium guest tracking', () => {
   it("tracks a parcel DPD places in another country, which only recognition holds against it", async () => {
     const result = await dpdBe(guest(placed('NL'))).track({ number: NUMBER });
     expect(result).toMatchObject({ status: 'delivered' });
+    expect(result.delivery_carrier).toBeUndefined();
   });
+
+  it('hands a parcel DPD places in Switzerland at its delivery depot or later to DPD Switzerland under the same number', async () => {
+    const result = await dpdBe(guest(placed('CH'))).track({ number: NUMBER });
+    expect(result).toMatchObject({ status: 'delivered', delivery_carrier: 'dpd' });
+    expect(result.delivery_tracking_number).toBeUndefined();
+    expect(deliveryHandoff('dpd-be', NUMBER, result)).toEqual({ carrier: 'dpd', number: NUMBER, basis: 'partner' });
+    // A label's check character stays on the number the parcel is filed under.
+    expect(deliveryHandoff('dpd-be', `${NUMBER}8`, result)).toEqual({ carrier: 'dpd', number: `${NUMBER}8`, basis: 'partner' });
+    const reply = fixture('out-for-delivery.json');
+    reply.status = { ...reply.status, description: 'AT_DELIVERY_CENTER', countryCode: 'CH' };
+    await expect(dpdBe(guest(Response.json(reply))).track({ number: NUMBER })).resolves.toMatchObject({ delivery_carrier: 'dpd' });
+  });
+
+  it.each(['ORDER_CREATED', 'PARCEL_HANDED', 'IN_TRANSIT', 'RETURN_TO_SENDER'])(
+    "names no delivery carrier for a parcel DPD places in Switzerland at %s, which can be its sender's country",
+    async (description) => {
+      const reply = fixture('out-for-delivery.json');
+      reply.status = { ...reply.status, description, countryCode: 'CH' };
+      const result = await dpdBe(guest(Response.json(reply))).track({ number: NUMBER });
+      expect(result.delivery_carrier).toBeUndefined();
+    },
+  );
 
   it.each([
     { name: 'a 400 typed PARCEL_NOT_FOUND', reply: () => Response.json({ error: 'ParcelException', exceptionType: 'PARCEL_NOT_FOUND' }, { status: 400 }) },

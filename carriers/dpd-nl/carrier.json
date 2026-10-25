@@ -28,7 +28,8 @@
     "history",
     "eta",
     "delivered_at",
-    "provider_code"
+    "provider_code",
+    "delivery_partner"
   ],
   "portal": {
     "url": "https://www.dpdgroup.com/nl/mydpd/my-parcels/search?lang=en&parcelNumber={trackingNumber}",
@@ -43,7 +44,8 @@
       "history",
       "eta",
       "delivered_at",
-      "provider_code"
+      "provider_code",
+      "delivery_partner"
     ],
     "discarded": [],
     "unavailable": []

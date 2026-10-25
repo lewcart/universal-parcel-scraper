@@ -8,6 +8,8 @@ export const adapter: AdapterFactory = (environment) => {
     fetcher: environment.fetcher,
     recorder: environment.recorder,
     userAgent: environment.userAgent,
+    // DPD Switzerland reads the same parcel with a Swiss postcode's scans, places and Pickup shops.
+    handsTo: { CH: 'dpd' },
   });
   return {
     id: 'dpd-be', recordsSteps: true, steps: ['direct'],

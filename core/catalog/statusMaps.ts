@@ -299,6 +299,7 @@ import { statusMap as indiaPost } from '../../carriers/india-post/status.js';
 import { statusMap as inpost } from '../../carriers/inpost/status.js';
 import { statusMap as instabox } from '../../carriers/instabox/status.js';
 import { statusMap as integralPack } from '../../carriers/integral-pack/status.js';
+import { statusMap as intelValley } from '../../carriers/intel-valley/status.js';
 import { statusMap as intelcom } from '../../carriers/intelcom/status.js';
 import { statusMap as internetExpress } from '../../carriers/internet-express/status.js';
 import { statusMap as interrapidisimo } from '../../carriers/interrapidisimo/status.js';
@@ -675,7 +676,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, heppner, hepsijet, hermes, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress, 'hongkong-post': hongkongPost,
   'houng-ah-loun': houngAhLoun, hovership, 'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, 'ilyang-logis': ilyangLogis, imile,
-  'indah-logistik': indahLogistik, 'india-post': indiaPost, inpost, instabox, 'integral-pack': integralPack, intelcom, 'internet-express': internetExpress, interrapidisimo,
+  'indah-logistik': indahLogistik, 'india-post': indiaPost, inpost, instabox, 'integral-pack': integralPack, 'intel-valley': intelValley, intelcom, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-au': jAndTAu, 'j-and-t-de': jAndTDe, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, 'japan-post': japanPost, jcex, 'jd-logistics': jdLogistics, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,

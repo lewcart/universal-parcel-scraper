@@ -12,7 +12,8 @@ CN.
    adapter sends the same request: `method=track`, `param` set to `{"sp":"","nums":[…]}` and
    `key` set to the Base64 of that text's MD5 in hexadecimal, as JSONP (`callbackparam`). It
    reads the reply in that callback, or bare. The platform's host answers plain HTTP only: its
-   certificate is not for that name. DayOne's tracker runs on the same platform.
+   certificate is not for that name. DayOne's and Intel-Valley's trackers run on the same
+   platform, and [rtb56.ts](rtb56.ts) holds what the three adapters share.
 2. `retry`: one more read when the first fails to connect or hangs. The first gets half of the
    budget.
 

@@ -222,6 +222,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "indah-logistik": 798,
   "inpost": 820,
   "integral-pack": 644,
+  "intel-valley": 66,
   "interrapidisimo": 969,
   "israel-post": 81,
   "j-and-t": 530,

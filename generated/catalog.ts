@@ -17554,6 +17554,37 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "intel-valley": {
+    "displayName": "Intel-Valley",
+    "color": "#00a3ff",
+    "aliases": [
+      "INTEL-VALLEY",
+      "Intel Valley",
+      "Intel-Valley Supply Chain",
+      "Intel-Valley Supply Chain Shenzhen",
+      "智谷供应链",
+      "智谷供应链（深圳）有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "intel-valley",
+      "recognitionRank": 66,
+      "localClocks": true
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^IV\\d{12}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "intelcom": {
     "displayName": "Intelcom / Dragonfly",
     "color": "#13a58f",
@@ -33071,6 +33102,7 @@ export const CARRIER_IDS = [
   "inposdom",
   "instabox",
   "integral-pack",
+  "intel-valley",
   "intelcom",
   "inter-courier",
   "intereuropa",
@@ -33872,6 +33904,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "inposdom": [],
   "instabox": [],
   "integral-pack": [],
+  "intel-valley": ["intel-valley-1"],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
   "inter-courier": [],
   "intereuropa": ["intereuropa-1"],

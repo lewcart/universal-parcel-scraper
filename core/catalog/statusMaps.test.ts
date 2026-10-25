@@ -1037,6 +1037,16 @@ describe('status map answers', () => {
     expect(answer('c-chez-vous', null, 'Suivi C Chez Vous')).toEqual(unknown);
   });
 
+  it('answers Canpar by its code, and a copy without one by the wording Canpar gives a code', () => {
+    expect(answer('canpar', 'WC', 'Out for Delivery-Almost There!')).toEqual(mapped('out_for_delivery'));
+    expect(answer('canpar', 'DRP', 'Synthetic scan')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('canpar', 'NH', 'Consignee Not Home')).toEqual(mapped('failed_attempt'));
+    expect(answer('canpar', null, 'Picked Up and On the Move!')).toEqual(mapped('accepted'));
+    expect(answer('canpar', null, 'Your Package was Delivered with no Signature Required')).toEqual(mapped('delivered'));
+    expect(answer('canpar', 'ZZZ', 'Our Package was Delivered')).toEqual(unknown);
+    expect(answer('canpar', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

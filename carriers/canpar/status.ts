@@ -1,4 +1,6 @@
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import statuses from './statuses.json' with { type: 'json' };
 
 const codes: Record<string, ClassifiedStatus> = {
   DEL: { status: 'delivered', stage: 'delivered' },
@@ -26,3 +28,20 @@ const codes: Record<string, ClassifiedStatus> = {
 export function canparStatus(code: string): ClassifiedStatus | undefined {
   return Object.hasOwn(codes, code) ? codes[code] : undefined;
 }
+
+/** The stage of each recorded wording through its code, left out where two codes word it alike with different stages. */
+const STAGE_BY_WORDING = new Map<string, Stage | undefined>();
+for (const { code, wording } of statuses.entries) {
+  const key = normalizeStatusWording(wording);
+  const stage = canparStatus(code)?.stage;
+  STAGE_BY_WORDING.set(key, STAGE_BY_WORDING.has(key) && STAGE_BY_WORDING.get(key) !== stage ? undefined : stage);
+}
+
+/**
+ * What the map says about one scan: its code, as the parser reads it, else, for a copy without
+ * one, the English wording Canpar gives a recorded code.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? canparStatus(code)?.stage : STAGE_BY_WORDING.get(wording)),
+  gaps: [],
+};

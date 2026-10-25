@@ -53,7 +53,10 @@ notifications and "CHRONOPOST NETWORKS" abroad. The app's scan-identity policy
 lets a scan stored with one of them keep its row once it loses it, provided its
 instant, wording and known stage agree.
 
-Scans retain their supplied offsets and seconds. Offset-less clocks stay
+Scans retain their supplied offsets and seconds, except at a partner's depot in a
+country on another clock than Paris: Chronopost gives such a scan the depot's wall
+clock under Paris's offset, the wall clock the partner's own feed shows. It keeps
+that wall clock alone, and its town dates it. Offset-less clocks stay
 local. Notifications and the recipient's delivery instructions retain activity
 without changing the last established shipment stage, and neither does a
 courier's drop-off scan that follows the pickup point's arrival scan. Observed

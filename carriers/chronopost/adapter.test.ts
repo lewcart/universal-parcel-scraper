@@ -5,9 +5,11 @@ import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { recognitionAskedCarriers, recognitionCandidates } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NotFoundError } from '../../core/errors/index.js';
+import { normalizeCarrierResult } from '../../core/result/index.js';
 import { resolveResult } from '../../core/result/resolve.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { dateLocalClocks } from '../../places/clocks.js';
 import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { createTracker } from '../../facade/index.js';
 import { sameInstantIdentityPolicy } from '../../app.js';
@@ -51,6 +53,28 @@ describe('Chronopost direct tracking', () => {
     expect(result.events?.[5]).toMatchObject({ location: 'EXAMPLE TOWN, FR', stage: 'accepted' });
     expect(result.events?.[6]).toMatchObject({ location: '', stage: 'registered' });
     expect(JSON.stringify(result)).not.toMatch(/SYNTHETIC SHOP|EXAMPLE STREET|00000|Point de livraison|Média utilisé|Rang/);
+  });
+
+  it("dates a partner depot's scan on its town's clock when Chronopost gives it Paris's offset", () => {
+    const depot = (date: string, place: string) => scan('TS', date, "Colis en cours d'acheminement", { Lieu: place });
+    const result = parseChronopostTrackingXml(history(
+      depot('2026-07-21T19:48:00+02:00', 'Example Town - DE (depot 0001)'),
+      depot('2026-07-22T09:49:10+02:00', 'Lisboa - PT (depot 0002)'),
+      depot('2026-07-23T08:30:00+02:00', 'Ponta Delgada - PT (depot 0003)'),
+    ), number);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-07-23T08:30:00' });
+    expect(result.events?.map(event => event.time ?? null)).toEqual([null, null, '2026-07-21T19:48:00+02:00']);
+    expect(result.events?.map(event => event.local_time ?? null)).toEqual(['2026-07-23T08:30:00', '2026-07-22T09:49:10', null]);
+    const dated = dateLocalClocks('chronopost', normalizeCarrierResult(result));
+    expect(dated).toMatchObject({ last_update: '2026-07-23T08:30:00+00:00' });
+    expect(dated.events?.slice(0, 2)).toMatchObject([
+      { time: '2026-07-23T08:30:00+00:00', time_zone: 'Atlantic/Azores', time_zone_basis: 'place' },
+      { time: '2026-07-22T09:49:10+01:00', time_zone: 'Europe/Lisbon', time_zone_basis: 'place' }]);
+    // Another offset is the scan's own, and stays.
+    for (const date of ['2026-07-22T09:49:10+01:00', '2026-07-22T08:49:10Z']) {
+      expect(parseChronopostTrackingXml(history(depot(date, 'Lisboa - PT (depot 0002)')), number).events?.[0])
+        .toMatchObject({ time: date });
+    }
   });
 
   it('drops office labels that name a service, and the stored scan that had one keeps its row', () => {

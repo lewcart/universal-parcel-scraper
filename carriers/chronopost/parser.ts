@@ -4,7 +4,7 @@ import { isAnotherPostItemAtChronopost } from '../../core/detection/chronopost.j
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { calendarDay, countryCode, explicitOffsetTime } from '../../core/time/index.js';
+import { calendarDay, countryCode, countryTimeZone, explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { xmlDocument, type XmlNode } from '../../core/transport/xml.js';
 import { isChronopostService } from './identity.js';
@@ -57,6 +57,24 @@ function clock(raw: string): { time?: string; local_time?: string; provider_time
     return { local_time: raw };
   }
   return raw ? { provider_time_text: clean(raw, 64) } : {};
+}
+
+/** A partner's depot, as the scan names it: "Example Town - PT (depot 0001)". */
+const DEPOT = / - ([A-Z]{2}) \(depot \d{1,6}\)$/;
+
+/**
+ * A partner depot's scan carries the depot's wall clock under Paris's offset.
+ * Where the depot's country keeps another clock, the scan keeps its wall clock
+ * alone, for its place to date.
+ */
+function depotClock(raw: string, place: string): ReturnType<typeof clock> {
+  const read = clock(raw);
+  const zone = countryTimeZone(DEPOT.exec(place)?.[1]);
+  const wall = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d+)?[+-]/.exec(raw)?.[1];
+  if (!read.time || !zone || !wall) return read;
+  const paris = firstOccurrence(DateTime.fromISO(wall, { zone: 'Europe/Paris' })).offset;
+  return DateTime.fromISO(raw, { setZone: true }).offset === paris && firstOccurrence(DateTime.fromISO(wall, { zone })).offset !== paris
+    ? { local_time: wall } : read;
 }
 
 /** The recipient's chosen redelivery day, printed as dd/MM/yyyy. */
@@ -178,10 +196,11 @@ export function parseChronopostTrackingXml(xml: string, rawNumber: string): Carr
         if (country) destinations.add(country);
       }
     }
+    const at = location(scalar(scan, 'officeLabel'), place);
     const event: CarrierEvent = {
-      ...clock(scalar(scan, 'eventDate')),
+      ...depotClock(scalar(scan, 'eventDate'), at),
       description,
-      location: location(scalar(scan, 'officeLabel'), place),
+      location: at,
       ...(code ? { provider_code: code } : {}),
     };
     const mapped = chronopostStage(code, description);
@@ -246,6 +265,7 @@ export function parseChronopostTrackingXml(xml: string, rawNumber: string): Carr
     current_stage_source: stageSource,
     last_status_text: latest.description,
     last_update: latest.time ?? null,
+    ...(!latest.time && latest.local_time ? { last_update_local: latest.local_time } : {}),
     expected_delivery: returning || ['delivered', 'returned', 'ready_for_pickup'].includes(stage) ? null : promised,
     ...(stage === 'delivered' && deliveredAt ? { delivered_at: deliveredAt } : {}),
     ...(pickupPoint ? { pickup_point: pickupPoint } : {}),

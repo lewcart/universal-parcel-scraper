@@ -787,6 +787,33 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
+  it("reads JS Express's scans on their place's clock, China's at home only", () => {
+    // JS Express's own feed gives these digits with the offset of each scan's place, and its
+    // partners' scans abroad came out six hours early on China's clock.
+    const result = parseParcelsAppResponse({ carriers: ['JS Express'], states: [
+      { date: '2026-10-20T22:29:37Z', status: 'PROCESSED AT HUB', carrier: 0 },
+      { date: '2026-10-18T14:47:08Z', status: 'Released From Import Customs', carrier: 0, location: 'Example Airport (EXB), New York, United States' },
+      { date: '2026-10-16T11:22:00Z', status: 'COLLECTED FROM AIRPORT TERMINAL', carrier: 0, location: 'EXAMPLE TOWN' },
+      { date: '2026-10-15T22:08:00Z', status: 'Item Flight landing', carrier: 0, location: 'Example Airport (EXA), Example Town, Netherlands' },
+      { date: '2026-10-15T12:45:59Z', status: 'Item Flight departure', carrier: 0, location: 'China' },
+      { date: '2026-10-15T10:35:00Z', status: 'UPLIFTED FROM TRANSSHIPMENT HUB', carrier: 0, location: 'HONG KONG' },
+      { date: '2026-10-14T08:57:08Z', status: 'Item departed from origin.', carrier: 0, location: 'South China Transit Center' },
+      { date: '2026-10-13T17:40:54Z', status: 'Item has been collected', carrier: 0, location: 'China' },
+    ] }, number, identity(), 'Asia/Shanghai');
+    expect(Object.fromEntries(result.events!.map((scan) => [scan.description, scan.time ?? `local ${scan.local_time}`]))).toEqual({
+      'PROCESSED AT HUB': 'local 2026-10-20T22:29:37.000',
+      // A US state named for certain gives its clock.
+      'Released From Import Customs': '2026-10-18T18:47:08.000Z',
+      'COLLECTED FROM AIRPORT TERMINAL': 'local 2026-10-16T11:22:00.000',
+      'Item Flight landing': '2026-10-15T20:08:00.000Z',
+      // A flight's departure filed in China keeps its wall clock, as JS Express's own rows do.
+      'Item Flight departure': 'local 2026-10-15T12:45:59.000',
+      'UPLIFTED FROM TRANSSHIPMENT HUB': '2026-10-15T02:35:00.000Z',
+      'Item departed from origin.': '2026-10-14T00:57:08.000Z',
+      'Item has been collected': '2026-10-13T09:40:54.000Z',
+    });
+  });
+
   it('reads Asendia scans filed under another name in their place\'s clock, not as UTC', () => {
     // Live shape (2026-09-30): an eBay shipment whose Asendia scans ParcelsApp
     // files under "EasyShip", on local clocks. Ship24's instants agree.

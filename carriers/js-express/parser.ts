@@ -5,9 +5,10 @@ import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../../core/detectio
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { canadaProvinceTimeZone, countryCode, isoTime, usStateTimeZone } from '../../core/time/index.js';
+import { canadaProvinceTimeZone, countryCode, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { jsExpressChinaClock } from './clock.js';
 import { jsExpressStage } from './status.js';
 
 export const PROVIDER = 'JS Express';
@@ -32,23 +33,6 @@ const PHONE = /(?<![A-Z\d])(?!\d{4}-\d{2}-\d{2}(?!\d))\+?\d(?:[\s().-]{0,2}\d){8
 const RECEIVER = /\s*[,;:.\-–]?\s*\b(?:(?:signed|received|collected|accepted)(?:\s+for)?\s+by|signed|signatory|signature)\b.*$/i;
 // The place a destination courier's wording ends with, as "Delivered (Sample Town, ON)".
 const PLACE = /\s*\(([^()]{1,120})\)$/;
-// Beijing time, the one clock of mainland China.
-const CHINA_ZONE = 'Asia/Shanghai';
-// Provinces, regions and municipalities of mainland China and its larger cities, in pinyin.
-const CHINA_NAMES = [
-  'Anhui', 'Beijing', 'Chongqing', 'Fujian', 'Gansu', 'Guangdong', 'Guangxi', 'Guizhou', 'Hainan', 'Hebei', 'Heilongjiang',
-  'Henan', 'Hubei', 'Hunan', 'Inner Mongolia', 'Jiangsu', 'Jiangxi', 'Jilin', 'Liaoning', 'Ningxia', 'Qinghai', 'Shaanxi',
-  'Shandong', 'Shanghai', 'Shanxi', 'Sichuan', 'Tianjin', 'Tibet', 'Xinjiang', 'Xizang', 'Yunnan', 'Zhejiang',
-  'Changchun', 'Changsha', 'Changzhou', 'Chengdu', 'Dalian', 'Dongguan', 'Foshan', 'Fuzhou', 'Guangzhou', 'Guiyang',
-  'Hangzhou', 'Harbin', 'Hefei', 'Huizhou', 'Jinan', 'Jinhua', 'Kunming', 'Kunshan', 'Lanzhou', 'Nanchang', 'Nanjing',
-  'Nanning', 'Ningbo', 'Qingdao', 'Quanzhou', 'Shantou', 'Shenyang', 'Shenzhen', 'Shijiazhuang', 'Suzhou', 'Taiyuan',
-  'Urumqi', 'Wenzhou', 'Wuhan', 'Wuxi', "Xi'?an", 'Xiamen', 'Yiwu', 'Zhengzhou', 'Zhongshan', 'Zhuhai',
-];
-// A label opening with a region of China, as "South China Transit Center", or with one of those names.
-const CHINA_PLACE = new RegExp(`^(?:(?:north|south|east|west|central|north-?east|north-?west|south-?east|south-?west)\\s+china|${
-  CHINA_NAMES.join('|')})(?![a-z'])`, 'i');
-// A flight's departure, take-off or landing.
-const FLIGHT = /\b(?:flights?|landing|landed|take-?off|uplifted)\b/i;
 // Straightship, the Canadian courier, names itself in its station rows and its delivery attempts.
 const STRAIGHTSHIP = /straightship/i;
 // A town and the code of its province or state, as a courier's wording ends with them.
@@ -94,17 +78,6 @@ function wallClock(stamp: string): string {
   return local;
 }
 
-/**
- * Whether a row's place lies in mainland China: its first part is the
- * country, or it opens with a region, province or city of China. A town of a
- * US state or a Canadian province, as "China, ME", does not.
- */
-function inChina(place: string): boolean {
-  const [first = '', ...rest] = place.split(',').map((part) => part.trim());
-  if (rest.some((part) => usStateTimeZone(part) || canadaProvinceTimeZone(part))) return false;
-  return countryCode(first) === 'CN' || CHINA_PLACE.test(first);
-}
-
 /** Whether the courier's wording gave the row its place, a town and a Canadian province. */
 function canadianTown(location: string, label: string): boolean {
   return location.toLowerCase() !== label.toLowerCase() && Boolean(canadaProvinceTimeZone(PROVINCE.exec(location)?.[1]));
@@ -121,7 +94,7 @@ function canadianTown(location: string, label: string): boolean {
  */
 function scanZone(description: string, location: string, label: string, straightship: boolean): string | null {
   if (straightship && (STRAIGHTSHIP.test(description) || canadianTown(location, label))) return 'UTC';
-  return location && !FLIGHT.test(description) && inChina(location) ? CHINA_ZONE : null;
+  return jsExpressChinaClock(description, location) ?? null;
 }
 
 /** An optional text field; anything but a string is a changed reply. */

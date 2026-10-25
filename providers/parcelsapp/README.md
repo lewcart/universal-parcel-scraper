@@ -319,6 +319,17 @@ step exists for future protocol changes.
   the code names a country keeping one, else it keeps its wall clock, as Hrvatska pošta's
   own adapter reads it. Read on Zagreb's clock, a British office's scans came out an hour
   early. Its other scans take Zagreb's clock.
+- JS Express's dates are the clock of each scan's place, not the China time of its catalog
+  zone. Its own feed gives the same digits with China's offset at its Chinese warehouse,
+  the Netherlands' at Schiphol and the destination courier's at the courier's scans: read
+  on China's clock, its scans at Schiphol came six hours early, and a landing at JFK under
+  five hours after the flight left China. A scan in China takes Beijing's clock, except a
+  flight's departure filed there, which keeps its wall clock as in JS Express's own
+  adapter. A scan elsewhere takes the clock of the US state or Canadian province its place
+  names for certain, else the single clock of the country it names; one with no place,
+  only a town or a country of several clocks keeps its wall clock. This is no rule for
+  every line on China's clock: Hualei's tenants (Mayi Yinfu) and DHLink date their scans
+  abroad on Beijing time.
 - Home clocks: some networks are named their own way, and their dates are their own
   instants or labels shown on their home clock wherever the scan was (checked
   2026-10-10). "Italy Post" has Poste Italiane's epoch milliseconds on Rome time. "New

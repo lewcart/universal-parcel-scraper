@@ -12,8 +12,10 @@ export function solveCorreosChileText(heading: string, prompt: string): string |
     const letter = (duplicate[1] ?? duplicate[2])!;
     return duplicate[3]!.replaceAll(letter, letter.repeat(2));
   }
-  const replace = /^Use the Latin ([a-z]) instead of every ([a-z]) in ([a-z]{1,30})\. (?:Type just|Write only) the result\.$/.exec(p);
-  if (replace) return replace[3]!.replaceAll(replace[2]!, replace[1]!);
+  const replace = /^(?:Use the Latin ([a-z]) instead of every ([a-z])|(?:Replace every|Change each) ([a-z]) (?:with|to) the Latin ([a-z])) in ([a-z]{1,30})\. (?:Type just|Write only) the result\.$/.exec(p);
+  if (replace) return replace[5]!.replaceAll((replace[2] ?? replace[3])!, (replace[1] ?? replace[4])!);
+  const digits = /^(?:Delete every|Remove each|Take out each) (\d) from (\d{1,30})\. (?:Keep leading zeros and type only the remaining digits|Write the remaining digits, keeping leading zeros)\.$/.exec(p);
+  if (digits) return digits[2]!.replaceAll(digits[1]!, '') || null;
   const count = /^(?:How many letters ([a-z]) does ([a-z]{1,30}) contain\?|Find the number of letters ([a-z]) in ([a-z]{1,30})\.) Answer using digits\.$/.exec(p);
   return count ? String([...(count[2] ?? count[4])!].filter(letter => letter === (count[1] ?? count[3])).length) : null;
 }

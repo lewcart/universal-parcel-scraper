@@ -44,7 +44,10 @@ still runs. A refused network or unsupported challenge remains a failure for
 enabled provider fallback. Without a browser service the plain read runs and its
 challenge goes to the same fallback. The browser does not enable HTTP recognition.
 
-Exact arithmetic and string questions are answered locally. Other questions
+hCaptcha follows a refused set of questions with a fresh one at once. A lookup
+answers up to three sets, another only while the rest of the lookup still fits.
+
+Exact arithmetic, digit and string questions are answered locally. Other questions
 need `CORREOS_CHILE_TEXT_MODEL_URL`, a private OpenAI-compatible chat-completions
 endpoint. Only the question is sent, without parcel data, tokens or browser state.
 The optional [model Dockerfile](text-model/Dockerfile) serves a pinned,

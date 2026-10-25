@@ -10,6 +10,13 @@ it('answers exact arithmetic and string operations without guessing unfamiliar i
   expect(solveCorreosChileText('Count letters', 'How many letters e does evergreen contain? Answer using digits.')).toBe('4');
   expect(solveCorreosChileText('Write the result', 'Use the Latin z instead of every a in banana. Type just the result.')).toBe('bznznz');
   expect(solveCorreosChileText('Count letters', 'Find the number of letters n in banana. Answer using digits.')).toBe('2');
+  expect(solveCorreosChileText('Respond with just the result.', 'Replace every t with the Latin x in tablet. Write only the result.')).toBe('xablex');
+  expect(solveCorreosChileText('Give just the result.', 'Change each t to the Latin x in tablet. Type just the result.')).toBe('xablex');
+  expect(solveCorreosChileText('Enter only the answer.', 'Delete every 4 from 84604. Keep leading zeros and type only the remaining digits.')).toBe('860');
+  expect(solveCorreosChileText('Enter only the answer.', 'Delete every 1 from 10213. Write the remaining digits, keeping leading zeros.')).toBe('023');
+  expect(solveCorreosChileText('Write just your answer.', 'Remove each 5 from 50551. Write the remaining digits, keeping leading zeros.')).toBe('01');
+  expect(solveCorreosChileText('Give just the result.', 'Take out each 2 from 32123. Write the remaining digits, keeping leading zeros.')).toBe('313');
+  expect(solveCorreosChileText('Enter only the answer.', 'Delete every 7 from 777. Write the remaining digits, keeping leading zeros.')).toBeNull();
   expect(solveCorreosChileText('Pick one', 'unknown question')).toBeNull();
   expect(solveCorreosChileText('x'.repeat(151), 'question')).toBeNull();
 });

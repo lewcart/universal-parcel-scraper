@@ -10,6 +10,9 @@ const PAGE = 'https://www.correos.cl/seguimiento-en-linea';
 const MAX_BYTES = 6_000_000;
 const WIDGET = 'iframe[title="Widget containing checkbox for hCaptcha security challenge"]';
 const CHALLENGE = 'iframe[title="hCaptcha challenge"]';
+const MAX_TEXT_SETS = 3;
+// Another set is answered only while the rest of the lookup still fits after it.
+const MIN_SET_MS = 20_000;
 export type ChileTextAnswer = (heading: string, question: string, signal: AbortSignal, timeoutMs: number) => Promise<string | null>;
 
 /** The page's resource, bound to exactly one complete identifier. */
@@ -49,35 +52,46 @@ export async function solveCorreosChileWidget(page: Page, signal: AbortSignal, r
     const element = await page.locator(CHALLENGE).elementHandle({ timeout: timeout(2_000) });
     const frame = await element?.contentFrame();
     if (!frame) throw new ChallengeError(PROVIDER);
-    for (let index = 0; index < 3; index++) {
-      phase = 'The text question did not become ready';
-      const box = frame.getByRole('textbox');
-      await box.waitFor({ state: 'visible', timeout: timeout(4_000) });
-      const heading = await frame.locator('#prompt-question').innerText({ timeout: timeout(1_000) });
-      const question = await frame.locator('#prompt-text').innerText({ timeout: timeout(1_000) });
-      if (heading.length > 150 || question.length > 400) throw new ChallengeError(PROVIDER);
-      const answer = solveCorreosChileText(heading, question)
-        ?? await answerText?.(heading, question, signal, timeout(10_000));
-      signal.throwIfAborted();
-      if (typeof answer !== 'string' || !/^[A-Za-z0-9-][A-Za-z0-9 ,'-]{0,59}$/.test(answer)) throw new ChallengeError(PROVIDER, 'Unsupported text challenge');
-      await box.fill(answer, { timeout: timeout(1_500) });
-      const submit = frame.locator('.button-submit');
-      const label = await submit.getAttribute('aria-label', { timeout: timeout(1_000) });
-      const final = label === 'Verify Answers';
-      if (!final && !/^Next Challenge, page [12] of [23]$/.test(label ?? '')) throw new ChallengeError(PROVIDER);
-      await submit.click({ timeout: timeout(2_000) });
-      if (final) {
-        phase = 'Text verification was not accepted';
-        await checked.waitFor({ state: 'visible', timeout: timeout(6_000) });
-        return;
+    const nextQuestion = (asked: string, max: number) => frame.waitForFunction(previous => {
+      const input = document.querySelector<HTMLInputElement>('input[role="textbox"]');
+      const prompt = document.getElementById('prompt-text')?.textContent?.trim();
+      return input?.value === '' && !!prompt && prompt !== previous;
+    }, asked.trim(), { timeout: timeout(max) });
+    // A refused set is followed at once by a fresh one, which is answered too.
+    for (let set = 1; set <= MAX_TEXT_SETS; set++) {
+      let question = '';
+      for (let index = 0, final = false; !final; index++) {
+        if (index === 3) throw new ChallengeError(PROVIDER);
+        phase = 'The text question did not become ready';
+        const box = frame.getByRole('textbox');
+        await box.waitFor({ state: 'visible', timeout: timeout(4_000) });
+        const heading = await frame.locator('#prompt-question').innerText({ timeout: timeout(1_000) });
+        question = await frame.locator('#prompt-text').innerText({ timeout: timeout(1_000) });
+        if (heading.length > 150 || question.length > 400) throw new ChallengeError(PROVIDER);
+        const answer = solveCorreosChileText(heading, question)
+          ?? await answerText?.(heading, question, signal, timeout(10_000));
+        signal.throwIfAborted();
+        if (typeof answer !== 'string' || !/^[A-Za-z0-9-][A-Za-z0-9 ,'-]{0,59}$/.test(answer)) throw new ChallengeError(PROVIDER, 'Unsupported text challenge');
+        await box.fill(answer, { timeout: timeout(1_500) });
+        const submit = frame.locator('.button-submit');
+        const label = await submit.getAttribute('aria-label', { timeout: timeout(1_000) });
+        final = label === 'Verify Answers';
+        if (!final && !/^Next Challenge, page [12] of [23]$/.test(label ?? '')) throw new ChallengeError(PROVIDER);
+        await submit.click({ timeout: timeout(2_000) });
+        if (!final) {
+          phase = 'The next text question did not become ready';
+          await nextQuestion(question, 4_000);
+        }
       }
-      phase = 'The next text question did not become ready';
-      await frame.waitForFunction(previous => {
-        const input = document.querySelector<HTMLInputElement>('input[role="textbox"]');
-        return input?.value === '' && document.getElementById('prompt-text')?.textContent?.trim() !== previous;
-      }, question.trim(), { timeout: timeout(4_000) });
+      phase = 'Text verification was not accepted';
+      const accepted = await Promise.any([
+        checked.waitFor({ state: 'visible', timeout: timeout(6_000) }).then(() => true),
+        nextQuestion(question, 6_000).then(() => false),
+      ]);
+      if (accepted) return;
+      if (remainingMs() < MIN_SET_MS) break;
     }
-    throw new ChallengeError(PROVIDER);
+    throw new ChallengeError(PROVIDER, phase);
   } catch (error) {
     signal.throwIfAborted();
     if (carrierErrorKind(error)) throw error;

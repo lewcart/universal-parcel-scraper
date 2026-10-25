@@ -86,6 +86,46 @@ it('retains a rejected or missing text challenge as a challenge without exposing
   expect(JSON.stringify(error)).not.toContain('PRIVATE');
 });
 
+/** An hCaptcha text challenge whose sets of three questions are refused until `accepting`. */
+function textChallenge(accepting: number) {
+  const state = { set: 1, index: 0, input: '', checked: false, answers: [] as string[] };
+  const prompt = () => `Duplicate every ${'abc'[state.index]} in abc${'z'.repeat(state.set)}. Write only the result.`;
+  const visible = (ready: () => boolean) => ({ waitFor: async () => { if (!ready()) throw new Error('PRIVATE timeout'); } });
+  const frame = {
+    getByRole: () => ({ waitFor: async () => {}, fill: async (value: string) => { state.input = value; state.answers.push(value); } }),
+    locator: (selector: string) => selector === '.button-submit' ? {
+      getAttribute: async () => state.index === 2 ? 'Verify Answers' : `Next Challenge, page ${state.index + 1} of 3`,
+      click: async () => {
+        state.input = '';
+        if (state.index < 2) state.index++;
+        else if (state.set === accepting) state.checked = true;
+        else [state.set, state.index] = [state.set + 1, 0];
+      },
+    } : { innerText: async () => selector === '#prompt-text' ? prompt() : 'Write the result' },
+    waitForFunction: async (_: unknown, previous: string) => { if (state.input !== '' || state.checked || prompt() === previous) throw new Error('PRIVATE timeout'); },
+  };
+  const widget = { getByRole: () => ({ click: async () => {} }), locator: () => visible(() => state.checked) };
+  const challenge = { getByRole: (role: string) => role === 'button' ? { ...visible(() => true), click: async () => {} } : { click: async () => {} } };
+  const page = { frameLocator: (selector: string) => selector.includes('checkbox') ? widget : challenge,
+    locator: () => ({ elementHandle: async () => ({ contentFrame: async () => frame }) }) } as unknown as Page;
+  return { page, state };
+}
+
+it('answers the fresh set hCaptcha offers after a refused one, up to three sets while the lookup still fits', async () => {
+  const second = textChallenge(2);
+  await solveCorreosChileWidget(second.page, new AbortController().signal, () => 30_000);
+  expect(second.state).toMatchObject({ checked: true, set: 2 });
+  expect(second.state.answers).toEqual(['aabcz', 'abbcz', 'abccz', 'aabczz', 'abbczz', 'abcczz']);
+  const never = textChallenge(4);
+  const error = await solveCorreosChileWidget(never.page, new AbortController().signal, () => 30_000).catch(e => e);
+  expect(error).toMatchObject({ kind: 'challenge', message: expect.stringContaining('Text verification was not accepted') });
+  expect(JSON.stringify(error)).not.toContain('PRIVATE');
+  expect(never.state.answers).toHaveLength(9);
+  const late = textChallenge(2);
+  await expect(solveCorreosChileWidget(late.page, new AbortController().signal, () => 15_000)).rejects.toMatchObject({ kind: 'challenge' });
+  expect(late.state.answers).toHaveLength(3);
+});
+
 it('honors cancellation while a response is still being read', async () => {
   const h = harness();
   let finish!: (value: Buffer) => void;

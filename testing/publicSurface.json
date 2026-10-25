@@ -157,6 +157,7 @@
       "EventPoint",
       "FailureHint",
       "FeedClock",
+      "ImportCharges",
       "ParsedTime",
       "RawTrackingLinkRule",
       "RecognitionCandidate",

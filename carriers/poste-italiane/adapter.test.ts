@@ -367,6 +367,19 @@ describe('Poste Italiane response parsing', () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
+  it('passes on the import charges an item from abroad owes, in euros', () => {
+    const FROM_ABROAD = JSON.parse(readFileSync(new URL('./fixtures/from-abroad.json', import.meta.url), 'utf8')) as Record<string, unknown>;
+    const oneri = { importoDirittiDoganali: '1234', importoDirittiPostali: '2100', importoDirittiPostaliSmart: '1800' };
+    expect(parsePosteItalianeTrackingResponse({ ...FROM_ABROAD, oneri: { ...oneri, statoOneri: 'PAGATO' } }, 'LX123456785JP').import_charges)
+      .toEqual({ currency: 'EUR', customs: 12.34, carrier_fee: 21, carrier_fee_online: 18, paid: true, status_code: 'PAGATO' });
+    // A closed payment window says nothing sure about payment.
+    expect(parsePosteItalianeTrackingResponse({ ...FROM_ABROAD, oneri: { ...oneri, statoOneri: 'FINESTRA_PAGAMENTO_CHIUSA' } }, 'LX123456785JP')
+      .import_charges).toEqual({ currency: 'EUR', customs: 12.34, carrier_fee: 21, carrier_fee_online: 18, status_code: 'FINESTRA_PAGAMENTO_CHIUSA' });
+    for (const empty of [undefined, null, {}, { importoDirittiDoganali: '12,34', statoOneri: '' }]) {
+      expect(parsePosteItalianeTrackingResponse({ ...FROM_ABROAD, oneri: empty }, 'LX123456785JP')).not.toHaveProperty('import_charges');
+    }
+  });
+
   it('reads the bare letter-post answer for a code Poste does not know as not found', () => {
     const unknown = { idTracciatura: '990000000010', tipoSpedizione: 'C', esitoRicerca: '3', stato: '1', sintesiStato: '', azioni: '',
       actionsMap: {}, statoDaVerificare: false };
@@ -492,10 +505,12 @@ describe('Poste Italiane response parsing', () => {
   });
 
   it('produces every capability carrier.json declares', () => {
-    expect(CAPABILITIES).toEqual(['history', 'eta', 'location', 'service_name']);
+    expect(CAPABILITIES).toEqual(['history', 'eta', 'location', 'service_name', 'import_charges']);
     const delivered = parsePosteItalianeTrackingResponse(parcel(), TRACKING_NUMBER);
     expect(delivered.events?.length).toBeGreaterThan(0);
     expect(delivered.service_name).toBe('POSTEDELIVERY EUROPE');
+    expect(parsePosteItalianeTrackingResponse(parcel({ oneri: { importoDirittiDoganali: '500' } }), TRACKING_NUMBER).import_charges)
+      .toEqual({ currency: 'EUR', customs: 5 });
     const accepted = parsePosteItalianeTrackingResponse(parcel({ listaMovimenti: [
       { ...movement('la spedizione è stata presa in carico', 1767225600000), denominazioneUfficio: 'UFFICIO DI PROVA' },
     ] }), TRACKING_NUMBER);

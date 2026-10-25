@@ -50,6 +50,22 @@ describe('the shipping service', () => {
   });
 });
 
+describe('the import charges', () => {
+  it('keeps the charges a carrier lists, without the members that are not valid', () => {
+    const import_charges = { currency: 'EUR', customs: 12.34, carrier_fee: 21, carrier_fee_online: 18, paid: true, status_code: 'PAID' };
+    expect(normalizeCarrierResult({ import_charges }).import_charges).toEqual(import_charges);
+    expect(normalizeCarrierResult({ import_charges: { currency: 'EUR', customs: -1, carrier_fee: '21', paid: 'yes', status_code: '', carrier_fee_online: 18 } })
+      .import_charges).toEqual({ currency: 'EUR', carrier_fee_online: 18 });
+  });
+
+  it('drops charges without a currency or anything they say', () => {
+    for (const import_charges of [null, 'EUR 12.34', { customs: 12.34 }, { currency: 'euro', customs: 12.34 }, { currency: 'EUR' },
+      { currency: 'EUR', customs: Number.NaN }]) {
+      expect(normalizeCarrierResult({ import_charges })).not.toHaveProperty('import_charges');
+    }
+  });
+});
+
 describe('result completeness flags', () => {
   it('keeps a boolean flag through normalization and resolution', () => {
     const scans = [{ time: '2026-01-02T12:00:00Z', description: 'In transit', stage: 'in_transit' }];

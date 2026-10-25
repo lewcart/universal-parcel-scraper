@@ -34,7 +34,8 @@
     "history",
     "eta",
     "location",
-    "service_name"
+    "service_name",
+    "import_charges"
   ],
   "portal": {
     "url": "https://www.poste.it/cerca/index.html#/risultati-spedizioni/{trackingNumber}",
@@ -46,6 +47,7 @@
       "eta",
       "location",
       "service_name",
+      "import_charges",
       "sender_name",
       "recipient_name",
       "recipient_address",
@@ -58,7 +60,8 @@
       "history",
       "eta",
       "location",
-      "service_name"
+      "service_name",
+      "import_charges"
     ],
     "discarded": [
       "sender_name",

@@ -25,8 +25,10 @@ describe('partial carrier answers', () => {
   });
 
   it('take a fuller history as it came, with the carrier facts it lacks', () => {
-    const filled = fillPartialAnswer('ups', NUMBER, summary, { ...history, tracking_provider: 'Ship24' });
-    expect(filled).toMatchObject({ tracking_provider: 'Ship24', expected_delivery: '2026-01-05', last_status_text: 'Departed facility' });
+    const import_charges = { currency: 'EUR', customs: 12.34 };
+    const filled = fillPartialAnswer('ups', NUMBER, { ...summary, import_charges }, { ...history, tracking_provider: 'Ship24' });
+    expect(filled).toMatchObject({ tracking_provider: 'Ship24', expected_delivery: '2026-01-05', last_status_text: 'Departed facility',
+      import_charges });
     // The provider's events are not resolved: hosts classify them as they persist them.
     expect(filled?.events).toEqual(history.events);
   });

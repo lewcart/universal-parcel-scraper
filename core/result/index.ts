@@ -50,6 +50,25 @@ export interface EventPoint extends JsonObject {
   longitude: number;
 }
 
+/**
+ * The import charges the carrier lists for the parcel, in `currency`. The
+ * amounts are in its major unit, such as 34.41 for €34.41.
+ */
+export interface ImportCharges extends JsonObject {
+  /** ISO 4217 code of the amounts. */
+  currency: string;
+  /** Customs duty and import VAT together, which the carrier collects for the customs authority. */
+  customs?: number;
+  /** The carrier's own fee for clearing the parcel, as charged on delivery. */
+  carrier_fee?: number;
+  /** That fee when the charges are paid online before delivery. */
+  carrier_fee_online?: number;
+  /** Whether the charges are paid, when the carrier says. */
+  paid?: boolean;
+  /** The carrier's own code for where the payment stands. */
+  status_code?: string;
+}
+
 export interface CarrierResult extends JsonObject {
   status?: CarrierStatus;
   current_stage?: string;
@@ -74,6 +93,8 @@ export interface CarrierResult extends JsonObject {
   dimensions_text?: string | null;
   /** The carrier's own name for the shipping service the parcel travels under, as its page shows it. */
   service_name?: string;
+  /** The duties, taxes and fees the carrier lists for importing the parcel. */
+  import_charges?: ImportCharges;
   /** A declared delivery partner, still subject to direct identity/progress confirmation. */
   delivery_carrier?: string;
   destination_country?: string;
@@ -130,6 +151,21 @@ export function eventPoint(latitude: unknown, longitude: unknown): EventPoint | 
   return { latitude: Math.round(lat * 1e4) / 1e4, longitude: Math.round(lon * 1e4) / 1e4 };
 }
 
+const AMOUNTS = ['customs', 'carrier_fee', 'carrier_fee_online'] as const;
+
+/** The import charges an adapter states, without the members that are not valid; none without a currency or anything it says. */
+function importCharges(value: unknown): ImportCharges | undefined {
+  if (!isRecord(value) || typeof value.currency !== 'string' || !/^[A-Z]{3}$/.test(value.currency)) return undefined;
+  const charges: ImportCharges = { currency: value.currency };
+  for (const field of AMOUNTS) {
+    const amount = value[field];
+    if (typeof amount === 'number' && Number.isFinite(amount) && amount >= 0) charges[field] = amount;
+  }
+  if (typeof value.paid === 'boolean') charges.paid = value.paid;
+  if (typeof value.status_code === 'string' && value.status_code.trim() && value.status_code.length <= 60) charges.status_code = value.status_code;
+  return Object.keys(charges).length > 1 ? charges : undefined;
+}
+
 export function normalizeCarrierResult(value: unknown): CarrierResult {
   if (!isRecord(value)) throw new TypeError('The carrier adapter returned an invalid response');
   const normalized: CarrierResult = { ...value };
@@ -156,6 +192,9 @@ export function normalizeCarrierResult(value: unknown): CarrierResult {
   if (typeof normalized.service_name !== 'string' || !normalized.service_name.trim() || normalized.service_name.length > 80) {
     delete normalized.service_name;
   }
+  const charges = importCharges(normalized.import_charges);
+  if (charges) normalized.import_charges = charges;
+  else delete normalized.import_charges;
 
   // A USPS routing barcode opens with the recipient's ZIP code. A reported
   // number keeps only the package identifier after it, and is dropped when

@@ -129,6 +129,9 @@ Italiane for a number issued abroad.
   office's street address or a street named with its province, is dropped.
 - `tipoProdotto` names the product, such as Poste Delivery Standard. Letter-post items echo
   their own number there, which is not kept.
+- `oneri` lists what an import owes, in euro cents, as `import_charges`: customs duty and VAT,
+  the postal fee on delivery and its lower online price. `statoOneri` `PAGATO` marks them paid;
+  another code stays a code, since `FINESTRA_PAGAMENTO_CHIUSA` only says the online window shut.
 - `dataPrevistaConsegna` is Italian prose ("Consegna prevista entro Venerdì 2 Gennaio 2026"),
   reduced to a calendar day and cleared once delivered. Unparsable text yields no estimate.
 - `dataOra` is epoch milliseconds, so there is no zone to guess. A local helper renders it
@@ -145,9 +148,6 @@ Italiane for a number issued abroad.
 
 - No event location for a scan at a post office's street address without its office name.
 - Day-resolution estimate only.
-- The duties and postal fee an import owes (`oneri`) and their payment state
-  (`statoOneri`, such as `PAGATO` or `FINESTRA_PAGAMENTO_CHIUSA`) are not read: the result has
-  no field for them.
 - Poste's tracker also answers those codes with other digits before the `C`. No parcel shows
   one yet, so neither detection nor the adapter takes them.
 

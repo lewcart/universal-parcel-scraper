@@ -88,8 +88,8 @@ for (const scan of result.events) {
 throws a `TrackingError` carrying both. [Runnable example](examples/node.mjs).
 
 Besides the scans, `result` carries what the carrier shows about the parcel, such as
-`expected_delivery`, `weight_kg`, `destination_country` or the shipping service in
-`service_name`.
+`expected_delivery`, `weight_kg`, `destination_country`, the shipping service in
+`service_name` or the duties and fees an import owes in `import_charges`.
 
 ### Browser
 

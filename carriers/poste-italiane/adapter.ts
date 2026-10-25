@@ -2,7 +2,7 @@
 import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { isPosteItalianeLookup } from '../../core/detection/posteItaliane.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError } from '../../core/errors/index.js';
-import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import type { CarrierEvent, CarrierResult, ImportCharges } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { clean, fetchBounded, parseJsonBytes, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
@@ -90,6 +90,27 @@ function serviceName(value: unknown, trackingNumber: string): string {
     && text.toLocaleUpperCase('en-US').replace(/[\s.-]/g, '') !== trackingNumber ? text : '';
 }
 
+// Poste's import charges, in euro cents: customs duty and VAT together, and its own
+// clearance fee as paid on delivery and as paid online beforehand ("Smart"), which the
+// fee table on its page for receiving from abroad prices at €21.00 and €18.00 above €150.
+const CHARGES = { customs: 'importoDirittiDoganali', carrier_fee: 'importoDirittiPostali', carrier_fee_online: 'importoDirittiPostaliSmart' } as const;
+
+/** The import charges an item from outside the EU owes, as `oneri` lists them. */
+function importCharges(value: unknown): { import_charges: ImportCharges } | Record<string, never> {
+  if (!isRecord(value)) return {};
+  const charges: ImportCharges = { currency: 'EUR' };
+  for (const [field, key] of Object.entries(CHARGES) as Array<[keyof typeof CHARGES, string]>) {
+    const cents = clean(value[key], 12);
+    if (/^\d{1,9}$/.test(cents)) charges[field] = Number(cents) / 100;
+  }
+  // PAGATO is paid. Others, such as FINESTRA_PAGAMENTO_CHIUSA (the online payment window
+  // closed), say nothing sure about payment and stay codes.
+  const status = clean(value.statoOneri, 60);
+  if (status === 'PAGATO') charges.paid = true;
+  if (/^[A-Z][A-Z_]*$/.test(status)) charges.status_code = status;
+  return Object.keys(charges).length > 1 ? { import_charges: charges } : {};
+}
+
 /**
  * After a burst of searches from one address, the service refuses more with HTTP 400 and an
  * error envelope until the caller solves its CAPTCHA.
@@ -172,7 +193,7 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
   parsed.sort((left, right) => right.timestamp - left.timestamp || right.index - left.index);
   const events = parsed.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event);
   const service = serviceName(payload.tipoProdotto, requested);
-  const product = service ? { service_name: service } : {};
+  const facts = { ...(service ? { service_name: service } : {}), ...importCharges(payload.oneri) };
   if (rawMovements.length > 0 && events.length === 0) {
     throw new SchemaError('Poste Italiane', 'Poste Italiane returned unusable tracking history');
   }
@@ -187,7 +208,7 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
     last_status_text: events[0]?.description ?? 'Returned',
     last_update: events[0]?.time ?? null,
     expected_delivery: null,
-    ...product,
+    ...facts,
     events,
   });
   // Envelope stato "5" forces delivered; otherwise the newest mapped event wins
@@ -206,7 +227,7 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
       last_status_text: events[0]?.description ?? 'Delivered',
       last_update: events[0]?.time ?? null,
       expected_delivery: null,
-      ...product,
+      ...facts,
       events,
     };
   }
@@ -221,7 +242,7 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
         last_status_text: events[0]!.description,
         last_update: events[0]?.time ?? null,
         expected_delivery: expectedDeliveryDay(payload.dataPrevistaConsegna),
-        ...product,
+        ...facts,
         events,
       };
     }
@@ -232,7 +253,7 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
         last_status_text: 'Tracking information received',
         last_update: null,
         expected_delivery: expectedDeliveryDay(payload.dataPrevistaConsegna),
-        ...product,
+        ...facts,
         events,
       };
     }
@@ -250,7 +271,7 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
     last_status_text: latest.event.description,
     last_update: latest.event.time ?? null,
     expected_delivery: expectedDeliveryDay(payload.dataPrevistaConsegna),
-    ...product,
+    ...facts,
     events,
   };
 }

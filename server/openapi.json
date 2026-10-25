@@ -703,6 +703,39 @@
             "type": "string",
             "description": "The carrier's own name for the shipping service the parcel travels under, when its page shows one."
           },
+          "import_charges": {
+            "type": "object",
+            "description": "The duties, taxes and fees the carrier lists for importing the parcel, in the currency's major unit.",
+            "required": [
+              "currency"
+            ],
+            "properties": {
+              "currency": {
+                "type": "string",
+                "description": "ISO 4217 code of the amounts."
+              },
+              "customs": {
+                "type": "number",
+                "description": "Customs duty and import VAT together, which the carrier collects for the customs authority."
+              },
+              "carrier_fee": {
+                "type": "number",
+                "description": "The carrier's own fee for clearing the parcel, as charged on delivery."
+              },
+              "carrier_fee_online": {
+                "type": "number",
+                "description": "That fee when the charges are paid online before delivery."
+              },
+              "paid": {
+                "type": "boolean",
+                "description": "Whether the charges are paid, when the carrier says."
+              },
+              "status_code": {
+                "type": "string",
+                "description": "The carrier's own code for where the payment stands."
+              }
+            }
+          },
           "last_status_text": {
             "type": [
               "string",

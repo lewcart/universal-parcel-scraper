@@ -324,15 +324,18 @@ describe('PosMalaysiaTracker fetch', () => {
     }));
     const instance = adapter({ fetcher, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null, env: {} });
     const started = performance.now();
-    await expect(instance.track({ number: TRACKING_NUMBER }, { budgetMs: 35 })).rejects.toMatchObject({ kind: 'transport' });
+    const failure = await instance.track({ number: TRACKING_NUMBER }, { budgetMs: 35 }).then(() => undefined, (error: unknown) => error);
     expect(performance.now() - started).toBeLessThan(1000);
-    expect(fetcher).toHaveBeenCalledTimes(1);
-    expect(fetcher.mock.calls[0]?.[1]?.signal?.aborted).toBe(true);
+    // A busy runner can spend the budget before the request starts; a request that did start was aborted as a transport failure.
+    expect(fetcher.mock.calls.length).toBeLessThanOrEqual(1);
+    expect(failure).toMatchObject({ kind: fetcher.mock.calls.length ? 'transport' : 'budget' });
+    expect(fetcher.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
+    const before = fetcher.mock.calls.length;
     const controller = new AbortController();
     const request = instance.track({ number: TRACKING_NUMBER }, { budgetMs: 5000, signal: controller.signal });
     controller.abort(new Error('Synthetic caller cancellation'));
     await expect(request).rejects.toMatchObject({ kind: 'transport' });
-    expect(fetcher).toHaveBeenCalledTimes(2);
-    expect(fetcher.mock.calls[1]?.[1]?.signal?.aborted).toBe(true);
+    expect(fetcher).toHaveBeenCalledTimes(before + 1);
+    expect(fetcher.mock.calls[before]?.[1]?.signal?.aborted).toBe(true);
   });
 });

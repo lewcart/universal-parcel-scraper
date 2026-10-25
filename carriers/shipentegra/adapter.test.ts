@@ -243,14 +243,14 @@ describe('ShipEntegra HTTP adapter', () => {
     await expect(carrier(retried).track({ number: IN_TRANSIT })).resolves.toMatchObject({ delivery_carrier: 'ups' });
     expect(retried).toHaveBeenCalledTimes(2);
 
-    let signal: AbortSignal | undefined;
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      signal = init?.signal ?? undefined;
-      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+      const signal = init?.signal;
+      signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
     await expect(carrier(hanging).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toBeInstanceOf(UpstreamNetworkError);
-    expect(signal?.aborted).toBe(true);
+    // A busy runner can spend the budget before the request starts; a request that did start was aborted.
+    expect(hanging.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(60);
     expect(hanging).toHaveBeenCalledTimes(2);
   });

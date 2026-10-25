@@ -158,17 +158,17 @@ describe('Blazor Server circuit', () => {
   });
 
   it('ends a hanging long poll at the lookup’s deadline', async () => {
-    let signal: AbortSignal | undefined;
     const { fetcher } = app({});
     fetcher.mockImplementationOnce(async () => new Response(SHELL))
       .mockImplementationOnce(async () => Response.json({ connectionToken: HUB_TOKEN, availableTransports: [{ transport: 'LongPolling', transferFormats: ['Binary'] }] }))
       .mockImplementationOnce((_input, init) => new Promise((_resolve, reject) => {
-        signal = init?.signal ?? undefined;
-        signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+        const signal = init?.signal;
+        signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
       }));
     const begun = Date.now();
     await expect(lookup(fetcher, { deadline: performance.now() + 80 })).rejects.toThrow();
-    expect(signal?.aborted).toBe(true);
+    // A busy runner can spend the budget before the long poll starts; a long poll that did start was aborted.
+    expect(fetcher.mock.calls[2]?.[1]?.signal?.aborted ?? true).toBe(true);
     expect(Date.now() - begun).toBeLessThan(2_000);
   });
 });

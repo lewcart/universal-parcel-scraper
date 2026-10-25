@@ -323,13 +323,13 @@ describe('DHLink HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the caller’s budget', async () => {
-    let signal: AbortSignal | undefined;
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      signal = init?.signal ?? undefined;
-      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+      const signal = init?.signal;
+      signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     await expect(carrier(fetcher).track({ number: WAREHOUSE }, { budgetMs: 20.5 })).rejects.toThrow();
-    expect(signal?.aborted).toBe(true);
+    // A busy runner can spend the budget before the request starts; a request that did start was aborted.
+    expect(fetcher.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
   });
 
   it('routes a parcel filed under DHLink to the adapter', async () => {

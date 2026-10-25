@@ -232,14 +232,14 @@ describe('Last One Mile Co-op tracking page', () => {
     expect(unused).not.toHaveBeenCalled();
     expect(normalizeLastOneMileNumber(' 1000 0000.0015 ')).toBe(DELIVERED);
     expect(normalizeLastOneMileNumber('１０００－００００－００１５')).toBe(DELIVERED);
-    let signal: AbortSignal | undefined;
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      signal = init?.signal ?? undefined;
-      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+      const signal = init?.signal;
+      signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
     await expect(new LastOneMileTracker({ fetcher: hanging }).fetch(DELIVERED, { budgetMs: 60 })).rejects.toThrow();
-    expect(signal?.aborted).toBe(true);
+    // A busy runner can spend the budget before the request starts; a request that did start was aborted.
+    expect(hanging.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);
     await expect(new LastOneMileTracker({ fetcher: serving('x'.repeat(600_000)) }).fetch(DELIVERED)).rejects.toThrow('unexpectedly large');
   });

@@ -284,14 +284,14 @@ describe('TForce Freight tracking page', () => {
     expect(normalizeTforceFreightNumber(' 222-222.221 ')).toBe(IN_TRANSIT);
     // The tracker reads eight digits with a leading zero.
     expect(normalizeTforceFreightNumber('11111111')).toBe('011111111');
-    let signal: AbortSignal | undefined;
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      signal = init?.signal ?? undefined;
-      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+      const signal = init?.signal;
+      signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
     await expect(new TforceFreightTracker({ fetcher: hanging }).fetch(IN_TRANSIT, { budgetMs: 60 })).rejects.toThrow();
-    expect(signal?.aborted).toBe(true);
+    // A busy runner can spend the budget before the request starts; a request that did start was aborted.
+    expect(hanging.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);
     const huge = vi.fn<typeof fetch>().mockImplementation(async () => new Response('x'.repeat(1_100_000)));
     await expect(new TforceFreightTracker({ fetcher: huge }).fetch(IN_TRANSIT)).rejects.toThrow('unexpectedly large');

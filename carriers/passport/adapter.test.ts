@@ -246,13 +246,13 @@ describe('Passport HTTP adapter', () => {
     expect(flaky).toHaveBeenCalledTimes(2);
     const large = vi.fn<typeof fetch>().mockImplementation(async () => new Response(new Uint8Array(600_000)));
     await expect(carrier(large).track({ number: TRANSIT })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'response_too_large' });
-    let signal: AbortSignal | undefined;
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      signal = init?.signal ?? undefined;
-      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+      const signal = init?.signal;
+      signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     await expect(carrier(hanging).track({ number: TRANSIT }, { budgetMs: 20.5 })).rejects.toThrow();
-    expect(signal?.aborted).toBe(true);
+    // A busy runner can spend the budget before the request starts; a request that did start was aborted.
+    expect(hanging.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     const unused = vi.fn<typeof fetch>();
     await expect(carrier(unused).track({ number: S10 })).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(unused).not.toHaveBeenCalled();

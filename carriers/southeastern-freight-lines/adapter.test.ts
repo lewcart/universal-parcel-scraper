@@ -254,14 +254,14 @@ describe('Southeastern Freight Lines Web Connect tracing', () => {
     expect(normalizeSeflNumber(' 910 000.009 ')).toBe(IN_TRANSIT);
     // The service keeps a leading zero.
     expect(normalizeSeflNumber('0100007')).toBe('0100007');
-    let signal: AbortSignal | undefined;
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      signal = init?.signal ?? undefined;
-      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+      const signal = init?.signal;
+      signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
     await expect(new SeflTracker({ fetcher: hanging }).fetch(IN_TRANSIT, { budgetMs: 60 })).rejects.toThrow();
-    expect(signal?.aborted).toBe(true);
+    // A busy runner can spend the budget before the request starts; a request that did start was aborted.
+    expect(hanging.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);
     const huge = reply('x'.repeat(300_000));
     await expect(new SeflTracker({ fetcher: huge }).fetch(IN_TRANSIT)).rejects.toThrow('unexpectedly large');

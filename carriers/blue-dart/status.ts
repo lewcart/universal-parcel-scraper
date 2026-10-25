@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const vocabulary: Record<string, ClassifiedStatus> = {
   // A pickup run to the shipper: the parcel is not with Blue Dart yet.
@@ -19,3 +20,6 @@ const vocabulary: Record<string, ClassifiedStatus> = {
 export function classifyBlueDartStatus(wording: string): ClassifiedStatus | undefined {
   return vocabulary[wording.toLowerCase()];
 }
+
+/** What the map says about one scan: its wording, as the parser reads it. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => classifyBlueDartStatus(wording)?.stage, gaps: [] };

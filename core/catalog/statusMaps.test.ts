@@ -1005,6 +1005,15 @@ describe('status map answers', () => {
     expect(answer('aramex', null, 'Synthetic scan wording')).toEqual(unknown);
   });
 
+  it('answers Blue Dart by its scan wording, in any case', () => {
+    expect(answer('blue-dart', null, 'Shipment Picked Up')).toEqual(mapped('accepted'));
+    expect(answer('blue-dart', null, 'Pickup Employee Is Out To P/U Shipment')).toEqual(mapped('registered'));
+    expect(answer('blue-dart', null, 'SHIPMENT OUT FOR DELIVERY')).toEqual(mapped('out_for_delivery'));
+    expect(answer('blue-dart', null, 'Cnee Refused Id/Otp Not Shared-Incorrect')).toEqual(mapped('failed_attempt'));
+    expect(answer('blue-dart', null, 'Shipment Returned Back To Shipper')).toEqual(mapped('returned'));
+    expect(answer('blue-dart', null, 'Synthetic scan wording')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

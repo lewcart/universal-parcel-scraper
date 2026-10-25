@@ -61,6 +61,7 @@ import { statusMap as bestOverniteExpress } from '../../carriers/best-overnite-e
 import { statusMap as betterTrucks } from '../../carriers/better-trucks/status.js';
 import { statusMap as bexExpress } from '../../carriers/bex-express/status.js';
 import { statusMap as bjsHomeDelivery } from '../../carriers/bjs-home-delivery/status.js';
+import { statusMap as blueDart } from '../../carriers/blue-dart/status.js';
 import { statusMap as blueExpress } from '../../carriers/blue-express/status.js';
 import { statusMap as blueex } from '../../carriers/blueex/status.js';
 import { statusMap as bombino } from '../../carriers/bombino/status.js';
@@ -620,7 +621,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   andreani, anjun, anousith, anserx, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics,
   'apple-express': appleExpress, aramex, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'atlantic-courier': atlanticCourier, 'australia-post': australiaPost, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
-  'barid-al-maghrib': baridAlMaghrib, belpost, 'best-overnite-express': bestOverniteExpress, 'better-trucks': betterTrucks, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, blueex, bombino,
+  'barid-al-maghrib': baridAlMaghrib, belpost, 'best-overnite-express': bestOverniteExpress, 'better-trucks': betterTrucks, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-dart': blueDart, 'blue-express': blueExpress, blueex, bombino,
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, bpost, 'bringer-parcel': bringerParcel, brt, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
   byhd, c3x, cacesa, 'canada-post': canadaPost, cargus, 'castle-parcels': castleParcels, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,

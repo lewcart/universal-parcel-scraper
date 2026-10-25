@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // Activities of Spee-Dee's package progress table, as the page writes them.
 // Other wording is left to the shared classifier.
@@ -16,3 +17,6 @@ export function speeDeeActivity(raw: string): string {
 export function speeDeeStatus(activity: string): ClassifiedStatus | undefined {
   return ACTIVITIES.get(activity.toUpperCase());
 }
+
+/** What the map says about one scan: its activity, as the parser keeps it. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => speeDeeStatus(wording)?.stage, gaps: [] };

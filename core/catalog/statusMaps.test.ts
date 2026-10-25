@@ -988,6 +988,13 @@ describe('status map answers', () => {
     expect(answer('ninja-van', 'SYNTHETIC_TYPE', 'synthetic type')).toEqual(unknown);
   });
 
+  it("answers Spee-Dee by its activity", () => {
+    expect(answer('spee-dee', null, 'ARRIVAL SCAN')).toEqual(mapped('in_transit'));
+    expect(answer('spee-dee', null, 'OUT FOR DELIVERY')).toEqual(mapped('out_for_delivery'));
+    expect(answer('spee-dee', null, 'DELIVERED')).toEqual(mapped('delivered'));
+    expect(answer('spee-dee', null, 'DEPARTURE SCAN')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

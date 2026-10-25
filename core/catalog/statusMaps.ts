@@ -499,6 +499,7 @@ import { statusMap as smsaExpress } from '../../carriers/smsa-express/status.js'
 import { statusMap as southAfricanPost } from '../../carriers/south-african-post-office/status.js';
 import { statusMap as southeasternFreightLines } from '../../carriers/southeastern-freight-lines/status.js';
 import { statusMap as spExpress } from '../../carriers/sp-express/status.js';
+import { statusMap as speeDee } from '../../carriers/spee-dee/status.js';
 import { statusMap as speedAndSafe } from '../../carriers/speed-and-safe/status.js';
 import { statusMap as speedaf } from '../../carriers/speedaf/status.js';
 import { statusMap as speedex } from '../../carriers/speedex/status.js';
@@ -681,7 +682,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
-  'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spring-gds': springGds, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-sg': spxSg,
+  'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'spee-dee': speeDee, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spring-gds': springGds, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-sg': spxSg,
   'spx-ph': spxPh, 'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, sunyou, swiftx, 'swiss-post': swissPost, 'swiss-post-cargo': swissPostCargo,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, techlink, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,

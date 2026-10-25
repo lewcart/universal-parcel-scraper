@@ -485,12 +485,11 @@ step exists for future protocol changes.
 - TIPSA's `date` has the digits of TIPSA's own shipment page, which keeps Madrid time for
   every agency ([TIPSA](../../carriers/tipsa/README.md)), so step 1 reads its Portuguese
   scans on Madrid time too.
-- CTTYEX's own steps in China, from the order data to the flight out, take its catalog
-  zone in step 1, Beijing time, as its tracker's do
-  ([CTTYEX](../../carriers/cttyex/README.md)). Its later scans, which its tracker does not
-  show ("Item arrives at destination airport"), keep their wall clock wherever they are
-  located: LinHan, on the same system, dates such scans on China's clock or the
-  destination's, and nothing says which.
+- CTTYEX's tracker prints every row on Beijing time, the rows abroad too
+  ([CTTYEX](../../carriers/cttyex/README.md)). Its own steps in China, from the order data to
+  the flight out, take that catalog zone in step 1. Its later scans ("Item arrives at
+  destination airport") keep their wall clock wherever they are located: nothing ties
+  ParcelsApp's digits for them to the tracker's yet.
 - Brand zones: a bare brand does not say which network scanned. The GLS and Hermes
   carriers in the catalog all keep Central European time, which step 4 checks for each
   scan, DST changes included. DPD's do not (DPD UK's, Ireland's, Portugal's and South

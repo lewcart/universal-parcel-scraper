@@ -922,13 +922,12 @@ function localClockBrand(name: unknown): boolean {
 }
 
 /**
- * Whether a scan is CTTYEX's from a leg after its own in China. Its own
- * tracker words only its steps in China, from the order data to the flight
- * out, on Beijing time ([CTTYEX](../../carriers/cttyex/README.md)), and those
- * take its catalog zone. ParcelsApp also relays later ones ("Item arrives at
- * destination airport"), which LinHan, on the same system, dates on China's
- * clock or the destination's. Nothing says which, so neither its carrier's
- * zone nor its place dates such a scan: it keeps its wall clock.
+ * Whether a scan is CTTYEX's from a leg after its own in China. Its tracker
+ * prints every row on Beijing time, the rows abroad too
+ * ([CTTYEX](../../carriers/cttyex/README.md)), and its steps in China, from the
+ * order data to the flight out, take its catalog zone here. The later ones
+ * ParcelsApp relays ("Item arrives at destination airport") keep their wall
+ * clock: nothing ties their digits to the tracker's yet.
  */
 function cttyexLaterLeg(name: unknown, status: string): boolean {
   return typeof name === 'string' && carrierIdFromName(name) === 'cttyex' && !cttyexChinaStep(status);

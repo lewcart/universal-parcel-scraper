@@ -3,9 +3,10 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { sameInstantIdentityPolicy } from '../../app.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, SPX_BR_API, SpxBrTracker } from './adapter.js';
-import { normalizeSpxBrNumber, parseSpxBr, spxBrWording } from './parser.js';
+import { normalizeSpxBrNumber, parseSpxBr, spxBrPlacedText, spxBrWording } from './parser.js';
 import { spxBrStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -62,7 +63,7 @@ describe('SPX Express Brazil HTTP adapter', () => {
       ['2026-05-16T14:00:00Z', 'F000', 'registered', null],
     ]);
     expect(result.events![6]).toMatchObject({ point: { latitude: -23.5, longitude: -46.6 },
-      description: 'Seu pedido chegou ao centro logístico: Cidade Exemplo - SP' });
+      description: 'Seu pedido chegou ao centro logístico' });
     expect(result.events![2]).not.toHaveProperty('point');
     expect(result.events!.every((event) => !('local_time' in event))).toBe(true);
     expect(JSON.stringify(result)).not.toMatch(/Pessoa Exemplo|Recebido|Vendedor|Rua |Avenida|R101|1000000000000000001/);
@@ -112,6 +113,43 @@ describe('SPX Express Brazil HTTP adapter', () => {
     // A scan nothing stages leaves the stage to the newest scan that has one.
     expect(unmapped.events![0]).not.toHaveProperty('stage');
     expect(unmapped).toMatchObject({ last_status_text: 'Aviso sintético', current_stage: 'customs' });
+  });
+
+  it('reads the centre, origin or port a wording names as its place, and keeps a row stored with it in the wording', () => {
+    expect(parseSpxBr(fixture('delivered'), DELIVERED).events!.slice(2, 7).map((event) => [event.description, event.location])).toEqual([
+      ['Seu pedido saiu do centro logístico', 'Vila Amostra - SP'],
+      ['O pedido está em separação no centro logístico, novas atualizações em até 1 dia.', 'Vila Amostra - SP'],
+      ['O pedido chegou ao centro e segue para a próxima etapa.', 'Vila Amostra - SP'],
+      ['Seu pedido saiu do centro logístico', 'Cidade Exemplo - SP'],
+      ['Seu pedido chegou ao centro logístico', 'Cidade Exemplo - SP'],
+    ]);
+    // The reply's place stands over the town the wording names.
+    expect(parseSpxBr(fixture('in-transit'), IN_TRANSIT).events!.filter((event) => /^F3(?:41|50|55)$/.test(event.provider_code!))
+      .map((event) => [event.description, event.location])).toEqual([
+      ['Pedido saiu do porto de trânsito', 'Aeroporto de Trânsito'],
+      ['Pedido chegou no porto de trânsito', 'Aeroporto de Trânsito'],
+      ['Pedido saiu da origem', 'Aeroporto Amostra'],
+    ]);
+    // A reason after a colon, or a scan away from SPX's facilities, keeps its wording.
+    expect(spxBrPlacedText('Pedido em inspeção na alfândega de importação: RFB - Motivo')).toEqual({
+      description: 'Pedido em inspeção na alfândega de importação: RFB - Motivo', location: '' });
+    expect(parseSpxBr(changed('delivered', (tracking) => {
+      Object.assign(tracking.records[0]!, { description: 'Pedido entregue no centro logístico: Cidade Exemplo - SP' });
+    }), DELIVERED).events![0]).toMatchObject({ description: 'Pedido entregue no centro logístico: Cidade Exemplo - SP' });
+
+    const policy = sameInstantIdentityPolicy('spx-br', { supportsScanMatching: true });
+    const incoming = { stage: 'in_transit', description: 'Seu pedido saiu do centro logístico', location: 'Cidade Exemplo - SP', providerCode: 'F540' };
+    const stored = { ...incoming, description: 'Seu pedido saiu do centro logístico: Cidade Exemplo - SP' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(incoming, { ...stored, location: '' })).toBe(true);
+    expect(policy?.matches?.(incoming, incoming)).toBe(true);
+    for (const different of [
+      { ...stored, description: 'Seu pedido saiu do centro logístico: Vila Amostra - SP', location: '' },
+      { ...stored, location: 'Vila Amostra - SP' },
+      { ...stored, providerCode: 'F450' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    const arrival = { ...incoming, description: 'O pedido chegou ao centro e segue para a próxima etapa.', providerCode: 'F510' };
+    expect(policy?.matches?.(arrival, { ...arrival, description: 'O pedido chegou ao centro de : Cidade Exemplo - SP e segue para a próxima etapa.' })).toBe(true);
   });
 
   it('takes whoever received the parcel out of the wording', () => {

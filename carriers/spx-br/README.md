@@ -32,9 +32,11 @@ numbers carry a PH prefix.
 - Rows flagged hidden, which the page leaves out, are left out too.
 - Scans at SPX's warehouses, forwarders, ports, hubs and sorting centres keep the place and
   coordinates the reply gives. Pickups, deliveries and the return to the seller would name the
-  seller's or the recipient's town, so they keep none. Facility addresses are not kept. A
-  departure from a logistics centre often gives no place but names the centre in its wording,
-  which is kept as its place.
+  seller's or the recipient's town, so they keep none. Facility addresses are not kept.
+- Some facility wordings name their centre, origin or port after a colon ("Seu pedido saiu do
+  centro logístico: Cidade Exemplo - SP"). The name leaves the wording, so it reads the same from
+  town to town, and is the scan's place when the reply gives none: a departure from a logistics
+  centre often names it only there. Rows stored with the name in their wording keep their row.
 - The reply can list a customs check filed late among later scans; the history is ordered by
   the clocks.
 - Tracking codes give the stages. Brazilian customs holding or inspecting a parcel is customs,

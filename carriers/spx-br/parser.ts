@@ -21,8 +21,13 @@ const MAX_EVENTS = 100;
 // the way out and back. Pickups, deliveries and the return to the seller
 // name the seller's or the recipient's town, which is not kept.
 const FACILITY = /^F(?:[2-5]\d\d|67\d|680)$/;
-// A departure can name its centre only in its wording: "Seu pedido saiu do centro logístico: Cidade Exemplo - SP".
-const NAMED_CENTRE = /\bcentro log[ií]stico:\s*(\S[^:]*)$/i;
+// Wordings that name the centre, origin or port of their scan after a colon:
+// "Seu pedido saiu do centro logístico: Cidade Exemplo - SP", and the arrival
+// "O pedido chegou ao centro de : Cidade Exemplo - SP e segue para a próxima etapa.".
+const PLACED = [
+  /^(.*\b(?:centro log[ií]stico|origem|porto de tr[âa]nsito))\s*:\s*([^:]*\S)$/i,
+  /^(O pedido chegou ao centro) de\s*:\s*(\S.*?)( e segue para a próxima etapa\.?)$/i,
+];
 
 /** A number for SPX Brazil's tracker; anything else is not one it issues. */
 export function normalizeSpxBrNumber(raw: string): string {
@@ -39,6 +44,18 @@ const NAMED = /\b(entregue)\s+(?:a|ao|à|para)\s+\[[^\]]*\][\s\S]*$/i;
 /** A scan's wording without the name of whoever took the parcel. */
 export function spxBrWording(text: string): string {
   return clean(clean(text, 1000).replace(RECEIVER, '').replace(NAMED, '$1'), 500).replace(/[\s,;:]+$/, '');
+}
+
+/**
+ * A facility scan's wording without the centre, origin or port it names, and
+ * that place, so the wording reads the same from town to town.
+ */
+export function spxBrPlacedText(wording: string): { description: string; location: string } {
+  for (const pattern of PLACED) {
+    const match = pattern.exec(wording);
+    if (match) return { description: match[1]!.trim() + (match[3] ?? ''), location: match[2]!.trim() };
+  }
+  return { description: wording, location: '' };
 }
 
 /** An optional text field; anything but a string is a changed reply. */
@@ -62,13 +79,14 @@ function projectRow(row: Record<string, unknown>): CarrierEvent | null {
     ? epochSecondsTime(clock)?.iso : undefined;
   if (!time) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid scan time');
   const facility = FACILITY.test(code);
+  // The reply's place stands; a place named only in the wording stands in for it.
+  const named = facility ? spxBrPlacedText(description) : { description, location: '' };
   const place = facility && isRecord(row.current_location) ? row.current_location : null;
-  const location = (place ? clean(text(place, 'location_name'), 120) : '')
-    || (facility ? clean(NAMED_CENTRE.exec(description)?.[1] ?? '', 120) : '');
+  const location = (place ? clean(text(place, 'location_name'), 120) : '') || clean(named.location, 120);
   const point = place && location ? eventPoint(place.lat, place.lng) : null;
-  const staged = spxBrStage(code, description);
+  const staged = spxBrStage(code, named.description);
   return {
-    time, ...(location ? { location } : {}), ...(point ? { point } : {}), description,
+    time, ...(location ? { location } : {}), ...(point ? { point } : {}), description: named.description,
     ...(code ? { provider_code: code } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };

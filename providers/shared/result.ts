@@ -290,6 +290,9 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^label correction applied[.!]?$/i.test(value)) return 'in_transit';
   // SEUR's receipt at its origin facility (SX001) and Vinted Go's parcel dropped off by its sender, as their own maps read them.
   if (/^the shipment has been received at the seur facilities of origin[.!]?$|^parcel was dropped off at the (?:locker|parcel shop)[.!]?$/i.test(value)) return 'accepted';
+  // Sending's collection and its departure on the national route, in ParcelsApp's English, as Sending's own map reads them.
+  if (/^reception in the delegation[.!]?$/i.test(value)) return 'accepted';
+  if (/^out in national route[.!]?$/i.test(value)) return 'in_transit';
   // FedEx's customs release, which its own map reads as a completed clearance.
   if (/^international shipment release - (?:import|export)[.!]?$/i.test(value)) return 'in_transit';
   // Straightship's shipper data, then its first scan in Canada and its stations, the town and province in brackets.

@@ -4,7 +4,7 @@ import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } fro
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
 import { explicitOffsetTime, zonedTime } from '../../core/time/index.js';
-import { clean } from '../../core/transport/index.js';
+import { clean } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 
 const PROVIDER = 'Nova Poshta';

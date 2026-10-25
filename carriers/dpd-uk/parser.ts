@@ -6,7 +6,7 @@ import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/e
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { classifyWording, languageStageStatus } from '../../core/status/index.js';
 import { explicitOffsetTime, isoTime } from '../../core/time/index.js';
-import { clean } from '../../core/transport/index.js';
+import { clean } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 
 export const PROVIDER = 'DPD UK';

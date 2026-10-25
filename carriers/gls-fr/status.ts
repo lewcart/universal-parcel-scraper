@@ -10,7 +10,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
-import { cleanScalar } from '../../core/transport/index.js';
+import { cleanScalar } from '../../core/transport/text.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface GLSFranceStatusMetadata {

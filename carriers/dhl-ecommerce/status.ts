@@ -10,7 +10,7 @@
 import type { CarrierStatus } from '../../core/result/index.js';
 import { trackingLanguageStage, type Stage } from '../../core/status/index.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
-import { clean as cleanText } from '../../core/transport/index.js';
+import { clean as cleanText } from '../../core/transport/text.js';
 import type { JsonObject } from '../../core/types.js';
 
 /** The same tag-stripping cleaner the projection uses (see adapter.ts). */

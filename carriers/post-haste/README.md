@@ -57,7 +57,8 @@ space between. Charge labels carry an eight-digit label number. Customer printed
 sender's account number with a consignment number, so they are not kept. The track and trace
 page gives the samples, and archived lookups on the tracker give the tickets. New Zealand
 Couriers, another Freightways brand, prints tickets in the same layout, and eight digits are
-shared by many carriers, so no rule claims either.
+shared by many carriers, so no rule claims either. A consignment number is the sender's own, as
+[New Zealand Couriers' notes](../nz-couriers/README.md#numbers) describe, so no rule claims it.
 
 ## Links
 

@@ -77,7 +77,11 @@ space. Charge labels carry eight digits and international consignments nine. Cus
 labels pair the sender's account number with a consignment number, so they are not kept. The
 track-a-parcel page gives the samples, and archived lookups on the tracker give the tickets.
 Post Haste, another Freightways brand, prints tickets in the same layout, and eight or nine
-digits are shared by many carriers, so no rule claims them.
+digits are shared by many carriers, so no rule claims them. Nor does one claim a consignment
+number: New Zealand Couriers'
+[integration guide](https://help.nzcouriers.co.nz/how-to-integrate-tracking-onto-your-website)
+calls it the customer's own identifier, and other carriers' consignments share its letters and
+digits.
 
 ## Links
 

@@ -1140,6 +1140,19 @@ describe('status map answers', () => {
     expect(answer('ekart', 'SyntheticCode', 'SyntheticCode - Example Hub')).toEqual(unknown);
   });
 
+  it("answers JD Logistics by its operation code, and a partner's label by its wording", () => {
+    expect(answer('jd-logistics', 'COSH', 'Synthetic scan')).toEqual(mapped('registered'));
+    expect(answer('jd-logistics', '3041', 'Picking Completed.')).toEqual(mapped('accepted'));
+    expect(answer('jd-logistics', 'CCL', 'Synthetic scan')).toEqual(mapped('customs'));
+    expect(answer('jd-logistics', 'DMLMLS', 'Synthetic scan')).toEqual(mapped('out_for_delivery'));
+    expect(answer('jd-logistics', 'DLV', 'Synthetic scan')).toEqual(mapped('delivered'));
+    expect(answer('jd-logistics', 'SRRF3P', 'Shipping Label Created')).toEqual(mapped('registered'));
+    expect(answer('jd-logistics', null, 'Shipping Label Created')).toEqual(mapped('registered'));
+    // Another code is left to the shared wording rules, and a copy without its code to review.
+    expect(answer('jd-logistics', 'SRRF3P', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('jd-logistics', null, 'Picking Completed.')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

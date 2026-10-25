@@ -5,6 +5,7 @@
  * wording rules.
  */
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const MOVING: ClassifiedStatus = { status: 'in_transit', stage: 'in_transit' };
 // JD's own warehouse holds the goods while it picks and weighs the order.
@@ -38,3 +39,12 @@ const RELAYED = new Map<string, ClassifiedStatus>([
 export function jdLogisticsStatus(code: string | undefined, wording: string): ClassifiedStatus | undefined {
   return (code ? CODES.get(code) : undefined) ?? RELAYED.get(wording.trim().toLowerCase());
 }
+
+/**
+ * What the map says about one scan: its operation code, else the wording JD relays from a
+ * last-mile partner. A scan the shared wording rules staged stays open.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => jdLogisticsStatus(code ?? undefined, wording)?.stage,
+  gaps: [],
+};

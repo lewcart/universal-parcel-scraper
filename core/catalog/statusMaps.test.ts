@@ -792,10 +792,17 @@ describe('status map answers', () => {
     expect(answer('packeta', null, 'Synthetic sentence')).toEqual(unknown);
   });
 
-  it("answers Evri UK's delivery by the wording it writes for one, and leaves every tracking point open, since its rail is not stored", () => {
+  it("answers Evri UK by its scan's rail and tracking point, and a scan stored without its rail by the wording of a delivery", () => {
+    // A ParcelShop arrival is a drop-off on one rail and ready for pickup on another.
+    expect(answer('evri-uk', '2/ARRIVED_PARCELSHOP', 'Synthetic scan')).toEqual(mapped('accepted'));
+    expect(answer('evri-uk', '4_SHOP/ARRIVED_PARCELSHOP', 'Synthetic scan')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('evri-uk', '4_COURIER/NOT_DELIVERED_BUSINESS_CLOSED', 'Synthetic scan')).toEqual(mapped('failed_attempt'));
+    expect(answer('evri-uk', '3/LOCAL_DEPOT', 'At the local depot')).toEqual(mapped('in_transit'));
+    expect(answer('evri-uk', '5_COURIER/LEFT_GARAGE', 'Delivered')).toEqual(mapped('delivered'));
+    // A rail the adapter does not know reaches the review, whatever its wording.
+    expect(answer('evri-uk', 'SYNTHETIC_RAIL/SYNTHETIC_POINT', 'Delivered')).toEqual(unknown);
     expect(answer('evri-uk', 'LEFT_GARAGE', 'Delivered')).toEqual(mapped('delivered'));
     expect(answer('evri-uk', null, 'Delivered')).toEqual(mapped('delivered'));
-    // The rail the stage comes from is not stored: a ParcelShop arrival is a drop-off on one rail and ready for pickup on another.
     for (const [code, wording] of [['ARRIVED_PARCELSHOP', 'Synthetic scan'], ['COURIER_DELIVERY', 'Out for delivery'], ['SYNTHETIC_POINT', 'Delivery update']] as const) {
       expect(answer('evri-uk', code, wording), code).toEqual(unknown);
     }

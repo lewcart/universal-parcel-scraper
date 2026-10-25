@@ -34,6 +34,17 @@ function stageOf(stageCode: string, pointCode: string): Stage | undefined {
   return POINTS.get(pointCode) ?? rail;
 }
 
+/** A scan's provider code: its rail, a slash, then its tracking point (`4_SHOP/ARRIVED_PARCELSHOP`). */
+function scanCode(stageCode: string, pointCode: string): string {
+  return `${stageCode}/${pointCode}`;
+}
+
+/** The stage a scan's provider code gives it, as the parser stages the scan; undefined for a code without its rail. */
+export function evriUkCodeStage(code: string): Stage | undefined {
+  const slash = code.indexOf('/');
+  return slash > 0 ? stageOf(code.slice(0, slash), code.slice(slash + 1)) : undefined;
+}
+
 const ZONE = 'Europe/London';
 
 /** The wording of every delivery: Evri's own can name the recipient or a safe place. */
@@ -115,7 +126,7 @@ export function parseEvriUk(payload: unknown, raw: string, expectedUrn?: string)
       ...(time ? { time: time.iso } : clock ? { provider_time_text: clock } : {}),
       description: stage === 'delivered' ? EVRI_UK_DELIVERED : privateDeliveryProse ? 'Delivery update' : description,
       ...(stage ? { stage, stage_source: 'carrier_map' } : {}),
-      provider_code: code,
+      provider_code: scanCode(stageCode, code),
       provider_stage_code: stageCode,
     };
     const identity = JSON.stringify([time?.iso ?? clock, code, description]);

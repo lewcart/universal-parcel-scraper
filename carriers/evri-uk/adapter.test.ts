@@ -2,11 +2,13 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { describe, expect, it } from 'vitest';
 import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, EvriUkTracker } from './adapter.js';
 import { requestEvriUkInPage } from './browser.js';
 import { EVRI_UK_MOBILE_API, readEvriUkMobile } from './mobile.js';
 import { evriUkTrackingUrl, normalizeEvriUkNumber, parseEvriUk } from './parser.js';
+import { statusMap } from './status.js';
 
 // All identifiers, clocks, credentials and private-field markers here are invented.
 const NUMBER = 'H000000000000001';
@@ -95,7 +97,7 @@ describe('Evri UK anonymous history', () => {
     payload.results[0].trackingEvents.reverse();
     payload.results[0].trackingEvents[2].dateTime = '2026-01-03T10:00:00';
     const result = parseEvriUk(payload, NUMBER, URN);
-    expect(result.events?.[0]?.provider_code).toBe('EXPECTED');
+    expect(result.events?.[0]?.provider_code).toBe('1/EXPECTED');
     expect(result.events?.[2]).toMatchObject({ provider_time_text: '2026-01-03T10:00:00' });
     expect(result.events?.[2]).not.toHaveProperty('time');
   });
@@ -142,7 +144,10 @@ describe('Evri UK anonymous history', () => {
     payload.results[0].trackingEvents = [scan(stageCode, code, '2026-07-03T11:00:00Z')];
     const result = parseEvriUk(payload, NUMBER, URN);
     expect(result.status).toBe(status);
-    expect(result.events?.[0]?.stage).toBe(stage);
+    expect(result.events?.[0]).toMatchObject({ stage, provider_code: `${stageCode}/${code}` });
+    // The scan keeps its rail with its tracking point, which the parcel app's review reads.
+    const { provider_code: kept, description } = result.events![0]!;
+    expect(statusMap.stage(kept ?? null, normalizeStatusWording(description ?? ''))).toBe(stage);
   });
 
   it('names the delivery service Evri gives the parcel', () => {
@@ -347,6 +352,9 @@ describe('Evri UK page protocol', () => {
     expect(result.kind).toBe('ok');
     if (result.kind !== 'ok') throw new Error('Expected history');
     expect(parseEvriUk(result.payload, NUMBER, result.urn).events).toHaveLength(6);
+    // The page's scans keep the same rail and tracking point codes as the guest API's.
+    expect(parseEvriUk(result.payload, NUMBER, result.urn).events?.map(event => event.provider_code))
+      .toEqual(parseEvriUk(history(), NUMBER, URN).events?.map(event => event.provider_code));
     expect(calls.map(call => call.url)).toEqual(['/protected/keys.json', `https://api.evri.com/customer-tracking/v1/search/${NUMBER}`,
       `https://tracking.platform-apis.evri.com/v1/parcels?uniqueIds=${encodeURIComponent(URN)}`]);
     expect(calls.every(call => call.init.signal instanceof AbortSignal)).toBe(true);

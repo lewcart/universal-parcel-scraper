@@ -121,7 +121,7 @@ describe('iMile HTTP adapter', () => {
   it('places each scan on the recipient country’s clock and stages it by its code and sentence', () => {
     const result = parseImile(fixture('in-transit'), IN_TRANSIT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',
-      last_status_text: '【SMP】 Clearance start.', last_update: '2026-06-04T02:15:00-05:00', expected_delivery: null,
+      last_status_text: 'SMP: Clearance start.', last_update: '2026-06-04T02:15:00-05:00', expected_delivery: null,
       destination_country: 'CO' });
     expect(result).not.toHaveProperty('last_update_local');
     expect(result.events!.map((event) => [event.time, event.provider_code ?? null, event.stage ?? null, event.location ?? null])).toEqual([
@@ -135,8 +135,8 @@ describe('iMile HTTP adapter', () => {
       ['2026-05-30T19:16:16-05:00', '1001', 'registered', null],
     ]);
     expect(result.events!.every((event) => event.local_time === undefined)).toBe(true);
-    // The booked flight's own clocks stay in its wording, as the page shows it.
-    expect(result.events![3]!.description).toBe('Flight Schedule ETD【<HKG>】<2026-06-03 02:00:00>, ETA【<SMP>】<2026-06-03 12:00:00>.');
+    // The booked flight's own clocks stay in its wording, without the page's brackets.
+    expect(result.events![3]!.description).toBe('Flight Schedule ETD HKG 2026-06-03 02:00:00, ETA SMP 2026-06-03 12:00:00.');
     // The last-mile number names no courier, so there is no hand-off.
     expect(JSON.stringify(result)).not.toMatch(/SAMPLELM|delivery_tracking_number|Sample Origin Center"?,"dispatch/);
   });
@@ -156,24 +156,36 @@ describe('iMile HTTP adapter', () => {
       ['1003', 'failed_attempt', 'User not at home'],
       ['1003', 'out_for_delivery', 'Our delivery associate is out for delivery.'],
       ['1003', 'in_transit', 'Your order has assigned delivery drvier.'],
-      ['1003', 'in_transit', 'Your order has arrived at 【SMP DS01】'],
+      ['1003', 'in_transit', 'Your order has arrived at SMP DS01'],
+    ]);
+    // A name opening a scan is its centre, which the location shows, or else heads the sentence.
+    expect(result.events!.slice(9, 15).map((event) => [event.stage ?? null, event.description, event.location ?? null])).toEqual([
+      ['in_transit', 'Your order has been received.', 'Sample Distribution Center'],
+      ['in_transit', 'SMP: AirPlane clearance finish,ready to ship to Sample Distribution Center.', null],
+      ['customs', 'Clearance Processing', null],
+      ['customs', 'SMP: Flight Arrived - Waiting for customs clearance.', null],
+      ['in_transit', 'HKG: The flight has taken off.', null],
+      [null, 'Flight Schedule ETD HKG 2026-05-17 11:40:00, ETA SMP 2026-05-17 16:15:00.', null],
     ]);
     expect(result.events!.find((event) => event.description === 'Clearance Processing')).toMatchObject({ stage: 'customs' });
     expect(result.events!.find((event) => event.description === 'Clearance Processing')).not.toHaveProperty('provider_code');
     expect(JSON.stringify(result)).not.toMatch(/Self|Receiver|viewPic|example\.invalid|contact him|\+000|0500000001/);
   });
 
-  it('takes the return codes’ word for a parcel going back', () => {
+  it('reads return handling as a return under way, until the sender has the parcel back', () => {
     const failed = parseImile(changed('delivered', (shipment) => {
       Object.assign(shipment.trackInfos[0]!, { trackStage: 1008, trackStageTx: 'Return Handling Process',
         content: 'Order delivery failed, returning to sender. If you have any question, please contact us through cs  ' });
     }), DELIVERED);
-    expect(failed).toMatchObject({ status: 'exception', current_stage: 'returned', current_stage_source: 'carrier_map',
+    expect(failed).toMatchObject({ status: 'exception', current_stage: 'exception', current_stage_source: 'carrier_map',
       last_status_text: 'Order delivery failed, returning to sender.' });
-    const received = parseImile(changed('delivered', (shipment) => {
-      Object.assign(shipment.trackInfos[0]!, { trackStage: 1008, trackStageTx: 'Return Handling Process', content: '【Sample Hub】Shipment received.' });
-    }), DELIVERED);
-    expect(received).toMatchObject({ current_stage: 'returned', last_status_text: '【Sample Hub】Shipment received.' });
+    // A centre receiving the parcel and a driver's reason are the way back.
+    for (const content of ['【Sample Hub】Shipment received.', '<No Answer>']) {
+      const back = parseImile(changed('delivered', (shipment) => {
+        Object.assign(shipment.trackInfos[0]!, { trackStage: 1008, trackStageTx: 'Return Handling Process', content });
+      }), DELIVERED);
+      expect(back).toMatchObject({ current_stage: 'exception', last_status_text: content === '<No Answer>' ? 'No Answer' : 'Sample Hub: Shipment received.' });
+    }
     const signed = parseImile(changed('delivered', (shipment) => {
       Object.assign(shipment.trackInfos[0]!, { trackStage: 2065, trackStageTx: 'Returned to Client', content: '【Sample Hub】Return signature' });
     }), DELIVERED);
@@ -537,7 +549,13 @@ describe('iMile status vocabulary', () => {
     // A delivery-stage sentence the map does not know is read by the shared rules, else stays in transit.
     expect(imileStage('1003', 'Synthetic note')).toEqual({ stage: 'in_transit', source: expect.any(String) });
     expect(imileStage('9999', 'Synthetic note')).toBeNull();
-    // The return codes decide whatever the sentence says.
-    expect(imileStage('1008', '【Sample Hub】Received.')).toEqual({ stage: 'returned', source: 'carrier_map' });
+    // The return codes decide whatever the sentence says, but a return is under way until the sender has the parcel.
+    expect(imileStage('1008', '【Sample Hub】Received.')).toEqual({ stage: 'exception', source: 'carrier_map' });
+    expect(imileStage('1008', '【Sample Hub】Return signature')).toEqual({ stage: 'returned', source: 'carrier_map' });
+    expect(imileStage('2065', '【Sample Hub】Received.')).toEqual({ stage: 'returned', source: 'carrier_map' });
+    // A stored wording shows the name iMile put in 【】 before the sentence.
+    expect(statusMapAnswer({ carrier: 'imile', providerCode: '1002', description: 'SMP: Clearance start.' })).toEqual({ kind: 'mapped', stage: 'customs' });
+    expect(statusMapAnswer({ carrier: 'imile', providerCode: '1003', description: 'Contact Error: need to return.' }))
+      .toEqual({ kind: 'mapped', stage: 'exception' });
   });
 });

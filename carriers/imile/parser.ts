@@ -7,6 +7,7 @@ import { countryTimeZone, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { imileStage } from './status.js';
+import { imileDisplayWording } from './wording.js';
 
 export const PROVIDER = 'iMile';
 // A long history is a few kilobytes.
@@ -62,7 +63,7 @@ const PHONE = /(?<![A-Z\d])(?!\d{4}-\d{2}-\d{2}(?!\d))\+?\d(?:[\s().\-/]{0,2}\d)
 /**
  * A scan's wording without the people it names: the driver's phone, who
  * took the parcel, the proof-of-delivery link and the support footer go.
- * The centre names in 【】 stay, as the page shows them.
+ * The centre names in 【】 stay for the stage rules to read past.
  */
 export function imileWording(raw: string): string {
   return clean(raw
@@ -103,11 +104,12 @@ function stageCode(row: Record<string, unknown>): string {
 
 function projectRow(row: Record<string, unknown>): { key: string; event: CarrierEvent } {
   const code = stageCode(row);
-  const description = imileWording(text(row, 'content', 2_000)) || text(row, 'trackStageTx', 120);
-  if (!description) throw new SchemaError(PROVIDER, 'iMile returned a scan without wording');
+  const written = imileWording(text(row, 'content', 2_000)) || text(row, 'trackStageTx', 120);
+  if (!written) throw new SchemaError(PROVIDER, 'iMile returned a scan without wording');
   const local = scanClock(row);
   const location = text(row, 'operateStationName', 120);
-  const staged = imileStage(code, description);
+  const staged = imileStage(code, written);
+  const description = imileDisplayWording(written, location);
   const event: CarrierEvent = {
     local_time: local,
     ...(location ? { location } : {}),

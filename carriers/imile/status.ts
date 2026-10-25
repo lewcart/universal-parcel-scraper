@@ -3,14 +3,20 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import { statusMap as cainiaoStatusMap } from '../aliexpress/status.js';
 
 /**
- * iMile's `trackStage` codes, by the label the reply gives them. Delivered,
- * returned and return handling decide the stage whatever the wording says.
+ * iMile's `trackStage` codes, by the label the reply gives them. Delivered
+ * and returned decide the stage whatever the wording says.
  */
 const DECISIVE: ReadonlyMap<string, Stage> = new Map([
   ['2060', 'delivered'], // Delivered.
-  ['1008', 'returned'], // Return Handling Process: the parcel goes back after its delivery failed.
   ['2065', 'returned'], // Returned to Client.
 ]);
+
+/**
+ * Return Handling Process: the parcel goes back after its delivery failed.
+ * Its scans are the way back, centres receiving it and drivers' reasons, so
+ * the return is under way until a sentence says the sender has it.
+ */
+const RETURNING = '1008';
 
 /** The other codes, when the wording is not one of iMile's own sentences. */
 const CODES: ReadonlyMap<string, Stage> = new Map([
@@ -70,7 +76,7 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
   ['inventory count scan', null],
   ['your order has been delivered successfully', 'delivered'],
   ['your package was received', 'delivered'],
-  ['order delivery failed, returning to sender', 'returned'],
+  ['order delivery failed, returning to sender', 'exception'],
   ['shipment returned to origin', 'returned'],
   ['return signature', 'returned'],
 ]);
@@ -95,18 +101,27 @@ export function imilePhrase(wording: string): string {
 /** Drivers' reasons iMile also gives a parcel held up before its delivery run. */
 const DELAYS: ReadonlySet<string> = new Set(['traffic, strike, bad weather']);
 
+// The name a stored wording shows before the sentence ("BOG: Clearance start."), which iMile writes in 【】.
+const HEADING = /^[^:]{1,120}: (?=\S)/;
+
 /** What iMile's own sentences say: a stage, null for a scan that moves nothing, undefined for a sentence they do not know. */
 function phraseStage(code: string, wording: string): Stage | null | undefined {
+  const read = (phrase: string) => {
+    if (DELAYS.has(phrase) && code !== DELIVERY) return 'in_transit';
+    if (PHRASES.has(phrase)) return PHRASES.get(phrase)!;
+    return OPENINGS.find(([opening]) => opening.test(phrase))?.[1];
+  };
   const phrase = imilePhrase(wording);
-  if (DELAYS.has(phrase) && code !== DELIVERY) return 'in_transit';
-  if (PHRASES.has(phrase)) return PHRASES.get(phrase)!;
-  return OPENINGS.find(([opening]) => opening.test(phrase))?.[1];
+  const stage = read(phrase);
+  const heading = stage === undefined ? HEADING.exec(phrase) : null;
+  return heading ? read(phrase.slice(heading[0].length)) : stage;
 }
 
 /** The stage iMile's code and sentences give a scan, null for one that moves nothing, undefined when neither decides. */
 export function imileMappedStage(code: string, wording: string): Stage | null | undefined {
   const phrase = phraseStage(code, wording);
   if (phrase === null) return null;
+  if (code === RETURNING) return phrase === 'returned' ? phrase : 'exception';
   return DECISIVE.get(code) ?? phrase ?? CODES.get(code);
 }
 

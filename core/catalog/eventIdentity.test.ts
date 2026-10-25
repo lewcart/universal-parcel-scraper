@@ -413,6 +413,12 @@ describe('same-instant identity policies', () => {
     const stored = { stage: 'in_transit', description: 'Departed from sorting center', location: 'Example Hub', providerCode: 'SC_OUTBOUND_SUCCESS' };
     expect(policy?.matches?.({ ...stored, description: ' departed from  sorting center' }, stored)).toBe(true);
     expect(policy?.matches?.({ ...stored, providerCode: 'OTHER' }, stored)).toBe(false);
+    // A row stored with iMile's brackets keeps its row once worded without them.
+    const bracketed = { stage: 'in_transit', description: '【Example Hub】Arrived.', location: 'Example Hub', providerCode: '1002' };
+    expect(policy?.matches?.({ ...bracketed, description: 'Arrived.' }, bracketed)).toBe(true);
+    const away = { ...bracketed, description: '【<EXA>】 Clearance start.', location: '' };
+    expect(policy?.matches?.({ ...away, description: 'EXA: Clearance start.' }, away)).toBe(true);
+    expect(policy?.matches?.({ ...away, description: 'Clearance start.' }, away)).toBe(false);
   });
 
   it('lets a DHLink node stored with its row’s clock in its wording keep its row once worded without it', () => {

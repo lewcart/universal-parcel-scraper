@@ -1,7 +1,9 @@
 import type { SameInstantIdentityPolicy, SameInstantScan } from '../../core/catalog/eventIdentity.js';
 import { replacesCainiaoPlaceholder } from '../aliexpress/app.js';
+import { imileDisplayWording } from './wording.js';
 
-const wording = (scan: SameInstantScan) => scan.description.replace(/\s+/g, ' ').trim().toLowerCase();
+// A row stored with iMile's brackets in its wording is the scan shown without them.
+const wording = (scan: SameInstantScan) => imileDisplayWording(scan.description, scan.location).replace(/\s+/g, ' ').trim().toLowerCase();
 
 /** One scan read twice: the same wording and place, and codes that agree when both carry one. */
 function sameScan(incoming: SameInstantScan, stored: SameInstantScan): boolean {

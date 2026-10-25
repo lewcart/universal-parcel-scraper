@@ -58,9 +58,13 @@ makes, with the China leg Cainiao's global tracker holds under the same number.
   clock. A recipient country with one zone places every scan as an instant. Australia, Brazil,
   Mexico and the United States span several zones and the reply does not say which, so their
   clocks stay `local_time`.
-- A scan's description is its own sentence, with the centre names in 【】 that the page shows.
-  The `trackStage` code stages it: Delivered (`2060`), Return Handling Process (`1008`) and
-  Returned to Client (`2065`) decide whatever the sentence says. In Transit (`1002`) and
+- A scan's description is its own sentence without the brackets the page shows. A name in 【】
+  opening a scan is its centre, which the location shows, or else heads the sentence ("BOG:
+  Clearance start."); the other names, and the reasons and dates in <>, keep their words.
+  The `trackStage` code stages it: Delivered (`2060`) and Returned to Client (`2065`) decide
+  whatever the sentence says. Return Handling Process (`1008`) is the way back, centres and
+  drivers' reasons included, so it reads as a problem until a sentence says the sender has the
+  parcel. In Transit (`1002`) and
   Delivery (`1003`) cover flights, clearance, centres, delivery runs and drivers' reasons, which
   the sentence tells apart. A booked flight, a booked delivery day and a stock count move
   nothing. Some scans come without a code. "Traffic, Strike, Bad weather" is a failed attempt on a

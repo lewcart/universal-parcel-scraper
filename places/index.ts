@@ -760,13 +760,14 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
     const county = countyIn(data, fieldPhrases[best.field] ?? [], best, carriers);
     const found = county ?? { place: best.place, text: (best.place.alternate && ownWords.get(townId(best.place))) || best.text };
     const atFound = found.place.hub ? null : airportFor(data, rest, fields[best.field] ?? rest, found.place, found.text, country);
-    // A smaller town that ends the part of the text a city begins, close to it, is the carrier's site
-    // there: "TORINO MONCALIERI" is a depot in Moncalieri. An airport the text names comes first. A
-    // hyphen makes the two one name, a quarter of the city: "Zürich-Mülligen" is in Zürich.
+    // A smaller town in the same region that ends the part of the text a city begins, close to it, is
+    // the carrier's site there: "TORINO MONCALIERI" is a depot in Moncalieri. An airport the text names
+    // comes first. A hyphen makes the two one name, a quarter of the city: "Zürich-Mülligen" is in
+    // Zürich, and so is "ZUERICH MUELLIGEN", as Mülligen the town lies across a regional border.
     const first = fieldTokens[best.field]![0];
     const suburb = county || atFound || found.place.hub || best.start !== first?.start ? undefined : scored
       .filter((other) => other.field === best.field && other.start >= best.end && other.place.country === best.place.country
-        && !fields[best.field]!.slice(best.end, other.start).includes('-')
+        && other.place.admin1 === best.place.admin1 && !fields[best.field]!.slice(best.end, other.start).includes('-')
         && !other.place.hub && other.place.thousands < best.place.thousands
         && fieldTokens[best.field]!.every((token) => token.end <= other.end || !/\p{L}/u.test(token.key))
         && distanceKm(best.place.latitude, best.place.longitude, other.place.latitude, other.place.longitude) <= SUBURB_MAX_KM)

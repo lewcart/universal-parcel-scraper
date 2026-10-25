@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, CEVA_SHIPMENTS, CevaLogisticsTracker } from './adapter.js';
 import { normalizeCevaLogisticsNumber, parseCevaLogisticsDetails, parseCevaLogisticsSearch } from './parser.js';
@@ -262,19 +263,14 @@ describe('CEVA Logistics HTTP adapter', () => {
   });
 
   it('retries a hanging attempt once inside the budget', async () => {
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await spent;
-      // Half of the budget, then the retry until it ends.
-      expect(ended).toEqual([60, 120]);
-      expect(fetcher).toHaveBeenCalledTimes(2);
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await spent;
+    // Half of the budget, then the retry until it ends.
+    expect(ended).toEqual([60, 120]);
+    expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
   it('routes a number filed under CEVA Logistics to the adapter', async () => {

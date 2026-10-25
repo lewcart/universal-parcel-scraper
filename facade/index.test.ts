@@ -9,6 +9,7 @@ import { resolveResult } from '../core/result/resolve.js';
 import { NOOP_RECORDER } from '../core/telemetry/index.js';
 import { DEFAULT_USER_AGENT } from '../core/transport/userAgent.js';
 import type { UniversalSource } from '../providers/types.js';
+import { fakeBudgetClock } from '../testing/budgetClock.js';
 import { createTracker, TrackingError } from './index.js';
 
 // UPS and Royal Mail stand in for any carrier with an adapter, Ship24 for any provider. Their
@@ -254,28 +255,18 @@ describe('standalone tracker', () => {
   });
 
   it('tracks with the carrier that answered once recognition has waited long enough for the others', async () => {
-    vi.useFakeTimers();
     // Put the budget signals on the same faked clock as the recognition deadline.
-    vi.spyOn(AbortSignal, 'timeout').mockImplementation((ms) => {
-      const controller = new AbortController();
-      setTimeout(() => { controller.abort(new DOMException('The operation timed out', 'TimeoutError')); }, ms);
-      return controller.signal;
-    });
-    try {
-      const lookup = vi.fn().mockResolvedValue({ status: 'delivered', events: [
-        { time: '2026-01-02T12:00:00Z', description: 'Delivered', stage: 'delivered' },
-      ] });
-      const tracker = createTracker({ providers: [], registry: recognizers({
-        dpd: async () => ({ known: true }), seur: hung, brt: async () => ({ known: false }), ciblex: async () => ({ known: false }),
-      }, lookup) });
-      const pending = tracker.track({ number: ambiguous });
-      await vi.advanceTimersByTimeAsync(10_000);
-      await expect(pending).resolves.toMatchObject({ carrier: 'dpd', source: 'dpd', attempts: [{ source: 'dpd', kind: 'ok' }] });
-      expect(lookup).toHaveBeenCalledOnce();
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const lookup = vi.fn().mockResolvedValue({ status: 'delivered', events: [
+      { time: '2026-01-02T12:00:00Z', description: 'Delivered', stage: 'delivered' },
+    ] });
+    const tracker = createTracker({ providers: [], registry: recognizers({
+      dpd: async () => ({ known: true }), seur: hung, brt: async () => ({ known: false }), ciblex: async () => ({ known: false }),
+    }, lookup) });
+    const pending = tracker.track({ number: ambiguous });
+    await vi.advanceTimersByTimeAsync(10_000);
+    await expect(pending).resolves.toMatchObject({ carrier: 'dpd', source: 'dpd', attempts: [{ source: 'dpd', kind: 'ok' }] });
+    expect(lookup).toHaveBeenCalledOnce();
   });
 
   it('rejects a recognition the caller cancels, and reports a budget spent on it as a tracking failure', async () => {

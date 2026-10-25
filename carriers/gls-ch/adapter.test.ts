@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import type { JsonObject } from '../../core/types.js';
 import {
   GLSSwitzerlandTracker,
@@ -331,17 +332,13 @@ describe('GLS Switzerland tracker', () => {
   });
 
   it('sends a request that hangs once more, inside the budget', async () => {
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 300, reply: () => Response.json(deliveredOverviewFixture()) }]);
-      const lookup = new GLSSwitzerlandTracker({ fetcher, now: () => FIXED_MILLIS }).fetch(OFFICIAL_TEST_PARCEL_NUMBER);
-      await vi.advanceTimersByTimeAsync(15_300);
-      await expect(lookup).resolves.toMatchObject({ status: 'delivered' });
-      // Half of the 30-second default budget, then the retry within the rest.
-      expect(ended).toEqual([15_000, 15_300]);
-    } finally {
-      vi.useRealTimers();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 300, reply: () => Response.json(deliveredOverviewFixture()) }]);
+    const lookup = new GLSSwitzerlandTracker({ fetcher, now: () => FIXED_MILLIS }).fetch(OFFICIAL_TEST_PARCEL_NUMBER);
+    await vi.advanceTimersByTimeAsync(15_300);
+    await expect(lookup).resolves.toMatchObject({ status: 'delivered' });
+    // Half of the 30-second default budget, then the retry within the rest.
+    expect(ended).toEqual([15_000, 15_300]);
   });
 
   it.each([

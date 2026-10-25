@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TrawlClient } from '../../core/transport/index.js';
 import { carrierErrorKind, IndeterminateError, InputRequiredError, NoHistoryError } from '../../core/errors/index.js';
 import type { LookupRecord, StepRecord, StepRecorder } from '../../core/telemetry/index.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { ParcelsAppTracker, parseParcelsAppHtml, parseParcelsAppResponse } from './adapter.js';
 
 const number = 'ZZ12345678900';
@@ -2369,22 +2370,12 @@ describe('ParcelsApp direct lookup', () => {
 
 describe('ParcelsApp slow lookup recovery', () => {
   beforeEach(() => {
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'performance'] });
+    fakeBudgetClock();
     // The ESM promise timer retains Node's clock in this Vitest environment.
     vi.spyOn(timers, 'setTimeout').mockImplementation(<T>(ms = 1, value?: T) =>
       new Promise<T>((resolve) => { setTimeout(() => resolve(value as T), ms); }));
-    // Node's native AbortSignal timer is not driven by fake timers. Keep its
-    // abort behavior while exercising the real bounded HTTP client below.
-    vi.spyOn(AbortSignal, 'timeout').mockImplementation((ms) => {
-      const controller = new AbortController();
-      setTimeout(() => controller.abort(new DOMException('Timed out', 'TimeoutError')), ms);
-      return controller.signal;
-    });
   });
-  afterEach(() => {
-    vi.useRealTimers();
-    vi.restoreAllMocks();
-  });
+  afterEach(() => vi.restoreAllMocks());
 
   function timedFetch(replies: { afterMs: number; payload?: unknown; failure?: Error }[]) {
     let attempt = 0;

@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, MONGOL_INFINITY_POST_CUSTOMS_API, MONGOL_INFINITY_POST_SEARCH_API, MongolInfinityPostTracker } from './adapter.js';
 import {
@@ -233,19 +234,14 @@ describe('Mongol Infinity Post HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(80);
-      await spent;
-      expect(fetcher).toHaveBeenCalledTimes(2);
-      // Half of the budget, then the retry until it ends.
-      expect(ended).toEqual([40, 80]);
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(80);
+    await spent;
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    // Half of the budget, then the retry until it ends.
+    expect(ended).toEqual([40, 80]);
   });
 
   it('routes a number filed under Mongol Infinity Post to the adapter', async () => {

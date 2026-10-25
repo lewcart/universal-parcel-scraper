@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { sameInstantIdentityPolicy } from '../../app.js';
 import type { StepRecord, StepRecorder } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import {
   DPDFranceChallengeError,
@@ -417,25 +418,21 @@ describe('DPD France transport tiers', () => {
   });
 
   it('retries a GET that hangs once, inside the budget, but not an unknown parcel', async () => {
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 300, reply: () => new Response(trackingFixture()) }]);
-      const { recorder, steps } = recordingRecorder();
-      const lookup = new DPDFranceTracker({ fetcher, trawl: null, recorder }).fetch(TEST_TRACKING_NUMBER, { budgetMs: 30_000 });
-      await vi.advanceTimersByTimeAsync(15_300);
-      await expect(lookup).resolves.toMatchObject({ status: 'exception' });
-      expect(ended).toEqual([15_000, 15_300]);
-      expect(steps.map((step) => [step.step, step.outcome])).toEqual([['direct', 'transport'], ['retry', 'ok']]);
-      const unknown = delayedFetcher([{ afterMs: 10,
-        reply: () => new Response('<p>Nous ne sommes pas en mesure de retrouver le numéro de colis recherché.</p>') }]);
-      const missing = expect(new DPDFranceTracker({ fetcher: unknown.fetcher, trawl: null }).fetch(TEST_TRACKING_NUMBER))
-        .rejects.toBeInstanceOf(DPDFranceTrackingError);
-      await vi.advanceTimersByTimeAsync(10);
-      await missing;
-      expect(unknown.fetcher).toHaveBeenCalledOnce();
-    } finally {
-      vi.useRealTimers();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 300, reply: () => new Response(trackingFixture()) }]);
+    const { recorder, steps } = recordingRecorder();
+    const lookup = new DPDFranceTracker({ fetcher, trawl: null, recorder }).fetch(TEST_TRACKING_NUMBER, { budgetMs: 30_000 });
+    await vi.advanceTimersByTimeAsync(15_300);
+    await expect(lookup).resolves.toMatchObject({ status: 'exception' });
+    expect(ended).toEqual([15_000, 15_300]);
+    expect(steps.map((step) => [step.step, step.outcome])).toEqual([['direct', 'transport'], ['retry', 'ok']]);
+    const unknown = delayedFetcher([{ afterMs: 10,
+      reply: () => new Response('<p>Nous ne sommes pas en mesure de retrouver le numéro de colis recherché.</p>') }]);
+    const missing = expect(new DPDFranceTracker({ fetcher: unknown.fetcher, trawl: null }).fetch(TEST_TRACKING_NUMBER))
+      .rejects.toBeInstanceOf(DPDFranceTrackingError);
+    await vi.advanceTimersByTimeAsync(10);
+    await missing;
+    expect(unknown.fetcher).toHaveBeenCalledOnce();
   });
 
   it('surfaces an actionable error when no browser solver is configured', async () => {

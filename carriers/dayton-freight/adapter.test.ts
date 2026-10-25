@@ -5,7 +5,8 @@ import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, DAYTON_API, daytonLookupUrl, DaytonTracker } from './adapter.js';
 import { normalizeDaytonNumber, parseDayton, printedPro } from './parser.js';
@@ -276,26 +277,21 @@ describe('Dayton Freight HTTP adapter', () => {
   });
 
   it('tries a read that hangs once more, and ends inside the budget', async () => {
-    useRequestClock();
-    try {
-      const recovered = delayedFetcher([{ afterMs: Infinity }, { afterMs: 50, reply: () => reply(fixture('in-transit')) }]);
-      const answered = carrier(recovered.fetcher).track({ number: IN_TRANSIT }, { budgetMs: 400 });
-      await vi.advanceTimersByTimeAsync(250);
-      await expect(answered).resolves.toMatchObject({ current_stage: 'in_transit' });
-      expect(recovered.fetcher).toHaveBeenCalledTimes(2);
-      // Half of the budget, then the retry within the rest.
-      expect(recovered.ended).toEqual([200, 250]);
-      const started = performance.now();
-      const hanging = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(carrier(hanging.fetcher).track({ number: IN_TRANSIT }, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await spent;
-      expect(hanging.fetcher).toHaveBeenCalledTimes(2);
-      expect(hanging.ended.map((at) => at - started)).toEqual([60, 120]);
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const recovered = delayedFetcher([{ afterMs: Infinity }, { afterMs: 50, reply: () => reply(fixture('in-transit')) }]);
+    const answered = carrier(recovered.fetcher).track({ number: IN_TRANSIT }, { budgetMs: 400 });
+    await vi.advanceTimersByTimeAsync(250);
+    await expect(answered).resolves.toMatchObject({ current_stage: 'in_transit' });
+    expect(recovered.fetcher).toHaveBeenCalledTimes(2);
+    // Half of the budget, then the retry within the rest.
+    expect(recovered.ended).toEqual([200, 250]);
+    const started = performance.now();
+    const hanging = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(carrier(hanging.fetcher).track({ number: IN_TRANSIT }, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await spent;
+    expect(hanging.fetcher).toHaveBeenCalledTimes(2);
+    expect(hanging.ended.map((at) => at - started)).toEqual([60, 120]);
   });
 
   it('routes a PRO the caller names Dayton Freight’s to the adapter', async () => {

@@ -3,7 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../app.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { adapter, EcoscootingTracker } from './adapter.js';
 import { normalizeEcoscootingNumber, parseEcoscooting } from './parser.js';
 import { ecoscootingStatus } from './status.js';
@@ -355,18 +356,13 @@ describe('Ecoscooting direct retrieval', () => {
       .mockResolvedValueOnce(new Response(JSON.stringify(fixture())));
     await expect(new EcoscootingTracker({ fetcher: dropped }).fetch(NUMBER)).resolves.toMatchObject({ status: 'delivered' });
     expect(dropped).toHaveBeenCalledTimes(2);
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(new EcoscootingTracker({ fetcher }).fetch(NUMBER, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await spent;
-      // Half of the budget, then the retry until it ends.
-      expect(ended).toEqual([60, 120]);
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(new EcoscootingTracker({ fetcher }).fetch(NUMBER, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await spent;
+    // Half of the budget, then the retry until it ends.
+    expect(ended).toEqual([60, 120]);
   });
   it.each([[404, 'transport'], [410, 'transport'], [403, 'challenge'], [429, 'rate_limited'], [503, 'maintenance']])('keeps HTTP %s distinct from parcel absence', async (status, kind) => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response('Failure', { status: Number(status) }));

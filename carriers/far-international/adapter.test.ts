@@ -5,7 +5,8 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NoHistoryError } from '../../core/errors/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, FAR_PAGE, FAR_RESULT, farResultUrl, FarTracker } from './adapter.js';
 import { normalizeFarNumber, parseFar } from './parser.js';
@@ -202,25 +203,20 @@ describe('FAR International HTTP adapter', () => {
   });
 
   it('sends a read that fails to connect or hangs once more inside the budget', async () => {
-    useRequestClock();
-    try {
-      const flaky = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(html(page('delivered')));
-      await expect(carrier(flaky).track({ number: PARCEL })).resolves.toMatchObject({ current_stage: 'delivered' });
-      expect(flaky).toHaveBeenCalledTimes(2);
-      const started = performance.now();
-      const slow = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(carrier(slow.fetcher).track({ number: PARCEL }, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await spent;
-      expect(slow.fetcher).toHaveBeenCalledTimes(2);
-      // Half of the budget, then the retry until it ends.
-      expect(slow.ended.map((at) => at - started)).toEqual([60, 120]);
-      const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(1024 * 1024 + 1)));
-      await expect(carrier(large).track({ number: PARCEL })).rejects.toThrow('unexpectedly large');
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const flaky = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(html(page('delivered')));
+    await expect(carrier(flaky).track({ number: PARCEL })).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(flaky).toHaveBeenCalledTimes(2);
+    const started = performance.now();
+    const slow = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(carrier(slow.fetcher).track({ number: PARCEL }, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await spent;
+    expect(slow.fetcher).toHaveBeenCalledTimes(2);
+    // Half of the budget, then the retry until it ends.
+    expect(slow.ended.map((at) => at - started)).toEqual([60, 120]);
+    const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(1024 * 1024 + 1)));
+    await expect(carrier(large).track({ number: PARCEL })).rejects.toThrow('unexpectedly large');
   });
 
   it('answers a number detection names FAR International for', async () => {

@@ -1,19 +1,9 @@
 /**
- * Test helpers for a request that hangs: fake timers that also drive the timeouts `fetchBounded`
- * takes from `AbortSignal.timeout`, and a fetcher whose replies arrive after a delay, or never,
- * each request ending with its signal as a real one does.
+ * Test helper for a request that hangs: a fetcher whose replies arrive after a delay, or never,
+ * each request ending with its signal as a real one does. `fakeBudgetClock` in `testing/budgetClock.ts`
+ * drives the delays.
  */
 import { vi } from 'vitest';
-
-/** Fakes the clocks a lookup reads. Node's own timer behind `AbortSignal.timeout` follows them. */
-export function useRequestClock(): void {
-  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'performance', 'Date'] });
-  vi.spyOn(AbortSignal, 'timeout').mockImplementation((ms) => {
-    const controller = new AbortController();
-    setTimeout(() => controller.abort(new DOMException('The operation was aborted due to timeout', 'TimeoutError')), ms);
-    return controller.signal;
-  });
-}
 
 export interface DelayedReply {
   /** When the reply comes; `Infinity` for a request that hangs until its signal ends it. */

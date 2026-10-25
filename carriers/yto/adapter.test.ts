@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, YtoTracker } from './adapter.js';
 import { normalizeYtoNumber, parseYto } from './parser.js';
@@ -188,18 +189,13 @@ describe('YTO domestic retrieval', () => {
   });
 
   it('gives a hanging first read half of the budget and the retry the rest', async () => {
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const lookup = expect(new YtoTracker({ fetcher }).fetch(NUMBER, { budgetMs: 2000 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(2000);
-      await lookup;
-      expect(fetcher).toHaveBeenCalledTimes(2);
-      expect(ended).toEqual([1000, 2000]);
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const lookup = expect(new YtoTracker({ fetcher }).fetch(NUMBER, { budgetMs: 2000 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(2000);
+    await lookup;
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(ended).toEqual([1000, 2000]);
   });
 
   it('propagates cancellation, fractional deadlines and streaming limits', async () => {

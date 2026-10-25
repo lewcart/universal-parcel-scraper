@@ -5,7 +5,8 @@ import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { ACI_EXPRESS_KR_COURIER, ACI_EXPRESS_KR_TRACKER, aciExpressKrCourierUrl, aciExpressKrTrackerUrl, AciExpressKrTracker, adapter } from './adapter.js';
 import { normalizeAciExpressKrNumber, parseAciExpressKr } from './parser.js';
@@ -237,35 +238,30 @@ describe('ACI Express HTTP adapter', () => {
   });
 
   it('tries a read that hangs once more, and ends inside the budget', async () => {
-    useRequestClock();
-    try {
-      const recovered = delayedFetcher([{ afterMs: Infinity }, { afterMs: 50, reply: () => reply(fixture('in-transit')) }]);
-      const answered = carrier(recovered.fetcher).track({ number: IN_TRANSIT }, { budgetMs: 400 });
-      await vi.advanceTimersByTimeAsync(250);
-      await expect(answered).resolves.toMatchObject({ current_stage: 'in_transit' });
-      expect(recovered.fetcher).toHaveBeenCalledTimes(2);
-      // Half of the budget, then the retry within the rest.
-      expect(recovered.ended).toEqual([200, 250]);
-      let started = performance.now();
-      const hanging = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(carrier(hanging.fetcher).track({ number: UNKNOWN }, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await spent;
-      expect(hanging.fetcher).toHaveBeenCalledTimes(2);
-      expect(hanging.ended.map((at) => at - started)).toEqual([60, 120]);
-      // A courier lookup that hangs after the tracking page's miss spends the same budget.
-      started = performance.now();
-      const missed = { afterMs: 10, reply: () => reply(fixture('not-found')) };
-      const slow = delayedFetcher([missed, { afterMs: Infinity }, missed, { afterMs: Infinity }]);
-      const courier = expect(carrier(slow.fetcher).track({ number: UNKNOWN }, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await courier;
-      expect(slow.fetcher.mock.calls.map(([url]) => String(url).startsWith(ACI_EXPRESS_KR_COURIER))).toEqual([false, true, false, true]);
-      expect(slow.ended.map((at) => at - started)).toEqual([10, 60, 70, 120]);
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const recovered = delayedFetcher([{ afterMs: Infinity }, { afterMs: 50, reply: () => reply(fixture('in-transit')) }]);
+    const answered = carrier(recovered.fetcher).track({ number: IN_TRANSIT }, { budgetMs: 400 });
+    await vi.advanceTimersByTimeAsync(250);
+    await expect(answered).resolves.toMatchObject({ current_stage: 'in_transit' });
+    expect(recovered.fetcher).toHaveBeenCalledTimes(2);
+    // Half of the budget, then the retry within the rest.
+    expect(recovered.ended).toEqual([200, 250]);
+    let started = performance.now();
+    const hanging = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(carrier(hanging.fetcher).track({ number: UNKNOWN }, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await spent;
+    expect(hanging.fetcher).toHaveBeenCalledTimes(2);
+    expect(hanging.ended.map((at) => at - started)).toEqual([60, 120]);
+    // A courier lookup that hangs after the tracking page's miss spends the same budget.
+    started = performance.now();
+    const missed = { afterMs: 10, reply: () => reply(fixture('not-found')) };
+    const slow = delayedFetcher([missed, { afterMs: Infinity }, missed, { afterMs: Infinity }]);
+    const courier = expect(carrier(slow.fetcher).track({ number: UNKNOWN }, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await courier;
+    expect(slow.fetcher.mock.calls.map(([url]) => String(url).startsWith(ACI_EXPRESS_KR_COURIER))).toEqual([false, true, false, true]);
+    expect(slow.ended.map((at) => at - started)).toEqual([10, 60, 70, 120]);
   });
 
   it('routes a number asked of ACI Express to the adapter', async () => {

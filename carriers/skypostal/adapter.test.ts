@@ -4,7 +4,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, openSkypostalText, SKYPOSTAL_API, SkypostalTracker, sealSkypostalText, skypostalRequest } from './adapter.js';
 import { normalizeSkypostalNumber, readSkypostal, skypostalSummaryNames } from './parser.js';
@@ -256,28 +257,23 @@ describe('SkyPostal sealed lookup', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }]);
-      let requested!: () => void;
-      const sent = new Promise<void>((resolve) => { requested = resolve; });
-      const lookup = expect(carrier((input, init) => { requested(); return fetcher(input, init); })
-        .track({ number: IN_TRANSIT }, { budgetMs: 200 })).rejects.toThrow();
-      // Sealing takes real time but none on the faked clock.
-      await sent;
-      await vi.advanceTimersByTimeAsync(200);
-      await lookup;
-      expect(fetcher).toHaveBeenCalledOnce();
-      expect(ended).toEqual([200]);
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }]);
+    let requested!: () => void;
+    const sent = new Promise<void>((resolve) => { requested = resolve; });
+    const lookup = expect(carrier((input, init) => { requested(); return fetcher(input, init); })
+      .track({ number: IN_TRANSIT }, { budgetMs: 200 })).rejects.toThrow();
+    // Sealing takes real time but none on the faked clock.
+    await sent;
+    await vi.advanceTimersByTimeAsync(200);
+    await lookup;
+    expect(fetcher).toHaveBeenCalledOnce();
+    expect(ended).toEqual([200]);
   });
 
   it('stops waiting for a key it derives once the lookup ends', async () => {
     const reply = await sealed(fixture('delivered'));
-    useRequestClock();
+    fakeBudgetClock();
     try {
       const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply);
       derivation.allowed = 0;
@@ -298,8 +294,6 @@ describe('SkyPostal sealed lookup', () => {
       expect(fetcher).toHaveBeenCalledOnce();
     } finally {
       derivation.allowed = Infinity;
-      vi.useRealTimers();
-      vi.restoreAllMocks();
     }
   });
 

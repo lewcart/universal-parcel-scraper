@@ -4,7 +4,8 @@ import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NoHistoryError } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, SHOUWU_API, SHOUWU_PAGE, ShouwuTracker } from './adapter.js';
 import { normalizeShouwuNumber, parseShouwu } from './parser.js';
@@ -238,25 +239,20 @@ describe('Shouwu International HTTP adapter', () => {
   });
 
   it('sends a read that fails to connect or hangs once more inside the budget', async () => {
-    useRequestClock();
-    try {
-      const flaky = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(reply(text('delivered')));
-      await expect(carrier(flaky).track({ number: DELIVERED })).resolves.toMatchObject({ current_stage: 'delivered' });
-      expect(flaky).toHaveBeenCalledTimes(2);
-      const started = performance.now();
-      const slow = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(carrier(slow.fetcher).track({ number: DELIVERED }, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await spent;
-      expect(slow.fetcher).toHaveBeenCalledTimes(2);
-      // Half of the budget, then the retry until it ends.
-      expect(slow.ended.map((at) => at - started)).toEqual([60, 120]);
-      const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(256 * 1024 + 1)));
-      await expect(carrier(large).track({ number: DELIVERED })).rejects.toThrow('unexpectedly large');
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const flaky = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(reply(text('delivered')));
+    await expect(carrier(flaky).track({ number: DELIVERED })).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(flaky).toHaveBeenCalledTimes(2);
+    const started = performance.now();
+    const slow = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(carrier(slow.fetcher).track({ number: DELIVERED }, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await spent;
+    expect(slow.fetcher).toHaveBeenCalledTimes(2);
+    // Half of the budget, then the retry until it ends.
+    expect(slow.ended.map((at) => at - started)).toEqual([60, 120]);
+    const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(256 * 1024 + 1)));
+    await expect(carrier(large).track({ number: DELIVERED })).rejects.toThrow('unexpectedly large');
   });
 
   it('recognizes a number the tracker knows, and not one it does not know or Shouwu does not issue', async () => {

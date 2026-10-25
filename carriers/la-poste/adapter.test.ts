@@ -3,7 +3,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { UpstreamHttpError } from '../../core/errors/index.js';
 import type { StepRecord, StepRecorder } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import {
   LaPosteTracker,
   adapter,
@@ -353,10 +354,8 @@ describe('La Poste transient 403 recovery', () => {
 });
 
 describe('La Poste network failure recovery', () => {
-  afterEach(() => vi.useRealTimers());
-
   it('retries a request that hangs once, inside the original budget', async () => {
-    useRequestClock();
+    fakeBudgetClock();
     const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 400, reply: () => Response.json(deliveredFixture()) }]);
     const { recorder, steps } = recordingRecorder();
     const lookup = new LaPosteTracker({ fetcher, recorder }).fetch(TRACKING_NUMBER);
@@ -368,7 +367,7 @@ describe('La Poste network failure recovery', () => {
   });
 
   it('retries a network failure once, then leaves it to the router', async () => {
-    useRequestClock();
+    fakeBudgetClock();
     const { fetcher } = delayedFetcher([
       { afterMs: 10, failure: new TypeError('fetch failed') }, { afterMs: 10, failure: new TypeError('fetch failed') },
     ]);

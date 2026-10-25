@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { SchemaError } from '../../core/errors/index.js';
 import {
   GLSFranceTracker,
@@ -517,23 +518,19 @@ describe('GLS France response normalization', () => {
   });
 
   it('retries a request that hangs once, inside the budget, but not a not-found', async () => {
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 300, reply: () => Response.json(deliveredFixture()) }]);
-      const lookup = new GLSFranceTracker({ fetcher }).fetch(TRACKING_NUMBER);
-      await vi.advanceTimersByTimeAsync(12_300);
-      await expect(lookup).resolves.toMatchObject({ status: 'delivered' });
-      // Half of the 24-second default budget, then the retry within the rest.
-      expect(ended).toEqual([12_000, 12_300]);
-      const wrongNumber = '00ZZ00Z0';
-      const missing = delayedFetcher([{ afterMs: 10, reply: () => new Response(`404 No command found for code: ${wrongNumber}`, { status: 404 }) }]);
-      const unknown = expect(new GLSFranceTracker({ fetcher: missing.fetcher }).fetch(wrongNumber)).rejects.toMatchObject({ kind: 'not_found' });
-      await vi.advanceTimersByTimeAsync(10);
-      await unknown;
-      expect(missing.fetcher).toHaveBeenCalledOnce();
-    } finally {
-      vi.useRealTimers();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 300, reply: () => Response.json(deliveredFixture()) }]);
+    const lookup = new GLSFranceTracker({ fetcher }).fetch(TRACKING_NUMBER);
+    await vi.advanceTimersByTimeAsync(12_300);
+    await expect(lookup).resolves.toMatchObject({ status: 'delivered' });
+    // Half of the 24-second default budget, then the retry within the rest.
+    expect(ended).toEqual([12_000, 12_300]);
+    const wrongNumber = '00ZZ00Z0';
+    const missing = delayedFetcher([{ afterMs: 10, reply: () => new Response(`404 No command found for code: ${wrongNumber}`, { status: 404 }) }]);
+    const unknown = expect(new GLSFranceTracker({ fetcher: missing.fetcher }).fetch(wrongNumber)).rejects.toMatchObject({ kind: 'not_found' });
+    await vi.advanceTimersByTimeAsync(10);
+    await unknown;
+    expect(missing.fetcher).toHaveBeenCalledOnce();
   });
 
   it('enforces the adapter response-size limit', async () => {

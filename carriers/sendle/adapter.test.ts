@@ -4,7 +4,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { NoHistoryError } from '../../core/errors/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { adapter, SENDLE_API, SENDLE_CHALLENGE, SENDLE_LOOKUP, sendleProofHolds, SendleTracker, solveSendleChallenge } from './adapter.js';
 import { normalizeSendleNumber, parseSendle, parseSendleChallenge } from './parser.js';
 import { sendleCategoryStage, sendleStage, statusMap } from './status.js';
@@ -231,26 +232,21 @@ describe('Sendle HTTP adapter', () => {
   });
 
   it('starts over with a new challenge when a call fails to connect or hangs, inside the budget', async () => {
-    useRequestClock();
-    try {
-      const flaky = service(() => reply(text('booked')));
-      flaky.mockRejectedValueOnce(new TypeError('fetch failed'));
-      await expect(carrier(flaky).track({ number: BOOKED })).resolves.toMatchObject({ current_stage: 'registered' });
-      expect(flaky.mock.calls.map(([url]) => String(url).slice(SENDLE_API.length))).toEqual(['/api/mutation', '/api/mutation', '/api/action']);
-      const started = performance.now();
-      const slow = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(carrier(slow.fetcher).track({ number: BOOKED }, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await spent;
-      expect(slow.fetcher).toHaveBeenCalledTimes(2);
-      // Half of the budget, then the retry until it ends.
-      expect(slow.ended.map((at) => at - started)).toEqual([60, 120]);
-      const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(256 * 1024 + 1)));
-      await expect(carrier(large).track({ number: BOOKED })).rejects.toThrow('unexpectedly large');
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const flaky = service(() => reply(text('booked')));
+    flaky.mockRejectedValueOnce(new TypeError('fetch failed'));
+    await expect(carrier(flaky).track({ number: BOOKED })).resolves.toMatchObject({ current_stage: 'registered' });
+    expect(flaky.mock.calls.map(([url]) => String(url).slice(SENDLE_API.length))).toEqual(['/api/mutation', '/api/mutation', '/api/action']);
+    const started = performance.now();
+    const slow = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(carrier(slow.fetcher).track({ number: BOOKED }, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await spent;
+    expect(slow.fetcher).toHaveBeenCalledTimes(2);
+    // Half of the budget, then the retry until it ends.
+    expect(slow.ended.map((at) => at - started)).toEqual([60, 120]);
+    const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(256 * 1024 + 1)));
+    await expect(carrier(large).track({ number: BOOKED })).rejects.toThrow('unexpectedly large');
   });
 
   it('answers a challenge as the page does, and stops when the lookup ends or its time runs out', async () => {

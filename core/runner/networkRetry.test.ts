@@ -1,15 +1,11 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { lookupBudget } from '../adapter/index.js';
 import { NotFoundError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../errors/index.js';
-import { delayedFetcher, useRequestClock } from '../testing/hang.js';
+import { delayedFetcher } from '../testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { fetchBounded } from '../transport/index.js';
 import { runSteps } from './index.js';
 import { firstAttemptMs, isNetworkFailure, networkRetryStep, withNetworkRetry } from './networkRetry.js';
-
-afterEach(() => {
-  vi.useRealTimers();
-  vi.restoreAllMocks();
-});
 
 const read = (fetcher: typeof fetch, signal: AbortSignal, timeoutMs: number) =>
   fetchBounded('https://carrier.test/track', { signal }, { provider: 'Carrier', timeoutMs, fetcher });
@@ -26,7 +22,7 @@ describe('one network retry inside the budget', () => {
   });
 
   it('gives a request that hangs half the budget, and the retry the rest', async () => {
-    useRequestClock();
+    fakeBudgetClock();
     const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 400, reply: () => new Response('ok') }]);
     const budget = lookupBudget({}, 15_000);
     const answer = withNetworkRetry(budget, timeoutMs => read(fetcher, budget.signal, timeoutMs));
@@ -36,7 +32,7 @@ describe('one network retry inside the budget', () => {
   });
 
   it('retries once, and never an answer or a lookup that ended', async () => {
-    useRequestClock();
+    fakeBudgetClock();
     const twice = delayedFetcher([{ afterMs: 10, failure: new TypeError('reset') }, { afterMs: 10, failure: new TypeError('reset') }]);
     const budget = lookupBudget({}, 15_000);
     const failure = expect(withNetworkRetry(budget, timeoutMs => read(twice.fetcher, budget.signal, timeoutMs))).rejects.toBeInstanceOf(UpstreamNetworkError);
@@ -60,7 +56,7 @@ describe('one network retry inside the budget', () => {
   });
 
   it('records the retry as a step of its own', async () => {
-    useRequestClock();
+    fakeBudgetClock();
     const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 300, reply: () => new Response('ok') }]);
     const steps: Array<[string, string]> = [];
     const run = ({ signal, remainingMs }: { signal: AbortSignal; remainingMs: number }) => read(fetcher, signal, remainingMs);

@@ -3,7 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { delayedFetcher } from '../../core/testing/hang.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, FIRST_LINE_PAGE, FirstLineTracker } from './adapter.js';
 import { normalizeFirstLineNumber, parseFirstLine, parseFirstLinePage } from './parser.js';
@@ -186,20 +187,15 @@ describe('FIRST LINE HTTP adapter', () => {
   });
 
   it('tries an attempt that hangs once more, in a new session, inside the budget', async () => {
-    useRequestClock();
-    try {
-      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
-      const spent = expect(carrier(fetcher).track({ number: DELIVERED }, { budgetMs: 120 })).rejects.toThrow();
-      await vi.advanceTimersByTimeAsync(120);
-      await spent;
-      expect(fetcher).toHaveBeenCalledTimes(2);
-      expect(fetcher.mock.calls.every(([url]) => String(url) === FIRST_LINE_PAGE)).toBe(true);
-      // Half of the budget, then the retry until it ends.
-      expect(ended).toEqual([60, 120]);
-    } finally {
-      vi.useRealTimers();
-      vi.restoreAllMocks();
-    }
+    fakeBudgetClock();
+    const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+    const spent = expect(carrier(fetcher).track({ number: DELIVERED }, { budgetMs: 120 })).rejects.toThrow();
+    await vi.advanceTimersByTimeAsync(120);
+    await spent;
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher.mock.calls.every(([url]) => String(url) === FIRST_LINE_PAGE)).toBe(true);
+    // Half of the budget, then the retry until it ends.
+    expect(ended).toEqual([60, 120]);
   });
 
   it('routes a 1ST waybill to the adapter', async () => {

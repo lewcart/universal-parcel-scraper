@@ -35,9 +35,11 @@ Tracked through the lookup its tracking page makes.
 - A row is read on the clock its place keeps: its country's when the country has one, and in
   the United States its state's when the place names one, as USPS writes it. A row whose place
   is a bare country code keeps that country's clock: JCEX files its Hong Kong hub's rows under
-  the destination with the destination's offset. An offset the place does not keep at that
-  time, and a place without one clock, keep the wall clock: Colissimo's rows come on France's
-  clock with China's offset.
+  the destination with the destination's offset. So does a place that opens with its country's
+  code and has no other two-letter part: JCEX files some of an Italian partner's rows under China
+  with China's offset, and its hub's "SH, CN" opens with Shanghai's code. An offset
+  the place does not keep at that time, and a place without one clock, keep the wall clock:
+  Colissimo's rows come on France's clock with China's offset.
 - The newest scan's instant, when it has one, is the last update, and a delivered scan's is the
   delivery time. Rows dated after the read are dropped.
 - The recipient's province, city and postcode, the postcodes in the rows' places, the

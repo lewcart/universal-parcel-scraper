@@ -53,11 +53,17 @@ function placeOf(location: string): string {
 /**
  * The zone a row's place keeps. A bare country code is the place, even when
  * the row's country is another: JCEX files its Hong Kong hub's rows under the
- * destination with the destination's offset. A US place settles a zone
- * through its state.
+ * destination with the destination's offset. A place that opens with a
+ * country's code, and has no other two-letter part, is in that country too:
+ * JCEX files some of an Italian partner's rows under China with China's
+ * offset. Its hub's "SH, CN" opens with Shanghai's code. A US place settles a
+ * zone through its state.
  */
 function placeZone(location: string, country: string): string | null {
-  const place = /^[A-Z]{2}$/.test(location) && countryCode(location) ? location : country;
+  const [opening, ...rest] = location.split(', ');
+  const code = (part: string | undefined) => part !== undefined && /^[A-Z]{2}$/.test(part);
+  const place = code(location) && countryCode(location) ? location
+    : rest.length && code(opening) && !rest.some(code) && countryCode(opening) ? opening! : country;
   if (place !== 'US') return countryTimeZone(place);
   if (place === location) return null;
   return usStateTimeZone(US_STATE.exec(location)?.[1] ?? US_FACILITY_STATE.exec(location)?.[1]);

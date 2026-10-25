@@ -134,6 +134,18 @@ describe('JCEX HTTP adapter', () => {
     expect([0, 3, 10].map((index) => result.events![index]!.local_time)).toEqual(['2026-04-20T10:05:00', '2026-04-18T13:07:00', '2026-04-11T09:00:21']);
   });
 
+  it('reads a place that opens with its country code on that country\'s clock, whatever the row\'s country', () => {
+    const result = parseJcex(changed('delivered', (content) => {
+      // A partner's row JCEX files under China with China's offset, beside one under the partner's own.
+      Object.assign(content.trackDetails[0]!, { countryCode: 'CN', timeZone: '+08:00', location: 'IT,Exampletown,Lombardy,00000' });
+      Object.assign(content.trackDetails[1]!, { countryCode: 'IT', timeZone: '+02:00', location: 'IT,Exampletown,Lombardy,00000' });
+    }), NUMBER, READ);
+    expect(result.events!.slice(0, 2).map((event) => [event.time ?? null, event.local_time ?? null, event.location])).toEqual([
+      [null, '2026-04-20T10:05:00', 'IT, Exampletown, Lombardy'],
+      ['2026-04-20T06:44:00+02:00', null, 'IT, Exampletown, Lombardy'],
+    ]);
+  });
+
   it('holds back rows written ahead of their time', () => {
     const result = parseJcex(fixture('delivered'), NUMBER, Date.parse('2026-04-19T00:00:00Z'));
     expect(result).toMatchObject({ current_stage: 'in_transit', last_update: '2026-04-18T13:07:00-05:00' });

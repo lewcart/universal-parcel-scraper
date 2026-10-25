@@ -17,7 +17,8 @@ The tracking page asks `GET /api/webservice/Service.ashx` on its own host, witho
 account, and the adapter sends the same request: `method=track`, `param` set to
 `{"sp":"","nums":[…]}` and `key` set to the Base64 of that text's MD5 in hexadecimal, as JSONP
 (`callbackparam`). It reads the reply in that callback, or bare. One HTTP read, and one more
-when the first fails to connect or hangs.
+when the first fails to connect or hangs. The tracker runs on the rtb56 platform, whose request and reply
+[YYpost's adapter](../yypost/rtb56.ts) shares with this one.
 
 ## Notes
 

@@ -295,6 +295,19 @@ describe('GLS France response normalization', () => {
     }
   });
 
+  it('reads a depot receipt as the acceptance only before the parcel moved on', () => {
+    const fixture = deliveredFixture();
+    fixture.colis.statutColis = 'REC';
+    const scan = (datereference: string, code: string) => ({ datereference, statutEvenement: code, typeEvenement: code, codelieuEvenement: DEPOT_CODE });
+    fixture.evenements = [fixture.evenements[0]!, scan('2026-08-27 18:00:00.0', 'REC'), scan('2026-08-28 12:00:00.0', 'EXP'),
+      scan('2026-08-29 01:00:00.0', 'REC'), scan('2026-08-29 05:00:00.0', 'TRV'), scan('2026-08-29 08:00:00.0', 'REC')];
+    const result = parseGLSFranceTrackingResponse(fixture, TRACKING_NUMBER);
+    expect(result.status).toBe('in_transit');
+    expect(result.events!.filter((event) => event.provider_code !== 'CON').map((event) => [event.provider_code, event.stage])).toEqual([
+      ['REC', 'in_transit'], ['TRV', 'out_for_delivery'], ['REC', 'in_transit'], ['EXP', 'in_transit'], ['REC', 'accepted'],
+    ]);
+  });
+
   it('dates the delivery only once the parcel is delivered', () => {
     expect(parseGLSFranceTrackingResponse(outForDeliveryFixture(), TRACKING_NUMBER)).not.toHaveProperty('delivered_at');
   });

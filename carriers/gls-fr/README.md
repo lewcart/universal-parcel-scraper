@@ -44,6 +44,9 @@ this confirmation before they can identify the French network.
   `statutColis: DEL` is checked against the newest event the same way. The
   app's review asks the same map by an event's code (`statusMap`), and leaves
   `DEL` open: the stored event does not keep its type.
+- `REC`, a receipt at a GLS depot, is the parcel's acceptance only before it
+  moved on. A depot receives it again on its way in and when a round brings it
+  back, and those receipts are in transit.
 - Timestamps come in three shapes on the same fields: ISO with or without
   offset, SQL-style wall clock, bare day. An explicit offset is honoured;
   everything else is read in `Europe/Paris`. Empty values arrive as year `0001`

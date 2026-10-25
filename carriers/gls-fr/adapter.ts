@@ -267,6 +267,13 @@ function parseTracking(payload: unknown, trackingNumber: string): ParsedTracking
   parsedEvents.sort((left, right) => (
     right.timestamp - left.timestamp || left.sourceIndex - right.sourceIndex
   ));
+  // Oldest first: a depot receives the parcel on its way in and again when a
+  // round brings it back, so a receipt after the parcel moved on is in transit.
+  let moved = false;
+  for (const { event } of [...parsedEvents].reverse()) {
+    if (event.stage === 'accepted' && moved) event.stage = 'in_transit';
+    if (event.stage && event.stage !== 'registered' && event.stage !== 'accepted') moved = true;
+  }
   const latestParsedEvent = parsedEvents[0];
   const events = parsedEvents
     .slice(0, MAX_EVENTS_TO_RETURN)

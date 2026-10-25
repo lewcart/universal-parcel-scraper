@@ -359,6 +359,20 @@ describe('locatePlace', () => {
     expect(place('Freiburg im Breisgau', ['DE'])).toMatchObject({ country: 'DE', name: 'Freiburg' });
   });
 
+  it('reads a linking word abbreviated to a letter and a full stop', () => {
+    expectPlace('Frankfurt a.d. Oder', { country: 'DE', name: 'Frankfurt a.d. Oder', latitude: 52.35, longitude: 14.55 }, ['DE']);
+    expectPlace('Weil a. Rhein', { country: 'DE', name: 'Weil a. Rhein', latitude: 47.59, longitude: 7.62 }, ['DE']);
+    expectPlace('Landsberg a. Lech', { country: 'DE', name: 'Landsberg a. Lech', latitude: 48.05, longitude: 10.88 }, ['DE']);
+    expectPlace('Neustadt a. d. Weinstraße', { country: 'DE', name: 'Neustadt a. d. Weinstraße', latitude: 49.35, longitude: 8.14 }, ['DE']);
+    expectPlace('Bernau b. Berlin', { country: 'DE', name: 'Bernau b. Berlin', latitude: 52.68, longitude: 13.59 }, ['DE']);
+    expectPlace('Ústí n. Labem', { country: 'CZ', name: 'Ústí n. Labem', latitude: 50.66, longitude: 14.03 }, ['CZ']);
+    // What follows it is no town on its own either, and a name GeoNames prints abbreviated is still found.
+    expect(place('Example b. Berlin', ['DE'])).toBeNull();
+    expect(place('Neumarkt i.d. OPf.', ['DE'])).toMatchObject({ country: 'DE', name: 'Neumarkt i.d. OPf' });
+    // A first letter is no linking word.
+    expect(place('A. Coruña', ['ES'])).toMatchObject({ country: 'ES' });
+  });
+
   it('finds a town between other words of a name, when it is a city where the parcel is', () => {
     expect(place('Example Reading Station Lockers', ['GB'])).toMatchObject({ country: 'GB', name: 'Reading' });
     expect(place('Punkt Pocztowy Example Lublin L999', ['PL'])).toMatchObject({ country: 'PL', name: 'Lublin' });

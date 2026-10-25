@@ -102,6 +102,12 @@ const LEADING_WORDS = new Set(['de', 'du', 'des', 'di', 'da', 'del', 'della', 'v
 // Words that join a town's name to the river, region or city it is told apart by: "Weil am Rhein",
 // "Bernau bei Berlin", "Boulogne-sur-Mer", "Ústí nad Labem".
 const LINKING_WORDS = new Set(['am', 'im', 'der', 'bei', 'upon', 'sur', 'nad', 'pod']);
+// The words a letter and its full stop stand for in "Frankfurt a.d. Oder", "Weil a. Rhein", "Bernau b.
+// Berlin" or "Ústí n. Labem": "a." is "am" or "an".
+const ABBREVIATED_LINKS: Readonly<Record<string, readonly (readonly string[])[]>> = {
+  a: [['am'], ['an']], 'a d': [['an', 'der']], b: [['bei']], i: [['im'], ['in']], 'i d': [['in', 'der']],
+  n: [['nad']], o: [['ob']], 'o d': [['ob', 'der']], p: [['pod']],
+};
 // Carriers print provinces the way the post does; GeoNames numbers them.
 const ADMIN_CODES: Record<string, Record<string, string>> = {
   CA: { AB: '01', BC: '02', MB: '03', NB: '04', NL: '05', NS: '07', ON: '08', PE: '09', QC: '10', SK: '11', YT: '12', NT: '13', NU: '14' },
@@ -405,7 +411,8 @@ function awayScans(
   return away;
 }
 
-interface Token { key: string; start: number; end: number }
+/** `link`: an abbreviated linking word, or the first word it stands for. */
+interface Token { key: string; start: number; end: number; link?: true }
 /**
  * Where in its field a phrase was read, whether it is all the field says, and whether other
  * words of the name surround it (`middle`, "Example Reading Station Lockers").
@@ -423,9 +430,36 @@ function tokens(text: string): Token[] {
   });
 }
 
+/**
+ * The field's words as printed, then with each abbreviated linking word written out: "Weil a. Rhein"
+ * is also "Weil am Rhein" and "Weil an Rhein".
+ */
+function spelledOut(field: string, list: Token[]): Token[][] {
+  const dotted = (token: Token | undefined) => token?.key.length === 1 && field[token.end] === '.';
+  const printed: Token[] = [];
+  let variants: Token[][] = [[]];
+  for (let index = 0; index < list.length; index += 1) {
+    const token = list[index]!;
+    const next = list[index + 1];
+    const paired = index > 0 && dotted(token) && dotted(next) && !field.slice(token.end + 1, next!.start).trim()
+      ? ABBREVIATED_LINKS[`${token.key} ${next!.key}`] : undefined;
+    const words = paired ?? (index > 0 && dotted(token) ? ABBREVIATED_LINKS[token.key] : undefined);
+    if (!words) {
+      printed.push(token);
+      variants = variants.map((variant) => [...variant, token]);
+      continue;
+    }
+    const end = paired ? next!.end : token.end;
+    printed.push({ ...token, link: true }, ...(paired ? [next!] : []));
+    variants = variants.flatMap((variant) => words.map((spelling) => [...variant,
+      ...spelling.map((key, at) => ({ key, start: token.start, end, ...(at === 0 ? { link: true as const } : {}) }))]));
+    if (paired) index += 1;
+  }
+  return printed.some((token) => token.link) ? [printed, ...variants] : [list];
+}
+
 /** Phrases worth looking up, most specific first: "zurich mulligen", then "zurich". */
 function phrases(field: string): Phrase[] {
-  const all = tokens(field).filter((token) => !/^\d+$/.test(token.key));
   const found: Phrase[] = [];
   const add = (list: Token[], rank: number, whole = false, middle = false) => {
     if (!list.length) return;
@@ -440,15 +474,11 @@ function phrases(field: string): Phrase[] {
       found.push({ key, text: field.slice(start, end), rank, start, end, whole, ...(middle ? { middle } : {}) });
     }
   };
-  // Facility words alone ("Hub", "Terminal") are no town, whatever GeoNames says.
-  if (all.some((token) => !FACILITY_WORDS.has(token.key))) add(all, 0, true);
-  let words = all.filter((token) => !FACILITY_WORDS.has(token.key));
-  while (words.length && LEADING_WORDS.has(words[0]!.key)) words = words.slice(1);
   const spans = (list: Token[], offset: number) => {
     for (let count = list.length; count > 0; count -= 1) add(list.slice(0, count), offset + list.length - count + 1, count === list.length);
     // What follows a linking word tells the town apart and is not the town: "Chazelles-sur-Lyon" is
     // not in Lyon, nor "Bernau bei Berlin" in Berlin.
-    const linked = list.findIndex((token, index) => index > 0 && LINKING_WORDS.has(token.key));
+    const linked = list.findIndex((token, index) => index > 0 && (token.link || LINKING_WORDS.has(token.key)));
     const end = linked > 0 ? linked + 1 : list.length;
     for (let start = 1; start < end; start += 1) add(list.slice(start), offset + list.length + start);
     // "Example Reading Station Lockers": a town between other words.
@@ -458,10 +488,16 @@ function phrases(field: string): Phrase[] {
       }
     }
   };
-  spans(words, 0);
-  // "Zhejiang Province Jinhua City": the town without its administrative words.
-  const bare = words.filter((token) => !DIVISION_WORDS.has(token.key));
-  if (bare.length < words.length) spans(bare, 1);
+  for (const all of spelledOut(field, tokens(field).filter((token) => !/^\d+$/.test(token.key)))) {
+    // Facility words alone ("Hub", "Terminal") are no town, whatever GeoNames says.
+    if (all.some((token) => !FACILITY_WORDS.has(token.key))) add(all, 0, true);
+    let words = all.filter((token) => !FACILITY_WORDS.has(token.key));
+    while (words.length && LEADING_WORDS.has(words[0]!.key)) words = words.slice(1);
+    spans(words, 0);
+    // "Zhejiang Province Jinhua City": the town without its administrative words.
+    const bare = words.filter((token) => !DIVISION_WORDS.has(token.key));
+    if (bare.length < words.length) spans(bare, 1);
+  }
   return [...found, ...cjkPhrases(field)];
 }
 

@@ -2,6 +2,8 @@ import type { CarrierStatus } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
+const FAILED_ATTEMPT: ClassifiedStatus = { status: 'exception', stage: 'failed_attempt' };
+
 const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   ['Shipment information received', { status: 'pending', stage: 'registered' }],
   ['Shipment picked up', { status: 'in_transit', stage: 'accepted' }],
@@ -80,22 +82,27 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   ['Your shipment has been processed at sorting center and ready for shipping', { status: 'in_transit', stage: 'in_transit' }],
   ['Your shipment has been accepted by delivery carrier', { status: 'in_transit', stage: 'in_transit' }],
   ['Your shipment is out for delivery', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
+  // CouriersPlease's lines on an Australian parcel: the hand-over to it, its round and a missed delivery.
+  ['1 item has been In transit, Despatched to Carrier', { status: 'in_transit', stage: 'in_transit' }],
+  ['Onboard for delivery', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
+  ['Unsuccessful delivery - failed delivery card left', FAILED_ATTEMPT],
   // GLS keeps the parcel at its depot after the parcel box it was due in was full.
-  ['The parcel is being stored in the GLS parcel center. It could not be delivered as the parcel box was occupied.', { status: 'exception', stage: 'failed_attempt' }],
+  ['The parcel is being stored in the GLS parcel center. It could not be delivered as the parcel box was occupied.', FAILED_ATTEMPT],
 ];
-
-const FAILED_ATTEMPT: ClassifiedStatus = { status: 'exception', stage: 'failed_attempt' };
 
 /**
  * Partner lines that carry a place or a reason after fixed words, by their
  * `normalizeStatusWording` form: GOFO's missed delivery with its type,
- * Ecoscooting's with its reason in brackets, and an Australian courier's
- * transfer to a depot after it left a card.
+ * Ecoscooting's with its reason in brackets, and CouriersPlease's acceptance
+ * at a town's depot, its transfer to a depot after it left a card and its
+ * transfer to the depot's collection run.
  */
 const PATTERNS: ReadonlyArray<readonly [RegExp, ClassifiedStatus]> = [
   [/^delivery failed, type: ?recipient absent or delivery location inaccessible\b/, FAILED_ATTEMPT],
   [/^your shipment delivery attempt failed(?: \[[^\]]{1,200}\])?$/, FAILED_ATTEMPT],
+  [/^your item has been accepted in \S.* depot$/, { status: 'in_transit', stage: 'in_transit' }],
   [/^\d+ items? (?:has|have) been transferred to \S.* card left$/, FAILED_ATTEMPT],
+  [/^\d+ items? (?:has|have) been transferred to run \S+ depot collection$/, { status: 'out_for_delivery', stage: 'ready_for_pickup' }],
 ];
 
 // A partner's line can carry its tracking page's markup, such as a link holding the parcel's

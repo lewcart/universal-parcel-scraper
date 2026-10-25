@@ -507,6 +507,46 @@
       "note": "Relayed from GLS: the parcel box it was due in was full, so the depot keeps it."
     },
     {
+      "wording": "1 item has been In transit, Despatched to Carrier",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-25",
+      "note": "Relayed from CouriersPlease: the parcel handed to it."
+    },
+    {
+      "wording": "Your item has been accepted in <town> Depot",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-25",
+      "note": "Relayed from CouriersPlease: its depot's receipt of the parcel, a hand-over between carriers. Matched on its fixed words."
+    },
+    {
+      "wording": "Onboard for delivery",
+      "stage": "out_for_delivery",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-25",
+      "note": "Relayed from CouriersPlease: on the courier's round."
+    },
+    {
+      "wording": "Unsuccessful delivery - failed delivery card left",
+      "stage": "failed_attempt",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-25",
+      "note": "Relayed from CouriersPlease after a missed delivery."
+    },
+    {
+      "wording": "1 item has been transferred to run <n> DEPOT COLLECTION",
+      "stage": "ready_for_pickup",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-25",
+      "note": "Relayed from CouriersPlease: set aside on the depot's collection run, as its own Depot collection arranged. Matched on its fixed words."
+    },
+    {
       "wording": "1 item has been transferred to <depot> (<town>) CARD LEFT",
       "stage": "failed_attempt",
       "language": "en",

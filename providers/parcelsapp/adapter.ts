@@ -29,6 +29,7 @@ import { isRecord } from '../../core/types.js';
 import { militaryPostOffice } from '../../places/trackingLocation.js';
 import { hasSeveralClocks, mainZone } from '../../places/zones.js';
 import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
+import { correosOriginZone } from '../../carriers/correos-spain/clock.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { cttyexChinaStep } from '../../carriers/cttyex/status.js';
 import { FIRST_LINE_CHINA_ZONE, firstLineInChina } from '../../carriers/first-line/clock.js';
@@ -823,6 +824,9 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   // Croatia Post relays a post abroad on that facility's clock, as its own tracker does.
   const abroad = carrier === 'hrvatska-posta' ? hrvatskaPostaForeignZone(scanLocation(name, state.location)) : undefined;
   if (abroad !== undefined) return abroad;
+  // Correos relays an origin post's scans on an item from abroad on that post's clock, or keeps their wall clock (null).
+  const sent = carrier === 'correos-spain' ? correosOriginZone(number, { wording: status }) : undefined;
+  if (sent !== undefined) return sent;
   if (carrier && PLACE_CLOCK_LINES.has(carrier)) return placeClockLine(carrier, status, scanLocation(name, state.location));
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   if (carrier === 'correios-br') return CORREIOS_BRAZIL_CLOCK;
@@ -970,10 +974,12 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   // iMile's page writes every scan on the recipient country's clock, wherever it happened, and
   // ParcelsApp has its digits; read on iMile's catalog zone they came out early. A destination
   // of one zone places them, and without one they keep their wall clock. So does Croatia Post's
-  // scan at a facility abroad whose office code names no single clock, and a scan of a line on
-  // its place's clock that its place does not date (`PLACE_CLOCK_LINES`).
+  // scan at a facility abroad whose office code names no single clock, Correos's copy of an
+  // origin post's scan from a country of several clocks, and a scan of a line on its place's
+  // clock that its place does not date (`PLACE_CLOCK_LINES`).
   const ownCarrier = typeof name === 'string' ? carrierIdFromName(name) ?? '' : '';
-  const unplacedWall = own === null && !offset && (['imile', 'hrvatska-posta'].includes(ownCarrier) || PLACE_CLOCK_LINES.has(ownCarrier));
+  const unplacedWall = own === null && !offset && (['imile', 'hrvatska-posta', 'correos-spain'].includes(ownCarrier)
+    || PLACE_CLOCK_LINES.has(ownCarrier));
   const sited = own === undefined ? siteZone(payload, raw, number, inNorthAmerica, status, destination) : undefined;
   const placed = own !== undefined ? own : sited;
   // A posting that only its office's capital places borrows first (`postingOffice`).

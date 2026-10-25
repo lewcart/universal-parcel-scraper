@@ -63,6 +63,21 @@ describe('Ship24 result parsing', () => {
     expect(result).toMatchObject({ reported_carriers: ['Correos de España'], discovered_carrier: 'correos-spain' });
   });
 
+  it('reads Correos\'s copies of an origin post\'s scans on that post\'s clock', () => {
+    const correos = { translation: { name: 'Correos de España' } };
+    const times = (item: string, data: Record<string, unknown> = {}) => parseShip24Response({ data: { tracking_number: item,
+      couriers: [{ translation: { name: 'India Post' } }, correos], ...data, events: [
+        { timestamp: '2026-09-29T17:01:00', status: 'En aduana de origen', courier: correos },
+        { timestamp: '2026-09-29T16:56:00', status: 'In the exchange office', courier: correos },
+      ] } }, item, 'Europe/Madrid').events?.map((scan) => scan.time ?? `local ${scan.local_time}`);
+    // Without a destination named, routing's Madrid would date them.
+    expect(times('RR123456785IN')).toEqual(['2026-09-29T11:31:00.000Z', '2026-09-29T11:26:00.000Z']);
+    expect(times('RR123456785IN', { origin_country_code: 'IN', destination_country_code: 'ES' }))
+      .toEqual(['2026-09-29T11:31:00.000Z', '2026-09-29T11:26:00.000Z']);
+    // An origin on several clocks leaves the wall clock.
+    expect(times('RR123456785US')).toEqual(['local 2026-09-29T17:01:00', 'local 2026-09-29T16:56:00']);
+  });
+
   it('reads SDA\'s offset-less scans beside Poste Italiane\'s instants on Rome\'s clock', () => {
     const result = parseShip24Response({ data: { tracking_number: number,
       couriers: [{ translation: { name: 'Italy SDA' } }, { translation: { name: 'Poste Italiane' } }],

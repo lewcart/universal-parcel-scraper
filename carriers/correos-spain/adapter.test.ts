@@ -9,6 +9,7 @@ import {
   parseCorreosSpainTrackingResponse,
   CorreosSpainTracker,
 } from './adapter.js';
+import { correosOriginZone } from './clock.js';
 import { classifyCorreosSpainStatus } from './status.js';
 
 // All identifiers and timestamps below are synthetic. Event codes and Spanish
@@ -157,6 +158,20 @@ describe('Correos Spain response parsing', () => {
     expect(times('RR123456785ES')?.slice(2)).toEqual([['B170000V', '2026-09-29T17:01:00+02:00'], ['B030000V', '2026-09-29T16:56:00+02:00']]);
     // A stored row on the Madrid reading is taken over by its code and wall clock.
     expect(sameInstantIdentityPolicy('correos-spain', { supportsScanMatching: true })).toMatchObject({ relabelledFrom: 'Europe/Madrid' });
+  });
+
+  it("tells relayed copies of an origin post's scans by Correos's summaries", () => {
+    const zone = (wording: string, number = 'RR123456785IN') => correosOriginZone(number, { wording });
+    expect(zone('En oficina de cambio')).toBe('Asia/Kolkata');
+    expect(zone('In the exchange office')).toBe('Asia/Kolkata');
+    expect(zone('Admisión, En aduana de origen, El envío está en la aduana del país de origen')).toBe('Asia/Kolkata');
+    expect(zone('En aduana de origen', 'RR123456785US')).toBeNull();
+    // Correos's own scans at its office of exchange, a Spanish item and a non-S10 code stay on Madrid's clock.
+    expect(zone('Salida de oficina de cambio')).toBeUndefined();
+    expect(zone('Llegada a oficina de cambio')).toBeUndefined();
+    expect(zone('En oficina de cambio', 'RR123456785ES')).toBeUndefined();
+    expect(zone('En oficina de cambio', TRACKING_NUMBER)).toBeUndefined();
+    expect(correosOriginZone('RR123456785IN', { code: 'C010000V' })).toBeUndefined();
   });
 
   it('binds the envelope codEnvio and honors the codError result', () => {

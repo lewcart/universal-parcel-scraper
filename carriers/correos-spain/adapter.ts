@@ -1,13 +1,13 @@
 
 import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { isCorreosSpainExpeditionCode } from '../../core/detection/correosSpain.js';
-import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
-import { countryCode, countryTimeZone, zonedTime } from '../../core/time/index.js';
+import { zonedTime } from '../../core/time/index.js';
 import { clean, cleanScalar, fetchBounded, parseJsonBytes, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { CORREOS_HOME_ZONE, correosOriginZone } from './clock.js';
 import { classifyCorreosSpainStatus, correosSpainEnglishSummary } from './status.js';
 
 // Protocol provenance:
@@ -41,40 +41,25 @@ const MAX_RESPONSE_BYTES = 1_000_000;
 const MAX_EVENTS_TO_RETURN = 20;
 
 const STAMP_FORMAT = 'dd/MM/yyyy HH:mm:ss';
-const HOME_ZONE = 'Europe/Madrid';
-// The origin post's steps as Correos codes them: at its outward office of exchange (B030000V)
-// and in its customs (B170000V).
-const ORIGIN_LEG = /^B\d/;
-
-/**
- * The country of the post that sent an item from abroad, which its S10 code's
- * suffix names; null for Spain's own items and other codes.
- */
-function foreignOrigin(number: string): string | null {
-  const country = isValidS10TrackingNumber(number) ? countryCode(number.slice(-2)) : null;
-  return country && country !== 'ES' ? country : null;
-}
 
 /**
  * When a scan happened. Correos splits it into fecEvento (DD/MM/YYYY) and
  * horEvento (HH:MM:SS, midnight when absent), a wall clock, read in Spanish
  * time: mainland Spain is Europe/Madrid, and Canary Islands scans stamped the
  * same way can be off by one hour, as events carry no locality. An origin
- * post's scan on an item from abroad has that post's wall clock: India Post's
- * own scans give its exchange and customs scans the same minutes on Kolkata
- * time, and Japan Post's on Tokyo time, so Madrid's put them hours late. It is
- * read in the origin's zone, or kept as a wall clock when the origin keeps
- * several. `timestamp` orders the scans, on Madrid's reading for a wall clock.
+ * post's scan on an item from abroad has that post's wall clock (clock.ts):
+ * it is read in `origin`, that post's zone, or kept as a wall clock when
+ * `origin` is null, as the post's country keeps several. `timestamp` orders
+ * the scans, on Madrid's reading for a wall clock.
  */
-function parsedTime(dateValue: unknown, timeValue: unknown, origin: string | null): { time?: string; local_time?: string; timestamp: number } | null {
+function parsedTime(dateValue: unknown, timeValue: unknown, origin: string | null | undefined): { time?: string; local_time?: string; timestamp: number } | null {
   const date = clean(dateValue, 16);
   if (!date) return null;
   const clock = clean(timeValue, 16) || '00:00:00';
   const stamp = `${date} ${clock}`;
-  const home = zonedTime(stamp, STAMP_FORMAT, HOME_ZONE, { locale: 'es-ES' });
-  if (!home || !origin) return home && { time: home.iso, timestamp: home.timestamp };
-  const zone = countryTimeZone(origin);
-  const placed = zone ? zonedTime(stamp, STAMP_FORMAT, zone, { locale: 'es-ES' }) : null;
+  const home = zonedTime(stamp, STAMP_FORMAT, CORREOS_HOME_ZONE, { locale: 'es-ES' });
+  if (!home || origin === undefined) return home && { time: home.iso, timestamp: home.timestamp };
+  const placed = origin ? zonedTime(stamp, STAMP_FORMAT, origin, { locale: 'es-ES' }) : null;
   if (placed) return { time: placed.iso, timestamp: placed.timestamp };
   const [day, month, year] = date.split('/');
   return { local_time: `${year}-${month}-${day}T${clock}`, timestamp: home.timestamp };
@@ -168,12 +153,11 @@ function parseTracking(payload: unknown, trackingNumber: string, expeditionCode?
   }
   const parsed: Array<{ event: CarrierEvent; classified: ClassifiedStatus | undefined; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
-  const origin = foreignOrigin(requested);
   (Array.isArray(rawEvents) ? rawEvents : []).filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
     const code = clean(rawEvent.codEvento, 32).toLocaleUpperCase('en-US');
     // desTextoResumen is worded in the language codIdioma names.
     const description = clean(rawEvent.desTextoResumen, 500) || correosSpainEnglishSummary(code) || code;
-    const time = parsedTime(rawEvent.fecEvento, rawEvent.horEvento, ORIGIN_LEG.test(code) ? origin : null);
+    const time = parsedTime(rawEvent.fecEvento, rawEvent.horEvento, correosOriginZone(requested, { code }));
     if (!time || !description) return;
     const identity = `${time.time ?? time.local_time}\u0000${description}\u0000${code}`;
     if (seen.has(identity)) return;

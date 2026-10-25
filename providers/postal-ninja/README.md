@@ -87,6 +87,9 @@ numbers or handles cannot end the lookup.
   by EDI)", at the origin office's clock (Geneva's departure at 12:20), read on the
   clock of the country the S10 number ends with when it keeps one; otherwise they borrow
   one, from its other copies first.
+  Correos de España's copies of an origin post's scans are at that post's clock too
+  ([Correos](../../carriers/correos-spain/README.md)), but Postal Ninja translates their
+  wording, so they cannot be told apart and are read like its own scans.
 - A fixed or network clock places its service's scans in any history. A local clock
   places them only in a full history that service reports alone, and for an S10 item
   one whose origin is its destination (`destCn`): beside other services, a service relays

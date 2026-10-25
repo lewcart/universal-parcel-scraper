@@ -75,6 +75,10 @@ Correos de Chile (`correos-chile`) are separate carriers.
   Madrid reading, by wall clock and code. `C010000V` and the later codes stay on Madrid's
   clock: on an item from abroad, the departure from the exchange office came after the
   arrival in Spain.
+- 17TRACK, ParcelsApp and Ship24 give no event code, so their copies of those scans are told
+  by Correos's summaries, "En oficina de cambio", "En aduana de origen" or "In the exchange
+  office", and read the same way ([clock.ts](clock.ts)). Postal Ninja translates the
+  wording, so its copies stay on its usual reading.
 - The office (`nom_codired`) becomes `pickup_point` only while the parcel awaits collection.
   On a delivered parcel it is where the parcel *was* held and would read as a false pickup
   instruction.

@@ -106,6 +106,11 @@ No account, cookie, fingerprint or issued token is used.
   milestone ("Departure from First Load Port", "Customs Clearance Commenced") the feed's
   scans that their location does not place keep their wall clocks. Mainfreight's catalog
   clock and routing's zone, New Zealand's, are left to its transport scans.
+- Correos's copies ("Correos de España") of an origin post's scans on an item from abroad,
+  "En oficina de cambio" and "En aduana de origen", are at that post's clock, as on
+  Correos's own tracker ([Correos](../../carriers/correos-spain/README.md)). They skip the
+  steps below: they are read on the clock of the country an S10 number ends with, or stay
+  wall times when it has several.
 - A wall clock is read in the first clock found among:
   1. the scan location's:
      - CTT's offices of exchange (`PTLISA - …`) and own sites are on Portugal's clock,

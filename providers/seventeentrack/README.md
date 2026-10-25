@@ -165,6 +165,12 @@ carrier.
   (checked 2026-10-11). Its own scans are read as UTC, its copies on the clock of the
   country an S10 number ends with. From a country with several clocks, 17TRACK's reading
   stays, the last guess.
+- Correos Spain's leg (carrier key 19181) shows Correos's wall clocks, worded "PHASE,
+  summary, details", with Madrid's offset. Its copies of an origin post's scans, told by
+  Correos's summaries "En oficina de cambio" and "En aduana de origen", are at that post's
+  clock, as on Correos's own tracker ([Correos](../../carriers/correos-spain/README.md)):
+  they are read on the clock of the country an S10 number ends with, or stay wall times
+  when it has several.
 - Swiss Post's leg (carrier key 19251) relays the destination post's arrival, customs,
   sorting and delivery scans, with no location, at that office's clock under Swiss Post's
   offset ([Swiss Post](../../carriers/swiss-post/README.md)). They are read on the clock of

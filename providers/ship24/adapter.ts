@@ -26,6 +26,7 @@ import {
   timeZoneCountry, usStateTimeZone,
 } from '../../core/time/index.js';
 import { isRecord } from '../../core/types.js';
+import { correosOriginZone } from '../../carriers/correos-spain/clock.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { gofoScanZone } from '../../carriers/gofo/clock.js';
 import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
@@ -268,6 +269,19 @@ function swissPostRelayZone(scan: Record<string, unknown>, journey: Journey): st
     typeof scan.location === 'string' ? scan.location : '', journey.destination);
 }
 
+/**
+ * Correos's copy of the origin post's scan on an item from abroad
+ * (carriers/correos-spain/clock.ts): that post's zone, or null for a country on
+ * several clocks, whose wall clock it keeps. Undefined for any other scan. The
+ * courier is the scan's, else the reply's only one.
+ */
+function correosOriginCopy(scan: Record<string, unknown>, journey: Journey): string | null | undefined {
+  const named = isRecord(scan.courier) && isRecord(scan.courier.translation) ? scan.courier.translation.name : undefined;
+  const name = named ?? (journey.couriers.length === 1 ? journey.couriers[0] : undefined);
+  return typeof name === 'string' && carrierIdFromName(name) === 'correos-spain' && typeof scan.status === 'string'
+    ? correosOriginZone(journey.number, { wording: scan.status }) : undefined;
+}
+
 function journeyOf(data: Record<string, unknown>, events: unknown[], number: string, couriers: string[], fallback: string | null): Journey {
   // An S10 item's suffix is its origin post's country.
   const suffix = /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(number) ? replyCountry(number.slice(-2)) : null;
@@ -409,8 +423,10 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
     // a relabelling feed's first borrows from its neighbours (below), and a
     // forwarding job's keeps its wall clock.
     const unnamed = feed || (forwarding && isRecord(raw.courier) && raw.courier.crawler_code === 'mainfreight-tracking');
+    // Correos's copy of an origin post's scan takes that post's clock, or keeps its wall clock.
+    const sent = wall ? correosOriginCopy(raw, journey) : undefined;
     readings.push({ event: parsed, wall, feed, country: feed?.country ?? locationCountry(raw.location),
-      zone: wall ? relayed ?? placedZone(journey, raw, wall, feed) ?? (unnamed ? null : namedZone(journey, wall)) : null });
+      zone: wall ? relayed ?? (sent !== undefined ? sent : placedZone(journey, raw, wall, feed) ?? (unnamed ? null : namedZone(journey, wall))) : null });
   }
   const events = readings.map((reading): CarrierEvent => {
     const { event, wall, feed } = reading;

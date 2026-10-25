@@ -414,6 +414,10 @@ step exists for future protocol changes.
   relays a London office's departure at that instant, and bpost's unplaced "Item has passed
   a checkpoint" falls at the same instant on Brussels time, as bpost's copies with no place
   do (step 3).
+- Correos's copies ("Spain Post") of an origin post's scans on an item from abroad, "En
+  oficina de cambio" and "En aduana de origen", are at that post's clock, as on Correos's
+  own tracker ([Correos](../../carriers/correos-spain/README.md)). They are read on the
+  clock of the country an S10 number ends with, or stay wall times when it has several.
 - Speedaf's dates are its sites' wall clocks under a UTC label. Its own feed dates the
   scans up to the departing flight ("Cargo flight departured") on China time and the rest
   on the destination's, and Cainiao's copies of the same scans agree once read that way.

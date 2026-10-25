@@ -431,6 +431,25 @@ describe('17TRACK result parsing', () => {
       '2026-09-03T10:20:28.000Z Forwarding abroad']);
   });
 
+  it('reads Correos\'s copies of an origin post\'s scans on that post\'s clock, its own on Madrid\'s', () => {
+    // 17TRACK words Correos's rows "PHASE, summary, details" and puts Madrid's offset on their wall clocks.
+    const row = (time: string, utc: string, description: string) => ({ time_iso: `${time}+02:00`, time_utc: utc,
+      time_raw: { date: time.slice(0, 10), time: time.slice(11), timezone: null }, description, location: null, stage: null,
+      sub_status: 'InTransit_Other' });
+    const reply = (requested: string) => ({ meta: { code: 200 }, shipments: [{ number: requested, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key: 19181, name: 'Correos Spain', country: 'ES' },
+        events: [
+          row('2026-10-05T09:11:05', '2026-10-05T07:11:05Z', 'EN CAMINO, Llegada a oficina de cambio, El envío ha llegado a la oficina de cambio'),
+          row('2026-09-29T17:01:00', '2026-09-29T15:01:00Z', 'EN CAMINO, En aduana de origen, El envío está en la aduana de origen'),
+          row('2026-09-29T16:56:00', '2026-09-29T14:56:00Z', 'EN CAMINO, En oficina de cambio, El envío está en la oficina de cambio'),
+        ] }] } } }] });
+    const times = (requested: string) => parse17TrackResponse(reply(requested), requested).events?.map((e) => e.time ?? `local ${e.local_time}`);
+    expect(times('RR123456785IN')).toEqual(['2026-10-05T07:11:05.000Z', '2026-09-29T11:31:00.000Z', '2026-09-29T11:26:00.000Z']);
+    // An origin on several clocks leaves the wall clock, and Spain's own items keep Madrid's.
+    expect(times('RR123456785US')).toEqual(['2026-10-05T07:11:05.000Z', 'local 2026-09-29T17:01:00', 'local 2026-09-29T16:56:00']);
+    expect(times('RR123456785ES')).toEqual(['2026-10-05T07:11:05.000Z', '2026-09-29T15:01:00.000Z', '2026-09-29T14:56:00.000Z']);
+  });
+
   it('reads the clock and offset 17TRACK shows when its UTC conversion disagrees', () => {
     // An India Post leg: the wall clock under India's offset, and a conversion 30 minutes after it.
     const scan = { time_iso: '2026-07-14T14:40:00+05:30', time_utc: '2026-07-14T09:40:00Z',

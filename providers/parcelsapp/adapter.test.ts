@@ -661,6 +661,27 @@ describe('ParcelsApp result parsing', () => {
     expect(reply).toMatchObject({ reported_carriers: ['Spain Post'], discovered_carrier: 'correos-spain' });
   });
 
+  it('reads Correos\'s copies of an origin post\'s scans on that post\'s clock', () => {
+    const times = (item: string) => parseParcelsAppResponse({
+      carriers: ['Spain Post'],
+      states: [
+        { date: '2026-10-05T09:11:05Z', status: 'Llegada a oficina de cambio', carrier: 0 },
+        { date: '2026-09-29T17:01:00Z', status: 'En aduana de origen', carrier: 0 },
+        { date: '2026-09-29T16:56:00Z', status: 'En oficina de cambio', carrier: 0 },
+      ],
+    }, item, identity(item)).events?.map((scan) => scan.time ?? `local ${scan.local_time}`);
+    // The S10 code's suffix names the origin; Correos's own scans stay on Madrid's clock.
+    expect(times('RR123456785IN')).toEqual(['2026-10-05T07:11:05.000Z', '2026-09-29T11:31:00.000Z', '2026-09-29T11:26:00.000Z']);
+    // An origin on several clocks leaves the wall clock, and Spain's own items keep Madrid's.
+    expect(times('RR123456785US')).toEqual(['2026-10-05T07:11:05.000Z', 'local 2026-09-29T17:01:00.000', 'local 2026-09-29T16:56:00.000']);
+    expect(times('RR123456785ES')).toEqual(['2026-10-05T07:11:05.000Z', '2026-09-29T15:01:00.000Z', '2026-09-29T14:56:00.000Z']);
+    // The rendered page gives the same instants.
+    const page = identity('RR123456785IN').replace('</table>', `</table><ul class="events">${
+      carrierRow('29 Sep 2026', '17:01', 'En aduana de origen', 'Spain Post')}${carrierRow('29 Sep 2026', '16:56', 'En oficina de cambio', 'Spain Post')}</ul>`);
+    expect(parseParcelsAppHtml(page, 'RR123456785IN').events?.map((scan) => scan.time))
+      .toEqual(['2026-09-29T11:31:00.000Z', '2026-09-29T11:26:00.000Z']);
+  });
+
   it('reads scans named "Evri" on Evri UK\'s London clock and proposes Evri UK', () => {
     // Live shape (2026-10-16): Evri UK's wall clocks labelled "+00:00", an hour
     // after the instants of Evri UK's own history in summer.

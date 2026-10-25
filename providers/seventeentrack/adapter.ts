@@ -21,6 +21,7 @@ import { countryTimeZone, firstOccurrence } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
+import { correosOriginZone } from '../../carriers/correos-spain/clock.js';
 import { daiPostRelayZone } from '../../carriers/dai-post/clock.js';
 import { HYWL_CHINA_ZONE, hywlInChina } from '../../carriers/hywl/clock.js';
 import { placedInIndia } from '../../carriers/shiprocket/clock.js';
@@ -138,6 +139,16 @@ function relaysUtcClock(key: unknown): boolean {
 const CORREO_EL_SALVADOR = 19031;
 /** The origin post's scans, in Correos de El Salvador's words: "(salida)", "(recibido por EDI)". */
 const OUTBOUND = /\((?:salida|recibido por EDI)\)$/i;
+
+/**
+ * 17TRACK's carrier 19181, Correos Spain, shows Correos's wall clocks, worded
+ * "PHASE, summary, details", and puts Madrid's offset on them. On an item from
+ * abroad, Correos lists the origin post's scans at that post's wall clock
+ * (carriers/correos-spain/clock.ts): they are read on the clock of the country
+ * the S10 code's suffix names, as Correos's adapter reads them, and from a
+ * country on several clocks they keep their wall clock.
+ */
+const CORREOS_SPAIN = 19181;
 
 /**
  * 17TRACK's carrier 19251, Swiss Post, whose leg relays the destination post's
@@ -396,6 +407,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const daiPost = reported.key === DAI_POST;
     const usps = reported.key === USPS;
     const chile = reported.key === CORREOS_CHILE;
+    const correos = reported.key === CORREOS_SPAIN;
     for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
@@ -406,10 +418,14 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
         : hywl && hywlInChina(text(raw.location)) ? HYWL_CHINA_ZONE : null;
       // A USPS facility's clock in its state's zone, where its place names one.
       const facility = usps ? uspsScanZone(text(raw.location)) : null;
-      // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's, Correos de Chile's, Shiprocket's or DAI Post's, on which 17TRACK puts one offset for the whole parcel.
+      // Correos's copy of the origin post's scan on an item from abroad: that post's zone, or null for its wall clock.
+      const sent = correos ? correosOriginZone(number, { wording: text(raw.description) }) : undefined;
+      // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's, Correos de Chile's, Shiprocket's, DAI Post's or an origin post's, on which 17TRACK puts one offset for the whole parcel.
       const wall = relayed ? rawClock(raw)
-        : facility || relaysFacilityClock(name) || utc || nz || exchange || own || chile || shiprocket || daiPost ? facilityWall(raw) : null;
-      const zone = !wall ? null : relayed ?? facility ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
+        : facility || relaysFacilityClock(name) || utc || nz || exchange || own || chile || shiprocket || daiPost || sent !== undefined
+          ? facilityWall(raw) : null;
+      const zone = !wall ? null : relayed ?? facility ?? own ?? (sent !== undefined ? sent : abroad.has(index) ? abroad.get(index) ?? null
+        : exchange ? origin : utc ? 'UTC'
         : nz ? 'Pacific/Auckland' : chile ? facilityZone(text(raw.location)) ?? 'America/Santiago'
         : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null)
         : daiPost ? daiPostRelayZone(text(raw.description), text(raw.location)) : facilityZone(text(raw.location)));
@@ -426,8 +442,8 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
         latest.see(day, false);
         continue;
       }
-      if (wall && (abroad.has(index) || shiprocket) && !zone) {
-        // A scan NZ Post dated abroad, in a country on several clocks, or a Shiprocket row outside India, keeps its description as a wall time.
+      if (wall && (abroad.has(index) || shiprocket || sent !== undefined) && !zone) {
+        // A scan NZ Post dated abroad or an origin post's that Correos relays, in a country on several clocks, or a Shiprocket row outside India, keeps its description as a wall time.
         const local: CarrierEvent = { ...parsed, local_time: wall };
         delete local.time;
         events.push(local);

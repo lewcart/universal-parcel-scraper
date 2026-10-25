@@ -970,6 +970,16 @@ describe('status map answers', () => {
     expect(answer('yunda', null, 'Delivered')).toEqual(unknown);
   });
 
+  it("answers Xpressbees by its state wording, and leaves a bare delivery open on purpose", () => {
+    expect(answer('xpressbees', 'SYN', 'Picked Up')).toEqual(mapped('accepted'));
+    expect(answer('xpressbees', 'SYN', 'Out for Delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('xpressbees', 'SYN', 'RTO Delivered')).toEqual(mapped('returned'));
+    // The return's own delivery when the row's category is a return to origin.
+    expect(answer('xpressbees', 'SYN', 'Delivered')).toEqual(unknown);
+    expect(answer('xpressbees', null, 'Delivered')).toEqual(gap);
+    expect(answer('xpressbees', 'SYN', 'Shipment is on its way')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

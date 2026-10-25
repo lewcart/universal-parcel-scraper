@@ -17,6 +17,30 @@
       "confirmedBy": "live"
     },
     {
+      "code": "005",
+      "wording": "ENVÍO EN REPARTO",
+      "language": "es",
+      "stage": "out_for_delivery",
+      "confirmedBy": "portal",
+      "note": "The delivery round. The tracking page counts 005 among the codes of a shipment in progress."
+    },
+    {
+      "code": "006",
+      "wording": "ENVÍO ENTREGADO",
+      "language": "es",
+      "stage": "delivered",
+      "confirmedBy": "portal",
+      "note": "The tracking page counts 006 and 010 as delivered."
+    },
+    {
+      "code": "010",
+      "wording": "ENVÍO ENTREGADO",
+      "language": "es",
+      "stage": "delivered",
+      "confirmedBy": "portal",
+      "note": "The tracking page counts 006 and 010 as delivered. The code also comes with other wording, such as a parcel received by Correos de Chile, so only this wording reads as delivered."
+    },
+    {
       "wording": "RECIBIDO POR CORREOSCHILE",
       "language": "es",
       "stage": "accepted",

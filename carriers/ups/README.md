@@ -51,8 +51,8 @@ rendered status, after that wait.
 - The API's reply becomes the same result as the page's: the same codes, stages, clock
   rules and ship-to country. Its towns come in capitals and its places as codes; they are
   written like the page's ("Koeln, Germany", "Des Moines, IA, United States"), so a scan
-  read once from each source stays one scan. The page writes a delivery's place the API's
-  way ("KOELN, DE"), and it is rewritten the same way. The API names no access point, so its result
+  read once from each source stays one scan. The page writes a delivery's place, and its
+  delivered banner's, the API's way ("KOELN, DE"), and it is rewritten the same way. The API names no access point, so its result
   has no `pickup_point`.
 - Credentials UPS refuses (HTTP 400, 401 or 403 for a token, or a second 401 on a fresh
   token) fail the step at once for ten minutes, as a transport failure, instead of asking

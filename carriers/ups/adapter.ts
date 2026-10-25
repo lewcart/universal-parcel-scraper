@@ -309,9 +309,10 @@ export function parseUPSTrackingHtml(page: string, trackingNumber: string): Carr
   const progress = withoutIcons(clean($('#stApp_shpmtProgress .progress-step.active').text()));
   const currentStatus = upsStatus(`${statusText} ${progress}`);
   if (!statusText) statusText = progress || 'Tracking information received';
-  // Where a delivered parcel was left. The ship-to block names the recipient's
-  // town, not where the parcel is, so it never becomes the banner's place.
-  const location = clean($('#stApp_deliveredToAddress').last().text());
+  // Where a delivered parcel was left, written as the scans' places. The ship-to
+  // block names the recipient's town, not where the parcel is, so it never
+  // becomes the banner's place.
+  const location = pagePlace(clean($('#stApp_deliveredToAddress').last().text()));
   // The banner has no clock, so its event carries none.
   const bannerStage = upsBannerStage(statusText);
   const events: CarrierEvent[] = currentStatus === 'unknown'
@@ -567,7 +568,8 @@ function townCase(town: string): string {
 
 /**
  * A scan's place on the page. A delivery's comes in capitals with codes ("KOELN, DE",
- * "DES MOINES, IA, US"), and is written as the page writes every other scan's.
+ * "DES MOINES, IA, US"), and is written as the page writes every other scan's. A
+ * place without commas is kept: its last word could be a state as well as a country.
  */
 function pagePlace(location: string): string {
   const fields = location.split(/\s*,\s*/);

@@ -983,6 +983,13 @@ describe('UPS rendered page', () => {
     expect(result.events).toEqual([{ location: 'ZUERICH CH', description: 'Delivered', stage: 'delivered' }]);
   });
 
+  it('writes the banner\'s place as the scans\' places, and keeps one without commas', () => {
+    const place = (text: string) => parseUPSTrackingHtml(RENDERED_PAGE.replace('ZUERICH CH', text), TRACKING_NUMBER).events?.[0]?.location;
+    expect(place('ZUERICH, CH')).toBe('Zuerich, Switzerland');
+    expect(place('DES MOINES, IA, US')).toBe('Des Moines, IA, United States');
+    expect(place('LOS ANGELES CA')).toBe('LOS ANGELES CA');
+  });
+
   it('never places the banner in the ship-to town', () => {
     const result = parseUPSTrackingHtml(`
       <html><head><meta name="stapp-tracknum" content="${TRACKING_NUMBER}"></head>

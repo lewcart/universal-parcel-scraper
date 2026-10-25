@@ -343,6 +343,7 @@ import { statusMap as metropolitanWarehouse } from '../../carriers/metropolitan-
 import { statusMap as microExpress } from '../../carriers/micro-express/status.js';
 import { statusMap as midlandTransport } from '../../carriers/midland-transport/status.js';
 import { statusMap as mngKargo } from '../../carriers/mng-kargo/status.js';
+import { statusMap as mondialRelay } from '../../carriers/mondial-relay/status.js';
 import { statusMap as mongolInfinityPost } from '../../carriers/mongol-infinity-post/status.js';
 import { statusMap as morningGlobal } from '../../carriers/morning-global/status.js';
 import { statusMap as mrlGlobal } from '../../carriers/mrl-global/status.js';
@@ -629,7 +630,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
   'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, 'maruti-air': marutiAir, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,
   'mds-collivery': mdsCollivery, meest, 'meihoo-pegasus': meihooPegasus, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
-  'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mrw, mtscn, mylerz, nacex, naqel, nationex,
+  'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mondial-relay': mondialRelay, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mrw, mtscn, mylerz, nacex, naqel, nationex,
   'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,
   northline, 'nova-global': novaGlobal, 'now-couriers': nowCouriers, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,

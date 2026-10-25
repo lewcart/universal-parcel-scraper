@@ -702,6 +702,21 @@ describe('status map answers', () => {
     expect(answer('fedex', null, 'Shipment arriving On-Time')).toEqual(unknown);
   });
 
+  it("answers Mondial Relay by its French wording and InPost Spain by its codes, and leaves the last leg out on purpose", () => {
+    expect(answer('mondial-relay', null, 'Colis pris en charge en Locker')).toEqual(mapped('accepted'));
+    expect(answer('mondial-relay', null, 'Prise en charge de votre colis sur notre site logistique.')).toEqual(mapped('in_transit'));
+    expect(answer('mondial-relay', null, 'Disponible dans votre Point Relais')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('mondial-relay', null, 'Retiré par le destinataire')).toEqual(mapped('delivered'));
+    // Out for delivery only when a milestone is dated at it.
+    expect(answer('mondial-relay', null, 'Colis en route vers le point de livraison')).toEqual(gap);
+    // Wording no rule knows gets the parser's movement placeholder, not a stage of its own.
+    expect(answer('mondial-relay', null, 'Votre colis est arrivé')).toEqual(unknown);
+    expect(answer('mondial-relay', 'LMD.1002', 'Paquete en el destino')).toEqual(mapped('in_transit'));
+    expect(answer('mondial-relay', 'LMD.1004', 'Listo para recoger en Punto Pack')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('mondial-relay', 'EOL.9999', 'Entregado')).toEqual(mapped('delivered'));
+    expect(answer('mondial-relay', 'EOL.9999', 'Any wording at all')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

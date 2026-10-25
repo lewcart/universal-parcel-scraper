@@ -90,7 +90,8 @@ for another shipment → `SchemaError`.
   milestone at the scan that sends the parcel "en route vers le point de
   livraison". That scan, and no other at that instant, reads out for delivery;
   on a relay delivery it stays movement. The app's milestones are read the
-  same way.
+  same way. The parcel app's review asks the same map (`statusMap`), which
+  leaves that scan without a stage: the stored scan does not keep the milestone.
 - The website names the delivery country. A delivered parcel takes its delivery
   scan's clock as its delivery time, whichever source answers.
 - Website timestamps are offset-less Paris wall-clock. A bare calendar day stays

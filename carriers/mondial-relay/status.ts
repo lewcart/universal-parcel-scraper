@@ -14,6 +14,7 @@
  * when a more specific source has already set the shipment status.
  */
 import { classifyWording, type ClassifiedStatus, type ClassifiedWording, type Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /** Fold a French label to the form the phrase lists are written in. */
 export function comparableText(value: string): string {
@@ -195,3 +196,22 @@ export function inpostSpainStage(code: string, label: string, milestone: string)
 export function inpostSpainHeadlineStage(milestone: string): Stage | undefined {
   return HEADLINE_MILESTONES.get(milestone);
 }
+
+/**
+ * What the map says about one scan. Mondial Relay's own scans carry no code, so their French
+ * wording stages them; the last leg is out for delivery only when a milestone is dated at it,
+ * which the stored scan does not keep. InPost Spain's scans carry their code, staged as its
+ * page's parser stages them, save by the milestone the stored scan does not keep either.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    if (code) return inpostSpainStage(code, wording, '')?.stage;
+    if (comparableText(wording) === LAST_LEG) return undefined;
+    const classified = classifyStatus(wording);
+    return classified.status === 'unknown' ? undefined : classified.stage;
+  },
+  gaps: [{
+    wording: LAST_LEG,
+    note: 'Out for delivery when the out-for-delivery milestone is dated at it, as on a home delivery, else movement: the stored scan does not keep the milestone.',
+  }],
+};

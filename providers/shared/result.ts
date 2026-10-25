@@ -212,6 +212,7 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^confirmation of preparation of the shipment received[.!]?$/i.test(value)) return 'registered';
   // Correios Brazil's scans in an aggregator's English or Correios' Portuguese for an item posted abroad. Correios'
   // receipt follows the posting and the export, so it is transit here; the recipient still owes customs their tax number.
+  // Anjun words the sender's data the same way, under its code "forecast", which its own map reads as a registration.
   if (/^item posted[.!]?$|^objeto postado[.!]?$/i.test(value)) return 'accepted';
   if (/^item in transfer - please wait[.!]?$|^objeto em transferencia - por favor aguarde[.!]?$|^item received at the export unit in the country of origin[.!]?$|^item received by the brazilian post[.!]?$|^objeto recebido pelos correios do brasil[.!]?$/i.test(value)) return 'in_transit';
   if (/^need to inform (?:the )?recipient['’]?s cpf\/cnpj[.!]?$|^necessidade de informar (?:o )?cpf\/cnpj do destinatario[.!]?$/i.test(value)) return 'customs';

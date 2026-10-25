@@ -135,6 +135,30 @@ describe('Correos Spain response parsing', () => {
       .toMatchObject({ storedSources: ['correos-spain'], requireProviderCode: true });
   });
 
+  it("reads an origin post's scans on an item from abroad on that post's clock", () => {
+    const eventos = [
+      event('B030000V', '29/09/2026', '16:56:00', 'En oficina de cambio'),
+      event('B170000V', '29/09/2026', '17:01:00', 'En aduana de origen'),
+      event('D050000V', '05/10/2026', '09:11:05', 'Llegada a oficina de cambio'),
+      event('C010000V', '09/10/2026', '20:42:37', 'Salida de oficina de cambio'),
+    ];
+    const parse = (number: string, rows = eventos) => parseCorreosSpainTrackingResponse([envelope({ codEnvio: number, eventos: rows })], number);
+    const times = (number: string) => parse(number).events?.map((item) => [item.provider_code, item.time ?? `local ${item.local_time}`]);
+    // The suffix of the S10 code names the origin; Correos's own scans stay on Madrid's clock.
+    expect(times('RR123456785IN')).toEqual([
+      ['C010000V', '2026-10-09T20:42:37+02:00'],
+      ['D050000V', '2026-10-05T09:11:05+02:00'],
+      ['B170000V', '2026-09-29T17:01:00+05:30'],
+      ['B030000V', '2026-09-29T16:56:00+05:30'],
+    ]);
+    // An origin of several clocks keeps the wall clock, and Spain's own items Madrid's.
+    expect(times('RR123456785US')?.slice(2)).toEqual([['B170000V', 'local 2026-09-29T17:01:00'], ['B030000V', 'local 2026-09-29T16:56:00']]);
+    expect(parse('RR123456785US', eventos.slice(0, 1))).toMatchObject({ last_update: null, last_update_local: '2026-09-29T16:56:00' });
+    expect(times('RR123456785ES')?.slice(2)).toEqual([['B170000V', '2026-09-29T17:01:00+02:00'], ['B030000V', '2026-09-29T16:56:00+02:00']]);
+    // A stored row on the Madrid reading is taken over by its code and wall clock.
+    expect(sameInstantIdentityPolicy('correos-spain', { supportsScanMatching: true })).toMatchObject({ relabelledFrom: 'Europe/Madrid' });
+  });
+
   it('binds the envelope codEnvio and honors the codError result', () => {
     expect(() => parseCorreosSpainTrackingResponse([envelope({ codEnvio: 'PR123456789012346C' })], TRACKING_NUMBER))
       .toThrow(SchemaError);

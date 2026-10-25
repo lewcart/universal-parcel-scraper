@@ -65,7 +65,16 @@ Correos de Chile (`correos-chile`) are separate carriers.
   absent) and are read as `Europe/Madrid`.
 - The catalog zone is `Europe/Madrid` too. ParcelsApp ("Spain Post") and Ship24 ("Correos de
   España") relay the same wall clocks without a real offset, so they are read on that clock and
-  land on the instants the adapter gives.
+  land on the instants the adapter gives, except an origin post's scans (below).
+- On an item from abroad, the origin post's scans, at its outward office of exchange
+  (`B030000V`) and in its customs (`B170000V`), carry that post's wall clock: India Post's own
+  scans have the same minutes on Kolkata time, and Japan Post's on Tokyo time, where Madrid's
+  put them hours late. The country the S10 code's suffix names gives their zone, or they keep
+  `local_time` when it has several. The identity policy in [identity.ts](identity.ts)
+  (`relabelledFrom: 'Europe/Madrid'`) lets such a scan take over the row stored under the
+  Madrid reading, by wall clock and code. `C010000V` and the later codes stay on Madrid's
+  clock: on an item from abroad, the departure from the exchange office came after the
+  arrival in Spain.
 - The office (`nom_codired`) becomes `pickup_point` only while the parcel awaits collection.
   On a delivered parcel it is where the parcel *was* held and would read as a false pickup
   instruction.
@@ -95,6 +104,8 @@ Correos de Chile (`correos-chile`) are separate carriers.
 - An office the locator does not place within 10 km of its name keeps its name alone.
 - Canary Islands scans are read as Madrid time and can be one hour off: events carry no
   locality to key `Atlantic/Canary` on.
+- On an item bound abroad, the destination post's scans (`F010000V` to the delivery) are read as
+  Madrid time too: the reply does not name the destination.
 
 ## Testing
 

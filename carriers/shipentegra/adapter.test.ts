@@ -9,6 +9,7 @@ import { adapter, SHIPENTEGRA_API, ShipentegraTracker } from './adapter.js';
 import { normalizeShipentegraNumber, parseShipentegra, shipentegraWording } from './parser.js';
 import { shipentegraStage, shipentegraSummaryStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = '500000001';
 const IN_TRANSIT = '500000002';
@@ -238,9 +239,10 @@ describe('ShipEntegra HTTP adapter', () => {
   });
 
   it('asks once more after a request that did not reach ShipEntegra, and ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const retried = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed'))
       .mockResolvedValueOnce(reply(fixture('in-transit')));
-    await expect(carrier(retried).track({ number: IN_TRANSIT })).resolves.toMatchObject({ delivery_carrier: 'ups' });
+    await clock.settle(expect(carrier(retried).track({ number: IN_TRANSIT })).resolves.toMatchObject({ delivery_carrier: 'ups' }));
     expect(retried).toHaveBeenCalledTimes(2);
 
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
@@ -248,7 +250,7 @@ describe('ShipEntegra HTTP adapter', () => {
       signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(hanging).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toBeInstanceOf(UpstreamNetworkError);
+    await clock.settle(expect(carrier(hanging).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toBeInstanceOf(UpstreamNetworkError));
     // A busy runner can spend the budget before the request starts; a request that did start was aborted.
     expect(hanging.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(60);

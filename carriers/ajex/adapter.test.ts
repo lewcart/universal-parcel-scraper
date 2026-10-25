@@ -10,6 +10,7 @@ import { adapter, AJEX_LOGIN_API, AJEX_TRACK_API, AJEX_VISITOR_KEY, AjexTracker,
 import { ajexWording, normalizeAjexNumber, parseAjex } from './parser.js';
 import { ajexStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'AJA123406789013';
 const IN_TRANSIT = 'A1234567890';
@@ -296,21 +297,22 @@ describe('AJEX HTTP adapter', () => {
   });
 
   it('tries once more after a failed connection, and ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     let calls = 0;
     const flaky = service(() => {
       calls += 1;
       if (calls === 1) throw new TypeError('fetch failed');
       return sealed(fixture('delivered'));
     });
-    await expect(carrier(flaky).track({ number: DELIVERED })).resolves.toMatchObject({ status: 'delivered' });
+    await clock.settle(expect(carrier(flaky).track({ number: DELIVERED })).resolves.toMatchObject({ status: 'delivered' }));
     // The retry reuses the token the first try got.
     expect(flaky.mock.calls.map(([url]) => String(url))).toEqual([AJEX_LOGIN_API, AJEX_TRACK_API, AJEX_TRACK_API]);
     const slow = vi.fn<typeof fetch>((_input, init) => new Promise<Response>((_, reject) => {
       init?.signal?.addEventListener('abort', () => reject(init.signal!.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(slow).track({ number: DELIVERED }, { budgetMs: 60 }))
-      .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) });
+    await clock.settle(expect(carrier(slow).track({ number: DELIVERED }, { budgetMs: 60 }))
+      .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) }));
     expect(Date.now() - started).toBeLessThan(2000);
     expect(slow.mock.calls.length).toBeLessThanOrEqual(2);
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);

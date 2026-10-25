@@ -9,6 +9,7 @@ import { adapter, PTS_API, PtsTracker } from './adapter.js';
 import { normalizePtsNumber, parsePts } from './parser.js';
 import { ptsStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 // Synthetic PTS numbers, and the partner number of the parcel asked by it.
 const DELIVERED = '1000000001';
@@ -251,6 +252,7 @@ describe('PTS Worldwide Express HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -258,7 +260,7 @@ describe('PTS Worldwide Express HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: TRANSIT }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.length).toBeGreaterThanOrEqual(1);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);

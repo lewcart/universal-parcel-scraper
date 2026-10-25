@@ -9,6 +9,7 @@ import { adapter, J_AND_T_AU_API, J_AND_T_AU_APP_ID, J_AND_T_AU_SIGNING_KEY, J_A
 import { jAndTAuWording, normalizeJAndTAuNumber, parseJAndTAu } from './parser.js';
 import { jAndTAuStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 // Synthetic waybills in J&T Express Australia's layout; none is a real parcel.
 const DELIVERED = 'JTAU123406789013';
@@ -221,12 +222,13 @@ describe('J&T Express Australia HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init?.signal;
       signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow());
     // A busy runner can spend the budget before the request starts; a request that did start was aborted.
     expect(fetcher.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);

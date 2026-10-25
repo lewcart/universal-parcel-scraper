@@ -9,6 +9,7 @@ import { adapter, INDAH_LOGISTIK_API, IndahLogistikTracker } from './adapter.js'
 import { normalizeIndahLogistikNumber, parseIndahLogistik } from './parser.js';
 import { indahLogistikStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'ZZA1CS00000011';
 const IN_TRANSIT = 'ZZB1CS000000000022';
@@ -220,20 +221,21 @@ describe('Indah Logistik HTTP adapter', () => {
   });
 
   it('tries once more after a failed connection, and ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     let calls = 0;
     const flaky = vi.fn<typeof fetch>(async () => {
       calls += 1;
       if (calls === 1) throw new TypeError('fetch failed');
       return json(fixture('delivered'));
     });
-    await expect(carrier(flaky).track({ number: DELIVERED })).resolves.toMatchObject({ status: 'delivered' });
+    await clock.settle(expect(carrier(flaky).track({ number: DELIVERED })).resolves.toMatchObject({ status: 'delivered' }));
     expect(flaky).toHaveBeenCalledTimes(2);
     const slow = vi.fn<typeof fetch>((_input, init) => new Promise<Response>((_, reject) => {
       init?.signal?.addEventListener('abort', () => reject(init.signal!.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(slow).track({ number: DELIVERED }, { budgetMs: 60 }))
-      .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) });
+    await clock.settle(expect(carrier(slow).track({ number: DELIVERED }, { budgetMs: 60 }))
+      .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) }));
     expect(Date.now() - started).toBeLessThan(2000);
     expect(slow.mock.calls.length).toBeLessThanOrEqual(2);
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);

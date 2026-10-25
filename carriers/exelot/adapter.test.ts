@@ -10,6 +10,7 @@ import numbers from './numbers.json' with { type: 'json' };
 import { normalizeExelotNumber, parseExelot } from './parser.js';
 import { exelotStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'XLT000000001';
 const PICKUP = 'XLT000000002';
@@ -196,12 +197,13 @@ describe('Exelot HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init?.signal;
       signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: PICKUP }, { budgetMs: 60 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: PICKUP }, { budgetMs: 60 })).rejects.toThrow());
     // A busy runner can spend the budget before the request starts; a request that did start was aborted.
     expect(fetcher.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(50);

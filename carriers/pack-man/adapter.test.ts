@@ -9,6 +9,7 @@ import { normalizePackManNumber } from './number.js';
 import { parsePackMan } from './parser.js';
 import { isPackManBilling, packManStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'A-00000017';
 const IN_TRANSIT = 'A-00000024';
@@ -196,6 +197,7 @@ describe('Pack-Man HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -203,7 +205,7 @@ describe('Pack-Man HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.length).toBeGreaterThanOrEqual(1);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);

@@ -8,6 +8,7 @@ import { adapter, SAUDI_POST_API, SaudiPostTracker } from './adapter.js';
 import { normalizeSaudiPostNumber, parseSaudiPost } from './parser.js';
 import { saudiPostStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'CRDSAL0000000017';
 const IN_TRANSIT = 'RR000000005BD';
@@ -207,6 +208,7 @@ describe('Saudi Post HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -214,7 +216,7 @@ describe('Saudi Post HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 120 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 120 })).rejects.toThrow());
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);
   });

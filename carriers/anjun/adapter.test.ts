@@ -9,6 +9,7 @@ import { adapter, ANJUN_API, anjunClock, anjunToken, AnjunTracker } from './adap
 import { anjunWording, normalizeAnjunNumber, parseAnjun } from './parser.js';
 import { anjunStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'AJ260301000000101';
 const IN_TRANSIT = 'AJ260514000000201';
@@ -221,13 +222,14 @@ describe('Anjun HTTP adapter', () => {
   });
 
   it('tries once more after a failed connection, and ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     let calls = 0;
     const flaky = vi.fn<typeof fetch>().mockImplementation(async () => {
       calls += 1;
       if (calls === 1) throw new TypeError('fetch failed');
       return reply(fixture('delivered'));
     });
-    await expect(carrier(flaky).track({ number: DELIVERED })).resolves.toMatchObject({ status: 'delivered' });
+    await clock.settle(expect(carrier(flaky).track({ number: DELIVERED })).resolves.toMatchObject({ status: 'delivered' }));
     expect(flaky).toHaveBeenCalledTimes(2);
     // Each try builds its own token.
     const tokens = flaky.mock.calls.map(([, init]) => (init!.headers as Record<string, string>).token);
@@ -236,8 +238,8 @@ describe('Anjun HTTP adapter', () => {
       init?.signal?.addEventListener('abort', () => reject(init.signal!.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(slow).track({ number: DELIVERED }, { budgetMs: 60 }))
-      .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) });
+    await clock.settle(expect(carrier(slow).track({ number: DELIVERED }, { budgetMs: 60 }))
+      .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) }));
     expect(Date.now() - started).toBeLessThan(2000);
     expect(slow.mock.calls.length).toBeLessThanOrEqual(2);
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);

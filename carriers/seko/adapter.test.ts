@@ -8,6 +8,7 @@ import { adapter, SEKO_API, SekoTracker } from './adapter.js';
 import { normalizeSekoNumber, parseSeko } from './parser.js';
 import { sekoStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'SMPLE0000001';
 const IN_TRANSIT = 'SMP0000002';
@@ -212,8 +213,9 @@ describe('SEKO HTTP adapter', () => {
   });
 
   it('tries a request that fails to reach SEKO once more, and ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const flaky = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(reply(fixture('delivered')));
-    await expect(carrier(flaky).track({ number: DELIVERED }, { budgetMs: 2000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+    await clock.settle(expect(carrier(flaky).track({ number: DELIVERED }, { budgetMs: 2000 })).resolves.toMatchObject({ current_stage: 'delivered' }));
     expect(flaky).toHaveBeenCalledTimes(2);
 
     const signals: AbortSignal[] = [];
@@ -223,7 +225,7 @@ describe('SEKO HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(70);
     expect(Date.now() - started).toBeLessThan(2000);

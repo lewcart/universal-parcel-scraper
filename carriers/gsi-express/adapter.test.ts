@@ -11,6 +11,7 @@ import { adapter, GSI_EXPRESS_TRACKING, GsiExpressTracker } from './adapter.js';
 import { normalizeGsiExpressNumber, parseGsiExpress } from './parser.js';
 import { gsiExpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const CLEARED = '0000001';
 const DEPARTED = '0000002';
@@ -155,6 +156,7 @@ describe('GSI Express HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -162,7 +164,7 @@ describe('GSI Express HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: CLEARED }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: CLEARED }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.length).toBeGreaterThan(0);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);

@@ -8,6 +8,7 @@ import { adapter, EWE_LOOKUP, EWE_TRACE, eweLookupUrl, EweTracker, eweTraceUrl }
 import { eweWording, normalizeEweNumber, parseEweLookup, parseEweTrace } from './parser.js';
 import { eweStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'AMZ0000000001';
 const IN_TRANSIT = 'AMZ0000000002';
@@ -235,6 +236,7 @@ describe('EWE HTTP adapter', () => {
   });
 
   it('ends hanging reads inside the budget and tries once more after a network failure', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -242,7 +244,7 @@ describe('EWE HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(hanging).track({ number: DELIVERED }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(hanging).track({ number: DELIVERED }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(70);
     let calls = 0;
@@ -251,7 +253,7 @@ describe('EWE HTTP adapter', () => {
       if (calls <= 2) throw new TypeError('fetch failed');
       return reply(String(input).startsWith(EWE_TRACE) ? trace('trace-not-found') : lookup('lookup-delivered'));
     });
-    await expect(carrier(flaky).track({ number: EMETRO }, { budgetMs: 3000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+    await clock.settle(expect(carrier(flaky).track({ number: EMETRO }, { budgetMs: 3000 })).resolves.toMatchObject({ current_stage: 'delivered' }));
     expect(flaky).toHaveBeenCalledTimes(4);
   });
 

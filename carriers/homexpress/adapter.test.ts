@@ -10,6 +10,7 @@ import { SECTIGO_DV_R36 } from './certificate.js';
 import { normalizeHomexpressNumber, parseHomexpressTrace } from './parser.js';
 import { homexpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'TMS00000000001';
 const IN_TRANSIT = 'TMS00000000002';
@@ -165,6 +166,7 @@ describe('HOMEXPRESS HTTP adapter', () => {
   });
 
   it('ends hanging reads inside the budget and tries once more after a network failure', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -172,7 +174,7 @@ describe('HOMEXPRESS HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(hanging).track({ number: DELIVERED }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(hanging).track({ number: DELIVERED }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.length).toBeGreaterThan(0);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(70);
@@ -182,7 +184,7 @@ describe('HOMEXPRESS HTTP adapter', () => {
       if (calls === 1) throw new TypeError('fetch failed');
       return reply(trace('trace-delivered'));
     });
-    await expect(carrier(flaky).track({ number: DELIVERED }, { budgetMs: 3000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+    await clock.settle(expect(carrier(flaky).track({ number: DELIVERED }, { budgetMs: 3000 })).resolves.toMatchObject({ current_stage: 'delivered' }));
     expect(flaky).toHaveBeenCalledTimes(2);
   });
 

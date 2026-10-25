@@ -8,6 +8,7 @@ import { statusMap as nzCouriersMap } from '../nz-couriers/status.js';
 import { adapter, POST_HASTE_API, PostHasteTracker } from './adapter.js';
 import { parsePostHaste, postHasteQuery } from './parser.js';
 import { statusMap } from './status.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'ZZZZ 01234566';
 const IN_TRANSIT = '01234567';
@@ -177,12 +178,13 @@ describe('Post Haste HTTP adapter', () => {
   });
 
   it('gives its one read the whole budget and ends a hanging read inside it', async () => {
+    const clock = fakeBudgetClock();
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init?.signal;
       signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: DELIVERED }, { budgetMs: 60 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: DELIVERED }, { budgetMs: 60 })).rejects.toThrow());
     // A busy runner can spend the budget before the request starts; a request that did start was aborted.
     expect(fetcher.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(50);

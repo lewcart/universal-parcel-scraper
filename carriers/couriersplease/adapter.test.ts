@@ -8,6 +8,7 @@ import { adapter, COURIERSPLEASE_API, COURIERSPLEASE_PAGE, CouriersPleaseTracker
 import { couriersPleaseToken, couriersPleaseWording, normalizeCouriersPleaseNumber, parseCouriersPlease } from './parser.js';
 import { couriersPleaseStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'CPBZZZZ0000014';
 const IN_TRANSIT = 'CPBZZZZ0000028';
@@ -264,6 +265,7 @@ describe('CouriersPlease HTTP adapter', () => {
   });
 
   it('ends a hanging page inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -271,7 +273,7 @@ describe('CouriersPlease HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.length).toBeGreaterThanOrEqual(1);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(70);

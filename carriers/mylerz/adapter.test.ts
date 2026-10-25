@@ -9,6 +9,7 @@ import { adapter, MYLERZ_HOSTS, mylerzTrackingUrl, MylerzTracker } from './adapt
 import { normalizeMylerzNumber, parseMylerz } from './parser.js';
 import { mylerzStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = '63000000000101';
 const IN_TRANSIT = '63000000000202';
@@ -239,16 +240,17 @@ describe('Mylerz HTTP adapter', () => {
   });
 
   it('ends hanging reads inside the budget and leaves none running', async () => {
+    const clock = fakeBudgetClock();
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise<Response>((_resolve, reject) => {
       init?.signal?.addEventListener('abort', () => reject(init.signal!.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(hanging).track({ number: IN_TRANSIT }, { budgetMs: 60 }))
-      .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) });
+    await clock.settle(expect(carrier(hanging).track({ number: IN_TRANSIT }, { budgetMs: 60 }))
+      .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) }));
     expect(Date.now() - started).toBeLessThan(2000);
     expect(hanging.mock.calls.length).toBeLessThanOrEqual(8);
     expect(hanging.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
-    await expect(carrier(hanging).track({ number: IN_TRANSIT }, { budgetMs: 0 })).rejects.toMatchObject({ kind: 'budget' });
+    await clock.settle(expect(carrier(hanging).track({ number: IN_TRANSIT }, { budgetMs: 0 })).rejects.toMatchObject({ kind: 'budget' }));
   });
 
   it('routes a barcode filed under Mylerz to the adapter', async () => {

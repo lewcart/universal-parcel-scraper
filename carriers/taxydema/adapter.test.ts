@@ -8,6 +8,7 @@ import { adapter, TAXYDEMA_API, TaxydemaTracker, taxydemaLookupUrl } from './ada
 import { normalizeTaxydemaNumber, parseTaxydema, taxydemaWording } from './parser.js';
 import { statusMap, taxydemaStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = '400000000017';
 const IN_TRANSIT = '400000000024';
@@ -200,6 +201,7 @@ describe('Taxydema HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -207,7 +209,7 @@ describe('Taxydema HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.length).toBeGreaterThanOrEqual(1);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);

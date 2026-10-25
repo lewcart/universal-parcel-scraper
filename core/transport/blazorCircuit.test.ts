@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { blazorApp, callJs, HUB_TOKEN, htmlFrames, invocation, join, render, started, writeBatch, type AppOptions } from '../testing/blazor.js';
 import { packMessage } from './blazor.js';
 import { readBlazorPage, type BlazorPageLookup } from './blazorCircuit.js';
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const APP = 'https://tracker.example/app/';
 const PAGE = `${APP}track/ZZ1`;
@@ -158,6 +159,7 @@ describe('Blazor Server circuit', () => {
   });
 
   it('ends a hanging long poll at the lookup’s deadline', async () => {
+    const clock = fakeBudgetClock();
     const { fetcher } = app({});
     fetcher.mockImplementationOnce(async () => new Response(SHELL))
       .mockImplementationOnce(async () => Response.json({ connectionToken: HUB_TOKEN, availableTransports: [{ transport: 'LongPolling', transferFormats: ['Binary'] }] }))
@@ -166,7 +168,7 @@ describe('Blazor Server circuit', () => {
         signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
       }));
     const begun = Date.now();
-    await expect(lookup(fetcher, { deadline: performance.now() + 80 })).rejects.toThrow();
+    await clock.settle(expect(lookup(fetcher, { deadline: performance.now() + 80 })).rejects.toThrow());
     // A busy runner can spend the budget before the long poll starts; a long poll that did start was aborted.
     expect(fetcher.mock.calls[2]?.[1]?.signal?.aborted ?? true).toBe(true);
     expect(Date.now() - begun).toBeLessThan(2_000);

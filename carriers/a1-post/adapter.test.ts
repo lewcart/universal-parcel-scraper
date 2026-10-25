@@ -8,6 +8,7 @@ import { A1_POST_PAGE, A1PostTracker, a1PostPageUrl, adapter } from './adapter.j
 import { normalizeA1PostNumber, parseA1Post } from './parser.js';
 import { a1PostScan, a1PostStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 // Synthetic USPS package barcodes whose check digits pass.
 const PARTNER = '9200190000000000000016';
@@ -177,6 +178,7 @@ describe('A1 POST HTTP adapter', () => {
   });
 
   it('ends a hanging read inside the budget', async () => {
+    const clock = fakeBudgetClock();
     const signals: AbortSignal[] = [];
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init!.signal!;
@@ -184,7 +186,7 @@ describe('A1 POST HTTP adapter', () => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: PARTNER }, { budgetMs: 80 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: PARTNER }, { budgetMs: 80 })).rejects.toThrow());
     expect(signals.length).toBeGreaterThanOrEqual(1);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
     expect(Date.now() - started).toBeLessThan(2000);

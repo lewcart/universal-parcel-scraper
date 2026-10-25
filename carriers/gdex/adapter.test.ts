@@ -8,6 +8,7 @@ import { adapter, GDEX_API, GdexTracker } from './adapter.js';
 import { gdexWording, normalizeGdexNumber, parseGdex } from './parser.js';
 import { gdexStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'MY00000000017';
 const IN_TRANSIT = 'MY00000000024';
@@ -204,12 +205,13 @@ describe('GDEX HTTP adapter', () => {
   });
 
   it('gives its one read the whole budget and ends a hanging read inside it', async () => {
+    const clock = fakeBudgetClock();
     const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init?.signal;
       signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
     }));
     const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 60 })).rejects.toThrow();
+    await clock.settle(expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 60 })).rejects.toThrow());
     // A busy runner can spend the budget before the request starts; a request that did start was aborted.
     expect(fetcher.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
     expect(Date.now() - started).toBeGreaterThanOrEqual(50);

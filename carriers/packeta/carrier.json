@@ -33,6 +33,7 @@
   },
   "capabilities": [
     "history",
+    "location",
     "sender_name",
     "pickup_point",
     "delivered_at"

@@ -9,7 +9,7 @@ import { zonedTime } from '../../core/time/index.js';
 import { clean, cleanScalar, fetchBounded, parseJsonBytes, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { classifyPacketaStatus, packetaEventStage } from './status.js';
-import { packetaEventLinks, packetaEventText, type PacketaEventLink } from './text.js';
+import { packetaEventLinks, packetaEventText, packetaPlacedText, type PacketaEventLink } from './text.js';
 
 // Protocol provenance:
 // - Prior art (structure + contract, verified independently below, MIT):
@@ -39,9 +39,9 @@ function parsedTime(value: unknown): { iso: string; timestamp: number } | null {
   if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(raw)) return null;
   // Packeta emits naive wall-clock times with no offset. The backend stamps
   // Europe/Prague time (verified against real parcels by the prior-art client);
-  // Romania (EET) depot scans can therefore be off by one hour. There is no
-  // per-event locality to do better, so ordering within a parcel is preserved
-  // while the zone caveat stays documented here instead of inventing UTC.
+  // Romania (EET) depot scans can therefore be off by one hour. Ordering
+  // within a parcel is preserved while the zone caveat stays documented here
+  // instead of inventing UTC.
   return zonedTime(raw, 'yyyy-MM-dd HH:mm:ss', 'Europe/Prague');
 }
 
@@ -104,16 +104,17 @@ export function parsePacketaTrackingResponse(payload: unknown, trackingNumber: s
     // A hand-off sentence links the partner's number to its tracker. The
     // number stays in the wording; the link names the partner.
     const raw = typeof rawEvent.text === 'string' ? rawEvent.text : '';
-    const description = packetaEventText(raw);
-    if (!time || !description) return;
-    const identity = `${time.iso}\u0000${description}`;
+    const sentence = packetaEventText(raw);
+    if (!time || !sentence) return;
+    const { description, location } = packetaPlacedText(sentence);
+    const identity = `${time.iso}\u0000${sentence}`;
     if (seen.has(identity)) return;
     seen.add(identity);
     const stage = packetaEventStage(description);
     parsed.push({
       // Unrecognized sentences keep no stage so schema drift surfaces as a
       // data outcome instead of a wrong movement claim.
-      event: { time: time.iso, location: '', description, ...(stage ? { stage } : {}) },
+      event: { time: time.iso, location, description, ...(stage ? { stage } : {}) },
       links: packetaEventLinks(raw),
       timestamp: time.timestamp,
       index,

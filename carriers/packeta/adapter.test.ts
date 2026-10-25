@@ -241,9 +241,10 @@ describe('Packeta response parsing', () => {
   });
 
   it('produces every capability carrier.json declares', () => {
-    expect(CAPABILITIES).toEqual(['history', 'sender_name', 'pickup_point', 'delivered_at']);
+    expect(CAPABILITIES).toEqual(['history', 'location', 'sender_name', 'pickup_point', 'delivered_at']);
     const result = parsePacketaTrackingResponse({ item: packet() }, TRACKING_NUMBER);
     expect(result.events?.length).toBeGreaterThan(0);
+    expect(result.events?.find((event) => event.location)).toMatchObject({ description: 'The parcel is ready for pickup.', location: 'Z-BOX Central 5' });
     expect(result.sender_name).toBe('Example Sender s.r.o.');
     expect(result.pickup_point).toBe('Example Pickup Point, Example Street 1');
     expect(result.delivered_at).toBe('2026-07-07T13:00:00+02:00');
@@ -306,7 +307,7 @@ describe('Packeta hand-off to a delivery partner', () => {
     expect(result).not.toHaveProperty('pickup_point');
     expect(result.events?.map((event) => [event.description, event.stage])).toEqual([
       [`The parcel has been handed over to the carrier. Tracking number: ${DPD_NUMBER}`, 'in_transit'],
-      ['We have successfully received the parcel for transport. DEPO Example', 'in_transit'],
+      ['We have successfully received the parcel for transport.', 'in_transit'],
       ['The parcel is currently on its way to the depot.', 'in_transit'],
       [`The parcel has been assigned a tracking number: ${DPD_NUMBER} and will soon be handed over to the carrier.`, 'registered'],
       ['We are aware of your parcel and are waiting for the sender to hand it over to us.', 'registered'],
@@ -365,6 +366,26 @@ describe('Packeta hand-off to a delivery partner', () => {
     expect(policy?.matches?.(incoming, { ...stored, description: raw.replaceAll(DPD_NUMBER, '01234567890135W') })).toBe(false);
     expect(policy?.matches?.(incoming, { ...stored, location: 'Example' })).toBe(false);
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+
+  it('reads the depot or point a sentence names as its place, and keeps a row stored with it in the sentence', () => {
+    const result = parsePacketaTrackingResponse({ item: packet({ trackingDetails: [
+      { text: 'Your parcel has arrived at the depot Example-East, Example Street 2/4. We’re now preparing it for delivery.', time: '2026-07-06 05:00:00' },
+      { text: 'We have successfully received the parcel for transport. DEPO Example, Example Street', time: '2026-07-05 09:00:00' },
+      { text: 'We have successfully received the parcel for transport.', time: '2026-07-04 09:00:00' },
+    ] }) }, TRACKING_NUMBER);
+    expect(result.events?.map((event) => [event.description, event.location, event.stage])).toEqual([
+      ['Your parcel has arrived at the depot. We’re now preparing it for delivery.', 'Example-East, Example Street 2/4', 'in_transit'],
+      ['We have successfully received the parcel for transport.', 'DEPO Example, Example Street', 'in_transit'],
+      ['We have successfully received the parcel for transport.', '', 'in_transit'],
+    ]);
+    const policy = sameInstantIdentityPolicy('packeta', { supportsScanMatching: true });
+    const incoming = { stage: 'in_transit', description: 'We have successfully received the parcel for transport.', location: 'DEPO Example, Example Street', providerCode: '' };
+    const stored = { ...incoming, description: `${incoming.description} DEPO Example, Example Street`, location: '' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(incoming, { ...stored, description: `${incoming.description} DEPO Other` })).toBe(false);
+    const arrival = { ...incoming, description: 'Your parcel has arrived at the depot. We’re now preparing it for delivery.', location: 'Example-East' };
+    expect(policy?.matches?.(arrival, { ...arrival, description: 'Your parcel has arrived at the depot Example-East. We’re now preparing it for delivery.', location: '' })).toBe(true);
   });
 });
 

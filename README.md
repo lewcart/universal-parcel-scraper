@@ -87,6 +87,9 @@ for (const scan of result.events) {
 `source` names who answered and `attempts` lists what was tried. With no history, `track()`
 throws a `TrackingError` carrying both. [Runnable example](examples/node.mjs).
 
+`language` (`'fr'`, `'de-CH'`) asks carriers that can word their scans in the reader's
+language to do so; the others answer as usual.
+
 Besides the scans, `result` carries what the carrier shows about the parcel, such as
 `expected_delivery`, `weight_kg`, `destination_country`, the shipping service in
 `service_name` or the duties and fees an import owes in `import_charges`.

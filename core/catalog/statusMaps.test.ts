@@ -193,6 +193,11 @@ describe('status map answers', () => {
     expect(answer('swiss-post', 'LETTER.*.106.859', 'Your shipment will shortly be handed over to the Swiss Post')).toEqual(mapped('registered'));
     expect(answer('swiss-post', 'LETTER.*.93.9112', 'Enquiry initiated')).toEqual(gap);
     expect(answer('swiss-post', 'PARCEL.*.1.4000', 'Delivered — Revocation')).toEqual(unknown);
+    // The tracker's other languages: the code still decides, and a revoked scan has no stage in any of them.
+    expect(answer('swiss-post', 'PARCEL.*.1.4000', 'Distribué')).toEqual(mapped('delivered'));
+    for (const revoked of ['Distribué — Révocation', 'Zugestellt — Widerruf', 'Recapitato — Revoca']) {
+      expect(answer('swiss-post', 'PARCEL.*.1.4000', revoked)).toEqual(unknown);
+    }
     expect(answer('swiss-post', 'PARCEL.*.1.9224', 'Order triggered by recipient: forward')).toEqual(gap);
     expect(answer('swiss-post', 'LETTER.*.90.1800', 'Delay')).toEqual(gap);
     expect(answer('swiss-post', 'PARCEL.*.0.501', 'Picked up at the client')).toEqual(mapped('accepted'));

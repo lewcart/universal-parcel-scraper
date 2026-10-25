@@ -52,6 +52,17 @@ describe('standalone tracker', () => {
     expect(lookup.mock.calls[0]![1].signal).toBeInstanceOf(AbortSignal);
   });
 
+  it("hands the reader's language to the carrier, and refuses one that is not a tag's length of text", async () => {
+    const lookup = vi.fn().mockResolvedValue({ status: 'in_transit', events: [{ time: '2026-01-02T12:00:00Z', description: 'In transit' }] });
+    const tracker = createTracker({ registry: registry(lookup), providers: [] });
+    await tracker.track({ number, language: 'fr-CH' });
+    await tracker.track({ number, language: null });
+    expect(lookup.mock.calls.map(([input]) => input.language)).toEqual(['fr-CH', undefined]);
+    for (const language of [42, 'x'.repeat(36)]) {
+      await expect(tracker.track({ number, language: language as string })).rejects.toThrow('Invalid language');
+    }
+  });
+
   it('records a single-step lookup once, leaving it to an adapter that records its own steps', async () => {
     const lookups: string[] = [];
     const recorder = { step() {}, lookup: ({ carrier }: { carrier: string }) => { lookups.push(carrier); } };

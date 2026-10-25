@@ -130,6 +130,10 @@ it lacks, such as the estimate, destination or weight, and `direct` keeps the ca
 as it came. Otherwise, even when every fallback fails, the carrier's answer stands. Hosts that
 route lookups themselves apply the same rule with `isPartialAnswer` and `fillPartialAnswer`.
 The `countryHint` input is still accepted but no longer affects a lookup.
+The `language` input, the reader's language as a BCP 47 tag, goes to the carrier's adapter
+(`readerLanguage`). An adapter whose tracker words its scans in that language asks in it, and
+the others ignore it. Stages come from codes, not from the wording, and the carrier's identity
+policy lets a scan worded in another language keep its stored row.
 One deadline and one cancellation signal cover the whole call. The answer lists every
 attempt with its source and outcome.
 

@@ -26,12 +26,21 @@ the retry fits in the rest.
    My Post 24 terminal holding the parcel, only while it waits there. Optional:
    if it fails, the parcel has no pickup point.
 
-Event wording comes from `core/rest/translations/en/shipment-text-messages`,
-fetched once per process and only when there are events. A load that fails
-or comes back empty is tried again ten minutes later; until then events fall
-back to their own wording, then to the built-in labels. Keys are dotted
-patterns with `*` wildcards; the most specific match of the same length wins,
-and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
+Event wording comes from `core/rest/translations/{language}/shipment-text-messages`,
+fetched once per process and language, and only when there are events. A load
+that fails or comes back empty is tried again ten minutes later; until then
+events fall back to their own wording, then to the built-in labels. Keys are
+dotted patterns with `*` wildcards; the most specific match of the same length
+wins, and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own
+flags.
+
+The table exists in English, German, French and Italian, and the lookup's
+`language` picks one; any other language gets English (the tracker itself
+answers it with German). Only the table changes: the event and shipment replies
+are the same in every language. Stages come from codes, and a revoked scan is
+recognised by its sub-event's label in all four. The identity policy in
+[app.ts](app.ts) lets a scan reworded in another language take over its stored
+row by provider code, instant and location, unless one of the two is revoked.
 
 ## Notes
 

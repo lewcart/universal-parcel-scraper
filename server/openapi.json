@@ -535,6 +535,14 @@
               "null"
             ]
           },
+          "language": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 35,
+            "description": "The reader's language as a BCP 47 tag, such as fr or de-CH. Carriers whose tracker words its scans in it answer in it; the others ignore it."
+          },
           "budgetMs": {
             "type": "integer",
             "minimum": 1,

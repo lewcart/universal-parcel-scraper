@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { LookupBudget } from '../../core/adapter/index.js';
+import type { AdapterEnvironment, LookupBudget } from '../../core/adapter/index.js';
 import { carrierErrorKind, IndeterminateError, NotFoundError, UpstreamHttpError } from '../../core/errors/index.js';
 import { delayedFetcher } from '../../core/testing/hang.js';
 import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import type { JsonObject } from '../../core/types.js';
-import { parseSwissPostShipment, swissPostPickupPoint, SwissPostTracker } from './adapter.js';
+import { adapter, parseSwissPostShipment, swissPostPickupPoint, SwissPostTracker } from './adapter.js';
 import { EVENT_STAGE_BY_CODE, swissPostEventStage } from './status.js';
 
 const WRONG_SWISS_POST_NUMBER = '989999999999999999';
@@ -638,6 +638,43 @@ describe('Swiss Post network failure recovery', () => {
     // Half of the 12-second budget, then the retry within the rest.
     expect(search.ended).toEqual([6_000, 6_300]);
     expect(search.fetcher).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("Swiss Post in the reader's language", () => {
+  const SHIPMENT = '993412345612345678';
+  // Swiss Post's wording of the fixture's newest scan in its four languages.
+  const LOADING: Record<string, string> = { en: 'Loading into delivery vehicle', de: 'Verlad in Zustellfahrzeug',
+    fr: 'Chargement dans le véhicule de livraison ', it: 'Caricamento nel veicolo di consegna' };
+
+  function lookup() {
+    const { shipment, events } = outForDelivery();
+    const urls: string[] = [];
+    const fetcher: typeof fetch = async (input) => {
+      const url = String(input);
+      urls.push(url);
+      if (url.endsWith('/user')) return Response.json({ userIdentifier: 'unit-test-user' }, { headers: { 'x-csrf-token': 'unit-test-csrf' } });
+      if (url.includes('/history?')) return Response.json({ hash: 'unit-test-hash' });
+      if (url.includes('/history/not-included/')) return Response.json([shipment]);
+      if (url.endsWith('/events')) return Response.json(events);
+      const language = /\/translations\/(\w+)\//.exec(url)?.[1] ?? '';
+      return Response.json({ 'shipment-text--': { 'PARCEL.*.1.1003.INLAND': LOADING[language] } });
+    };
+    return { urls, track: adapter({ fetcher } as AdapterEnvironment).track };
+  }
+  const tables = (urls: string[]) => urls.filter((url) => url.includes('/translations/')).map((url) => url.split('/').at(-2));
+
+  it('words the scans in a language Swiss Post has, else in English, with one table per language', async () => {
+    const app = lookup();
+    for (const [language, wording] of [['fr-CH', 'Chargement dans le véhicule de livraison'], ['de', 'Verlad in Zustellfahrzeug'],
+      ['IT', 'Caricamento nel veicolo di consegna'], ['es', 'Loading into delivery vehicle'], [null, 'Loading into delivery vehicle'],
+      ['fr', 'Chargement dans le véhicule de livraison']] as const) {
+      const result = await app.track({ number: SHIPMENT, language });
+      // The stage comes from the code, whatever the wording.
+      expect(result).toMatchObject({ current_stage: 'out_for_delivery', last_status_text: wording });
+      expect(result.events?.[0]).toMatchObject({ description: wording, provider_code: 'PARCEL.*.1.1003' });
+    }
+    expect(tables(app.urls)).toEqual(['fr', 'de', 'it', 'en']);
   });
 });
 

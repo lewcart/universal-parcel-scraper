@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { AdapterRegistry, lookupBudget, type AdapterEnvironment } from './index.js';
+import { AdapterRegistry, lookupBudget, readerLanguage, type AdapterEnvironment } from './index.js';
 import { TransportError } from '../errors/index.js';
 import { trackCarrier } from './track.js';
 import { NOOP_RECORDER } from '../telemetry/index.js';
@@ -80,6 +80,17 @@ describe('consumer dispatch', () => {
       expect(held.remainingMs()).toBeGreaterThan(2 ** 31 - 1_000);
       expect(held.remainingMs()).toBeLessThanOrEqual(2 ** 31 - 1);
     }
+  });
+
+  it("reads the primary subtag of the reader's language among those an adapter supports", () => {
+    const supported = ['en', 'de', 'fr', 'it'] as const;
+    expect(readerLanguage({ language: 'fr' }, supported)).toBe('fr');
+    expect(readerLanguage({ language: 'de-CH' }, supported)).toBe('de');
+    expect(readerLanguage({ language: ' IT_ch ' }, supported)).toBe('it');
+    for (const language of [undefined, null, '', 'es', 'french', 'fr;q=0.9', 'zh-Hant-TW', 'f']) {
+      expect(readerLanguage({ language }, supported)).toBeUndefined();
+    }
+    expect(readerLanguage({ language: 42 as unknown as string }, supported)).toBeUndefined();
   });
 
   it('refuses a placeholder number before any adapter is asked, and hands every other number on as given', async () => {

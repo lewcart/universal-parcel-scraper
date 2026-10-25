@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 import makeFetchCookie from 'fetch-cookie';
 import { CookieJar } from 'tough-cookie';
-import { lookupBudget, type AdapterFactory, type LookupBudget, type TrackingContext } from '../../core/adapter/index.js';
+import { lookupBudget, readerLanguage, type AdapterFactory, type LookupBudget, type TrackingContext } from '../../core/adapter/index.js';
 import { IndeterminateError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../generated/catalog.js';
@@ -10,7 +10,8 @@ import { withNetworkRetry } from '../../core/runner/networkRetry.js';
 import { decodeText, fetchBounded, parseJsonBytes } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import {
-  FALLBACK_EVENT_LABELS, GLOBAL_STATUS_STAGE, STAGE_STATUS, STATUS_MAP, swissPostEventStage,
+  FALLBACK_EVENT_LABELS, GLOBAL_STATUS_STAGE, STAGE_STATUS, STATUS_MAP, SWISS_POST_LANGUAGES, swissPostEventStage,
+  type SwissPostLanguage,
 } from './status.js';
 import { DESTINATION_EVENTS, swissPostOriginZone } from './clock.js';
 
@@ -18,10 +19,12 @@ import { DESTINATION_EVENTS, swissPostOriginZone } from './clock.js';
 // creates a throwaway user, echoes a CSRF token, and keys the search result on
 // a hash. Every call in that sequence shares one cookie jar.
 const API_BASE = 'https://service.post.ch/ekp-web/api';
-const TRANSLATIONS_URL = 'https://service.post.ch/ekp-web/core/rest/translations/en/shipment-text-messages';
+/** The tracker's wording table in one of its languages; the event replies are the same in all of them. */
+const translationsUrl = (language: SwissPostLanguage) =>
+  `https://service.post.ch/ekp-web/core/rest/translations/${language}/shipment-text-messages`;
 const PROVIDER = 'Swiss Post';
 const REQUEST_TIMEOUT_MS = 10_000;
-/** A translation table that failed to load, or came back empty, is asked for again after this. */
+/** A wording table that failed to load, or came back empty, is asked for again after this. */
 const TRANSLATION_RETRY_MS = 10 * 60_000;
 /** The user, search, result, event, translation and pickup office calls, each at its own bound. */
 const DEFAULT_BUDGET_MS = 6 * REQUEST_TIMEOUT_MS;
@@ -360,9 +363,9 @@ export function parseSwissPostShipment(
 }
 
 export class SwissPostTracker {
-  #translations: Record<string, string> | null = null;
-  /** When the table may be asked for again: while one load runs, and for a while after one fails. */
-  #translationRetryAt = 0;
+  readonly #translations = new Map<SwissPostLanguage, Record<string, string>>();
+  /** When a table may be asked for again: while one load runs, and for a while after one fails. */
+  readonly #translationRetryAt = new Map<SwissPostLanguage, number>();
   readonly #fetcher: typeof fetch | undefined;
 
   constructor(options: SwissPostOptions = {}) {
@@ -394,16 +397,18 @@ export class SwissPostTracker {
   }
 
   /**
-   * Cached for the process: the table is large, static, and shared by every lookup. Lookups
-   * that come while it loads, or within ten minutes of a failed or empty load, go without it
-   * and fall back to the event's own wording; the first after that asks again.
+   * Cached for the process, one per language: a table is large, static, and shared by every
+   * lookup in its language. Lookups that come while it loads, or within ten minutes of a failed
+   * or empty load, go without it and fall back to the event's own wording; the first after
+   * that asks again.
    */
-  async loadTranslations(fetcher: typeof fetch, budget?: LookupBudget): Promise<Record<string, string>> {
-    if (this.#translations) return this.#translations;
-    if (Date.now() < this.#translationRetryAt) return {};
-    this.#translationRetryAt = Infinity;
+  async loadTranslations(fetcher: typeof fetch, budget?: LookupBudget, language: SwissPostLanguage = 'en'): Promise<Record<string, string>> {
+    const cached = this.#translations.get(language);
+    if (cached) return cached;
+    if (Date.now() < (this.#translationRetryAt.get(language) ?? 0)) return {};
+    this.#translationRetryAt.set(language, Infinity);
     try {
-      const payload = await this.readJson(fetcher, TRANSLATIONS_URL, { headers: HEADERS }, budget);
+      const payload = await this.readJson(fetcher, translationsUrl(language), { headers: HEADERS }, budget);
       const raw = isRecord(payload) && isRecord(payload['shipment-text--'])
         ? payload['shipment-text--']
         : {};
@@ -411,23 +416,24 @@ export class SwissPostTracker {
         Object.entries(raw).filter((entry): entry is [string, string] => typeof entry[1] === 'string'),
       );
       if (Object.keys(translations).length === 0) {
-        this.#translationRetryAt = Date.now() + TRANSLATION_RETRY_MS;
+        this.#translationRetryAt.set(language, Date.now() + TRANSLATION_RETRY_MS);
         return {};
       }
-      this.#translations = translations;
+      this.#translations.set(language, translations);
       return translations;
     } catch (error) {
       // A lookup that ended says nothing about the table: the next one asks again.
       if (budget && ended(budget)) {
-        this.#translationRetryAt = 0;
+        this.#translationRetryAt.set(language, 0);
         throw error;
       }
-      this.#translationRetryAt = Date.now() + TRANSLATION_RETRY_MS;
+      this.#translationRetryAt.set(language, Date.now() + TRANSLATION_RETRY_MS);
       return {};
     }
   }
 
-  async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
+  /** The shipment, its scans worded in `language`. */
+  async fetch(trackingNumber: string, context: TrackingContext = {}, language: SwissPostLanguage = 'en'): Promise<CarrierResult> {
     const budget = lookupBudget(context, DEFAULT_BUDGET_MS);
     const fetcher = makeFetchCookie(this.#fetcher ?? fetch, new CookieJar());
     const userResult = await withNetworkRetry(budget, (timeoutMs) => fetchBounded(`${API_BASE}/user`, { headers: HEADERS, signal: budget.signal }, {
@@ -490,7 +496,7 @@ export class SwissPostTracker {
         if (ended(budget)) throw error;
       }
     }
-    const translations = events.length > 0 ? await this.loadTranslations(fetcher, budget) : {};
+    const translations = events.length > 0 ? await this.loadTranslations(fetcher, budget, language) : {};
     const result = parseSwissPostShipment(item, events, translations);
     // The pickup notice names the site holding the parcel; that site's record gives its name and address.
     const office = result.current_stage === 'ready_for_pickup' ? swissPostPickupOffice(item) : '';
@@ -528,6 +534,7 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: 'swiss-post',
     steps: ['direct'],
-    track: (input, context) => tracker.fetch(input.number, context),
+    // Swiss Post words its scans in the reader's language when it has one, else in English.
+    track: (input, context) => tracker.fetch(input.number, context, readerLanguage(input, SWISS_POST_LANGUAGES) ?? 'en'),
   };
 };

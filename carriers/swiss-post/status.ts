@@ -150,14 +150,25 @@ export const GLOBAL_STATUS_STAGE: Record<string, Stage> = {
 /** The `globalStatus` codes with a known meaning. A status-only answer carries its code as the status text. */
 export const SWISS_POST_GLOBAL_STATUSES: readonly string[] = Object.freeze(Object.keys(GLOBAL_STATUS_STAGE));
 
+/** The languages the tracker words its scans in; it answers any other with German. */
+export const SWISS_POST_LANGUAGES = ['en', 'de', 'fr', 'it'] as const;
+export type SwissPostLanguage = (typeof SWISS_POST_LANGUAGES)[number];
+
+/** A revoked scan's wording ends with its sub-event's label, in any of the tracker's languages. */
+const REVOKED = /— (?:revocation|révocation|widerruf|revoca)$/i;
+
+/** Whether a scan's wording is that of a revoked scan ("Delivered — Revocation", "Distribué — Révocation"). */
+export function swissPostRevoked(wording: string): boolean {
+  return REVOKED.test(wording.trim());
+}
+
 /**
  * What the map says about one scan. The map reads the last segment of the
- * dotted event code. A revoked scan's wording ends with its sub-event's label,
- * "— Revocation", and takes no stage.
+ * dotted event code. A revoked scan takes no stage.
  */
 export const statusMap: CarrierStatusMap = {
   codeKey: (code) => code.split('.').at(-1) ?? code,
-  stage: (code, wording) => (code && !wording.includes('— revocation') ? swissPostEventStage(code) : undefined),
+  stage: (code, wording) => (code && !swissPostRevoked(wording) ? swissPostEventStage(code) : undefined),
   gaps: [
     { code: '9112', note: 'An enquiry note, not a movement: the shipment summary decides the stage.' },
     { code: '1800', note: 'A delay notice, not a movement: the shipment summary decides the stage.' },

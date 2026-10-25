@@ -44,6 +44,8 @@ export interface ParcelInput {
   /** @deprecated Accepted for compatibility; it no longer affects a lookup. */
   countryHint?: string | null;
   trackingUrl?: string | null;
+  /** The reader's language as a BCP 47 tag ("fr", "de-CH"), for carriers whose tracker words its scans in it. */
+  language?: string | null;
   /** Ask this enabled provider alone, whatever its coverage: no recognition, carrier lookup or hand-off. */
   source?: UniversalSource;
 }
@@ -224,6 +226,8 @@ export function createTracker(options: TrackerOptions = {}) {
     if (input.countryHint != null && typeof input.countryHint !== 'string') throw new TypeError('Invalid country hint');
     if (input.postcode != null && typeof input.postcode !== 'string') throw new TypeError('Invalid postcode');
     if (input.trackingUrl != null && typeof input.trackingUrl !== 'string') throw new TypeError('Invalid tracking URL');
+    if (input.language != null && (typeof input.language !== 'string' || input.language.length > 35)) throw new TypeError('Invalid language');
+    const language = input.language ? { language: input.language } : {};
     // A provider can ask for a delivery postcode the carrier does not read; only the providers then get it.
     const postcode = input.postcode ?? '';
     const carrierPostcode = carrierTakesPostcode(carrier, number);
@@ -249,7 +253,7 @@ export function createTracker(options: TrackerOptions = {}) {
       }
     }
     const adapter = input.source ? undefined : registry.for(carrier);
-    const directInput = { number, postcode: fields.postcode, trackingUrl: fields.trackingUrl };
+    const directInput = { number, postcode: fields.postcode, trackingUrl: fields.trackingUrl, ...language };
     const directBudget = () => Math.min(remaining() + DEADLINE_SLACK_MS, 60_000);
     let result = adapter ? await attempt(carrier, async () => dateLocalClocks(carrier, normalizeCarrierResult(
       await (adapter.recordsSteps || adapter.steps.length > 1
@@ -292,7 +296,7 @@ export function createTracker(options: TrackerOptions = {}) {
     if (proposal && !signal.aborted) {
       const partner = registry.for(proposal.carrier);
       if (partner) {
-        const confirmed = await attempt(proposal.carrier, () => partner.track({ number: proposal.number }, { signal, budgetMs: directBudget() }));
+        const confirmed = await attempt(proposal.carrier, () => partner.track({ number: proposal.number, ...language }, { signal, budgetMs: directBudget() }));
         response.handoff = { ...proposal, confirmed: Boolean(confirmed), ...(confirmed ? { result: confirmed } : {}) };
       }
     }

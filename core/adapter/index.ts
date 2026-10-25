@@ -37,6 +37,25 @@ export interface TrackingInput {
    * names another or none. A hint for the lookup, never proof of the carrier.
    */
   carrier?: string | null;
+  /**
+   * The reader's language as a BCP 47 tag ("fr", "de-CH"), for carriers whose
+   * tracker words its scans in it. A preference: an adapter that cannot answer
+   * in it answers as it does without one. Stages do not depend on it.
+   */
+  language?: string | null;
+}
+
+/**
+ * The primary subtag of the input's language ("fr" for "fr-CH"), in lower
+ * case, when `supported` lists it; undefined otherwise.
+ */
+export function readerLanguage<const Language extends string>(
+  input: Pick<TrackingInput, 'language'>,
+  supported: readonly Language[],
+): Language | undefined {
+  const tag = typeof input.language === 'string' ? /^\s*([a-z]{2,3})(?:[-_][\w-]*)?\s*$/i.exec(input.language) : null;
+  const primary = tag?.[1]!.toLowerCase();
+  return supported.find((language) => language === primary);
 }
 
 export interface TrackingContext {

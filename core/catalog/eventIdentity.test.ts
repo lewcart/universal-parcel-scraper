@@ -142,6 +142,21 @@ describe('same-instant identity policies', () => {
     ]) expect(policy?.matches?.(incoming, different)).toBe(false);
   });
 
+  it('lets a Swiss Post scan worded in another language take over its stored row at the same place', () => {
+    const policy = sameInstantIdentityPolicy('swiss-post', { supportsScanMatching: true });
+    // The app requires the same provider code at the same instant before it asks.
+    const stored = { stage: 'delivered', description: 'Delivered', location: 'Example Town 999999', providerCode: 'PARCEL.*.1.4000' };
+    for (const description of ['Distribué', 'Zugestellt', 'Recapitato']) {
+      expect(policy?.matches?.({ ...stored, description }, stored)).toBe(true);
+      expect(policy?.matches?.(stored, { ...stored, description })).toBe(true);
+    }
+    const revoked = { ...stored, stage: '', description: 'Delivered — Revocation' };
+    expect(policy?.matches?.({ ...revoked, description: 'Distribué — Révocation' }, revoked)).toBe(true);
+    for (const different of [revoked, { ...stored, location: 'Another Town 999998' }, { ...stored, location: '' }]) {
+      expect(policy?.matches?.({ ...stored, description: 'Distribué' }, different)).toBe(false);
+    }
+  });
+
   it('lets a universal copy that lost Posti\'s "abroad" label take over its stored row', () => {
     const policy = sameInstantIdentityPolicy('unknown', { supportsScanMatching: true });
     const stored = { stage: 'in_transit', description: 'Item is in transport in destination country.', location: 'ULKOMAILLA', providerCode: '' };

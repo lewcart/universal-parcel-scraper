@@ -52,8 +52,14 @@ office dates the delivery.
 Clocks carry no offset. A scan at a Polish office, which carries an office type,
 is read on Polish time (`Europe/Warsaw`), and so is item data from Poczta
 Polska's own sender platform, "Elektroniczny Nadawca", which has none. Scans
-relayed from partners abroad, other office-less scans, and wall clocks that a
-daylight-saving change skips or repeats keep their local digits. Scans keep the
+relayed from a partner post abroad, which carry no office type, show the
+scanning office's wall clock. On an item another country's post numbered they
+are read on that country's clock, and on one Poczta Polska numbered for abroad
+on the destination's: a Latvian item's relayed posting and departure match
+Latvijas Pasts's own instants that way. They keep their wall clock and say the
+zone was deduced. Relayed scans from a country with several clocks (Spain and
+Portugal count, for their islands), other office-less scans, and wall clocks
+that a daylight-saving change skips or repeats keep their local digits. Scans keep the
 provider's order. See [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md) for
 unresolved history handling. Empty history, invalidated scans, ambiguous
 reused numbers and unregistered letter post, which the service answers with its mail type

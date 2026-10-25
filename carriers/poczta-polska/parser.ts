@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
+import { countryTimeZone, explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { isPocztaPolskaSystemOffice } from './identity.js';
@@ -34,14 +34,32 @@ function polishOffice(office: unknown): boolean {
 
 // A Polish office dates its scans on Polish time. A wall clock the zone skips
 // or repeats stays local.
-function warsawTime(local: string): string | null {
-  const parsed = firstOccurrence(DateTime.fromISO(local, { zone: 'Europe/Warsaw' }));
+function zoneTime(local: string, zone: string): string | null {
+  const parsed = firstOccurrence(DateTime.fromISO(local, { zone }));
   if (!parsed.isValid || parsed.toISO({ includeOffset: false, suppressMilliseconds: true }) !== local
     || parsed.getPossibleOffsets().length !== 1) return null;
   return parsed.toISO({ suppressMilliseconds: true });
 }
 
-function eventClock(value: unknown, polish: boolean): Record<string, string> {
+interface PartnerClock { zone: string; basis: string }
+
+/**
+ * The clock of the partner post whose scans the tracker relays. Posts relay
+ * scans on the scanning office's wall clock: an item another country's post
+ * numbered is posted and sent off there, and one Poczta Polska numbered for
+ * abroad meets the destination's post. A Latvian item's relayed posting and
+ * departure show Latvijas Pasts's instants on Riga's clock. None for a country
+ * with several clocks, Spain's and Portugal's islands among them.
+ */
+function partnerClock(number: string, destination: unknown): PartnerClock | null {
+  const issuer = isValidS10TrackingNumber(number) ? number.slice(-2) : '';
+  const [country, basis] = issuer && issuer !== 'PL' ? [issuer, 'carrier']
+    : typeof destination === 'string' && destination !== 'PL' ? [destination, 'destination'] : ['', ''];
+  const zone = country !== 'ES' && country !== 'PT' ? countryTimeZone(country) : null;
+  return zone ? { zone, basis } : null;
+}
+
+function eventClock(value: unknown, polish: boolean, partner: PartnerClock | null): Record<string, string> {
   if (value != null && typeof value !== 'string') throw new SchemaError('poczta-polska', 'Poczta Polska returned an invalid clock field');
   const raw = clean(value, 64);
   if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-](?:[01]\d|2[0-3]):?[0-5]\d)$/i.test(raw)) {
@@ -52,8 +70,10 @@ function eventClock(value: unknown, polish: boolean): Record<string, string> {
     // UTC validates the calendar only. It is never attached to local digits.
     const parsed = DateTime.fromISO(raw, { zone: 'UTC' });
     const local = parsed.isValid ? parsed.toISO({ includeOffset: false, suppressMilliseconds: true }) : null;
-    const time = local && polish ? warsawTime(local) : null;
+    const time = local && polish ? zoneTime(local, 'Europe/Warsaw') : null;
     if (time) return { time };
+    const relayed = local && !polish && partner ? zoneTime(local, partner.zone) : null;
+    if (local && relayed) return { local_time: local, time: relayed, time_zone: partner!.zone, time_zone_basis: partner!.basis };
     if (local) return { local_time: local };
   }
   return raw ? { provider_time_text: raw } : {};
@@ -82,6 +102,7 @@ export function parsePocztaPolska(payload: unknown, number: string): CarrierResu
   // Source rows run oldest first. A return scan turns the rest of the trip
   // around: movement stays movement, and a final delivery is the sender's.
   let returning = false;
+  const partner = partnerClock(requested, item.recipientCountryCode);
   const projected = item.events.map((raw): CarrierEvent => {
     if (!isRecord(raw)) throw new SchemaError('poczta-polska');
     if (raw.canceled === true) throw new IndeterminateError('poczta-polska', 'Poczta Polska returned an invalidated scan');
@@ -93,7 +114,7 @@ export function parsePocztaPolska(payload: unknown, number: string): CarrierResu
     const mapped = classifyPocztaPolskaStatus(code);
     if (startsPocztaPolskaReturn(code, isRecord(raw.state) ? clean(raw.state.code, 16) : '')) returning = true;
     const stage = returning && mapped?.stage === 'delivered' ? 'returned' : mapped?.stage;
-    return { ...eventClock(raw.time, polishOffice(raw.postOffice)), description, provider_code: code,
+    return { ...eventClock(raw.time, polishOffice(raw.postOffice), partner), description, provider_code: code,
       ...(location ? { location } : {}), ...(stage ? { stage } : {}), ...(returning ? { provider_leg: 'return' } : {}) };
   });
   if (!projected.length) throw new IndeterminateError('poczta-polska', 'Poczta Polska returned no parcel history');

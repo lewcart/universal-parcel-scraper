@@ -102,6 +102,26 @@ describe('Poczta Polska identity-bound scans', () => {
       .toEqual(['2026-07-10T23:45:00+02:00', '2026-07-10T22:15:00+02:00']);
   });
 
+  it("reads a partner post's relayed scans on its clock: the issuing post's, or the destination's for an item sent abroad", () => {
+    const office = { code: '000003', name: 'Example Exchange Office', officeType: 'CP WER' };
+    const item = (number: string, destination: string) => {
+      const value = payload(); value.number = number; value.mailInfo.number = number; value.mailInfo.recipientCountryCode = destination;
+      value.mailInfo.events = [
+        { ...scan('P_NAD', 'Posting/collection', 'NA', '2026-10-20T12:10:00', 'International Postal System') },
+        { ...scan('P_WYOC', 'Item departure', 'TR', '2026-10-21T00:04:00'), postOffice: {} },
+        { ...scan('P_WEPL', 'Arrival in Poland', 'TR', '2026-10-23T00:50:26'), postOffice: office }];
+      return parsePocztaPolska(value, number);
+    };
+    const inbound = item('LS000000005LV', 'PL');
+    expect(inbound.events?.map(event => [event.time, event.time_zone_basis])).toEqual([['2026-10-23T00:50:26+02:00', undefined],
+      ['2026-10-21T00:04:00+03:00', 'carrier'], ['2026-10-20T12:10:00+03:00', 'carrier']]);
+    expect(inbound.events?.[2]).toMatchObject({ local_time: '2026-10-20T12:10:00', time_zone: 'Europe/Riga' });
+    // An item Poczta Polska numbered meets the destination's post; a country of several clocks gives none.
+    expect(item('RR000000005PL', 'FI').events?.[1])
+      .toMatchObject({ time: '2026-10-21T00:04:00+03:00', time_zone: 'Europe/Helsinki', time_zone_basis: 'destination' });
+    for (const country of ['ES', 'US']) expect(item('RR000000005PL', country).events?.[1]).not.toHaveProperty('time');
+  });
+
   it('needs an office type, since a relayed office code can be a foreign postcode', () => {
     const value = payload(); value.mailInfo.events.at(-1).postOffice = { code: '000004', name: 'Example Foreign Office' };
     const result = parsePocztaPolska(value, NUMBER);

@@ -14,7 +14,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 # The optional transports are devDependencies of the package: without --save-prod, --omit=dev skips them.
 RUN npm ci --ignore-scripts --omit=dev \
-    && npm install --ignore-scripts --omit=dev --no-save --save-prod playwright-core@1.64.1 sharp@0.35.5 onnxruntime-web@1.30.0 \
+    && npm install --ignore-scripts --omit=dev --no-save --save-prod playwright-core@1.63.0 sharp@0.35.5 onnxruntime-web@1.30.0 \
     && npm cache clean --force
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/data ./data

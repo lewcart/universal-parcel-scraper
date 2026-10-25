@@ -478,8 +478,20 @@ describe('the detection engine', () => {
     expect(parseTrackingInput(text)).toMatchObject({ trackingNumber: '12345678', source: 'text', confidence: 'low' });
   });
 
+  it('reads the groups a number prints apart in a message', () => {
+    expect(parseTrackingInput('Your tracking number is 1Z 999 AA1 01 2345 6784 and it ships today'))
+      .toMatchObject({ trackingNumber: '1Z999AA10123456784', carrier: 'ups', confidence: 'high', source: 'text' });
+    for (const text of ['Votre colis numéro 1234 5678 9012 sera livré demain', 'Sendungsnummer 1234 5678 9012 wird morgen zugestellt.']) {
+      expect(parseTrackingInput(text), text).toMatchObject({ trackingNumber: '123456789012', source: 'text' });
+    }
+    // A long number keeps no short one after it, and short groups that make no number are none.
+    expect(parseTrackingInput('Tracking 1234567899 12 Teile').trackingNumber).toBe('1234567899');
+    for (const text of ['Parcel 12 34 or so', 'Colis 123 45 euros']) expect(parseTrackingInput(text).source, text).toBe('none');
+  });
+
   it('takes no number from a label that offers two, nor a date', () => {
-    for (const text of ['Tracking number 5555666677 or 7777888899', 'Sendung 12.10.2026', 'Votre colis du 12/10/2026']) {
+    for (const text of ['Tracking number 5555666677 or 7777888899', 'Sendung 12.10.2026', 'Votre colis du 12/10/2026',
+      'Tracking 1234 5678 or 9999 8888', 'Suivi colis 12 10 2026 merci']) {
       expect(parseTrackingInput(text)).toMatchObject({ trackingNumber: '', source: 'none' });
     }
   });

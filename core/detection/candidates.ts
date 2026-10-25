@@ -52,8 +52,10 @@ const LABELLED_NUMBER = new RegExp(
   + String.raw`|(?:(?:${NUMBER_WORDS})\s*(?:(?:de|du|di|del|do|da)\s+|d')?)?(?:${PARCEL_WORDS})(?!\p{L})(?:\s*(?:${NUMBER_WORDS}))?`
   + String.raw`|\p{L}*(?:sendungs|paket|tracking|zending)nummer)`
   + String.raw`(?:\s+(?:is|est|es|ist|lautet|è|é|jest)(?:\s+(?:le|el|il|o))?(?![\p{L}0-9]))?\s*[:#-]?\s*`
-  // The token holds a digit, so a label followed by a plain word does not end the search.
-  + String.raw`((?=[A-Z0-9.-]{0,39}\d)[A-Z0-9][A-Z0-9.-]{3,39})`,
+  // The token holds a digit, so a label followed by a plain word does not end the search. Groups
+  // printed apart may follow it: "1Z 999 AA1 01 2345 6784".
+  + String.raw`((?=[A-Z0-9.-]{0,39}\d)(?:[A-Z0-9][A-Z0-9.-]{3,39}|[A-Z0-9][A-Z0-9.-]{1,2}(?=\s[A-Z0-9]*\d))`
+  + String.raw`(?:\s[A-Z0-9]{2,6}(?![\p{L}0-9]))*)`,
   'iu',
 );
 // A word that offers a second number: "tracking 1234567899 or 9987654321".
@@ -63,13 +65,30 @@ const DATE = /^\d{1,2}([./-])\d{1,2}\1\d{2,4}$/;
 
 /**
  * Last resort: a number introduced by a "tracking number:" style label. A
- * label that offers two numbers names neither, and a date is no number.
+ * label that offers two numbers names neither, and a date is no number. A
+ * number printed in groups is read whole when a carrier claims it or when
+ * its groups are short and make eight characters or more: "0034 0434 1234 5678".
  */
 export function keywordNumberInText(raw: string): string | undefined {
   const match = LABELLED_NUMBER.exec(raw);
-  if (!match || ALTERNATIVE_NUMBER.test(raw.slice(match.index + match[0].length))) return undefined;
+  if (!match) return undefined;
+  // Each later group holds a digit, but for the two capitals that close an S10 code: "RR 123 456 789 FR".
+  const [first, ...rest] = match[1]!.split(/\s/);
+  const groups = [first!];
+  for (const group of rest) {
+    const digits = /\d/.test(group);
+    if (!digits && !/^[A-Z]{2}$/.test(group)) break;
+    groups.push(group);
+    if (!digits) break;
+  }
+  const end = match.index + match[0].length - match[1]!.length + groups.join(' ').length;
+  if (ALTERNATIVE_NUMBER.test(raw.slice(end))) return undefined;
   // A sentence can end right after its number.
-  const candidate = match[1]!.replace(/[.-]+$/, '');
-  if (DATE.test(candidate)) return undefined;
-  return candidate && validTrackingNumberInText(candidate) ? candidate : undefined;
+  const joins = groups.map((_, count) => groups.slice(0, count + 1).join('').replace(/[.-]+$/, ''));
+  const claimed = joins.slice(1).reverse().find((joined) => detectCarrierMatch(joined).confidence === 'high');
+  const grouped = groups.length > 1 && groups.every((group) => group.length <= 6) && joins.at(-1)!.length >= 8
+    && !DATE.test(groups.join('.')) ? joins.at(-1) : undefined;
+  const candidate = claimed ?? grouped ?? joins[0]!;
+  if (candidate.length < 4 || DATE.test(candidate)) return undefined;
+  return validTrackingNumberInText(candidate) ? candidate : undefined;
 }

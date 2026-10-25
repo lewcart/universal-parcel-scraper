@@ -1094,6 +1094,12 @@ describe('status map answers', () => {
     expect(answer('dhl-ecommerce-uk', null, 'Synthetic scan wording')).toEqual(unknown);
   });
 
+  it("answers a provider's copy of a DHL eCommerce UK sentence that still names the shipment", () => {
+    expect(answer('dhl-ecommerce-uk', null, 'Your shipment 48261593704815 is out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('dhl-ecommerce-uk', null, 'Your shipment 948261593 has been collected')).toEqual(mapped('accepted'));
+    expect(answer('dhl-ecommerce-uk', null, 'Your shipment 482615 is out for delivery')).toEqual(unknown);
+  });
+
   it('answers DTDC by a status label kept as its wording, and leaves a delivery without its leg out on purpose', () => {
     expect(answer('dtdc', 'softdata_upload', 'Booked')).toEqual(mapped('registered'));
     expect(answer('dtdc', 'pickup_completed', 'Picked Up')).toEqual(mapped('accepted'));

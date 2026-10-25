@@ -29,5 +29,11 @@ export function statusForStage(stage: Stage): CarrierStatus {
   return STATUSES[stage];
 }
 
-/** What the map says about one scan: its sentence, as the parser keeps it without the number. */
-export const statusMap: CarrierStatusMap = { stage: (_code, wording) => dhlEcommerceUkStage(wording), gaps: [] };
+/**
+ * What the map says about one scan: its sentence without the number, as the parser keeps it. A
+ * provider's copy of the sentence still names the shipment, so a run of digits is taken out first.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => dhlEcommerceUkStage(wording.replace(/\d{7,}/g, ' ').replace(/\s+/g, ' ').trim()),
+  gaps: [],
+};

@@ -7,6 +7,7 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 import { zonedTime } from '../../core/time/index.js';
 import { clean, cleanScalar, fetchBounded, parseJsonBytes, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { isCorreosExpressCode } from '../correos-express/status.js';
 import { CORREOS_HOME_ZONE, correosOriginZone } from './clock.js';
 import { classifyCorreosSpainStatus, correosSpainEnglishSummary } from './status.js';
 
@@ -153,8 +154,10 @@ function parseTracking(payload: unknown, trackingNumber: string, expeditionCode?
   }
   const parsed: Array<{ event: CarrierEvent; classified: ClassifiedStatus | undefined; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
+  const codes: string[] = [];
   (Array.isArray(rawEvents) ? rawEvents : []).filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
     const code = clean(rawEvent.codEvento, 32).toLocaleUpperCase('en-US');
+    if (code) codes.push(code);
     // desTextoResumen is worded in the language codIdioma names.
     const description = clean(rawEvent.desTextoResumen, 500) || correosSpainEnglishSummary(code) || code;
     const time = parsedTime(rawEvent.fecEvento, rawEvent.horEvento, correosOriginZone(requested, { code }));
@@ -179,6 +182,11 @@ function parseTracking(payload: unknown, trackingNumber: string, expeditionCode?
       index,
     });
   });
+  // The localizador serves the whole Correos group. Correos's own codes carry letters: an
+  // all-digit number whose every coded scan is a Correos Express situation is Correos Express's.
+  if (/^\d+$/.test(requested) && codes.length > 0 && codes.every(isCorreosExpressCode)) {
+    throw new InvalidInputError('Correos', 'Correos Express tracks this shipment');
+  }
   // The localizador lists oldest first; the parcel state is the latest entry.
   parsed.sort((left, right) => right.timestamp - left.timestamp || left.index - right.index);
   const events = parsed.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event);

@@ -187,6 +187,21 @@ describe('Correos Spain response parsing', () => {
     expect(() => parseCorreosSpainTrackingResponse(null, TRACKING_NUMBER)).toThrow(SchemaError);
   });
 
+  it("leaves a Correos Express shipment the group's localizador answers to Correos Express", () => {
+    const shipment = '1000000000000017';
+    const express = [
+      event('X010000V', '13/10/2026', '13:12:02', 'Information'),
+      event('X020000V', '13/10/2026', '19:46:32', 'En route to the destination location'),
+    ];
+    expect(() => parseCorreosSpainTrackingResponse([envelope({ codEnvio: shipment, eventos: express })], shipment))
+      .toThrow(InvalidInputError);
+    // A Correos scan among them, or a code of Correos's own with letters, keeps the history.
+    expect(parseCorreosSpainTrackingResponse([envelope({ codEnvio: shipment, eventos: [
+      ...express, event('C010000V', '14/10/2026', '09:00:00', 'In transit'),
+    ] })], shipment).events).toHaveLength(3);
+    expect(parseCorreosSpainTrackingResponse([envelope({ eventos: express })], TRACKING_NUMBER).events).toHaveLength(2);
+  });
+
   it('names the single parcel of an expedition and leaves several inconclusive', () => {
     const shipment = (shipmentCode: string, expeditionCode = EXPEDITION) => ({ shipmentCode, expeditionCode, events: [] });
     expect(parseCorreosSpainExpeditionResponse({ type: 'expeditions', shipment: [shipment(PARCEL)] }, EXPEDITION)).toBe(PARCEL);

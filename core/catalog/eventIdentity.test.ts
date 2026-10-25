@@ -448,7 +448,7 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
   });
 
-  it('lets a CTTYEX row read on Beijing time take over the row stored from its wall clock, by wording and place', () => {
+  it('lets a CTTYEX row read on Beijing time take over the row stored from its wall clock, by wording and place, the place once in the wording', () => {
     expect(sameInstantIdentityPolicy('cttyex')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('cttyex', { supportsScanMatching: true });
     expect(policy).toMatchObject({
@@ -463,6 +463,16 @@ describe('same-instant identity policies', () => {
       { ...stored, location: 'Sample City' },
     ]) expect(policy?.matches?.(incoming, different)).toBe(false);
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+    // A row abroad stored with its town, state and ZIP code in the wording.
+    const placed = { stage: 'in_transit', description: 'Leaving the sorting center', location: 'Sample City, Sample State', providerCode: '' };
+    const worded = { ...placed, description: 'Sample City, Sample State, 00000 Leaving the sorting center', location: '' };
+    expect(policy?.matches?.(placed, worded)).toBe(true);
+    for (const different of [
+      { ...worded, description: 'Other City, Sample State, 00000 Leaving the sorting center' },
+      { ...worded, description: 'Sample City, Sample State, 00000 Arrive at the last mile sorting and distribution center' },
+      { ...worded, location: 'Sample City' },
+    ]) expect(policy?.matches?.(placed, different)).toBe(false);
+    expect(policy?.matches?.(worded, placed)).toBe(false);
   });
 
   it.each([

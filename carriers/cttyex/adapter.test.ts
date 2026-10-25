@@ -49,7 +49,7 @@ describe('CTTYEX HTTP adapter', () => {
     const result = parseCttyex(fixture('in-transit'), IN_TRANSIT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
       last_status_text: 'Departure from the airport of origin domestic', last_update: '2026-03-21T01:10:20+08:00',
-      last_update_local: null, expected_delivery: null, destination_country: 'DE' });
+      expected_delivery: null, destination_country: 'DE' });
     // The repeated scan is kept once.
     expect(result.events!.map((event) => [event.time, event.stage, event.stage_source])).toEqual([
       ['2026-03-21T01:10:20+08:00', 'in_transit', 'carrier_map'],
@@ -67,20 +67,21 @@ describe('CTTYEX HTTP adapter', () => {
       current_stage_source: 'carrier_map', last_update: '2026-04-02T14:20:10+08:00', destination_country: 'FR' });
   });
 
-  it('keeps the wall clock of a wording the map does not list, which could come from another leg', () => {
+  it('reads a wording the map does not list on Beijing time too', () => {
     const result = parseCttyex(changed('in-transit', (item) => {
       item.details.unshift({ create_time: '2026-03-23 09:45:00', content: 'Delivered' }, { create_time: '2026-03-22 18:00:00', content: 'Synthetic note' });
     }), IN_TRANSIT);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'wording:language',
-      last_update: null, last_update_local: '2026-03-23T09:45:00' });
+      last_update: '2026-03-23T09:45:00+08:00' });
+    expect(result).not.toHaveProperty('last_update_local');
     expect(result.events!.slice(0, 3)).toEqual([
-      { local_time: '2026-03-23T09:45:00', description: 'Delivered', stage: 'delivered', stage_source: 'wording:language' },
-      { local_time: '2026-03-22T18:00:00', description: 'Synthetic note' },
+      { time: '2026-03-23T09:45:00+08:00', description: 'Delivered', stage: 'delivered', stage_source: 'wording:language' },
+      { time: '2026-03-22T18:00:00+08:00', description: 'Synthetic note' },
       expect.objectContaining({ time: '2026-03-21T01:10:20+08:00' }),
     ]);
   });
 
-  it('stages the steps after the flight by their wording, with or without a town, and keeps their wall clocks', () => {
+  it('reads the steps after the flight on Beijing time, with the town and state that open them as their location', () => {
     const place = 'Sample City, Sample State, 00000';
     const result = parseCttyex(changed('in-transit', (item) => {
       item.details.unshift(
@@ -94,18 +95,21 @@ describe('CTTYEX HTTP adapter', () => {
       );
     }), IN_TRANSIT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
-      last_update: null, last_update_local: '2026-03-30T23:11:10' });
-    expect(result.events!.slice(0, 8).map((event) => [event.local_time ?? event.time, event.stage, event.stage_source])).toEqual([
-      ['2026-03-30T23:11:10', 'in_transit', 'carrier_map'],
-      ['2026-03-30T06:18:28', 'in_transit', 'carrier_map'],
+      last_status_text: 'Leaving the sorting center', last_update: '2026-03-30T23:11:10+08:00' });
+    expect(result.events!.slice(0, 8).map((event) => [event.time, event.location, event.description, event.stage])).toEqual([
+      ['2026-03-30T23:11:10+08:00', 'Sample City, Sample State', 'Leaving the sorting center', 'in_transit'],
+      ['2026-03-30T06:18:28+08:00', 'Sample City, Sample State', 'Arrive at the last mile sorting and distribution center', 'in_transit'],
       // The last-mile network's first scan near the recipient, not the parcel's acceptance.
-      ['2026-03-28T23:43:58', 'in_transit', 'carrier_map'],
-      ['2026-03-26T04:23:25', 'in_transit', 'carrier_map'],
-      ['2026-03-25T20:57:51', 'in_transit', 'carrier_map'],
-      ['2026-03-24T03:50:50', 'customs', 'carrier_map'],
-      ['2026-03-22T01:09:52', 'in_transit', 'carrier_map'],
-      ['2026-03-21T01:10:20+08:00', 'in_transit', 'carrier_map'],
+      ['2026-03-28T23:43:58+08:00', 'Sample City, Sample State', 'Accepted at logistics carrier Regional Destination Facility', 'in_transit'],
+      ['2026-03-26T04:23:25+08:00', undefined, 'Arrived at logistics carrier Facility In Transit to Next Facility', 'in_transit'],
+      // A processing center's town stays in its wording.
+      ['2026-03-25T20:57:51+08:00', undefined, 'Leave the Sample Port processing center', 'in_transit'],
+      ['2026-03-24T03:50:50+08:00', 'Sample Port', 'Import customs clearance', 'customs'],
+      ['2026-03-22T01:09:52+08:00', undefined, 'Arrive at the destination international airport', 'in_transit'],
+      ['2026-03-21T01:10:20+08:00', undefined, 'Departure from the airport of origin domestic', 'in_transit'],
     ]);
+    expect(result.events!.every((event) => event.stage_source === 'carrier_map' && event.local_time === undefined)).toBe(true);
+    expect(JSON.stringify(result)).not.toContain('00000');
     // The receiving point's other wording is a step in China.
     const received = parseCttyex(changed('registered', (item) => {
       item.details.unshift({ create_time: '2026-04-03 11:00:50', content: 'Arrive at the receiving point' });

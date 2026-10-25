@@ -8,7 +8,8 @@ import { delayedFetcher } from '../../core/testing/hang.js';
 import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, LINHAN_API, LINHAN_PAGE, LinhanTracker } from './adapter.js';
-import { linhanScan, normalizeLinhanNumber, parseLinhan } from './parser.js';
+import { normalizeLinhanNumber, parseLinhan } from './parser.js';
+import { linhanScan } from './scan.js';
 import { linhanMappedStage, linhanStage, linhanStatusKey, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 

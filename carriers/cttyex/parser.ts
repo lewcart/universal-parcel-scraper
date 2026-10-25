@@ -1,17 +1,17 @@
-import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { countryCode, zonedTime } from '../../core/time/index.js';
-import { clean, textFromHtml } from '../../core/transport/index.js';
+import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { CTTYEX_NOT_FOUND, cttyexChinaStep, cttyexMappedStage, cttyexStage } from './status.js';
+import { linhanScan } from '../linhan/scan.js';
+import { CTTYEX_NOT_FOUND, cttyexMappedStage, cttyexStage } from './status.js';
 
 export const PROVIDER = 'CTTYEX';
 // One parcel's reply is about a kilobyte.
 export const CTTYEX_MAX_BYTES = 256 * 1024;
-/** CTTYEX's own steps are in China; the tracker prints their wall clocks without a zone. */
+/** The tracker prints every row's wall clock on Beijing time without a zone, abroad too. */
 export const CTTYEX_ZONE = 'Asia/Shanghai';
 // Letters and digits with at least one digit. The tracker matches the whole number, in capitals.
 const NUMBER = /^(?=[A-Z]*\d)[A-Z0-9]{8,40}$/;
@@ -46,38 +46,31 @@ const COUNTRY_BY_NAME: ReadonlyMap<string, string> = new Map([
 ]);
 
 /**
- * A scan's clock. CTTYEX's own steps are in China, so their wall clock is an
- * instant on Beijing time. A wording the map does not list could come from
- * another leg and keeps its wall clock.
+ * A scan's instant. The tracker, LinHan's system, prints every row's wall
+ * clock on Beijing time, the rows abroad too. China keeps one offset all
+ * year: every valid wall clock is an instant there.
  */
-function scanClock(value: string, chinaStep: boolean): { time: string } | { local_time: string } {
-  const wall = value.replace(' ', 'T');
-  if (!CLOCK.test(value)) throw new SchemaError(PROVIDER, 'CTTYEX returned an invalid scan time');
-  if (chinaStep) {
-    const parsed = zonedTime(value, 'yyyy-MM-dd HH:mm:ss', CTTYEX_ZONE);
-    // Only a clock that reads back unchanged is kept: Luxon would roll 24:00 over to the next day.
-    if (!parsed || parsed.iso.slice(0, 19) !== wall) throw new SchemaError(PROVIDER, 'CTTYEX returned an invalid scan time');
-    return { time: parsed.iso };
-  }
-  // Parsing in UTC checks the calendar digits only; the wall clock keeps no offset.
-  const parsed = DateTime.fromISO(wall, { zone: 'UTC' });
-  if (!parsed.isValid || parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== wall) throw new SchemaError(PROVIDER, 'CTTYEX returned an invalid scan time');
-  return { local_time: wall };
+function scanTime(value: string): string {
+  const parsed = CLOCK.test(value) ? zonedTime(value, 'yyyy-MM-dd HH:mm:ss', CTTYEX_ZONE) : undefined;
+  // Only a clock that reads back unchanged is kept: Luxon would roll 24:00 over to the next day.
+  if (!parsed || parsed.iso.slice(0, 19) !== value.replace(' ', 'T')) throw new SchemaError(PROVIDER, 'CTTYEX returned an invalid scan time');
+  return parsed.iso;
 }
 
 function projectRow(row: Record<string, unknown>): { key: string; wall: string; event: CarrierEvent } {
   if (typeof row.content !== 'string') throw new SchemaError(PROVIDER, 'CTTYEX returned a scan without wording');
-  // The page writes a row's content as HTML.
-  const description = textFromHtml(row.content, 300);
+  // The page writes a row's content as HTML; a row abroad can open with its town, state and ZIP code.
+  const { description, location } = linhanScan(row.content);
   if (!description) throw new SchemaError(PROVIDER, 'CTTYEX returned a scan without wording');
   const clock = text(row, 'create_time', 32);
   const staged = cttyexStage(description);
   const event: CarrierEvent = {
-    ...scanClock(clock, cttyexChinaStep(description)),
+    time: scanTime(clock),
+    ...(location ? { location } : {}),
     description,
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };
-  return { key: JSON.stringify([clock, description]), wall: clock, event };
+  return { key: JSON.stringify([clock, location, description]), wall: clock, event };
 }
 
 /**
@@ -131,8 +124,7 @@ export function parseCttyex(payload: unknown, raw: string): CarrierResult {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: source } : {}),
     last_status_text: newest.description!,
-    last_update: typeof newest.time === 'string' ? newest.time : null,
-    last_update_local: typeof newest.local_time === 'string' ? newest.local_time : null,
+    last_update: newest.time!,
     expected_delivery: null,
     ...(country ? { destination_country: country } : destination ? { destination_country_name: destination } : {}),
     events,

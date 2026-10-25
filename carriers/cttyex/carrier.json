@@ -34,6 +34,7 @@
   },
   "capabilities": [
     "history",
+    "location",
     "destination_country",
     "offset_timestamps"
   ],
@@ -44,16 +45,20 @@
     "shows": [
       "status",
       "history",
-      "destination_country"
+      "location",
+      "destination_country",
+      "postcodes"
     ],
     "scraped": [
       "status",
       "history",
+      "location",
       "destination_country"
     ],
-    "discarded": [],
+    "discarded": [
+      "postcodes"
+    ],
     "unavailable": [
-      "location",
       "provider_code",
       "eta",
       "weight",

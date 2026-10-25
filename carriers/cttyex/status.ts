@@ -17,10 +17,10 @@ const SCANS: ReadonlyMap<string, Stage> = new Map<string, Stage>([
 
 /**
  * The steps after the flight, from the destination agent and the last-mile
- * network, worded as on LinHan's tracker, the same system. A port's town, or
- * the recipient's town, state and ZIP code, can open the wording, and a
- * processing center's town sits inside it. They are not CTTYEX's steps in
- * China, so they keep their wall clocks.
+ * network, worded as on LinHan's tracker, the same system. The parser moves
+ * a port's town, or the recipient's town and state, out of the wording, which
+ * keeps them when they are not read as a place; a processing center's town
+ * sits inside it.
  */
 const ABROAD: readonly (readonly [RegExp, Stage])[] = [
   [/^arrive at the destination international airport$/, 'in_transit'],

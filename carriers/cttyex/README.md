@@ -30,11 +30,12 @@ cross-border e-commerce parcels from China. Tracked through the lookup its track
 - The tracker shows CTTYEX's own steps in China, from the order data to the departure from the
   origin airport, then the destination agent's and the last-mile network's steps, worded as on
   [LinHan's](../linhan/README.md) tracker, the same system: the arrival, the import clearance, the
-  processing and sorting centers. Scans print a wall clock to the second without a zone. China
-  keeps one zone, so a step in China is an instant on Beijing time. Any other row keeps its wall
-  clock: LinHan's tracker writes its rows abroad on Beijing time too, but no CTTYEX row abroad
-  has yet come beside a clock that tells its zone. [`identity.ts`](identity.ts) lets a wording the
-  map comes to list as a step in China take over the row an app stored from its wall clock.
+  processing and sorting centers. Scans print a wall clock to the second without a zone, on
+  Beijing time for every row as on LinHan's tracker, so each is an instant there, abroad too.
+- A row abroad can open with the port's town or the recipient's town, state and ZIP code. The town
+  and state become the location and the ZIP code is dropped, as on LinHan's tracker; a processing
+  center's town stays in its wording. [`identity.ts`](identity.ts) lets a row take over the one an
+  app stored from its wall clock with its place in the wording.
 - The tracker has no codes. [`status.ts`](status.ts) stages the scans by their wording; others go
   through the shared wording rules. The last-mile network's "Accepted at … Regional Destination
   Facility" is in transit: CTTYEX took the parcel in China. The newest staged scan decides the parcel's stage, and the
@@ -45,8 +46,8 @@ cross-border e-commerce parcels from China. Tracked through the lookup its track
 
 ## Limitations
 
-- No location, delivery estimate, weight, delivery partner or partner number.
-- A row abroad keeps the town, state and ZIP code that open it in its wording.
+- No location for CTTYEX's steps in China, and no delivery estimate, weight, delivery partner or
+  partner number.
 - The tracker keeps parcels for two months.
 
 ## Numbers

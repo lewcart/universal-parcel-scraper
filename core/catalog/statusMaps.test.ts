@@ -980,6 +980,14 @@ describe('status map answers', () => {
     expect(answer('xpressbees', 'SYN', 'Shipment is on its way')).toEqual(unknown);
   });
 
+  it("answers Ninja Van by its event type, and leaves a delivery open on purpose", () => {
+    expect(answer('ninja-van', 'HUB_INBOUND_SCAN', 'hub inbound scan')).toEqual(mapped('in_transit'));
+    expect(answer('ninja-van', 'RTS', 'rts')).toEqual(mapped('exception'));
+    // The return's delivery, or a problem on the way back, by a marker the stored scan does not keep.
+    expect(answer('ninja-van', 'DELIVERY_SUCCESS', 'delivery success')).toEqual(gap);
+    expect(answer('ninja-van', 'SYNTHETIC_TYPE', 'synthetic type')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

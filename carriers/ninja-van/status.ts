@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // Public tracking events. The website omits its internal routing and shipment
 // bookkeeping rows from the visible timeline.
@@ -27,3 +28,13 @@ const STATES: Record<string, ClassifiedStatus> = {
 export function ninjaVanStatus(type: string): ClassifiedStatus | undefined {
   return Object.hasOwn(STATES, type) ? STATES[type] : undefined;
 }
+
+/**
+ * What the map says about one scan: its event type. A delivery on the way back reads as the
+ * return, or as a problem when the row's return marker is missing; the stored scan keeps
+ * neither the marker nor the leg, so a delivery stays open.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code) => (code && code !== 'DELIVERY_SUCCESS' ? ninjaVanStatus(code)?.stage : undefined),
+  gaps: [{ code: 'DELIVERY_SUCCESS', note: 'Delivered, the return delivered to the sender, or a problem on the way back, by the row\'s return marker and leg: the stored scan keeps neither.' }],
+};

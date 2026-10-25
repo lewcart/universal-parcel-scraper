@@ -1219,6 +1219,18 @@ describe('status map answers', () => {
     expect(answer('dhl-ecommerce-pl', null, 'Synthetic scan')).toEqual(unknown);
   });
 
+  it("answers GEODIS by its French sentences, and leaves a delivery still to come in transit", () => {
+    expect(answer('geodis', null, "En préparation chez l'expéditeur")).toEqual(mapped('registered'));
+    expect(answer('geodis', null, 'Envoi pris en charge')).toEqual(mapped('in_transit'));
+    expect(answer('geodis', null, 'En cours de livraison')).toEqual(mapped('out_for_delivery'));
+    expect(answer('geodis', null, 'Votre colis va être livré')).toEqual(mapped('in_transit'));
+    expect(answer('geodis', null, 'Votre colis a été livré')).toEqual(mapped('delivered'));
+    expect(answer('geodis', null, 'Colis disponible pour retrait')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('geodis', null, 'Destinataire absent')).toEqual(mapped('failed_attempt'));
+    expect(answer('geodis', null, "Retour à l'expéditeur")).toEqual(mapped('returned'));
+    expect(answer('geodis', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

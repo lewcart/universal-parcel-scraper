@@ -14,7 +14,8 @@
  * no stage and the sync classifies it.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
-import { clean } from '../../core/transport/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
+import { clean } from '../../core/transport/text.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface ClassifiedStatus {
@@ -133,3 +134,6 @@ export function classifyStatus(description: string): ClassifiedStatus {
   if (includesAny(value, IN_TRANSIT_PHRASES)) return { status: 'in_transit', stage: 'in_transit' };
   return { status: 'unknown' };
 }
+
+/** What the map says about one scan: its French sentence, as the adapter classifies it. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => classifyStatus(wording).stage, gaps: [] };

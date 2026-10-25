@@ -355,6 +355,9 @@ describe('status map answers', () => {
     expect(answer('royal-mail', 'LOPPA', 'Sender advised item dropped off at parcel locker')).toEqual(mapped('accepted'));
     expect(answer('royal-mail', 'EVPPA', 'Accepted at Parcelshop')).toEqual(mapped('accepted'));
     expect(answer('royal-mail', 'EVKOP', 'Delivered')).toEqual(mapped('delivered'));
+    // The destination's customs codes stage the scan whatever their wording.
+    expect(answer('royal-mail', 'EVJIC', 'Synthetic scan')).toEqual(mapped('customs'));
+    expect(answer('royal-mail', 'EVJBA', 'Synthetic scan')).toEqual(mapped('customs'));
     expect(answer('royal-mail', 'ZZZZZ', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
     expect(answer('royal-mail', 'ZZZZZ', 'Synthetic scan')).toEqual(unknown);
   });

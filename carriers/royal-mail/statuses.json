@@ -304,6 +304,24 @@
       "note": "Departure from the destination country's office of exchange."
     },
     {
+      "code": "EVJIC",
+      "wording": "Your item is currently with Customs in the destination country.",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-09-25",
+      "note": "Presented to the destination country's customs: the destination post's own tracker shows \"Item sent to Customs\" in the same minute, and \"Released from Customs\" (EVJIA) follows."
+    },
+    {
+      "code": "EVJBA",
+      "wording": "Your item is currently with Customs in the destination country.",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Seen in the same minute as EVJIC, under the same wording, before the release; the destination post's own tracker shows one presentation to customs there."
+    },
+    {
       "code": "EVJIA",
       "wording": "Released from Customs",
       "language": "en",

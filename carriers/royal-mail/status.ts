@@ -44,6 +44,10 @@ const EVENT_STAGES = new Map<string, Stage>([
   ['EVBAH', 'in_transit'],
   ['EVJOE', 'in_transit'],
   ['EVJDU', 'in_transit'],
+  // The item presented to the destination country's customs, which the destination post's own
+  // tracker words "Item sent to Customs" in the same minute; EVJBA comes in that minute too.
+  ['EVJIC', 'customs'],
+  ['EVJBA', 'customs'],
   // The release ends the customs stage, as the summary category "Released from customs" does.
   ['EVJIA', 'in_transit'],
   // After a missed delivery: the redelivery round comes as its own scan, and the item kept at a

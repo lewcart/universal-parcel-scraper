@@ -70,8 +70,12 @@ jobs:
         run: |
           set -euo pipefail
           title='A newer TRAWL release is available'
-          read -r number state < <(gh issue list --state all --search "\"$title\" in:title" --limit 20 \
-            --json number,state,title --jq "map(select(.title == \"$title\")) | first // empty | \"\(.number) \(.state)\"") || true
+          # Listed, not searched, as in the carrier canary: the search index
+          # can miss the open issue.
+          issue=$(gh api -X GET "repos/$GH_REPO/issues" -f state=all -f 'creator=github-actions[bot]' -F per_page=100 \
+            --jq "map(select(.title == \"$title\" and .pull_request == null)) | (map(select(.state == \"open\")) + .)
+              | first // empty | \"\(.number) \(.state | ascii_upcase)\"")
+          read -r number state <<<"$issue"
           if [ "$NEWER" != true ]; then
             if [ "${state:-}" = OPEN ]; then gh issue close "$number" --comment "TRAWL $PINNED is pinned and is the newest release."; fi
             exit 0

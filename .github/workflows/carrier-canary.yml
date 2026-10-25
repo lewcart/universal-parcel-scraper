@@ -231,8 +231,14 @@ jobs:
                    else "The job failed before reporting checks; see the run log." end)\n"
           ' <<<"$NEEDS")
           title='Daily carrier canary failures'
-          read -r number state < <(gh issue list --state all --search "\"$title\" in:title" --limit 20 \
-            --json number,state,title --jq "map(select(.title == \"$title\")) | first // empty | \"\(.number) \(.state)\"") || true
+          # The issues this workflow opened, newest first and an open one
+          # before any closed one. Not a search: the search index once missed
+          # the open issue, and a second one was opened beside it. A failed
+          # listing ends the step instead of opening another.
+          issue=$(gh api -X GET "repos/$GH_REPO/issues" -f state=all -f 'creator=github-actions[bot]' -F per_page=100 \
+            --jq "map(select(.title == \"$title\" and .pull_request == null)) | (map(select(.state == \"open\")) + .)
+              | first // empty | \"\(.number) \(.state | ascii_upcase)\"")
+          read -r number state <<<"$issue"
           if [ -z "$failures" ]; then
             if [ "${state:-}" = OPEN ]; then gh issue close "$number" --comment "All carrier canaries passed: $RUN_URL"; fi
             exit 0

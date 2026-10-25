@@ -3,7 +3,7 @@ import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, S
 import { eventPoint, type CarrierEvent, type CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { epochSecondsTime } from '../../core/time/index.js';
-import { clean } from '../../core/transport/index.js';
+import { clean } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 import { spxBrStage } from './status.js';
 

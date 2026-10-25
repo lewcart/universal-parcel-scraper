@@ -1,4 +1,5 @@
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const STATUS = new Map<string, ClassifiedStatus>([
   ['荷物受付', { status: 'in_transit', stage: 'accepted' }],
@@ -31,3 +32,8 @@ const STATUS = new Map<string, ClassifiedStatus>([
 export function yamatoStatus(description: string): ClassifiedStatus | undefined {
   return STATUS.get(description);
 }
+
+const STAGE_BY_WORDING = new Map<string, Stage>([...STATUS].map(([label, status]) => [normalizeStatusWording(label), status.stage]));
+
+/** What the map says about one scan: its exact label, as the adapter reads it. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => STAGE_BY_WORDING.get(wording), gaps: [] };

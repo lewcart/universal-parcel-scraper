@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // Event codes observed in the official anonymous tracking service. The
 // website's lifecycle rail combines these into much broader presentation states.
@@ -39,3 +40,6 @@ const codes: Record<string, ClassifiedStatus> = {
 export function classifyPurolatorStatus(code: string): ClassifiedStatus | undefined {
   return Object.hasOwn(codes, code) ? codes[code] : undefined;
 }
+
+/** What the map says about one scan: its code, as the parser stores it. */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? classifyPurolatorStatus(code)?.stage : undefined), gaps: [] };

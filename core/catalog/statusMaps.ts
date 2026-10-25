@@ -255,6 +255,7 @@ import { statusMap as haypost } from '../../carriers/haypost/status.js';
 import { statusMap as hctLogistics } from '../../carriers/hct-logistics/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hepsijet } from '../../carriers/hepsijet/status.js';
+import { statusMap as hermes } from '../../carriers/hermes/status.js';
 import { statusMap as hermesAt } from '../../carriers/hermes-at/status.js';
 import { statusMap as hermesDe } from '../../carriers/hermes-de/status.js';
 import { statusMap as hispapost } from '../../carriers/hispapost/status.js';
@@ -434,6 +435,7 @@ import { statusMap as proships } from '../../carriers/proships/status.js';
 import { statusMap as ptsWorldwideExpress } from '../../carriers/pts-worldwide-express/status.js';
 import { statusMap as ptt } from '../../carriers/ptt/status.js';
 import { statusMap as pullmanCargo } from '../../carriers/pullman-cargo/status.js';
+import { statusMap as purolator } from '../../carriers/purolator/status.js';
 import { statusMap as quantiumSolutions } from '../../carriers/quantium-solutions/status.js';
 import { statusMap as quicksilverSa } from '../../carriers/quicksilver-sa/status.js';
 import { statusMap as quiqup } from '../../carriers/quiqup/status.js';
@@ -443,6 +445,7 @@ import { statusMap as ramHandToHand } from '../../carriers/ram-hand-to-hand/stat
 import { statusMap as redpack } from '../../carriers/redpack/status.js';
 import { statusMap as redur } from '../../carriers/redur/status.js';
 import { statusMap as redx } from '../../carriers/redx/status.js';
+import { statusMap as relaisColis } from '../../carriers/relais-colis/status.js';
 import { statusMap as relaytech } from '../../carriers/relaytech/status.js';
 import { statusMap as rivigo } from '../../carriers/rivigo/status.js';
 import { statusMap as rlCarriers } from '../../carriers/rl-carriers/status.js';
@@ -575,6 +578,7 @@ import { statusMap as xdeLogistics } from '../../carriers/xde-logistics/status.j
 import { statusMap as xdp } from '../../carriers/xdp/status.js';
 import { statusMap as xlcourier } from '../../carriers/xlcourier/status.js';
 import { statusMap as xpoLtl } from '../../carriers/xpo-ltl/status.js';
+import { statusMap as yamato } from '../../carriers/yamato/status.js';
 import { statusMap as yanwen } from '../../carriers/yanwen/status.js';
 import { statusMap as ywe } from '../../carriers/ywe/status.js';
 import { statusMap as ycsLogistics } from '../../carriers/ycs-logistics/status.js';
@@ -628,7 +632,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gig-logistics': gigLogistics, 'gls-ch': glsCh, 'gls-de': glsDe, 'gls-es': glsEs, 'gls-fr': glsFr, 'gls-it': glsIt,
   globalpost, 'gms-worldwide': gmsWorldwide, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
   'grand-slam-express': grandSlamExpress, 'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, 'gtl-goto': gtlGoto, guatex, gzyl,
-  hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress,
+  hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, hepsijet, hermes, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress,
   'houng-ah-loun': houngAhLoun, hovership, 'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, 'ilyang-logis': ilyangLogis, imile,
   'indah-logistik': indahLogistik, inpost, instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
@@ -656,8 +660,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'posta-shqiptare': postaShqiptare,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, 'poste-italiane': posteItaliane, postex, posti, postlogistics, 'postmedia-parcel-services': postmediaParcelServices,
   postnord, posturinn, ppl, 'precision-deliveries': precisionDeliveries,
-  'pro-carrier': proCarrier, 'prompt-xpress': promptXpress, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'pullman-cargo': pullmanCargo, 'quantium-solutions': quantiumSolutions,
-  'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech,
+  'pro-carrier': proCarrier, 'prompt-xpress': promptXpress, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'pullman-cargo': pullmanCargo, purolator, 'quantium-solutions': quantiumSolutions,
+  'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, 'relais-colis': relaisColis, relaytech,
   rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
   'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sendle, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket, shouwu,
@@ -675,7 +679,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'united-delivery-service': unitedDeliveryService, uniuni, upaya, ups, urbano, urvaam, usps,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, 'viettel-post': viettelPost,
   vimenpaq, 'vinted-go': vintedGo, vozovoz, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl,
-  yanwen, 'ycs-logistics': ycsLogistics, 'yilong-logistics': yilongLogistics, yto, yunexpress, ywe, yypost, zto, 'zto-international': ztoInternational,
+  yamato, yanwen, 'ycs-logistics': ycsLogistics, 'yilong-logistics': yilongLogistics, yto, yunexpress, ywe, yypost, zto, 'zto-international': ztoInternational,
   'yurtici-kargo': yurticiKargo, zajil, zeleris, 'zr-express': zrExpress,
 };
 

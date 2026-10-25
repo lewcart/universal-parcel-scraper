@@ -15,7 +15,8 @@
  * are left to the shared wording classifier.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
-import { clean } from '../../core/transport/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
+import { clean } from '../../core/transport/text.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface ClassifiedRelaisColisStatus {
@@ -118,3 +119,15 @@ export function classifyRelaisColisStatus(description: string): ClassifiedRelais
 
   return { status: 'unknown' };
 }
+
+/**
+ * What the map says about one scan: its French sentence, as the adapter reads it. A return the
+ * sentence only announces stays open, since the adapter's movement stage for it is a guess.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    const classified = classifyRelaisColisStatus(wording);
+    return classified.status === 'unknown' ? undefined : classified.stage;
+  },
+  gaps: [],
+};

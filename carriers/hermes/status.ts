@@ -7,7 +7,9 @@
  * id degrades to a sensible stage instead of an invented one.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
+import statuses from './statuses.json' with { type: 'json' };
 
 /** Observed `sendungsstatusId` values and the status each one means. */
 export const HERMES_STATUS = new Map<number, CarrierStatus>([
@@ -66,3 +68,18 @@ export function hermesEventStage(rawStatusId: unknown, rawDescription: unknown):
   if (status === 'pending') return 'registered';
   return status as Stage;
 }
+
+/** The stage of each wording statuses.json records with its id, left out where two ids word it alike with different stages. */
+const STAGE_BY_WORDING = new Map<string, Stage | undefined>();
+for (const entry of statuses.entries) {
+  if (!('code' in entry) || !entry.wording) continue;
+  const wording = normalizeStatusWording(entry.wording), stage = hermesEventStage(entry.code, entry.wording);
+  STAGE_BY_WORDING.set(wording, STAGE_BY_WORDING.has(wording) && STAGE_BY_WORDING.get(wording) !== stage ? undefined : stage);
+}
+
+/**
+ * What the map says about one scan. A row's id stages it, and the stored scan keeps only its
+ * wording, so the wording stages it through the id statuses.json records it with. Wording not
+ * recorded with an id stays open.
+ */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => STAGE_BY_WORDING.get(wording), gaps: [] };

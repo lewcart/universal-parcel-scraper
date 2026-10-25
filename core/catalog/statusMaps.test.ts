@@ -854,6 +854,37 @@ describe('status map answers', () => {
     expect(answer('japan-post', null, 'Final delivery soon')).toEqual(unknown);
   });
 
+  it("answers Hermes Einrichtungs-Service's wording through the id it is recorded with", () => {
+    expect(answer('hermes', null, 'Deine Sendung wurde elektronisch angekündigt. Weitere Informationen folgen in Kürze.')).toEqual(mapped('registered'));
+    expect(answer('hermes', null, 'Du hast den Liefertermin bestätigt.')).toEqual(mapped('in_transit'));
+    expect(answer('hermes', null, 'Deine Sendung wurde erfolgreich zugestellt.')).toEqual(mapped('delivered'));
+    expect(answer('hermes', null, 'Eine neue Formulierung')).toEqual(unknown);
+  });
+
+  it('answers Purolator by its code', () => {
+    expect(answer('purolator', '3010', 'Label information electronically submitted')).toEqual(mapped('registered'));
+    expect(answer('purolator', '2300', 'Picked up by Purolator')).toEqual(mapped('accepted'));
+    expect(answer('purolator', '9250', 'Attempted delivery - receiver unavailable')).toEqual(mapped('failed_attempt'));
+    expect(answer('purolator', '9000', 'Shipment delivered')).toEqual(mapped('delivered'));
+    expect(answer('purolator', '0001', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('purolator', null, 'Shipment delivered')).toEqual(unknown);
+  });
+
+  it('answers Relais Colis by its French sentence, and leaves a return it only announces open', () => {
+    expect(answer('relais-colis', null, 'Colis pris en charge')).toEqual(mapped('in_transit'));
+    expect(answer('relais-colis', null, 'Colis en cours de livraison')).toEqual(mapped('out_for_delivery'));
+    expect(answer('relais-colis', null, 'Colis retiré par le destinataire')).toEqual(mapped('delivered'));
+    expect(answer('relais-colis', null, 'Votre colis sera retourné')).toEqual(unknown);
+    expect(answer('relais-colis', null, 'Une phrase inconnue')).toEqual(unknown);
+  });
+
+  it('answers Yamato by its exact labels', () => {
+    expect(answer('yamato', null, '荷物受付')).toEqual(mapped('accepted'));
+    expect(answer('yamato', null, '発送済み')).toEqual(mapped('in_transit'));
+    expect(answer('yamato', null, '配達完了')).toEqual(mapped('delivered'));
+    expect(answer('yamato', null, '配達予定')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

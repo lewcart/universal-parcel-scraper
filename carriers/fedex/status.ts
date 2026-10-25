@@ -79,8 +79,9 @@ const REGISTERED_TERMS = [
   'order created',
 ];
 // "In FedEx possession — At FedEx location": FedEx has taken the parcel in at one of its
-// locations. A hold for the recipient carries its own codes (HL, HP) and wording.
-const ACCEPTED_TERMS = ['picked up', 'pickedup', 'tendered at fedex', 'arrived at fedex location', 'accepted at', 'in fedex possession'];
+// locations. A hold for the recipient carries its own codes (HL, HP) and wording. "Arrived at
+// FedEx location" is the wording of AR, a hub arrival in transit, and stays one without its code.
+const ACCEPTED_TERMS = ['picked up', 'pickedup', 'tendered at fedex', 'accepted at', 'in fedex possession'];
 const IN_TRANSIT_TERMS = [
   'in transit',
   'on the way',
@@ -150,8 +151,7 @@ export function fedexScanStage(code: string | null, wording: string): Stage | un
 
 /**
  * What the map says about one scan. A scan keeps its code, which stages it as the parser does
- * when the map knows the code: "Arrived at FedEx location" is in transit under `AR`, though its
- * wording alone reads as accepted. The wording stages a scan whose code the map does not know,
- * and one stored without a code.
+ * when the map knows the code. The wording stages a scan whose code the map does not know, and
+ * one stored or relayed without a code.
  */
 export const statusMap: CarrierStatusMap = { stage: fedexScanStage, gaps: [] };

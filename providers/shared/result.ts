@@ -210,11 +210,11 @@ function providerWordingStage(description: string): Stage | undefined {
   // the sender's confirmation that the shipment is being prepared.
   if (/^item has passed a checkpoint[.!]?$/i.test(value)) return 'in_transit';
   if (/^confirmation of preparation of the shipment received[.!]?$/i.test(value)) return 'registered';
-  // Correios Brazil's scans in an aggregator's English for an item posted abroad. Correios' receipt follows
-  // the posting and the export, so it is transit here; the recipient still owes customs their tax number.
-  if (/^item posted[.!]?$/i.test(value)) return 'accepted';
-  if (/^item in transfer - please wait[.!]?$|^item received at the export unit in the country of origin[.!]?$|^item received by the brazilian post[.!]?$/i.test(value)) return 'in_transit';
-  if (/^need to inform (?:the )?recipient['’]?s cpf\/cnpj[.!]?$/i.test(value)) return 'customs';
+  // Correios Brazil's scans in an aggregator's English or Correios' Portuguese for an item posted abroad. Correios'
+  // receipt follows the posting and the export, so it is transit here; the recipient still owes customs their tax number.
+  if (/^item posted[.!]?$|^objeto postado[.!]?$/i.test(value)) return 'accepted';
+  if (/^item in transfer - please wait[.!]?$|^objeto em transferencia - por favor aguarde[.!]?$|^item received at the export unit in the country of origin[.!]?$|^item received by the brazilian post[.!]?$|^objeto recebido pelos correios do brasil[.!]?$/i.test(value)) return 'in_transit';
+  if (/^need to inform (?:the )?recipient['’]?s cpf\/cnpj[.!]?$|^necessidade de informar (?:o )?cpf\/cnpj do destinatario[.!]?$/i.test(value)) return 'customs';
   if (/^(?:received\.|(?:\d\) )?[a-z ]{1,40} cent(?:er|re)) your order has been received[.!]?$|^(?:\S+ )?cent(?:er|re) (?:received|parcel shipped to \S+)[.!]?$|^origin port warehouse receive\b|^the flight has taken off[.!]?$|^(?:\S+ )?dispatch task assigned to da[.!]?$/i.test(value)) return 'in_transit';
   if (/^<bad address>$/i.test(value)) return 'failed_attempt';
   // Speedaf's issue scan ending a delivery round the recipient had moved to another day, as its own map reads it.
@@ -236,6 +236,9 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^shipment added to loading unit[.!]?$|^received at hub: in motherbag[.!]?$|^shipment received[.!]?$|^the shipment (?:has been|was) prepared for (?:the )?further shipping\b/i.test(value)) return 'in_transit';
   // Hermes Germany's delivery to the safe place its recipient booked, which the aggregator pairs with its "Delivered".
   if (/^the shipment was left at a drop-off location[.!]?$/i.test(value)) return 'delivered';
+  // A line carrier taking the parcel from the seller's or forwarder's warehouse, as GlobalEco's, ExMate's and Huiyi
+  // Logistics' own maps read their "Received by Carrier".
+  if (/^received by carrier[.!]?$/i.test(value)) return 'in_transit';
   // Landmark Global's hand-over to the destination's postal operator for the last mile, as Landmark's own map reads it.
   if (/^item deposited to local postal operator[.!]?$/i.test(value)) return 'in_transit';
   // Pitney Bowes's Global Shipping Program steps as aggregators relay them, as its own map reads them: the shipper's data,

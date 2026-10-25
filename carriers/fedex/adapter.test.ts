@@ -269,7 +269,7 @@ describe('FedEx structured response', () => {
       ['2026-06-04', 'XX', 'Shipment information sent to FedEx', ''],
     ] as const;
     const events = parseFedExTrackingResponse(groundEconomyFixture(scans, DELIVERED_NUMBER), DELIVERED_NUMBER).events!;
-    expect(events.map((event) => event.stage)).toEqual(['delivered', 'accepted', 'accepted', undefined, 'registered']);
+    expect(events.map((event) => event.stage)).toEqual(['delivered', 'accepted', 'in_transit', undefined, 'registered']);
     for (const event of events) {
       expect(event.provider_code).toBe('XX');
       expect(statusMap.stage(event.provider_code ?? null, normalizeStatusWording(event.description ?? '')), event.description).toBe(event.stage);
@@ -318,11 +318,11 @@ describe('FedEx structured response', () => {
       ['Picked up', 'accepted'],
     ]);
     // Each scan keeps its code, which the parcel app's review reads before the wording:
-    // "Arrived at FedEx location" alone reads as accepted.
+    // "Arrived at FedEx location" without its code reads as AR does.
     for (const event of result.events ?? []) {
       expect(statusMap.stage(event.provider_code ?? null, normalizeStatusWording(event.description ?? '')), event.description).toBe(event.stage);
     }
-    expect(statusMap.stage(null, normalizeStatusWording('Arrived at FedEx location'))).toBe('accepted');
+    expect(statusMap.stage(null, normalizeStatusWording('Arrived at FedEx location'))).toBe('in_transit');
     // An `HP` package is ready for pickup too.
     expect(parseFedExTrackingResponse(heldFixture((shipment) => { shipment.keyStatusCD = 'HP'; }), HELD_NUMBER))
       .toMatchObject({ current_stage: 'ready_for_pickup', pickup_point: result.pickup_point });

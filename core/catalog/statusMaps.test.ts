@@ -728,7 +728,7 @@ describe('status map answers', () => {
     expect(answer('fedex', 'DL', 'Delivered')).toEqual(mapped('delivered'));
     expect(answer('fedex', 'XX', 'In FedEx possession — At FedEx location')).toEqual(mapped('accepted'));
     expect(answer('fedex', 'constructor', 'Shipment arriving On-Time')).toEqual(unknown);
-    expect(answer('fedex', null, 'Arrived at FedEx location')).toEqual(mapped('accepted'));
+    expect(answer('fedex', null, 'Arrived at FedEx location')).toEqual(mapped('in_transit'));
     expect(answer('fedex', null, 'In FedEx possession — At FedEx location')).toEqual(mapped('accepted'));
     expect(answer('fedex', null, 'On FedEx vehicle for delivery')).toEqual(mapped('out_for_delivery'));
     expect(answer('fedex', null, 'Delivered')).toEqual(mapped('delivered'));
@@ -1617,6 +1617,9 @@ describe("universal providers' answers", () => {
       ['Item posted', 'accepted'], ['Item in transfer - please wait', 'in_transit'],
       ['Item received at the export unit in the country of origin', 'in_transit'],
       ['Item received by the Brazilian Post', 'in_transit'], ["Need to inform recipient's CPF/CNPJ", 'customs'],
+      ['Objeto postado', 'accepted'], ['Objeto em transferência - por favor aguarde', 'in_transit'],
+      ['Objeto recebido pelos Correios do Brasil', 'in_transit'], ['Necessidade de informar CPF/CNPJ do destinatário', 'customs'],
+      ['Received by carrier', 'in_transit'],
       ['Cambio disposizioni di consegna', 'in_transit'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
@@ -1681,6 +1684,7 @@ describe("universal providers' answers", () => {
       'en demora - el envío ha sufrido un retraso provocando una posible demora en la entrega.']);
     expect(answer('unknown', null, 'EN DEMORA - EL ENVÍO HA SUFRIDO UN RETRASO PROVOCANDO UNA POSIBLE DEMORA EN LA ENTREGA.')).toEqual(gap);
     expect(answer('unknown', null, 'Last-mile delivery forecast')).toEqual(gap);
+    expect(answer('unknown', null, 'Forecast of last-mile delivery by carrier')).toEqual(gap);
     for (const wording of ['Shipment parameters updated', 'Tax ID. Form received', 'Keine weiteren Details erforderlich', 'Filiale / Agentur',
       'Benachrichtigt', 'In progress', 'Update on your parcel', '110', 'Item received', 'Received.', 'Shipped', 'Driver assigned',
       'Parcel is with the driver', 'Not received from retailer', 'Pickup document attached', 'Delivery branch. Rescheduling',

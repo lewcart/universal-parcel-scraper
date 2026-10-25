@@ -171,8 +171,10 @@ const SHIPROCKET = 100662;
  * whose digits are the line's wall clocks. Read as labeled, most of its rows
  * in China fell between midnight and 06:00 there; on Beijing's clock all fell
  * in the day (checked 2026-10-21). A row placed in China or Hong Kong is read on
- * Beijing's clock, as Huiyi Logistics' adapter reads it; any other keeps
- * 17TRACK's reading, the last guess.
+ * Beijing's clock, as Huiyi Logistics' adapter reads it; any other keeps its
+ * wall clock, as that adapter keeps it. An Italian dispatch scan came with
+ * the line's own wall clock under "+00:00", so read as labeled it stood two
+ * hours from the line's copy of the same scan (checked 2026-10-25).
  */
 const HYWL = 192109;
 
@@ -421,10 +423,10 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       // Correos's copy of the origin post's scan on an item from abroad: that post's zone, or null for its wall clock.
       const sent = correos ? correosOriginZone(number, { wording: text(raw.description) }) : undefined;
       // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's, Correos de Chile's, Shiprocket's, DAI Post's or an origin post's, on which 17TRACK puts one offset for the whole parcel.
-      const wall = relayed ? rawClock(raw)
+      const wall = relayed || hywl ? rawClock(raw)
         : facility || relaysFacilityClock(name) || utc || nz || exchange || own || chile || shiprocket || daiPost || sent !== undefined
           ? facilityWall(raw) : null;
-      const zone = !wall ? null : relayed ?? facility ?? own ?? (sent !== undefined ? sent : abroad.has(index) ? abroad.get(index) ?? null
+      const zone = !wall ? null : hywl ? relayed : relayed ?? facility ?? own ?? (sent !== undefined ? sent : abroad.has(index) ? abroad.get(index) ?? null
         : exchange ? origin : utc ? 'UTC'
         : nz ? 'Pacific/Auckland' : chile ? facilityZone(text(raw.location)) ?? 'America/Santiago'
         : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null)
@@ -442,8 +444,8 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
         latest.see(day, false);
         continue;
       }
-      if (wall && (abroad.has(index) || shiprocket || sent !== undefined) && !zone) {
-        // A scan NZ Post dated abroad or an origin post's that Correos relays, in a country on several clocks, or a Shiprocket row outside India, keeps its description as a wall time.
+      if (wall && (abroad.has(index) || shiprocket || hywl || sent !== undefined) && !zone) {
+        // A scan NZ Post dated abroad or an origin post's that Correos relays, in a country on several clocks, a Shiprocket row outside India or a Huiyi Logistics row outside China, keeps its description as a wall time.
         const local: CarrierEvent = { ...parsed, local_time: wall };
         delete local.time;
         events.push(local);

@@ -28,7 +28,7 @@ sellers. Tracked through the lookup its tracking page makes.
   city of the line's Chinese leg, is dated on Beijing's clock. Any other keeps its wall clock
   without an offset: the destination's rows fit either UTC or local time.
   [17TRACK](../../providers/seventeentrack/README.md) keeps the `+00:00` and reads its copies of
-  the Chinese rows the same way.
+  the rows the same way.
 - The page says the company's back office creates the orders and maintains their tracks. The
   rows follow fixed milestone templates, in English or in English and Chinese; one history's rows
   all end at the same minute and second, at uneven hour steps. Repeated lookups hours apart

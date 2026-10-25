@@ -132,7 +132,7 @@ carrier.
   digits are wall clocks ([Huiyi Logistics](../../carriers/hywl/README.md)). Read as labeled,
   most of its rows in China fall between midnight and 06:00 there, and on Beijing's clock all
   in the day. A row placed in China or Hong Kong is read on Beijing's clock; any other keeps
-  17TRACK's reading, the last guess.
+  its wall clock in `local_time`, as the line's own rows keep it.
 - DAI Post's leg (carrier key 100790) shows the tracker's clocks, each the scan's local time,
   and 17TRACK puts one offset on all of them: `+01:00` on a parcel from London, on its
   Singapore and Brisbane scans too. A scan is read as the

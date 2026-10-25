@@ -68,6 +68,12 @@ function laPosteTransitCopy(raw: Record<string, unknown>, description: string, c
     && !clean(raw.tkDateStr, 64).endsWith(':00');
 }
 
+// Asendia Hong Kong, which flies parcels for 4PX, dates its label and manifest
+// in UTC, as Yanwen relays them, and 4PX labels those digits with the
+// destination's offset: a label made as 4PX's facility measured the parcel
+// reads two hours before the measurement, at the same seconds.
+const ASENDIA = /^asendia hong kong$/i;
+
 /** The offset 4PX's own facility scans (`FPX_C_…`) carry, if any. */
 function facilityZone(tracks: unknown[]): string | undefined {
   return tracks.map((raw) => (isRecord(raw) && clean(raw.tkCode, 64).startsWith('FPX_C_') ? clean(raw.tkTimezone, 64) : ''))
@@ -118,9 +124,9 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
       continue;
     }
     const description = clean(wording.replace(QUALIFIER, ''), 500);
-    const time = eventTime(facility && TRANSMITTED.test(description) ? { ...raw, tkTimezone: facility }
-      : laPosteTransitCopy(raw, description, country) ? { ...raw, tkTimezone: 'UTC' } : raw);
     const location = clean(raw.tkLocation, 200);
+    const time = eventTime(facility && TRANSMITTED.test(description) ? { ...raw, tkTimezone: facility }
+      : laPosteTransitCopy(raw, description, country) || ASENDIA.test(location) ? { ...raw, tkTimezone: 'UTC' } : raw);
     const code = clean(raw.tkCode, 64);
     const key = JSON.stringify([time, description, location, code]);
     if (seen.has(key)) continue;

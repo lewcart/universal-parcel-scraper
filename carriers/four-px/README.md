@@ -26,7 +26,10 @@ Poste's UTC digits under Paris's offset, two hours before La Poste's own scans,
 so they are read as UTC. 4PX's own transport rows, to the minute, and its copies
 of the delivery round show Paris's clock. Parcels to France's overseas
 departments and territories or to Monaco keep the stated offset: no 4PX copy
-there has been compared with La Poste's own scans.
+there has been compared with La Poste's own scans. Asendia Hong Kong's label and
+manifest carry Asendia's UTC digits, as Yanwen relays them, under the
+destination's offset: a label made as 4PX's facility measures the parcel reads
+two hours before the measurement, at the same seconds. They are read as UTC.
 
 Event codes map to stages. `FPX_O_IR` and `FPX_O_IRI` relay whatever step a
 partner reported, from a label to an arrival abroad, so their wording decides.

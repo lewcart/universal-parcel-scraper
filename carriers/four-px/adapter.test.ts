@@ -102,6 +102,20 @@ describe('4PX result projection', () => {
     expect(times()[1]).toBe('2026-03-22T08:16:04+02:00');
   });
 
+  it("reads Asendia Hong Kong's label and manifest as UTC, not on the destination's offset they are labelled with", () => {
+    const payload = fixture();
+    const tracks = payload.data[0].tracks;
+    const asendia = (tkDesc: string, tkDateStr: string) => ({ ...tracks.at(-5), tkCode: 'FPX_O_IR', tkDesc, tkDateStr,
+      tkTimezone: 'UTC+02:00', tkLocation: 'Asendia Hong Kong' });
+    payload.data[0].tracks = [...tracks.slice(0, -7), asendia('Manifest created', '2026-03-09 08:55:20'), ...tracks.slice(-7, -5),
+      asendia('Label creation', '2026-03-08 06:30:03'), ...tracks.slice(-5)];
+    const events = parse(payload, NUMBER).events!;
+    // The label is made as the facility measures the parcel, at 14:30:03 +08:00.
+    expect(events.filter((event) => event.location === 'Asendia Hong Kong').map((event) => event.time))
+      .toEqual(['2026-03-09T08:55:20Z', '2026-03-08T06:30:03Z']);
+    expect(events.find((event) => event.description === 'Label creation')?.stage).toBe('registered');
+  });
+
   it('reads a scan whose zone is named rather than offset', () => {
     const payload = fixture();
     payload.data[0].tracks[0].tkTimezone = 'UTCAmerica/Vancouver';

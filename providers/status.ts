@@ -35,6 +35,7 @@ const NO_STEP: ReadonlyArray<readonly [wording: string, note: string]> = [
   ['benachrichtigt', 'A German note that someone was notified, without saying of what: no step of its own.'],
   ['in progress', 'A heading that names no step.'],
   ['update on your parcel', 'A heading that names no step.'],
+  ['carrier update', "Cainiao's placeholder wording, which ParcelsApp relays for its notices and its transit sorting centers' scans alike: it names no movement."],
   ['110', "A bare code relayed in place of a scan's wording: it names no step."],
   // Scans whose wording alone cannot settle the step: who received the parcel, which side shipped or
   // released it, whether a driver collects or delivers, or which forwarder's warehouse scanned it.

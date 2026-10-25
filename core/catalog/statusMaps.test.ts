@@ -1699,7 +1699,7 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', null, 'Last-mile delivery forecast')).toEqual(gap);
     expect(answer('unknown', null, 'Forecast of last-mile delivery by carrier')).toEqual(gap);
     for (const wording of ['Shipment parameters updated', 'Tax ID. Form received', 'Keine weiteren Details erforderlich', 'Filiale / Agentur',
-      'Benachrichtigt', 'In progress', 'Update on your parcel', '110', 'Item received', 'Received.', 'Shipped', 'Driver assigned',
+      'Benachrichtigt', 'In progress', 'Update on your parcel', 'Carrier update', '110', 'Item received', 'Received.', 'Shipped', 'Driver assigned',
       'Parcel is with the driver', 'Not received from retailer', 'Pickup document attached', 'Delivery branch. Rescheduling',
       'Parcel to be taken to a Yodel Store', 'The parcel has reached the ParcelShop', 'Barcode scanning', 'Packaged']) expect(answer('unknown', null, wording), wording).toEqual(gap);
     // Only the whole wording: a receipt that names its receiver, or another number, is not left out.

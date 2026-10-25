@@ -34,6 +34,11 @@ decision based on an earlier check belong to whoever calls it.
   guarantee; coordinate breaking changes with the app. General-purpose tracking and catalog
   helpers belong in the stable entry points, even when the app is their only consumer.
 
+A module the browser entry points load takes text helpers from `core/transport/text.ts`, never
+from the transport index, which loads Playwright and sharp. The lint rule
+[`scripts/eslint-browser-imports.mjs`](scripts/eslint-browser-imports.mjs) reports the import
+that reaches the index, including one that newly loads an older module.
+
 The stable entry points and data schemas follow semver: fixes are patches, additions are
 minor, and breaking changes are major. Before 1.0.0, breaking changes raise the minor version.
 

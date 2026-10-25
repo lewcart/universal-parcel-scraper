@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import browserImports from './scripts/eslint-browser-imports.mjs';
 
 const unsafe = ['assignment', 'member-access', 'call', 'return', 'argument'].map(name => `@typescript-eslint/no-unsafe-${name}`);
 
@@ -27,6 +28,10 @@ export default defineConfig(
         + ":not(MemberExpression[property.name='getPossibleOffsets'] > CallExpression)",
       message: 'Pass a wall clock read in a zone through firstOccurrence() from core/time.',
     }],
+  } },
+  // The transport index brings Playwright and sharp; the modules a browser entry point loads take its text helpers from text.js.
+  { files: ['**/*.ts'], ignores: ['**/*.test.ts'], plugins: { local: { rules: { 'browser-imports': browserImports } } }, rules: {
+    'local/browser-imports': ['error', { root: import.meta.dirname, entries: ['index.ts', 'app.ts'], module: 'core/transport/index.ts', instead: 'core/transport/text.js' }],
   } },
   // Scripts are outside the TypeScript project: syntax rules only.
   { files: ['**/*.mjs'], extends: [tseslint.configs.disableTypeChecked], languageOptions: { globals: globals.node } },

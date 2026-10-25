@@ -59,10 +59,10 @@
     },
     {
       "code": "RETOUR",
-      "stage": "returned",
+      "stage": "exception",
       "confirmedBy": "live",
       "firstSeen": "2026-09-12",
-      "note": "Progress-bar group: returning to the sender; the stage is set from the group directly."
+      "note": "Progress-bar group: returning to the sender. A return under way stays open, as the shared rules read it, until a scan has the parcel back with its sender."
     },
     {
       "wording": "incident / anomalie / avarie / endommagé / refusé / adresse incorrecte / adresse de livraison est incomplète",
@@ -207,10 +207,10 @@
     },
     {
       "code": "RE1",
-      "stage": "returned",
+      "stage": "exception",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "Event code: the item is being sent back to its sender (incorrect address, pickup deadline passed or non-compliant import documents); the result status becomes exception."
+      "note": "Event code: the item is being sent back to its sender (incorrect address, pickup deadline passed or non-compliant import documents). The return is under way, not over: the stage and the result status are exception."
     },
     {
       "code": "DI2",

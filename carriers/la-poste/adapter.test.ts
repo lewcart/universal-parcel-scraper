@@ -13,7 +13,7 @@ import {
   normalizeLaPosteTrackingNumber,
   parseLaPosteTrackingResponse,
 } from './adapter.js';
-import { eventStage, eventStatus } from './status.js';
+import { eventStage, eventStatus, statusMap } from './status.js';
 
 const TRACKING_NUMBER = 'AB12345678901';
 const CAPABILITIES = (JSON.parse(
@@ -815,8 +815,17 @@ describe('La Poste status vocabulary', () => {
     expect(eventStatus('AARTAXDOU', 'DO2', released, true)).toBe('in_transit');
     expect(eventStage('AARTAXDOU', 'DO2', released)).toBe('in_transit');
     const expired = "Votre colis vous a attendu dans votre point de retrait jusqu'à la date limite. Nous sommes contraints de le renvoyer à l'expéditeur.";
-    expect(eventStage('AARIREXP', 'RE1', expired)).toBe('returned');
+    // A return is open until the parcel is back with its sender.
+    expect(eventStage('AARIREXP', 'RE1', expired)).toBe('exception');
     expect(eventStatus('AARIREXP', 'RE1', expired, true)).toBe('exception');
+    expect(eventStage('AARIREXP', 'RE1', "Votre Colissimo n'a pas pu vous être livré en raison d'un problème d'adresse. Il va être retourné à l'expéditeur."))
+      .toBe('exception');
+    expect(eventStage('RETOUR', '', "Votre colis est en cours de retour vers l'expéditeur.")).toBe('exception');
+    expect(eventStage('DESLREXP', 'DI2', "Votre colis est livré à son expéditeur à la suite d'un retour.")).toBe('returned');
+    expect(eventStage('DESMDREXP', '', 'Colis mis à disposition du vendeur suite à un retour')).toBe('returned');
+    expect(eventStage('', '', "Votre colis est livré à son expéditeur à la suite d'un retour.")).toBe('returned');
+    expect(statusMap.stage('AARIREXP/RE1', expired)).toBe('exception');
+    expect(statusMap.stage('DESLREXP/DI2', "Votre colis est livré à son expéditeur à la suite d'un retour.")).toBe('returned');
     const paidAtDoor = 'Vous avez payé vos droits et taxes de douane lors de la distribution.';
     expect(eventStage('DESPAY', 'DO4', paidAtDoor)).toBe('delivered');
     expect(eventStatus('DESPAY', 'DO4', paidAtDoor, true)).toBe('delivered');

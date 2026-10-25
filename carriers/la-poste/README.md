@@ -80,6 +80,10 @@ recognition reads it as unknown rather than as a transport failure.
   entry, `DO2` the release and `RE1` the decision to return the item. Duties paid
   at the door (`DESPAY`) follow the delivery scan and keep it delivered. Pickup and customs are set as `current_stage` because the status
   vocabulary has no value for them.
+- A return stays open until the parcel is back with its sender: `RE1`, the `RETOUR` group and
+  other return wording are an exception, as the shared rules read a return under way, and only
+  `DI2` (groups `DESLREXP` and `DESMDREXP`) or wording that has the sender receive it is returned.
+  Apps treat a returned parcel as finished.
 - Scans in France and its overseas departments keep the feed's timestamp, which
   carries its offset; impossible dates are dropped. That holds for imported
   tracked mail's arrival and transit in France too: the posts that relay them,

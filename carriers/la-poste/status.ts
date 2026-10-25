@@ -65,6 +65,9 @@ export const CODE_STATUSES = new Map<string, CarrierStatus>([
 const PICKUP_CODE = 'AG1';
 const CUSTOMS_ENTRY_CODE = 'DO1';
 const RETURN_CODE = 'RE1';
+/** The parcel back with its sender after a return, under the groups that hand it over (`DESLREXP`, `DESMDREXP`). */
+const BACK_WITH_SENDER_CODE = 'DI2';
+const BACK_WITH_SENDER_GROUPS = new Set(['DESLREXP', 'DESMDREXP']);
 /** Duties paid at the door: the scan follows the delivery under its own group. */
 const PAID_AT_DELIVERY_GROUP = 'DESPAY';
 /** Acceptance at the origin, by La Poste (`PC1`) or its partner abroad (`PC2`). */
@@ -116,15 +119,19 @@ export function eventStatus(
     ?? (described !== 'unknown' ? described : labelStatus(label, hasEvents));
 }
 
-/** The stage for one event; returns and pickup readiness are recognized before the status. */
+/**
+ * The stage for one event; returns and pickup readiness are recognized before the status. A return
+ * ends with the parcel back with its sender (`DI2`, or wording that says so). Until then, the decision
+ * to send it back (`RE1`), the return group and any other return wording leave it open, as the shared
+ * rules read a return under way: an exception.
+ */
 export function eventStage(group: string, code: string, label: string): Stage {
   const normalizedGroup = group.toLocaleUpperCase('en-US');
   const normalizedCode = code.toLocaleUpperCase('en-US');
   const value = comparable(label);
-  if (normalizedGroup === 'RETOUR' || normalizedCode === RETURN_CODE || value.includes('retour')) {
-    return 'returned';
-  }
   const worded = trackingLanguageStage(label);
+  if (normalizedCode === BACK_WITH_SENDER_CODE || BACK_WITH_SENDER_GROUPS.has(normalizedGroup) || worded === 'returned') return 'returned';
+  if (normalizedGroup === 'RETOUR' || normalizedCode === RETURN_CODE || value.includes('retour')) return 'exception';
   // A missed delivery announces the pickup point the parcel is sent to next.
   if (worded !== 'failed_attempt' && (
     normalizedGroup === 'DISMAD'
@@ -148,7 +155,7 @@ export function eventStage(group: string, code: string, label: string): Stage {
 }
 
 /** The codes the map reads on their own, beside those of `CODE_STATUSES`. */
-const KNOWN_CODES = new Set([...CODE_STATUSES.keys(), PICKUP_CODE, CUSTOMS_ENTRY_CODE, ...ACCEPTANCE_CODES]);
+const KNOWN_CODES = new Set([...CODE_STATUSES.keys(), PICKUP_CODE, CUSTOMS_ENTRY_CODE, BACK_WITH_SENDER_CODE, ...ACCEPTANCE_CODES]);
 
 /**
  * What the map says about one scan. Its provider code is `GROUP/CODE`, or the

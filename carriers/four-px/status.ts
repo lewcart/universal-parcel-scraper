@@ -29,6 +29,11 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['FPX_O_RR', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_M_IT', { status: 'in_transit', stage: 'in_transit' }],
 ]);
+// A partner's step filed under a code that says otherwise, by code and
+// `normalizeStatusWording` wording: a partner can word a move between its
+// sorting centre and the office that delivers as "In transit" under 4PX's
+// delivery code, days before the round.
+const RESTAGED: ReadonlyMap<string, Stage> = new Map([['FPX_D_SD\u0000in transit', 'in_transit']]);
 // These codes relay whatever step a partner reported, from a label to an
 // arrival in the destination country, so the wording decides the stage.
 const WORDED = new Set(['FPX_O_IR', 'FPX_O_IRI']);
@@ -51,6 +56,8 @@ export interface FourPxStatus extends ClassifiedStatus {
 }
 
 export function fourPxStatus(code: string, description = ''): FourPxStatus | undefined {
+  const restaged = RESTAGED.get(`${code}\u0000${normalizeStatusWording(description)}`);
+  if (restaged) return { status: languageStageStatus(restaged), stage: restaged, source: 'carrier_map' };
   const mapped = CODES.get(code);
   if (mapped) return { ...mapped, source: 'carrier_map' };
   const uncoded = code ? undefined : UNCODED.get(normalizeStatusWording(description));
@@ -74,7 +81,7 @@ function wordedStage(wording: string): Stage | undefined {
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => {
     if (!code) return UNCODED.get(wording);
-    return CODES.get(code)?.stage ?? (WORDED.has(code) ? wordedStage(wording) : undefined);
+    return RESTAGED.get(`${code}\u0000${wording}`) ?? CODES.get(code)?.stage ?? (WORDED.has(code) ? wordedStage(wording) : undefined);
   },
   gaps: [],
 };

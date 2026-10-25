@@ -204,6 +204,8 @@ describe('4PX result projection', () => {
     ['FPX_O_IR', 'Order data transmitted', 'pending', 'registered', 'carrier_map'],
     ['FPX_I_CP', 'Customs clearance in progress.', 'in_transit', 'customs', 'carrier_map'],
     ['FPX_D_SASPS', 'Parcel was handed over to pickup parcel shop_shop', 'out_for_delivery', 'ready_for_pickup', 'carrier_map'],
+    ['FPX_D_SD', 'In transit', 'in_transit', 'in_transit', 'carrier_map'],
+    ['FPX_D_SD', 'Scheduled for delivery', 'out_for_delivery', 'out_for_delivery', 'carrier_map'],
   ])('reads %s "%s" as %s', (code, description, status, stage, source) => {
     const payload = fixture(); Object.assign(payload.data[0].tracks[0], { tkCode: code, tkDesc: description });
     const result = parse(payload, NUMBER);

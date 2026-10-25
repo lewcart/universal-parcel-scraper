@@ -31,7 +31,9 @@ there has been compared with La Poste's own scans.
 Event codes map to stages. `FPX_O_IR` and `FPX_O_IRI` relay whatever step a
 partner reported, from a label to an arrival abroad, so their wording decides.
 A partner's transit scans relayed without a code are staged by their whole
-wording. Other unknown codes stay unstaged. A partner's qualifier left after an
+wording. A partner's "In transit" under the delivery code `FPX_D_SD` is a move
+toward the office that delivers, days before the round, so it reads as in
+transit. Other unknown codes stay unstaged. A partner's qualifier left after an
 underscore at the end of a wording, as DPD's (`…_nabn`), is dropped. A
 partner's pickup-shop record relayed in place of a wording (the shop's fields,
 then `_store_type;pudo_id;pudo_name;…`) is no scan: its shop name and town are

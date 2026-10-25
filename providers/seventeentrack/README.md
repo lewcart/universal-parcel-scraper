@@ -82,8 +82,8 @@ carrier.
 - Exactly one shipment must match the requested number. Demo numbers and ambiguous
   replies are rejected.
 - Stages come from the exact `sub_status` map in [status.ts](status.ts) first. It works
-  when `stage` is null or the description is Chinese. Then come the declared stage and
-  the shared wording rules. `Exception_Returning` is not a completed return.
+  when `stage` is null or the description is Chinese, and a stage it gives is credited to
+  the map (`carrier_map`). Then come the declared stage and the shared wording rules. `Exception_Returning` is not a completed return.
   Shipment-level `Expired` is never a scan and never means lost.
 - Times: `time_utc`, else `time_iso`, and both must carry an offset. When both parse but name
   different instants, `time_iso`, the clock and offset 17TRACK shows, wins: on India Post's legs

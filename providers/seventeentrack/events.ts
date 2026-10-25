@@ -46,7 +46,8 @@ export function seventeenTrackEvent(raw: JsonObject, operator: JsonObject, place
   const parsed = event(time, raw.description, raw.stage ?? (Object.hasOwn(SUB_STAGES, code) ? code.split('_')[0] : undefined));
   if (!parsed) return null;
   const coded = subStatusStage(code, parsed.stage as Stage);
-  if (coded) parsed.stage = coded;
+  // A stage the code gives comes from 17TRACK's map, even where its stage name was not one the wording rules read.
+  if (coded) Object.assign(parsed, { stage: coded, stage_source: 'carrier_map' });
   // 17TRACK's generic transit bucket loses Swiss Post's delivery-round scan.
   // Refine only that operator's precise native label; keep its original code.
   if (code === 'InTransit_Other' && operator.reporting_carrier === 'Swiss Post'

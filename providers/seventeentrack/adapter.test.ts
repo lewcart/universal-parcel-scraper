@@ -133,6 +133,11 @@ describe('17TRACK result parsing', () => {
     expect(result.events?.[0]?.description).toBe(stage === 'delivered' ? 'Delivered' : description);
   });
 
+  it('credits the stage a code gives to the map, beside a stage name the wording rules do not read', () => {
+    const result = parse17TrackResponse(postalHistory([{ ...postalScan('InTransit_PickedUp', '中国邮政已收取邮件'), stage: 'PickedUp' }]), number);
+    expect(result.events?.[0]).toMatchObject({ stage: 'accepted', stage_source: 'carrier_map' });
+  });
+
   it("reads the place China Post's feed gives after a status, and no place for a status alone", () => {
     const located = (location: string) => parse17TrackResponse(
       postalHistory([{ ...postalScan('InTransit_Other', 'In transit'), location }]), number).events?.[0]?.location;

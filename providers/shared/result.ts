@@ -127,6 +127,10 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   // country ("Delivered by Airline") and its last-mile distributor taking the item ("Deliver to distributor").
   if (/deliver(?:ed)? to (?:the )?(?:local carrier|delivery partner|post office|distributor)|delivered by (?:the )?airline/i.test(description)) return 'in_transit';
   if (/will be available for (?:pickup|collection)/i.test(description)) return 'in_transit';
+  // InPost's steps as aggregators relay them, as its own map reads them: a logistics centre taking the parcel in on
+  // the way, after the courier's collection and again on each round trip, and its hand-over to the courier for delivery.
+  if (/^accepted at the logistics cent(?:er|re)[.!]?$/i.test(description)) return 'in_transit';
+  if (/^handed over for delivery[.!]?$/i.test(description)) return 'out_for_delivery';
   // Sender pre-advice such as Quickpac's "Shipment recorded by sender (data delivered)".
   if (/being prepared by the sender|recorded by (?:the )?(?:foreign )?sender|\bdata delivered\b|en route to .*awaiting processing/i.test(description)) return 'registered';
   // The bare word also appears in handoffs, forecasts and negations ("delivered

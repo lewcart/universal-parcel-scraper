@@ -1508,6 +1508,14 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', null, 'We have received information about your incoming item')).toEqual(unknown);
   });
 
+  it("read InPost's logistics centre and hand-over for delivery as InPost's own map does when an aggregator relays them", () => {
+    expect(answer('unknown', null, 'Accepted at the Logistics Centre')).toEqual(mapped('in_transit'));
+    expect(answer('unknown', null, 'Handed over for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('inpost', null, 'Accepted at the Logistics Centre')).toEqual(mapped('in_transit'));
+    // A hand-over to the airline or the recipient's side is still no round.
+    expect(answer('unknown', null, 'Handed over to airline')).not.toEqual(mapped('out_for_delivery'));
+  });
+
   it("close the aggregators' whole scans no shared rule reads, and nothing like them", () => {
     for (const [wording, stage] of [
       // Latvijas Pasts' export steps, ECMS's pre-alert and InPost's refusal at the door, as ParcelsApp and Ship24 relay them.

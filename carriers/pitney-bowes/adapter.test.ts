@@ -23,6 +23,8 @@ const changed = (name: string, change: (body: Reply) => void) => {
   change(body);
   return body;
 };
+const scan = (description: string, date: string, hour: string, location: string | null = null) =>
+  ({ description, location, date, hour, longDate: '', shortDate: '', dayOfWeek: '', hasLongEventInfo: false });
 const reply = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
   { ...init, headers: { 'Content-Type': 'application/json', ...init.headers } });
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
@@ -48,7 +50,8 @@ describe('Pitney Bowes HTTP adapter', () => {
       last_status_text: 'Customs Clearance', last_update: null, last_update_local: '2026-06-02T12:10:00', expected_delivery: null,
       service_name: 'Pitney Bowes Expedited Parcel Service', weight_kg: 0.085 });
     expect(result.events!.map((event) => [event.local_time, event.description, event.stage ?? null, event.location ?? null])).toEqual([
-      ['2026-06-02T12:10:00', 'Customs Clearance', 'customs', 'ZZ'],
+      // An import declaration's country is paperwork, not the parcel's place.
+      ['2026-06-02T12:10:00', 'Customs Clearance', 'customs', null],
       ['2026-05-30T16:29:00', 'Interpost handed item over to postal company', 'in_transit', null],
       ['2026-05-30T11:03:00', 'Shipped from Global Shipping Center to Destination', 'in_transit', 'Sample Hub, Sampleshire, GB'],
       ['2026-05-29T11:05:00', 'Parcel Documentation and Labeling', 'in_transit', 'Sample Hub, Sampleshire, GB'],
@@ -75,8 +78,6 @@ describe('Pitney Bowes HTTP adapter', () => {
   });
 
   it('drops a partner’s scan relayed again in capitals on a clock whole hours away, and keeps a scan with no placed twin', () => {
-    const scan = (description: string, date: string, hour: string, location: string | null = null) =>
-      ({ description, location, date, hour, longDate: '', shortDate: '', dayOfWeek: '', hasLongEventInfo: false });
     const result = parsePitneyBowes(changed('in-transit', (body) => {
       body.trackingEventsModule.trackingEvents.unshift(
         scan('DEPART FACILITY', 'Jun 3, 2026', '03:43\u00a0AM'),
@@ -97,9 +98,38 @@ describe('Pitney Bowes HTTP adapter', () => {
       ['2026-06-02T19:43:00', 'ON HOLD', null],
       ['2026-06-02T18:14:00', 'Arrived Facility', 'Sample City, ZZ'],
       ['2026-06-02T17:14:00', 'Arrived Facility', null],
-      ['2026-06-02T12:10:00', 'Customs Clearance', 'ZZ'],
+      ['2026-06-02T12:10:00', 'Customs Clearance', null],
     ]);
     expect(result).toMatchObject({ current_stage: 'in_transit', current_stage_source: 'wording:language', last_status_text: 'DEPART FACILITY' });
+  });
+
+  it('shows Interpost’s clearance status in words with its code, and keeps no place for its import declaration', () => {
+    const result = parsePitneyBowes(changed('in-transit', (body) => {
+      body.trackingEventsModule.trackingEvents[0]!.location = 'IT';
+      body.trackingEventsModule.trackingEvents.unshift(
+        scan('B2C ClearanceStatus4', 'Jun 3, 2026', '12:42\u00a0PM', 'NL'),
+        scan('B2C ClearanceStatus2', 'Jun 3, 2026', '09:15\u00a0AM', 'NL'),
+      );
+    }), IN_TRANSIT);
+    expect(result.events!.slice(0, 3)).toEqual([
+      { local_time: '2026-06-03T12:42:00', location: 'NL', description: 'Customs import cleared', provider_code: 'B2C ClearanceStatus4',
+        stage: 'in_transit', stage_source: 'carrier_map' },
+      // A status number Interpost's tracker does not caption is a customs step.
+      { local_time: '2026-06-03T09:15:00', location: 'NL', description: 'Customs clearance update', provider_code: 'B2C ClearanceStatus2',
+        stage: 'customs', stage_source: 'wording:language' },
+      // The declaration names the country it is lodged in, which still tells its clock.
+      { local_time: '2026-06-02T12:10:00', time: '2026-06-02T12:10:00+02:00', time_zone: 'Europe/Rome', time_zone_basis: 'place',
+        description: 'Customs Clearance', stage: 'customs', stage_source: 'carrier_map' },
+    ]);
+    expect(result).toMatchObject({ current_stage: 'in_transit', last_status_text: 'Customs import cleared', last_update: null });
+    const declared = parsePitneyBowes(changed('in-transit', (body) => { body.trackingEventsModule.trackingEvents[0]!.location = 'IT'; }), IN_TRANSIT);
+    expect(declared).toMatchObject({ last_update: '2026-06-02T12:10:00+02:00', last_update_local: '2026-06-02T12:10:00' });
+    // A declaration placed in a town, and another scan naming only a country, keep their place.
+    const placed = parsePitneyBowes(changed('in-transit', (body) => {
+      body.trackingEventsModule.trackingEvents[0]!.location = 'Sample City, ZZ';
+      body.trackingEventsModule.trackingEvents.unshift(scan('Arrived Facility', 'Jun 3, 2026', '08:00\u00a0AM', 'ZZ'));
+    }), IN_TRANSIT);
+    expect(placed.events!.slice(0, 2).map((event) => event.location)).toEqual(['ZZ', 'Sample City, ZZ']);
   });
 
   it('takes the summary’s word for a delivery, and its other statuses only for scans without a stage', () => {
@@ -266,8 +296,10 @@ describe('Pitney Bowes status vocabulary', () => {
     expect(statusMapAnswer({ carrier: 'pitney-bowes', description: 'Customs Documentation and Labeling' }))
       .toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(statusMapAnswer({ carrier: 'pitney-bowes', description: 'Synthetic note' })).toEqual({ kind: 'unknown' });
-    // Interpost's import clearance: status 4 is cleared; another status number stays customs by the shared rules.
+    // Interpost's import clearance: status 4 is cleared, in words or stored as its code; another status number stays customs by the shared rules.
     expect(statusMapAnswer({ carrier: 'pitney-bowes', description: 'B2C ClearanceStatus4' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'pitney-bowes', providerCode: 'B2C ClearanceStatus4', description: 'Customs import cleared' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(pitneyBowesStage('B2C ClearanceStatus1')).toEqual({ stage: 'customs', source: 'wording:language' });
     // Wording the map does not know, relayed from a partner, falls to the shared rules.
     expect(pitneyBowesStage('Depart Facility')).toEqual({ stage: 'in_transit', source: 'wording:language' });

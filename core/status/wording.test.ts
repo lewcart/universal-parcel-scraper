@@ -281,7 +281,8 @@ describe('classifyWording', () => {
     expect(wordingStage('Les formalités import/export sont en cours sur votre colis.')).toBe('customs');
     expect(wordingStage('Les formalités import/export de votre colis sont terminées et il poursuit son acheminement.')).toBe('in_transit');
     expect(wordingStage('Import customs clearance started')).toBe('customs');
-    for (const wording of ['Import customs clearance complete', 'Export clearance success', 'Leaving customs', 'Departed from customs']) {
+    for (const wording of ['Import customs clearance complete', 'Export clearance success', 'Leaving customs', 'Departed from customs',
+      'Customs Import cleared', 'B2C Clearance 4. Customs Import cleared']) {
       expect(wordingStage(wording)).toBe('in_transit');
     }
   });

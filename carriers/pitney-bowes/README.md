@@ -38,8 +38,16 @@ tracking page makes.
 - Scans carry no code. The map reads Pitney Bowes's own wording and the postal wording it
   relays; other relayed wording falls to the shared rules. Export paperwork written at the hub
   ("Customs Documentation and Labeling") is not customs, and the onward carrier opening its
-  record moves nothing. Interpost's import clearance comes as `B2C ClearanceStatus` and a
-  status number; Interpost's own tracker captions 4 as cleared, so only that number is mapped.
+  record moves nothing.
+- Interpost's import clearance comes as its code alone, `B2C ClearanceStatus` and a status
+  number. The scan shows the caption Interpost's own tracker gives status 4, "Customs import
+  cleared", and keeps the code as its provider code. Another number shows as a customs
+  clearance update, staged by the shared rules, since its meaning is not known.
+- Interpost's import declaration ("Customs Clearance", captioned "Customs Import submitted" by
+  its tracker) names only the country it is lodged in, and can come within hours of the parcel
+  leaving the UK hub, before it could be there. The scan keeps no place, so it puts nothing on
+  a map, but its wall clock is still read in that country's zone, as the place was. A scan
+  stored with the country, or a clearance stored under its code, keeps its stored row.
 - Aggregators relay the hub's steps, and Interpost's request for the final-mile label at the
   hub's processing scan. The universal providers' shared rules stage them as this map does.
 - The summary's `Delivered` settles a delivery. Its other statuses stand in only when no scan
@@ -50,7 +58,8 @@ tracking page makes.
 
 ## Limitations
 
-- No delivery estimate, provider codes, or delivery time as an instant.
+- No delivery estimate, no provider code but Interpost's clearance status, and no delivery time
+  as an instant.
 - A number the tracker does not know cannot be told from an outage or a history it no longer
   keeps.
 

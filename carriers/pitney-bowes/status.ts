@@ -33,9 +33,8 @@ const SCANS: Readonly<Record<string, Stage>> = {
   'Customs Cleared': 'in_transit',
   'Cleared customs': 'in_transit',
   'Customs Clearance': 'customs',
-  // Interpost's import clearance with its status number; Interpost's own
-  // tracker captions status 4 "Customs Import cleared".
-  'B2C ClearanceStatus4': 'in_transit',
+  // Interpost's clearance status 4 in its own tracker's words (`interpostClearance`).
+  'Customs import cleared': 'in_transit',
   'Departed carrier facility': 'in_transit',
   'Processed by Carrier': 'in_transit',
   'Item in transit by postal company': 'in_transit',
@@ -52,12 +51,27 @@ const GAPS = [
   },
 ];
 
+/**
+ * Interpost's import clearance, which Pitney Bowes relays as its code alone:
+ * `B2C ClearanceStatus` and a status number. Interpost's own tracker captions
+ * status 4 "Customs Import cleared"; what the other numbers mean is not known.
+ */
+const CLEARANCE = /^B2C ClearanceStatus(\d{1,3})$/i;
+const CLEARANCES: Readonly<Record<string, string>> = { 4: 'Customs import cleared' };
+
+/** The words a clearance status code is shown in, and the code, kept as the provider code. */
+export function interpostClearance(wording: string): { wording: string; code: string } | null {
+  const code = wording.trim();
+  const status = CLEARANCE.exec(code)?.[1];
+  return status === undefined ? null : { wording: CLEARANCES[Number(status)] ?? 'Customs clearance update', code };
+}
+
 const SCAN_KEYS = new Map(Object.entries(SCANS).map(([wording, stage]) => [normalizeStatusWording(wording), stage]));
 const GAP_KEYS = new Set(GAPS.map((gap) => normalizeStatusWording(gap.wording)));
 
-/** The stage Pitney Bowes's own wording gives a scan, if any. */
+/** The stage Pitney Bowes's own wording gives a scan, if any. A clearance code stored as the wording reads as its words. */
 export function pitneyBowesMappedStage(wording: string): Stage | undefined {
-  return SCAN_KEYS.get(normalizeStatusWording(wording));
+  return SCAN_KEYS.get(normalizeStatusWording(interpostClearance(wording)?.wording ?? wording));
 }
 
 /** A scan's stage: its wording in the map, else the shared wording rules, else nothing. */
@@ -65,7 +79,7 @@ export function pitneyBowesStage(wording: string): ClassifiedWording | null {
   const mapped = pitneyBowesMappedStage(wording);
   if (mapped) return { stage: mapped, source: 'carrier_map' };
   if (GAP_KEYS.has(normalizeStatusWording(wording))) return null;
-  const worded = classifyWording(wording, 'in_transit');
+  const worded = classifyWording(interpostClearance(wording)?.wording ?? wording, 'in_transit');
   return worded.source === 'none' ? null : worded;
 }
 

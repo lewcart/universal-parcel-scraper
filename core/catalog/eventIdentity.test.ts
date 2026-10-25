@@ -333,6 +333,26 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: 'Item has been registered! The item can be registered several times.' }, stored)).toBe(false);
   });
 
+  it('lets a Pitney Bowes import declaration shown without its country, and a clearance shown in words, take over their rows', () => {
+    const policy = sameInstantIdentityPolicy('pitney-bowes', { supportsScanMatching: true });
+    expect(policy).toMatchObject({ storedSources: ['pitney-bowes'], requireProviderCode: false, matchEachScan: true, matchWallClock: true });
+    const declaration = { stage: 'customs', description: 'Customs Clearance', location: '', providerCode: '' };
+    expect(policy?.matches?.(declaration, declaration)).toBe(true);
+    expect(policy?.matches?.(declaration, { ...declaration, location: 'ZZ' })).toBe(true);
+    for (const stored of [{ ...declaration, location: 'Sample City, ZZ' }, { ...declaration, location: 'ZZ', stage: 'in_transit' }]) {
+      expect(policy?.matches?.(declaration, stored)).toBe(false);
+    }
+    expect(policy?.matches?.({ ...declaration, description: 'Arrived Facility' }, { ...declaration, description: 'Arrived Facility', location: 'ZZ' })).toBe(false);
+    const cleared = { stage: 'in_transit', description: 'Customs import cleared', location: 'ZZ', providerCode: 'B2C ClearanceStatus4' };
+    const stored = { ...cleared, description: 'B2C ClearanceStatus4', providerCode: '' };
+    expect(policy?.matches?.(cleared, stored)).toBe(true);
+    expect(policy?.matches?.(stored, cleared)).toBe(false);
+    for (const other of [{ ...stored, location: 'YY' }, { ...stored, description: 'B2C ClearanceStatus2' }]) {
+      expect(policy?.matches?.(cleared, other)).toBe(false);
+    }
+    expect(policy?.matches?.({ ...cleared, providerCode: 'B2C ClearanceStatus2' }, stored)).toBe(false);
+  });
+
   it.each(['aliexpress', 'imile'])('lets a %s scan Cainiao worded as "Carrier update" take over its row once worded as its step', (source) => {
     const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
     const stored = { stage: 'in_transit', description: 'Carrier update', location: '', providerCode: 'SC_TRANS_OUTBOUND_SUCCESS' };

@@ -3,9 +3,12 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { pitneyBowesStage, pitneyBowesSummaryStage } from './status.js';
+import { mainZone } from '../../places/zones.js';
+import { declarationCountry } from './identity.js';
+import { interpostClearance, pitneyBowesStage, pitneyBowesSummaryStage } from './status.js';
 
 export const PROVIDER = 'Pitney Bowes';
 // A long history is under twenty kilobytes.
@@ -50,6 +53,27 @@ function scanClock(row: Record<string, unknown>): string {
     throw new SchemaError(PROVIDER, 'Pitney Bowes returned an invalid scan time');
   }
   return parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss");
+}
+
+/** A wall clock read in a zone the scan itself tells, and how that zone was chosen. */
+function dated(local: string, zone: string, basis: string): Pick<CarrierEvent, 'time' | 'time_zone' | 'time_zone_basis'> {
+  const time = firstOccurrence(DateTime.fromISO(local, { zone })).toISO({ suppressMilliseconds: true });
+  return time ? { time, time_zone: zone, time_zone_basis: basis } : {};
+}
+
+/**
+ * An import declaration's country is paperwork: Interpost can lodge it within
+ * hours of the parcel leaving the UK hub, before the parcel could be there.
+ * The scan keeps no place, so it puts nothing on a map, but the country still
+ * tells its clock, as the place did.
+ */
+function withoutDeclarationCountry(event: CarrierEvent): CarrierEvent {
+  const country = declarationCountry(event.description ?? '', event.location ?? '');
+  if (!country) return event;
+  const unplaced = { ...event };
+  delete unplaced.location;
+  const zone = mainZone(country);
+  return zone ? { ...unplaced, ...dated(event.local_time!, zone, 'place') } : unplaced;
 }
 
 /** A scan's place as written, without the `XX` some relayed scans put for a missing region. */
@@ -140,22 +164,24 @@ export function parsePitneyBowes(payload: unknown, raw: string): CarrierResult {
   const scans: Scan[] = [];
   for (const row of module.trackingEvents as unknown[]) {
     if (!isRecord(row)) throw new SchemaError(PROVIDER, 'Pitney Bowes returned an invalid scan');
-    const description = text(row, 'description');
-    if (!description) throw new SchemaError(PROVIDER, 'Pitney Bowes returned a scan without wording');
+    const written = text(row, 'description');
+    if (!written) throw new SchemaError(PROVIDER, 'Pitney Bowes returned a scan without wording');
     const local = scanClock(row);
     const location = place(row);
-    const staged = pitneyBowesStage(description);
+    const clearance = interpostClearance(written);
+    const staged = pitneyBowesStage(written);
     scans.push({ minute: Date.parse(`${local}Z`) / 60_000, event: {
       local_time: local,
       ...(location ? { location } : {}),
-      description,
+      description: clearance?.wording ?? written,
+      ...(clearance ? { provider_code: clearance.code } : {}),
       ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
     } });
   }
   const kept = withoutCopies(scans);
   if (!kept.length) throw new NoHistoryError(PROVIDER);
   // Newest first, as the page lists them; scans of one minute keep the reply's order.
-  const events = kept.map((scan, index) => ({ event: scan.event, index }))
+  const events = kept.map((scan, index) => ({ event: withoutDeclarationCountry(scan.event), index }))
     .sort((a, b) => String(b.event.local_time).localeCompare(String(a.event.local_time)) || a.index - b.index)
     .map((scan) => scan.event);
 
@@ -171,7 +197,7 @@ export function parsePitneyBowes(payload: unknown, raw: string): CarrierResult {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: source ?? 'carrier_map' } : {}),
     last_status_text: newest.description!,
-    last_update: null,
+    last_update: newest.time ?? null,
     last_update_local: newest.local_time,
     expected_delivery: null,
     ...(service ? { service_name: service } : {}),

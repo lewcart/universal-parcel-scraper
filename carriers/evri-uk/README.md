@@ -58,7 +58,9 @@ caller's deadline and cancellation signal.
 - The event's rail code sets its stage. A few tracking points refine it: a
   drop-off or collection is the acceptance, a failed courier visit is a
   failed attempt, and a customer return's processing and journey back are
-  returned. Unknown rail codes remain unstaged.
+  returned. Unknown rail codes remain unstaged. A scan's `provider_code` is its
+  tracking point, not its rail, so the app's review (`statusMap`) stages only
+  the `Delivered` wording and leaves every other scan open.
 - A parcel sent to a ParcelShop or locker waits on the `4_SHOP` or
   `4_LOCKER` rail, which evri.com's tracking page reads as awaiting
   collection, so it is ready for pickup until the `5_SHOP` collection, which

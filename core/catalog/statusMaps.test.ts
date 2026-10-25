@@ -778,6 +778,16 @@ describe('status map answers', () => {
     expect(answer('packeta', null, 'Synthetic sentence')).toEqual(unknown);
   });
 
+  it("answers Evri UK's delivery by the wording it writes for one, and leaves every tracking point open, since its rail is not stored", () => {
+    expect(answer('evri-uk', 'LEFT_GARAGE', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('evri-uk', null, 'Delivered')).toEqual(mapped('delivered'));
+    // The rail the stage comes from is not stored: a ParcelShop arrival is a drop-off on one rail and ready for pickup on another.
+    for (const [code, wording] of [['ARRIVED_PARCELSHOP', 'Synthetic scan'], ['COURIER_DELIVERY', 'Out for delivery'], ['SYNTHETIC_POINT', 'Delivery update']] as const) {
+      expect(answer('evri-uk', code, wording), code).toEqual(unknown);
+    }
+    expect(answer('evri-uk', null, 'Out for delivery')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

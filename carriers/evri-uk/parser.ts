@@ -36,6 +36,9 @@ function stageOf(stageCode: string, pointCode: string): Stage | undefined {
 
 const ZONE = 'Europe/London';
 
+/** The wording of every delivery: Evri's own can name the recipient or a safe place. */
+export const EVRI_UK_DELIVERED = 'Delivered';
+
 export function normalizeEvriUkNumber(raw: string): string {
   const number = raw.toUpperCase().replace(/[\s-]/g, '');
   if (!/^[A-Z0-9]{16}$/.test(number)) throw new InvalidInputError('Evri UK', 'Evri UK requires a 16-character parcel barcode');
@@ -110,7 +113,7 @@ export function parseEvriUk(payload: unknown, raw: string, expectedUrn?: string)
     const clock = cleanScalar(rawEvent.dateTime, 64);
     const event: CarrierEvent = {
       ...(time ? { time: time.iso } : clock ? { provider_time_text: clock } : {}),
-      description: stage === 'delivered' ? 'Delivered' : privateDeliveryProse ? 'Delivery update' : description,
+      description: stage === 'delivered' ? EVRI_UK_DELIVERED : privateDeliveryProse ? 'Delivery update' : description,
       ...(stage ? { stage, stage_source: 'carrier_map' } : {}),
       provider_code: code,
       provider_stage_code: stageCode,

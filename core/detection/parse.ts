@@ -67,6 +67,8 @@ const TRACKED = 'suivi|seguimiento|tracciamento|rastreio|rastreamento|tracking';
 const LABEL = new RegExp('^(?:\\p{L}+\\s+)?(?:(?:\\p{L}*(?:code|nummer)|number|numer|numero|número|numéro|nr|n\\.?[°º]|kod|codice|codigo|código)'
   + `(?:\\s+(?:(?:de|du|del|di|do|da)\\s+(?:${TRACKED}|colis|envío|envio|spedizione)|przesyłki|paczki))?|${TRACKED})`
   + '(?:[.:#\\s]+|(?<=[°º]))(?=\\d)', 'iu');
+// A label of another number: an order's, a customer's, an invoice's, a phone's or a voucher's.
+const OTHER_NUMBER = /order|bestell|auftrag|commande|pedido|ordine|zam[oó]wieni|kunden|customer|client|rechnung|invoice|factur|telefon|phone|gutschein|voucher|coupon|rabatt|promo/iu;
 // A word among the groups of an entry. The letters a number prints apart are
 // fewer, "RR 123 456 789 FR", and GLS's lettered Track IDs stand alone.
 const WORD = /(?:^|\s)\p{L}{5,}(?=\s|$)/u;
@@ -77,7 +79,8 @@ const holdsWord = (entry: string) => /\s/.test(entry) && WORD.test(entry);
  * as in "1Z 999 AA1 01 2345 6784". A word offering a second number leaves it
  * unread, and a label word before the digits is no part of it, unless a
  * carrier confidently claims the two together. Nor is any other word: "Suivi
- * colis 12345678" holds no number whole.
+ * colis 12345678" holds no number whole. A label of an order's or a phone's
+ * number names no tracking number.
  */
 function numberEnteredWhole(input: string): { number: string; labelled: boolean } | undefined {
   if (input.includes('://')) return undefined;
@@ -89,7 +92,7 @@ function numberEnteredWhole(input: string): { number: string; labelled: boolean 
   if (alternatives.filter((group) => /\d/.test(group)).length > 1) return undefined;
   const claimed = detectCarrierMatch(input).confidence === 'high';
   const label = LABEL.exec(input);
-  if (label && !claimed) {
+  if (label && !claimed && !OTHER_NUMBER.test(label[0])) {
     const number = input.slice(label[0].length);
     if (validTrackingNumber(number) && !holdsWord(number)) return { number, labelled: true };
   }

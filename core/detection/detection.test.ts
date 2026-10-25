@@ -520,7 +520,8 @@ describe('the detection engine', () => {
   });
 
   it('takes no other number a label names for the tracking number', () => {
-    for (const input of ['numéro de commande 12345678', 'número de pedido 12345678', 'suivi 5555666677 ou 7777888899']) {
+    for (const input of ['numéro de commande 12345678', 'número de pedido 12345678', 'suivi 5555666677 ou 7777888899', 'Order number 12345678',
+      'Bestellnummer 12345678', 'Commande n° 12345678', 'Telefonnummer 0612345678', 'Customer ID: 12345678']) {
       expect(parseTrackingInput(input)).toMatchObject({ trackingNumber: '', source: 'none' });
     }
   });

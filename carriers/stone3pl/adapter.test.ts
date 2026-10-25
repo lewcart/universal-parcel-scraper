@@ -76,6 +76,13 @@ describe('Stone3PL', () => {
     expect(result).toMatchObject({ current_stage: 'delivered', summary_only: true, last_update: null });
   });
 
+  it('keeps the page\'s pick-up bucket over a scan worded as transit', () => {
+    const value = changed(row => { row.front_status = 2; });
+    expect(parseStone3pl(value, NUMBER)).toMatchObject({ current_stage: 'ready_for_pickup', summary_only: true });
+    delete value.data.all_data[0]!.front_status; value.data.all_data[0]!.status = 25;
+    expect(parseStone3pl(value, NUMBER)).toMatchObject({ current_stage: 'ready_for_pickup' });
+  });
+
   it('does not turn destination milestone objects into scans or discard the origin history', () => {
     const value = changed(row => { row.track_last = { '-1': { t_time: '2030-01-21 04:54:49' }, '0': { t_time: '' } }; });
     expect(parseStone3pl(value, NUMBER)).toMatchObject({ events: expect.any(Array), last_update_local: '2030-01-20T07:36:46' });

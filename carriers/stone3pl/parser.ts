@@ -139,7 +139,8 @@ export function parseStone3pl(payload: unknown, raw: string): CarrierResult {
   if (!events.length) throw new NoHistoryError(PROVIDER);
   const staged = events.find(event => event.stage);
   // The overall transit bucket also covers electronic pre-advice. Prefer its actual scans.
-  const headline: Stage | undefined = display === 3 ? 'delivered' : display === 4 ? 'exception' : undefined;
+  const headline: Stage | undefined = display === 2 ? 'ready_for_pickup' : display === 3 ? 'delivered'
+    : display === 4 ? 'exception' : undefined;
   const stage = headline ?? (staged?.stage as Stage | undefined) ?? (display === 1 ? 'in_transit' : undefined);
   const source = headline ? 'carrier_map' : staged?.stage_source ?? 'carrier_map';
   const newest = events[0]!;

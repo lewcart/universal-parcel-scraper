@@ -867,6 +867,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'winit', number: 'WO0000000000A',
     route: /^https:\/\/track\.winit\.com\/tracking\/Mobile\/result\?trackingNos=WO0000000000A$/,
     marker: /Temporarily query no tracking information/ },
+  { carrier: 'stone3pl', number: 'S900000000000000001',
+    route: /^https:\/\/stone3pl\.com\/\?route=services\/track&nums=S900000000000000001$/,
+    marker: /Delivered&Signed|Last Mile Tracking/ },
   // The page moves to its new route in the browser, searches the number and repeats it in the notice it shows when nothing matches.
   { carrier: 'dsv', number: 'ZZ99999999',
     route: /^https:\/\/mydsv\.com\/(?:new\/tracking\/)?track-shipment\?query=ZZ99999999$/,

@@ -3,8 +3,7 @@
   "displayName": "Stone3PL",
   "aliases": [
     "STONE3PL.COM",
-    "Stone 3PL",
-    "STONELINE"
+    "Stone 3PL"
   ],
   "region": {
     "countries": [
@@ -24,8 +23,7 @@
       "retry"
     ],
     "recognition": {
-      "rank": 806,
-      "pattern": "^S\\d{18}$"
+      "rank": 806
     },
     "localClocks": true
   },

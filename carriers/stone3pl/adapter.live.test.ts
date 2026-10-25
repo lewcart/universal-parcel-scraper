@@ -11,8 +11,9 @@ describe('Stone3PL live retrieval', () => {
     expect(answer).toMatchObject({ carrier: 'stone3pl', source: 'stone3pl' });
     expect(answer.attempts[0]).toMatchObject({ source: 'stone3pl', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
+    // The feed states no offset; any instant here is one the tracker deduced.
     expect(answer.result.events.every(event => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(event.local_time))
-      && event.time === undefined && event.description)).toBe(true);
+      && (!event.time || event.time_zone_basis) && event.description)).toBe(true);
     await expect(direct().recognize!(process.env.STONE3PL_TRACKING_NUMBER!)).resolves.toMatchObject({ known: true });
   }, 45_000);
 

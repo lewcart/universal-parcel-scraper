@@ -26,11 +26,13 @@ bucket establishes no information. An empty history without it is inconclusive.
 - Scan dates use `t_time`. The formatted `day` and `time` can contain a 24-hour
   hour followed by `pm`, and `track_date` / `end_track_date` can be the time of
   the lookup, so none of them establishes an event instant or estimate.
-- The feed provides no timezone. Scan times remain `local_time`, including
-  destination scans; no UTC offset is inferred from Stone3PL's home country.
+- The feed provides no timezone. The adapter keeps scan times in `local_time`,
+  destination scans included; `createTracker()` dates them on a deduced zone,
+  as it does for every carrier with local clocks.
 - The scan's wording establishes its milestone. Numeric status 1 also appears
-  on electronic pre-advice. The site's overall delivered and alert buckets are
-  retained; when a headline has no corresponding scan, the answer is partial.
+  on electronic pre-advice. The site's overall pick-up, delivered and alert
+  buckets are retained; when a headline has no corresponding scan, the answer
+  is partial.
 - `true_track_number` is the page's last-mile number. The carrier is a handoff
   hint only when the feed names a catalog carrier; the number or destination
   alone never chooses one. Countries and shipping service are retained.

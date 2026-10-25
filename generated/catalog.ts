@@ -29097,8 +29097,7 @@ export const CARRIER_CATALOG = {
     "color": "#0066b3",
     "aliases": [
       "STONE3PL.COM",
-      "Stone 3PL",
-      "STONELINE"
+      "Stone 3PL"
     ],
     "countries": [
       "CN"
@@ -29109,7 +29108,6 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "stone3pl",
       "recognitionRank": 806,
-      "recognitionPattern": "^S\\d{18}$",
       "localClocks": true
     },
     "canaryUrl": "https://stone3pl.com/",

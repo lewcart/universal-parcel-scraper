@@ -86,7 +86,9 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
 
 /** DHLink's and China Post's scans in Chinese, and a relayed USPS notice. */
 const PATTERNS: readonly (readonly [RegExp, Stage])[] = [
-  // The shipper's electronic data, before any scan.
+  // The order a line on the Hualei platform writes when the parcel's data reaches it: before any
+  // scan, DHLink's shipper data; after DHLink's scans, the line DHLink booked, which the parser
+  // keeps from stepping back.
   [/^货物电子信息已经?收到$/, 'registered'],
   [/^已入库$/, 'accepted'],
   [/已收取邮件$/, 'accepted'],
@@ -99,6 +101,11 @@ const PATTERNS: readonly (readonly [RegExp, Stage])[] = [
   [/^已交承运商运输$/, 'in_transit'],
   [/已出口直封$/, 'in_transit'],
   [/^出口海关\/放行$/, 'in_transit'],
+  // China's export clearance done ("domestic clearance"), as its QG001 node words it in English.
+  [/^国内清关完成$/, 'in_transit'],
+  // At the airport waiting for a flight, then the flight it is booked on, in Chinese with DHLink's English.
+  [/^arriving at the airport - arranging flights\b|^到达机场-安排航班中$/, 'in_transit'],
+  [/^预计配载航班\d{1,2}月\d{1,2}日/, 'in_transit'],
   [/^到达寄达地(?:处理中心)?$/, 'in_transit'],
   // Collected at the destination port after import clearance, though its English says a delivery was made.
   [/^目的港已提货/, 'in_transit'],

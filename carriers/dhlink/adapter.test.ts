@@ -71,6 +71,22 @@ describe('DHLink HTTP adapter', () => {
     expect(deliveryHandoff('dhlink', WAREHOUSE, result)).toEqual({ carrier: 'swiftx', number: 'SWX990000000000000001', basis: 'partner' });
   });
 
+  it('reads a line’s order or a partner’s label after DHLink took the parcel as no step back', () => {
+    const row = (trackTime: string, info: string) => ({ trackTime, createDate: null, place: null, info, nodeCode: null, nodeName: null });
+    const result = parseDhlink(changed('swiftx-at-warehouse', (parcel) => {
+      parcel.trackinfoList.push(row('2026-03-01 09:00:00', '货物电子信息已经收到'), row('2026-03-02 14:10:00', 'Shipping Label Created'),
+        row('2026-03-02 16:40:00', '货物电子信息已经收到'), row('2026-03-02 18:00:00', '国内清关完成'));
+    }), WAREHOUSE, LATER);
+    expect(result.events!.map((event) => [event.description, event.stage, event.stage_source])).toEqual([
+      ['国内清关完成', 'in_transit', 'carrier_map'],
+      ['货物电子信息已经收到', 'in_transit', 'carrier_map'],
+      ['Package departed from the warehouse', 'in_transit', 'carrier_map'],
+      ['Shipping Label Created', 'accepted', 'carrier_map'],
+      ['Package received & scanned at warehouse', 'accepted', 'carrier_map'],
+      ['货物电子信息已经收到', 'registered', 'carrier_map'],
+    ]);
+  });
+
   it('keeps one row per scan, preferring DHLink’s node and English, and drops the destination code from Chinese places', () => {
     const result = parseDhlink(fixture('postal-delivered'), POSTAL, LATER);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',

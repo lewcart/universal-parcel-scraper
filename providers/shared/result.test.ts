@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { event, result } from './result.js';
+import { event, localEvent, result } from './result.js';
 
 describe('shared provider result', () => {
   it('drops an entry in wording no rule reads when it is dated at the lookup', () => {
@@ -60,6 +60,13 @@ describe('shared provider result', () => {
       expect(event('2026-01-07T12:45:00+01:00', relayed)).toMatchObject({ description: notice, stage: 'pending', stage_source: 'none' });
     }
     expect(event('2026-01-07T12:45:00+01:00', `${notice}. Rendez-vous`)?.description).toBe(`${notice}. Rendez-vous`);
+  });
+
+  it("leaves out DHL's detail line saying no further details are required, but not the scan beside it", () => {
+    expect(event('2026-01-07T12:45:00Z', 'Keine weiteren Details erforderlich')).toBeNull();
+    expect(localEvent('2026-01-07T12:45:00', 'Keine weiteren Details erforderlich.')).toBeNull();
+    expect(event('2026-01-07T12:44:00Z', 'Entladung')).toMatchObject({ description: 'Entladung', stage: 'in_transit' });
+    expect(event('2026-01-07T12:45:00Z', 'Keine weiteren Details erforderlich, Entladung')).not.toBeNull();
   });
 
   it("reads Interpost's import clearance by its caption, without the status code ParcelsApp heads it with", () => {

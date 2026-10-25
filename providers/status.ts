@@ -24,11 +24,11 @@ const NO_STEP: ReadonlyArray<readonly [wording: string, note: string]> = [
   ['shipment parameters updated', "Postal Ninja's note that the shipment's details changed: not a scan."],
   ['tracking number must contain only capital letters and digits. please check that tracking number is correct.',
     "ParcelsApp's check of the number's characters: not a scan."],
+  ['keine weiteren details erforderlich', "DHL's detail line saying no further details are required, as ParcelsApp relays it: not a scan."],
   // MailAmericas' tax ID checks (its SM codes, left out of its own map), as ParcelsApp relays them.
   ['tax id. form received', "MailAmericas' tax ID check as ParcelsApp relays it: the parcel moves on whatever it says."],
   ['tax id. address not found', "MailAmericas' tax ID check as ParcelsApp relays it: the parcel moves on whatever it says."],
   // Detail lines that sit beside different scans, headings, and a code relayed without its wording.
-  ['keine weiteren details erforderlich', 'A German detail line that sits beside different scans: no step of its own.'],
   ['filiale / agentur', 'A German detail line that sits beside different scans: no step of its own.'],
   ['packstation', 'A detail line naming a Packstation, before the parcel was collected: no step of its own.'],
   ['vereinfachte zustellung', 'A detail line naming a simplified delivery, beside loading and unloading scans: no step of its own.'],

@@ -123,7 +123,8 @@ export function parseBpost(payload: unknown, number: string): CarrierResult {
     const country = isRecord(raw.location) ? countryCode(raw.location.countryCode) : '';
     const location = isRecord(raw.location) ? [clean(raw.location.locationName, 160), clean(raw.location.countryCode, 2)]
       .filter(Boolean).join(', ') : '';
-    const time = country === 'BE' || (national && !country) ? brusselsTime(local) : '';
+    // A scan that names no place at all is bpost's own record, on Brussels time wherever the parcel is.
+    const time = country === 'BE' || !location || (national && !country) ? brusselsTime(local) : '';
     const dedup = `${local}\u0000${description}\u0000${location}`;
     if (seen.has(dedup)) continue;
     seen.add(dedup);

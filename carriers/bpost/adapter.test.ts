@@ -98,6 +98,13 @@ describe('bpost direct history', () => {
     expect(events.slice(3)).toEqual([expect.objectContaining({ local_time: '2026-01-02T12:00:00', location: 'Example hub' }),
       expect.objectContaining({ local_time: '2026-01-01T12:00:00', location: 'Example hub, NL' })]);
     expect(events.slice(3).some((event) => event.time)).toBe(false);
+    // A scan that names no place at all is bpost's own record, on Brussels time.
+    const placeless = payload();
+    placeless.items[0].countryOfDepurture = 'NL';
+    delete placeless.items[0].events[2].location;
+    placeless.items[0].events[3].location = { locationName: '', countryCode: '' };
+    expect(parseBpost(placeless, NUMBER).events?.slice(2, 4).map((event) => event.time))
+      .toEqual(['2026-01-03T10:00:00+01:00', '2026-01-02T12:00:00+01:00']);
     // The hour the change to summer time skips has no instant; the repeated one takes its first.
     const changes = payload();
     changes.items[0].events[0] = { ...changes.items[0].events[0], date: '2026-03-29', time: '02:30' };

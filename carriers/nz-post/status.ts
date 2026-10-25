@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // EDIFACT groups used by the official consumer tracking client. Pickup requests
 // are pre-advice; they do not establish that NZ Post has collected the parcel.
@@ -36,3 +37,6 @@ export function classifyNzPostStatus(code: string): ClassifiedStatus | undefined
   if (BORDER.has(code)) return { status: 'in_transit', stage: 'customs' };
   return undefined;
 }
+
+/** What the map says about one scan: its EDIFACT code, which alone stages it. */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? classifyNzPostStatus(code)?.stage : undefined), gaps: [] };

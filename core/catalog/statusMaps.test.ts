@@ -1243,6 +1243,18 @@ describe('status map answers', () => {
     expect(answer('ontrac', null, 'Package Delivered')).toEqual(unknown);
   });
 
+  it("answers NZ Post by its EDIFACT code, and leaves a copy without one open", () => {
+    expect(answer('nz-post', '997', 'Tracking number allocated to parcel')).toEqual(mapped('registered'));
+    expect(answer('nz-post', '13', 'Collected from sender')).toEqual(mapped('accepted'));
+    expect(answer('nz-post', '5019', 'Held for clearance')).toEqual(mapped('customs'));
+    expect(answer('nz-post', '6028', 'Cleared for import')).toEqual(mapped('in_transit'));
+    expect(answer('nz-post', '32', 'With courier for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('nz-post', '52', 'Delivery attempted - refer to card')).toEqual(mapped('exception'));
+    expect(answer('nz-post', '22', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('nz-post', '9999', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('nz-post', null, 'Delivered')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

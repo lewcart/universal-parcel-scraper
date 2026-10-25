@@ -398,6 +398,7 @@ import { statusMap as novaPoshta } from '../../carriers/nova-poshta/status.js';
 import { statusMap as nowCouriers } from '../../carriers/now-couriers/status.js';
 import { statusMap as nox } from '../../carriers/nox/status.js';
 import { statusMap as nzCouriers } from '../../carriers/nz-couriers/status.js';
+import { statusMap as nzPost } from '../../carriers/nz-post/status.js';
 import { statusMap as oakHarbor } from '../../carriers/oak-harbor/status.js';
 import { statusMap as oca } from '../../carriers/oca/status.js';
 import { statusMap as ocasa } from '../../carriers/ocasa/status.js';
@@ -682,7 +683,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'mds-collivery': mdsCollivery, meest, 'meihoo-pegasus': meihooPegasus, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
   'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mondial-relay': mondialRelay, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mrw, mtscn, mylerz, nacex, naqel, nationex,
   'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, 'ninja-van': ninjaVan, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,
-  northline, 'nova-global': novaGlobal, 'nova-poshta': novaPoshta, 'now-couriers': nowCouriers, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
+  northline, 'nova-global': novaGlobal, 'nova-poshta': novaPoshta, 'now-couriers': nowCouriers, nox, 'nz-couriers': nzCouriers, 'nz-post': nzPost, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, ontrac, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, paack, 'pack-man': packMan, packeta, packlink, packs,
   'pakistan-post': pakistanPost, palletways, 'pandu-logistics': panduLogistics, paperfly, paquetexpress, parcelpoint, passport,

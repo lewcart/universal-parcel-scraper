@@ -428,6 +428,11 @@ step exists for future protocol changes.
   oficina de cambio" and "En aduana de origen", are at that post's clock, as on Correos's
   own tracker ([Correos](../../carriers/correos-spain/README.md)). They are read on the
   clock of the country an S10 number ends with, or stay wall times when it has several.
+- Correo Uruguayo's copies of a sending post's scans name that post's country ("CHINA")
+  and are on its clock, as on Correo Uruguayo's own tracker
+  ([Correo Uruguayo](../../carriers/correo-uruguayo/README.md)), or stay wall times when it
+  has several. Read on Montevideo's clock, China Post's posting came eleven hours after China
+  Post's own row of it.
 - Speedaf's dates are its sites' wall clocks under a UTC label. Its own feed dates the
   scans up to the departing flight ("Cargo flight departured") on China time and the rest
   on the destination's, and Cainiao's copies of the same scans agree once read that way.

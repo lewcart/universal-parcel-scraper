@@ -683,6 +683,18 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-09-29T11:31:00.000Z', '2026-09-29T11:26:00.000Z']);
   });
 
+  it("reads Correo Uruguayo's copies of a sending post's scans on the clock of the country they name", () => {
+    const time = (location: string) => parseParcelsAppResponse({
+      carriers: ['Correo Uruguayo'], originCode: 'CN', destinationCode: 'UY',
+      states: [{ date: '2026-10-10T13:51:00Z', status: 'ADMISION PAIS DE ORIGEN', carrier: 0, location }],
+    }, number, identity()).events?.map((scan) => scan.time ?? `local ${scan.local_time}`);
+    // China Post's own row of the posting is at 05:51 UTC.
+    expect(time('CHINA')).toEqual(['2026-10-10T05:51:00.000Z']);
+    // A country of several clocks leaves the wall clock; Correo Uruguayo's own scans stay on Montevideo's.
+    expect(time('UNITED STATES')).toEqual(['local 2026-10-10T13:51:00.000']);
+    expect(time('MONTEVIDEO')).toEqual(['2026-10-10T16:51:00.000Z']);
+  });
+
   it('reads scans named "Evri" on Evri UK\'s London clock and proposes Evri UK', () => {
     // Live shape (2026-10-16): Evri UK's wall clocks labelled "+00:00", an hour
     // after the instants of Evri UK's own history in summer.

@@ -755,6 +755,18 @@ describe('status map answers', () => {
     expect(answer('colis-prive', null, 'Un nouveau libellé du transporteur')).toEqual(unknown);
   });
 
+  it('answers DPD UK by its own wording, then the shared rules, as the parser reads its scans', () => {
+    expect(answer('dpd-uk', null, "We've received your order details, but have not yet received your parcel")).toEqual(mapped('registered'));
+    expect(answer('dpd-uk', null, 'The parcel is undergoing customs clearance')).toEqual(mapped('customs'));
+    expect(answer('dpd-uk', null, 'Your parcel will be with you today ')).toEqual(mapped('out_for_delivery'));
+    expect(answer('dpd-uk', null, 'Your parcel is waiting for you at home (left in safe place)')).toEqual(mapped('delivered'));
+    expect(answer('dpd-uk', null, 'Your delivery has been cancelled, please contact Example Merchant for further details')).toEqual(mapped('exception'));
+    expect(answer('dpd-uk', null, 'The parcel has been delivered back to the sender')).toEqual(mapped('returned'));
+    // Its notices and wording no rule reads keep no stage.
+    expect(answer('dpd-uk', null, 'A notification has been sent to advise you when the delivery will take place')).toEqual(unknown);
+    expect(answer('dpd-uk', null, 'Your parcel has been dropped off at a DPD Pickup Shop')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

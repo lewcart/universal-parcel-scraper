@@ -952,6 +952,14 @@ describe('status map answers', () => {
     expect(answer('the-courier-guy', 'synthetic-code', 'Synthetic code')).toEqual(unknown);
   });
 
+  it("answers SPX Philippines by its tracking code or a legacy row's status name", () => {
+    expect(answer('spx-ph', 'F000', 'Synthetic scan')).toEqual(mapped('registered'));
+    expect(answer('spx-ph', 'F600', 'Synthetic scan')).toEqual(mapped('out_for_delivery'));
+    expect(answer('spx-ph', 'F980', 'Synthetic scan')).toEqual(mapped('delivered'));
+    expect(answer('spx-ph', 'OnHold', 'Synthetic scan')).toEqual(mapped('exception'));
+    expect(answer('spx-ph', 'F777', 'Delivered')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

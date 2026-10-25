@@ -1,4 +1,5 @@
 import type { Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // Tracking codes of the order endpoint. Codes not listed fall back to the
 // shared wording classifier. Export clearance is a transit milestone, and a
@@ -36,3 +37,9 @@ export function spxPhStage(code: string, legacy = false): Stage | undefined {
 export function isSpxPhFacilityCode(code: string): boolean {
   return FACILITY_CODES.has(code);
 }
+
+/**
+ * What the map says about one scan: its tracking code, or a legacy row's status name; the two
+ * never share a value. A code neither lists took the shared wording rules, so it stays open.
+ */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? spxPhStage(code) ?? spxPhStage(code, true) : undefined), gaps: [] };

@@ -30,7 +30,12 @@ tracking page makes.
 
 - Each scan's `date` and `hour` are the wall clock it came with, to the minute, with no zone.
   The hub's scans are UK time, but the scans relayed from the destination carrier keep that
-  carrier's clock, so every scan stays `local_time`.
+  carrier's clock, so a scan stays `local_time`.
+- The scans the platform writes without a place when the UK hub processes a parcel for
+  Interpost each show the instant of the hub's processing scan: "In Transit" and "Item
+  processed at Interpost" on UTC, an hour before it in British summer time, and "Interpost
+  handed item over to postal company" on Central European time, an hour after it. They are
+  dated on those clocks, with `time_zone_basis` `carrier`.
 - Some partners' scans come twice: once with the place, on its clock, and once in capitals
   without the place, a whole number of hours away (UTC in the scans seen). The copy without the
   place is dropped, as is a scan repeated whole. A relayed place's `XX` for a missing region

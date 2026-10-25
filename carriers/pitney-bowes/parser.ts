@@ -76,6 +76,24 @@ function withoutDeclarationCountry(event: CarrierEvent): CarrierEvent {
   return zone ? { ...unplaced, ...dated(event.local_time!, zone, 'place') } : unplaced;
 }
 
+/**
+ * The scans Pitney Bowes's platform writes without a place when its UK hub
+ * processes a parcel for Interpost, each at the instant of the hub's
+ * processing scan: its own "In Transit" and Interpost's processing on UTC, an
+ * hour before the hub's scan in British summer time, and Interpost's hand-over
+ * to the postal company on Central European time, an hour after it.
+ */
+const PLATFORM_CLOCKS: ReadonlyMap<string, string> = new Map([
+  ['in transit', 'UTC'],
+  ['item processed at interpost', 'UTC'],
+  ['interpost handed item over to postal company', 'Europe/Brussels'],
+]);
+
+function onPlatformClock(event: CarrierEvent): CarrierEvent {
+  const zone = event.location || event.time ? undefined : PLATFORM_CLOCKS.get(event.description!.toLowerCase());
+  return zone ? { ...event, ...dated(event.local_time!, zone, 'carrier') } : event;
+}
+
 /** A scan's place as written, without the `XX` some relayed scans put for a missing region. */
 function place(row: Record<string, unknown>): string {
   return text(row, 'location', 120).split(',').map((part) => part.trim()).filter((part) => part && part !== 'XX').join(', ');
@@ -181,7 +199,7 @@ export function parsePitneyBowes(payload: unknown, raw: string): CarrierResult {
   const kept = withoutCopies(scans);
   if (!kept.length) throw new NoHistoryError(PROVIDER);
   // Newest first, as the page lists them; scans of one minute keep the reply's order.
-  const events = kept.map((scan, index) => ({ event: withoutDeclarationCountry(scan.event), index }))
+  const events = kept.map((scan, index) => ({ event: onPlatformClock(withoutDeclarationCountry(scan.event)), index }))
     .sort((a, b) => String(b.event.local_time).localeCompare(String(a.event.local_time)) || a.index - b.index)
     .map((scan) => scan.event);
 

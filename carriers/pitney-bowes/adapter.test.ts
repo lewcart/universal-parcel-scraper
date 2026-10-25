@@ -59,7 +59,25 @@ describe('Pitney Bowes HTTP adapter', () => {
       ['2026-05-29T10:04:00', 'In Transit', 'in_transit', null],
       ['2026-05-27T12:00:00', 'Tracking details uploaded', 'registered', null],
     ]);
-    expect(result.events!.every((event) => event.time === undefined && event.stage_source === 'carrier_map')).toBe(true);
+    expect(result.events!.every((event) => event.stage_source === 'carrier_map')).toBe(true);
+    expect(result.events!.filter((event) => event.time === undefined)).toHaveLength(5);
+  });
+
+  it('reads the platform’s unplaced scans at the hub’s processing on their own clocks, each at the instant of the hub’s scan', () => {
+    const at = (result: ReturnType<typeof parsePitneyBowes>, description: string) => result.events!.filter((event) => event.description === description)
+      .map((event) => [event.local_time, event.time ?? null, event.time_zone ?? null, event.time_zone_basis ?? null]);
+    const delivered = parsePitneyBowes(fixture('delivered'), DELIVERED);
+    // The hub's processing at 08:57 in British summer time is 07:57 UTC.
+    expect(at(delivered, 'In Transit')).toEqual([['2026-05-11T07:57:00', '2026-05-11T07:57:00Z', 'UTC', 'carrier']]);
+    expect(at(delivered, 'Item processed at Interpost')).toEqual([['2026-05-11T07:58:00', '2026-05-11T07:58:00Z', 'UTC', 'carrier']]);
+    expect(at(delivered, 'Interpost handed item over to postal company'))
+      .toEqual([['2026-05-11T09:58:00', '2026-05-11T09:58:00+02:00', 'Europe/Brussels', 'carrier']]);
+    // Other unplaced scans, and those wordings with a place, keep their wall clock alone.
+    expect(at(delivered, 'Tracking details uploaded')).toEqual([['2026-05-06T17:53:00', null, null, null]]);
+    const placed = parsePitneyBowes(changed('in-transit', (body) => {
+      body.trackingEventsModule.trackingEvents.find((row) => row.description === 'In Transit')!.location = 'Sample City, ZZ';
+    }), IN_TRANSIT);
+    expect(at(placed, 'In Transit')).toEqual([['2026-05-29T10:04:00', null, null, null]]);
   });
 
   it('keeps the delivery without the partner’s links, repeated scans or placeholder regions', () => {

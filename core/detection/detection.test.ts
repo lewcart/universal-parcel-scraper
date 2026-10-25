@@ -477,8 +477,25 @@ describe('the detection engine', () => {
     ['Pickup code 123456', '123456'],
     ['Sendungsnummer 0034 0434 1234 5678', '0034 0434 1234 5678'],
     ['Nr. 12345678', '12345678'],
+    ['N° de suivi 12345678', '12345678'],
+    ['N°12345678', '12345678'],
+    ['Numéro de suivi : 12345678', '12345678'],
+    ['numéro de colis 12345678', '12345678'],
+    ['Suivi: 12345678', '12345678'],
+    ['Trackingnummer: 12345678', '12345678'],
+    ['Nº de seguimiento: 12345678', '12345678'],
+    ['número de envío 12345678', '12345678'],
+    ['numero di tracciamento 12345678', '12345678'],
+    ['n.º de rastreio 12345678', '12345678'],
+    ['Numer przesyłki 12345678', '12345678'],
   ])('leaves a label word out of a short entry: %s', (input, number) => {
     expect(parseTrackingInput(input)).toMatchObject({ trackingNumber: number, source: 'text' });
+  });
+
+  it('takes no other number a label names for the tracking number', () => {
+    for (const input of ['numéro de commande 12345678', 'número de pedido 12345678', 'suivi 5555666677 ou 7777888899']) {
+      expect(parseTrackingInput(input)).toMatchObject({ trackingNumber: '', source: 'none' });
+    }
   });
 
   it('keeps a short entry whole when its letters are no label word, or touch the digits', () => {

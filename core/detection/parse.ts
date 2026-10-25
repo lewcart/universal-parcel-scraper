@@ -58,8 +58,15 @@ function trackingMatch(
 // A word that offers a second number: "1234567899 or 9987654321" holds two.
 const ALTERNATIVE = /^(?:or|oder|ou|o|of|lub)$/i;
 // A word naming the code after it, alone or after another word ("Pickup code").
-// German and Dutch join theirs into one word: Abholcode, Sendungsnummer.
-const LABEL = /^(?:\p{L}+\s+)?(?:\p{L}*(?:code|nummer)|number|numer|numero|número|numéro|nr|kod|codice|codigo|código)[.:#\s]+(?=\d)/iu;
+// German and Dutch join theirs into one word: Abholcode, Sendungsnummer. French,
+// Spanish, Italian and Portuguese name what the number tracks after a preposition
+// ("N° de suivi", "número de seguimiento", "numero di tracciamento"), Polish
+// after the word ("numer przesyłki"), and the tracking word can stand alone
+// ("Suivi"). "N°" can touch its digits.
+const TRACKED = 'suivi|seguimiento|tracciamento|rastreio|rastreamento|tracking';
+const LABEL = new RegExp('^(?:\\p{L}+\\s+)?(?:(?:\\p{L}*(?:code|nummer)|number|numer|numero|número|numéro|nr|n\\.?[°º]|kod|codice|codigo|código)'
+  + `(?:\\s+(?:(?:de|du|del|di|do|da)\\s+(?:${TRACKED}|colis|envío|envio|spedizione)|przesyłki|paczki))?|${TRACKED})`
+  + '(?:[.:#\\s]+|(?<=[°º]))(?=\\d)', 'iu');
 
 /**
  * The number a short entry holds whole, groups a label prints apart included,

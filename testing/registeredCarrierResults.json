@@ -1642,9 +1642,10 @@
         },
         {
           "local_time": "2026-08-31T19:20:00",
-          "description": "Actualización del envío",
+          "description": "ENVÍO ADMITIDO",
           "provider_code": "001",
           "location": "PLANTA CENTRAL",
+          "stage": "accepted",
           "time": "2026-08-31T19:20:00-04:00",
           "time_zone": "America/Santiago",
           "time_zone_basis": "carrier"

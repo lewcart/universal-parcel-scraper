@@ -153,6 +153,13 @@ carrier.
   all keep `+08:00`. When that country has several clocks, the scan stays a wall time
   (`local_time`). When nothing names a country, NZ Post's Auckland reading stays, the last
   guess: hours off, but a delivery keeps its instant. The reply stays conclusive.
+- Poland Post's leg (carrier key 16081) shows Poczta Polska's wall clocks, and 17TRACK labels
+  them with Poland's offset on the day it looks: after October's change it put `+01:00` on
+  July scans, when Poland kept `+02:00`. That leg's `time_raw` is read on Warsaw's clock at
+  the scan's own date. A scan after the departure from Poland is a partner post's, on its own
+  clock: it is read in the recipient country's zone when the reply names one on a single
+  clock, as [Poczta Polska](../../carriers/poczta-polska/README.md)'s adapter reads it, and
+  otherwise keeps 17TRACK's reading.
 - China Post's leg mirrors the origin post's outward exchange scans (`到达境外出口互换局`,
   `离开境外出口互换局`) on that post's wall clock, and 17TRACK labels them `+08:00`: an NZ
   Post arrival at 06:09 Auckland time showed four hours late (checked 2026-10-10). On an
@@ -186,7 +193,7 @@ carrier.
   scan's status there, at times with the place after it in 【】 ("Departure from【Example】");
   the scan keeps only that place, without a full Canadian or British postcode, or none.
 - At most 20 carrier legs and 1000 events. Per-event `address` is never read, and of
-  `shipping_info` only the recipient's country, for an NZ Post or Swiss Post leg: the
+  `shipping_info` only the recipient's country, for an NZ Post, Poland Post or Swiss Post leg: the
   address can be the recipient's street.
 
 ## Rejected approaches

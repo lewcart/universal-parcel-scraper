@@ -350,6 +350,29 @@ describe('17TRACK result parsing', () => {
     expect(parse17TrackResponse(reply(100999, [row('2026-09-11', '10:43:00', null)]), number).events?.[0]?.time).toBe('2026-09-11T14:43:00.000Z');
   });
 
+  it('reads Poland Post\'s clock at the scan\'s own date, and a partner\'s scan after the departure on the recipient\'s', () => {
+    // Public shape: Poland Post's wall clocks in time_raw with no zone, under the +01:00 17TRACK put on July scans in late October.
+    const row = (date: string, time: string, description: string) => ({ time_iso: `${date}T${time}+01:00`, time_utc: null,
+      time_raw: { date, time, timezone: null }, description, location: null, stage: null, sub_status: 'InTransit_Other' });
+    const reply = (key: number, country?: string): Payload => ({ meta: { code: 200 }, shipments: [{ number, code: 200, shipment: {
+      latest_status: { status: 'InTransit' }, ...(country ? { shipping_info: { recipient_address: { country } } } : {}),
+      tracking: { providers: [{ provider: { key, name: 'Poland Post', country: 'PL' }, events: [
+        row('2026-07-20', '14:25:00', 'Customs service'),
+        row('2026-07-08', '10:02:20', 'Departure from Poland'),
+        row('2026-07-06', '17:11:32', 'Posting/collection'),
+      ] }] } } }] });
+    // July is Poland's summer, +02:00; the customs scan abroad is Japan's +09:00.
+    expect(parse17TrackResponse(reply(16081, 'JP'), number).events?.map((event) => event.time)).toEqual(['2026-07-20T05:25:00.000Z',
+      '2026-07-08T08:02:20.000Z', '2026-07-06T15:11:32.000Z']);
+    // With no recipient country, or one on several clocks, the scan abroad keeps 17TRACK's reading.
+    for (const country of [undefined, 'ES']) {
+      expect(parse17TrackResponse(reply(16081, country), number).events?.map((event) => event.time)).toEqual(['2026-07-20T13:25:00.000Z',
+        '2026-07-08T08:02:20.000Z', '2026-07-06T15:11:32.000Z']);
+    }
+    // Another feed keeps 17TRACK's reading.
+    expect(parse17TrackResponse(reply(100999, 'JP'), number).events?.[1]?.time).toBe('2026-07-08T09:02:20.000Z');
+  });
+
   it('reads NZ Post\'s clock at the scan\'s own date, abroad too when nothing names a country', () => {
     const row = (date: string, time: string, offset: string, description: string) => ({
       time_iso: `${date}T${time}${offset}`, time_utc: null, time_raw: { date, time, timezone: null },

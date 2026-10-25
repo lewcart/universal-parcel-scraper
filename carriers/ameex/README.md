@@ -19,6 +19,13 @@ The tracker opens one parcel at `/{locale}/tracking/{code}` on ameex.ma; the Fre
 `suivi-colis` in place of `tracking`. The site's search markup and its scripts build that
 address with the code in upper case.
 
+## Why there is no adapter
+
+The tracker page renders a lookup on the server, with no token or captcha, but it answers every
+public code with "No parcel matches this number", its own placeholder included. Ameex's
+customer API at `api.ameex.app` has a parcel tracking route, but it takes a merchant account's
+`C-Api-Id` and `C-Api-Key`. So Ameex stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

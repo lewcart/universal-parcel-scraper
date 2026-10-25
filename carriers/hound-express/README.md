@@ -14,7 +14,13 @@ carriers share and the `HP` layout has a single example, so no rule claims eithe
 
 ## Links
 
-The tracker sends the number in a POST request, so no address opens one parcel.
+The tracker sends the number in a POST request, so no address opens one parcel. The page's
+script posts a JSON list of `{"guideNumber": …}` to
+`ws_pods.hound-express.com/Sabueso/ws/deliveryServices/trackOrder` with the partner key it
+embeds for every visitor in a `partnerKey` header. An unknown number answers HTTP 200 with an
+empty `resultDetails` list and a `GONULL` warning. The page reads a found guide's scans from
+`resultDetails`, each with a `statusObj` id, a `dateTime` and a `location`. No found reply has
+been seen, so there is no adapter yet.
 
 ## Testing
 

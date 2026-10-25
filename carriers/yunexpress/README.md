@@ -27,7 +27,10 @@ parcel sent within its destination country, is dated on the latest scan's
 stated offset when none of its rows names a place: one partner relays it,
 and the carrier's home clock would be China's. Some partners state their
 zone's standard offset in summer too, and the leg then shares the latest
-scan's error.
+scan's error. Reading such a leg on the destination's zone, when the
+destination has one zone and the stated offset is its standard one in summer
+time, waits for a public sample: archived pages keep the page shell, not the
+tracking reply.
 [`identity.ts`](identity.ts) lets such a row take over the one an app
 stored for its wall clock under another offset, with the same place and wording. The
 reply is inconclusive when its latest summary does not match the first scan.

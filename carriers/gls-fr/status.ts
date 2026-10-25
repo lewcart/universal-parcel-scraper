@@ -9,6 +9,7 @@
  * classifies and records it for review.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import type { Stage } from '../../generated/catalog.js';
 
@@ -79,3 +80,13 @@ export function glsFranceStatusMetadata(value: unknown): GLSFranceStatusMetadata
 export function glsFranceStatus(value: unknown): CarrierStatus {
   return glsFranceStatusMetadata(value)?.status ?? 'unknown';
 }
+
+/**
+ * What the map says about one event: its code, as the adapter writes it, since GLS sends no
+ * wording. A delay is a failed attempt when its event type is a delivery, which the stored row
+ * does not keep.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code) => (code && code !== 'DEL' ? GLS_FRANCE_STATUSES.get(code)?.stage : undefined),
+  gaps: [{ code: 'DEL', note: 'A delivery delay, or a failed attempt when its event type is a delivery (LIV): the stored row does not keep the type.' }],
+};

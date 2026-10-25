@@ -10,7 +10,8 @@
  * instead of inventing progress.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
-import { trackingLanguageStage } from '../../core/status/index.js';
+import { trackingLanguageStage, type Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 export function stageForText(text: string, fallback = 'in_transit'): string {
   const value = text.toLowerCase();
@@ -42,3 +43,13 @@ export function statusForStage(stage: string): CarrierStatus {
   if (stage === 'failed_attempt' || stage === 'returned') return 'exception';
   return 'in_transit';
 }
+
+/**
+ * What the map says about one scan: DHL's scans carry no code, so their wording stages them as
+ * the adapter reads it. Wording the rules do not know stays open, and so does a forecast, which
+ * keeps the progress before it.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => (stageForText(wording, '') || undefined) as Stage | undefined,
+  gaps: [],
+};

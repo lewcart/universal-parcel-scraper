@@ -41,7 +41,9 @@ this confirmation before they can identify the French network.
   an event with no stage for the sync to classify.
 - `DEL` is read like the official frontend: a rescheduled delay (`in_transit`),
   and a failed attempt only when the same event's `typeEvenement` is `LIV`.
-  `statutColis: DEL` is checked against the newest event the same way.
+  `statutColis: DEL` is checked against the newest event the same way. The
+  app's review asks the same map by an event's code (`statusMap`), and leaves
+  `DEL` open: the stored event does not keep its type.
 - Timestamps come in three shapes on the same fields: ISO with or without
   offset, SQL-style wall clock, bare day. An explicit offset is honoured;
   everything else is read in `Europe/Paris`. Empty values arrive as year `0001`

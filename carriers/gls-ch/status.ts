@@ -10,6 +10,7 @@
  */
 import { languageStageStatus, trackingLanguageStage, type ClassifiedStatus } from '../../core/status/index.js';
 import { deliveryForecastRemainder } from '../../core/status/language.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 export type { ClassifiedStatus };
 
@@ -89,3 +90,16 @@ export function classifyDescription(description: string): ClassifiedStatus {
   }
   return { status: 'unknown', stage: 'in_transit' };
 }
+
+/**
+ * What the map says about one scan. A history row keeps its event number as its code, not the
+ * status code that staged it, so the wording stages it as a row without a status. Wording the
+ * rules do not know stays open, and so does a delivery notice.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    const classified = classifyDescription(wording);
+    return classified.status === 'unknown' ? undefined : classified.stage;
+  },
+  gaps: [],
+};

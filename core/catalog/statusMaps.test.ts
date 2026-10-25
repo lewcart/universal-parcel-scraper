@@ -363,6 +363,39 @@ describe('status map answers', () => {
       .toEqual(mapped('registered'));
   });
 
+  it("answers DHL by its wording in English and German, and leaves a forecast and unknown wording open", () => {
+    expect(answer('dhl', null, 'The instruction data for this shipment have been provided by the sender to DHL electronically')).toEqual(mapped('registered'));
+    expect(answer('dhl', null, 'Pick-up was successful.')).toEqual(mapped('accepted'));
+    expect(answer('dhl', null, 'Die Sendung wurde im Briefzentrum bearbeitet.')).toEqual(mapped('in_transit'));
+    expect(answer('dhl', null, 'The shipment has been loaded into the delivery vehicle')).toEqual(mapped('out_for_delivery'));
+    expect(answer('dhl', null, 'Die Sendung wurde nicht erfolgreich zugestellt.')).toEqual(mapped('failed_attempt'));
+    expect(answer('dhl', null, 'Die Sendung wurde erfolgreich zugestellt.')).toEqual(mapped('delivered'));
+    expect(answer('dhl', null, 'The shipment will be delivered tomorrow')).toEqual(unknown);
+    expect(answer('dhl', null, 'Synthetic note')).toEqual(unknown);
+  });
+
+  it("answers GLS Germany and Switzerland by their wording, since a row keeps its event number, not its status", () => {
+    for (const carrier of ['gls-de', 'gls-ch']) {
+      expect(answer(carrier, null, 'The parcel has not been handed over to GLS.'), carrier).toEqual(mapped('registered'));
+      expect(answer(carrier, '1.0', 'The parcel was handed over to GLS.'), carrier).toEqual(mapped('accepted'));
+      expect(answer(carrier, null, 'The parcel has left the parcel center.'), carrier).toEqual(mapped('in_transit'));
+      expect(answer(carrier, null, 'The parcel is expected to be delivered during the day.'), carrier).toEqual(mapped('out_for_delivery'));
+      expect(answer(carrier, null, 'The parcel is ready for collection at the ParcelShop.'), carrier).toEqual(mapped('ready_for_pickup'));
+      expect(answer(carrier, null, 'The parcel has been delivered.'), carrier).toEqual(mapped('delivered'));
+      expect(answer(carrier, null, 'Synthetic note'), carrier).toEqual(unknown);
+    }
+  });
+
+  it("answers GLS France by its event code, and leaves its delay, a failed attempt for a delivery event, out on purpose", () => {
+    expect(answer('gls-fr', 'CON', 'Shipment information received')).toEqual(mapped('registered'));
+    expect(answer('gls-fr', 'TRV', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('gls-fr', 'LIP', 'Ready for pickup at GLS ParcelShop')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('gls-fr', 'LIV', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('gls-fr', 'DEL', 'Delivery delayed')).toEqual(gap);
+    expect(answer('gls-fr', 'ZZZ', 'GLS France tracking update')).toEqual(unknown);
+    expect(answer('gls-fr', null, 'Delivered')).toEqual(unknown);
+  });
+
   it("answers DHL Express's wait for collection, missed delivery and return", () => {
     expect(answer('dhl-express', 'CC', 'Awaiting collection by the consignee')).toEqual(mapped('ready_for_pickup'));
     expect(answer('dhl-express', 'ND', 'Delivery attempt could not be completed')).toEqual(mapped('failed_attempt'));

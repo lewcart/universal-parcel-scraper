@@ -132,6 +132,7 @@ import { statusMap as delnext } from '../../carriers/delnext/status.js';
 import { statusMap as deppon } from '../../carriers/deppon/status.js';
 import { statusMap as dhlExpress } from '../../carriers/dhl-express/status.js';
 import { statusMap as dhlFreight } from '../../carriers/dhl-freight/status.js';
+import { statusMap as dhl } from '../../carriers/dhl/status.js';
 import { statusMap as dhlink } from '../../carriers/dhlink/status.js';
 import { statusMap as direx } from '../../carriers/direx/status.js';
 import { statusMap as dobropost } from '../../carriers/dobropost/status.js';
@@ -217,7 +218,10 @@ import { statusMap as geis } from '../../carriers/geis/status.js';
 import { statusMap as geodisPl } from '../../carriers/geodis-pl/status.js';
 import { statusMap as geniki } from '../../carriers/geniki-taxydromiki/status.js';
 import { statusMap as gigLogistics } from '../../carriers/gig-logistics/status.js';
+import { statusMap as glsCh } from '../../carriers/gls-ch/status.js';
+import { statusMap as glsDe } from '../../carriers/gls-de/status.js';
 import { statusMap as glsEs } from '../../carriers/gls-es/status.js';
+import { statusMap as glsFr } from '../../carriers/gls-fr/status.js';
 import { statusMap as glsIt } from '../../carriers/gls-it/status.js';
 import { statusMap as goExpress } from '../../carriers/go-express/status.js';
 import { statusMap as globalpost } from '../../carriers/globalpost/status.js';
@@ -586,7 +590,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, ctt, cttyex,
   'cyprus-post': cyprusPost, 'd-express': dExpress, 'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss,
-  dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, dellin, delnext, deppon, 'dhl-express': dhlExpress,
+  dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, dellin, delnext, deppon, dhl, 'dhl-express': dhlExpress,
   'dhl-freight': dhlFreight, dhlink, direx, dobropost, 'dohrn-transfer': dohrnTransfer, 'domain-logistics': domainLogistics, domex, dpd,
   'dpd-at': dpdAt, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe,
   'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-ro': dpdRo, 'dpd-za': dpdZa, dpex, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dx, dynalogic,
@@ -599,7 +603,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
   fleetex, fleetoptics, flippost, followmont, 'forward-air': forwardAir, 'forza-delivery': forzaDelivery, 'four-px': fourPx, foxpost, 'franch-express': franchExpress, fukuyama, gaash, gati, gdex,
-  'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gig-logistics': gigLogistics, 'gls-es': glsEs, 'gls-it': glsIt,
+  'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gig-logistics': gigLogistics, 'gls-ch': glsCh, 'gls-de': glsDe, 'gls-es': glsEs, 'gls-fr': glsFr, 'gls-it': glsIt,
   globalpost, 'gms-worldwide': gmsWorldwide, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
   'grand-slam-express': grandSlamExpress, 'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, 'gtl-goto': gtlGoto, guatex, gzyl,
   hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress,

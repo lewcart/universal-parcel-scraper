@@ -51,7 +51,8 @@ upstream error.
   `DELIVEREDPS` is `ready_for_pickup`. `retourFlag` forces a return.
 - Codes beat wording: codes are stable across languages. Rows without a code use
   wording rules ordered negatives first, then `core/status`'s multilingual
-  classifier.
+  classifier. A row keeps its event number as `provider_code`, not its status
+  code, so the app's review asks those wording rules alone (`statusMap`).
 - "The parcel has not been handed over to GLS." is `registered`: GLS knows of
   the parcel but does not have it. It is checked before the "handed over to
   GLS" acceptance.

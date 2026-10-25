@@ -26,8 +26,9 @@ through the service Allegro's tracking page asks on Allegro's edge gateway.
   return to the sender makes it `exception`, a return under way, and a new delivery to a point
   or the door `in_transit`. Until a scan says, it is `exception` once the pick-up time has
   expired, since Allegro then sends the parcel back, and `in_transit` before that.
-- Once a scan says the parcel went back to the sender, the later scans are its way back and are
-  staged `returned`, a delivery to the sender included.
+- "Parcel has been returned to the sender" sends the parcel back. It is `returned` when no later
+  scan moves the parcel, and otherwise `exception`, a return under way. The later scans are its
+  way back and stay `exception` until a delivery, the sender's, makes it `returned`.
 - A refused request (HTTP 400 or 406), the gateway's "Feature unavailable" 404 for a retired
   route, a redirect, a bot check and malformed replies keep their own kinds; none is not found.
 - Recognition makes the same request. `allegro-one-1` and `allegro-one-2` claim these numbers

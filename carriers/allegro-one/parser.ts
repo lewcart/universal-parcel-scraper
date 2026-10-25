@@ -34,6 +34,8 @@ interface Scan {
 
 // The scans of a parcel on its way to a recipient again.
 const ONWARD: ReadonlySet<string> = new Set(['out_for_delivery', 'failed_attempt', 'ready_for_pickup', 'delivered']);
+// The scans that move a parcel, or say it reached someone.
+const MOVING: ReadonlySet<string> = new Set(['accepted', 'in_transit', 'returned', ...ONWARD]);
 
 /**
  * Whether a parcel taken back from its point goes to the sender. The first
@@ -100,8 +102,9 @@ export function parseAllegroOne(payload: unknown, raw: string): CarrierResult {
   // Once the parcel has waited at a point, a courier collecting it is the
   // uncollected parcel taken back, not the sender's drop-off accepted: a
   // return under way when it goes back to the sender, in transit when it goes
-  // to a point or the door again. Once it is sent back, every later movement
-  // is the way back: its delivery reaches the sender, not the recipient.
+  // to a point or the door again. "Returned to the sender" sends it back: a
+  // return under way while later scans still move it. Every later movement is
+  // the way back, under way until its delivery reaches the sender.
   const chronological = scans.map((scan) => scan.event).reverse();
   let waited = false;
   let expired = false;
@@ -110,10 +113,14 @@ export function parseAllegroOne(payload: unknown, raw: string): CarrierResult {
     if (waited && event.stage === 'accepted') {
       event.stage = takenBackToSender(chronological.slice(index + 1), expired) ? 'exception' : 'in_transit';
     }
-    if (returning && event.stage && event.stage !== 'exception') event.stage = 'returned';
+    if (event.stage === 'returned') {
+      if (chronological.slice(index + 1).some(({ stage }) => stage !== undefined && MOVING.has(stage))) event.stage = 'exception';
+      returning = true;
+    } else if (returning && event.stage && event.stage !== 'exception') {
+      event.stage = event.stage === 'delivered' ? 'returned' : 'exception';
+    }
     if (event.stage === 'ready_for_pickup') [waited, expired] = [true, false];
     if (allegroOnePickUpExpired(event.description)) expired = true;
-    if (event.stage === 'returned') returning = true;
   });
   const newest = scans[0]!.event;
   const current = newest.stage

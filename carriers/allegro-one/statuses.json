@@ -29,7 +29,7 @@
     {"wording": "Time for parcel pick-up has expired", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "A return to the sender follows."},
     {"wording": "No parcel", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "The parcel was not where a scan expected it; later scans can find it again."},
     {"wording": "Parcel has been lost", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "Later scans can find the parcel again."},
-    {"wording": "Parcel has been returned to the sender", "language": "en", "stage": "returned", "confirmedBy": "live"},
+    {"wording": "Parcel has been returned to the sender", "language": "en", "stage": "returned", "confirmedBy": "live", "note": "The parcel is sent back; the parser reads a return under way while later scans still move it."},
     {"wording": "Parcel has been delivered", "language": "en", "stage": "delivered", "confirmedBy": "live", "note": "Also when the recipient collects the parcel from a locker or point."}
   ]
 }

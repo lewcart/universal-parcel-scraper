@@ -48,6 +48,7 @@ export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
   // The parcel was not where a scan expected it; a later scan can find it again.
   'No parcel': 'exception',
   'Parcel has been lost': 'exception',
+  // The parcel is sent back; the parser reads a return under way while later scans still move it.
   'Parcel has been returned to the sender': 'returned',
   'Parcel has been delivered': 'delivered',
 };

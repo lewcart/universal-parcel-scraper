@@ -157,18 +157,24 @@ describe('Allegro One HTTP adapter', () => {
     ]);
   });
 
-  it('reads the scans after a return to the sender as the way back', () => {
+  it('reads a return to the sender followed by its way back as a return under way until the sender has it', () => {
     const result = parseAllegroOne(fixture('sent-back'), SENT_BACK);
-    expect(result).toMatchObject({ status: 'exception', current_stage: 'returned', current_stage_source: 'carrier_map',
+    expect(result).toMatchObject({ status: 'exception', current_stage: 'exception', current_stage_source: 'carrier_map',
       last_status_text: 'Parcel has been released for delivery', last_update: '2026-09-28T05:50:33.164Z' });
-    expect(result.events!.map((event) => event.stage)).toEqual(['returned', 'returned', 'returned', 'returned', 'returned',
+    expect(result.events!.map((event) => event.stage)).toEqual(['exception', 'exception', 'exception', 'exception', 'exception',
       'failed_attempt', 'out_for_delivery', 'in_transit', 'failed_attempt', 'out_for_delivery', 'in_transit', 'in_transit', 'accepted',
       'accepted', 'registered']);
     const back = fixture('sent-back');
     back.status.push({ eventTimestamp: '2026-09-28T12:14:51Z', description: 'Parcel has been delivered' });
     const delivered = parseAllegroOne(back, SENT_BACK);
-    expect(delivered).toMatchObject({ current_stage: 'returned', last_status_text: 'Parcel has been delivered' });
+    expect(delivered).toMatchObject({ status: 'exception', current_stage: 'returned', last_status_text: 'Parcel has been delivered' });
+    expect(delivered.events!.slice(0, 6).map((event) => event.stage))
+      .toEqual(['returned', 'exception', 'exception', 'exception', 'exception', 'exception']);
     expect(delivered.delivered_at).toBeUndefined();
+    // A later scan that does not move the parcel leaves the return to the sender as it reads.
+    const noted = fixture('sent-back').status.slice(0, 11);
+    noted.push({ eventTimestamp: '2026-09-25T09:00:00Z', description: 'Parcel has been weighed' });
+    expect(parseAllegroOne({ status: noted }, SENT_BACK).events!.slice(0, 2).map((event) => event.stage)).toEqual([undefined, 'returned']);
   });
 
   it('orders scans by instant, keeps equal ones in the order they were logged and leaves unknown wording to the shared rules', () => {

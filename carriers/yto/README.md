@@ -19,6 +19,8 @@ keeps subsequent movement, collection and signature scans on the return to the s
 Return transit remains active; only a completed sender signature is terminal.
 Short operation labels and depot names are retained; expanded descriptions containing
 courier contacts, recipient details and collection addresses are excluded.
+Known labels are shown in English, and rows stored with the Chinese label take the
+English in place.
 
 Relayed Chinese labels and their ParcelsApp translations use the same vocabulary as
 direct scans. ParcelsApp's UTC-labelled China clocks are read in the catalog timezone.

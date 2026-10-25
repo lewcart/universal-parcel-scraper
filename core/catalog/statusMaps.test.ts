@@ -665,6 +665,8 @@ describe('status map answers', () => {
   it('answers YTO by its operation code, on the way out and back', () => {
     expect(answer('yto', '996', '冬运会安检')).toEqual(mapped('in_transit'));
     expect(answer('yto', '310', 'Picked up')).toEqual(mapped('accepted'));
+    expect(answer('yto', '310', '业务员收件')).toEqual(mapped('accepted'));
+    expect(answer('yto', '996', 'Security check')).toEqual(mapped('in_transit'));
     expect(answer('yto', '710', 'Out for delivery back to the sender')).toEqual(mapped('out_for_delivery'));
     expect(answer('yto', '745', 'Delivered')).toEqual(mapped('delivered'));
     expect(answer('yto', '745', 'Returned to the sender')).toEqual(mapped('returned'));

@@ -52,8 +52,11 @@ export interface YtoScan {
   returnLeg?: true;
 }
 
-const SCANS: ReadonlyArray<readonly [chinese: string, english: string, stage: Stage, wording: string]> = [
+// English is ParcelsApp's translation of the label, where one was seen.
+const SCANS: ReadonlyArray<readonly [chinese: string, english: string | null, stage: Stage, wording: string]> = [
   ['揽收扫描', 'Pickup scan', 'accepted', 'Picked up'],
+  // The courier's own pickup, under the same code as the pickup scan.
+  ['业务员收件', null, 'accepted', 'Picked up'],
   ['装件入车扫描', 'Load scan into vehicle', 'in_transit', 'Loaded for transport'],
   ['下车扫描', 'Get off scan', 'in_transit', 'Unloaded at a sorting centre'],
   ['快件城市信息', 'Package city information', 'in_transit', 'In transit'],
@@ -63,6 +66,8 @@ const SCANS: ReadonlyArray<readonly [chinese: string, english: string, stage: St
   // The courier took the parcel back out of the locker or station.
   ['小件员取出', 'Small item handler takes out.', 'in_transit', 'Taken out of the locker by the courier'],
   ['PDA正常签收扫描', 'PDA normal delivery scan', 'delivered', 'Delivered'],
+  // A security check in the network for a winter sports event: the parcel moves on.
+  ['冬运会安检', null, 'in_transit', 'Security check'],
 ];
 
 function key(label: string): string {
@@ -71,7 +76,7 @@ function key(label: string): string {
 
 const BY_LABEL = new Map(SCANS.flatMap(([chinese, english, stage, wording]) => {
   const entry: YtoScan = { stage, wording, ...(chinese === '退回件扫描' ? { returnLeg: true } : {}) };
-  return [[key(chinese), entry], [key(english), entry]] as const;
+  return [chinese, english].filter((label) => label !== null).map((label) => [key(label), entry] as const);
 }));
 
 /** The stage and stored wording of one YTO scan label, Chinese or translated. */

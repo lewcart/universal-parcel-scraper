@@ -11,6 +11,15 @@
       "code": "310"
     },
     {
+      "wording": "业务员收件",
+      "language": "zh",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-22",
+      "note": "The courier's own pickup, under the same code as the pickup scan; stored as \"Picked up\".",
+      "code": "310"
+    },
+    {
       "wording": "Pickup scan",
       "language": "en",
       "stage": "accepted",
@@ -161,7 +170,7 @@
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-10-20",
-      "note": "A security check of the parcel in the network for a winter sports event; the parcel moves on."
+      "note": "A security check of the parcel in the network for a winter sports event; the parcel moves on. Stored as \"Security check\"."
     },
     {
       "wording": "已取件",

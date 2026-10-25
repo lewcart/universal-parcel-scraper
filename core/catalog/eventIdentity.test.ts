@@ -460,11 +460,14 @@ describe('same-instant identity policies', () => {
     ['jrt', 'accepted', '到达收货点', 'Arrived at the receiving point', 'ARRIVAL'],
     ['jrt', 'registered', '货物电子信息已经收到', 'The electronic cargo information has been received', ''],
     ['thhy', 'in_transit', '货物离开操作中心', 'Goods leave the operation center', 'SHIPMENT'],
+    ['yto', 'accepted', '业务员收件', 'Picked up', '310'],
   ])('lets a %s row shown in English take over the row stored in the carrier’s Chinese, by place and code', (source, stage, chinese, english, code) => {
     expect(sameInstantIdentityPolicy(source)).toBeUndefined();
     const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
     expect(policy).toEqual({
       sourceCarrierId: source, storedSources: [source], requireProviderCode: false, matchEachScan: true, matches: expect.any(Function),
+      // YTO dates local clocks, which adds the wall-clock pass.
+      ...(source === 'yto' ? { matchWallClock: true } : {}),
     });
     const stored = { stage, description: chinese, location: 'Sample Town', providerCode: code };
     const incoming = { ...stored, description: ` ${english.toUpperCase()} `, location: 'Sample Town ' };

@@ -89,8 +89,17 @@ describe('YTO domestic parser', () => {
       opCode: '996', opName: '冬运会安检', opTime: '2026-01-02 21:00:00', description: '快件已安检' });
     value[0].waybillProcessInfo.splice(0, 3);
     const result = parseYto(value, NUMBER);
-    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: '冬运会安检' });
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Security check' });
     expect(result.events?.[0]).toMatchObject({ provider_code: '996', stage: 'in_transit' });
+  });
+
+  it("reads the courier's own pickup as the pickup scan", () => {
+    const value = fixture();
+    const pickup = value[0].waybillProcessInfo.at(-1);
+    value[0].waybillProcessInfo = [{ ...pickup, opCode: '310', opName: '业务员收件', opTime: '2026-01-01 08:00:00' }];
+    const result = parseYto(value, NUMBER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'accepted', last_status_text: 'Picked up' });
+    expect(result.events?.[0]).toMatchObject({ provider_code: '310', stage: 'accepted', description: 'Picked up' });
   });
 
   it('leaves unknown operations unmapped even when earlier history was delivered', () => {

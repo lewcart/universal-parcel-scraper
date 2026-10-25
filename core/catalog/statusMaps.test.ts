@@ -1153,6 +1153,21 @@ describe('status map answers', () => {
     expect(answer('jd-logistics', null, 'Picking Completed.')).toEqual(unknown);
   });
 
+  it("answers Ciblex by the English wording its adapter stores, and a copy by Ciblex's French label", () => {
+    expect(answer('ciblex', null, 'Shipment collected')).toEqual(mapped('accepted'));
+    expect(answer('ciblex', null, 'Parcel processed at Ciblex facility')).toEqual(mapped('in_transit'));
+    expect(answer('ciblex', null, 'Ready for pickup')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('ciblex', null, 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('ciblex', null, 'Returned to sender')).toEqual(mapped('returned'));
+    expect(answer('ciblex', null, 'Colis pris en charge')).toEqual(mapped('accepted'));
+    expect(answer('ciblex', null, 'COLIS LIVRE')).toEqual(mapped('delivered'));
+    expect(answer('ciblex', null, 'Disponible au relais')).toEqual(mapped('ready_for_pickup'));
+    // A label the adapter does not read is stored in neutral wording, without the label.
+    expect(answer('ciblex', null, 'Ciblex tracking update')).toEqual(unknown);
+    expect(answer('ciblex', null, 'Acheminement contractuel du colis en 48h00')).toEqual(unknown);
+    expect(answer('ciblex', null, 'Colis livré demain')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

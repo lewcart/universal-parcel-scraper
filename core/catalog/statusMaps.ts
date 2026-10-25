@@ -102,6 +102,7 @@ import { statusMap as chronopost } from '../../carriers/chronopost/status.js';
 import { statusMap as chukou1 } from '../../carriers/chukou1/status.js';
 import { statusMap as chunghwaPost } from '../../carriers/chunghwa-post/status.js';
 import { statusMap as chunil } from '../../carriers/chunil/status.js';
+import { statusMap as ciblex } from '../../carriers/ciblex/status.js';
 import { statusMap as cityExpressRs } from '../../carriers/city-express-rs/status.js';
 import { statusMap as citylinkExpress } from '../../carriers/citylink-express/status.js';
 import { statusMap as citymail } from '../../carriers/citymail/status.js';
@@ -637,7 +638,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, bpost, 'bring-posten': bringPosten, 'bringer-parcel': bringerParcel, brt, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
   byhd, 'c-chez-vous': cChezVous, c3x, cacesa, 'canada-post': canadaPost, canpar, cargus, 'castle-parcels': castleParcels, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
-  'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, 'citylink-express': citylinkExpress, citymail,
+  'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, ciblex, 'city-express-rs': cityExpressRs, 'citylink-express': citylinkExpress, citymail,
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'colis-prive': colisPrive, colisweb, 'connect-couriers': connectCouriers, coordinadora,
   'copa-courier': copaCourier, corre,
   'correios-br': correiosBr, 'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,

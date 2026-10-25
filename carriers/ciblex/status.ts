@@ -13,7 +13,8 @@
  * wording classifier records them for review.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
-import { clean } from '../../core/transport/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import { clean } from '../../core/transport/text.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface ClassifiedCiblexStatus {
@@ -46,23 +47,34 @@ function includesAny(value: string, phrases: string[]): boolean {
   return phrases.some((phrase) => value.includes(phrase));
 }
 
+const UPDATE: ClassifiedCiblexStatus = { status: 'unknown', stage: 'in_transit', description: 'Ciblex tracking update' };
+const RETURNED: ClassifiedCiblexStatus = { status: 'exception', stage: 'returned', description: 'Returned to sender' };
+const DELIVERED: ClassifiedCiblexStatus = { status: 'delivered', stage: 'delivered', description: 'Delivered' };
+const OUT_FOR_DELIVERY: ClassifiedCiblexStatus = { status: 'out_for_delivery', stage: 'out_for_delivery', description: 'Out for delivery' };
+const READY_FOR_PICKUP: ClassifiedCiblexStatus = { status: 'out_for_delivery', stage: 'ready_for_pickup', description: 'Ready for pickup' };
+const EXCEPTION: ClassifiedCiblexStatus = { status: 'exception', stage: 'exception', description: 'Shipment exception' };
+const FAILED_ATTEMPT: ClassifiedCiblexStatus = { status: 'exception', stage: 'failed_attempt', description: 'Delivery issue' };
+const IN_TRANSIT: ClassifiedCiblexStatus = { status: 'in_transit', stage: 'in_transit', description: 'Parcel processed at Ciblex facility' };
+const ACCEPTED: ClassifiedCiblexStatus = { status: 'in_transit', stage: 'accepted', description: 'Shipment collected' };
+const REGISTERED: ClassifiedCiblexStatus = { status: 'pending', stage: 'registered', description: 'Shipment information received' };
+
 export function classifyCiblexStatus(rawDescription: string): ClassifiedCiblexStatus {
   const value = comparableText(rawDescription);
   if (/\b(?:prevu|prevue|demain|prochainement|sera|seront|doit|doivent)\b/.test(value)
     || /\b(?:pas|jamais)\b/.test(value)) {
-    return { status: 'unknown', stage: 'in_transit', description: 'Ciblex tracking update' };
+    return UPDATE;
   }
   if (includesAny(value, ['retour expediteur', 'retourne a l expediteur', 'retour a l expediteur'])) {
-    return { status: 'exception', stage: 'returned', description: 'Returned to sender' };
+    return RETURNED;
   }
   if (includesAny(value, ['colis livre', 'livraison effectuee', 'remis au destinataire'])) {
-    return { status: 'delivered', stage: 'delivered', description: 'Delivered' };
+    return DELIVERED;
   }
   if (includesAny(value, ['mis en livraison', 'mise en livraison', 'en cours de livraison'])) {
-    return { status: 'out_for_delivery', stage: 'out_for_delivery', description: 'Out for delivery' };
+    return OUT_FOR_DELIVERY;
   }
   if (includesAny(value, ['disponible en relais', 'disponible au relais', 'mis a disposition'])) {
-    return { status: 'out_for_delivery', stage: 'ready_for_pickup', description: 'Ready for pickup' };
+    return READY_FOR_PICKUP;
   }
   if (includesAny(value, [
     'complement adresse',
@@ -71,19 +83,36 @@ export function classifyCiblexStatus(rawDescription: string): ClassifiedCiblexSt
     'anomalie',
     'refuse',
   ])) {
-    return { status: 'exception', stage: 'exception', description: 'Shipment exception' };
+    return EXCEPTION;
   }
   if (includesAny(value, ['destinataire absent', 'non livre'])) {
-    return { status: 'exception', stage: 'failed_attempt', description: 'Delivery issue' };
+    return FAILED_ATTEMPT;
   }
   if (includesAny(value, ['colis controle', 'colis en transit', 'arrive agence', 'depart agence'])) {
-    return { status: 'in_transit', stage: 'in_transit', description: 'Parcel processed at Ciblex facility' };
+    return IN_TRANSIT;
   }
   if (includesAny(value, ['colis pris en charge', 'prise en charge'])) {
-    return { status: 'in_transit', stage: 'accepted', description: 'Shipment collected' };
+    return ACCEPTED;
   }
   if (includesAny(value, ['annonce', 'information recue'])) {
-    return { status: 'pending', stage: 'registered', description: 'Shipment information received' };
+    return REGISTERED;
   }
-  return { status: 'unknown', stage: 'in_transit', description: 'Ciblex tracking update' };
+  return UPDATE;
 }
+
+/** The stage of the English wording the adapter stores for each label it reads. */
+const STORED = new Map([RETURNED, DELIVERED, OUT_FOR_DELIVERY, READY_FOR_PICKUP, EXCEPTION, FAILED_ATTEMPT, IN_TRANSIT, ACCEPTED, REGISTERED]
+  .map(({ description, stage }) => [normalizeStatusWording(description), stage]));
+
+/**
+ * What the map says about one scan: the English wording the adapter stores in place of a label
+ * it reads, or a copy's French label. A label it does not read is stored as "Ciblex tracking
+ * update", which stays open since the stored scan does not keep the label.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    const classified = classifyCiblexStatus(wording);
+    return STORED.get(wording) ?? (classified.status === 'unknown' ? undefined : classified.stage);
+  },
+  gaps: [],
+};

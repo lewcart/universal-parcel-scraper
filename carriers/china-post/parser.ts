@@ -6,7 +6,7 @@ import { countryCode } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { isRecord } from '../../core/types.js';
-import { chinaPostStateStatus, chinaPostStatus } from './status.js';
+import { chinaPostEnglish, chinaPostStateStatus, chinaPostStatus } from './status.js';
 
 export const PROVIDER = 'China Post';
 const SUCCESS = '000000';
@@ -206,7 +206,7 @@ function acceptanceScan(collector: unknown, oldest: CarrierEvent): CarrierEvent 
   // Acceptance precedes every later scan; an equal or later clock is not one.
   if (!time || !oldest.local_time || time >= oldest.local_time) return undefined;
   const location = scanLocation(collector.orgName);
-  return { local_time: time, description: ACCEPTED, ...(location ? { location } : {}), stage: 'accepted', stage_source: 'carrier_map' };
+  return { local_time: time, description: chinaPostEnglish(ACCEPTED)!, ...(location ? { location } : {}), stage: 'accepted', stage_source: 'carrier_map' };
 }
 
 /**
@@ -247,7 +247,8 @@ export function parseChinaPostTraces(payload: unknown, raw: string): CarrierResu
     const local = atDestination(scan, destination);
     const location = placeOfScan(scan, local ? country : undefined);
     const status = chinaPostStatus(code, state);
-    const event: CarrierEvent = { local_time: scanTime(scan.time), description, ...(location ? { location } : {}),
+    // The label shows in English where one is known; the code and state label stage it.
+    const event: CarrierEvent = { local_time: scanTime(scan.time), description: chinaPostEnglish(description) ?? description, ...(location ? { location } : {}),
       ...(code ? { provider_code: code } : {}), ...(status ? { stage: status.stage, stage_source: 'carrier_map' } : {}) };
     const identity = JSON.stringify(event);
     if (seen.has(identity)) continue;

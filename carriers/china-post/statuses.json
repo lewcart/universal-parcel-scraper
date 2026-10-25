@@ -158,186 +158,209 @@
     {
       "wording": "运送中",
       "language": "zh",
+      "english": "In transit",
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "State label (stateDesc); consulted only for scan codes without a mapping."
+      "note": "State label (stateDesc); consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "清关中",
       "language": "zh",
+      "english": "In customs clearance",
       "stage": "customs",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "State label (stateDesc); consulted only for scan codes without a mapping."
+      "note": "State label (stateDesc); consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "到达境外目的地",
       "language": "zh",
+      "english": "Arrived in the destination country",
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "State label (stateDesc); consulted only for scan codes without a mapping."
+      "note": "State label (stateDesc); consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "派送中",
       "language": "zh",
+      "english": "Out for delivery",
       "stage": "out_for_delivery",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "State label (stateDesc); consulted only for scan codes without a mapping."
+      "note": "State label (stateDesc); consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "已签收",
       "language": "zh",
+      "english": "Delivered",
       "stage": "delivered",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "State label (stateDesc); consulted only for scan codes without a mapping."
+      "note": "State label (stateDesc); consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "已退回",
       "language": "zh",
+      "english": "Returned",
       "stage": "returned",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "State label (stateDesc); consulted only for scan codes without a mapping."
+      "note": "State label (stateDesc); consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "已揽收",
       "language": "zh",
+      "english": "Accepted",
       "stage": "accepted",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "已揽件",
       "language": "zh",
+      "english": "Accepted",
       "stage": "accepted",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "到达目的地",
       "language": "zh",
+      "english": "Arrived at the destination",
       "stage": "in_transit",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "启运",
       "language": "zh",
+      "english": "Departure",
       "stage": "in_transit",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is China Post's own, as its relayed feed words this label."
     },
     {
       "wording": "交运输商",
       "language": "zh",
+      "english": "Handed to the carrier",
       "stage": "in_transit",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "已起飞",
       "language": "zh",
+      "english": "Flight departed",
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "State label (stateDesc), also in the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label (stateDesc), also in the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "已落地",
       "language": "zh",
+      "english": "Flight landed",
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
-      "note": "State label (stateDesc), also in the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label (stateDesc), also in the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "出口清关",
       "language": "zh",
+      "english": "Export customs clearance",
       "stage": "customs",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "进口清关",
       "language": "zh",
+      "english": "Import customs clearance",
       "stage": "customs",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "预报关中",
       "language": "zh",
+      "english": "Declared to customs in advance",
       "stage": "customs",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "等待客户网点取件",
       "language": "zh",
+      "english": "Awaiting collection at the post office",
       "stage": "ready_for_pickup",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "待取件",
       "language": "zh",
+      "english": "Awaiting collection",
       "stage": "ready_for_pickup",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "正在安排派送",
       "language": "zh",
+      "english": "Arranging delivery",
       "stage": "out_for_delivery",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table (arranging delivery); consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table (arranging delivery); consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "派件异常",
       "language": "zh",
+      "english": "Delivery problem",
       "stage": "exception",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "邮件异常",
       "language": "zh",
+      "english": "Problem with the item",
       "stage": "exception",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "退回寄件人",
       "language": "zh",
+      "english": "Returned to the sender",
       "stage": "returned",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table; consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table; consulted only for scan codes without a mapping. The English is a plain rendering."
     },
     {
       "wording": "待退回",
       "language": "zh",
+      "english": "Return to the sender pending",
       "stage": "returned",
       "confirmedBy": "bundle",
       "firstSeen": "2026-10-08",
-      "note": "State label from the app's own state table (return to the sender pending); consulted only for scan codes without a mapping."
+      "note": "State label from the app's own state table (return to the sender pending); consulted only for scan codes without a mapping. The English is a plain rendering."
     }
   ]
 }

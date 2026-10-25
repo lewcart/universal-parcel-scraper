@@ -209,6 +209,25 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...status, location: '' }, status)).toBe(true);
   });
 
+  it('lets a universal copy that shows a China Post label in English take over the row stored in Chinese', () => {
+    const policy = sameInstantIdentityPolicy('unknown', { supportsScanMatching: true });
+    // A partner's scan abroad, its place cut off in the label and read from the location.
+    const stored = { stage: 'out_for_delivery', description: '出门投递【ZZ Dispatching【Example Ci】', location: 'Dispatching【Example City X9X9X9】',
+      providerCode: 'OutForDelivery_Other' };
+    const incoming = { ...stored, description: 'Out for delivery', location: 'Example City' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.({ ...incoming, location: 'Example City' }, { ...stored, location: 'Example City' })).toBe(true);
+    const label = { stage: 'in_transit', description: '飞机进港', location: '', providerCode: 'InTransit_Other' };
+    expect(policy?.matches?.({ ...label, description: 'Plane has landed' }, label)).toBe(true);
+    for (const different of [
+      { ...stored, description: '邮件到达处理中心【ZZ Arriyal at Processin】' },
+      { ...stored, location: 'Dispatching【Other City X9X9X9】' },
+      { ...stored, providerCode: 'Delivered_Other' },
+      { ...stored, description: '运输中' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.(stored, incoming)).toBe(false);
+  });
+
   it('matches a Cainiao scan whose town has left its wording for its location', () => {
     expect(sameInstantIdentityPolicy('aliexpress')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('aliexpress', { supportsScanMatching: true });
@@ -486,13 +505,15 @@ describe('same-instant identity policies', () => {
     ['jrt', 'registered', '货物电子信息已经收到', 'The electronic cargo information has been received', ''],
     ['thhy', 'in_transit', '货物离开操作中心', 'Goods leave the operation center', 'SHIPMENT'],
     ['yto', 'accepted', '业务员收件', 'Picked up', '310'],
+    ['china-post', 'out_for_delivery', '派送中', 'Out for delivery', 'O_014'],
+    ['china-post', 'in_transit', '邮件到达【示例市揽投部】', 'Arrival', '713'],
   ])('lets a %s row shown in English take over the row stored in the carrier’s Chinese, by place and code', (source, stage, chinese, english, code) => {
     expect(sameInstantIdentityPolicy(source)).toBeUndefined();
     const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
     expect(policy).toEqual({
       sourceCarrierId: source, storedSources: [source], requireProviderCode: false, matchEachScan: true, matches: expect.any(Function),
-      // YTO dates local clocks, which adds the wall-clock pass.
-      ...(source === 'yto' ? { matchWallClock: true } : {}),
+      // YTO and China Post date local clocks, which adds the wall-clock pass.
+      ...(['yto', 'china-post'].includes(source) ? { matchWallClock: true } : {}),
     });
     const stored = { stage, description: chinese, location: 'Sample Town', providerCode: code };
     const incoming = { ...stored, description: ` ${english.toUpperCase()} `, location: 'Sample Town ' };

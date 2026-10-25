@@ -21,6 +21,7 @@ import { countryTimeZone, firstOccurrence } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
+import { chinaPostEnglish } from '../../carriers/china-post/status.js';
 import { correosOriginZone } from '../../carriers/correos-spain/clock.js';
 import { daiPostRelayZone } from '../../carriers/dai-post/clock.js';
 import { HYWL_CHINA_ZONE, hywlInChina } from '../../carriers/hywl/clock.js';
@@ -499,6 +500,10 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }
       catch (cause) { throw new SchemaError(SOURCE, '17TRACK returned an invalid tracking event', { cause }); }
       if (!parsed) continue;
+      // China Post words its labels in Chinese only: they show in English where it is known,
+      // staged as the Chinese was, with the place left to the location.
+      const english = reported.key === CHINA_POST && parsed.description ? chinaPostEnglish(parsed.description) : undefined;
+      if (english) parsed.description = english;
       const day = usps ? uspsDay(raw) ?? (USPS_UNPLACED.test(text(raw.location)) ? facilityWall(raw) : null) : null;
       if (day) {
         const local: CarrierEvent = { ...parsed, local_time: day };

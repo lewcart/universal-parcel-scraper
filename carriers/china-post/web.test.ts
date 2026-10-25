@@ -21,6 +21,13 @@ describe('China Post public web preview', () => {
     expect(result.events!.every(row => !row.time)).toBe(true);
   });
 
+  it('shows the state label in English, staged by the label', () => {
+    const result = parseChinaPostWebPreview(page(entry({ success: true, match: true,
+      scans: [{ ...scan, time: '2030-01-01 23:00', code: 'O_098', state: '未知状态' }, { ...scan, code: 'O_099', state: '待取件' }] })), number);
+    expect(result).toMatchObject({ current_stage: 'ready_for_pickup', last_status_text: 'Awaiting collection' });
+    expect(result.events!.map(row => [row.description, row.stage])).toEqual([['Awaiting collection', 'ready_for_pickup'], ['未知状态', undefined]]);
+  });
+
   it('binds the request, every scan and the final response', () => {
     for (const row of [entry(undefined, { trackingNumberSubmitted: 'ZS00000000002' }), entry({ success: true, match: false }),
       entry({ success: true, match: true, scans: [{ ...scan, number: 'ZS00000000002' }] })]) {

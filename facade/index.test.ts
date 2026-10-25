@@ -659,12 +659,12 @@ describe('standalone tracker', () => {
         stateDesc: '到达境外目的地', orgCode: 'USJFKA', orgName: '', time: '2026-09-03 14:13:00' }];
       trace = JSON.stringify(reply);
       const late = (await trackChinaPost(vi.fn<typeof fetch>(), [])).result;
-      expect(late).toMatchObject({ current_stage: 'delivered', last_status_text: '【美国】已妥投', last_update_local: '2026-09-03T14:13:00' });
+      expect(late).toMatchObject({ current_stage: 'delivered', last_status_text: 'Delivered', last_update_local: '2026-09-03T14:13:00' });
       // A provider history with the delivery and that scan replaces it under China Post's status; one without the scan is behind.
       const rescanned = await trackChinaPost(providerReplies({ ship24: [...history, ['2026-09-03T19:13:00Z', 'Arrival at inward office of exchange']] }),
         ['Ship24']);
       expect(rescanned).toMatchObject({ source: 'Ship24', direct: late, result: { status: 'delivered', current_stage: 'delivered',
-        last_status_text: '【美国】已妥投', destination_country: 'US' } });
+        last_status_text: 'Delivered', destination_country: 'US' } });
       expect(rescanned.result.events).toHaveLength(7);
       expect(rescanned.result.events[0]).toMatchObject({ description: 'Arrival at inward office of exchange', stage: 'in_transit' });
       const behind = await trackChinaPost(providerReplies({ ship24: history }), ['Ship24']);

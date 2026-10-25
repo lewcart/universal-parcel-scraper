@@ -550,7 +550,12 @@ describe('status map answers', () => {
     expect(answer('china-post', '999', '已签收')).toEqual(mapped('delivered'));
     // An unmapped code with the scan's own text is staged by a label the key does not hold.
     expect(answer('china-post', '999', '【美国】已妥投')).toEqual(unknown);
-    expect(answer('china-post', null, 'Delivered')).toEqual(unknown);
+    // The English the adapter shows answers the same.
+    expect(answer('china-post', '461', 'Arrived at the delivery office')).toEqual(mapped('in_transit'));
+    expect(answer('china-post', null, 'Accepted')).toEqual(mapped('accepted'));
+    expect(answer('china-post', '999', 'Awaiting collection')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('china-post', '999', 'Return to the sender pending')).toEqual(mapped('returned'));
+    expect(answer('china-post', '999', 'Departed from a transit office abroad')).toEqual(unknown);
   });
 
   it('answers Old Dominion by its status, which is its provider code', () => {

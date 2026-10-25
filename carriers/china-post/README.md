@@ -103,6 +103,14 @@ is not decoded: `stateDesc` carries the same state as readable text.
 code, and by wording only when the wording is a state label: one that replaced
 a scan's text or names the dated acceptance.
 
+China Post words its scans in Chinese only, so known labels are shown in English, and
+rows stored in Chinese take the English in place. A state label's English is its entry's
+in [statuses.json](statuses.json); a scan text's, its bracketed places aside, is in
+[status.ts](status.ts). The English is China Post's own where its relayed feed gives one,
+else ParcelsApp's translation of the label, else a plain rendering. The code and the
+Chinese label still set the stage, and the map answers the English too. A label without
+known English keeps its Chinese.
+
 The newest scan sets the status, with one exception. Like the web preview, the
 guest window can show a destination office's inbound processing scan above the
 delivery, uploaded after the item was delivered: arrival at or departure from
@@ -132,7 +140,7 @@ record, only its time and office are, for the acceptance event. Domestic EMS
 scan texts embed courier names, mobile numbers and branch phones, so each text
 is cut at its first clause. A text that still names a person, a phone, a signer or
 an unrecognised bracketed value is replaced by its state label: a return to
-sender (711) reads "已退回".
+sender (711) reads "已退回", shown as "Returned".
 
 ## Limitations
 

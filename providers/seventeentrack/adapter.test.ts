@@ -113,24 +113,25 @@ describe('17TRACK result parsing', () => {
   );
 
   it.each([
-    ['InTransit_TransportArrived', '飞机进港', 'in_transit'],
-    ['InTransit_Other', '航空公司接收', 'in_transit'],
-    ['InTransit_PickedUp', '中国邮政已收取邮件', 'accepted'],
-    ['InTransit_CustomsProcessing', '送交出口海关', 'customs'],
-    ['InTransit_CustomsReleased', '出口海关/放行', 'in_transit'],
-    ['InTransit_CustomsRequiringInformation', '等待清关资料', 'customs'],
-    ['Exception_Delayed', '运输延误', 'exception'],
-    ['Exception_Returning', '退回中', 'exception'],
-    ['Exception_Returned', '已退回', 'returned'],
-    ['OutForDelivery_Other', '正在投递', 'out_for_delivery'],
-    ['Delivered_Other', '已妥投', 'delivered'],
-  ])('uses %s with a null stage independently of scan language', (code, description, stage) => {
+    ['InTransit_TransportArrived', '飞机进港', 'in_transit', 'Plane has landed'],
+    ['InTransit_Other', '航空公司接收', 'in_transit', 'Received by airline'],
+    ['InTransit_PickedUp', '中国邮政已收取邮件', 'accepted', 'China Post has received the mail'],
+    ['InTransit_CustomsProcessing', '送交出口海关', 'customs', 'Presented to export customs'],
+    ['InTransit_CustomsReleased', '出口海关/放行', 'in_transit', 'Export customs release'],
+    ['InTransit_CustomsRequiringInformation', '等待清关资料', 'customs', '等待清关资料'],
+    ['Exception_Delayed', '运输延误', 'exception', '运输延误'],
+    ['Exception_Returning', '退回中', 'exception', '退回中'],
+    ['Exception_Returned', '已退回', 'returned', 'Returned'],
+    ['OutForDelivery_Other', '正在投递', 'out_for_delivery', '正在投递'],
+    ['Delivered_Other', '已妥投', 'delivered', 'Delivered'],
+  ])('uses %s with a null stage independently of scan language', (code, description, stage, shown) => {
     const result = parse17TrackResponse(postalHistory([postalScan(code, description)]), number);
     expect(result.current_stage).toBe(stage);
     expect(result.events?.[0]).toMatchObject({ stage, provider_code: code,
       reporting_carrier: 'China Post', reporting_carrier_key: 3011,
       time_provenance: 'provider_inferred', provider_time_iso: '2026-09-20T12:22:00+08:00' });
-    expect(result.events?.[0]?.description).toBe(stage === 'delivered' ? 'Delivered' : description);
+    // China Post's labels show in English where it is known; others keep their Chinese.
+    expect(result.events?.[0]?.description).toBe(shown);
   });
 
   it('credits the stage a code gives to the map, beside a stage name the wording rules do not read', () => {
@@ -152,6 +153,28 @@ describe('17TRACK result parsing', () => {
       expect(located(status), status).toBeUndefined();
     }
     for (const location of ['Example Transit Hub', 'Arrival Hall, Example City', 'EXAMPLE CITY, CA 99999']) expect(located(location)).toBe(location);
+  });
+
+  it("shows China Post's labels in English, a partner's scan abroad too, with the place as the location", () => {
+    const shown = (code: string, description: string, location: string | null = null) => parse17TrackResponse(
+      postalHistory([{ ...postalScan(code, description), location }]), number).events?.[0];
+    expect(shown('OutForDelivery_Other', '出门投递【ZZ Dispatching【Example Ci】', 'Dispatching【Example City X9X9X9】'))
+      .toMatchObject({ description: 'Out for delivery', location: 'Example City', stage: 'out_for_delivery' });
+    expect(shown('InTransit_Other', '邮件到达处理中心【ZZ Arriyal at Processin】', 'Arriyal at Processing Center【Example City】'))
+      .toMatchObject({ description: 'Arrival at processing center', location: 'Example City', stage: 'in_transit' });
+    expect(shown('InTransit_Other', '邮件离开【示例市国际营业部】，正在发往【示例中心】', '示例市 00000000'))
+      .toMatchObject({ description: 'Departed for the next office', location: '示例市 00000000', stage: 'in_transit' });
+    expect(shown('InTransit_CustomsReleased', '出口清关完成【Customs Clearance Completed【示例市】】', 'Customs Clearance Completed【示例市】'))
+      .toMatchObject({ description: 'Export customs clearance completed', location: '示例市', stage: 'in_transit' });
+    expect(shown('InTransit_Other', '承运商接收')).toMatchObject({ description: 'Received by carrier', stage: 'in_transit' });
+    // A label without known English keeps China Post's wording.
+    expect(shown('InTransit_Other', '邮件运输中')).toMatchObject({ description: '邮件运输中', stage: 'in_transit' });
+    // Another carrier's leg keeps its own wording.
+    const other = parse17TrackResponse({ ...postalHistory([]), shipments: [{ number, code: 200, shipment: {
+      latest_status: { status: 'InTransit' },
+      tracking: { providers: [{ provider: { key: 190000, name: 'Example Forwarder' }, events: [postalScan('InTransit_Other', '承运商接收')] }] },
+    } }] }, number);
+    expect(other.events?.[0]?.description).toBe('承运商接收');
   });
 
   it('does not convert stale tracking or unknown codes into shipment progress', () => {
@@ -444,7 +467,7 @@ describe('17TRACK result parsing', () => {
     const relayed = parse17TrackResponse(reply([chinaPostLeg('CN'), nzLeg(null)]), number);
     expect(relayed.events?.find(e => e.description === 'Held for clearance, Your item is currently being held for clearance')?.time)
       .toBe('2026-08-14T04:47:00.000Z');
-    expect(relayed.events?.find(e => e.description === '到达境外出口互换局')).toMatchObject({ time: '2026-08-05T18:09:00.000Z' });
+    expect(relayed.events?.find(e => e.description === "Arrival at the origin post's office of exchange")).toMatchObject({ time: '2026-08-05T18:09:00.000Z' });
     // An airline scan naming a country lends it before the destination does, though a transit hub's can be the wrong one.
     expect(held(reply([nzLeg('Japan')], 'CN'))).toMatchObject({ time: '2026-08-14T03:47:00.000Z' });
     // A lender on several clocks leaves the wall time; with none at all, NZ Post's Auckland reading stays.

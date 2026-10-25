@@ -194,7 +194,9 @@ carrier.
   late. India Post rows worded `Aircraft Departure` or `UPLIFT` are counted in
   `undated_event_count` instead of dated. The scans before one still describe the parcel,
   so the reply stays conclusive. India Post's own adapter places take-offs.
-- Original scan text is kept. The English interface does not translate descriptions.
+- Original scan text is kept: the English interface does not translate descriptions. China
+  Post's leg shows a label in the English the [China Post adapter](../../carriers/china-post/README.md)
+  shows, its places left to the location, and a copy stored in Chinese takes the English in place.
 - Each scan keeps the `location` 17TRACK reports, unless it holds private delivery details or
   is Posti's "ULKOMAILLA" ("abroad"), which names no place. China Post's feed can give the
   scan's status there, at times with the place after it in 【】 ("Departure from【Example】");

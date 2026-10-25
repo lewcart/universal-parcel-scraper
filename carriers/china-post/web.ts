@@ -4,7 +4,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { TrawlScrapeResponse } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { chinaPostDescription, PROVIDER } from './parser.js';
-import { chinaPostStatus } from './status.js';
+import { chinaPostEnglish, chinaPostStatus } from './status.js';
 
 export const CHINA_POST_WEB = 'https://www.ems.com.cn/queryList';
 export const CHINA_POST_WEB_FLAG = 'https://www.ems.com.cn/ems-web/trackTestQuery/getLogisticsTestFlag';
@@ -45,6 +45,8 @@ export function parseChinaPostWebPreview(page: TrawlScrapeResponse, number: stri
   if (!payload.scans.length) throw new NoHistoryError(PROVIDER, 'China Post returned no guest scans');
   const scans: readonly unknown[] = payload.scans;
   const events: CarrierEvent[] = [];
+  // Each scan's state label, which stages it; the event shows its English.
+  const labels: string[] = [];
   for (const scan of [...scans].reverse()) {
     if (!isRecord(scan) || scan.number !== number || typeof scan.time !== 'string'
       || !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}(?::\d{2})?$/.test(scan.time)
@@ -55,10 +57,11 @@ export function parseChinaPostWebPreview(page: TrawlScrapeResponse, number: stri
     const description = chinaPostDescription('', scan.state);
     if (!date.isValid || !description) throw new SchemaError(PROVIDER, 'China Post returned an unreadable guest scan');
     const stage = chinaPostStatus(scan.code, description)?.stage;
-    events.push({ local_time: date.toFormat("yyyy-MM-dd'T'HH:mm:ss"), description,
+    labels.push(description);
+    events.push({ local_time: date.toFormat("yyyy-MM-dd'T'HH:mm:ss"), description: chinaPostEnglish(description) ?? description,
       ...(scan.code ? { provider_code: scan.code } : {}), ...(stage ? { stage, stage_source: 'carrier_map' } : {}) });
   }
-  const current = chinaPostStatus(events[0]!.provider_code ?? '', events[0]!.description ?? '');
+  const current = chinaPostStatus(events[0]!.provider_code ?? '', labels[0]!);
   return { status: current?.status ?? 'unknown', ...(current ? { current_stage: current.stage, current_stage_source: 'carrier_map' } : {}),
     last_status_text: events[0]!.description, last_update: null, last_update_local: events[0]!.local_time,
     history_truncated: true, events };

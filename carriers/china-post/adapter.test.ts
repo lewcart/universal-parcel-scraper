@@ -3,12 +3,13 @@ import { describe, expect, it, vi } from 'vitest';
 import { AdapterRegistry } from '../../core/adapter/index.js';
 import { carrierDefinition } from '../../core/catalog/index.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import { REGISTRY } from '../../generated/registry.js';
 import { adapter } from './adapter.js';
 import { CHINA_POST_APP_API, CHINA_POST_CHECK_PATH, CHINA_POST_TRACE_PATH } from './app.js';
-import { chinaPostCodeStatus, chinaPostStateStatus } from './status.js';
+import { chinaPostCodeStatus, chinaPostEnglish, chinaPostStateStatus, statusMap } from './status.js';
 import { CHINA_POST_WEB_FLAG, CHINA_POST_WEB_TRACE } from './web.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -67,7 +68,7 @@ describe('China Post adapter', () => {
 
   it('returns no courier, signer, recipient or map data', async () => {
     const result = await instance(transport(open, () => json(text('returned')))).track({ number: NUMBER });
-    expect(result).toMatchObject({ current_stage: 'returned', last_status_text: '已退回' });
+    expect(result).toMatchObject({ current_stage: 'returned', last_status_text: 'Returned' });
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|10000000000|11183|0\.00000|example\.invalid|签收|快递员|电话/);
   });
 
@@ -280,6 +281,15 @@ describe('China Post adapter', () => {
     for (const entry of statuses.entries as { code?: string; wording?: string; stage: string }[]) {
       const mapped = entry.code ? chinaPostCodeStatus(entry.code) : chinaPostStateStatus(entry.wording!);
       expect(mapped?.stage, entry.code ?? entry.wording).toBe(entry.stage);
+    }
+  });
+
+  it('shows every state label in English, which its map answers with the same stage', () => {
+    for (const entry of statuses.entries as { wording?: string; english?: string; stage: string }[]) {
+      if (!entry.wording) continue;
+      expect(entry.english, entry.wording).toBeTruthy();
+      expect(chinaPostEnglish(entry.wording), entry.wording).toBe(entry.english);
+      expect(statusMap.stage(null, normalizeStatusWording(entry.english!)), entry.english).toBe(entry.stage);
     }
   });
 });

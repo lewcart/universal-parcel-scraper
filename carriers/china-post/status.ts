@@ -1,5 +1,7 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
-import type { CarrierStatusMap } from '../../core/status/statusMap.js';
+import { statusWordings, type WordedStatus } from '../../core/status/english.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import statuses from './statuses.json' with { type: 'json' };
 
 const IN_TRANSIT: ClassifiedStatus = { status: 'in_transit', stage: 'in_transit' };
 const CUSTOMS: ClassifiedStatus = { status: 'in_transit', stage: 'customs' };
@@ -81,13 +83,96 @@ export function chinaPostStatus(code: string, state: string): ClassifiedStatus |
   return chinaPostCodeStatus(code) ?? chinaPostStateStatus(state);
 }
 
+// China Post words its scans in Chinese only. A state label's English is its
+// entry's in statuses.json. A scan text's places, in 【】, are left out of its
+// key (`chinaPostLabel`): the scan keeps its place as its location. The English
+// is China Post's own where its relayed feed gave one (17TRACK passes it on
+// where the place belongs, "Arrival at Processing Center【…】"), else
+// ParcelsApp's translation of the label, else a plain rendering.
+const WORDINGS = statusWordings(statuses.entries.filter((entry): entry is typeof entry & WordedStatus => 'wording' in entry));
+const LABELS: ReadonlyArray<readonly [label: string, english: string]> = [
+  // China Post's own English.
+  ['邮件到达处理中心…', 'Arrival at processing center'],
+  ['邮件离开处理中心…', 'Departure from processing center'],
+  ['出口清关完成…', 'Export customs clearance completed'],
+  ['目的国清关完成…', 'Import customs clearance completed'],
+  ['出门投递…', 'Out for delivery'],
+  ['承运商接收', 'Received by carrier'],
+  ['抵达', 'Arrival'],
+  ['干线中转', 'In transit'],
+  ['邮件在该国内转运中', 'In transit'],
+  ['目的地转运…', 'In transit'],
+  // ParcelsApp's translations.
+  ['中国邮政已收取邮件', 'China Post has received the mail'],
+  ['飞机进港', 'Plane has landed'],
+  ['航空公司接收', 'Received by airline'],
+  ['航空公司启运', 'Airline departure'],
+  ['出口海关/放行', 'Export customs release'],
+  ['到达寄达地', 'Arrive at the place of destination'],
+  // ParcelsApp keeps 收寄点 (the office of posting) in Chinese: "Departed from 收寄点【…】".
+  ['离开收寄点…', 'Departed from the office of posting'],
+  // Plain renderings of the scan texts.
+  ['邮件到达…', 'Arrival'],
+  ['邮件离开…', 'Departure'],
+  ['邮件离开…，正在发往下一站', 'Departed for the next stop'],
+  ['邮件离开…，正在发往…', 'Departed for the next office'],
+  ['邮件离开…，正在发往航站准备安检', "Departed for the airport's security check"],
+  ['邮件已在…完成分拣，准备发出', 'Sorted and ready to leave'],
+  ['邮件到达…，准备发往…', 'Arrived, to leave for the next office'],
+  ['邮件已乘机由…飞往…', 'Left on a flight'],
+  ['您的邮件正途经…', 'Passing through'],
+  ['…已出口直封', 'Closed into an export dispatch'],
+  ['已交承运商运输', 'Handed to the carrier for transport'],
+  ['送交出口海关', 'Presented to export customs'],
+  ['出口海关/留存待验', 'Held by export customs for inspection'],
+  ['送交境外进口海关', 'Presented to import customs abroad'],
+  ['寄达地海关允许进口', 'Import allowed by destination customs'],
+  ['到达寄达地处理中心', 'Arrival at processing center in the destination country'],
+  ['离开…处理中心', 'Departure from processing center'],
+  ['离开境外经转局', 'Departed from a transit office abroad'],
+  // The origin post's own exchange scans, which China Post mirrors on an item from abroad.
+  ['到达境外出口互换局', "Arrival at the origin post's office of exchange"],
+  ['离开境外出口互换局', "Departure from the origin post's office of exchange"],
+  ['已到达…投递局', 'Arrived at the delivery office'],
+  ['…安排投递', 'Out for delivery'],
+  ['邮件正在派送中', 'Out for delivery'],
+  ['…已妥投', 'Delivered'],
+  ['…已收寄', 'Accepted'],
+  // An attempt, with what was done after it in brackets: "已试投/投递失败（/已通知客户）".
+  ['已试投/投递失败', 'Delivery attempted, not delivered'],
+];
+
+/**
+ * A label without its places: each 【…】 it holds, nested or cut off by the
+ * feed, becomes "…", and a note in brackets after it goes. A place after the
+ * label is optional, so a label that ends with one is also kept without it.
+ */
+export function chinaPostLabel(wording: string): string {
+  let label = wording.replace(/\s+/g, ' ').trim();
+  for (let previous = ''; previous !== label;) {
+    previous = label;
+    label = label.replace(/【[^【】]*】/g, '…');
+  }
+  return label.replace(/【[^【】]*$/, '…').replace(/(?:（[^（）]*）|\([^()]*\))$/, '').trim();
+}
+
+const ENGLISH: ReadonlyMap<string, string> = new Map(LABELS);
+
+/** The English shown for one China Post label, its places aside, or undefined when none is known. */
+export function chinaPostEnglish(wording: string): string | undefined {
+  const label = chinaPostLabel(wording);
+  return ENGLISH.get(label) ?? ENGLISH.get(label.replace(/…$/, '')) ?? ENGLISH.get(`${label}…`)
+    ?? WORDINGS.english(normalizeStatusWording(label));
+}
+
 /**
  * What the map says about one scan by its code and wording. A mapped code
  * decides. Otherwise the scan was staged by its state label, which is its
- * wording only when the label replaced the text or dates the acceptance; other
- * wording leaves the stage to the rest of the reply.
+ * wording, in Chinese or in the English the adapter shows, only when the label
+ * replaced the text or dates the acceptance; other wording leaves the stage to
+ * the rest of the reply.
  */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => chinaPostCodeStatus(code ?? '')?.stage ?? chinaPostStateStatus(wording)?.stage,
+  stage: (code, wording) => chinaPostCodeStatus(code ?? '')?.stage ?? WORDINGS.stage(wording),
   gaps: [],
 };

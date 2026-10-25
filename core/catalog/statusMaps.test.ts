@@ -1057,6 +1057,20 @@ describe('status map answers', () => {
     expect(answer('colisweb', null, 'Mise à jour Colisweb')).toEqual(unknown);
   });
 
+  it("answers Dachser by the English wording its rules give a scan, and a copy of Dachser's own wording by those rules", () => {
+    expect(answer('dachser', null, 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('dachser', null, 'Shipment exception')).toEqual(mapped('exception'));
+    expect(answer('dachser', null, 'Delivery attempt was unsuccessful')).toEqual(mapped('failed_attempt'));
+    expect(answer('dachser', null, 'Delivery appointment updated')).toEqual(mapped('in_transit'));
+    expect(answer('dachser', null, 'Shipment accepted by Dachser')).toEqual(mapped('accepted'));
+    expect(answer('dachser', null, 'Entregado')).toEqual(mapped('delivered'));
+    expect(answer('dachser', null, 'No entregado, destinatario ausente')).toEqual(mapped('failed_attempt'));
+    expect(answer('dachser', null, 'Nueva fecha de entrega')).toEqual(mapped('in_transit'));
+    // The neutral update replaced wording no rule matched, which the stored scan does not keep.
+    expect(answer('dachser', null, 'Dachser tracking update')).toEqual(unknown);
+    expect(answer('dachser', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

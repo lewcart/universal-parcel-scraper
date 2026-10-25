@@ -35,7 +35,8 @@ rule.
   delivered.
 - Unmatched event wording is `in_transit` with "Dachser tracking update". Descriptions are a
   fixed English vocabulary; the raw wording is not retained because the endpoint mixes
-  languages per customer.
+  languages per customer. The parcel app's review (`statusMap`) leaves that update open, since
+  the stored scan does not keep the wording it replaced.
 - Times: ISO-8601 keeps its offset; `dd/MM/yyyy` and `yyyy-MM-dd` forms (optional clock) are
   read in `Europe/Madrid`.
 - The estimate is the first of `fechaEntregaAplazada`, `fCompromiso`, `fechaPrimeraEntrega`,

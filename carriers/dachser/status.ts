@@ -9,6 +9,7 @@
  * broad delivery words they contain.
  */
 import type { CarrierResult } from '../../core/result/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
 
 /** Lower-cased, accent-free text, for language-independent matching. */
@@ -46,10 +47,15 @@ export const EVENT_RULES: readonly EventRule[] = [
   { stage: 'registered', description: 'Shipment registered by Dachser', needles: ['registrado', 'creado', 'announced', 'registered', 'information received'] },
 ];
 
+/** The rule an event's own wording matches, without the in-transit default. */
+function eventRule(rawDescription: unknown): EventRule | undefined {
+  const value = plainText(rawDescription);
+  return EVENT_RULES.find((rule) => rule.needles.some((needle) => value.includes(needle)));
+}
+
 /** The stage and the neutral English wording we show for one event row. */
 export function eventLabel(rawDescription: unknown): { stage: Stage; description: string } {
-  const value = plainText(rawDescription);
-  const matched = EVENT_RULES.find((rule) => rule.needles.some((needle) => value.includes(needle)));
+  const matched = eventRule(rawDescription);
   return matched
     ? { stage: matched.stage, description: matched.description }
     : { stage: 'in_transit', description: 'Dachser tracking update' };
@@ -75,3 +81,16 @@ export function shipmentStatus(rawStatus: unknown, hasEvents: boolean): {
   if (value || hasEvents) return { status: 'in_transit', text: 'In transit' };
   return { status: 'unknown', text: 'Tracking update unavailable' };
 }
+
+/** The stage of each English wording a rule gives a stored event. */
+const STAGE_BY_LABEL = new Map(EVENT_RULES.map((rule) => [normalizeStatusWording(rule.description), rule.stage]));
+
+/**
+ * What the map says about one scan: the English wording its rule gave it, else, for a copy of
+ * Dachser's own wording, the rules. A scan no rule matched stays open, since the stored scan does
+ * not keep the wording its neutral update replaced.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => STAGE_BY_LABEL.get(wording) ?? eventRule(wording)?.stage,
+  gaps: [],
+};

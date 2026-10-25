@@ -329,11 +329,15 @@ function relayedNotice(label: string): string {
     ? CHRONOPOST_NOTIFICATION : label;
 }
 
+// ParcelsApp heads Interpost's import clearance with Interpost's status code, "B2C Clearance 4. Customs Import
+// cleared". Interpost's own tracker shows the caption alone, as Pitney Bowes's map words it.
+const CLEARANCE_STATUS = /^B2C Clearance ?(?:Status ?)?\d{1,3}\. +(?=\S)/i;
+
 const EXPLICIT_OFFSET = /(?:Z|[+-]\d{2}:\d{2})$/;
 const LOCAL_WALL_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/;
 
 function describe(description: unknown, stage?: unknown): { description: string; stage: Stage; stage_source: string } | null {
-  const label = relayedNotice(text(description));
+  const label = relayedNotice(text(description)).replace(CLEARANCE_STATUS, '');
   if (!label || isNotice(label)) return null;
   const declared = typeof stage === 'string' && Object.hasOwn(STAGES, stage) ? STAGES[stage] : undefined;
   // Established source semantics (e.g. handoff/negation) remain first. A real

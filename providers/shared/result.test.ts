@@ -61,4 +61,13 @@ describe('shared provider result', () => {
     }
     expect(event('2026-01-07T12:45:00+01:00', `${notice}. Rendez-vous`)?.description).toBe(`${notice}. Rendez-vous`);
   });
+
+  it("reads Interpost's import clearance by its caption, without the status code ParcelsApp heads it with", () => {
+    expect(event('2026-01-07T12:45:00+01:00', 'B2C Clearance 4. Customs Import cleared'))
+      .toMatchObject({ description: 'Customs Import cleared', stage: 'in_transit' });
+    // The code alone has no caption to show instead.
+    expect(event('2026-01-07T12:45:00+01:00', 'B2C Clearance 4.')?.description).toBe('B2C Clearance 4.');
+    expect(event('2026-01-07T12:45:00+01:00', 'Customs Clearance. Customs Import submitted')?.description)
+      .toBe('Customs Clearance. Customs Import submitted');
+  });
 });

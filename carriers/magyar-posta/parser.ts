@@ -29,8 +29,9 @@ const CATEGORY = /^fig_[123]([1-5])$/;
 // The app's instants: UTC, with microseconds.
 const APP_STAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$/;
 const HOME = 'Europe/Budapest';
-// Handheld clocks can run a little early; a row further ahead of the lookup is a plan, not a scan.
-const CLOCK_SKEW_MS = 3_600_000;
+// A row more than a few minutes after the lookup is a plan, not a scan: a dispatch's next leg
+// is listed at its planned time a day ahead, and an hour's leeway showed it before it was due.
+const CLOCK_SKEW_MS = 5 * 60_000;
 /** The app names each scan's category, the tracker's icons 1 to 5. */
 const APP_CATEGORIES: ReadonlyMap<string, string> = new Map([
   ['felvétel', '1'], ['feldolgozás', '2'], ['szállítás', '3'], ['kézbesítés', '4'], ['kézbesített', '5'],

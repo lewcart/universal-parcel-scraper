@@ -98,9 +98,11 @@ describe('Magyar Posta result page', () => {
     const planned = edit(fixture('pickup'), $ => {
       $('div.more_details_container').append(rowFor('2', '2', 'Küldemény előkészítése szállításhoz', '2026. 04. 12. 11:40', ''));
     });
-    // 10:00 in Budapest, then an hour before the row and after it.
-    expect(parseMagyarPosta(planned, LETTER, Date.parse('2026-04-11T08:00:00Z'))).toMatchObject({ last_update_local: '2026-04-11T09:00:00' });
-    for (const readAt of ['2026-04-12T08:45:00Z', '2026-04-12T10:00:00Z']) {
+    // 10:00 in Budapest, and a quarter of an hour before the row; then a few minutes before it and after it.
+    for (const readAt of ['2026-04-11T08:00:00Z', '2026-04-12T09:25:00Z']) {
+      expect(parseMagyarPosta(planned, LETTER, Date.parse(readAt))).toMatchObject({ last_update_local: '2026-04-11T09:00:00' });
+    }
+    for (const readAt of ['2026-04-12T09:36:00Z', '2026-04-12T10:00:00Z']) {
       expect(parseMagyarPosta(planned, LETTER, Date.parse(readAt))).toMatchObject({ last_update_local: '2026-04-12T11:40:00' });
     }
   });
@@ -193,8 +195,10 @@ describe('Magyar Posta app reply', () => {
     const before = parseMagyarPostaApp(payload, LETTER, Date.parse('2026-04-08T12:00:00Z'))!;
     expect(before).toMatchObject({ last_update: '2026-04-08T11:30:00Z' });
     expect(before.events!.map(event => event.time)).toEqual(['2026-04-08T11:30:00Z', '2026-04-08T10:02:00Z', '2026-04-06T09:15:00Z']);
-    // An hour early, as a clock running ahead, and once due.
-    for (const readAt of ['2026-04-09T08:45:00Z', '2026-04-09T10:00:00Z']) {
+    // Still held back 54 minutes before it is due, as the plan of a lookup at a quarter to the hour.
+    expect(parseMagyarPostaApp(payload, LETTER, Date.parse('2026-04-09T08:46:00Z'))).toMatchObject({ last_update: '2026-04-08T11:30:00Z' });
+    // A few minutes early, as a clock running ahead, and once due.
+    for (const readAt of ['2026-04-09T09:36:00Z', '2026-04-09T10:00:00Z']) {
       expect(parseMagyarPostaApp(payload, LETTER, Date.parse(readAt))!.events![0]).toMatchObject({ time: '2026-04-09T09:40:00Z', stage: 'in_transit' });
     }
   });

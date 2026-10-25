@@ -151,8 +151,7 @@ export const PROOF_OF_DELIVERY_SCAN = 'DEYY';
  * Notices that would move the parcel: MSDLX, DPD failing to send the delivery
  * details, reads as a failed round, and the others as in transit to an app
  * that takes such a scan as news that the parcel moves. ENA is a data exchange
- * inside DPD's systems; SPE a delivery estimate or a changed delivery day,
- * which the shared rules read as in transit for its "to be delivered"; MSDLO
+ * inside DPD's systems; SPE a delivery estimate or a changed delivery day; MSDLO
  * the notice DPD emailed for the delivery round; MIDLI and MII the recipient's
  * delivery instruction and MIA its receipt, which can come while DPD has only
  * the label; OTHER the guest API's catch-all. Each keeps the stage of the scan

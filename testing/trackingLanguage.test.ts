@@ -155,7 +155,6 @@ describe('intuitive language contrasts', () => {
     ['Votre colis est disponible dans votre point de retrait. Il vous sera remis sur présentation d’une pièce d’identité.', 'ready_for_pickup'],
     ['Delivered to the sender', 'returned'],
     ['Returned and delivered to sender', 'returned'],
-    ['Expected to be delivered on Monday', 'in_transit'],
     ['Not yet delivered', 'failed_attempt'],
     ['Undelivered', 'failed_attempt'],
     ['Your parcel is being delivered', 'out_for_delivery'],
@@ -168,6 +167,11 @@ describe('intuitive language contrasts', () => {
     expect(trackingLanguageStage(description)).toBe(expected);
     expect(inferStage(description, 'pending')).toBe(expected);
     expect(event('2026-01-01T12:00:00Z', description)?.stage).toBe(expected);
+  });
+
+  it('[generated] reads an estimate as a forecast, not a delivery', () => {
+    expect(trackingLanguageStage('Expected to be delivered on Monday')).toBeUndefined();
+    expect(inferStage('Expected to be delivered on Monday', 'pending')).toBe('pending');
   });
 
   it.each([

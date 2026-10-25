@@ -513,7 +513,11 @@ describe('classifyWording', () => {
     'Votre colis sera livré demain', 'Il sera livré après paiement des droits et taxes', 'Votre colis va être livré aujourd’hui',
     'Ihre Sendung wird am Dienstag zugestellt', 'Voraussichtliche Zustellung am 06.10.2026', 'Zustellung voraussichtlich morgen',
     'Il pacco sarà consegnato domani', 'Il pacco verrà consegnato domani', 'Será entregado mañana', 'Se entregará a la mayor brevedad',
-    'Será entregue amanhã', 'Vai ser entregue hoje'])('gives the notice "%s" no stage', wording => {
+    'Será entregue amanhã', 'Vai ser entregue hoje',
+    // Estimates are forecasts too, so "to be delivered" does not read them as transit.
+    'Your parcel is estimated to be delivered on: Friday, July 17, 2026', 'Expected to be delivered on Monday',
+    'Your package has been scheduled to be delivered by 08:00 PM on Mar 11.', 'Due to be delivered tomorrow',
+    'The parcel is now expected to be delivered on 17.07.2026'])('gives the notice "%s" no stage', wording => {
     expect(trackingLanguageStage(wording)).toBeUndefined();
     expect(classifyWording(wording, 'pending')).toEqual({ stage: 'pending', source: 'none' });
     expect(classifyWording(wording, 'in_transit')).toEqual({ stage: 'in_transit', source: 'none' });
@@ -534,8 +538,18 @@ describe('classifyWording', () => {
     ['Delivery attempt failed. Your parcel will be delivered again tomorrow', 'failed_attempt'],
     ['Your parcel cannot be delivered', 'failed_attempt'],
     ['Will be delivered back to sender', 'exception'],
+    ['Arrived at the depot. Your parcel is estimated to be delivered on: Friday, July 17, 2026', 'in_transit'],
+    ['The shipment was loaded into the delivery vehicle and is expected to be delivered today.', 'out_for_delivery'],
   ] as const)('reads only what "%s" reports: %s', (wording, stage) => {
     expect(classifyWording(wording, 'pending')).toEqual({ stage, source: 'wording:language' });
+  });
+
+  it('reads the round beside an estimate, and keeps what still waits to be delivered in transit', () => {
+    expect(classifyWording('The item is expected to be delivered today. The item is out for doorstep delivery', 'pending'))
+      .toEqual({ stage: 'out_for_delivery', source: 'wording:out_for_delivery' });
+    for (const wording of ['Parcel to be delivered', 'Waiting to be delivered', 'The package is ready to be delivered to the final destination']) {
+      expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'in_transit', source: 'wording:language' });
+    }
   });
 
   it('files a linehaul handover as transit, not acceptance', () => {
@@ -832,6 +846,9 @@ describe('classifyWording', () => {
       ['Item received by Royal Mail', 'accepted'],
       // Royal Mail's delivery round, relayed by universal providers.
       ['Due to be delivered today', 'out_for_delivery'], ['Due to be delivered today by', 'out_for_delivery'],
+      // Posta Slovenije's and GLS's delivery rounds, relayed without their codes.
+      ['The item is expected to be delivered today', 'out_for_delivery'],
+      ['The parcel is expected to be delivered during the day.', 'out_for_delivery'],
       ['Sender advised item dropped off at parcel locker', 'accepted'], ['Dropped off at Postbox', 'accepted'],
       ['The shipment has been taken over by one of our operators at the post office.', 'accepted'],
       ['The shipment has been taken over at the post office point', 'accepted'],

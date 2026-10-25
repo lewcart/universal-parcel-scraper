@@ -31,6 +31,8 @@ const SENTENCE = String.raw`(?:[^.;!?]|\.(?=\S))`;
  */
 const DELIVERY_FORECAST = new RegExp(`(?:${[
   String.raw`\b(?:will|would|shall|should|may|might|must|won't|can(?! ?not\b)|could(?! not\b))(?: (?:not|now|then|still|also|likely|probably|possibly|hopefully|soon|shortly|only|normally|usually|again|today|tomorrow))* be delivered\b(?! (?:back )?to (?:the )?(?:sender|shipper)\b)`,
+  // An estimate: "Your parcel is estimated to be delivered on: <date>".
+  String.raw`(?:\b(?:is|are|was|were|has been|have been|had been) (?:now |still |also )?)?\b(?:estimated|expected|scheduled|planned|forecast(?:ed)?|projected|due) to be delivered\b(?! (?:back )?to (?:the )?(?:sender|shipper)\b)`,
   String.raw`\b(?:sera|seront|serait|seraient|va etre|vont etre|doit etre|doivent etre|devrait etre|devraient etre|pourra etre|pourront etre|pourrait etre)(?: \w+){0,2}? livree?s?\b(?! a (?:l'|son |leur |votre )expediteur)`,
   String.raw`\b(?:wird|werden|soll|sollte|sollen|sollten)\b(?!${SENTENCE}*?\babsender\b)${SENTENCE}*?(?<!\bnicht )\bzugestellt\b`,
   String.raw`\bvoraussichtlich\w*\b${SENTENCE}*?\b(?:zugestellt|zustellung)\b|\b(?:zustellung|zustelltermin) (?:(?:ist|erfolgt) )?(?:voraussichtlich|geplant)\b`,
@@ -246,6 +248,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // Royal Mail's delivery-round scans (EVGPD, EVKPD), as universal providers relay them: the
   // delivery today is its out-for-delivery scan, not a forecast.
   if (/^due to be delivered today(?: by\b.*)?$/.test(text)) return 'out_for_delivery';
+  // Posta Slovenije's delivery round (N) and GLS's (INDELIVERY), as universal providers relay
+  // them without the code: each carrier's map reads the sentence as out for delivery.
+  if (/^the item is expected to be delivered today\.?$|^(?:the )?parcel is expected to be delivered during the day\.?$/.test(text)) return 'out_for_delivery';
   // Every rule below reads only what happened, never a delivery still to come.
   const reported = deliveryForecastRemainder(text);
   if (reported !== undefined) return reported ? trackingLanguageStage(reported) : undefined;

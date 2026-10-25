@@ -100,14 +100,13 @@ const IMPORT = 'lettre et ppi import suivi';
  * international tracked letter sent from France, reads it as UTC and shows it on
  * Paris's clock (a Dutch scan of such a letter reached the feed before the
  * instant it was labelled). It is read in the country's zone, or kept as a wall
- * clock when the country has several. An imported item's transit scans at home
- * (group ACH) are read the same way: its arrival in France and its transit
- * came two hours after the instants of the importer's own copies, while its
- * delivery scans agree with them to the second. Null for other scans at home and
- * for other products, whose partner scans have not been compared with the partner's own.
+ * clock when the country has several. Null at home, where an imported item's
+ * arrival and transit keep the instant the relaying post shows to the minute,
+ * and for other products, whose partner scans have not been compared with the
+ * partner's own.
  */
-function partnerClock(raw: string, country: string, product: string, exportedLetter: boolean, group: string): { time: string; local_time?: string } | null {
-  if (!country || (LA_POSTE_COUNTRIES.has(country) && !(product === IMPORT && group.startsWith('ACH'))) || !explicitOffsetTime(raw)) return null;
+function partnerClock(raw: string, country: string, product: string, exportedLetter: boolean): { time: string; local_time?: string } | null {
+  if (!country || LA_POSTE_COUNTRIES.has(country) || !explicitOffsetTime(raw)) return null;
   const labelled = DateTime.fromISO(raw, { setZone: true });
   const shown = product === 'colissimo' ? labelled
     : product === IMPORT || (exportedLetter && product !== 'chronopost') ? labelled.toUTC() : null;
@@ -268,7 +267,7 @@ function parseShipment(payload: unknown, trackingNumber: string): { result: Carr
     const location = clean(event.country, 80);
     return {
       time,
-      ...partnerClock(time, countryCode(location), product, EXPORTED_LETTER.test(requested), group),
+      ...partnerClock(time, countryCode(location), product, EXPORTED_LETTER.test(requested)),
       location,
       description: description || 'Tracking update',
       stage: eventStage(group, code, description),

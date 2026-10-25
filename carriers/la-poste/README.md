@@ -81,14 +81,14 @@ recognition reads it as unknown rather than as a transport failure.
   at the door (`DESPAY`) follow the delivery scan and keep it delivered. Pickup and customs are set as `current_stage` because the status
   vocabulary has no value for them.
 - Scans in France and its overseas departments keep the feed's timestamp, which
-  carries its offset, but for imported tracked mail's transit (group `ACH`), below;
-  impossible dates are dropped. A partner post's scan abroad shows that office's
-  wall clock under the wrong offset: Colissimo gives it the Paris offset, and imported tracked mail ("Lettre et PPI import suivi") reads
-  it as UTC and shows it on Paris's clock. So does an international tracked
-  letter sent from France (an `L` number ending in `FR`): a Dutch scan of one
-  reached the feed before the instant it was labelled. Imported tracked mail's
-  arrival in France and transit there are read so too: they came two hours after
-  the importer's copies, whose delivery scans agree with La Poste's to the second.
+  carries its offset; impossible dates are dropped. That holds for imported
+  tracked mail's arrival and transit in France too: the posts that relay them,
+  Royal Mail and India Post, show the same instant to the minute. A partner
+  post's scan abroad shows that office's wall clock under the wrong offset:
+  Colissimo gives it the Paris offset, and imported tracked mail ("Lettre et PPI
+  import suivi") reads it as UTC and shows it on Paris's clock. So does an
+  international tracked letter sent from France (an `L` number ending in `FR`): a
+  Dutch scan of one reached the feed before the instant it was labelled.
   Those scans are read in the country's zone, or kept as `local_time` when the
   country has several. Other products keep the feed's instant until their partner
   scans are compared with the partner's own. The app's identity policy lets a corrected Colissimo scan

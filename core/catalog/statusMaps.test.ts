@@ -1014,6 +1014,20 @@ describe('status map answers', () => {
     expect(answer('blue-dart', null, 'Synthetic scan wording')).toEqual(unknown);
   });
 
+  it('answers Bring by its event code, a deviation by the cause its wording names, and leaves notices out on purpose', () => {
+    expect(answer('bring-posten', 'HANDED_IN', 'Handed in')).toEqual(mapped('accepted'));
+    expect(answer('bring-posten', 'TRANSPORT_TO_RECIPIENT', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('bring-posten', 'DELIVERED_SENDER', 'Returned to sender')).toEqual(mapped('returned'));
+    expect(answer('bring-posten', 'DEVIATION', 'Handed in after the deadline')).toEqual(mapped('accepted'));
+    expect(answer('bring-posten', 'DEVIATION', 'Delayed')).toEqual(mapped('exception'));
+    expect(answer('bring-posten', 'DEVIATION', 'Delivery exception')).toEqual(mapped('exception'));
+    expect(answer('bring-posten', 'DELIVERY_CHANGED', 'Delivery details changed')).toEqual(gap);
+    expect(answer('bring-posten', 'NOTIFICATION_SENT', 'Notification sent')).toEqual(gap);
+    expect(answer('bring-posten', 'SYNTHETIC_CODE', 'Synthetic code')).toEqual(unknown);
+    // The wording is the scraper's own, so a copy without the code is not read by it.
+    expect(answer('bring-posten', null, 'Delivered')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

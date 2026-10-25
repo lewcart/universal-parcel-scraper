@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // DELIVERY_CHANGED and NOTIFICATION_SENT record a request or a message, not a
 // movement, so they carry no stage.
@@ -39,3 +40,19 @@ export function bringWording(code: string, cause = ''): string {
   return (code === 'DEVIATION' ? CAUSES.get(cause) : undefined)
     ?? labels.get(code) ?? code.replaceAll('_', ' ').toLowerCase().replace(/^./, letter => letter.toUpperCase());
 }
+
+/** A deviation's cause, by the wording it gives the scan. */
+const CAUSE_BY_WORDING = new Map([...CAUSES].map(([cause, wording]) => [normalizeStatusWording(wording), cause]));
+
+/**
+ * What the map says about one scan: its event code, as the parser reads it, with a deviation's
+ * cause told by the wording it gives the scan. The wording is ours, not Bring's, so a copy
+ * without a code stays open.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? bringStatus(code, CAUSE_BY_WORDING.get(wording))?.stage : undefined),
+  gaps: [
+    { code: 'DELIVERY_CHANGED', note: 'A delivery change or added delivery details, which move nothing: the parcel keeps the stage of the scan before it, which the stored scan does not keep.' },
+    { code: 'NOTIFICATION_SENT', note: 'A message to the recipient, which moves nothing: the parcel keeps the stage of the scan before it, which the stored scan does not keep.' },
+  ],
+};

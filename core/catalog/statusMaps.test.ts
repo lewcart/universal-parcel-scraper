@@ -1276,15 +1276,20 @@ describe('status map answers', () => {
   });
 
   it("answers Correos de Chile by its wording, with the portal's code where a stage needs it", () => {
+    expect(answer('correos-chile', '001', 'ENVÍO ADMITIDO')).toEqual(mapped('accepted'));
     expect(answer('correos-chile', '003', 'ENVÍO EN PROCESO DE INTERNACIÓN AL PAÍS')).toEqual(mapped('customs'));
     expect(answer('correos-chile', '005', 'ENVIO EN REPARTO')).toEqual(mapped('out_for_delivery'));
     expect(answer('correos-chile', '006', 'ENVIO ENTREGADO')).toEqual(mapped('delivered'));
     expect(answer('correos-chile', null, 'RECIBIDO POR CORREOSCHILE')).toEqual(mapped('accepted'));
     expect(answer('correos-chile', null, 'ENVIO DESPACHADO AL PAIS DE DESTINO')).toEqual(mapped('in_transit'));
     expect(answer('correos-chile', null, 'ENVIO EN PROCESO DE INTERNACION')).toEqual(mapped('customs'));
-    // A delivery without the portal's code, and the neutral update in place of free-form wording, stay open.
+    // A delivery without the portal's code stays open; the neutral update in place of free-form wording,
+    // with any code or none, is a gap.
     expect(answer('correos-chile', null, 'ENVIO ENTREGADO')).toEqual(unknown);
-    expect(answer('correos-chile', '006', 'Actualización del envío')).toEqual(unknown);
+    expect(answer('correos-chile', '001', 'ENVIO ENTREGADO')).toEqual(unknown);
+    expect(answer('correos-chile', '006', 'Actualización del envío')).toEqual(gap);
+    expect(answer('correos-chile', '12', 'Actualización del envío')).toEqual(gap);
+    expect(answer('correos-chile', null, 'Actualización del envío')).toEqual(gap);
   });
 
   it('answers India Post by its event code and wording as the adapter read the row, and leaves a row no rule knows open', () => {

@@ -37,7 +37,8 @@ describe('Correos de Chile anonymous tracking', () => {
     expect(result.events).toHaveLength(2);
     expect(result.events?.[0]).toMatchObject({ stage: 'customs', provider_code: '003', location: 'AEROPUERTO',
       local_time: '2026-09-05T01:24:00' });
-    expect(result.events?.[1]!.stage).toBeUndefined();
+    // The portal's admission, with its code, keeps its wording.
+    expect(result.events?.[1]).toMatchObject({ description: 'ENVÍO ADMITIDO', provider_code: '001', stage: 'accepted' });
     expect(result.delivered_at).toBeUndefined();
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE_SYNTHETIC|sucursales|Iconos|Codigo|Referencia|RutEntrega/);
     for (const entry of statuses.entries as { code?: string; wording: string; stage: string }[]) {

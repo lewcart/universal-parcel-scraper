@@ -4,7 +4,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { calendarDay } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { classifyCorreosChileScan } from './status.js';
+import { classifyCorreosChileScan, NEUTRAL_UPDATE } from './status.js';
 
 const ORIGIN = 'https://www.correos.cl';
 const PORTLET = /^cl_cch_seguimiento_portlet_seguimientoenlineaportlet_INSTANCE_[A-Za-z0-9]{8,24}$/;
@@ -64,7 +64,7 @@ function scanDescription(value: string, mapped: ReturnType<typeof classifyCorreo
   if (mapped) return clean(value, 160);
   // Estado is an untyped provider string. Avoid projecting free-form recipient
   // or delivery details into a publicly visible history field.
-  return 'Actualización del envío';
+  return NEUTRAL_UPDATE;
 }
 
 export function parseCorreosChileTracking(payload: unknown, raw: string): CarrierResult {

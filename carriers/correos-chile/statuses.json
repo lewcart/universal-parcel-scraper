@@ -2,6 +2,14 @@
   "carrier": "correos-chile",
   "entries": [
     {
+      "code": "001",
+      "wording": "ENVÍO ADMITIDO",
+      "language": "es",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "The first scan of an item from abroad, before its import."
+    },
+    {
       "code": "003",
       "wording": "ENVÍO EN PROCESO DE INTERNACIÓN AL PAÍS",
       "language": "es",

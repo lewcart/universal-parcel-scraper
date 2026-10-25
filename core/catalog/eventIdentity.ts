@@ -75,9 +75,10 @@ export interface SameInstantIdentityPolicy {
   /**
    * The zone this source once read every wall clock in. A scan showing a wall
    * clock under another offset takes over the stored row whose instant shows
-   * that wall clock in this zone, and the reverse, when the provider code
-   * (required) and location agree, no event of the batch carries that row,
-   * and the match is unique both ways. Wording may differ.
+   * that wall clock in this zone, and the reverse, when the location agrees,
+   * no event of the batch carries that row, and the match is unique both ways.
+   * The provider code must agree, and then wording may differ; a scan and a
+   * row that carry no code need the same wording instead (Posti's).
    */
   readonly relabelledFrom?: string;
   /**

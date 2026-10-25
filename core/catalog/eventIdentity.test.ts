@@ -362,6 +362,15 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: 'Item has been registered! The item can be registered several times.' }, stored)).toBe(false);
   });
 
+  it('reads a Posti copy of an origin post\'s scan stored on Helsinki\'s clock at the wall clock it now carries, by wording', () => {
+    const policy = sameInstantIdentityPolicy('posti', { supportsScanMatching: true });
+    expect(policy).toMatchObject({ requireProviderCode: false, relabelledFrom: 'Europe/Helsinki' });
+    const wall = (time: string, zone?: string) =>
+      DateTime.fromISO(time, zone ? { zone } : { setZone: true }).toFormat("yyyy-MM-dd'T'HH:mm:ss");
+    expect(wall('2026-10-23T09:44:00Z', policy?.relabelledFrom)).toBe(wall('2026-10-23T12:44:00+02:00'));
+    expect(wall('2026-01-12T09:00:00Z', policy?.relabelledFrom)).toBe(wall('2026-01-12T11:00:00+01:00'));
+  });
+
   it('lets a Pitney Bowes import declaration shown without its country, and a clearance shown in words, take over their rows', () => {
     const policy = sameInstantIdentityPolicy('pitney-bowes', { supportsScanMatching: true });
     expect(policy).toMatchObject({ storedSources: ['pitney-bowes'], requireProviderCode: false, matchEachScan: true, matchWallClock: true });

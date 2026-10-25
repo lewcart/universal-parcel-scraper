@@ -31,9 +31,12 @@ function stoppedStatus(incoming: SameInstantScan, stored: SameInstantScan): bool
 }
 
 // Scans stored with such a label as their location lose it and keep their row,
-// as do scans stored with a status run into its explanation.
+// as do scans stored with a status run into its explanation. A copy of an
+// origin post's scan, once stored on Helsinki's clock, keeps its row on that
+// post's.
 export const sameInstantIdentityPolicy: SameInstantIdentityPolicy = {
   sourceCarrierId: 'posti', storedSources: ['posti'], requireProviderCode: false,
   matchEachScan: true,
   matches: (incoming, stored) => matchesDroppedLocation(incoming, stored, isPostiPlacelessLabel) || stoppedStatus(incoming, stored),
+  relabelledFrom: 'Europe/Helsinki',
 };

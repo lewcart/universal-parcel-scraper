@@ -67,6 +67,12 @@ Bootstrap, lookup and refresh share one cancellable 15-second budget.
   stored with either label keep its row once it loses it, provided its instant, wording and
   known stage agree.
 - Only timestamps with explicit offsets are kept; missing or ambiguous times stay unset.
+- Posti's copies of the origin post's scans in the country of origin ("Item is in transport in
+  country of origin", "Item has departed from country of origin") name no place and carry that
+  post's wall clock under Helsinki's offset: Poczta Polska's and La Poste's own scans fall an
+  hour later, to the minute. On an item from Poland or France they are read on Warsaw's or
+  Paris's clock. Other posts' items keep the time Posti states until another source confirms
+  theirs. The app's scan-identity policy lets a copy stored on Helsinki's clock keep its row.
 - Measurements need a known unit and a positive finite value.
 - Main status enums come from Posti's public parcels bundle
   (`cdn.posti.fi/omaposti/parcels/public/remoteEntry.js`). Endpoint discovery started from

@@ -1,12 +1,14 @@
 
+import { DateTime } from 'luxon';
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { isValidS10TrackingNumber } from '../../core/detection/index.js';
 import { CarrierError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
 import { runSteps, type StepContext } from '../../core/runner/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { isPostiPlacelessLabel } from './identity.js';
@@ -106,6 +108,21 @@ function measurement(raw: unknown, units: Record<string, number>): number | null
   return Number.isFinite(value) && value > 0 ? value : null;
 }
 
+// Posti's copies of the origin post's scans in the country of origin carry
+// that post's wall clock under Helsinki's offset, an hour before the post's
+// own scans. Poczta Polska's and La Poste's own scans confirm it to the
+// minute; items from other posts keep the time Posti states.
+const ORIGIN_POST_ZONES: Readonly<Record<string, string>> = { FR: 'Europe/Paris', PL: 'Europe/Warsaw' };
+const IN_COUNTRY_OF_ORIGIN = /\bcountry of origin\b/i;
+
+/** A placeless scan in the country of origin of an item from a post whose own scans confirm the clock, on that post's clock. */
+function originPostTime(time: string, label: string, location: string, number: string): string {
+  const zone = isValidS10TrackingNumber(number) ? ORIGIN_POST_ZONES[number.slice(-2)] : undefined;
+  if (!zone || !time || location || !IN_COUNTRY_OF_ORIGIN.test(label)) return time;
+  const read = firstOccurrence(DateTime.fromObject(DateTime.fromISO(time, { zone: 'Europe/Helsinki' }).toObject(), { zone }));
+  return (read.isValid && read.toISO({ suppressMilliseconds: true })) || time;
+}
+
 /** Identity-bound projection; empty search, malformed replies and wrong identities remain distinct. */
 export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const requested = normalizePostiTrackingNumber(trackingNumber);
@@ -133,11 +150,12 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     const description = clean(event.eventDescription);
     const reason = clean(event.reasonDescription);
     const city = clean(event.city, 160);
+    const location = isPostiPlacelessLabel(city) ? '' : city;
     return {
       // The status and its explanation are separate sentences, and the status often has no stop.
       description: reason && description ? `${/[.!?]$/.test(description) ? description : `${description}.`} ${reason}` : description || reason,
-      time: explicitOffsetTime(event.timestamp)?.iso ?? '',
-      location: isPostiPlacelessLabel(city) ? '' : city,
+      time: originPostTime(explicitOffsetTime(event.timestamp)?.iso ?? '', description, location, requested),
+      location,
       stage: postiEventStage(description),
     };
   }).sort((left, right) => (Date.parse(right.time || '') || 0) - (Date.parse(left.time || '') || 0)).slice(0, 100);

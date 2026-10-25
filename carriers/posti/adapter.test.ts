@@ -71,6 +71,27 @@ describe('Posti projection', () => {
     expect(waiting('READY_FOR_PICKUP', [departed])).toMatchObject({ current_stage: 'ready_for_pickup' });
   });
 
+  it('reads its copies of a Polish or French post\'s scans in the country of origin on that post\'s clock', () => {
+    const data = fixture();
+    const times = (number: string, events: object[]) => parse({ data: { consumerSearchShipments: { totalHits: 1, hits: [{
+      ...hit(data), displayId: number, packages: [], events,
+    }] } } }, number).events?.map((event) => event.time);
+    // Poczta Polska's own scans at 11:44 and 15:26 Warsaw time; Posti shows them at 12:44 and 16:26 Helsinki time.
+    const departed = { eventDescription: 'Item has departed from country of origin', city: 'ULKOMAILLA', timestamp: '2026-10-23T09:44:00Z' };
+    const mailed = { eventDescription: 'Item is in transport in country of origin.', reasonDescription: 'The item has been mailed in the country of origin.',
+      city: '', timestamp: '2026-10-22T13:26:00Z' };
+    const arrived = { eventDescription: 'Item arrived in the destination country', city: '', timestamp: '2026-10-24T12:02:35Z' };
+    const sorted = { eventDescription: 'Item is in sorting', city: 'EXAMPLE CITY', timestamp: '2026-10-25T08:00:00Z' };
+    expect(times('CW123456785PL', [departed, mailed, arrived, sorted]))
+      .toEqual(['2026-10-25T08:00:00Z', '2026-10-24T12:02:35Z', '2026-10-23T12:44:00+02:00', '2026-10-22T16:26:00+02:00']);
+    // In winter too: Helsinki's 11:00 is Paris's.
+    expect(times('CW123456785FR', [{ ...departed, timestamp: '2026-01-12T09:00:00Z' }])).toEqual(['2026-01-12T11:00:00+01:00']);
+    // Another post's item, Posti's own number, and a scan naming a place keep Posti's time.
+    expect(times('CW123456785DE', [departed])).toEqual(['2026-10-23T09:44:00Z']);
+    expect(times('JJFI12345678901234567', [departed])).toEqual(['2026-10-23T09:44:00Z']);
+    expect(times('CW123456785PL', [{ ...departed, city: 'EXAMPLE CITY' }])).toEqual(['2026-10-23T09:44:00Z']);
+  });
+
   it('keeps the pickup point a delivered parcel was collected from, and no other', () => {
     const data = fixture('ready-for-pickup');
     const delivered = (events: object[]) => parse({ data: { consumerSearchShipments: { totalHits: 1, hits: [{

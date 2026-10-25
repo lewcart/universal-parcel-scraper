@@ -4,7 +4,7 @@ RUN python3 -m venv /opt/zto-ocr \
        opencv-python-headless==5.0.0.93 pyyaml==6.0.3 shapely==2.2.0 pyclipper==1.4.0 six==1.17.0 tqdm==4.70.1 \
     && /opt/zto-ocr/bin/pip install --no-cache-dir --no-deps ddddocr==1.6.1 rapidocr-onnxruntime==1.4.4
 
-FROM ghcr.io/germondai/trawl:1.9.2@sha256:cfa32f8d6ce5df7d3916d6b014aeeb61256342197b992bd7151ea70e180e3c8f
+FROM ghcr.io/germondai/trawl:1.9.3@sha256:c46f74dfde3df278ff3dc5357f78df1109dfddd9aef754b4dcba1ac98f6fc6ae
 LABEL org.opencontainers.image.source="https://github.com/plhery/universal-parcel-scraper" \
       org.opencontainers.image.licenses="AGPL-3.0-only"
 # TRAWL's request log includes the page path, where some carriers put the parcel number.

@@ -1564,7 +1564,7 @@ describe("universal providers' answers", () => {
       ['Shipment in Transit to the ePost Global Processing Center', 'registered'],
       ['The package was dropped off by the sender at the PaketShop Beispielkiosk, Musterstraße 1, 00000 Musterstadt.', 'accepted'],
       ['Acceptance of the package at the delivery branch abroad', 'in_transit'],
-      ["Package received & scanned at carrier's domestic warehouse.", 'accepted'],
+      ["Package received & scanned at carrier's domestic warehouse.", 'accepted'], ['THE GOODS ARRIVE AT THE RECEIVING POINT', 'accepted'],
       ['TURMOIL', 'exception']] as const) {
       expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     }

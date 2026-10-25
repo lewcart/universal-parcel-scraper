@@ -811,6 +811,8 @@ describe('classifyWording', () => {
       ['Acceptance of the package at the delivery branch abroad', 'in_transit'], ['Release for delivery abroad', 'out_for_delivery'],
       // A forwarder's warehouse receipt, as 17TRACK relays it.
       ["Package received & scanned at carrier's domestic warehouse.", 'accepted'],
+      // The forwarder's receiving point before that warehouse, 17TRACK's first scan of the parcel.
+      ['THE GOODS ARRIVE AT THE RECEIVING POINT', 'accepted'],
       // DAI Post's own words, relayed by universal providers.
       ["We’ve received your delivery details. We’ll let you know as soon as your parcel is in our hands.", 'registered'],
       ['Your parcel’s checked in and being prepared for its journey.', 'accepted'], ['Checked in at origin hub', 'accepted'],

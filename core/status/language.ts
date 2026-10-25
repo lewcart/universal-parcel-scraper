@@ -492,6 +492,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // A forwarder's receipt at its warehouse in the sending country, as 17TRACK relays it before the
   // parcel departs that warehouse.
   if (/^(?:package|parcel) received (?:&|and) scanned at (?:the )?carrier's domestic warehouse$/.test(text)) return 'accepted';
+  // The goods reaching the forwarder's receiving point, its first scan, before that warehouse receipt.
+  if (/^(?:the )?goods (?:arrive|arrived|have arrived) at (?:the )?receiving point$/.test(text)) return 'accepted';
   // Admitted by the carrier: Correos's "Admitido", Correos Express's "Admitido en
   // oficina". Admission still to come is registered above.
   if (/(?<!\b(?:no|nao) )\badmitid[oa]s?\b|\badmision en origen\b/.test(text)) return 'accepted';

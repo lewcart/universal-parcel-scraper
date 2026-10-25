@@ -449,6 +449,11 @@ describe('classifyWording', () => {
       ['Saída do Centro Internacional', 'in_transit'],
       ['PENDIENTE DE ENTREGAR A TIPSA', 'registered'],
       ['Pendiente de recepción en CTT Express', 'registered'],
+      ['Aguarda entrada nos CTT', 'registered'],
+      // CTT's pre-advice as ParcelsApp translates it.
+      ['Waiting for entry at CTT. The information about the shipment has been received.', 'registered'],
+      ['Waiting for entry at CTT', 'registered'],
+      ['The information about the shipment has been received.', 'registered'],
     ] as const) expect(classifyWording(wording)).toEqual({ stage, source: 'wording:language' });
     // Carriers disagree on a new round, and a failed pickup or a cancelled round is
     // not a missed delivery: the carrier maps decide these.

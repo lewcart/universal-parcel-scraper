@@ -141,10 +141,10 @@ describe('FedEx structured response', () => {
       expected_delivery: null,
     });
     expect(result.events).toEqual([
-      { time: '2026-09-02T11:58:00+02:00', location: 'ZUERICH, CH', description: 'Delivered', stage: 'delivered' },
-      { time: '2026-09-01T08:12:00+02:00', location: 'KOELN, DE', description: 'Departed FedEx location', stage: 'in_transit' },
-      { local_time: '2026-08-31', location: 'SEOUL, KR', description: 'Picked up', stage: 'accepted' },
-      { time: '2026-08-30T09:05:00+09:00', location: 'SEOUL, KR', description: 'Shipment information sent to FedEx', stage: 'registered' },
+      { time: '2026-09-02T11:58:00+02:00', location: 'ZUERICH, CH', description: 'Delivered', provider_code: 'DL', stage: 'delivered' },
+      { time: '2026-09-01T08:12:00+02:00', location: 'KOELN, DE', description: 'Departed FedEx location', provider_code: 'DP', stage: 'in_transit' },
+      { local_time: '2026-08-31', location: 'SEOUL, KR', description: 'Picked up', provider_code: 'PU', stage: 'accepted' },
+      { time: '2026-08-30T09:05:00+09:00', location: 'SEOUL, KR', description: 'Shipment information sent to FedEx', provider_code: 'OC', stage: 'registered' },
     ]);
   });
 
@@ -271,7 +271,8 @@ describe('FedEx structured response', () => {
     const events = parseFedExTrackingResponse(groundEconomyFixture(scans, DELIVERED_NUMBER), DELIVERED_NUMBER).events!;
     expect(events.map((event) => event.stage)).toEqual(['delivered', 'accepted', 'accepted', undefined, 'registered']);
     for (const event of events) {
-      expect(statusMap.stage(null, normalizeStatusWording(event.description ?? '')), event.description).toBe(event.stage);
+      expect(event.provider_code).toBe('XX');
+      expect(statusMap.stage(event.provider_code ?? null, normalizeStatusWording(event.description ?? '')), event.description).toBe(event.stage);
     }
   });
 
@@ -316,6 +317,12 @@ describe('FedEx structured response', () => {
       ['Arrived at FedEx location', 'in_transit'],
       ['Picked up', 'accepted'],
     ]);
+    // Each scan keeps its code, which the parcel app's review reads before the wording:
+    // "Arrived at FedEx location" alone reads as accepted.
+    for (const event of result.events ?? []) {
+      expect(statusMap.stage(event.provider_code ?? null, normalizeStatusWording(event.description ?? '')), event.description).toBe(event.stage);
+    }
+    expect(statusMap.stage(null, normalizeStatusWording('Arrived at FedEx location'))).toBe('accepted');
     // An `HP` package is ready for pickup too.
     expect(parseFedExTrackingResponse(heldFixture((shipment) => { shipment.keyStatusCD = 'HP'; }), HELD_NUMBER))
       .toMatchObject({ current_stage: 'ready_for_pickup', pickup_point: result.pickup_point });

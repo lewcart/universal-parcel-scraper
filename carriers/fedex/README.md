@@ -89,8 +89,11 @@ fallback')`.
 - Opt-in browser recognition uses the same lookup and requires dated shipment activity.
   It returns the history with its confirmation so callers can reuse it after identification.
 - Status uses `keyStatusCD` / scan `statusCD` first, then substring matches on the prose. A
-  `DL` code is terminal and outranks the wording. Scans keep no code, so the status map answers
-  by their wording, as the parser reads a scan whose code it does not know.
+  `DL` code is terminal and outranks the wording. A scan's `provider_code` is its code, the
+  page's `statusCD` or the API's `eventType`, which share one vocabulary. The app's review
+  (`statusMap`) reads that code first, then the wording, as the parser does; a scan stored
+  without a code is staged by its wording. The code is not part of a stored scan's identity,
+  which the app keys on its time, place and wording.
 - `DY` (delayed) is an exception, except while the newest scan is a pickup "received after
   FedEx cutoff" and the wording names no problem. FedEx flags such a parcel, which leaves on the
   next business day, so it reads as picked up.

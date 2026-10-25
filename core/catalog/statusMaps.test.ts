@@ -701,7 +701,13 @@ describe('status map answers', () => {
     expect(answer('mrw', null, 'Envío retenido')).toEqual(unknown);
   });
 
-  it('answers FedEx by its wording, as the parser reads a scan whose code it does not know', () => {
+  it('answers FedEx by its scan code, and by its wording a scan whose code it does not know or that has none', () => {
+    expect(answer('fedex', 'AR', 'Arrived at FedEx location')).toEqual(mapped('in_transit'));
+    expect(answer('fedex', 'HL', 'Synthetic wording')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('fedex', 'DL', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('fedex', 'XX', 'In FedEx possession — At FedEx location')).toEqual(mapped('accepted'));
+    expect(answer('fedex', 'constructor', 'Shipment arriving On-Time')).toEqual(unknown);
+    expect(answer('fedex', null, 'Arrived at FedEx location')).toEqual(mapped('accepted'));
     expect(answer('fedex', null, 'In FedEx possession — At FedEx location')).toEqual(mapped('accepted'));
     expect(answer('fedex', null, 'On FedEx vehicle for delivery')).toEqual(mapped('out_for_delivery'));
     expect(answer('fedex', null, 'Delivered')).toEqual(mapped('delivered'));

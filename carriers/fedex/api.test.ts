@@ -83,10 +83,10 @@ describe('FedEx official API reply', () => {
     const result = parseFedExApiResponse(apiFixture(), DELIVERED_NUMBER);
     expect(result).toEqual(parseFedExTrackingResponse(PAGE_DELIVERED, DELIVERED_NUMBER));
     expect(result.events).toEqual([
-      { time: '2026-09-02T11:58:00+02:00', location: 'ZUERICH, CH', description: 'Delivered', stage: 'delivered' },
-      { time: '2026-09-01T08:12:00+02:00', location: 'KOELN, DE', description: 'Departed FedEx location', stage: 'in_transit' },
-      { local_time: '2026-08-31', location: 'SEOUL, KR', description: 'Picked up', stage: 'accepted' },
-      { time: '2026-08-30T09:05:00+09:00', location: 'SEOUL, KR', description: 'Shipment information sent to FedEx', stage: 'registered' },
+      { time: '2026-09-02T11:58:00+02:00', location: 'ZUERICH, CH', description: 'Delivered', provider_code: 'DL', stage: 'delivered' },
+      { time: '2026-09-01T08:12:00+02:00', location: 'KOELN, DE', description: 'Departed FedEx location', provider_code: 'DP', stage: 'in_transit' },
+      { local_time: '2026-08-31', location: 'SEOUL, KR', description: 'Picked up', provider_code: 'PU', stage: 'accepted' },
+      { time: '2026-08-30T09:05:00+09:00', location: 'SEOUL, KR', description: 'Shipment information sent to FedEx', provider_code: 'OC', stage: 'registered' },
     ]);
   });
 

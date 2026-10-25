@@ -143,8 +143,15 @@ export function fedexStatus(code: string, text: string, hasEvents = false): Carr
   return hasEvents ? 'in_transit' : 'unknown';
 }
 
+/** A scan's stage: its code's, else its wording's, or undefined when neither gives one. */
+export function fedexScanStage(code: string | null, wording: string): Stage | undefined {
+  return (code && Object.hasOwn(FEDEX_CODE_STAGE, code) ? FEDEX_CODE_STAGE[code] : undefined) ?? fedexStage(wording) ?? undefined;
+}
+
 /**
- * What the map says about one scan. FedEx's scans keep no code, so their wording stages them, as
- * it stages a scan whose code the map does not know.
+ * What the map says about one scan. A scan keeps its code, which stages it as the parser does
+ * when the map knows the code: "Arrived at FedEx location" is in transit under `AR`, though its
+ * wording alone reads as accepted. The wording stages a scan whose code the map does not know,
+ * and one stored without a code.
  */
-export const statusMap: CarrierStatusMap = { stage: (_code, wording) => fedexStage(wording) ?? undefined, gaps: [] };
+export const statusMap: CarrierStatusMap = { stage: fedexScanStage, gaps: [] };

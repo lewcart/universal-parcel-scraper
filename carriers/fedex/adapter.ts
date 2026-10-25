@@ -20,7 +20,7 @@ import { calendarDay, explicitOffsetTime } from '../../core/time/index.js';
 import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { FedExApiClient, fedexApiCredentials, type FedExApiCredentials } from './api.js';
-import { FEDEX_CODE_STAGE, fedexStage, fedexStatus, statusForStage } from './status.js';
+import { FEDEX_CODE_STAGE, fedexScanStage, fedexStage, fedexStatus, statusForStage } from './status.js';
 
 /**
  * FedEx, through its official Track API when the deployment has keys for it
@@ -262,13 +262,14 @@ function shipmentResult(shipment: FedExShipment, number: string): CarrierResult 
   const seen = new Set<string>();
   for (const [index, scan] of shipment.scans.entries()) {
     if (!scan.description) continue;
-    const stage = FEDEX_CODE_STAGE[scan.code] ?? fedexStage(scan.wording) ?? undefined;
+    const stage = fedexScanStage(scan.code, scan.wording);
     const { clock } = scan;
     // A delivered scan names its signatory; the event keeps the fact, not the name.
     const event: CarrierEvent = {
       ...clock,
       ...(scan.location ? { location: scan.location } : {}),
       description: stage === 'delivered' ? 'Delivered' : scan.description,
+      ...(scan.code ? { provider_code: scan.code } : {}),
       ...(stage ? { stage } : {}),
     };
     const identity = JSON.stringify([clock.time ?? clock.local_time ?? '', event.location ?? '', event.description]);

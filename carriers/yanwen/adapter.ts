@@ -9,6 +9,7 @@ import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError, Tran
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
+import { isYanwenPlaceholder } from './app.js';
 import { yanwenCategory, yanwenStatus } from './status.js';
 
 // This constant is shipped in the public browser script; it is part of the
@@ -28,13 +29,15 @@ export function yanwenTrackingUrl(raw: string): string {
 }
 
 // Partner scans can carry the delivery postcode: a Canadian one before the
-// town, a US ZIP after the state. A location keeps its town and region only.
+// town, a US ZIP after the state. A location keeps its town and region only,
+// and a partner's "Not Available" is none.
 const POSTCODE = /^(?:[A-Z]\d[A-Z] ?\d[A-Z]\d|\d{5}(?:-\d{4})?)$/i;
 // GOFO's European delivery scans say whether a PIN was used and give a door
 // number; neither belongs in the wording.
 const DELIVERY_DETAIL = /\s*,?\s*\b(?:PIN|Door NO):[^,.]*/gi;
 
 function place(raw: string): string {
+  if (isYanwenPlaceholder(raw)) return '';
   const parts = raw.split(',').map((part) => part.trim());
   const kept = parts.map((part) => part.replace(/^([A-Z]{2}) \d{5}(?:-\d{4})?$/, '$1')).filter((part) => part && !POSTCODE.test(part));
   return kept.join(',') === parts.join(',') ? raw : kept.join(', ');

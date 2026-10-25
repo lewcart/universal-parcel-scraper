@@ -16,7 +16,7 @@
  */
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
-import { cleanScalar } from '../../core/transport/index.js';
+import { cleanScalar } from '../../core/transport/text.js';
 
 function statusKey(value: unknown): string {
   return cleanScalar(value, 200).toLocaleLowerCase('en-US').replace(/[^a-z0-9]+/g, '');

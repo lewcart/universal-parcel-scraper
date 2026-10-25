@@ -62,6 +62,24 @@
       "confirmedBy": "live"
     },
     {
+      "wording": "The freight handler collected the shipment at the airport",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "The item is received by PostNL",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "The item is at the PostNL sorting center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live"
+    },
+    {
       "wording": "Out for delivery",
       "language": "en",
       "stage": "out_for_delivery",

@@ -12,6 +12,9 @@ const MAP: Readonly<Record<string, ClassifiedStatus>> = {
   'Import Customs Clearance Completed': { status: 'in_transit', stage: 'in_transit' },
   '货物运输中': { status: 'in_transit', stage: 'in_transit' },
   'Arrival scan': { status: 'in_transit', stage: 'in_transit' },
+  'The freight handler collected the shipment at the airport': { status: 'in_transit', stage: 'in_transit' },
+  'The item is received by PostNL': { status: 'in_transit', stage: 'in_transit' },
+  'The item is at the PostNL sorting center': { status: 'in_transit', stage: 'in_transit' },
   'Out for delivery': { status: 'out_for_delivery', stage: 'out_for_delivery' },
 };
 

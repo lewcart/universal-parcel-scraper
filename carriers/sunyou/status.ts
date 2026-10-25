@@ -11,6 +11,7 @@
  * it, and only when its code is not listed here.
  */
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const DISPLAY_STATUS = new Map<string, ClassifiedStatus>([
   ['1', { status: 'in_transit', stage: 'in_transit' }],
@@ -60,3 +61,9 @@ export function sunYouStatus(displayStatus: string): ClassifiedStatus | undefine
 export function sunYouEventStatus(eventCode: string): ClassifiedStatus | undefined {
   return EVENT_CODE.get(eventCode);
 }
+
+/**
+ * What the map says about one scan: its event code. A newest scan whose code is not listed took
+ * the shipment's display status, which the stored scan does not keep, so it stays open.
+ */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? sunYouEventStatus(code)?.stage : undefined), gaps: [] };

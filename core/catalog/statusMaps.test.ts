@@ -838,6 +838,22 @@ describe('status map answers', () => {
     expect(answer('swiss-post-cargo', 'XYZ', 'Sortierung')).toEqual(unknown);
   });
 
+  it("answers SunYou by its event code, and leaves a code it does not list open", () => {
+    expect(answer('sunyou', 'PreAlert', 'Synthetic scan')).toEqual(mapped('registered'));
+    expect(answer('sunyou', 'InboundScan', 'Synthetic scan')).toEqual(mapped('accepted'));
+    expect(answer('sunyou', 'ClearanceProcess', 'Synthetic scan')).toEqual(mapped('customs'));
+    expect(answer('sunyou', 'SyntheticCode', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('sunyou', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
+  it("answers Japan Post by its exact English labels", () => {
+    expect(answer('japan-post', null, 'Posting/Collection')).toEqual(mapped('accepted'));
+    expect(answer('japan-post', null, 'Item out for physical delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('japan-post', null, 'Absence. Attempted delivery.')).toEqual(mapped('failed_attempt'));
+    expect(answer('japan-post', null, 'Final delivery')).toEqual(mapped('delivered'));
+    expect(answer('japan-post', null, 'Final delivery soon')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

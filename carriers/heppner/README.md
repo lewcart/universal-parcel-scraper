@@ -32,6 +32,9 @@ for the other three.
 - The endpoint sends identifiers, no wording. `step` (milestone) is read first, then the event
   code prefix, so a new code inside a known milestone still lands on the right stage.
   `status.ts` supplies the English descriptions.
+- The parcel app's review (`statusMap`) reads that English description, since a stored scan
+  keeps its code but not its milestone or state. "Heppner tracking update", the description of
+  a scan no rule reads, stays open there.
 - `EN_ATTENTE_INSTRUCTIONS` (awaiting delivery instructions) and the shipment state
   `ANOMALIE` map to `exception`.
 - The `SOL_` codes close the shipment for different reasons, which the portal's own event

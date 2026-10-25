@@ -1,5 +1,6 @@
 import type { CarrierStatus } from '../../core/result/index.js';
 import { classifyWording, languageStageStatus, type ClassifiedStatus, type Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // Hongkong Post's English event wordings, seen in its own tracking history.
 // The chatbot repeats the latest one with a full stop. "Held by customs" is
@@ -30,3 +31,6 @@ export function classifyHongkongPostStatus(wording: string): { status: CarrierSt
   return classified.source === 'none' ? { status: 'unknown' }
     : { status: languageStageStatus(classified.stage), stage: classified.stage, source: classified.source };
 }
+
+/** What the map says about one scan: its wording, when the carrier's own map knows it. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => hongkongPostStatus(wording)?.stage, gaps: [] };

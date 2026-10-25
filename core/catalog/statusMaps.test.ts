@@ -647,7 +647,7 @@ describe('status map answers', () => {
     expect(answer('yto', null, 'Delivered')).toEqual(unknown);
   });
 
-  it.each(['app', '', 'hongkong-post', '__proto__', 'toString', 'Unknown'])('does not know %s', (carrier) => {
+  it.each(['app', '', 'india-post', '__proto__', 'toString', 'Unknown'])('does not know %s', (carrier) => {
     expect(answer(carrier, 'DLO', 'Delivered')).toEqual(unknown);
   });
 
@@ -1265,6 +1265,31 @@ describe('status map answers', () => {
     // A delivery without the portal's code, and the neutral update in place of free-form wording, stay open.
     expect(answer('correos-chile', null, 'ENVIO ENTREGADO')).toEqual(unknown);
     expect(answer('correos-chile', '006', 'Actualización del envío')).toEqual(unknown);
+  });
+
+  it('answers Heppner by the English wording it stores, and leaves its neutral update open', () => {
+    expect(answer('heppner', 'LIV_SYN', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('heppner', 'SOL_REI', 'Returned to sender')).toEqual(mapped('returned'));
+    expect(answer('heppner', 'PCH_SYN', 'Shipment collected')).toEqual(mapped('accepted'));
+    expect(answer('heppner', null, 'Delivery instructions required')).toEqual(mapped('exception'));
+    expect(answer('heppner', 'SYN_SYN', 'Heppner tracking update')).toEqual(unknown);
+  });
+
+  it("answers Hongkong Post by its own wordings, and leaves the shared rules' readings open", () => {
+    expect(answer('hongkong-post', null, 'Posted')).toEqual(mapped('accepted'));
+    expect(answer('hongkong-post', null, 'Held by customs.')).toEqual(mapped('customs'));
+    expect(answer('hongkong-post', null, 'Delivery incomplete')).toEqual(mapped('failed_attempt'));
+    expect(answer('hongkong-post', null, 'Item out for delivery')).toEqual(unknown);
+  });
+
+  it("answers LBC by its app's code, or a web scan's wording, in any case", () => {
+    expect(answer('lbc-express', '8000', 'Synthetic wording')).toEqual(mapped('accepted'));
+    expect(answer('lbc-express', '5', 'Released to authorized representative')).toEqual(mapped('delivered'));
+    expect(answer('lbc-express', '0', 'Shipment has been received at Example Hub.')).toEqual(mapped('in_transit'));
+    expect(answer('lbc-express', null, 'Please expect delivery within the day.')).toEqual(mapped('out_for_delivery'));
+    expect(answer('lbc-express', null, 'Picked up by LBC')).toEqual(mapped('accepted'));
+    expect(answer('lbc-express', null, 'Delivery update')).toEqual(unknown);
+    expect(answer('lbc-express', '9', 'Delivered')).toEqual(unknown);
   });
 
   it('does not know a scan without wording', () => {

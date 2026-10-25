@@ -2,8 +2,8 @@ import { load } from 'cheerio';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import type { ClassifiedStatus } from '../../core/status/index.js';
 import { clean } from '../../core/transport/index.js';
+import { classifyLbcWording, RELEASED } from './status.js';
 
 // Domestic waybills have twelve digits; LBC's tracking also answers for ten-,
 // eleven- and fourteen-digit numbers.
@@ -13,21 +13,9 @@ export function normalizeLbcNumber(raw: string): string {
   return number;
 }
 
-const RELEASED = 'Released to authorized representative';
-
 /** A release names the representative who took the parcel: keep the milestone, never the name. */
 export function withoutRepresentative(text: string): string {
   return /^Released to authorized representative\b/i.test(text) ? RELEASED : /^Released to\b/i.test(text) ? 'Release update' : text;
-}
-
-/** The stage LBC's own scan wording names. */
-export function classifyLbcWording(description: string): ClassifiedStatus | undefined {
-  if (description === 'Delivered' || description === RELEASED) return { status: 'delivered', stage: 'delivered' };
-  if (description === 'Please expect delivery within the day.') return { status: 'out_for_delivery', stage: 'out_for_delivery' };
-  if (/^Shipment has been accepted at\s+.+\.$/.test(description) || description === 'PICKED UP BY LBC') return { status: 'in_transit', stage: 'accepted' };
-  if (/^Shipment has been received at\s+.+\.$/.test(description) || /^Shipment is en route to\s+.+\./.test(description)
-    || /^Shipment has left the origin\b/.test(description)) return { status: 'in_transit', stage: 'in_transit' };
-  return undefined;
 }
 
 export function parseLbc(html: string, raw: string): CarrierResult {

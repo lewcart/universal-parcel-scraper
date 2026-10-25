@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon';
 import { CarrierError, ChallengeError, IndeterminateError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import type { ClassifiedStatus } from '../../core/status/index.js';
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { xmlDocument, type XmlNode } from '../../core/transport/xml.js';
-import { classifyLbcWording, normalizeLbcNumber, withoutRepresentative } from './parser.js';
+import { normalizeLbcNumber, withoutRepresentative } from './parser.js';
+import { classifyLbcScan } from './status.js';
 
 export const LBC_MOBILE_API = 'https://lbcapigateway.lbcapps.com/lbctrackingapi2/v2';
 const SOAP = 'http://schemas.xmlsoap.org/soap/envelope/';
@@ -33,23 +33,6 @@ function scalar(node: XmlNode, name: string, required = true, max = 1000): strin
   const value = clean(matches[0]!.text, max);
   if (required && !value) invalidXml();
   return value;
-}
-
-const CODES: Readonly<Record<string, ClassifiedStatus>> = {
-  '1': { status: 'delivered', stage: 'delivered' },
-  '4': { status: 'exception', stage: 'failed_attempt' },
-  // Released to an authorized representative.
-  '5': { status: 'delivered', stage: 'delivered' },
-  '8000': { status: 'in_transit', stage: 'accepted' },
-  '8002': { status: 'out_for_delivery', stage: 'out_for_delivery' },
-  '8810': { status: 'in_transit', stage: 'in_transit' },
-  '8820': { status: 'in_transit', stage: 'in_transit' },
-  '1004': { status: 'in_transit', stage: 'in_transit' },
-};
-
-// Code 0 carries several kinds of scan, which LBC's wording tells apart.
-function classify(code: string, description: string): ClassifiedStatus | undefined {
-  return CODES[code] ?? (code === '0' ? classifyLbcWording(description) : undefined);
 }
 
 function scanClock(day: string, time: string): string | null {
@@ -86,7 +69,7 @@ export function parseLbcMobile(xml: string, raw: string): CarrierResult {
     const code = scalar(row, 'StatusId', true, 32);
     const wording = scalar(row, 'StatusandLocation');
     const description = code === '1' ? 'Delivered' : /^Delivered to\b/i.test(wording) ? 'Delivery update' : withoutRepresentative(wording);
-    const mapped = classify(code, description);
+    const mapped = classifyLbcScan(code, description);
     const day = scalar(row, 'DatePosted', true, 64);
     const time = scalar(row, 'DatePostedTime', false, 64);
     const local = scanClock(day, time);
@@ -109,7 +92,7 @@ export function parseLbcMobile(xml: string, raw: string): CarrierResult {
     events.sort((a, b) => String(b.local_time).localeCompare(String(a.local_time)));
   }
   const current = events[0]!;
-  const mapped = classify(String(current.provider_code), current.description!);
+  const mapped = classifyLbcScan(String(current.provider_code), current.description!);
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage, current_stage_source: 'carrier_map' } : {}),
     last_status_text: current.description, last_update: null, ...(current.local_time ? { last_update_local: current.local_time } : {}),
     timezone: 'Asia/Manila', events: events.slice(0, 100) };

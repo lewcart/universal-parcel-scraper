@@ -274,12 +274,14 @@ import { statusMap as happyPost } from '../../carriers/happy-post/status.js';
 import { statusMap as haypost } from '../../carriers/haypost/status.js';
 import { statusMap as hctLogistics } from '../../carriers/hct-logistics/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
+import { statusMap as heppner } from '../../carriers/heppner/status.js';
 import { statusMap as hepsijet } from '../../carriers/hepsijet/status.js';
 import { statusMap as hermes } from '../../carriers/hermes/status.js';
 import { statusMap as hermesAt } from '../../carriers/hermes-at/status.js';
 import { statusMap as hermesDe } from '../../carriers/hermes-de/status.js';
 import { statusMap as hispapost } from '../../carriers/hispapost/status.js';
 import { statusMap as homexpress } from '../../carriers/homexpress/status.js';
+import { statusMap as hongkongPost } from '../../carriers/hongkong-post/status.js';
 import { statusMap as houngAhLoun } from '../../carriers/houng-ah-loun/status.js';
 import { statusMap as hovership } from '../../carriers/hovership/status.js';
 import { statusMap as hrParcel } from '../../carriers/hr-parcel/status.js';
@@ -340,6 +342,7 @@ import { statusMap as labaih } from '../../carriers/labaih/status.js';
 import { statusMap as landmarkGlobal } from '../../carriers/landmark-global/status.js';
 import { statusMap as lastOneMileCoop } from '../../carriers/last-one-mile-coop/status.js';
 import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status.js';
+import { statusMap as lbcExpress } from '../../carriers/lbc-express/status.js';
 import { statusMap as leopardsCourier } from '../../carriers/leopards-courier/status.js';
 import { statusMap as liccardi } from '../../carriers/liccardi/status.js';
 import { statusMap as lietuvosPastas } from '../../carriers/lietuvos-pastas/status.js';
@@ -667,7 +670,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, geodis, 'geodis-pl': geodisPl, 'gig-logistics': gigLogistics, 'gls-ch': glsCh, 'gls-de': glsDe, 'gls-es': glsEs, 'gls-fr': glsFr, 'gls-it': glsIt,
   globalpost, 'gms-worldwide': gmsWorldwide, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
   'grand-slam-express': grandSlamExpress, 'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, 'gtl-goto': gtlGoto, guatex, gzyl,
-  hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, hepsijet, hermes, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress,
+  hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, heppner, hepsijet, hermes, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress, 'hongkong-post': hongkongPost,
   'houng-ah-loun': houngAhLoun, hovership, 'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, 'ilyang-logis': ilyangLogis, imile,
   'indah-logistik': indahLogistik, inpost, instabox, 'integral-pack': integralPack, intelcom, 'internet-express': internetExpress, interrapidisimo,
@@ -676,7 +679,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
   'kit-tk': kitTk, 'korea-post': koreaPost, 'kuehne-nagel': kuehneNagel, 'kun-express': kunExpress, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih,
-  'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, liccardi,
+  'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'lbc-express': lbcExpress, 'leopards-courier': leopardsCourier, liccardi,
   'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
   'line-clear': lineClear, lingdong, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,

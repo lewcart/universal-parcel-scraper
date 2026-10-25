@@ -35,6 +35,15 @@ const DHLINK_NUMBER = /^FC\d{13}$/;
 const STATE_NOT_FOUND = 1;
 const STATE_DELIVERED = 3;
 const CJK = /[㐀-鿿豈-﫿]/;
+// China's provinces and the cities DHLink's lines leave from, as a place part
+// writes them in Latin letters, spaced or not ("SHENZHEN", "shen zhen").
+const CHINA_NAMES = new RegExp(`^(?:${[
+  'anhui', 'beijing', 'chongqing', 'fujian', 'gansu', 'guangdong', 'guangxi', 'guizhou', 'hainan', 'hebei', 'heilongjiang',
+  'henan', 'hubei', 'hunan', 'jiangsu', 'jiangxi', 'jilin', 'liaoning', 'shaanxi', 'shandong', 'shanghai', 'shanxi',
+  'sichuan', 'tianjin', 'yunnan', 'zhejiang', 'chengdu', 'dongguan', 'foshan', 'fuzhou', 'guangzhou', 'hangzhou', 'huizhou',
+  'jinhua', 'nanjing', 'ningbo', 'putian', 'qingdao', 'quanzhou', 'shantou', 'shenzhen', 'suzhou', 'wenzhou', 'wuhan',
+  'xiamen', 'yiwu', 'zhengzhou', 'zhongshan', 'zhuhai',
+].join('|')})(?:shi|city)?$`);
 const COUNTRY = /^[A-Z]{2}$/;
 const PLACEHOLDERS = new Set(['', '.', '-', 'none', 'null', 'unknown']);
 // A state with its ZIP code, as relayed USPS rows name the office: the state stays.
@@ -48,12 +57,16 @@ const CONTACT = /(?:投递员|快递员|派送员|联系电话|电话[:：]|手�
  * DHLink's last-leg partners. The reply gives the last leg's number
  * (`lastTurnNo`) but names no partner, so the partner is read from the
  * number's whole layout. A number no layout fits gives no hand-off.
+ * `beijingClock` marks a partner whose scans DHLink relays on its own
+ * Beijing clock rather than the scan's.
  */
-export const DHLINK_LAST_LEGS: readonly { readonly carrier: string; readonly number: RegExp }[] = [
-  // SwiftX's own numbers: SWX and eighteen digits, the layout `swiftx-1` claims.
-  { carrier: 'swiftx', number: /^SWX\d{18}$/ },
-  // GOFO's US waybills: GFUS and fourteen digits, the layout `gofo-1` claims.
-  { carrier: 'gofo', number: /^GFUS\d{14}$/ },
+export const DHLINK_LAST_LEGS: readonly { readonly carrier: string; readonly number: RegExp; readonly beijingClock?: true }[] = [
+  // SwiftX's own numbers: SWX and eighteen digits, the layout `swiftx-1` claims. Its
+  // relayed rounds and deliveries are recorded before a US reading of their clocks.
+  { carrier: 'swiftx', number: /^SWX\d{18}$/, beijingClock: true },
+  // GOFO's US waybills: GFUS and fourteen digits, the layout `gofo-1` claims. Its relayed
+  // scans come twelve hours after GOFO's own on a US reading.
+  { carrier: 'gofo', number: /^GFUS\d{14}$/, beijingClock: true },
   // DPD Switzerland's parcel numbers: fourteen digits from its depots 0600 to 0619.
   { carrier: 'dpd', number: /^06[01]\d{11}$/ },
 ];
@@ -89,15 +102,16 @@ function beforeDigits(part: string): string {
 }
 
 /**
- * A row's place without its postcode or placeholder. One feed appends the
- * destination's code to Chinese places ("广州市,GB"), and a code alone names
- * no place.
+ * A row's place without its postcode or placeholder, and whether it is in
+ * China. Feeds append the destination's code to Chinese places ("广州市,GB",
+ * "SHENZHEN, US"), and a code alone names no place.
  */
-function placeOf(raw: string): string {
+function placeOf(raw: string): { location: string; china: boolean } {
   const parts = withoutPostcodes(raw).split(/[,;]/).map((part) => beforeDigits(part.trim()))
     .filter((part) => !PLACEHOLDERS.has(part.toLowerCase()));
-  const kept = parts.some((part) => CJK.test(part)) ? parts.filter((part) => !COUNTRY.test(part)) : parts;
-  return kept.every((part) => COUNTRY.test(part)) ? '' : [...new Set(kept)].join(', ');
+  const china = CJK.test(raw) || parts.some((part) => CHINA_NAMES.test(part.toLowerCase().replace(/\s+/g, '')));
+  const kept = china ? parts.filter((part) => !COUNTRY.test(part)) : parts;
+  return { location: kept.every((part) => COUNTRY.test(part)) ? '' : [...new Set(kept)].join(', '), china };
 }
 
 interface Scan {
@@ -121,17 +135,18 @@ function recordedAt(row: Record<string, unknown>): number | null {
 
 /**
  * The zone a scan's clock keeps, where DHLink's record shows it. Places in
- * China keep Beijing time, and a US post office's row its state's when the
- * row was recorded after that reading. A row recorded before its clock could
- * have struck at the destination keeps DHLink's own Beijing time, as GOFO's
- * relayed scans do. Null when either clock could be the row's.
+ * China and every row of a parcel whose last leg relays on Beijing time keep
+ * Beijing time, and a US post office's row its state's when the row was
+ * recorded after that reading. A row recorded before its clock could have
+ * struck at the destination keeps DHLink's own Beijing time. Null when either
+ * clock could be the row's.
  */
-function scanZone(scan: Scan, destination: string): string | null {
+function scanZone(scan: Scan, destination: string, beijingClock: boolean): string | null {
   const fits = (zone: string) => {
     const time = isoTime(scan.stamp, zone);
     return time !== null && time.timestamp <= scan.recorded + CLOCK_SKEW_MS;
   };
-  if (scan.china) return fits(RECORD_ZONE) ? RECORD_ZONE : null;
+  if (scan.china || beijingClock) return fits(RECORD_ZONE) ? RECORD_ZONE : null;
   if (scan.state && fits(scan.state)) return scan.state;
   const away = scan.state ?? EASTERNMOST[destination] ?? countryTimeZone(destination);
   return away && away !== RECORD_ZONE && !fits(away) && fits(RECORD_ZONE) ? RECORD_ZONE : null;
@@ -148,12 +163,14 @@ function projectRow(row: unknown, readAt: number): Scan | 'ahead' | null {
   // A row dated after the read is not a scan yet.
   if (earliest.toMillis() > readAt) return 'ahead';
   const info = text(row, 'info');
-  const description = wordingOf(info);
+  // DHLink's nodes can end their wording with the row's own clock ("Shipment has delivered at …").
+  const said = wordingOf(info);
+  const description = said.endsWith(` at ${stamp}`) ? said.slice(0, -` at ${stamp}`.length).trim() : said;
   if (!description) return null;
   const code = text(row, 'nodeCode', 32);
   const name = text(row, 'nodeName', 64);
   const place = text(row, 'place', 200);
-  const location = placeOf(place);
+  const { location, china } = placeOf(place);
   const staged = dhlinkStage(code, name, description);
   // The clock is set once the scan's rows are pooled.
   const event: CarrierEvent = {
@@ -166,7 +183,7 @@ function projectRow(row: unknown, readAt: number): Scan | 'ahead' | null {
   // USPS names the office in the place, or else at the end of its wording.
   const office = (US_OFFICE.exec(place.toUpperCase()) ?? US_OFFICE.exec(info))?.[1];
   const state = office && !SPLIT_STATES.has(office) ? usStateTimeZone(office) : null;
-  return { stamp: local, event, rank, china: CJK.test(place), state, recorded: Math.min(recordedAt(row) ?? readAt, readAt) };
+  return { stamp: local, event, rank, china, state, recorded: Math.min(recordedAt(row) ?? readAt, readAt) };
 }
 
 function outranks(left: readonly number[], right: readonly number[]): boolean {
@@ -174,12 +191,11 @@ function outranks(left: readonly number[], right: readonly number[]): boolean {
   return index >= 0 && left[index]! > right[index]!;
 }
 
-/** The partner's number, when its whole layout is one the table maps. */
-function handoff(entry: Record<string, unknown>, asked: readonly string[]): { delivery_carrier: string; delivery_tracking_number: string } | null {
+/** The last leg, when its number's whole layout is one the table maps. */
+function lastLeg(entry: Record<string, unknown>): { leg: (typeof DHLINK_LAST_LEGS)[number]; number: string } | null {
   const number = normalizeTrackingNumber(text(entry, 'lastTurnNo', 64));
-  if (!number || asked.includes(number)) return null;
-  const leg = DHLINK_LAST_LEGS.find((candidate) => candidate.number.test(number));
-  return leg ? { delivery_carrier: leg.carrier, delivery_tracking_number: number } : null;
+  const leg = number ? DHLINK_LAST_LEGS.find((candidate) => candidate.number.test(number)) : undefined;
+  return leg ? { leg, number } : null;
 }
 
 /**
@@ -231,10 +247,11 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
       recorded: Math.min(held.recorded, scan.recorded) } : kept);
   }
   const destination = text(entry, 'destCountryCode', 8).toUpperCase();
+  const last = lastLeg(entry);
   // Newest first, as the tracking page lists them; the clocks sort as written.
   const events = [...scans.values()].sort((left, right) => (left.stamp < right.stamp ? 1 : left.stamp > right.stamp ? -1 : 0))
     .map((scan): CarrierEvent => {
-      const zone = scanZone(scan, destination);
+      const zone = scanZone(scan, destination, last?.leg.beijingClock === true);
       const time = zone ? isoTime(scan.stamp, zone)?.iso : undefined;
       return { ...(time ? { time } : { local_time: scan.stamp }), ...scan.event };
     });
@@ -258,7 +275,7 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
     ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
     expected_delivery: null,
     ...(stage === 'delivered' && newest.stage === 'delivered' && newest.time ? { delivered_at: newest.time } : {}),
-    ...handoff(entry, [number, tracking, own]),
+    ...(last && ![number, tracking, own].includes(last.number) ? { delivery_carrier: last.leg.carrier, delivery_tracking_number: last.number } : {}),
     ...(COUNTRY.test(destination) ? { destination_country: destination } : {}),
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),

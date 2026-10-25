@@ -44,12 +44,15 @@ page makes.
   the last-mile partner's pickup and China Post's hand-over to the airline are transit.
   DHLink's delivered count makes the parcel delivered when the last row says less.
 - Clocks have no offset. DHLink records each row on Beijing time (`createDate`), seconds after
-  the clock of a row scanned in China. A scan with a place in China is read on Beijing time, and
-  one a USPS office names with its state and ZIP code on that state's, unless the state spans
-  several zones. A scan recorded before its clock could have struck at the destination, even in
-  the destination's easternmost zone, keeps DHLink's own Beijing time, as GOFO's relayed scans
-  do. Any other scan could be on either clock and keeps its wall clock in `local_time`; the
-  newest scan's instant, when it has one, is the last update.
+  the clock of a row scanned in China. A scan with a place in China is read on Beijing time.
+  So is every scan of a parcel whose last leg is GOFO or SwiftX: DHLink relays their scans on
+  its own clock, however late it records them. GOFO's own feed gives the same instants, and
+  SwiftX's rounds and deliveries are recorded before a US reading of their clocks. Otherwise a
+  scan a USPS office names with its state and ZIP code is read on that state's time, unless the
+  state spans several zones. A scan recorded before its clock could have struck at the
+  destination, even in the destination's easternmost zone, keeps DHLink's own Beijing time. Any
+  other scan could be on either clock and keeps its wall clock in `local_time`; the newest
+  scan's instant, when it has one, is the last update.
 - A row still after the read at UTC+14, the earliest instant it can stand for, is dropped, and
   the delivered count is then not trusted.
 - The reply gives the last leg's number (`lastTurnNo`) but no partner, so the partner comes from
@@ -57,9 +60,11 @@ page makes.
   and fourteen digits is GOFO, and fourteen digits from depots 0600 to 0619 is DPD
   Switzerland. Other numbers give no hand-off; parcels USPS or a post delivers give no
   last-leg number.
-- Places lose postcodes, placeholders and the destination code one feed appends to Chinese
-  places. Wordings lose US ZIP codes, British and Canadian postcodes, and contact or signature
-  details a post appends. The order id, the DHLink number and the feeds' and rows' ids are
+- Places lose postcodes, placeholders and the destination code feeds append to Chinese places,
+  whether written in Chinese or as a province or city in Latin letters ("SHENZHEN, US").
+  Wordings lose US ZIP codes, British and Canadian postcodes, contact or signature details a
+  post appends, and the row's own clock a node's wording ends with ("Shipment has delivered
+  at …"). The order id, the DHLink number and the feeds' and rows' ids are
   never read.
 - The tracking link adds `lang=en`: the page shows Chinese otherwise.
 

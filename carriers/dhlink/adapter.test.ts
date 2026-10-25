@@ -74,7 +74,7 @@ describe('DHLink HTTP adapter', () => {
   it('keeps one row per scan, preferring DHLink’s node and English, and drops the destination code from Chinese places', () => {
     const result = parseDhlink(fixture('postal-delivered'), POSTAL, LATER);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Shipment has delivered at 2026-02-20 15:10:00', last_update: null, last_update_local: '2026-02-20T15:10:00' });
+      last_status_text: 'Shipment has delivered', last_update: null, last_update_local: '2026-02-20T15:10:00' });
     expect(result.destination_country).toBeUndefined();
     expect(result.delivery_carrier).toBeUndefined();
     // Scans with a place in China, on either row, are on Beijing time. The destination's are not
@@ -143,20 +143,32 @@ describe('DHLink HTTP adapter', () => {
   });
 
   it('places a scan’s clock by when DHLink recorded it, and leaves it a wall clock when either zone fits', () => {
-    // GOFO's relayed scans, recorded within hours: a US clock would still be ahead of the record.
     const row = (trackTime: string, createDate: string | null, place: string, info: string) => ({ trackTime, createDate, place, info, nodeCode: null, nodeName: null });
-    const relayed = (rows: Row[], destination = 'US') => parseDhlink(changed('swiftx-at-warehouse', (parcel) => {
+    const relayed = (rows: Row[], destination = 'US', lastTurnNo: string | null = null) => parseDhlink(changed('swiftx-at-warehouse', (parcel) => {
       parcel.destCountryCode = destination;
+      parcel.lastTurnNo = lastTurnNo;
       parcel.trackinfoList = rows;
     }), WAREHOUSE, LATER);
-    const gofo = relayed([
+    // A line provider's relayed scans, recorded within minutes: a US clock would still be ahead of the record.
+    const line = relayed([
       row('2026-03-10 09:12:00', '2026-03-10 09:40:05', 'LA_SBA Warehouse, US', 'Out for delivery'),
       row('2026-03-09 21:30:00', '2026-03-10 14:00:00', 'LAX HUB, US', 'Arrived at destination hub'),
     ]);
-    expect(gofo).toMatchObject({ last_update: '2026-03-10T09:12:00+08:00', status: 'out_for_delivery' });
-    expect(gofo.last_update_local).toBeUndefined();
+    expect(line).toMatchObject({ last_update: '2026-03-10T09:12:00+08:00', status: 'out_for_delivery' });
+    expect(line.last_update_local).toBeUndefined();
     // Recorded 16½ hours after its clock: Beijing or New York could both be its time.
-    expect(gofo.events![1]).toMatchObject({ local_time: '2026-03-09T21:30:00', location: 'LAX HUB, US' });
+    expect(line.events![1]).toMatchObject({ local_time: '2026-03-09T21:30:00', location: 'LAX HUB, US' });
+    // GOFO's and SwiftX's relayed scans are on Beijing time however late DHLink records them, a state's office too.
+    const late = [row('2026-03-09 21:30:00', '2026-03-11 14:00:00', 'SAMPLEVILLE, GA 99901', 'Arrived at GOFO Regional Hub'),
+      row('2026-03-09 08:00:00', '2026-03-11 14:00:00', 'none', 'Shipping Label Created')];
+    for (const lastTurnNo of ['GFUS99000000000001', 'SWX990000000000000001']) {
+      expect(timeline(relayed(late, 'US', lastTurnNo).events), lastTurnNo).toEqual([
+        ['2026-03-09T21:30:00+08:00', null, 'in_transit', 'SAMPLEVILLE, GA'], ['2026-03-09T08:00:00+08:00', null, 'registered', null]]);
+    }
+    // A scan recorded before even Beijing's reading of its clock is no Beijing clock.
+    expect(relayed([row('2026-03-10 18:00:00', '2026-03-10 15:00:00', 'none', 'Delivered')], 'US', 'GFUS99000000000001').last_update).toBeNull();
+    // Without such a partner, the office's state gives the clock.
+    expect(relayed(late, 'US', '06190000000001').events![0]!.time).toBe('2026-03-09T21:30:00-04:00');
     // A post office's state, recorded before its clock could strike there: not the state's time.
     expect(relayed([row('2026-03-10 09:12:00', '2026-03-10 09:40:05', 'SAMPLEVILLE, CA 99901', 'Arrived at Post Office')]).last_update)
       .toBe('2026-03-10T09:12:00+08:00');
@@ -173,6 +185,20 @@ describe('DHLink HTTP adapter', () => {
     expect(relayed([row('2026-03-10 18:00:00', null, '示例市', '已出库')]).last_update).toBe('2026-03-10T18:00:00+08:00');
     // A place in China whose clock is after its record is no Beijing clock.
     expect(relayed([row('2026-03-10 18:00:00', '2026-03-10 15:00:00', '示例市', '已出库')]).last_update).toBeNull();
+    // A Chinese city in Latin letters with the destination's code appended is in China.
+    const warehouse = relayed([row('2026-03-10 18:00:00', '2026-03-10 18:05:00', 'SHENZHEN, US', 'Package departed from the warehouse'),
+      row('2026-03-10 09:00:00', '2026-03-10 18:05:00', 'shen zhen', 'Package received & scanned at warehouse'),
+      row('2026-03-10 08:00:00', '2026-03-10 18:05:00', 'SAMPLEVILLE, US', 'Package received & scanned at warehouse')]);
+    expect(timeline(warehouse.events)).toEqual([['2026-03-10T18:00:00+08:00', null, 'in_transit', 'SHENZHEN'],
+      ['2026-03-10T09:00:00+08:00', null, 'accepted', 'shen zhen'], ['2026-03-10T08:00:00+08:00', null, 'accepted', 'SAMPLEVILLE, US']]);
+  });
+
+  it('drops the row’s own clock from the end of a node’s wording, and keeps any other', () => {
+    const worded = (info: string) => parseDhlink(changed('postal-delivered', (parcel) => {
+      parcel.trackinfoList[1]!.info = info;
+    }), POSTAL, LATER).last_status_text;
+    expect(worded('Shipment has delivered at 2026-02-20 15:10:00')).toBe('Shipment has delivered');
+    expect(worded('Shipment has delivered at 2026-02-19 15:10:00')).toBe('Shipment has delivered at 2026-02-19 15:10:00');
   });
 
   it('holds back rows written ahead of the read, whatever their zone', () => {
@@ -333,6 +359,6 @@ describe('DHLink status vocabulary', () => {
     // Nor is the collection at the destination port.
     expect(dhlinkStage('', '', '目的港已提货 Delivery has been made at the destination port')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
     expect(statusMapAnswer({ carrier: 'dhlink', providerCode: 'SYNTHETIC', description: 'Synthetic note' })).toEqual({ kind: 'unknown' });
-    expect(statusMapAnswer({ carrier: 'dhlink', providerCode: 'J014', description: 'Shipment has delivered at …' })).toEqual({ kind: 'mapped', stage: 'delivered' });
+    expect(statusMapAnswer({ carrier: 'dhlink', providerCode: 'J014', description: 'Shipment has delivered' })).toEqual({ kind: 'mapped', stage: 'delivered' });
   });
 });

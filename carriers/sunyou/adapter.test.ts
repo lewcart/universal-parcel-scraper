@@ -207,6 +207,11 @@ describe('SunYou declared capabilities and privacy', () => {
     ]);
   });
 
+  it("leaves the last-mile number out of the departure's wording; the hand-off carries it", () => {
+    expect(coded.events?.find((event) => event.provider_code === 'Dispatch')?.description).toBe('Departed Sunyou Facility');
+    expect(coded.delivery_tracking_number).toBe('ZZ000000005GB');
+  });
+
   it.each(carrier.capabilities)('declares %s and a fixture proves it', (capability) => {
     const check = checks[capability];
     expect(check, `unknown capability ${capability}`).toBeTypeOf('function');
@@ -325,6 +330,12 @@ describe('SunYou stored scans', () => {
     expect(sameInstantIdentityPolicy('sunyou')).toBeUndefined();
     expect(policy?.matches?.(incoming, stored)).toBe(true);
     expect(policy?.matches?.(incoming, { ...stored, providerCode: 'InboundScan', stage: 'accepted' })).toBe(true);
+  });
+
+  it('lets the departure stored with its last-mile number take the shorter wording', () => {
+    const departed = { stage: 'in_transit', location: '', providerCode: 'Dispatch', description: 'Departed Sunyou Facility, Carrier Tracking Number:  ZZ000000005GB' };
+    expect(policy?.matches?.({ ...departed, description: 'Departed Sunyou Facility' }, departed)).toBe(true);
+    expect(policy?.matches?.({ ...departed, description: 'Departed Sunyou Facility', providerCode: 'InboundScan' }, departed)).toBe(false);
   });
 
   it('keeps other scans apart', () => {

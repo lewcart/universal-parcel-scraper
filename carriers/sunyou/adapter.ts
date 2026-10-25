@@ -22,6 +22,7 @@ import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { detectCarrierMatch, isValidS10TrackingNumber } from '../../core/detection/index.js';
 import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
 import type { CarrierId } from '../../generated/catalog.js';
+import { sunYouWording } from './identity.js';
 import { sunYouEventStatus, sunYouStatus } from './status.js';
 
 const PROVIDER = 'SunYou';
@@ -126,7 +127,7 @@ export function parseSunYouTrackingResponse(value: unknown, trackingNumber: stri
     return {
       time: sunYouEventTime(event),
       location: '',
-      description: text(event.content),
+      description: sunYouWording(text(event.content)),
       ...(code ? { provider_code: code } : {}),
       ...(classified ? { stage: classified.stage } : {}),
     };
@@ -141,7 +142,7 @@ export function parseSunYouTrackingResponse(value: unknown, trackingNumber: stri
   return {
     status: classified?.status ?? 'in_transit',
     ...(classified ? { current_stage: classified.stage } : {}),
-    last_status_text: text(item.lastContent) || newest?.description || '',
+    last_status_text: sunYouWording(text(item.lastContent)) || newest?.description || '',
     // The shipment's lastUpdate is a wall clock with no zone; the newest scan carries its leg's offset.
     last_update: newest?.time || text(item.lastUpdate) || null,
     expected_delivery: null,

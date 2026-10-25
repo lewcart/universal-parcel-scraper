@@ -1,6 +1,15 @@
 import type { SameInstantIdentityPolicy, SameInstantScan } from '../../core/catalog/eventIdentity.js';
 
-const normalized = (value: string) => value.replace(/\s+/g, ' ').trim().toLocaleLowerCase('en-US');
+const normalized = (value: string) => sunYouWording(value).replace(/\s+/g, ' ').trim().toLocaleLowerCase('en-US');
+
+/**
+ * A scan's wording without the last-mile number SunYou appends to its departure
+ * ("Departed Sunyou Facility, Carrier Tracking Number: …"): the result's hand-off
+ * carries it. Rows stored with it take the shorter wording in place.
+ */
+export function sunYouWording(content: string): string {
+  return content.replace(/,?\s*Carrier Tracking Number:\s*[A-Z0-9-]*\s*$/i, '').trim() || content;
+}
 
 // Scans stored before SunYou's event codes were kept have none, and their
 // stage came from their wording or from nothing. They take the code and its

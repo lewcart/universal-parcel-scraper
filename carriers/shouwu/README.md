@@ -32,9 +32,14 @@ numbers `shouwu-1` offers.
   at the warehouse and In Transit as anything from the handover to delivery in the destination
   country, so the newest staged scan refines a status within what it covers. A status without
   scans is a summary. Scans have no code; the status map stages the wording seen on them, such as
-  a handover to a carrier as in transit, and the shared rules stage the rest.
-- `traceTime` is epoch seconds, which the page shows in the visitor's zone without naming one,
-  so each scan keeps its instant. The page reads the first ten digits, so the adapter reads
+  the warehouse's intake and processing as accepted and a handover to a carrier as in transit,
+  and the shared rules stage the rest.
+- `traceTime` is epoch seconds, which the page shows in the visitor's zone without naming one.
+  Shouwu's back office reads every scan's wall clock on Beijing time, a scan abroad's too, so a
+  flight out of Shanghai reads hours shorter than it is. Each scan keeps the wall clock its epoch
+  shows in Beijing as `local_time`, which Node lookups date on its place's zone; a scan in China
+  keeps the epoch's instant. A scan stored from the epoch as its instant is taken over by its
+  wording and place (`identity.ts`). The page reads the first ten digits, so the adapter reads
   milliseconds as the same second.
 - A scan's place is `traceLocation`, which the page leaves out and Shouwu's own back office shows
   before the wording. Anything with a digit, as an address or a postcode has, is dropped.
@@ -45,7 +50,7 @@ numbers `shouwu-1` offers.
 ## Limitations
 
 - No estimate, weight, service, last-mile carrier or last-mile number: the page shows none.
-- A delivery is dated only by a scan whose wording reads as one.
+- No delivery instant: scans give wall clocks in no stated zone.
 
 ## Links
 

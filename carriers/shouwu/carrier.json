@@ -26,14 +26,13 @@
     ],
     "recognition": {
       "rank": 63
-    }
+    },
+    "localClocks": true
   },
   "capabilities": [
     "history",
     "location",
-    "delivered_at",
-    "destination_country",
-    "offset_timestamps"
+    "destination_country"
   ],
   "portal": {
     "url": "https://admin.shshouwu.com/track.html?q={trackingNumber}",
@@ -48,9 +47,7 @@
       "status",
       "history",
       "location",
-      "delivered_at",
-      "destination_country",
-      "offset_timestamps"
+      "destination_country"
     ],
     "discarded": [],
     "unavailable": [

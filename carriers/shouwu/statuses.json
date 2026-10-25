@@ -34,6 +34,13 @@
       "note": "A parcel's traceStatus, which the page labels Delivered."
     },
     {
+      "wording": "Order information received. We're expecting your parcel to arrive with us.",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "An order scan before Shouwu has the parcel."
+    },
+    {
       "wording": "Shipment information received",
       "stage": "registered",
       "language": "en",
@@ -46,6 +53,58 @@
       "language": "en",
       "confirmedBy": "live",
       "note": "A handover scan of trace type TRACE_TYPE_TAIL. The page's In Transit status starts at the handover to a carrier, and the parcel's status was In Transit with it."
+    },
+    {
+      "wording": "Arrival processing center",
+      "stage": "accepted",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "Shouwu's warehouse taking the parcel in, which the page's Preparing status covers."
+    },
+    {
+      "wording": "Package processing completed",
+      "stage": "accepted",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "The warehouse done with the parcel before its flight, which the page's Preparing status still covers."
+    },
+    {
+      "wording": "Arrived at Shanghai Pudong Airport",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "Departed from export airport",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "Arrived at airport of Destination",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "Shipment started the customs clearance process at destination",
+      "stage": "customs",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "Custom clearance completed",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "Released by customs in the destination country."
+    },
+    {
+      "wording": "Delivery to local courier",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "A handover to the destination's delivery carrier, not to the recipient."
     }
   ]
 }

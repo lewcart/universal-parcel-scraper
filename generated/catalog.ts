@@ -27406,7 +27406,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "shouwu",
-      "recognitionRank": 63
+      "recognitionRank": 63,
+      "localClocks": true
     },
     "canaryUrl": "https://admin.shshouwu.com/track.html",
     "trackingUrlTemplate": "https://admin.shshouwu.com/track.html?q={trackingNumber}",

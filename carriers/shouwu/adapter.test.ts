@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { DateTime } from 'luxon';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
@@ -7,6 +8,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { delayedFetcher } from '../../core/testing/hang.js';
 import { fakeBudgetClock } from '../../testing/budgetClock.js';
 import { createTracker } from '../../facade/index.js';
+import { sameInstantIdentityPolicy } from '../../app.js';
 import { adapter, SHOUWU_API, SHOUWU_PAGE, ShouwuTracker } from './adapter.js';
 import { normalizeShouwuNumber, parseShouwu } from './parser.js';
 import { shouwuStage, shouwuStatusLabel, shouwuStatusStage, statusMap } from './status.js';
@@ -50,24 +52,24 @@ describe('Shouwu International HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('reads a delivered parcel’s scans as instants, newest first, with their towns, its destination, and no address', () => {
+  it('reads a delivered parcel’s scans as wall clocks on Beijing time, newest first, with their towns, its destination, and no address', () => {
     const result = parseShouwu(fixture('delivered'), DELIVERED);
     expect(result).toEqual({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Delivered, Front Door', last_update: '2026-04-16T17:39:12Z', expected_delivery: null,
-      delivered_at: '2026-04-16T17:39:12Z', destination_country: 'US', events: expect.any(Array) });
-    expect(result.events!.map((event) => [event.time, event.location, event.description, event.stage])).toEqual([
-      ['2026-04-16T17:39:12Z', 'SAMPLE CITY, CA', 'Delivered, Front Door', 'delivered'],
-      ['2026-04-16T08:15:14Z', 'SAMPLE CITY, CA', 'Out for Delivery', 'out_for_delivery'],
+      last_status_text: 'Delivered, Front Door', last_update: null, last_update_local: '2026-04-17T01:39:12', expected_delivery: null,
+      destination_country: 'US', events: expect.any(Array) });
+    expect(result.events!.map((event) => [event.local_time, event.location, event.description, event.stage])).toEqual([
+      ['2026-04-17T01:39:12', 'SAMPLE CITY, CA', 'Delivered, Front Door', 'delivered'],
+      ['2026-04-16T16:15:14', 'SAMPLE CITY, CA', 'Out for Delivery', 'out_for_delivery'],
       // A place with a digit could be an address or name a postcode, and is not read.
-      ['2026-04-15T22:05:28Z', undefined, 'Arrived at Sorting Facility', 'in_transit'],
-      ['2026-04-13T06:20:00Z', 'EXAMPLE GATEWAY', 'Customs clearance completed', 'in_transit'],
-      ['2026-04-12T10:41:09Z', 'Shanghai', 'Departed from origin airport', 'in_transit'],
+      ['2026-04-16T06:05:28', undefined, 'Arrived at Sorting Facility', 'in_transit'],
+      ['2026-04-13T14:20:00', 'EXAMPLE GATEWAY', 'Customs clearance completed', 'in_transit'],
+      ['2026-04-12T18:41:09', 'Shanghai', 'Departed from origin airport', 'in_transit'],
       // The scan listed twice counts once.
-      ['2026-04-11T02:00:12Z', '上海', '已出库', undefined],
-      ['2026-04-10T09:30:45Z', undefined, '已入库', 'accepted'],
-      ['2026-04-10T03:12:00Z', undefined, 'Sample Status Note', undefined],
+      ['2026-04-11T10:00:12', '上海', '已出库', undefined],
+      ['2026-04-10T17:30:45', undefined, '已入库', 'accepted'],
+      ['2026-04-10T11:12:00', undefined, 'Sample Status Note', undefined],
     ]);
-    expect(result.events!.every((event) => !('local_time' in event) && !('provider_code' in event))).toBe(true);
+    expect(result.events!.every((event) => !('time' in event) && !('provider_code' in event))).toBe(true);
     const json = JSON.stringify(result);
     for (const excluded of ['Sample Road', '99999', 'Sample Desk', 'Sample status text', 'United States', 'TRACE_TYPE', 'TRACE_STATUS']) {
       expect(json).not.toContain(excluded);
@@ -78,7 +80,7 @@ describe('Shouwu International HTTP adapter', () => {
     const result = parseShouwu(changed((traces) => {
       traces.splice(0, traces.length, trace('1776361152', 'Delivered'), trace(1776327314999, 'Out for Delivery'), trace(1776290728, 'Arrived at Sorting Facility'));
     }), DELIVERED);
-    expect(result.events!.map((event) => event.time)).toEqual(['2026-04-16T17:39:12Z', '2026-04-16T08:15:14Z', '2026-04-15T22:05:28Z']);
+    expect(result.events!.map((event) => event.local_time)).toEqual(['2026-04-17T01:39:12', '2026-04-16T16:15:14', '2026-04-16T06:05:28']);
     // Equal instants keep the reply's order, newest first.
     const tied = parseShouwu(changed((traces) => {
       traces.splice(0, traces.length, trace(1776361152, 'Delivered'), trace(1776361152, 'Out for Delivery'));
@@ -111,13 +113,16 @@ describe('Shouwu International HTTP adapter', () => {
         events: [{ stage: 'in_transit', stage_source: 'carrier_map' }, { stage: 'registered', stage_source: 'carrier_map' }] });
     expect(staged('TRACE_STATUS_READY', [trace(1775813445, '已入库')]))
       .toMatchObject({ status: 'in_transit', current_stage: 'accepted', current_stage_source: 'wording:language' });
+    // The warehouse's own scans are the parcel at the warehouse, which Preparing covers.
+    expect(staged('TRACE_STATUS_READY', [trace(1775990469, 'Package processing completed'), trace(1775813445, 'Arrival processing center')]))
+      .toMatchObject({ status: 'in_transit', current_stage: 'accepted', current_stage_source: 'carrier_map' });
     expect(staged('TRACE_STATUS_READY', [trace(1775990469, 'Departed from origin airport')]))
       .toMatchObject({ status: 'pending', current_stage: 'registered', current_stage_source: 'carrier_map' });
     expect(staged('TRACE_STATUS_FAILED', [trace(1776361152, 'Returned to sender'), trace(1776327314, 'Out for Delivery')]))
       .toMatchObject({ status: 'exception', current_stage: 'returned', current_stage_source: 'wording:language' });
     expect(staged('TRACE_STATUS_FAILED', [trace(1776327314, 'Out for Delivery')]))
       .toMatchObject({ status: 'exception', current_stage: 'failed_attempt', current_stage_source: 'carrier_map' });
-    // Delivered is the end: no scan refines it, and only a scan staged delivered dates it.
+    // Delivered is the end: no scan refines it, and no instant dates it.
     const signed = staged('TRACE_STATUS_SIGNED', [trace(1776361152, 'Sample Status Note'), trace(1776327314, 'Out for Delivery')]);
     expect(signed).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map', last_status_text: 'Sample Status Note' });
     expect(signed).not.toHaveProperty('delivered_at');
@@ -160,13 +165,13 @@ describe('Shouwu International HTTP adapter', () => {
       whole.data.unshift({ order: { orderNo: OTHER, traceStatus: 'TRACE_STATUS_READY' }, traces: [trace(1776400000, 'Sample Status Note')] });
       whole.data[1]!.order.orderNo = 'swecn990000000001yq ';
     });
-    expect(parseShouwu(mixed, DELIVERED)).toMatchObject({ current_stage: 'delivered', last_update: '2026-04-16T17:39:12Z' });
+    expect(parseShouwu(mixed, DELIVERED)).toMatchObject({ current_stage: 'delivered', last_update_local: '2026-04-17T01:39:12' });
     // Of two entries under the number, the one with the newest scan is the parcel.
     const twice = changed((_traces, _order, whole) => {
       whole.data.push({ order: { orderNo: DELIVERED, traceStatus: 'TRACE_STATUS_ON_THE_WAY' }, traces: [trace(1776400000, 'Departed from origin airport')] },
         { order: { orderNo: DELIVERED, traceStatus: 'TRACE_STATUS_READY' }, traces: [] });
     });
-    expect(parseShouwu(twice, DELIVERED)).toMatchObject({ current_stage: 'in_transit', last_update: '2026-04-17T04:26:40Z' });
+    expect(parseShouwu(twice, DELIVERED)).toMatchObject({ current_stage: 'in_transit', last_update_local: '2026-04-17T12:26:40' });
     expect(parseShouwu(twice, DELIVERED)).not.toHaveProperty('destination_country');
   });
 
@@ -201,7 +206,7 @@ describe('Shouwu International HTTP adapter', () => {
       traces.splice(0, traces.length, ...Array.from({ length: 120 }, (_, index) => trace(1775000000 + index * 60, 'Arrived at Sorting Facility')));
     }), DELIVERED);
     expect(result.events).toHaveLength(100);
-    expect(result).toMatchObject({ history_truncated: true, last_update: '2026-04-01T01:32:20Z' });
+    expect(result).toMatchObject({ history_truncated: true, last_update_local: '2026-04-01T09:32:20' });
   });
 
   it('keeps an unknown number, a failed lookup, a moved route, a browser check and a broken reply apart', async () => {
@@ -257,7 +262,7 @@ describe('Shouwu International HTTP adapter', () => {
 
   it('recognizes a number the tracker knows, and not one it does not know or Shouwu does not issue', async () => {
     const recognize = (body: string) => carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(body))).recognize!(DELIVERED);
-    await expect(recognize(text('delivered'))).resolves.toEqual({ known: true, lastActivityAt: '2026-04-16T17:39:12.000Z' });
+    await expect(recognize(text('delivered'))).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-04-17T01:39:12' });
     await expect(recognize(text('not-found'))).resolves.toEqual({ known: false });
     const fetcher = vi.fn<typeof fetch>();
     await expect(carrier(fetcher).recognize!('SWECN99000000001YQ')).resolves.toEqual({ known: false });
@@ -270,8 +275,42 @@ describe('Shouwu International HTTP adapter', () => {
       ? reply(text('delivered')) : new Response('', { status: 503 })));
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'shouwu', source: 'shouwu', result: { current_stage: 'delivered', destination_country: 'US' } });
-    expect(answer.result.events[0]).toMatchObject({ time: '2026-04-16T17:39:12Z', description: 'Delivered, Front Door' });
+    expect(answer.result.events[0]).toMatchObject({ local_time: '2026-04-17T01:39:12', description: 'Delivered, Front Door' });
     expect(fetcher.mock.calls.filter(([url]) => String(url) === SHOUWU_API)).toHaveLength(1);
+  });
+
+  it('dates each Beijing wall clock on its place’s zone, so a flight out of Shanghai lasts as long as it did', async () => {
+    const flown = changed((traces, order) => {
+      order.countryCodeTwo = 'DE';
+      traces.splice(0, traces.length, trace(1775950200, 'Arrived at airport of Destination', 'Frankfurt'),
+        trace(1775930400, 'Departed from export airport', 'Shanghai'), trace(1775900000, 'Package processing completed'));
+    });
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => (String(url) === SHOUWU_API
+      ? reply(JSON.stringify(flown)) : new Response('', { status: 503 })));
+    const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED, carrier: 'shouwu' }, { budgetMs: 3000 });
+    expect(answer.result.events.map((event) => [event.local_time, event.time, event.time_zone, event.time_zone_basis])).toEqual([
+      ['2026-04-12T07:30:00', '2026-04-12T07:30:00+02:00', 'Europe/Berlin', 'place'],
+      ['2026-04-12T02:00:00', '2026-04-12T02:00:00+08:00', 'Asia/Shanghai', 'place'],
+      // A scan without a place takes the clock of the nearest one that has one: in China, its instant is the epoch's.
+      ['2026-04-11T17:33:20', '2026-04-11T17:33:20+08:00', 'Asia/Shanghai', 'neighbour'],
+    ]);
+  });
+
+});
+
+describe('Shouwu International stored scans', () => {
+  it('lets a scan abroad, stored at the instant its wall clock reads in Beijing, take over its row by wording and place', () => {
+    const policy = sameInstantIdentityPolicy('shouwu', { supportsScanMatching: true });
+    expect(policy).toMatchObject({ storedSources: ['shouwu'], requireProviderCode: false, matchEachScan: true,
+      relabelledFrom: 'Asia/Shanghai', matchWallClock: true });
+    const wall = (time: string, zone?: string) =>
+      DateTime.fromISO(time, zone ? { zone } : { setZone: true }).toFormat("yyyy-MM-dd'T'HH:mm:ss");
+    expect(wall('2026-04-11T23:30:00Z', policy?.relabelledFrom)).toBe(wall('2026-04-12T07:30:00+02:00'));
+    const scan = { stage: 'in_transit', description: 'Arrived at airport of Destination', location: 'Frankfurt', providerCode: '' };
+    expect(policy?.matches?.(scan, { ...scan, description: ' arrived at  airport of destination ' })).toBe(true);
+    for (const other of [{ ...scan, location: 'Shanghai' }, { ...scan, description: 'Departed from export airport' }]) {
+      expect(policy?.matches?.(scan, other)).toBe(false);
+    }
   });
 });
 

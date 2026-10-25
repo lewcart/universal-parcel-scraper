@@ -1,8 +1,8 @@
+import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { epochSecondsTime, type ParsedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { shouwuStage, shouwuStatusLabel, shouwuStatusStage } from './status.js';
@@ -17,6 +17,8 @@ const STATUS = /^[A-Z][A-Z0-9_]{0,63}$/;
 const COUNTRY = /^[A-Z]{2}$/;
 // Epoch seconds. The page reads the first ten digits, so milliseconds read as the same second.
 const EPOCH = /^\d{10}(?:\d{3})?$/;
+// The zone Shouwu's back office reads every scan's wall clock in.
+const BACK_OFFICE = 'Asia/Shanghai';
 // A facility's or a town's name. Anything with a digit, as a postcode, a street number or a phone number has, is dropped.
 const PLACE = /^\p{L}[\p{L}\p{M} .,'’()&/-]{0,59}$/u;
 const MAX_ENTRIES = 20;
@@ -49,16 +51,18 @@ function text(row: Record<string, unknown>, key: string, maxLength = 300): strin
 }
 
 /**
- * A scan's instant, from epoch seconds as a number or digits. The page
+ * A scan's wall clock, from epoch seconds as a number or digits. Shouwu's
+ * back office reads each scan's wall clock on Beijing time, a scan abroad's
+ * too, so the epoch shows the scan's own wall clock in Beijing. The page
  * shows no time for an empty or zero value, and neither is read as one.
  */
-function scanTime(row: Record<string, unknown>): ParsedTime | null {
+function scanClock(row: Record<string, unknown>): { seconds: number; wall: string } | null {
   const value = row.traceTime;
   if (value === null || value === undefined || value === '' || value === 0) return null;
   const digits = typeof value === 'number' && Number.isSafeInteger(value) ? String(value) : typeof value === 'string' ? value.trim() : '';
-  const time = EPOCH.test(digits) ? epochSecondsTime(Number(digits.slice(0, 10))) : null;
-  if (!time) throw new SchemaError(PROVIDER, 'Shouwu returned an invalid scan time');
-  return time;
+  const seconds = EPOCH.test(digits) ? Number(digits.slice(0, 10)) : 0;
+  if (seconds <= 0) throw new SchemaError(PROVIDER, 'Shouwu returned an invalid scan time');
+  return { seconds, wall: DateTime.fromSeconds(seconds, { zone: BACK_OFFICE }).toFormat("yyyy-MM-dd'T'HH:mm:ss") };
 }
 
 /** The facility or town a scan names, at most; anything that could be an address is dropped. */
@@ -71,7 +75,7 @@ interface Parcel {
   status: string;
   country: string;
   events: CarrierEvent[];
-  /** The newest scan's epoch milliseconds, or -Infinity without a scan. */
+  /** The newest scan's epoch seconds, or -Infinity without a scan. */
   newest: number;
 }
 
@@ -87,17 +91,17 @@ function readParcel(entry: Record<string, unknown>, order: Record<string, unknow
   const scans: { event: CarrierEvent; timestamp: number; index: number }[] = [];
   for (const row of rows) {
     if (!isRecord(row)) throw new SchemaError(PROVIDER, 'Shouwu returned an invalid scan');
-    const time = scanTime(row);
+    const clock = scanClock(row);
     const description = text(row, 'traceDesc');
     const location = place(row);
     // A row without wording or a time places nothing.
-    if (!time || !description) continue;
-    const key = JSON.stringify([time.timestamp, description, location]);
+    if (!clock || !description) continue;
+    const key = JSON.stringify([clock.seconds, description, location]);
     if (seen.has(key)) continue;
     seen.add(key);
     const staged = shouwuStage(description);
-    scans.push({ timestamp: time.timestamp, index: scans.length, event: {
-      time: time.iso,
+    scans.push({ timestamp: clock.seconds, index: scans.length, event: {
+      local_time: clock.wall,
       ...(location ? { location } : {}),
       description,
       ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
@@ -115,7 +119,8 @@ function readParcel(entry: Record<string, unknown>, order: Record<string, unknow
  * is a failed lookup. An entry is `order`, with the number in `orderNo`, the
  * status code in `traceStatus` and the destination in `countryCodeTwo`, and
  * `traces`, each with epoch seconds in `traceTime`, wording in `traceDesc`
- * and a place in `traceLocation`. Only entries naming the whole number asked
+ * and a place in `traceLocation`. A scan keeps the wall clock its epoch shows
+ * in Beijing, for its place to date. Only entries naming the whole number asked
  * are read, and of them only those fields.
  */
 export function parseShouwu(payload: unknown, raw: string): CarrierResult {
@@ -176,14 +181,13 @@ export function parseShouwu(payload: unknown, raw: string): CarrierResult {
     };
   }
   const newest = events[0]!;
-  const delivered = stage === 'delivered' ? events.find((event) => event.stage === 'delivered')?.time : undefined;
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: source! } : {}),
     last_status_text: newest.description!,
-    last_update: newest.time!,
+    last_update: null,
+    last_update_local: newest.local_time!,
     expected_delivery: null,
-    ...(delivered ? { delivered_at: delivered } : {}),
     ...destination,
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),

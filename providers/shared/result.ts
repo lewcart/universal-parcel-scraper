@@ -275,6 +275,9 @@ function providerWordingStage(description: string): Stage | undefined {
   // Lietuvos paštas' acceptance (ACCEPTED in its own map) as ParcelsApp relays it. The shared rules leave a
   // bare receipt unread, since it names no receiver.
   if (/^parcel received[.!]?$/i.test(value)) return 'accepted';
+  // China Post's domestic steps as aggregators relay them, with the cities in Latin script: the mail flown from one city
+  // to another, passing through one, landed in one and bound for an office, and its forecast to reach one.
+  if (/^邮件已乘机由.{1,60}飞往|^您的邮件正途经|^邮件到达[^，,]{1,60}[，,]\s*准备发往|^预计【[^】]{1,20}】到达.{1,60}两地距离/u.test(value)) return 'in_transit';
   // ECMS's pre-alert, in English then Chinese: the parcel has yet to reach its origin warehouse.
   if (/^virtual manifest has been received[.!]?(?:\s*发货预报已收到[，,]?\s*正在等待货物到达我们的始发站仓库[。.]?)?$/iu.test(value)) return 'registered';
   // InPost's refusal at the door (LMD.9006), as InPost's own map reads it.

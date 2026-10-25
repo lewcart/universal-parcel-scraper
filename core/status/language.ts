@@ -501,8 +501,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // The goods reaching the forwarder's receiving point, its first scan, before that warehouse receipt.
   if (/^(?:the )?goods (?:arrive|arrived|have arrived) at (?:the )?receiving point$/.test(text)) return 'accepted';
   // Admitted by the carrier: Correos's "Admitido", Correos Express's "Admitido en
-  // oficina". Admission still to come is registered above.
-  if (/(?<!\b(?:no|nao) )\badmitid[oa]s?\b|\badmision en origen\b/.test(text)) return 'accepted';
+  // oficina", a post's "Admisión país de origen". Admission still to come is registered above.
+  if (/(?<!\b(?:no|nao) )\badmitid[oa]s?\b|\badmision (?:en origen|pais de origen)\b/.test(text)) return 'accepted';
   // Accepted by CTT: its "Aceite" state, and "O envio foi aceite" in its scans. A return request accepted is no parcel.
   if (/^aceite(?:\.|$)|\b(?:envio|objeto|objecto|encomenda|remessa) foi aceite\b/.test(text)) return 'accepted';
   // A cross-dock transfer, a flight taking off or landing, a tally in a bonded

@@ -679,7 +679,7 @@ describe('classifyWording', () => {
       ['pre-registered. shipment pre-registered in the postal correos spain system, pending acceptance', 'registered'],
       ['Prerregistrado', 'registered'],
       ['admitido.. el envío ha tenido admisión en origen.', 'accepted'],
-      ['ADMITIDO EN OFICINA DE CORREOS', 'accepted'],
+      ['ADMITIDO EN OFICINA DE CORREOS', 'accepted'], ['Admisión país de origen', 'accepted'],
       // USPS before its acceptance scan, and CTT's acceptance.
       ['Shipment Received, Package Acceptance Pending, ZIP Code 10001', 'registered'],
       ['Aceite', 'accepted'],

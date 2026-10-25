@@ -1339,6 +1339,8 @@ describe('status map answers', () => {
     expect(answer('india-post', 'AircraftTakeOff', 'Aircraft Departure')).toEqual(mapped('in_transit'));
     expect(answer('india-post', 'AircraftTakeOff', 'Flight ZZ0102 departed: Frankfurt Airport (FRA) → CDG')).toEqual(mapped('in_transit'));
     expect(answer('india-post', 'MailArrived', 'Flight ZZ0102 arrived: FRA → Paris Charles de Gaulle Airport (CDG)')).toEqual(mapped('in_transit'));
+    expect(answer('india-post', 'BagUnloaded', 'Bag unloaded at destination Airport')).toEqual(mapped('in_transit'));
+    expect(answer('india-post', 'ItemTransfered', 'Transfer to OOE (Otb)')).toEqual(mapped('in_transit'));
     // The adapter keeps such a row in transit; the map leaves it open.
     expect(answer('india-post', 'SyntheticEvent', 'Synthetic Event')).toEqual(unknown);
     expect(answer('india-post', null, 'Synthetic scan')).toEqual(unknown);

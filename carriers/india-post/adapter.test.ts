@@ -136,6 +136,15 @@ it('distinguishes export-customs entry and exit under the same event type', () =
   expect(classifyIndiaPostEvent('ExportCustoms', 'Sent to Export Customs').stage).toBe('customs');
 });
 
+it('reads the movement codes seen since as transit, no longer unknown', () => {
+  for (const [code, wording] of [
+    ['BagReceived', 'Bag Received for Forwarding'], ['BagReceived', 'Bag Received'],
+    ['BagUnloaded', 'Bag unloaded at destination Airport'], ['SendItemToDomestic', 'Send item to domestic location (Inb)'],
+    ['ItemTransfered', 'Transfer to OOE (Otb)'], ['AssignedToLoadPlan', 'Assigned to load plan'],
+    ['TransportLegCompleted', 'Transport Leg Completed'],
+  ]) expect(classifyIndiaPostEvent(code, wording)).toEqual({ status: 'in_transit', stage: 'in_transit' });
+});
+
 it('reads "lost" only as a whole word, not Lagos before "To" in a flight remark', () => {
   expect(classifyIndiaPostEvent('MailArrived', 'MAIL_ARRIVED', 'Flight No: ZZ0102 (From LOS To CDG)').stage).toBe('in_transit');
   expect(classifyIndiaPostEvent('ItemLost', 'Item Lost').stage).toBe('exception');

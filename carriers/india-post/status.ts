@@ -113,6 +113,15 @@ export function classifyIndiaPostEvent(...values: unknown[]): ClassifiedStatus {
     'tmoreceive',
     'itemreceive',
     'transferooe',
+    // Movement codes seen since: bags received and unloaded, an item sent on to the
+    // domestic network or to the office of exchange, a load plan and a finished leg.
+    'bagreceived',
+    'bagunloaded',
+    'senditemtodomestic',
+    'itemtransfer',
+    'transfertoooe',
+    'assignedtoloadplan',
+    'transportlegcompleted',
   ])) return { status: 'in_transit', stage: 'in_transit' };
   return { status: 'unknown', stage: 'in_transit' };
 }

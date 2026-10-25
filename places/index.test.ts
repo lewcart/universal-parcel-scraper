@@ -89,8 +89,12 @@ describe('locatePlace', () => {
     // A Brazilian state, not Puerto Rico.
     expectPlace('CURITIBA - PR', { country: 'BR', name: 'Curitiba', latitude: -25.43, longitude: -49.27 });
     expectPlace('PANAMA CITY PA', { country: 'PA', name: 'Panama City', latitude: 8.99, longitude: -79.52 });
-    // Queens, not the island.
-    expectPlace('JAMAICA NY INTERNATIONAL DISTRIBUTION CENTER', { country: 'US', name: 'Jamaica', latitude: 40.69, longitude: -73.81 });
+    // Queens, not the island, however USPS or Nova Poshta's US partner writes it; the name alone is the island.
+    const queens = { country: 'US', name: 'Jamaica', latitude: 40.69, longitude: -73.81 };
+    expectPlace('JAMAICA NY INTERNATIONAL DISTRIBUTION CENTER', queens);
+    expectPlace('JAMAICA, NY', queens);
+    expectPlace('JAMAICA, NEWYORK, US', queens);
+    expect(place('JAMAICA', ['US'])).toMatchObject({ precision: 'country', country: 'JM' });
   });
 
   it('places the cities Toronto absorbed, which Canada Post still addresses', () => {

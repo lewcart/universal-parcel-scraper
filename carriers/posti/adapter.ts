@@ -119,7 +119,7 @@ const IN_COUNTRY_OF_ORIGIN = /\bcountry of origin\b/i;
 function originPostTime(time: string, label: string, location: string, number: string): string {
   const zone = isValidS10TrackingNumber(number) ? ORIGIN_POST_ZONES[number.slice(-2)] : undefined;
   if (!zone || !time || location || !IN_COUNTRY_OF_ORIGIN.test(label)) return time;
-  const read = firstOccurrence(DateTime.fromObject(DateTime.fromISO(time, { zone: 'Europe/Helsinki' }).toObject(), { zone }));
+  const read = firstOccurrence(DateTime.fromObject(DateTime.fromISO(time).setZone('Europe/Helsinki').toObject(), { zone }));
   return (read.isValid && read.toISO({ suppressMilliseconds: true })) || time;
 }
 

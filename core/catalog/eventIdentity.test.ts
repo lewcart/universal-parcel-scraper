@@ -79,6 +79,8 @@ describe('same-instant identity policies', () => {
     ['chronopost', 'in_transit', 'Destinataire informé par SMS ou mail', 'Service d’avisage', 'Example Town - DE (depot 0001)'],
     ['chronopost', 'in_transit', "Colis en cours d'acheminement", 'CHRONOPOST NETWORKS', 'Example Town - DE (depot 0001)'],
     ['dpd-fr', 'delivered', 'Votre colis est livré', 'Livré au destinataire', 'Agence DPD de Example Town (1)'],
+    ['poczta-polska', 'in_transit', 'In transport', 'Transshipment', 'Placówka Pocztowa Example Town'],
+    ['poczta-polska', 'registered', 'Electronic item data received', 'Elektroniczny Nadawca', 'Placówka Pocztowa Example Town'],
     ['posti', 'in_transit', 'Item has been registered The item can be registered several times during delivery.', 'ULKOMAILLA', 'EXAMPLE CITY'],
     ['posti', 'delivered', 'Item delivered to the recipient.', 'ULKOMAILLA', 'EXAMPLE CITY'],
   ])('lets a %s scan that lost "%s" take over its stored row', (source, stage, description, dropped, place) => {

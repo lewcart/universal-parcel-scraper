@@ -5,6 +5,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { isPocztaPolskaSystemOffice } from './identity.js';
 import { classifyPocztaPolskaStatus, settlesPocztaPolskaDuty, startsPocztaPolskaReturn } from './status.js';
 
 export function normalizePocztaPolskaNumber(raw: string): string {
@@ -87,7 +88,8 @@ export function parsePocztaPolska(payload: unknown, number: string): CarrierResu
     const description = clean(raw.name, 500);
     const code = clean(raw.code, 40);
     if (!description || !code) throw new SchemaError('poczta-polska', 'Poczta Polska returned an incomplete scan');
-    const location = isRecord(raw.postOffice) ? clean(raw.postOffice.name, 160) : '';
+    const office = isRecord(raw.postOffice) ? clean(raw.postOffice.name, 160) : '';
+    const location = isPocztaPolskaSystemOffice(office) ? '' : office;
     const mapped = classifyPocztaPolskaStatus(code);
     if (startsPocztaPolskaReturn(code, isRecord(raw.state) ? clean(raw.state.code, 16) : '')) returning = true;
     const stage = returning && mapped?.stage === 'delivered' ? 'returned' : mapped?.stage;

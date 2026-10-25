@@ -34,7 +34,9 @@ Specific scan codes determine progress. An unsuccessful delivery can carry the
 broader “in delivery” state, so that state does not override the scan. The one
 state read on its own is “returned”: from that scan on, the item travels back,
 and a final delivery means the sender has it again. Weight is provided in
-kilograms. Office names provide locations, and the office holding an item for
+kilograms. Office names provide locations, except those that name a system or a unit with
+no address: the transshipment terminal of a scan in transport, the sender platform and the
+international postal system. A scan stored with one keeps its row. The office holding an item for
 collection is its pickup point; a delivered item has none. The destination country is the two-letter code
 the service gives, and the mail type, such as Pocztex or EMS, is the service name; office addresses, opening hours and payment documents are
 excluded.

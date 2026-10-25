@@ -116,10 +116,24 @@ describe('Poczta Polska identity-bound scans', () => {
       value.mailInfo.events[0].postOffice = { name };
       return parsePocztaPolska(value, NUMBER).events?.at(-1);
     };
-    expect(sent('2026-01-04T08:00:00')).toMatchObject({ time: '2026-01-04T08:00:00+01:00', location: 'Elektroniczny Nadawca' });
+    expect(sent('2026-01-04T08:00:00')).toMatchObject({ time: '2026-01-04T08:00:00+01:00' });
     expect(sent('2026-07-04T08:00:00', 'ELEKTRONICZNY NADAWCA')).toMatchObject({ time: '2026-07-04T08:00:00+02:00' });
     expect(sent('2026-07-04T08:00:00', 'International Postal System')).toMatchObject({ local_time: '2026-07-04T08:00:00' });
     expect(sent('2026-07-04T08:00:00', 'International Postal System')).not.toHaveProperty('time');
+  });
+
+  it('gives no location for an office that names a system or a terminal with no address', () => {
+    const value = payload();
+    value.mailInfo.events = [
+      { ...scan('P_REJ_KN1', 'Electronic item data received', 'NA', '2026-01-04T08:00:00', 'Elektroniczny Nadawca'), postOffice: { name: 'Elektroniczny Nadawca' } },
+      scan('P_NAD', 'Posting/collection', 'NA', '2026-01-04T12:00:00', 'Sending Office'),
+      { ...scan('P_PZL', 'In transport', 'TR', '2026-01-05T01:00:00'), postOffice: { name: 'Transshipment', officeType: 'CP WER' } },
+      { ...scan('P_PZL', 'In transport', 'TR', '2026-01-05T03:00:00'), postOffice: { name: ' Terminal  Przeładunkowy ', officeType: 'CP WER' } },
+      scan('P_WD', 'In delivery', 'DOR', '2026-01-05T08:00:00')];
+    const events = parsePocztaPolska(value, NUMBER).events!;
+    expect(events.map(event => event.location ?? null)).toEqual(['Example Post Office', null, null, 'Sending Office', null]);
+    // The terminal is still a Polish office, so its scans keep Warsaw time.
+    expect(events[1]).toMatchObject({ time: '2026-01-05T03:00:00+01:00' });
   });
 
   it("keeps the provider's order when every scan is dated", () => {

@@ -1,6 +1,6 @@
-FROM python:3.12.15-slim-trixie@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 AS zto-ocr
+FROM python:3.12.15-slim-trixie@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 AS zto-ocr
 RUN python3 -m venv /opt/zto-ocr \
-    && /opt/zto-ocr/bin/pip install --no-cache-dir numpy==2.5.4 pillow==12.3.0 onnxruntime==1.31.0 \
+    && /opt/zto-ocr/bin/pip install --no-cache-dir numpy==2.5.4 pillow==13.0.0 onnxruntime==1.31.0 \
        opencv-python-headless==5.0.0.93 pyyaml==6.0.3 shapely==2.2.0 pyclipper==1.4.0 six==1.17.0 tqdm==4.70.1 \
     && /opt/zto-ocr/bin/pip install --no-cache-dir --no-deps ddddocr==1.6.1 rapidocr-onnxruntime==1.4.4
 

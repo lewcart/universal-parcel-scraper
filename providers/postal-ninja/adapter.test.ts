@@ -118,6 +118,30 @@ describe('Postal Ninja result parsing', () => {
     ]), us, 'America/New_York'))).toEqual(['2026-09-24T21:30:17.000Z', '2026-09-03T16:20:00.000Z']);
   });
 
+  it('reads Cainiao\'s steps in China on China\'s clock, and lends it to none of its later scans', () => {
+    // Cainiao's own feed dates these steps +08:00 at the same digits. On the Zurich
+    // clock routing passes for a Swiss Post item they came six hours late.
+    const item = 'LW123456785CH';
+    const reply = postal(item, 'CH', [
+      { ds: 'Cainiao', dt: '2026-08-05T16:46:11', dsc: 'Shipment information received electronically by the warehouse. Example text' },
+      { ds: 'Cainiao', dt: '2026-08-05T23:37:10', dsc: 'Inbound processing in sorting center', loc: 'Example Town' },
+      { ds: 'Cainiao', dt: '2026-08-06T16:39:00', dsc: 'Export customs clearance complete successfully' },
+      { ds: 'Cainiao', dt: '2026-08-07T22:30:00', dsc: 'Leaving the origin country or region' },
+      { ds: 'Cainiao', dt: '2026-08-08T05:07:00', dsc: 'Departed from the departure country or region' },
+      // On either side's clock, as Cainiao's feed dates it: it borrows routing's zone, not China's.
+      { ds: 'Cainiao', dt: '2026-08-08T15:09:00', dsc: 'Arrived at the linehaul office' },
+      { ds: 'Swiss Post', dt: '2026-08-10T09:00:00', dsc: 'Sorting', loc: 'Example, 0000, Switzerland' },
+    ]);
+    expect(times(parsePostalNinjaResponse(reply, item, 'Europe/Zurich', 'swiss-post'))).toEqual([
+      '2026-08-10T07:00:00.000Z', '2026-08-08T13:09:00.000Z', '2026-08-07T21:07:00.000Z', '2026-08-07T14:30:00.000Z',
+      '2026-08-06T08:39:00.000Z', '2026-08-05T15:37:10.000Z', '2026-08-05T08:46:11.000Z',
+    ]);
+    // Without a zone from routing, the step in China keeps its clock and the later scan its wall time.
+    expect(times(parsePostalNinjaResponse(postal(item, 'CH', reply.track.events.slice(4, 6)), item))).toEqual([
+      'local 2026-08-08T15:09:00', '2026-08-07T21:07:00.000Z',
+    ]);
+  });
+
   it('orders scans by instant once every one has one', () => {
     // Postal Ninja orders wall times: 10:30 UTC sorts after 11:00 Zurich time.
     const parsed = parsePostalNinjaResponse(withEvents([

@@ -78,8 +78,8 @@ numbers or handles cannot end the lookup.
   | The scanning office's | An Post Ireland, CTT Express, Correos de España, DHL Parcel Netherlands, DPD, DPD Poland, DPD UK, GLS, Hermes Germany, MRW, Nova Poshta, Packeta, Poczta Polska, PostNord, Posten Norge, UkrPoshta | Domestic parcels in their countries, `DPD` on the Polish, German and Spanish networks; UkrPoshta's Ukrainian scans of an item to China |
   | The scanning office's, named by its location | FedEx, UPS | UPS 12/12 on two parcels across Eastern, Central and Mountain time; FedEx 16/17 on two parcels from Washington to Florida and from Ohio to Kentucky |
 
-  Every other service's clock is unknown. Two services also relay scans at another
-  clock. Swiss Post relays the destination post's arrival, customs, sorting and delivery
+  Every other service's clock is unknown, but for Cainiao's steps in China (below). Two
+  services also relay scans at another clock. Swiss Post relays the destination post's arrival, customs, sorting and delivery
   scans, which name no place, at that office's clock: a delivery round UPU and Correos de
   El Salvador date 12:26 in San Salvador (18:26 UTC) comes as 12:26. They are read on the
   destination's clock when it keeps one, else on Zurich's, the last guess. Correos de El
@@ -90,6 +90,12 @@ numbers or handles cannot end the lookup.
   Correos de España's copies of an origin post's scans are at that post's clock too
   ([Correos](../../carriers/correos-spain/README.md)), but Postal Ninja translates their
   wording, so they cannot be told apart and are read like its own scans.
+  Cainiao's scans keep its feed's wall clock, each at its site's, as Cainiao's own offsets
+  showed on two parcels. Its steps in China, from the seller's to the departing flight, are
+  read on China's clock by their wording ([shared with ParcelsApp](../../carriers/aliexpress/clock.ts)),
+  whatever the parcel's carrier: read on the Zurich clock routing passes for a Swiss Post
+  item, they came six hours late. Its later scans, on the transit hub's or the
+  destination's clock, borrow no zone from them.
 - A fixed or network clock places its service's scans in any history. A local clock
   places them only in a full history that service reports alone, and for an S10 item
   one whose origin is its destination (`destCn`): beside other services, a service relays

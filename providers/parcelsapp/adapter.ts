@@ -29,6 +29,7 @@ import { isRecord } from '../../core/types.js';
 import { militaryPostOffice } from '../../places/trackingLocation.js';
 import { hasSeveralClocks, mainZone } from '../../places/zones.js';
 import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
+import { CAINIAO_CHINA_LEG, CAINIAO_CHINA_ZONE } from '../../carriers/aliexpress/clock.js';
 import { correosOriginZone } from '../../carriers/correos-spain/clock.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { FIRST_LINE_CHINA_ZONE, firstLineInChina } from '../../carriers/first-line/clock.js';
@@ -225,8 +226,8 @@ const CAINIAO_LAST_MILE = [
  * wherever the parcel is injected (a Florida parcel's at -07:00; 2026-10-10).
  *
  * Cainiao's own feed (checked 2026-10-11 on parcels to the UK, Belgium,
- * Spain, Italy, Japan, Brazil and the US) dates its origin leg on China time,
- * from the warehouse to the departing linehaul, and the return warehouse
+ * Spain, Italy, Japan, Brazil and the US) dates its origin leg on China time
+ * (`CAINIAO_CHINA_LEG`), from the warehouse to the departing linehaul, and the return warehouse
  * too, the warehouse's own steps and the origin sorting center's among them:
  * AliExpress's feed dates those +08:00, at sorting centers in mainland China
  * and Hong Kong. "Carrier update" is not listed: besides its own notices, on
@@ -287,16 +288,7 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
 }[]> = new Map([
   ['gofoexpress', [{ wording: /^shipping label created$/i, zone: 'America/Los_Angeles' }]],
   ['cainiao', [
-    { wording: wordings([
-      'pending shipping by the seller', 'order received successfully', 'package finished', 'leave the warehouse',
-      'departed from warehouse', 'accepted by carrier', 'shipment information received by warehouse electronically',
-      'package ready for shipping from warehouse', 'package shipped out from warehouse',
-      '(?:inbound|outbound) in sorting center', 'processing at sorting center', 'departed from sorting center',
-      'package not accepted by sorting center', 'package (?:received by|left) sorting center of transit', 'last-mile delivery forecast',
-      'arrived at departure transport hub', 'export customs clearance started', 'export clearance success',
-      '(?:leaving|left) from departure country/region', 'cross-solution reroute', '质检真假鉴定',
-      'return warehouse inbound success\\.?', 'parcel has been destroyed in return warehouse\\.?',
-    ]), zone: 'Asia/Shanghai' },
+    { wording: wordings(CAINIAO_CHINA_LEG), zone: CAINIAO_CHINA_ZONE },
     { wording: wordings(['import clearance start', 'import customs clearance complete', 'arrived at customs', 'leaving customs',
       'we\'re inspecting your order']), zone: DESTINATION, via: { PT: 'ES' } },
     { wording: wordings(['your shipment has arrived at sorting center', 'your shipment has been processed at sorting center and ready for shipping']),

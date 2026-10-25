@@ -23,7 +23,7 @@ import { isRecord } from '../../core/types.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { classifyEvent, event, hasPrivateDeliveryDetails, isNotice, numberOf, result, text, type UniversalSource } from '../shared/result.js';
 import { courierZone, universalCarrierHints } from '../shared/hints.js';
-import { carrierHomeZone, originCopy, serviceZone } from './clocks.js';
+import { carrierHomeZone, originLeg, serviceZone } from './clocks.js';
 
 const SOURCE: UniversalSource = 'Postal Ninja';
 const GET_API = 'https://postal.ninja/track/get';
@@ -95,7 +95,7 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
       if (stage !== 'delivered' && hasPrivateDeliveryDetails(description)) continue;
       // A scan's location (loc) is read only for its clock.
       const scan = { service: text(raw.ds), description, wall: raw.dt, location: text(raw.loc), delivered: stage === 'delivered' };
-      scans.push({ wall: raw.dt, service: scan.service, origin: originCopy(scan), zone: serviceZone(scan, journey),
+      scans.push({ wall: raw.dt, service: scan.service, origin: originLeg(scan), zone: serviceZone(scan, journey),
         event: { description: stage === 'delivered' ? 'Delivered' : description, ...classified } });
     }
   }
@@ -108,7 +108,7 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
   const zoneAt = (index: number, wall: string): string | null => {
     const { zone, service, origin } = scans[index]!;
     if (zone !== null) return zone || null;
-    // A post's copies of the origin post's scans are on another clock than its own, and borrow among themselves.
+    // A service's scans on its origin's clock (a post's copies of the origin post's, Cainiao's in China) borrow among themselves.
     const established = (other: typeof scans[number]) => other.service === service && other.origin === origin
       && typeof other.zone === 'string' ? other.zone : null;
     for (let earlier = index - 1; earlier >= 0; earlier -= 1) { const borrowed = established(scans[earlier]!); if (borrowed) return borrowed; }

@@ -8,6 +8,7 @@
  * missing here has no known clock: its scans borrow a zone in the adapter, as
  * a guess, or keep their wall time.
  */
+import { CAINIAO_CHINA_ZONE, cainiaoInChina } from '../../carriers/aliexpress/clock.js';
 import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
 import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
@@ -37,6 +38,15 @@ const FIXED_CLOCKS: ReadonlyMap<string, string> = new Map([
 const UTC_POSTS: ReadonlySet<string> = new Set(['Correos de El Salvador']);
 /** The origin post's scans, as Postal Ninja translates "(salida)" and "(recibido por EDI)". */
 const OUTBOUND = /\((?:outbound|output|departure|received by EDI)\)$/i;
+
+/**
+ * Cainiao, whose scans keep its feed's wall clock, each at its site's: its
+ * steps in China on China's clock (`cainiaoInChina`), the others on the
+ * transit hub's or the destination's, which vary by parcel. Against
+ * Cainiao's own offsets on two parcels to the UK and France, every scan had
+ * the feed's digits.
+ */
+const CAINIAO = 'Cainiao';
 
 /** Services with one clock per network, by the parcel's destination: GOFO's US network keeps Los Angeles time in New York. */
 const NETWORK_CLOCKS: ReadonlyMap<string, ReadonlyMap<string, string>> = new Map([
@@ -124,34 +134,40 @@ export interface Scan {
   delivered: boolean;
 }
 
-/** Whether a scan is a UTC post's copy of the origin post's, on the origin office's clock. */
-export function originCopy({ service, description }: Pick<Scan, 'service' | 'description'>): boolean {
-  return UTC_POSTS.has(service) && OUTBOUND.test(description);
+/**
+ * Whether a scan is on its origin's clock, apart from its service's others: a
+ * UTC post's copy of the origin post's, on the origin office's clock, or
+ * Cainiao's step in China. It borrows a zone only from such scans and lends
+ * none to the rest.
+ */
+export function originLeg({ service, description }: Pick<Scan, 'service' | 'description'>): boolean {
+  return UTC_POSTS.has(service) ? OUTBOUND.test(description) : service === CAINIAO && cainiaoInChina(description);
 }
 
 /**
  * The established zone of a scan's wall time, from the service that reported
  * it: the destination post's clock for a scan Swiss Post relays from it, a UTC
  * post's or the origin's that an S10 suffix names for its copies, its fixed
- * or network clock in any history, else in a history it reports
- * alone its location's clock, or a local clock's country: the destination's,
- * else the service's (`courierZone`) or the carrier's. A destination on another
- * clock than the service's may be a parcel that crossed a border, so it
- * establishes none. Null when the clock is unknown; false when the hour is
- * (a date written as midnight, UPS's 12:xx), so that no zone can place the
- * scan.
+ * or network clock in any history, China's for Cainiao's steps in China, else
+ * in a history it reports alone its location's clock, or a local clock's
+ * country: the destination's, else the service's (`courierZone`) or the
+ * carrier's. A destination on another clock than the service's may be a
+ * parcel that crossed a border, so it establishes none. Null when the clock
+ * is unknown; false when the hour is (a date written as midnight, UPS's
+ * 12:xx), so that no zone can place the scan.
  */
 export function serviceZone(scan: Scan, journey: Journey): string | null | false {
   const { service, description, wall, location, delivered } = scan;
   const relayed = service === 'Swiss Post' ? swissPostDestinationZone(description, location, journey.destination) : null;
   if (relayed) return relayed;
   if (UTC_POSTS.has(service)) {
-    if (!originCopy(scan)) return 'UTC';
+    if (!originLeg(scan)) return 'UTC';
     return isValidS10TrackingNumber(journey.number) ? countryTimeZone(journey.number.slice(-2)) : null;
   }
   const fixed = FIXED_CLOCKS.get(service) ?? (journey.destination ? NETWORK_CLOCKS.get(service)?.get(journey.destination) : undefined);
   if (fixed) return fixed;
   if (MIDNIGHT.test(wall) || (TWELVE_HOUR_CLOCKS.has(service) && wall.slice(11, 13) === '12' && !delivered)) return false;
+  if (service === CAINIAO && originLeg(scan)) return CAINIAO_CHINA_ZONE;
   if (!journey.alone) return null;
   if (LOCATED_CLOCKS.has(service)) return locationZone(location);
   if (!LOCAL_CLOCKS.has(service)) return null;

@@ -12,6 +12,7 @@ import { sameInstantIdentityPolicy as cttyex } from '../../carriers/cttyex/ident
 import { sameInstantIdentityPolicy as dhl } from '../../carriers/dhl/identity.js';
 import { sameInstantIdentityPolicy as dhlEcommerce } from '../../carriers/dhl-ecommerce/identity.js';
 import { sameInstantIdentityPolicy as dhlExpress } from '../../carriers/dhl-express/identity.js';
+import { sameInstantIdentityPolicy as dhlink } from '../../carriers/dhlink/identity.js';
 import { sameInstantIdentityPolicy as dpd } from '../../carriers/dpd/app.js';
 import { sameInstantIdentityPolicy as dpdGermany } from '../../carriers/dpd-de/identity.js';
 import { sameInstantIdentityPolicy as dpdFrance } from '../../carriers/dpd-fr/identity.js';
@@ -93,7 +94,7 @@ export interface SameInstantIdentityPolicy {
 }
 
 const policies: ReadonlyMap<string, SameInstantIdentityPolicy> = new Map(
-  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhl, dhlEcommerce, dhlExpress, dpd, dpdGermany, dpdFrance, fedex, hermesGermany, imile, indiaPost, inpost, jdLogistics, jrt, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, pitneyBowes, posMalaysia, postlogistics, postnord, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, thhy, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
+  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhl, dhlEcommerce, dhlExpress, dhlink, dpd, dpdGermany, dpdFrance, fedex, hermesGermany, imile, indiaPost, inpost, jdLogistics, jrt, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, pitneyBowes, posMalaysia, postlogistics, postnord, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, thhy, ups, swissPost, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
 );
 
 const wording = (scan: SameInstantScan) => scan.description.replace(/\s+/g, ' ').trim().toLowerCase();

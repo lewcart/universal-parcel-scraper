@@ -64,8 +64,8 @@ page makes.
   whether written in Chinese or as a province or city in Latin letters ("SHENZHEN, US").
   Wordings lose US ZIP codes, British and Canadian postcodes, contact or signature details a
   post appends, and the row's own clock a node's wording ends with ("Shipment has delivered
-  at …"). The order id, the DHLink number and the feeds' and rows' ids are
-  never read.
+  at …"); a scan stored with that clock keeps its row. The order id, the DHLink number and
+  the feeds' and rows' ids are never read.
 - The tracking link adds `lang=en`: the page shows Chinese otherwise.
 
 ## Limitations

@@ -377,6 +377,21 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...stored, providerCode: 'OTHER' }, stored)).toBe(false);
   });
 
+  it('lets a DHLink node stored with its row’s clock in its wording keep its row once worded without it', () => {
+    const policy = sameInstantIdentityPolicy('dhlink', { supportsScanMatching: true });
+    expect(policy).toMatchObject({ storedSources: ['dhlink'], requireProviderCode: false, matchEachScan: true, matchWallClock: true });
+    const stored = { stage: 'delivered', description: 'Shipment has delivered at 2026-01-02 03:04:05', location: 'Example City, KY, US', providerCode: '' };
+    const incoming = { ...stored, description: 'Shipment has delivered' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(incoming, incoming)).toBe(true);
+    for (const different of [
+      { ...stored, location: 'Example Town, KY, US' },
+      { ...stored, description: 'Shipment has delivered at the front door' },
+      { ...stored, description: 'Shipment has arrived at 2026-01-02 03:04:05' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: ' at 2026-01-02 03:04:05' })).toBe(false);
+  });
+
   it('lets a LinHan row read on Beijing time take over the row stored on its town’s zone, by wall clock, town and wording', () => {
     expect(sameInstantIdentityPolicy('linhan')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('linhan', { supportsScanMatching: true });

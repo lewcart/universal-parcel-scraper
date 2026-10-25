@@ -26,6 +26,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import { trackingLanguageStage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface ClassifiedAsendiaStatus {
@@ -194,6 +195,37 @@ export function classifyAsendiaA1Event(
       : origin === 'a1 manual entry' ? MANUAL_CODES
         : null;
   if (byCode) return Object.hasOwn(byCode, code) ? byCode[code]! : null;
-  const wording = comparableText(description);
-  return Object.hasOwn(PARTNER_WORDING, wording) ? PARTNER_WORDING[wording]! : null;
+  return partnerWording(description) ?? null;
 }
+
+function partnerWording(description: string): ClassifiedAsendiaStatus | undefined {
+  const wording = comparableText(description);
+  return Object.hasOwn(PARTNER_WORDING, wording) ? PARTNER_WORDING[wording] : undefined;
+}
+
+/** Asendia's own codes: A1's, its manual entries' and FullTrack's, which no two sources share. */
+const OWN_CODES: Readonly<Record<string, ClassifiedAsendiaStatus>> = { ...A1_CODES, ...MANUAL_CODES, ...HARMONIZED_CODES };
+
+/**
+ * What the map says about one scan, by its code and wording without the source that tells
+ * Asendia's codes from a partner's: a code Asendia's lists hold is Asendia's, as no partner has
+ * shown one, and another code is read by the partner's wording, but for the consumer-return
+ * (RET) and inquiry (CLAIM) codes FullTrack leaves out. A scan without a code is a partner's
+ * wording or the global portal's, and stays open where the two read it differently.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    if (code) {
+      if (Object.hasOwn(OWN_CODES, code)) return OWN_CODES[code]!.stage;
+      return /^(?:RET|CLAIM)/.test(code) ? undefined : partnerWording(wording)?.stage;
+    }
+    const partner = partnerWording(wording)?.stage;
+    const portal = classifyAsendiaStatus(wording);
+    const portalStage = portal.status === 'unknown' ? undefined : portal.stage;
+    return partner && portalStage && partner !== portalStage ? undefined : partner ?? portalStage;
+  },
+  gaps: [{
+    wording: 'it’s happening, your parcel will be delivered today. get ready!',
+    note: "DAI Post's delivery round as A1 relays it, or a delivery by the global portal's phrases: the stored scan does not keep which tracker sent it.",
+  }],
+};

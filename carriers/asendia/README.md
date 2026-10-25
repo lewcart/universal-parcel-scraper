@@ -67,6 +67,11 @@ a summary through universal providers (see [routing](https://github.com/plhery/d
     [status.ts](status.ts)). Consumer-return `RET*` and inquiry `CLAIM*` codes are unmapped.
   - Partners (`USPS TrackV2 API`, `BROADREACH API`, `DAI API`, …): exact wording, else the
     shared rules.
+- The parcel app's review (`statusMap`) has the code and wording but not the source: a code
+  Asendia lists is Asendia's, another is read by the partner's wording, and a scan without a
+  code by a partner's wording or the global portal's phrases. DAI Post's round, which the
+  portal's phrases read as a delivery, stays open there without its code, since the stored scan
+  does not keep its source.
 - DAI Post's relayed scans (`DAI API`) carry the wall clock DAI Post's own tracker shows, the
   scan's local time, labelled UTC. They are read as DAI Post's adapter reads them: in the
   country's zone when it keeps one clock, such as New Zealand or the United Kingdom.

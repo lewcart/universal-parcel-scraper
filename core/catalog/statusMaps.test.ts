@@ -1168,6 +1168,26 @@ describe('status map answers', () => {
     expect(answer('ciblex', null, 'Colis livré demain')).toEqual(unknown);
   });
 
+  it("answers Asendia by its own codes, a partner's scan by its wording, and a scan without a code by either tracker's wording", () => {
+    expect(answer('asendia', '1', 'Shipment Information Received')).toEqual(mapped('registered'));
+    expect(answer('asendia', '2', 'Processed by Asendia USA')).toEqual(mapped('accepted'));
+    expect(answer('asendia', 'ME3', 'Synthetic scan')).toEqual(mapped('in_transit'));
+    expect(answer('asendia', 'IMPCUSTIN', 'In customs authorities')).toEqual(mapped('customs'));
+    expect(answer('asendia', 'DELIVERY', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('asendia', 'B8', 'Customs released')).toEqual(mapped('in_transit'));
+    expect(answer('asendia', 'MA', 'Pre-Shipment, USPS Awaiting Item')).toEqual(mapped('registered'));
+    expect(answer('asendia', 'FP05', 'It’s happening, your parcel will be delivered today. Get ready!')).toEqual(mapped('out_for_delivery'));
+    expect(answer('asendia', null, 'Your parcel is ready for pick up')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('asendia', null, 'Information received')).toEqual(mapped('registered'));
+    expect(answer('asendia', null, 'Delivered')).toEqual(mapped('delivered'));
+    // The global portal's phrases read DAI Post's round as a delivery.
+    expect(answer('asendia', null, 'It’s happening, your parcel will be delivered today. Get ready!')).toEqual(gap);
+    // A partner's code is read by its wording alone, and FullTrack's return and inquiry codes stay open.
+    expect(answer('asendia', 'B1', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('asendia', 'RETSYNTHETIC', 'Delivered')).toEqual(unknown);
+    expect(answer('asendia', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

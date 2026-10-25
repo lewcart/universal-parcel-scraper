@@ -11,7 +11,7 @@
  * then accepts a batch tracking request with it. The tracker keeps the token
  * for its later lookups. Both calls replay once after a transport failure or an
  * HTTP 502/503/504, and an HTTP 429 only when it supplies a short, valid
- * `Retry-After`.
+ * `Retry-After`. A 429 left standing names the wait PostNL asked for.
  *
  * The response echoes the requested barcodes, so the item whose `item` equals
  * the requested number is the only one read. PostNL answers an unknown barcode
@@ -24,8 +24,8 @@
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
 import { DateTime } from 'luxon';
 import {
-  CarrierError, IndeterminateError, InputRequiredError, NoHistoryError, NotFoundError, SchemaError, TransportError, UpstreamHttpError,
-  UpstreamNetworkError,
+  CarrierError, IndeterminateError, InputRequiredError, NoHistoryError, NotFoundError, RateLimitedError, SchemaError, TransportError,
+  UpstreamHttpError, UpstreamNetworkError,
 } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
@@ -282,6 +282,17 @@ export function parsePostNLDomesticResponse(value: unknown, trackingNumber: stri
   };
 }
 
+/**
+ * PostNL's refusal of a request for being too many, with the wait it asked for in its wording, so a host's
+ * log shows whether waiting longer would have served the lookup. A wait of up to a minute was waited once.
+ */
+function rateLimited(error: UpstreamHttpError): RateLimitedError {
+  const wait = error.retryAfterMs === undefined ? 'without saying how long to wait'
+    : `asking to wait ${Math.round(error.retryAfterMs / 1000)} s`;
+  return new RateLimitedError(PROVIDER, error.retryAfterMs, `${error.provider} refused the request with HTTP 429, ${wait}`,
+    { cause: error, status: 429 });
+}
+
 /** The same failure without the request details fetchBounded attaches: the address holds the postcode. */
 function withoutPostcode(error: unknown): unknown {
   if (error instanceof UpstreamHttpError) return new UpstreamHttpError(error.provider, error.status, error.retryAfterMs);
@@ -379,7 +390,8 @@ export class PostNLTracker {
       if (error instanceof UpstreamHttpError && [404, 410].includes(error.status)) {
         throw new TransportError(PROVIDER, 'PostNL domestic tracking is unavailable', { status: error.status });
       }
-      throw withoutPostcode(error);
+      const stripped = withoutPostcode(error);
+      throw stripped instanceof UpstreamHttpError && stripped.status === 429 ? rateLimited(stripped) : stripped;
     }
     signal.throwIfAborted();
     return parsePostNLDomesticResponse(parseJsonBytes(bytes, 'PostNL domestic tracking'), trackingNumber);
@@ -403,6 +415,7 @@ export class PostNLTracker {
       if (error instanceof UpstreamHttpError && [404, 410].includes(error.status)) {
         throw new TransportError(PROVIDER, 'PostNL tracking endpoint is unavailable', { cause: error });
       }
+      if (error instanceof UpstreamHttpError && error.status === 429) throw rateLimited(error);
       throw error;
     }
   }

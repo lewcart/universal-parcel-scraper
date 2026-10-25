@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { RateLimitedError, retryAfterMsOf } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, fetchPostNL, parsePostNLDomesticResponse, parsePostNLTrackingResponse, PostNLTracker } from './adapter.js';
@@ -524,6 +525,19 @@ describe('PostNL complete lookup budget', () => {
     abort.abort();
     await rejected;
     expect(fetcher).toHaveBeenCalledOnce();
+  });
+
+  it.each([
+    ['120', 'tracking', 'PostNL tracking refused the request with HTTP 429, asking to wait 120 s', 120_000],
+    [null, 'authentication', 'PostNL authentication refused the request with HTTP 429, without saying how long to wait', undefined],
+  ])('says how long PostNL asked to wait when it refuses a request as too many (Retry-After %s)', async (header, step, message, wait) => {
+    const refusal = () => new Response('', { status: 429, headers: header === null ? {} : { 'Retry-After': header } });
+    const fetcher = vi.fn<typeof fetch>(async (url) => step === 'authentication' || String(url).endsWith('/tracking-items')
+      ? refusal() : jsonResponse({ access_token: 'visitor-token' }));
+    const error = await new PostNLTracker({ fetcher }).fetch(POSTNL_WRONG_NUMBER).catch((caught: unknown) => caught);
+    expect(error).toBeInstanceOf(RateLimitedError);
+    expect(error).toMatchObject({ kind: 'rate_limited', status: 429, message, retryAfterMs: wait });
+    expect(retryAfterMsOf(error)).toBe(wait);
   });
 
   it.each([404, 410])('treats HTTP %s as endpoint failure rather than parcel absence', async status => {

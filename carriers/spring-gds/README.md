@@ -29,7 +29,9 @@ native catalog all carry it; everything user-facing says PostNL.
      a batch; only the item whose `item` equals the requested number is read.
    - Each call replays once after a transport failure or HTTP 502/503/504, and after a 429
      only when it carries a short, valid `Retry-After`. Both calls share a cancellable
-     deadline; other errors are not retried.
+     deadline; other errors are not retried. A 429 left standing is a rate limit whose
+     message names the call and the wait PostNL asked for, or that it named none, so a
+     host's log shows whether waiting longer would have served the lookup.
    - Unknown barcode: an ordinary item with no events and "barcode was not found" in
      `message`. "Barcode was incorrect" means the same only for a 15-character `3S` barcode
      with a four-letter customer code, the layout the endpoint reads, where it marks a code

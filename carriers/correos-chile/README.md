@@ -52,8 +52,9 @@ need `CORREOS_CHILE_TEXT_MODEL_URL`, a private OpenAI-compatible chat-completion
 endpoint. Only the question is sent, without parcel data, tokens or browser state.
 The small model follows a few worked examples better than rules. An answer to a
 question that lists words must be one of them, or the model is asked once more with
-the choices. A sink-or-float question is asked as whether the thing floats, which it
-answers far more reliably.
+the choices. A sink-or-float question is asked as whether the thing floats, and one
+asking for the listed word that is not of a kind asks about each word on its own: the
+model misreads both, but answers the plainer questions far more reliably.
 The optional [model Dockerfile](text-model/Dockerfile) serves a pinned,
 Apache-licensed Qwen model with llama.cpp; build it from this repository and keep
 port 8080 on a private network. Point the setting at `/v1/chat/completions`.

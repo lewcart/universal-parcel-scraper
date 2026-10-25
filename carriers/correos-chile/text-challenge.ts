@@ -2,8 +2,8 @@
 export function solveCorreosChileText(heading: string, prompt: string): string | null {
   if (heading.length > 150 || prompt.length > 400) return null;
   const h = heading.trim().toLowerCase(), p = prompt.trim();
-  const coins = /^A jar (?:starts with|contains) (\d{1,3}) coins\. You (?:take (\d{1,3}) coins out|remove (\d{1,3}) coins from it)\.?$/.exec(p);
-  if (coins && /^(?:find the number of coins still in the jar\. use digits only|give the final coin count in the jar using digits only)$/.test(h)) {
+  const coins = /^A jar (?:starts with|contains) (\d{1,3}) coins\. You (?:take (\d{1,3}) coins? out|remove (\d{1,3}) coins? from it)\.?$/.exec(p);
+  if (coins && /^(?:find the number of coins still in the jar\. use digits only|give the final coin count in the jar using digits only|work out how many coins remain in the jar\. use digits only|calculate the coins remaining in the jar\. answer with digits only|after the removal how many coins remain\. answer with digits only)$/.test(h)) {
     const before = Number(coins[1]), removed = Number(coins[2] ?? coins[3]);
     return removed <= before ? String(before - removed) : null;
   }

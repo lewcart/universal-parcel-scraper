@@ -43,11 +43,6 @@ const SUMMARIES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
 /** The tracker's status for a number it does not know, in Chinese and in English. */
 export const CTTYEX_NOT_FOUND: readonly string[] = ['查询不到', 'Not Found'];
 
-/** Whether a scan's wording is one of CTTYEX's own steps in China. */
-export function cttyexChinaStep(wording: string): boolean {
-  return SCANS.has(normalizeStatusWording(wording));
-}
-
 /** The stage CTTYEX's wording gives a scan or the summary. */
 export function cttyexMappedStage(wording: string): Stage | undefined {
   const key = normalizeStatusWording(wording);

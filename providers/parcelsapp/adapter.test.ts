@@ -493,7 +493,7 @@ describe('ParcelsApp result parsing', () => {
       .toEqual([undefined]);
   });
 
-  it('reads CTTYEX\'s own steps in China on Beijing time and keeps the wall clock of its later scans', () => {
+  it('reads every CTTYEX scan on Beijing time, the later ones abroad too, as its tracker prints them', () => {
     // CTTYEX's wording, as its tracker and the aggregators write it; synthetic dates and place.
     const states = [
       { date: '2026-07-08T09:10:00Z', status: 'Item arrives at destination airport', carrier: 0, location: 'EXAMPLE CITY, Germany' },
@@ -502,14 +502,14 @@ describe('ParcelsApp result parsing', () => {
     ];
     const json = parseParcelsAppResponse({ carriers: ['CTTYEX'], states }, number, identity(), 'Asia/Shanghai');
     expect(json.events?.map((scan) => [scan.time, scan.local_time])).toEqual([
-      [undefined, '2026-07-08T09:10:00.000'], // neither China's clock nor its place's
+      ['2026-07-08T01:10:00.000Z', undefined], // China's clock, not its place's
       ['2026-07-06T15:40:00.000Z', undefined],
       ['2026-07-05T02:00:00.000Z', undefined],
     ]);
-    expect(json).toMatchObject({ current_stage: 'in_transit', last_update: null });
+    expect(json).toMatchObject({ current_stage: 'in_transit', last_update: '2026-07-08T01:10:00.000Z' });
     const html = parseParcelsAppHtml(rendered(carrierRow('08 Jul 2026', '09:10', 'Item arrives at destination airport', 'CTTYEX')
       + carrierRow('06 Jul 2026', '23:40', 'Departure from the airport of origin domestic', 'CTTYEX')), number, 'Asia/Shanghai');
-    expect(html.events?.map((scan) => scan.time ?? scan.local_time)).toEqual(['2026-07-08T09:10:00.000', '2026-07-06T15:40:00.000Z']);
+    expect(html.events?.map((scan) => scan.time ?? scan.local_time)).toEqual(['2026-07-08T01:10:00.000Z', '2026-07-06T15:40:00.000Z']);
   });
 
   it('keeps a scan at a US military post office on its wall clock', () => {

@@ -136,8 +136,8 @@ step exists for future protocol changes.
   `carrierIdFromName` still treats these brands as ambiguous, so discovery and routing
   are unchanged.
 
-  Three kinds of scan with no zone, and CTTYEX's later scans (below), keep their wall clock
-  in `local_time` instead, with no instant. One names no carrier, or a network that
+  Three kinds of scan with no zone keep their wall clock in `local_time` instead, with no
+  instant. One names no carrier, or a network that
   neither the catalog nor the tables here know ("Example Parcel Co"): nothing says its
   label is an instant. Another names a bare brand whose catalog networks all keep local
   clocks ("DPD Group", "GLS"; Brand zones below): its label is the wall clock of whichever
@@ -489,10 +489,8 @@ step exists for future protocol changes.
   every agency ([TIPSA](../../carriers/tipsa/README.md)), so step 1 reads its Portuguese
   scans on Madrid time too.
 - CTTYEX's tracker prints every row on Beijing time, the rows abroad too
-  ([CTTYEX](../../carriers/cttyex/README.md)). Its own steps in China, from the order data to
-  the flight out, take that catalog zone in step 1. Its later scans ("Item arrives at
-  destination airport") keep their wall clock wherever they are located: nothing ties
-  ParcelsApp's digits for them to the tracker's yet.
+  ([CTTYEX](../../carriers/cttyex/README.md)), so step 1 reads every CTTYEX scan on that
+  catalog zone, an arrival at the destination airport as much as its steps in China.
 - Brand zones: a bare brand does not say which network scanned. The GLS and Hermes
   carriers in the catalog all keep Central European time, which step 4 checks for each
   scan, DST changes included. DPD's do not (DPD UK's, Ireland's, Portugal's and South

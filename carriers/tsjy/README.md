@@ -30,8 +30,9 @@ abroad on a line such as 17FEIA's. Tracked through the lookup the order search o
   time. That is right for 17FEIA's rows from its warehouse in China up to the export declaration,
   which [17FEIA](../17feia/README.md) writes on Beijing time, so on a 17FEIA line those are
   instants. TSJY keeps the row's place but not the country, state and offset that let 17FEIA's
-  own answer date a partner's scan, so the line's other rows keep their wall clocks; the hand-off
-  to `17feia` dates the partner's scans.
+  own answer date a partner's scan. A place that ends with its country, as `Town (DE)`, still
+  dates the scan on that country's clock when it has a single zone, as 17FEIA does. The line's
+  other rows keep their wall clocks; the hand-off to `17feia` dates the partner's scans.
 - The map names TSJY's steps and 17FEIA's milestones as they read in TSJY's journey: 17FEIA's
   order data comes while TSJY still holds the parcel, and its receipt after TSJY's dispatch is
   transit. A later carrier's announcement or receipt is transit too; other relayed wording goes

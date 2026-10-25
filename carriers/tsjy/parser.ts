@@ -4,6 +4,7 @@ import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } fro
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { countryTimeZone, firstOccurrence } from '../../core/time/index.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { normalizeSeventeenFeiaNumber } from '../17feia/parser.js';
@@ -67,15 +68,25 @@ function text(record: Record<string, unknown>, key: string, maxLength = 500): st
 }
 
 /**
- * A row's clock. TSJY's server stamps its own steps with milliseconds: those
- * are instants. A partner's rows come in whole seconds, its wall clocks read
- * on Beijing time, which is right for 17FEIA's rows from its warehouse in
- * China and unknown elsewhere, so the others keep that wall clock.
+ * A row's clock and instant. TSJY's server stamps its own steps with
+ * milliseconds: those are instants. A partner's rows come in whole seconds,
+ * its wall clocks read on Beijing time, which is right for 17FEIA's rows from
+ * its warehouse in China. A partner's place that ends with its country, as
+ * `Town (DE)`, is read on that country's clock when it has one zone, as 17FEIA
+ * reads the same row. The others keep their wall clock.
  */
-function clockOf(stamp: number, warehouse: boolean): { time: string } | { local_time: string } {
+function clockOf(stamp: number, warehouse: boolean, location: string): { at: number; clock: { time: string } | { local_time: string } } {
   const home = DateTime.fromMillis(stamp, { zone: HOME_ZONE });
-  if (stamp % 1000 !== 0 || warehouse) return { time: home.startOf('second').toISO({ suppressMilliseconds: true })! };
-  return { local_time: home.toFormat("yyyy-MM-dd'T'HH:mm:ss") };
+  if (stamp % 1000 !== 0 || warehouse) return { at: stamp, clock: { time: home.startOf('second').toISO({ suppressMilliseconds: true })! } };
+  const local = home.toFormat("yyyy-MM-dd'T'HH:mm:ss");
+  const country = /\(([A-Z]{2})\)$/.exec(location)?.[1];
+  const zone = country ? countryTimeZone(country) : null;
+  const placed = zone ? firstOccurrence(DateTime.fromISO(local, { zone })) : null;
+  // A clock the zone skips is no reading of the place's clock.
+  if (placed?.isValid && placed.toFormat("yyyy-MM-dd'T'HH:mm:ss") === local) {
+    return { at: placed.toMillis(), clock: { time: placed.toISO({ suppressMilliseconds: true }) } };
+  }
+  return { at: stamp, clock: { local_time: local } };
 }
 
 function projectRow(row: unknown, readAt: number, seventeenFeia: boolean): { key: string; at: number; event: CarrierEvent } | null {
@@ -85,17 +96,19 @@ function projectRow(row: unknown, readAt: number, seventeenFeia: boolean): { key
     throw new SchemaError(PROVIDER, 'TSJY returned an invalid scan time');
   }
   const description = text(row, 'event');
-  // A row dated after the read is not a scan yet, and the line's estimated departure never is.
-  if (!description || ESTIMATE.test(description) || stamp > readAt) return null;
+  if (!description || ESTIMATE.test(description)) return null;
   const location = text(row, 'loc', 200);
+  const { at, clock } = clockOf(stamp, seventeenFeia && SEVENTEENFEIA_WAREHOUSE_ROWS.has(normalizeStatusWording(description)), location);
+  // A row dated after the read is not a scan yet, and the line's estimated departure never is.
+  if (at > readAt) return null;
   const staged = tsjyStage(description);
   const event: CarrierEvent = {
-    ...clockOf(stamp, seventeenFeia && SEVENTEENFEIA_WAREHOUSE_ROWS.has(normalizeStatusWording(description))),
+    ...clock,
     description,
     ...(location ? { location } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };
-  return { key: JSON.stringify([stamp, description, location]), at: stamp, event };
+  return { key: JSON.stringify([stamp, description, location]), at, event };
 }
 
 /** The line's number, when a line in the table or one carrier's high-confidence rule claims it. */

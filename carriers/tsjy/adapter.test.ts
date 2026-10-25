@@ -112,6 +112,19 @@ describe('TSJY HTTP adapter', () => {
     expect(result.delivered_at).toBeUndefined();
   });
 
+  it('dates a relayed scan on its country’s clock where its place ends with a single-zone country', () => {
+    const result = parseTsjy(changed('relayed-journey', (order) => {
+      order.trackList[0]!.loc = 'Sampleburg (DE)';
+      order.trackList[1]!.loc = 'Sampleburg (US)';
+    }), JOURNEY, LATER);
+    expect(result.events![0]).toMatchObject({ time: '2026-03-19T17:26:00+01:00', location: 'Sampleburg (DE)', stage: 'delivered' });
+    expect(result.events![0]!.local_time).toBeUndefined();
+    expect(result).toMatchObject({ last_update: '2026-03-19T17:26:00+01:00', delivered_at: '2026-03-19T17:26:00+01:00' });
+    // A country with several zones settles none.
+    expect(result.events![1]).toMatchObject({ local_time: '2026-03-19T08:03:00', location: 'Sampleburg (US)' });
+    expect(result.events![1]!.time).toBeUndefined();
+  });
+
   it('holds back rows dated after the read', () => {
     const result = parseTsjy(fixture('relayed-journey'), JOURNEY, Date.parse('2026-03-16T20:00:00+08:00'));
     expect(result).toMatchObject({ current_stage: 'in_transit', last_status_text: 'Flight Arrived at Clearance Port.', last_update_local: '2026-03-16T15:30:00' });

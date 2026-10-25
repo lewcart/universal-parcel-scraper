@@ -91,10 +91,11 @@ export interface SameInstantIdentityPolicy {
    */
   readonly matchWallClock?: boolean;
   /**
-   * The source answers from two feeds that date one scan apart, one to the
-   * minute and one to the second, in their own wording. A scan takes over a
-   * stored row less than a minute away that `matches` accepts, when no event
-   * of the batch carries that row and the match is unique both ways.
+   * The source answers from two feeds, or an earlier release read it from
+   * another, that date one scan apart, one to the minute and one to the
+   * second, in their own wording. A scan takes over a stored row less than a
+   * minute away that `matches` accepts, when no event of the batch carries
+   * that row and the match is unique both ways.
    */
   readonly matchWithinMinute?: boolean;
 }

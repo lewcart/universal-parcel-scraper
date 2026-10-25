@@ -377,7 +377,8 @@ with no policy of its own gets one that matches only that way or by the same wor
 location at the same instant. A policy's `matchWithinMinute` serves a source whose feeds
 date one scan apart, one to the minute and one to the second, in their own wording: a scan
 takes over a row less than a minute away that the policy's comparison accepts, as DPD
-Germany's app service and guest API do. A universal provider's scan has no code to
+Germany's app service and guest API do, or Chronopost's service and the La Poste feed
+earlier releases read it from. A universal provider's scan has no code to
 relabel by: the app leaves it out as a copy of its stored row when its instant moved by whole
 quarter hours, up to 14 hours, with the same wording, and that row keeps the old instant
 until a re-key.

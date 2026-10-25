@@ -106,6 +106,56 @@ describe('Chronopost direct tracking', () => {
     expect(takenOver).toEqual(["Service d'avisage", 'CHRONOPOST NETWORKS', 'Web Services']);
   });
 
+  it("lets a scan take over the row an earlier release stored from La Poste's feed, less than a minute away", () => {
+    const office = (code: string, at: string, label: string, officeLabel = 'EXAMPLE HUB CHRONOPOST') => `<events><code>${code}</code>`
+      + `<eventDate>${at}</eventDate><eventLabel>${label}</eventLabel><officeLabel>${officeLabel}</officeLabel></events>`;
+    const [preparation, sorting, transit, round, notice, instruction, delivery] = [
+      "Colis en cours de préparation chez l'expéditeur", "Tri effectué dans l'agence de départ", "Colis en cours d'acheminement",
+      'Colis en cours de livraison par le livreur', 'Destinataire informé par SMS ou mail', 'Instruction de livraison reçue',
+      'Livraison effectuée'];
+    const result = parseChronopostTrackingXml(history(
+      office('DC', '2026-01-01T09:14:51+01:00', preparation, 'Web Services'),
+      office('SC', '2026-01-01T17:32:19+01:00', sorting),
+      office('TS', '2026-01-01T17:32:20+01:00', transit),
+      office('TS', '2026-01-02T04:10:05+01:00', transit),
+      office('O', '2026-01-02T04:10:40+01:00', transit),
+      office('TA', '2026-01-02T08:00:00+01:00', round),
+      office('CL', '2026-01-02T08:00:00+01:00', instruction),
+      office('SM', '2026-01-02T08:00:00+01:00', notice, "Service d'avisage"),
+      office('D', '2026-01-02T11:59:46+01:00', delivery),
+    ), number);
+    const scans = (result.events ?? []).map(event => ({ time: event.time ?? '', stage: event.stage ?? '',
+      description: event.description ?? '', location: event.location ?? '', providerCode: event.provider_code ?? '' }));
+    expect(scans.map(scan => scan.providerCode)).toEqual(['D', 'SM', 'CL', 'TA', 'O', 'TS', 'TS', 'SC', 'DC']);
+    // La Poste's feed gave the same scans to the minute, under its codes and stages, with no office.
+    const copy = (providerCode: string, time: string, description: string, stage: string) => ({ time, stage, description, location: '', providerCode });
+    const stored = [
+      copy('DR1', '2026-01-01T09:14:00+01:00', preparation, 'registered'),
+      copy('ET1', '2026-01-01T17:32:00+01:00', sorting, 'in_transit'),
+      copy('ET1', '2026-01-01T17:32:00+01:00', transit, 'in_transit'),
+      copy('ET1', '2026-01-02T04:10:00+01:00', transit, 'in_transit'),
+      copy('MD1', '2026-01-02T08:00:00+01:00', round, 'out_for_delivery'),
+      copy('MD2', '2026-01-02T08:00:00+01:00', instruction, 'in_transit'),
+      copy('DI1', '2026-01-02T11:59:00+01:00', delivery, 'delivered'),
+      // Another notice, stored from Chronopost's own reply, which the history no longer lists.
+      copy('SM', '2026-01-02T08:00:30+01:00', notice, 'out_for_delivery'),
+    ];
+    const policy = sameInstantIdentityPolicy('chronopost', { supportsScanMatching: true })!;
+    expect(policy).toMatchObject({ matchEachScan: true, matchWithinMinute: true });
+    // As the app matches: rows less than a minute away, each scan's one row matching no other scan.
+    const near = (scan: typeof stored[number], row: typeof stored[number]) =>
+      Math.abs(Date.parse(scan.time) - Date.parse(row.time)) < 60_000 && policy.matches!(scan, row);
+    const takenOver = scans.map((scan) => {
+      const rows = stored.filter(row => near(scan, row));
+      return rows.length === 1 && scans.filter(other => near(other, rows[0]!)).length === 1 ? stored.indexOf(rows[0]!) : null;
+    });
+    // Both hub scans at 04:10 could be the row's, so neither takes it, and the notice is no copy.
+    expect(takenOver).toEqual([6, null, 5, 4, null, null, 2, 1, 0]);
+    expect(policy.matches!(scans[0]!, { ...stored[6]!, location: 'EXAMPLE TOWN' })).toBe(false);
+    expect(policy.matches!(scans[0]!, { ...stored[6]!, description: 'Livraison effectuée en relais' })).toBe(false);
+    expect(policy.matches!({ ...scans[0]!, providerCode: 'DI1' }, stored[6]!)).toBe(false);
+  });
+
   it('keeps delivery when a later notification records activity', () => {
     const xml = fixture.replace('<code>TP </code>', '<code>DL </code>')
       .replace(/(<code>DL <\/code>[\s\S]*?<eventLabel>)[^<]+/, '$1Livraison effectuée');

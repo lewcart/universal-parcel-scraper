@@ -51,7 +51,11 @@ scan abroad. Office labels that name a service rather than a place give none:
 "Web Services" on the shipper's preparation, "Service d'avisage" on
 notifications and "CHRONOPOST NETWORKS" abroad. The app's scan-identity policy
 lets a scan stored with one of them keep its row once it loses it, provided its
-instant, wording and known stage agree.
+instant, wording and known stage agree. Earlier releases read Chronopost's scans
+from La Poste's feed, to the minute, under La Poste's codes and without an
+office. A scan in the same words less than a minute from such a row takes it
+over, whatever stage either map read, unless another scan of the history could
+claim it.
 
 Scans retain their supplied offsets and seconds, except at a partner's depot in a
 country on another clock than Paris: Chronopost gives such a scan the depot's wall

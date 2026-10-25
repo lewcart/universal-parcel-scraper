@@ -39,19 +39,37 @@ export function recognizedNumberInText(raw: string): string | undefined {
 
 // The second word of a label. "No" and "ID" also start numbers, so they belong
 // to the label only when they stand apart from what follows.
-const LABEL_SUFFIX = String.raw`(?:numbers?(?![A-Z])|no\.|(?:no|id)(?![A-Z0-9.]))`;
+const LABEL_SUFFIX = String.raw`(?:numbers?(?!\p{L})|no\.|(?:no|id)(?![\p{L}0-9.]))`;
+// Other languages name the parcel or its tracking, with a word for its number
+// before or after: "numéro de suivi", "Sendung Nr.", "número de envío", "numer
+// przesyłki", or join the two: "Sendungsnummer", "zendingnummer".
+const PARCEL_WORDS = String.raw`suivi|colis|envoi|sendung|paket|pakket|zending|seguimiento|env[ií]o|paquete`
+  + String.raw`|tracciamento|spedizione|pacco|rastreio|rastreamento|encomenda|przesy[lł]k[ai]|paczk[ai]`;
+const NUMBER_WORDS = String.raw`num[eé]ro|n[uú]mero|numer|nummer|nr\.?|n\.?\s?[°º]`;
 const LABELLED_NUMBER = new RegExp(
-  String.raw`(?:track(?:ing)?(?:\s*${LABEL_SUFFIX}|(?![A-Z]))`
-  + String.raw`|(?:parcel|shipment)(?:\s+(?:tracking(?![A-Z])|${LABEL_SUFFIX})|(?![A-Z])))`
-  + String.raw`(?:\s+is(?![A-Z0-9]))?\s*[:#-]?\s*`
+  String.raw`(?:track(?:ing)?(?:\s*${LABEL_SUFFIX}|(?!\p{L}))`
+  + String.raw`|(?:parcel|shipment)(?:\s+(?:tracking(?!\p{L})|${LABEL_SUFFIX})|(?!\p{L}))`
+  + String.raw`|(?:(?:${NUMBER_WORDS})\s*(?:(?:de|du|di|del|do|da)\s+|d')?)?(?:${PARCEL_WORDS})(?!\p{L})(?:\s*(?:${NUMBER_WORDS}))?`
+  + String.raw`|\p{L}*(?:sendungs|paket|tracking|zending)nummer)`
+  + String.raw`(?:\s+(?:is|est|es|ist|lautet|è|é|jest)(?:\s+(?:le|el|il|o))?(?![\p{L}0-9]))?\s*[:#-]?\s*`
   // The token holds a digit, so a label followed by a plain word does not end the search.
   + String.raw`((?=[A-Z0-9.-]{0,39}\d)[A-Z0-9][A-Z0-9.-]{3,39})`,
-  'i',
+  'iu',
 );
+// A word that offers a second number: "tracking 1234567899 or 9987654321".
+export const ALTERNATIVE_WORDS = 'or|oder|ou|o|of|lub';
+const ALTERNATIVE_NUMBER = new RegExp(String.raw`^\s+(?:${ALTERNATIVE_WORDS})\s+[A-Z0-9.-]*\d`, 'i');
+const DATE = /^\d{1,2}([./-])\d{1,2}\1\d{2,4}$/;
 
-/** Last resort: a number introduced by a "tracking number:" style label. */
+/**
+ * Last resort: a number introduced by a "tracking number:" style label. A
+ * label that offers two numbers names neither, and a date is no number.
+ */
 export function keywordNumberInText(raw: string): string | undefined {
+  const match = LABELLED_NUMBER.exec(raw);
+  if (!match || ALTERNATIVE_NUMBER.test(raw.slice(match.index + match[0].length))) return undefined;
   // A sentence can end right after its number.
-  const candidate = LABELLED_NUMBER.exec(raw)?.[1]?.replace(/[.-]+$/, '');
+  const candidate = match[1]!.replace(/[.-]+$/, '');
+  if (DATE.test(candidate)) return undefined;
   return candidate && validTrackingNumberInText(candidate) ? candidate : undefined;
 }

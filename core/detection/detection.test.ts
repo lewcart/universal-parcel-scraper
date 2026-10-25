@@ -464,6 +464,26 @@ describe('the detection engine', () => {
     expect(parseTrackingInput(text)).toMatchObject({ trackingNumber: '12345678901', source: 'text', confidence: 'low' });
   });
 
+  it.each([
+    'Votre numéro de suivi est le 12345678.',
+    'Votre colis n°12345678 arrive demain',
+    'Ihre Sendungsnummer lautet 12345678.',
+    'Dein Paket mit der Sendungsnummer 12345678 kommt morgen',
+    'Su número de seguimiento es 12345678',
+    'Il tuo numero di tracciamento è 12345678',
+    'O código de rastreio é 12345678',
+    'Twój numer przesyłki: 12345678 jest w drodze',
+    'Je zending 12345678 is onderweg',
+  ])('reads the number a label introduces in other languages: %s', (text) => {
+    expect(parseTrackingInput(text)).toMatchObject({ trackingNumber: '12345678', source: 'text', confidence: 'low' });
+  });
+
+  it('takes no number from a label that offers two, nor a date', () => {
+    for (const text of ['Tracking number 5555666677 or 7777888899', 'Sendung 12.10.2026', 'Votre colis du 12/10/2026']) {
+      expect(parseTrackingInput(text)).toMatchObject({ trackingNumber: '', source: 'none' });
+    }
+  });
+
   it('keeps a label word attached to the number, and takes no word for a number', () => {
     expect(parseTrackingInput('Tracking NO123456789').trackingNumber).toBe('NO123456789');
     expect(parseTrackingInput('tracking notable1234').trackingNumber).toBe('notable1234');
@@ -476,6 +496,7 @@ describe('the detection engine', () => {
     ['Abholcode: 123456', '123456'],
     ['Pickup code 123456', '123456'],
     ['Sendungsnummer 0034 0434 1234 5678', '0034 0434 1234 5678'],
+    ['Tracking number: 0034 0434 1234 5678', '0034 0434 1234 5678'],
     ['Nr. 12345678', '12345678'],
     ['N° de suivi 12345678', '12345678'],
     ['N°12345678', '12345678'],
@@ -490,6 +511,12 @@ describe('the detection engine', () => {
     ['Numer przesyłki 12345678', '12345678'],
   ])('leaves a label word out of a short entry: %s', (input, number) => {
     expect(parseTrackingInput(input)).toMatchObject({ trackingNumber: number, source: 'text' });
+  });
+
+  it('reads no entry with a word in it whole', () => {
+    expect(parseTrackingInput('Suivi colis 12345678')).toMatchObject({ trackingNumber: '12345678', source: 'text' });
+    expect(parseTrackingInput('Ihre Bestellung 12345678')).toMatchObject({ trackingNumber: '', source: 'none' });
+    expect(parseTrackingInput('1Z 999 AA1 01 2345 6784')).toMatchObject({ carrier: 'ups', source: 'number' });
   });
 
   it('takes no other number a label names for the tracking number', () => {

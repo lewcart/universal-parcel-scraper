@@ -10,7 +10,7 @@
 import type { CarrierId } from '../../generated/catalog.js';
 import { CARRIER_DEFINITIONS } from '../catalog/definitions.js';
 import { TRACKING_LINK_RULES, matchesDomain, type TrackingLinkRule } from '../catalog/linkRules.js';
-import { keywordNumberInText, recognizedNumberInText } from './candidates.js';
+import { ALTERNATIVE_WORDS, keywordNumberInText, recognizedNumberInText } from './candidates.js';
 import { detectCarrierMatch } from './detect.js';
 import { validTrackingNumber } from './valid.js';
 import type { TrackingInputMatch } from './types.js';
@@ -55,8 +55,8 @@ function trackingMatch(
   return { trackingNumber, source, ...detectCarrierMatch(trackingNumber) };
 }
 
-// A word that offers a second number: "1234567899 or 9987654321" holds two.
-const ALTERNATIVE = /^(?:or|oder|ou|o|of|lub)$/i;
+// "1234567899 or 9987654321" holds two numbers.
+const ALTERNATIVE = new RegExp(`^(?:${ALTERNATIVE_WORDS})$`, 'i');
 // A word naming the code after it, alone or after another word ("Pickup code").
 // German and Dutch join theirs into one word: Abholcode, Sendungsnummer. French,
 // Spanish, Italian and Portuguese name what the number tracks after a preposition
@@ -67,12 +67,17 @@ const TRACKED = 'suivi|seguimiento|tracciamento|rastreio|rastreamento|tracking';
 const LABEL = new RegExp('^(?:\\p{L}+\\s+)?(?:(?:\\p{L}*(?:code|nummer)|number|numer|numero|número|numéro|nr|n\\.?[°º]|kod|codice|codigo|código)'
   + `(?:\\s+(?:(?:de|du|del|di|do|da)\\s+(?:${TRACKED}|colis|envío|envio|spedizione)|przesyłki|paczki))?|${TRACKED})`
   + '(?:[.:#\\s]+|(?<=[°º]))(?=\\d)', 'iu');
+// A word among the groups of an entry. The letters a number prints apart are
+// fewer, "RR 123 456 789 FR", and GLS's lettered Track IDs stand alone.
+const WORD = /(?:^|\s)\p{L}{5,}(?=\s|$)/u;
+const holdsWord = (entry: string) => /\s/.test(entry) && WORD.test(entry);
 
 /**
  * The number a short entry holds whole, groups a label prints apart included,
  * as in "1Z 999 AA1 01 2345 6784". A word offering a second number leaves it
  * unread, and a label word before the digits is no part of it, unless a
- * carrier confidently claims the two together.
+ * carrier confidently claims the two together. Nor is any other word: "Suivi
+ * colis 12345678" holds no number whole.
  */
 function numberEnteredWhole(input: string): { number: string; labelled: boolean } | undefined {
   if (input.includes('://')) return undefined;
@@ -82,12 +87,13 @@ function numberEnteredWhole(input: string): { number: string; labelled: boolean 
     return groups;
   }, ['']);
   if (alternatives.filter((group) => /\d/.test(group)).length > 1) return undefined;
+  const claimed = detectCarrierMatch(input).confidence === 'high';
   const label = LABEL.exec(input);
-  if (label && detectCarrierMatch(input).confidence !== 'high') {
+  if (label && !claimed) {
     const number = input.slice(label[0].length);
-    if (validTrackingNumber(number)) return { number, labelled: true };
+    if (validTrackingNumber(number) && !holdsWord(number)) return { number, labelled: true };
   }
-  return validTrackingNumber(input) ? { number: input, labelled: false } : undefined;
+  return validTrackingNumber(input) && (claimed || !holdsWord(input)) ? { number: input, labelled: false } : undefined;
 }
 
 /**
@@ -166,11 +172,12 @@ export function parseTrackingInput(raw: string): TrackingInputMatch {
     return trackingMatch(recognized, input === recognized ? 'number' : 'text');
   }
 
-  const keywordNumber = keywordNumberInText(input);
-  if (keywordNumber) return trackingMatch(keywordNumber, 'text');
-
+  // An entry that holds its number whole keeps the groups it prints apart: "Sendungsnummer 0034 0434 …".
   const whole = numberEnteredWhole(input);
   if (whole) return trackingMatch(whole.number, whole.labelled ? 'text' : 'number');
+
+  const keywordNumber = keywordNumberInText(input);
+  if (keywordNumber) return trackingMatch(keywordNumber, 'text');
 
   return {
     trackingNumber: '',

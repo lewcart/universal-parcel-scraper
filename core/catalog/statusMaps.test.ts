@@ -1207,6 +1207,18 @@ describe('status map answers', () => {
     expect(answer('cne', null, 'Synthetic scan')).toEqual(unknown);
   });
 
+  it("answers DHL eCommerce Poland by its history page's English and Polish wording", () => {
+    expect(answer('dhl-ecommerce-pl', null, 'The shipment has been dropped off at depot by the sender.')).toEqual(mapped('accepted'));
+    expect(answer('dhl-ecommerce-pl', null, 'Przesyłka dotarła do oddziału nadawczego DHL Parcel.')).toEqual(mapped('accepted'));
+    expect(answer('dhl-ecommerce-pl', null, 'The shipment is handled in Sorting Center')).toEqual(mapped('in_transit'));
+    expect(answer('dhl-ecommerce-pl', null, 'Przesyłka przekazana kurierowi do doręczenia')).toEqual(mapped('out_for_delivery'));
+    expect(answer('dhl-ecommerce-pl', null, 'Delivered to customer.')).toEqual(mapped('delivered'));
+    expect(answer('dhl-ecommerce-pl', null, 'Przesyłka doręczona do Odbiorcy.')).toEqual(mapped('delivered'));
+    // The API's current status is no scan.
+    expect(answer('dhl-ecommerce-pl', null, 'Parcel has been delivered')).toEqual(unknown);
+    expect(answer('dhl-ecommerce-pl', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

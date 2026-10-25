@@ -1,25 +1,14 @@
 import { BudgetExceededError, ChallengeError, IndeterminateError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import type { Stage } from '../../core/status/index.js';
 import { calendarDay } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
 import { isRecord } from '../../core/types.js';
+import { dhlPolandScanStage } from './status.js';
 
 const PROVIDER = 'DHL eCommerce Poland';
 const ENDPOINT = 'https://sprawdz.dhl.com.pl/';
 const MAX_BODY = 300_000;
-
-const STAGES: readonly [RegExp, Stage][] = [
-  [/^(?:Delivered to customer\.|Przesyłka doręczona do Odbiorcy\.)$/i, 'delivered'],
-  [/^(?:With delivery courier|Przesyłka przekazana kurierowi do doręczenia)\.?$/i, 'out_for_delivery'],
-  [/^(?:The shipment is in transit to the delivery depot\.|Przesyłka w transporcie do oddziału doręczającego\.)$/i, 'in_transit'],
-  [/^(?:The shipment has arrives at sorting center\.|Przesyłka została przyjęta w centrum sortowania\.)$/i, 'in_transit'],
-  [/^(?:The shipment is processed at depot of origin country\.|Przesyłka jest obsługiwana w oddziale nadającym\.)$/i, 'in_transit'],
-  [/^(?:The shipment has been dropped off at depot by the sender\.|Przesyłka została nadana przez nadawcę w oddziale DHL\.)$/i, 'accepted'],
-  [/^(?:The shipment is handled in Sorting Center|Przesyłka jest obsługiwana w Centrum Sortowania)\.?$/i, 'in_transit'],
-  [/^(?:The shipment has reached DHL terminal\.|Przesyłka dotarła do oddziału nadawczego DHL Parcel\.)$/i, 'accepted'],
-];
 
 /** Facility clocks remain local: international rows do not identify their zone. */
 export function parseDhlPolandHistory(payload: unknown, waybill: string): CarrierResult {
@@ -39,7 +28,7 @@ export function parseDhlPolandHistory(payload: unknown, waybill: string): Carrie
     if (!day || !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(row.time)) throw new SchemaError(PROVIDER, 'DHL Poland returned an invalid scan clock');
     const description = clean(row.description, 500).replace(/\s*(?:The (?:shipment|parcel) (?:was )?received by|Przesyłka odebrana przez)\b[\s\S]*$/i, '').trim();
     if (!description) throw new SchemaError(PROVIDER, 'DHL Poland returned an empty scan');
-    const stage = STAGES.find(([pattern]) => pattern.test(description))?.[1];
+    const stage = dhlPolandScanStage(description);
     const location = clean(row.location, 200);
     return { local_time: `${day}T${row.time}:00`, description,
       ...(location ? { location } : {}), ...(stage ? { stage, stage_source: 'carrier_map' } : {}) };

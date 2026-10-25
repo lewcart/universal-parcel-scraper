@@ -7,6 +7,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 interface Entry { wording: string; stage?: Stage }
@@ -47,3 +48,26 @@ export function dhlEcommercePlStatus(code: string, timelineStep: unknown, text =
 export function statusForStage(stage: Stage): CarrierStatus {
   return STATUSES[stage];
 }
+
+// The history page's scan wording, in English or Polish, with the stage each names.
+const SCAN_STAGES: readonly [RegExp, Stage][] = [
+  [/^(?:Delivered to customer\.|Przesyłka doręczona do Odbiorcy\.)$/i, 'delivered'],
+  [/^(?:With delivery courier|Przesyłka przekazana kurierowi do doręczenia)\.?$/i, 'out_for_delivery'],
+  [/^(?:The shipment is in transit to the delivery depot\.|Przesyłka w transporcie do oddziału doręczającego\.)$/i, 'in_transit'],
+  [/^(?:The shipment has arrives at sorting center\.|Przesyłka została przyjęta w centrum sortowania\.)$/i, 'in_transit'],
+  [/^(?:The shipment is processed at depot of origin country\.|Przesyłka jest obsługiwana w oddziale nadającym\.)$/i, 'in_transit'],
+  [/^(?:The shipment has been dropped off at depot by the sender\.|Przesyłka została nadana przez nadawcę w oddziale DHL\.)$/i, 'accepted'],
+  [/^(?:The shipment is handled in Sorting Center|Przesyłka jest obsługiwana w Centrum Sortowania)\.?$/i, 'in_transit'],
+  [/^(?:The shipment has reached DHL terminal\.|Przesyłka dotarła do oddziału nadawczego DHL Parcel\.)$/i, 'accepted'],
+];
+
+/** The stage of one history scan's wording, once the recipient's acknowledgement is cut off. */
+export function dhlPolandScanStage(description: string): Stage | undefined {
+  return SCAN_STAGES.find(([pattern]) => pattern.test(description))?.[1];
+}
+
+/**
+ * What the map says about one scan: the history page's wording, as the browser step reads it.
+ * The API's current status is a summary, not a scan, so its wording stays open.
+ */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => dhlPolandScanStage(wording), gaps: [] };

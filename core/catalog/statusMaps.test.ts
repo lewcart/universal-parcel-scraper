@@ -1188,6 +1188,25 @@ describe('status map answers', () => {
     expect(answer('asendia', null, 'Synthetic scan')).toEqual(unknown);
   });
 
+  it("answers CNE by its labels, and by its state code where no wording rule reads the label", () => {
+    expect(answer('cne', '1', 'Parcel Infomation Received')).toEqual(mapped('registered'));
+    expect(answer('cne', null, 'Picked Up by Courier')).toEqual(mapped('accepted'));
+    expect(answer('cne', '1', 'Arrived at Transit Airport')).toEqual(mapped('in_transit'));
+    expect(answer('cne', '1', 'The shipment is picked up by customs broker')).toEqual(mapped('customs'));
+    expect(answer('cne', '1', 'On Board with Courier；Synthetic explanation')).toEqual(mapped('out_for_delivery'));
+    expect(answer('cne', '9', 'Sorting failed []')).toEqual(mapped('exception'));
+    expect(answer('cne', '8', "It was returned to customer's address by CNE")).toEqual(mapped('returned'));
+    // A partner's acceptance once CNE codes the parcel as shipping, and wording no rule reads, take the code.
+    expect(answer('cne', '1', 'Accepted at USPS Origin Facility')).toEqual(mapped('in_transit'));
+    expect(answer('cne', '3', 'Synthetic scan')).toEqual(mapped('delivered'));
+    expect(answer('cne', '5', 'Synthetic scan')).toEqual(mapped('customs'));
+    // Wording only the shared rules read, and a code that establishes nothing, stay open.
+    expect(answer('cne', null, 'Accepted at USPS Origin Facility')).toEqual(unknown);
+    expect(answer('cne', '3', 'Delivered')).toEqual(unknown);
+    expect(answer('cne', '4', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('cne', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

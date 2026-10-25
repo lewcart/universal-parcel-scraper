@@ -4,7 +4,7 @@ import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } fro
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { classifyWording, languageStageStatus, type Stage } from '../../core/status/index.js';
 import { explicitOffsetTime, isoTime } from '../../core/time/index.js';
-import { clean, cleanScalar } from '../../core/transport/index.js';
+import { clean, cleanScalar } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 
 const PROVIDER = 'CNE Express';
@@ -76,7 +76,7 @@ function scanClock(value: string, label: string): { time?: string; local_time?: 
 // Last-mile partners write "label；explanation".
 const labelOf = (description: string) => description.split('；')[0]!.trim() || description;
 
-function stageOf(description: string, code: string): { stage: Stage; source: string } | undefined {
+export function cneScanStage(description: string, code: string): { stage: Stage; source: string } | undefined {
   // The explanation can announce a later step ("It will be out for delivery"), so only the label is read.
   const label = labelOf(description);
   const exact = WORDING_ANY_CASE.get(description.toLowerCase()) ?? WORDING_ANY_CASE.get(label.toLowerCase());
@@ -96,7 +96,7 @@ function scan(raw: unknown): CarrierEvent {
   if (!isRecord(raw) || !clean(raw.details, 1000)) throw new SchemaError(PROVIDER, 'CNE returned an invalid movement');
   const description = clean(raw.details, 1000), clock = clean(raw.date, 64);
   const location = clean(raw.place, 200), code = cleanScalar(raw.state);
-  const mapped = stageOf(description, code);
+  const mapped = cneScanStage(description, code);
   return { description, ...(location ? { location } : {}), ...scanClock(clock, labelOf(description)),
     ...(mapped ? { stage: mapped.stage, stage_source: mapped.source } : {}),
     ...(code ? { provider_code: code } : {}) };

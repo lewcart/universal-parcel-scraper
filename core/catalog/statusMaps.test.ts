@@ -927,6 +927,31 @@ describe('status map answers', () => {
     expect(answer('landmark-global', null, 'A partner wording')).toEqual(unknown);
   });
 
+  it("answers Pos Malaysia by a summary's own wording, and the delivery its parcel status adds", () => {
+    expect(answer('pos-malaysia', null, 'Collected')).toEqual(mapped('accepted'));
+    expect(answer('pos-malaysia', 'SYNTHETIC', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('pos-malaysia', null, 'Your parcel has been presented to the Customs Authority for inspection')).toEqual(mapped('customs'));
+    expect(answer('pos-malaysia', 'DELIVERED', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('pos-malaysia', 'SYNTHETIC', 'Synthetic process text')).toEqual(unknown);
+  });
+
+  it('answers Singapore Post by its event code', () => {
+    expect(answer('singapore-post', 'IR', 'Synthetic scan')).toEqual(mapped('registered'));
+    expect(answer('singapore-post', 'HC', 'Synthetic scan')).toEqual(mapped('customs'));
+    expect(answer('singapore-post', 'AL', 'Synthetic scan')).toEqual(mapped('out_for_delivery'));
+    expect(answer('singapore-post', 'FD', 'Synthetic scan')).toEqual(mapped('delivered'));
+    expect(answer('singapore-post', 'ZZ', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('singapore-post', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
+  it("answers The Courier Guy by its status code, and a copy by the wording the parser writes for one", () => {
+    expect(answer('the-courier-guy', 'collected', 'Collected')).toEqual(mapped('accepted'));
+    expect(answer('the-courier-guy', 'in-locker', 'In locker')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('the-courier-guy', 'delivered', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('the-courier-guy', null, 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('the-courier-guy', 'synthetic-code', 'Synthetic code')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

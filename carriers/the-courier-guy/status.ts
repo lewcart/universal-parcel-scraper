@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const groups: Array<[string[], ClassifiedStatus]> = [
   [['submitted', 'pending-approval', 'collection-assigned', 'awaiting-dropoff', 'collection-accepted'], { status: 'pending', stage: 'registered' }],
@@ -24,3 +25,9 @@ export const HIDDEN_COURIER_GUY_CODES = new Set(['bob-box-reservation-failed', '
 export function courierGuyWording(code: string): string {
   return code === 'delivered' ? 'Delivered' : code.replaceAll('-', ' ').replace(/^./, letter => letter.toUpperCase());
 }
+
+/** What the map says about one scan: its status code, else the wording the parser writes for one. */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => courierGuyStatus(code ?? wording.replaceAll(' ', '-'))?.stage,
+  gaps: [],
+};

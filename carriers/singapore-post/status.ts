@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const CODES = new Map<string, ClassifiedStatus>([
   ['HC', { status: 'in_transit', stage: 'customs' }],
@@ -20,3 +21,6 @@ const CODES = new Map<string, ClassifiedStatus>([
 export function singaporePostStatus(code: string): ClassifiedStatus | undefined {
   return CODES.get(code);
 }
+
+/** What the map says about one scan: its event code, as the adapter stores it. */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? singaporePostStatus(code)?.stage : undefined), gaps: [] };

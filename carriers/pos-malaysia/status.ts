@@ -10,7 +10,8 @@
  * stage. The fixed labels come from the official tracking SPA's sample data
  * and identity-bound tracking responses.
  */
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const SUMMARY_STATUS: Record<string, ClassifiedStatus> = {
   'Delivery completed': { status: 'delivered', stage: 'delivered' },
@@ -42,3 +43,15 @@ export function classifyPosMalaysiaStatus(summary: string): ClassifiedStatus | n
 export function isMappedPosMalaysiaSummary(summary: string): boolean {
   return Object.hasOwn(SUMMARY_STATUS, summary);
 }
+
+const SUMMARY_STAGE = new Map<string, Stage>(Object.entries(SUMMARY_STATUS).map(([summary, { stage }]) => [normalizeStatusWording(summary), stage]));
+
+/**
+ * What the map says about one scan. Its summary stages it, and the stored scan keeps the summary
+ * only when the row has no longer process text, so only a summary's own wording stages a scan;
+ * the delivery the parcel's status adds reads "Delivered".
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code === 'DELIVERED' && wording === 'delivered' ? 'delivered' : SUMMARY_STAGE.get(wording)),
+  gaps: [],
+};

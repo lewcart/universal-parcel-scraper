@@ -416,6 +416,7 @@ import { statusMap as pittOhio } from '../../carriers/pitt-ohio/status.js';
 import { statusMap as planzer } from '../../carriers/planzer/status.js';
 import { statusMap as pocztaPolska } from '../../carriers/poczta-polska/status.js';
 import { statusMap as posIndonesia } from '../../carriers/pos-indonesia/status.js';
+import { statusMap as posMalaysia } from '../../carriers/pos-malaysia/status.js';
 import { statusMap as postHaste } from '../../carriers/post-haste/status.js';
 import { statusMap as postLuxembourg } from '../../carriers/post-luxembourg/status.js';
 import { statusMap as postaFaroe } from '../../carriers/posta-faroe/status.js';
@@ -484,6 +485,7 @@ import { statusMap as shiprocket } from '../../carriers/shiprocket/status.js';
 import { statusMap as shouwu } from '../../carriers/shouwu/status.js';
 import { statusMap as shreeAnjani } from '../../carriers/shree-anjani/status.js';
 import { statusMap as shreeMaruti } from '../../carriers/shree-maruti/status.js';
+import { statusMap as singaporePost } from '../../carriers/singapore-post/status.js';
 import { statusMap as skroutzLastMile } from '../../carriers/skroutz-last-mile/status.js';
 import { statusMap as skyking } from '../../carriers/skyking/status.js';
 import { statusMap as skynetSa } from '../../carriers/skynet-sa/status.js';
@@ -537,6 +539,7 @@ import { statusMap as teleship } from '../../carriers/teleship/status.js';
 import { statusMap as tfmExpress } from '../../carriers/tfm-express/status.js';
 import { statusMap as tforceFreight } from '../../carriers/tforce-freight/status.js';
 import { statusMap as thailandPost } from '../../carriers/thailand-post/status.js';
+import { statusMap as theCourierGuy } from '../../carriers/the-courier-guy/status.js';
 import { statusMap as thhy } from '../../carriers/thhy/status.js';
 import { statusMap as tiki } from '../../carriers/tiki/status.js';
 import { statusMap as tipsa } from '../../carriers/tipsa/status.js';
@@ -661,7 +664,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pathao-courier': pathaoCourier, pbt, 'pcp-express': pcpExpress, 'pcs-logistics-vn': pcsLogisticsVn, 'pdn-express': pdnExpress,
   'pdq-chile': pdqChile, pecom, 'pfc-express': pfcExpress, phlpost, 'pilot-freight': pilotFreight,
   'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, planzer, 'poczta-polska': pocztaPolska, 'pos-indonesia': posIndonesia,
-  'post-haste': postHaste, 'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
+  'pos-malaysia': posMalaysia, 'post-haste': postHaste, 'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, 'poste-italiane': posteItaliane, postex, posti, postlogistics, 'postmedia-parcel-services': postmediaParcelServices,
   postnord, posturinn, ppl, 'precision-deliveries': precisionDeliveries,
@@ -670,7 +673,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
   'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sendle, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket, shouwu,
-  'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'skroutz-last-mile': skroutzLastMile,
+  'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'singapore-post': singaporePost, 'skroutz-last-mile': skroutzLastMile,
   skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
@@ -678,7 +681,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, sunyou, swiftx, 'swiss-post': swissPost, 'swiss-post-cargo': swissPostCargo,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, techlink, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
-  'thailand-post': thailandPost, thhy, tiki, tipsa, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,
+  'thailand-post': thailandPost, 'the-courier-guy': theCourierGuy, thhy, tiki, tipsa, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,
   trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
   'ubi-smart-parcel': ubiSmartParcel,
   'united-delivery-service': unitedDeliveryService, uniuni, upaya, ups, urbano, urvaam, usps,

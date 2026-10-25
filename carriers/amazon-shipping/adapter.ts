@@ -313,7 +313,11 @@ export function parseAmazonShippingTrackingResponse(payload: unknown, zone: stri
   const newestCode = parsedEvents[0]?.event.provider_code;
   const echoesNewest = !statusKey(trackingStatus) && !tags && newestCode !== undefined
     && statusKey(summary.status) === statusKey(newestCode);
-  const active = current.status !== 'unknown' && !echoesNewest ? current : latestKnown?.classified;
+  // A summary saying delivered when no scan does is not taken: the tracker said so of parcels
+  // that had just left their pickup site and went on being scanned for another day.
+  const unscannedDelivery = current.stage === 'delivered' && latestKnown !== undefined
+    && !parsedEvents.some((item) => item.classified.stage === 'delivered');
+  const active = current.status !== 'unknown' && !echoesNewest && !unscannedDelivery ? current : latestKnown?.classified;
   if (!active) {
     throw new SchemaError(PROVIDER, 'Amazon Shipping returned incomplete tracking details');
   }

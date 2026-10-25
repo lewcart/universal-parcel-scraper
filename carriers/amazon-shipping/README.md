@@ -62,7 +62,9 @@ Checks, before any history is read:
 - Events are deduplicated on (clock, location, code, description), sorted newest first and
   capped at 100. Shipment status comes from the summary's `trackingStatus`, `status` and
   tags, else from the newest event that classifies. A summary whose only signal is a
-  `status` repeating the newest scan's event code defers to that scan.
+  `status` repeating the newest scan's event code defers to that scan. So does a summary
+  saying delivered when no scan does: the tracker said so of parcels that had just left their
+  pickup site and were scanned in transit for another day before their delivery scan.
 - No universal-provider fallback: Amazon is the only source for these numbers.
 
 ## Limitations

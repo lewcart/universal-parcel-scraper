@@ -250,6 +250,26 @@ describe('Amazon Shipping France response normalization', () => {
       .toMatchObject({ provider_code: 'Departed', stage: 'in_transit' });
   });
 
+  it('takes a delivered summary only when a scan says delivered', () => {
+    const summary = {
+      status: 'Delivered', metadata: { trackingStatus: { stringValue: 'DELIVERED' } }, containerStatusTags: ['DELIVERED'],
+    };
+    const departed = scan('Departed', 'swa_rex_detail_departed', 'Aug 11, 2026, 9:40:00 PM');
+    const received = scan('Received', 'swa_rex_arrived_at_sort_center', 'Aug 11, 2026, 6:10:00 PM');
+    const result = parseAmazonShippingTrackingResponse(outForDeliveryWith(summary, received, departed));
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-08-11T21:40:00+02:00' });
+    expect(result).not.toHaveProperty('delivered_at');
+    // The delivery scan settles it, and a summary with no scans to weigh it against stands.
+    expect(parseAmazonShippingTrackingResponse(outForDeliveryWith(summary,
+      scan('Delivered', 'swa_rex_detail_delivered', 'Aug 11, 2026, 11:20:00 AM'))))
+      .toMatchObject({ status: 'delivered', current_stage: 'delivered', delivered_at: '2026-08-11T11:20:00+02:00' });
+    const scanless = outForDeliveryFixture();
+    scanless.eventHistory = JSON.stringify({ eventHistory: [] });
+    const progress = JSON.parse(String(scanless.progressTracker)) as Record<string, unknown>;
+    scanless.progressTracker = JSON.stringify({ ...progress, summary });
+    expect(parseAmazonShippingTrackingResponse(scanless)).toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+  });
+
   it('uses event history when the summary status is absent', () => {
     const fixtureWithoutSummary = deliveredFixture();
     fixtureWithoutSummary.progressTracker = JSON.stringify({

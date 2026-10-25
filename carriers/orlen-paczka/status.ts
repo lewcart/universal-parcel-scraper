@@ -29,9 +29,10 @@ const CODES: Readonly<Record<string, Stage>> = {
 /**
  * A parcel ORLEN hands to another country's carrier gets code 690 and its
  * "ready for pickup" category, but its sentence says the parcel left with the
- * other carrier: it is in transit, not waiting at a point.
+ * other carrier, or only that it is in another country ("Paczka w innym
+ * kraju"): it is in transit, not waiting at a point.
  */
-const HANDOFF = /^paczka przekazana do przewoźnika w innym kraju\b/;
+const HANDOFF = /^paczka (?:przekazana do przewoźnika )?w innym kraju\b/;
 
 /** The stage of one scan from its code, or from its wording where the code's category does not fit it. */
 export function orlenPaczkaStage(code: string, wording: string): Stage | undefined {

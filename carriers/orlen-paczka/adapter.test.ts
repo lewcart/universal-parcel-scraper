@@ -52,6 +52,10 @@ describe('ORLEN Paczka parser', () => {
     const collected = parseOrlenPaczka(envelope([scan('16-01-2026, 20:00', '690', 'Paczka przekazana do przewoźnika w innym kraju. Dalszą drogę możesz śledzić w aplikacji Vinted'),
       scan('02-02-2026, 20:30', '1000', 'Odebrana przez Klienta')]), NUMBER);
     expect(collected).toMatchObject({ status: 'delivered', current_stage: 'delivered', delivered_at: '2026-02-02T20:30:00+01:00' });
+    expect(parseOrlenPaczka(envelope([scan('16-01-2026, 20:00', '690', 'Paczka w innym kraju')]), NUMBER))
+      .toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(parseOrlenPaczka(envelope([scan('16-01-2026, 20:00', '690', 'Twoja paczka czeka na odbiór w punkcie')]), NUMBER))
+      .toMatchObject({ current_stage: 'ready_for_pickup' });
   });
 
   it('keeps an unknown code visible without a stage, and a newest unknown scan leaves the status unknown', () => {

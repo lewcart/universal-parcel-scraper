@@ -37,7 +37,8 @@ own current time in that zone. A wall clock the zone repeats or skips stays loca
 Each scan has a numeric code, a short category and a sentence. The sentence is kept as the
 scan's wording and the code sets its stage; parcels of some services carry an older sentence
 for the same code. A parcel handed to another country's carrier arrives under the code and
-category of a parcel waiting at its point, so that wording keeps it in transit. The town a
+category of a parcel waiting at its point, so that wording, or a shorter one saying the parcel
+is in another country, keeps it in transit. The town a
 sorting-centre scan names becomes its location. A code the map does not know keeps its
 wording without a stage. When the reply says its history is not `full`, the official page
 shows the newest scan alone and the result is marked partial.

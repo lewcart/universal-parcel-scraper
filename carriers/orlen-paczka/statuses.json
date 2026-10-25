@@ -101,6 +101,15 @@
       "note": "Handed over to another country's carrier, with the code and short category of a parcel waiting for pickup; the wording decides. A collection by the customer followed."
     },
     {
+      "code": "690",
+      "wording": "Paczka w innym kraju",
+      "stage": "in_transit",
+      "language": "pl",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-12",
+      "note": "The parcel is in another country: the hand-over abroad in a shorter sentence, under the same code."
+    },
+    {
       "code": "1000",
       "wording": "Cieszymy się, że Twoja paczka została już odebrana z punktu odbioru",
       "stage": "delivered",

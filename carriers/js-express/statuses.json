@@ -41,6 +41,15 @@
     {"wording": "SHIPMENT CREATED", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "A partner's record of the parcel's data, written after JS Express had the order; it moves nothing."},
     {"wording": "Package information is created in the system", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "The destination courier's record of the parcel's data, written days before it has the parcel; it moves nothing."},
     {"wording": "Your package is being prepared by the sender and will be handed over to us soon", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "A courier's record of the parcel's data, in its own voice, before JS Express hands the parcel over; it moves nothing."},
-    {"wording": "Package will be delivered before 9:00pm", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "The destination courier's delivery forecast for the day, with its place moved into the location; no scan."}
+    {"wording": "Package will be delivered before 9:00pm", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "The destination courier's delivery forecast for the day, with its place moved into the location; no scan."},
+    {"wording": "Shipment information received", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "The destination post's record of the label, at the instant of Colissimo's own, written while JS Express had the parcel; it moves nothing."},
+    {"wording": "Votre Colissimo va bientôt nous être confié ! Il est en cours de préparation chez votre expéditeur.", "unmapped": true, "language": "fr", "confirmedBy": "live", "note": "Colissimo's record of the label, written while JS Express had the parcel; it moves nothing."},
+    {"wording": "Votre colis est en transit sur nos plateformes logistiques.", "stage": "in_transit", "language": "fr", "confirmedBy": "live"},
+    {"wording": "Votre Colissimo est en cours de traitement sur le site de tri local.", "stage": "in_transit", "language": "fr", "confirmedBy": "live"},
+    {"wording": "L'adresse indiquée sur votre colis est incomplète ou incorrecte. Nous procédons à sa correction afin de permettre le bon acheminement de votre colis.", "stage": "in_transit", "language": "fr", "confirmedBy": "live", "note": "Colissimo corrects the address and carries on, as its own copy reads it."},
+    {"wording": "Votre Colissimo n'a pas pu vous être livré en raison d'un problème d'adresse. Il va être retourné à l'expéditeur.", "stage": "exception", "language": "fr", "confirmedBy": "live", "note": "A return announced: the parcel is not back with its sender yet."},
+    {"wording": "Votre colis est sur son site de distribution. Nous le préparons pour le mettre en livraison.", "stage": "out_for_delivery", "language": "fr", "confirmedBy": "live", "note": "Colissimo's sort into the delivery round, as La Poste reads its code MD1."},
+    {"wording": "Votre colis est livré à son expéditeur à la suite d'un retour.", "stage": "returned", "language": "fr", "confirmedBy": "live"},
+    {"wording": "到达待取", "stage": "ready_for_pickup", "language": "zh", "confirmedBy": "live", "note": "JS Express's own status in Chinese, arrived and awaiting collection, with the country for its place."}
   ]
 }

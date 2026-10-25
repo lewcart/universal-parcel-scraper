@@ -230,6 +230,16 @@ describe('JS Express tracking adapter', () => {
     expect(announced.events?.map((event) => [event.stage, event.stage_source])).toEqual([[undefined, undefined], ['customs', 'carrier_map']]);
   });
 
+  it("keeps a Colissimo leg's announced return open until the parcel is back with its sender", () => {
+    const announced = parseJsExpress(withList([
+      row('2026-05-03 14:00:00', 'Sample Center', "Votre Colissimo n'a pas pu vous être livré en raison d'un problème d'adresse. Il va être retourné à l'expéditeur.")]), DELIVERED);
+    expect(announced).toMatchObject({ status: 'exception', current_stage: 'exception', current_stage_source: 'carrier_map' });
+    const back = parseJsExpress(withList([
+      row('2026-05-05 10:00:00', 'Sample Center', "Votre colis est livré à son expéditeur à la suite d'un retour."),
+      row('2026-05-03 14:00:00', 'Sample Center', "Votre Colissimo n'a pas pu vous être livré en raison d'un problème d'adresse. Il va être retourné à l'expéditeur.")]), DELIVERED);
+    expect(back).toMatchObject({ current_stage: 'returned', current_stage_source: 'carrier_map' });
+  });
+
   it('reads the lookup\'s "no data" answer as not found, a waybill without scans as no history, and an empty reply as inconclusive', async () => {
     expect(() => parseJsExpress(parsed('not-found'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     expect(() => parseJsExpress(withList([]), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));

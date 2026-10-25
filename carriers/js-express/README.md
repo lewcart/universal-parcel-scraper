@@ -55,6 +55,8 @@ delivers them. Tracked through the lookup its English tracking page makes.
   ON)": the adapter moves it into the location, so the wording stays the same from town to town.
 - Partners' records of the parcel's data and a courier's delivery forecast move nothing and have
   no stage.
+- A courier's announced return, such as Colissimo's "Il va être retourné à l'expéditeur", is an
+  exception: the parcel is returned only once a scan has it back with its sender.
 - A delivery loses a clause naming who took the parcel, and every row loses phone numbers.
 
 ## Limitations

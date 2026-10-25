@@ -22,6 +22,7 @@ const WORDING = new Map<string, ClassifiedStatus>([
   // Intake lines written in the seconds after the pickup scan, the partner's label
   // among them: the parcel is in Yanwen's hands and has not moved yet.
   ['Processing information input', { status: 'in_transit', stage: 'accepted' }],
+  ['Shipment data received', { status: 'in_transit', stage: 'accepted' }],
   ['shipping label created', { status: 'in_transit', stage: 'accepted' }],
   ['Shipment order created', { status: 'in_transit', stage: 'accepted' }],
   ['Order processed by shipper', { status: 'pending', stage: 'registered' }],

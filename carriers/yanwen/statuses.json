@@ -121,6 +121,14 @@
       "firstSeen": "2026-10-17"
     },
     {
+      "wording": "Shipment data received",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-25",
+      "note": "Written at the minute of Processing information input, after Yanwen's pickup scan."
+    },
+    {
       "wording": "shipping label created",
       "language": "en",
       "stage": "accepted",

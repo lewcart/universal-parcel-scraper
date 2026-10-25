@@ -471,6 +471,27 @@ describe('the detection engine', () => {
     expect(parseTrackingInput('Shipment tracking: delayed').source).toBe('none');
   });
 
+  it.each([
+    ['Abholcode 123456', '123456'],
+    ['Abholcode: 123456', '123456'],
+    ['Pickup code 123456', '123456'],
+    ['Sendungsnummer 0034 0434 1234 5678', '0034 0434 1234 5678'],
+    ['Nr. 12345678', '12345678'],
+  ])('leaves a label word out of a short entry: %s', (input, number) => {
+    expect(parseTrackingInput(input)).toMatchObject({ trackingNumber: number, source: 'text' });
+  });
+
+  it('keeps a short entry whole when its letters are no label word, or touch the digits', () => {
+    // Letters a carrier prints apart from its digits stay on the number.
+    for (const input of ['QZX 123456', 'ABCD 1234567', 'LP 00123456789012', '1111 2222 3333 4444', '1Z 999 AA1 01 2345 6784', 'abholcode123456']) {
+      expect(parseTrackingInput(input)).toMatchObject({ trackingNumber: input, source: 'number' });
+    }
+  });
+
+  it.each(['or', 'oder', 'ou', 'o', 'of', 'lub'])('reads no single number from two numbers joined by "%s"', (word) => {
+    expect(parseTrackingInput(`5555666677 ${word} 7777888899`)).toMatchObject({ trackingNumber: '', source: 'none' });
+  });
+
   it('keeps other numeric carriers ambiguous', () => {
     expect(detectCarrierMatch('123456789012345')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch('87979.0061660090')).toMatchObject({ carrier: 'unknown', confidence: 'low' });

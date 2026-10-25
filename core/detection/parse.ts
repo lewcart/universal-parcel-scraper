@@ -55,6 +55,34 @@ function trackingMatch(
   return { trackingNumber, source, ...detectCarrierMatch(trackingNumber) };
 }
 
+// A word that offers a second number: "1234567899 or 9987654321" holds two.
+const ALTERNATIVE = /^(?:or|oder|ou|o|of|lub)$/i;
+// A word naming the code after it, alone or after another word ("Pickup code").
+// German and Dutch join theirs into one word: Abholcode, Sendungsnummer.
+const LABEL = /^(?:\p{L}+\s+)?(?:\p{L}*(?:code|nummer)|number|numer|numero|número|numéro|nr|kod|codice|codigo|código)[.:#\s]+(?=\d)/iu;
+
+/**
+ * The number a short entry holds whole, groups a label prints apart included,
+ * as in "1Z 999 AA1 01 2345 6784". A word offering a second number leaves it
+ * unread, and a label word before the digits is no part of it, unless a
+ * carrier confidently claims the two together.
+ */
+function numberEnteredWhole(input: string): { number: string; labelled: boolean } | undefined {
+  if (input.includes('://')) return undefined;
+  const alternatives = input.split(/\s+/).reduce<string[]>((groups, word) => {
+    if (ALTERNATIVE.test(word)) groups.push('');
+    else groups[groups.length - 1] += word;
+    return groups;
+  }, ['']);
+  if (alternatives.filter((group) => /\d/.test(group)).length > 1) return undefined;
+  const label = LABEL.exec(input);
+  if (label && detectCarrierMatch(input).confidence !== 'high') {
+    const number = input.slice(label[0].length);
+    if (validTrackingNumber(number)) return { number, labelled: true };
+  }
+  return validTrackingNumber(input) ? { number: input, labelled: false } : undefined;
+}
+
 /**
  * Pull a tracking number and carrier out of a number, carrier URL, or pasted
  * shipping message. Number shape disambiguates links shared by multiple brands,
@@ -134,9 +162,8 @@ export function parseTrackingInput(raw: string): TrackingInputMatch {
   const keywordNumber = keywordNumberInText(input);
   if (keywordNumber) return trackingMatch(keywordNumber, 'text');
 
-  if (!input.includes('://') && validTrackingNumber(input)) {
-    return trackingMatch(input, 'number');
-  }
+  const whole = numberEnteredWhole(input);
+  if (whole) return trackingMatch(whole.number, whole.labelled ? 'text' : 'number');
 
   return {
     trackingNumber: '',

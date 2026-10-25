@@ -885,6 +885,23 @@ describe('status map answers', () => {
     expect(answer('yamato', null, '配達予定')).toEqual(unknown);
   });
 
+  it('answers Korea Post by its exact labels, English or Korean', () => {
+    expect(answer('korea-post', null, 'Posting/Collection')).toEqual(mapped('accepted'));
+    expect(answer('korea-post', null, 'Ready for customs clearance')).toEqual(mapped('customs'));
+    expect(answer('korea-post', null, '배달준비')).toEqual(mapped('out_for_delivery'));
+    expect(answer('korea-post', null, 'Delivery complete')).toEqual(mapped('delivered'));
+    expect(answer('korea-post', null, 'Delivery complete soon')).toEqual(unknown);
+  });
+
+  it("answers Planzer by its labels, its \"Shipped\" stored as the delivery it means", () => {
+    expect(answer('planzer', null, 'Recorded')).toEqual(mapped('registered'));
+    expect(answer('planzer', null, 'In delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('planzer', null, 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('planzer', null, 'Not delivered – A delivery card has been deposited')).toEqual(mapped('failed_attempt'));
+    expect(answer('planzer', null, 'Zugestellt.')).toEqual(mapped('delivered'));
+    expect(answer('planzer', null, 'Versandt')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

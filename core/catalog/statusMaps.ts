@@ -303,6 +303,7 @@ import { statusMap as kazpost } from '../../carriers/kazpost/status.js';
 import { statusMap as kex } from '../../carriers/kex/status.js';
 import { statusMap as kexExpressHk } from '../../carriers/kex-express-hk/status.js';
 import { statusMap as kitTk } from '../../carriers/kit-tk/status.js';
+import { statusMap as koreaPost } from '../../carriers/korea-post/status.js';
 import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js';
 import { statusMap as kunExpress } from '../../carriers/kun-express/status.js';
 import { statusMap as kunyoung } from '../../carriers/kunyoung/status.js';
@@ -409,6 +410,7 @@ import { statusMap as phlpost } from '../../carriers/phlpost/status.js';
 import { statusMap as pilotFreight } from '../../carriers/pilot-freight/status.js';
 import { statusMap as pitneyBowes } from '../../carriers/pitney-bowes/status.js';
 import { statusMap as pittOhio } from '../../carriers/pitt-ohio/status.js';
+import { statusMap as planzer } from '../../carriers/planzer/status.js';
 import { statusMap as pocztaPolska } from '../../carriers/poczta-polska/status.js';
 import { statusMap as posIndonesia } from '../../carriers/pos-indonesia/status.js';
 import { statusMap as postHaste } from '../../carriers/post-haste/status.js';
@@ -639,7 +641,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-au': jAndTAu, 'j-and-t-de': jAndTDe, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, 'japan-post': japanPost, jcex, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
-  'kit-tk': kitTk, 'kuehne-nagel': kuehneNagel, 'kun-express': kunExpress, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
+  'kit-tk': kitTk, 'korea-post': koreaPost, 'kuehne-nagel': kuehneNagel, 'kun-express': kunExpress, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih,
   'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, liccardi,
   'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
@@ -655,7 +657,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pakistan-post': pakistanPost, palletways, 'pandu-logistics': panduLogistics, paperfly, paquetexpress, parcelpoint, passport,
   'pathao-courier': pathaoCourier, pbt, 'pcp-express': pcpExpress, 'pcs-logistics-vn': pcsLogisticsVn, 'pdn-express': pdnExpress,
   'pdq-chile': pdqChile, pecom, 'pfc-express': pfcExpress, phlpost, 'pilot-freight': pilotFreight,
-  'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, 'poczta-polska': pocztaPolska, 'pos-indonesia': posIndonesia,
+  'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, planzer, 'poczta-polska': pocztaPolska, 'pos-indonesia': posIndonesia,
   'post-haste': postHaste, 'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, 'poste-italiane': posteItaliane, postex, posti, postlogistics, 'postmedia-parcel-services': postmediaParcelServices,

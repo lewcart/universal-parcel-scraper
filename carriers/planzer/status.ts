@@ -16,6 +16,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /** Shipment-level English labels from `overallStatus.text.english`. */
 export const PLANZER_STATUS = new Map<string, CarrierStatus>([
@@ -117,3 +118,8 @@ export const PLANZER_ROUTE_STATUS: Record<PlanzerRouteStage, CarrierStatus> = {
   out_for_delivery: 'out_for_delivery',
   delivered: 'delivered',
 };
+
+const ENGLISH_STAGE = new Map<string, Stage>([...PLANZER_EVENT_STAGE].map(([label, stage]) => [normalizeStatusWording(label), stage]));
+
+/** What the map says about one scan: its label, as the adapter reads it ("Shipped" is stored as "Delivered"). */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => ENGLISH_STAGE.get(wording) ?? planzerEventStage(wording), gaps: [] };

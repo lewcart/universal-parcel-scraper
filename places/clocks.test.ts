@@ -96,6 +96,8 @@ describe('dateLocalClocks', () => {
     const scan = { local_time: '2026-03-02T11:00:00', description: 'In transit' };
     expect(dated(dateLocalClocks('mailamericas', { destination_country: 'EC', events: [scan] }).events![0]))
       .toEqual(['2026-03-02T11:00:00-05:00', 'America/Guayaquil', 'destination']);
+    expect(dated(dateLocalClocks('mailamericas', { destination_country: 'DO', events: [scan] }).events![0]))
+      .toEqual(['2026-03-02T11:00:00-04:00', 'America/Santo_Domingo', 'destination']);
     expect(dated(dateLocalClocks('seur', { events: [scan] }).events![0]))
       .toEqual(['2026-03-02T11:00:00+01:00', 'Europe/Madrid', 'carrier']);
     // A catalog zone of UTC says the feed mixes clocks: the home is the carrier's first country.

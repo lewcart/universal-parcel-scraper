@@ -20553,6 +20553,7 @@ export const CARRIER_CATALOG = {
       "CL",
       "CO",
       "CR",
+      "DO",
       "EC",
       "MX",
       "PE",

@@ -95,6 +95,9 @@ how a consumer learns that DHL holds one behind a postcode.
 - A forecast ("will be delivered tomorrow", "wird … zugestellt") keeps the
   progress fallback. Mapping it to `delivered` would announce a delivery that
   hasn't happened; mapping it to `registered` would undo real progress.
+- "Delivery not possible" is a failed attempt: it follows the loading onto the
+  delivery vehicle, the parcel then waits at a retail outlet, and the partner
+  posts' copies of the scan read it so.
 - `fortschritt` is only the fallback for unmapped wording (`<= 1` means the
   parcel is still announced); the wording explains progress better.
 - Timestamps carry DHL's own offset and are kept verbatim; `core/time` only

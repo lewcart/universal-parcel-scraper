@@ -120,6 +120,8 @@ describe('DHL public tracking normalization', () => {
     ['The shipment could not be delivered', 'failed_attempt', 'exception'],
     ['Die Sendung konnte nicht zugestellt werden.', 'failed_attempt', 'exception'],
     ['Die Sendung wurde nicht erfolgreich zugestellt.', 'failed_attempt', 'exception'],
+    ['Delivery not possible. Pickup information will follow by mail', 'failed_attempt', 'exception'],
+    ['Delivery not possible. Forwarding in postal retail outlet', 'failed_attempt', 'exception'],
     ['The shipment is ready for collection', 'ready_for_pickup', 'out_for_delivery'],
     ['Die Sendung liegt zur Abholung bereit.', 'ready_for_pickup', 'out_for_delivery'],
     ['The shipment is being processed by customs', 'customs', 'in_transit'],

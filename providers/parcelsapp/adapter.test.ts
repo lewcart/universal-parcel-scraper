@@ -1840,6 +1840,32 @@ describe('ParcelsApp result parsing', () => {
     ])).toEqual(['2026-07-21T10:24:00.000Z', '2026-07-20T08:02:00.000Z']);
   });
 
+  it("reads Interpost's import declaration and clearance on a Pitney Bowes parcel on the clock of the country they name", () => {
+    // Pitney Bowes's own adapter reads them there; TrackYourParcel's copies name no country and take Pitney Bowes's.
+    const scan = (date: string, status: string, carrier: number, location?: string) => ({ date, status, carrier, ...(location ? { location } : {}) });
+    const states = [
+      scan('2026-10-22T12:42:00Z', 'B2C ClearanceStatus4', 0, 'NL'),
+      scan('2026-10-22T12:42:00Z', 'B2C Clearance 4. Customs Import cleared', 1),
+      scan('2026-10-21T09:55:00Z', 'Customs Clearance', 0, 'IT'),
+      scan('2026-10-21T09:55:00Z', 'Customs Clearance. Customs Import submitted', 1),
+      scan('2026-10-21T08:10:00Z', 'Shipped from Global Shipping Center to Destination', 0, 'Example Town, Exampleshire, GB'),
+    ];
+    const times = (rows: Record<string, unknown>[]) => parseParcelsAppResponse({ carriers: ['Pitney Bowes', 'TrackYourParcel'], states: rows },
+      number, identity(), 'Europe/London').events?.map((event) => [event.description, event.time]);
+    expect(times(states)).toEqual([
+      ['B2C ClearanceStatus4', '2026-10-22T10:42:00.000Z'],
+      ['Customs Import cleared', '2026-10-22T10:42:00.000Z'],
+      ['Customs Clearance', '2026-10-21T07:55:00.000Z'],
+      ['Customs Clearance. Customs Import submitted', '2026-10-21T07:55:00.000Z'],
+      ['Shipped from Global Shipping Center to Destination', '2026-10-21T07:10:00.000Z'],
+    ]);
+    // A copy with no Pitney Bowes copy at the same minute, or one naming no country alone, is read as before.
+    expect(times([states[1]!, { ...states[2]!, location: 'Example Town, Exampleshire, GB' }])).toEqual([
+      ['Customs Import cleared', '2026-10-22T11:42:00.000Z'],
+      ['Customs Clearance', '2026-10-21T08:55:00.000Z'],
+    ]);
+  });
+
   it('reads the South African post\'s and EMS\'s copies of a UK parcel\'s scans on the clock where each happened', () => {
     // Parcelforce's labels are London's; SAPO's and EMS's copies are the wall clock of the office that scanned.
     const scan = (date: string, status: string, carrier: number, location?: string) => ({ date, status, carrier, ...(location ? { location } : {}) });

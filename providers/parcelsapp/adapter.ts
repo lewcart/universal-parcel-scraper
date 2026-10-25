@@ -501,6 +501,38 @@ function royalMailRelay(location: string, status: string, destination: string | 
   if (country) return europeanAbroad(country);
   return !location && europeanAbroad(destination) && ROYAL_MAIL_ABROAD.test(status);
 }
+/**
+ * Interpost's import declaration and clearance on a Pitney Bowes parcel are on
+ * the clock of the country they name, not on the UK hub's. Pitney Bowes's
+ * tracker relays them with that country alone as their place ("Customs
+ * Clearance" at "IT", "B2C ClearanceStatus4" at "NL"), and Pitney Bowes's own
+ * adapter reads them there. TrackYourParcel, B2C Europe's tracker, relays them
+ * at the same digits with no place ("Customs Clearance. Customs Import
+ * submitted", "B2C Clearance 4. Customs Import cleared"), so its copy takes the
+ * country of Pitney Bowes's copy at the same minute. The London clock is only
+ * the hub's: both trackers write the destination post's scans on its clock, and
+ * their copies of Poste Italiane's delivery have the digits of Poste's own
+ * instant on Rome time. Read on Pitney Bowes's London clock, or routing's for
+ * TrackYourParcel, the declaration and clearance came an hour after Pitney
+ * Bowes's own rows.
+ */
+const INTERPOST_CUSTOMS = /^(?:customs clearance|b2c clearance ?(?:status ?)?\d{1,3})\b/i;
+const INTERPOST_RELAYS = new Set(['pitneybowes', 'trackyourparcel']);
+function interpostCustomsZone(payload: Record<string, unknown>, state: Record<string, unknown>, status: string): string | undefined {
+  const network = nameKey(stateCarrierName(payload, state));
+  if (!INTERPOST_RELAYS.has(network) || !INTERPOST_CUSTOMS.test(status)) return undefined;
+  const named = (scan: Record<string, unknown>) => {
+    const location = typeof scan.location === 'string' ? scan.location.trim() : '';
+    return /^[A-Z]{2}$/.test(location) && INTERPOST_CUSTOMS.test(relayedLabel(scan.status)) ? countryCode(location) : null;
+  };
+  const wall = mislabeledWallTime(state.date);
+  const copies = network === 'pitneybowes' ? [state] : (Array.isArray(payload.states) ? payload.states : []).filter(
+    (scan): scan is Record<string, unknown> => isRecord(scan) && wall !== null && mislabeledWallTime(scan.date) === wall
+      && nameKey(stateCarrierName(payload, scan)) === 'pitneybowes');
+  const countries = new Set(copies.map(named));
+  const [country] = [...countries];
+  return countries.size === 1 && country ? mainZone(country) ?? undefined : undefined;
+}
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
 // A country's code before a postcode, as FedEx ends a location: "EXAMPLE TOWN, RR, IT 12345".
@@ -832,6 +864,8 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   if (carrier === 'swiftx' && SWIFTX_LABEL.test(status.trim())) return SWIFTX_LABEL_CLOCK;
   if (carrier === 'swiftx' && swiftxSiteZone(scanLocation(name, state.location))) return undefined;
   if (ROYAL_MAIL_NAMES.has(key) && royalMailRelay(scanLocation(name, state.location), status, destination)) return ROYAL_MAIL_RELAY_CLOCK;
+  const customs = interpostCustomsZone(payload, state, status);
+  if (customs) return customs;
   if (key === '1st') {
     const location = scanLocation(name, state.location);
     return !location || firstLineInChina(location) ? FIRST_LINE_CHINA_ZONE : undefined;

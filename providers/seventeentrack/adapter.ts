@@ -117,6 +117,35 @@ function facilityWall(raw: Record<string, unknown>): string | null {
 }
 
 /**
+ * 17TRACK labels such a clock with a zone it gives the carrier, at that zone's
+ * offset on the day it looks rather than on the scan's: after October's change
+ * it put +01:00 on BRT's July scans and on DPD Germany's and Correos Spain's
+ * September scans, which it had labelled +02:00 in summer (checked 2026-10-25).
+ * The zone is the leg's country's when that keeps one clock, but GLS's: 17TRACK
+ * names Great Britain for GLS and labels its scans on Central European time.
+ */
+const LABEL_ZONES: Record<number, string> = { 100005: 'Europe/Berlin' };
+
+function labelZone(provider: Record<string, unknown>): string | null {
+  return typeof provider.key === 'number' && Object.hasOwn(LABEL_ZONES, provider.key)
+    ? LABEL_ZONES[provider.key]! : countryTimeZone(provider.country);
+}
+
+/**
+ * `zone` when 17TRACK labelled the scan's clock with the zone's offset `now`
+ * and the scan's own date keeps another, so it is read on that zone's clock at
+ * its own date. A label the zone does not keep now is someone else's and stays.
+ */
+function seasonZone(raw: Record<string, unknown>, zone: string | null, now: DateTime): string | null {
+  const wall = facilityWall(raw);
+  if (!wall || !zone || typeof raw.time_iso !== 'string') return null;
+  const shown = DateTime.fromISO(raw.time_iso, { setZone: true });
+  const own = firstOccurrence(DateTime.fromISO(wall, { zone }));
+  return shown.isValid && own.isValid && shown.toFormat("yyyy-MM-dd'T'HH:mm:ss") === wall
+    && shown.offset === now.setZone(zone).offset && shown.offset !== own.offset ? zone : null;
+}
+
+/**
  * 17TRACK's carrier 100016, Asendia USA, relays A1's tracking: A1 dates every
  * scan in UTC, its partners' too. A Swiss Post scan at 18:20 +02:00 is A1's
  * 16:20, a German delivery round 09:07 local is its 07:07. 17TRACK labels
@@ -416,6 +445,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
   let count = 0;
   let undated = 0;
   const latest = new LatestScan(SOURCE);
+  const now = DateTime.now();
   for (const provider of tracking.providers) {
     if (!isRecord(provider) || !Array.isArray(provider.events)) throw new SchemaError(SOURCE, '17TRACK returned invalid provider history');
     const reported = isRecord(provider.provider) ? provider.provider : {};
@@ -439,6 +469,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const poland = reported.key === POLAND_POST;
     const departed = poland ? polishDeparture(provider.events) : '';
     const partner = poland ? polishPartnerZone(shipment) : null;
+    const labelled = labelZone(reported);
     for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
@@ -454,14 +485,15 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       // Poland Post's scan on Warsaw's clock, or a partner's after the departure from Poland on the recipient's.
       const polish = !poland ? null : departed && (rawClock(raw) ?? '') > departed ? partner : 'Europe/Warsaw';
       // A facility's clock, A1's UTC, NZ Post's, Poland Post's, Correos de El Salvador's, Correos de Chile's, Shiprocket's, DAI Post's or an origin post's, on which 17TRACK puts one offset for the whole parcel.
-      const wall = relayed || hywl ? rawClock(raw)
-        : facility || relaysFacilityClock(name) || utc || nz || polish || exchange || own || chile || shiprocket || daiPost || sent !== undefined
-          ? facilityWall(raw) : null;
-      const zone = !wall ? null : hywl ? relayed : relayed ?? facility ?? own ?? (sent !== undefined ? sent : abroad.has(index) ? abroad.get(index) ?? null
+      const read = facility || relaysFacilityClock(name) || utc || nz || polish || exchange || own || chile || shiprocket || daiPost || sent !== undefined;
+      // Any other row 17TRACK labelled with its zone's offset on the day it looks, not on the scan's.
+      const season = relayed || hywl || read || poland ? null : seasonZone(raw, labelled, now);
+      const wall = relayed || hywl ? rawClock(raw) : read || season ? facilityWall(raw) : null;
+      const zone = !wall ? null : season ?? (hywl ? relayed : relayed ?? facility ?? own ?? (sent !== undefined ? sent : abroad.has(index) ? abroad.get(index) ?? null
         : exchange ? origin : utc ? 'UTC' : polish ? polish
         : nz ? 'Pacific/Auckland' : chile ? facilityZone(text(raw.location)) ?? 'America/Santiago'
         : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null)
-        : daiPost ? daiPostRelayZone(text(raw.description), text(raw.location)) : facilityZone(text(raw.location)));
+        : daiPost ? daiPostRelayZone(text(raw.description), text(raw.location)) : facilityZone(text(raw.location))));
       const placed = wall && zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;
       let parsed: CarrierEvent | null;
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }

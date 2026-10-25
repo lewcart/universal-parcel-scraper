@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DateTime } from 'luxon';
 import { readFileSync } from 'node:fs';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, onTestFinished, vi } from 'vitest';
 import { carrierErrorKind } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
@@ -351,6 +351,8 @@ describe('17TRACK result parsing', () => {
   });
 
   it('reads Poland Post\'s clock at the scan\'s own date, and a partner\'s scan after the departure on the recipient\'s', () => {
+    vi.useFakeTimers({ toFake: ['Date'], now: new Date('2026-10-25T09:00:00Z') });
+    onTestFinished(() => { vi.useRealTimers(); });
     // Public shape: Poland Post's wall clocks in time_raw with no zone, under the +01:00 17TRACK put on July scans in late October.
     const row = (date: string, time: string, description: string) => ({ time_iso: `${date}T${time}+01:00`, time_utc: null,
       time_raw: { date, time, timezone: null }, description, location: null, stage: null, sub_status: 'InTransit_Other' });
@@ -369,8 +371,31 @@ describe('17TRACK result parsing', () => {
       expect(parse17TrackResponse(reply(16081, country), number).events?.map((event) => event.time)).toEqual(['2026-07-20T13:25:00.000Z',
         '2026-07-08T08:02:20.000Z', '2026-07-06T15:11:32.000Z']);
     }
-    // Another feed keeps 17TRACK's reading.
-    expect(parse17TrackResponse(reply(100999, 'JP'), number).events?.[1]?.time).toBe('2026-07-08T09:02:20.000Z');
+    // Another feed relays no partner: its scan abroad is only read on Poland's clock at its own date.
+    expect(parse17TrackResponse(reply(100999, 'JP'), number).events?.[0]?.time).toBe('2026-07-20T12:25:00.000Z');
+  });
+
+  it('reads a clock 17TRACK labelled with its zone\'s offset on the day it looks at the scan\'s own date', () => {
+    vi.useFakeTimers({ toFake: ['Date'], now: new Date('2026-10-25T09:00:00Z') });
+    onTestFinished(() => { vi.useRealTimers(); });
+    // Public shape: BRT's wall clocks in time_raw with no zone, under the +01:00 17TRACK put on July scans in late October.
+    const row = (date: string, time: string, offset = '+01:00', timezone: string | null = null) => ({ time_iso: `${date}T${time}${offset}`,
+      time_utc: null, time_raw: { date, time, timezone }, description: 'DEPARTED', location: null, stage: null, sub_status: 'InTransit_Other' });
+    const reply = (key: number, country: string, events: unknown[]): Payload => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key, name: 'Example', country }, events }] } } }] });
+    const times = (payload: Payload) => parse17TrackResponse(payload, number).events?.map((event) => event.time);
+    // July is Italy's summer, +02:00; a scan since the change keeps +01:00, and one 17TRACK labelled +02:00 kept its label.
+    expect(times(reply(199997, 'IT', [row('2026-10-26', '08:10:00'), row('2026-07-24', '13:42:00'), row('2026-07-23', '21:00:00', '+02:00')])))
+      .toEqual(['2026-10-26T07:10:00.000Z', '2026-07-24T11:42:00.000Z', '2026-07-23T19:00:00.000Z']);
+    // A zone the carrier stated stays.
+    expect(times(reply(199997, 'IT', [row('2026-07-24', '13:42:00', '+01:00', '+01:00')]))).toEqual(['2026-07-24T12:42:00.000Z']);
+    // GLS's leg names Great Britain, but 17TRACK labels it on Central European time.
+    expect(times(reply(100005, 'GB', [row('2026-09-30', '16:50:00')]))).toEqual(['2026-09-30T14:50:00.000Z']);
+    // Great Britain keeps +00:00 now, so +01:00 there is no label on its clock, and stays.
+    expect(times(reply(100999, 'GB', [row('2026-01-12', '10:00:00')]))).toEqual(['2026-01-12T09:00:00.000Z']);
+    // In summer a winter scan labelled with summer's offset is read the same way.
+    vi.setSystemTime(new Date('2027-07-01T09:00:00Z'));
+    expect(times(reply(100007, 'DE', [row('2027-01-12', '10:00:00', '+02:00')]))).toEqual(['2027-01-12T09:00:00.000Z']);
   });
 
   it('reads NZ Post\'s clock at the scan\'s own date, abroad too when nothing names a country', () => {

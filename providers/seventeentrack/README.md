@@ -99,6 +99,13 @@ carrier.
   name and key. The timeline still uses 17TRACK's reading, and mirrored scans from two
   operators are not deduplicated. That is why a scoped China Post success skips
   timestamp-based shadow comparisons.
+- Where it adds the offset, 17TRACK uses its zone for the carrier at that zone's offset on the
+  day it looks, not on the scan's: after October's change it put `+01:00` on BRT's July scans
+  and on DPD Germany's and Correos Spain's September scans, which it had labelled `+02:00` in
+  summer. A row no rule below reads, labelled with its zone's offset at lookup time while the
+  scan's own date keeps another, is read on that zone's clock at its own date. The zone is the
+  leg's country's when that keeps one clock, and Central European time for GLS (carrier key
+  100005), whose leg names Great Britain. Any other label stays.
 - DHL Express scans carry the facility's clock in `time_raw`, and 17TRACK puts one offset
   on all of them, so a scan in Shenzhen gets the destination's. They take the zone the
   [DHL Express rule](../../carriers/dhl-express/clock.ts) reads from their location

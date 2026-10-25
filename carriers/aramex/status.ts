@@ -1,4 +1,5 @@
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const wording: Record<string, ClassifiedStatus> = {
   'The shipment has been delivered': { status: 'delivered', stage: 'delivered' },
@@ -41,3 +42,18 @@ export function isAramexNote(value: string): boolean {
 export function classifyAramexStatus(value: string): ClassifiedStatus | undefined {
   return wording[value];
 }
+
+const STAGE_BY_WORDING = new Map<string, Stage>(Object.entries(wording).map(([text, status]) => [normalizeStatusWording(text), status.stage]));
+
+/**
+ * What the map says about one scan: its exact wording, as the parser reads it. A note stages
+ * nothing and leaves the parcel at the stage of the scan before it, which the stored note does
+ * not keep.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, text) => STAGE_BY_WORDING.get(text),
+  gaps: [...notes].map((text) => ({
+    wording: normalizeStatusWording(text),
+    note: 'A note beside the movement, on contact, payment, a check or the network: the parcel keeps the stage of the scan before it, which the stored note does not keep.',
+  })),
+};

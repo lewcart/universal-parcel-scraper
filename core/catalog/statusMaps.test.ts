@@ -995,6 +995,16 @@ describe('status map answers', () => {
     expect(answer('spee-dee', null, 'DEPARTURE SCAN')).toEqual(unknown);
   });
 
+  it('answers Aramex by its exact wording, and leaves its notes out on purpose', () => {
+    expect(answer('aramex', null, 'The shipment has been delivered')).toEqual(mapped('delivered'));
+    expect(answer('aramex', null, 'Shipment collected from the shipper')).toEqual(mapped('accepted'));
+    expect(answer('aramex', null, 'The shipment is currently going through customs inspection')).toEqual(mapped('customs'));
+    expect(answer('aramex', null, 'The delivery address has been updated')).toEqual(mapped('in_transit'));
+    expect(answer('aramex', null, 'Customer ID received')).toEqual(gap);
+    expect(answer('aramex', null, 'Shipment charges paid')).toEqual(gap);
+    expect(answer('aramex', null, 'Synthetic scan wording')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

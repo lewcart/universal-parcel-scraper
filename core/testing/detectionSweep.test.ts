@@ -12,151 +12,31 @@
  *
  * The corpus is a characterization of today's engine. A failure here means
  * detection changed: decide whether that change was intended, then update the
- * records and the golden file (`npm run generate:golden`).
+ * records (`npm run generate:expectations -- <carrier-id>` when a rule only
+ * added a carrier) and the golden file (`npm run generate:golden`).
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { MAX_RECOGNITIONS, recognitionAskedCarriers, recognitionCandidates } from '../catalog/recognition.js';
-import { isValidColissimoParcelNumber } from '../detection/colissimo.js';
-import { isValidEvriParcelNumber } from '../detection/evri.js';
-import { isValidFedEx1DBarcode, isValidFedExGround96Barcode, isValidFedExGroundEconomyNumber } from '../detection/fedex.js';
-import { isValidDhlEcommercePolandNumber, isValidDhlIdentcode } from '../detection/identcode.js';
+import { detectCarrierMatch, normalizeTrackingNumber } from '../detection/index.js';
+import { RULES, highConfidenceCarriers, matchingCarriers, matchingRules, type DetectionRule } from './catalogRules.js';
 import {
-  detectCarrierMatch,
-  isValidCorreosSpainCheckLetter,
-  isValidDpdParcelNumber,
-  isValidDhlExpressWaybill,
-  isValidGlsParcelNumber,
-  isValidHermesParcelNumber,
-  isValidMondialRelayBarcode,
-  isValidPocztaPolskaBarcode,
-  isValidS10TrackingNumber,
-  isValidSscc,
-  isValidTntConsignmentNumber,
-  normalizeTrackingNumber,
-} from '../detection/index.js';
-import {
-  hasGs1CheckDigit,
-  hasLuhnCheckDigit,
-  hasMod7CheckDigit,
-  isValidFedExTrackingNumber,
-  isValidPosteItalianeRegisteredNumber,
-  isValidSaiaPro,
-  isValidUkrposhtaBarcode,
-} from '../detection/numericChecksums.js';
-import { isValidMagyarPostaNumber } from '../detection/magyarPosta.js';
-import { isValidPosLajuConsignment } from '../detection/s10.js';
-import { isValidSfExpressWaybill } from '../detection/sfExpress.js';
-import { isValidOnTracTrackingNumber, isValidUpsTrackingNumber } from '../detection/ups.js';
-import { isValidUspsPackageBarcode } from '../detection/usps.js';
-import {
-  CARRIERS_DIRECTORY,
   carrierFolders,
   loadNumberCorpus,
   loadNumberCorpusFiles,
   positiveRecords,
   type CorpusRecord,
 } from './corpus.js';
+import { collisionKey, gapCovers, gapRecords, readCollisions, readGaps } from './declarations.js';
 import { buildDetectionGolden, readDetectionGolden, writeDetectionGolden } from './golden.js';
 
-interface DetectionRule {
-  readonly id: string;
-  readonly pattern: string;
-  readonly rawPattern?: string;
-  readonly confidence: 'high' | 'low';
-  readonly checksum?:
-    | 's10' | 'mondial-relay' | 'hermes' | 'gls' | 'dhl-express' | 'tnt' | 'poczta-polska' | 'correos-spain' | 'dpd' | 'usps' | 'sscc'
-    | 'ups' | 'colissimo' | 'ukrposhta' | 'evri' | 'mod7' | 'gs1' | 'ontrac' | 'luhn' | 'fedex' | 'sf-express'
-    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia' | 'magyar-posta' | 'poste-italiane'
-    | 'dhl-ecommerce-pl';
-  readonly preferred?: true;
-}
-
-interface CarrierRule {
-  readonly carrier: string;
-  readonly rule: DetectionRule;
-}
-
-const detectionDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'detection');
-const collisions: { shape: string; carriers: string[]; reason: string }[] = JSON.parse(
-  readFileSync(path.join(detectionDirectory, 'collisions.json'), 'utf8'),
-);
 const coverageBaseline: { maxUncoveredRules: number } = JSON.parse(
-  readFileSync(path.join(detectionDirectory, 'coverage-baseline.json'), 'utf8'),
+  readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'detection', 'coverage-baseline.json'), 'utf8'),
 );
-/** `open` is the worklist; the other kinds say why the gap stays. */
-const gaps: { carrier: string; pattern?: string; kind: 'by_design' | 'collision' | 'open'; reason: string }[] = JSON.parse(
-  readFileSync(path.join(detectionDirectory, 'gaps.json'), 'utf8'),
-);
-
-const RULES: CarrierRule[] = carrierFolders().flatMap((carrier) => {
-  const definition: { detection?: DetectionRule[] } = JSON.parse(
-    readFileSync(path.join(CARRIERS_DIRECTORY, carrier, 'carrier.json'), 'utf8'),
-  );
-  return (definition.detection ?? []).map((rule) => ({ carrier, rule }));
-});
-
-/** The engine's own gate, rule by rule: pattern first, then the checksum. */
-function ruleMatches(rule: DetectionRule, value: string, raw: string): boolean {
-  if (!new RegExp(rule.pattern).test(value)) return false;
-  if (rule.rawPattern && !new RegExp(rule.rawPattern).test(raw.trim().toUpperCase())) return false;
-  if (rule.checksum === 's10') return isValidS10TrackingNumber(value);
-  if (rule.checksum === 'mondial-relay') return isValidMondialRelayBarcode(value);
-  if (rule.checksum === 'hermes') return isValidHermesParcelNumber(value);
-  if (rule.checksum === 'gls') return isValidGlsParcelNumber(value);
-  if (rule.checksum === 'dhl-express') return isValidDhlExpressWaybill(value);
-  if (rule.checksum === 'tnt') return isValidTntConsignmentNumber(value);
-  if (rule.checksum === 'poczta-polska') return isValidPocztaPolskaBarcode(value);
-  if (rule.checksum === 'correos-spain') return isValidCorreosSpainCheckLetter(value);
-  if (rule.checksum === 'dpd') return isValidDpdParcelNumber(value);
-  if (rule.checksum === 'usps') return isValidUspsPackageBarcode(value);
-  if (rule.checksum === 'sscc') return isValidSscc(value);
-  if (rule.checksum === 'ups') return isValidUpsTrackingNumber(value);
-  if (rule.checksum === 'colissimo') return isValidColissimoParcelNumber(value);
-  if (rule.checksum === 'ukrposhta') return isValidUkrposhtaBarcode(value);
-  if (rule.checksum === 'evri') return isValidEvriParcelNumber(value);
-  if (rule.checksum === 'mod7') return hasMod7CheckDigit(value);
-  if (rule.checksum === 'gs1') return hasGs1CheckDigit(value);
-  if (rule.checksum === 'ontrac') return isValidOnTracTrackingNumber(value);
-  if (rule.checksum === 'luhn') return hasLuhnCheckDigit(value);
-  if (rule.checksum === 'fedex') return isValidFedExTrackingNumber(value);
-  if (rule.checksum === 'sf-express') return isValidSfExpressWaybill(value);
-  if (rule.checksum === 'fedex-ground-96') return isValidFedExGround96Barcode(value);
-  if (rule.checksum === 'fedex-1d') return isValidFedEx1DBarcode(value);
-  if (rule.checksum === 'identcode') return isValidDhlIdentcode(value);
-  if (rule.checksum === 'fedex-ground-economy') return isValidFedExGroundEconomyNumber(value);
-  if (rule.checksum === 'pos-laju') return isValidPosLajuConsignment(value);
-  if (rule.checksum === 'saia') return isValidSaiaPro(value);
-  if (rule.checksum === 'magyar-posta') return isValidMagyarPostaNumber(value);
-  if (rule.checksum === 'poste-italiane') return isValidPosteItalianeRegisteredNumber(value);
-  if (rule.checksum === 'dhl-ecommerce-pl') return isValidDhlEcommercePolandNumber(value);
-  return true;
-}
-
-function matchingRules(input: string): CarrierRule[] {
-  const value = normalizeTrackingNumber(input);
-  return RULES.filter(({ rule }) => ruleMatches(rule, value, input));
-}
-
-/** Carriers with at least one matching rule, in catalog order. */
-function matchingCarriers(input: string): string[] {
-  return [...new Set(matchingRules(input).map(({ carrier }) => carrier))];
-}
-
-/**
- * The engine stops at a carrier's first matching rule, so a carrier's
- * confidence is that rule's confidence, not the strongest one it owns.
- */
-function highConfidenceCarriers(input: string): string[] {
-  const matches = matchingRules(input);
-  const firstPerCarrier = new Map<string, DetectionRule>();
-  for (const { carrier, rule } of matches) if (!firstPerCarrier.has(carrier)) firstPerCarrier.set(carrier, rule);
-  return [...firstPerCarrier.entries()]
-    .filter(([, rule]) => rule.confidence === 'high')
-    .map(([carrier]) => carrier);
-}
+const collisions = readCollisions();
+const gaps = readGaps();
 
 const records = loadNumberCorpus();
 const folders = carrierFolders();
@@ -287,14 +167,14 @@ describe('rule coverage', () => {
 });
 
 describe('declared collisions', () => {
-  const declared = new Map(collisions.map((entry) => [[...entry.carriers].sort().join(','), entry]));
+  const declared = new Map(collisions.map((entry) => [collisionKey(entry.carriers), entry]));
 
   it('declares every carrier overlap the corpus produces', () => {
     const undeclared = new Map<string, string>();
     for (const record of records) {
-      const carriers = matchingCarriers(record.number).sort();
+      const carriers = matchingCarriers(record.number);
       if (carriers.length < 2) continue;
-      const key = carriers.join(',');
+      const key = collisionKey(carriers);
       if (!declared.has(key)) undeclared.set(key, record.number);
     }
     expect([...undeclared].map(([key, number]) => `${key} (e.g. ${number})`)).toEqual([]);
@@ -312,7 +192,7 @@ describe('declared collisions', () => {
 
   it('drops a declaration once no record produces it', () => {
     const seen = new Set(records
-      .map((record) => matchingCarriers(record.number).sort().join(','))
+      .map((record) => collisionKey(matchingCarriers(record.number)))
       .filter((key) => key.includes(',')));
     const stale = [...declared.keys()].filter((key) => !seen.has(key));
     expect(stale).toEqual([]);
@@ -320,25 +200,16 @@ describe('declared collisions', () => {
 });
 
 describe('declared gaps', () => {
-  const offered = (record: CorpusRecord): boolean => {
-    const match = detectCarrierMatch(record.number);
-    return match.carrier === record.carrier || (match.candidates as readonly string[]).includes(record.carrier);
-  };
-  // An S10 number names its issuing post and a label barcode is not typed, so neither is a gap.
-  const gapRecords = records.filter((record) => record.quarantine !== true
-    && record.role !== 'negative' && record.role !== 'full_barcode'
-    && !isValidS10TrackingNumber(normalizeTrackingNumber(record.number)) && !offered(record));
-  const covers = (gap: typeof gaps[number], record: CorpusRecord): boolean => gap.carrier === record.carrier
-    && (gap.pattern === undefined || new RegExp(gap.pattern).test(normalizeTrackingNumber(record.number)));
+  const unoffered = gapRecords(records);
 
   it('declares every record whose own carrier detection does not offer', () => {
-    const undeclared = gapRecords.filter((record) => !gaps.some((gap) => covers(gap, record)))
+    const undeclared = unoffered.filter((record) => !gaps.some((gap) => gapCovers(gap, record)))
       .map((record) => `${record.carrier} ${record.number}`);
     expect(undeclared).toEqual([]);
   });
 
   it('drops a declaration once detection offers the carrier', () => {
-    const stale = gaps.filter((gap) => !gapRecords.some((record) => covers(gap, record)))
+    const stale = gaps.filter((gap) => !unoffered.some((record) => gapCovers(gap, record)))
       .map((gap) => `${gap.carrier} ${gap.pattern ?? 'every record'}`);
     expect(stale).toEqual([]);
   });

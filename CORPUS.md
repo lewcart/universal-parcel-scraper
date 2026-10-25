@@ -52,6 +52,12 @@ the gap stays; `open` ones are the worklist.
 A collision or gap declaration that no record needs any more fails the sweep, so both lists
 only hold what is still true.
 
+When a new rule makes detection offer a carrier for numbers other carriers take,
+`npm run generate:expectations -- <carrier-id>` rewrites what that carrier alone explains: records
+whose answer only gained it as a candidate, collision declarations whose overlap only gained it,
+and its gaps that no record needs. It lists every other change and leaves it to settle by hand.
+Run it after `npm run generate`, since detection reads the generated catalog.
+
 ```sh
 npm test -- core/testing/detectionSweep
 ```

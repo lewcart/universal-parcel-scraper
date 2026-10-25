@@ -1105,6 +1105,15 @@ describe('status map answers', () => {
     expect(answer('dtdc', 'in_transit', 'Synthetic scan wording')).toEqual(unknown);
   });
 
+  it("answers EMS by the EMS Cooperative's exact labels", () => {
+    expect(answer('ems', null, 'Posted')).toEqual(mapped('accepted'));
+    expect(answer('ems', null, 'Held at destination import office')).toEqual(mapped('customs'));
+    expect(answer('ems', null, 'Released from import customs')).toEqual(mapped('in_transit'));
+    expect(answer('ems', null, 'Delivery attempted')).toEqual(mapped('failed_attempt'));
+    expect(answer('ems', null, 'Export cancelled')).toEqual(mapped('exception'));
+    expect(answer('ems', null, 'Delivered soon')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

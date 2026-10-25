@@ -1114,6 +1114,17 @@ describe('status map answers', () => {
     expect(answer('ems', null, 'Delivered soon')).toEqual(unknown);
   });
 
+  it("answers Delhivery by its wording, and leaves a delivery out on purpose, since the stored scan does not keep the return leg", () => {
+    expect(answer('delhivery', null, 'Picked Up')).toEqual(mapped('accepted'));
+    expect(answer('delhivery', null, 'IN_TRANSIT')).toEqual(mapped('in_transit'));
+    expect(answer('delhivery', null, 'Dispatched')).toEqual(mapped('out_for_delivery'));
+    expect(answer('delhivery', null, 'DELIVERED_SELLER')).toEqual(mapped('returned'));
+    expect(answer('delhivery', null, 'RTO')).toEqual(mapped('returned'));
+    expect(answer('delhivery', null, 'Canceled')).toEqual(mapped('exception'));
+    expect(answer('delhivery', null, 'Delivered')).toEqual(gap);
+    expect(answer('delhivery', null, 'Synthetic scan')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

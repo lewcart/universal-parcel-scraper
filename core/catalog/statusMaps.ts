@@ -139,6 +139,7 @@ import { statusMap as dayRoss } from '../../carriers/day-ross/status.js';
 import { statusMap as daytonFreight } from '../../carriers/dayton-freight/status.js';
 import { statusMap as dachser } from '../../carriers/dachser/status.js';
 import { statusMap as dao } from '../../carriers/dao/status.js';
+import { statusMap as delhivery } from '../../carriers/delhivery/status.js';
 import { statusMap as dellin } from '../../carriers/dellin/status.js';
 import { statusMap as delnext } from '../../carriers/delnext/status.js';
 import { statusMap as deppon } from '../../carriers/deppon/status.js';
@@ -640,7 +641,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'correios-br': correiosBr, 'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, ctt, 'ctt-express': cttExpress, cttyex,
   'cyprus-post': cyprusPost, 'd-express': dExpress, dachser, 'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss,
-  dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, dellin, delnext, deppon, dhl, 'dhl-ecommerce': dhlEcommerce, 'dhl-ecommerce-es': dhlEcommerceEs, 'dhl-ecommerce-nl': dhlEcommerceNl, 'dhl-ecommerce-uk': dhlEcommerceUk, 'dhl-express': dhlExpress,
+  dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, delhivery, dellin, delnext, deppon, dhl, 'dhl-ecommerce': dhlEcommerce, 'dhl-ecommerce-es': dhlEcommerceEs, 'dhl-ecommerce-nl': dhlEcommerceNl, 'dhl-ecommerce-uk': dhlEcommerceUk, 'dhl-express': dhlExpress,
   'dhl-freight': dhlFreight, dhlink, direx, dobropost, 'dohrn-transfer': dohrnTransfer, 'domain-logistics': domainLogistics, domex, dpd,
   'dpd-at': dpdAt, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe,
   'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-ro': dpdRo, 'dpd-uk': dpdUk, 'dpd-za': dpdZa, dpex, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dtdc, dx, dynalogic,

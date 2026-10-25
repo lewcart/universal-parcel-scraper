@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const statuses: Record<string, ClassifiedStatus> = {
   DELIVERED: { status: 'delivered', stage: 'delivered' },
@@ -24,3 +25,15 @@ const statuses: Record<string, ClassifiedStatus> = {
 export function classifyDelhiveryStatus(value: string): ClassifiedStatus | undefined {
   return statuses[value.toUpperCase().replaceAll('_', ' ')];
 }
+
+/**
+ * What the map says about one scan: its wording, as the adapter classifies it. A delivery on the
+ * return leg reaches the seller, and the stored scan does not keep the leg, so it stays open.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    const stage = classifyDelhiveryStatus(wording)?.stage;
+    return stage === 'delivered' ? undefined : stage;
+  },
+  gaps: [{ wording: 'delivered', note: 'Delivered to the recipient, or to the seller when its scan type or the shipment\'s flow is a return: the stored scan does not keep either.' }],
+};

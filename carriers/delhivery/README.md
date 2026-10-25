@@ -30,6 +30,8 @@ delivered status then adds no snapshot of its own.
 Calendar days and invalid date labels remain unresolved instead of becoming midnight scans.
 The returned flow can still be in transit. Its shipment status determines current progress;
 return scans retain their leg, and sender delivery does not become recipient delivery.
+The parcel app's review (`statusMap`) reads the wording alone, so "Delivered" stays open there,
+since the stored scan does not keep its leg.
 Scan remarks, recipient information, coordinates, references and phone fields are excluded.
 
 ## Limitations

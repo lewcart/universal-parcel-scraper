@@ -104,6 +104,9 @@ describe('classifyWording', () => {
       '1 item has been transferred to 0000 (example) card left', 'Card left - item held at post office', 'Carded',
       // Indian couriers' hyphenated or spaced "undelivered" is no delivery.
       'Un-Delivered', 'Un Delivered', 'Undelivered',
+      // DHL's failed round as a universal provider relays it in English.
+      'Delivery not possible. Pickup information will follow by mail', 'Delivery not possible. Forwarding in postal retail outlet',
+      'Delivery was not possible', 'Delivery impossible',
     ]) expect(classifyWording(wording)).toEqual({ stage: 'failed_attempt', source: 'wording:language' });
     // A scheduled attempt, a sender pickup attempt or a hypothetical absence is not a missed round.
     for (const wording of [

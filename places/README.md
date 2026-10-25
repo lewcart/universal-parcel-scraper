@@ -41,7 +41,8 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   "新城") names no town. Latin letters next to such script are a word: "Changsha市".
 - A smaller town that ends the part of the text a city begins, within 30 km of the city, is
   the carrier's site there: "TORINO MONCALIERI (999)" is in Moncalieri. An airport the text
-  names there comes first ("PARIS ORLY").
+  names there comes first ("PARIS ORLY"), and a hyphen makes the two one name, a quarter of the
+  city ("Zürich-Mülligen").
 - Bigger towns win, and context breaks ties: a country written in the text, a state,
   province or canton, by code or by name ("STERLING - Virginia - USA", "CURITIBA - PR"), a
   Swiss postcode, then the countries of neighbouring scans, the parcel's destination and

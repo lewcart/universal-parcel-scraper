@@ -263,8 +263,9 @@ describe('locatePlace', () => {
     expect(place('TORINO MONCALIERI (999)', ['IT'])).toMatchObject({ country: 'IT', name: 'Moncalieri', latitude: 44.999 });
     expect(place('LYON CORBAS 2', ['FR'])).toMatchObject({ country: 'FR', name: 'Corbas' });
     expect(place('LONDON CROYDON')).toMatchObject({ country: 'GB', name: 'Croydon' });
-    // Not a word that is no town there, nor before an airport the text names.
+    // Not a word that is no town there, a quarter a hyphen joins to the city, nor before an airport the text names.
     expect(place('TORINO NORD')).toMatchObject({ country: 'IT', name: 'Turin' });
+    expect(place('Zürich-Mülligen', ['CH'])).toMatchObject({ country: 'CH', name: 'Zürich' });
     expect(place('PARIS ORLY')).toMatchObject({ country: 'FR', name: 'Paris', site: 'Paris-Orly Airport' });
   });
 

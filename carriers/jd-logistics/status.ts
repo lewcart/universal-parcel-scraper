@@ -29,20 +29,23 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['DLV', { status: 'delivered', stage: 'delivered' }],
 ]);
 
-// A last-mile partner's step under a code JD has shown only with it, such as GOFO's label
-// under SRRF3P. The wording decides, so another step under the same code is not misread.
+// A last-mile partner's step, read by its wording ahead of the code JD relays it under: GOFO's
+// label comes under SRRF3P, a code JD has shown with that step alone, and GOFO's loading at a
+// hub under DMLMLS, which is otherwise JD's courier out with the parcel. GOFO's arrival at its
+// delivery station and its own out-for-delivery follow under other codes.
 const RELAYED = new Map<string, ClassifiedStatus>([
   ['shipping label created', { status: 'pending', stage: 'registered' }],
+  ['loaded on vehicle', MOVING],
 ]);
 
-/** The status and stage for one scan's operation code, or its relayed wording; undefined when unmapped. */
+/** The status and stage for one scan's relayed wording, or its operation code; undefined when unmapped. */
 export function jdLogisticsStatus(code: string | undefined, wording: string): ClassifiedStatus | undefined {
-  return (code ? CODES.get(code) : undefined) ?? RELAYED.get(wording.trim().toLowerCase());
+  return RELAYED.get(wording.trim().toLowerCase()) ?? (code ? CODES.get(code) : undefined);
 }
 
 /**
- * What the map says about one scan: its operation code, else the wording JD relays from a
- * last-mile partner. A scan the shared wording rules staged stays open.
+ * What the map says about one scan: the wording JD relays from a last-mile partner, else its
+ * operation code. A scan the shared wording rules staged stays open.
  */
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => jdLogisticsStatus(code ?? undefined, wording)?.stage,

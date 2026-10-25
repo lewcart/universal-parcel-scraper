@@ -180,6 +180,9 @@ describe('JD Logistics international projection', () => {
     // The partner's other steps under SRRF3P are read by their wording.
     nodes[0] = { ...nodes[0], operationCode: 'SRRF3P', operatorDesc: 'Delivered' };
     expect(parseJdLogistics(reply, NUMBER)).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'wording:language' });
+    // GOFO loads the parcel at a hub under JD's courier code, before its delivery station.
+    nodes[0] = { ...nodes[0], operationCode: 'DMLMLS', operatorDesc: 'Loaded on Vehicle' };
+    expect(parseJdLogistics(reply, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map' });
   });
 
   it('drops the courier\'s name and phone from the out-for-delivery wording', () => {

@@ -15,8 +15,9 @@ Each scan keeps its operation code as its provider code and takes its stage from
 (`status.ts`); a scan with an unknown code is classified by its wording. An order shipped from
 JD's own warehouse abroad is accepted there while it is picked and weighed, then handed to a
 last-mile partner such as GOFO, whose steps JD relays. GOFO's label comes under a code JD has
-shown with that step alone, so its wording decides it rather than the code. The newest scan
-decides the status. The courier's name and phone are dropped from the out-for-delivery wording
+shown with that step alone, and GOFO's loading at a hub, before its delivery station, under the
+code of JD's courier out with the parcel, so their wording decides them rather than the code.
+The newest scan decides the status. The courier's name and phone are dropped from the out-for-delivery wording
 (`wording.ts`).
 
 A scan's location is its city and its country in English. JD names the country in Chinese in

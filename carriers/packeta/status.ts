@@ -21,6 +21,7 @@
  * fictionalized in that project's fixtures); the return's sentence on 2026-10-09.
  */
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const RETURNED: ClassifiedStatus = { status: 'exception', stage: 'returned' };
 const EXCEPTION: ClassifiedStatus = { status: 'exception', stage: 'exception' };
@@ -85,3 +86,9 @@ export function packetaEventStage(rawDescription: string): Stage | null {
   }
   return null;
 }
+
+/**
+ * What the map says about one scan: its sentence, the only key a scan has. The
+ * parcel's `packetStatusId` stages the parcel, never a scan.
+ */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => packetaEventStage(wording) ?? undefined, gaps: [] };

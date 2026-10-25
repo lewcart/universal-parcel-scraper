@@ -767,6 +767,17 @@ describe('status map answers', () => {
     expect(answer('dpd-uk', null, 'Your parcel has been dropped off at a DPD Pickup Shop')).toEqual(unknown);
   });
 
+  it("answers Packeta by its event sentences, and not by the parcel's status wording", () => {
+    expect(answer('packeta', null, 'We are aware of your parcel and are waiting for the sender to hand it over to us.')).toEqual(mapped('registered'));
+    expect(answer('packeta', null, 'We have successfully received the parcel for transport. DEPO Example')).toEqual(mapped('in_transit'));
+    expect(answer('packeta', null, 'The parcel is ready for pickup. Z-BOX Example 1')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('packeta', null, 'The parcel is with you. Thank you, and we look forward to next time.')).toEqual(mapped('delivered'));
+    expect(answer('packeta', null, 'We have returned the parcel back to the sender.')).toEqual(mapped('returned'));
+    // The packetStatusId and its wording stage the parcel, never a scan.
+    expect(answer('packeta', '3', 'The package has been delivered')).toEqual(unknown);
+    expect(answer('packeta', null, 'Synthetic sentence')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

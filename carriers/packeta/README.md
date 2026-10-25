@@ -32,7 +32,8 @@ after nine digits is CDL's order number.
 - The locale is pinned to English. Event sentences are the only per-event signal, and a
   fixed locale turns them into a stable vocabulary that substring matching can classify.
 - Two independent maps: `packetStatusId` sets the parcel's stage, the canned sentences set
-  each event's stage. The overall stage never borrows from the sentences.
+  each event's stage. The overall stage never borrows from the sentences. The app's review
+  asks the sentence map (`statusMap`), since a scan keeps no code.
 - The `packetStatusId` names come from the tracking page's own script. Only `3` (delivered)
   and the returns `5` and `21` are confirmed live; the other ids are reconstructed. The script
   names `21` LOST_OR_UNKNOWN, but its live wording is "Return (on the way back)", so it maps to

@@ -1047,6 +1047,16 @@ describe('status map answers', () => {
     expect(answer('canpar', null, 'Synthetic scan')).toEqual(unknown);
   });
 
+  it("answers Colisweb by its step's wording, and leaves the wording two steps share out on purpose", () => {
+    expect(answer('colisweb', null, 'Livraison effectuée')).toEqual(mapped('delivered'));
+    expect(answer('colisweb', null, 'Livraison annulée')).toEqual(mapped('returned'));
+    expect(answer('colisweb', null, 'Colis pris en charge')).toEqual(mapped('in_transit'));
+    expect(answer('colisweb', null, 'Livraison en cours')).toEqual(mapped('out_for_delivery'));
+    expect(answer('colisweb', null, 'Livraison confirmée')).toEqual(mapped('registered'));
+    expect(answer('colisweb', null, 'Incident de livraison')).toEqual(gap);
+    expect(answer('colisweb', null, 'Mise à jour Colisweb')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

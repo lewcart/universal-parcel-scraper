@@ -31,6 +31,9 @@ Tracked through the public recipient search.
 - `package_return_failed` maps to `returned`, not `failed_attempt`: the failure is about the
   return leg.
 - An unlisted step gives no `current_stage` and a stage-less event, so the sync classifies it.
+- A failed step and an undeliverable one are both worded "Incident de livraison", at different
+  stages. The parcel app's review (`statusMap`) leaves that wording without a stage, since the
+  stored event does not keep the step.
 - Milestone timestamps carry their own offset and are kept verbatim.
 - The estimate is the booked slot the page shows, `startsAt` to `endsAt`, as
   `YYYY-MM-DD HH:mm–HH:mm`. The endpoint sends UTC instants and the page prints them on

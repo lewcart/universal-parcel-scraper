@@ -11,6 +11,7 @@
  * with no stage and the sync classifies it.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface ClassifiedStatus {
@@ -83,3 +84,28 @@ export function classifyStatus(value: unknown): ClassifiedStatus {
   }
   return { status: 'unknown', description: 'Mise à jour Colisweb' };
 }
+
+const STEPS = [
+  ...DELIVERED_STEPS, ...RETURNED_STEPS, ...CANCELED_STEPS, ...EXCEPTION_STEPS,
+  ...FAILED_STEPS, ...OUT_FOR_DELIVERY_STEPS, ...PICKED_UP_STEPS, ...CONFIRMED_STEPS,
+];
+
+/** The stage of each step's wording, left out where two steps word it alike with different stages. */
+const STAGE_BY_WORDING = new Map<string, Stage | undefined>();
+for (const { description, stage } of STEPS.map(classifyStatus)) {
+  const key = normalizeStatusWording(description);
+  STAGE_BY_WORDING.set(key, STAGE_BY_WORDING.has(key) && STAGE_BY_WORDING.get(key) !== stage ? undefined : stage);
+}
+
+/**
+ * What the map says about one event: the wording of its step, as the adapter writes it. A failed
+ * step and an undeliverable one share their wording, and an unknown step's wording stays open,
+ * since the stored event does not keep the step.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => STAGE_BY_WORDING.get(wording),
+  gaps: [{
+    wording: normalizeStatusWording(classifyStatus('delivery_failed').description),
+    note: 'A failed delivery, pickup or withdrawal, or an exception when the parcel cannot be delivered: the stored event does not keep the step.',
+  }],
+};

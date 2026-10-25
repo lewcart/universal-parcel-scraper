@@ -1028,6 +1028,15 @@ describe('status map answers', () => {
     expect(answer('bring-posten', null, 'Delivered')).toEqual(unknown);
   });
 
+  it("answers C chez vous by its step's wording, and leaves an unknown step open", () => {
+    expect(answer('c-chez-vous', null, 'Commande enregistrée')).toEqual(mapped('registered'));
+    expect(answer('c-chez-vous', null, 'Commande en route vers la plateforme régionale')).toEqual(mapped('in_transit'));
+    expect(answer('c-chez-vous', null, 'Commande disponible au point retrait')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('c-chez-vous', null, 'Commande retirée au point retrait')).toEqual(mapped('delivered'));
+    expect(answer('c-chez-vous', null, 'Commande livrée')).toEqual(mapped('delivered'));
+    expect(answer('c-chez-vous', null, 'Suivi C Chez Vous')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

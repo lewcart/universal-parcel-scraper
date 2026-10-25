@@ -18,6 +18,7 @@
  * has not started.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface StepDetails {
@@ -63,3 +64,16 @@ export function parcelStep(value: unknown, kind: DeliveryKind = 'home'): number 
 export function stepDetails(step: number, kind: DeliveryKind = 'home'): StepDetails | null {
   return Object.hasOwn(STEP_DETAILS[kind], step) ? STEP_DETAILS[kind][step]! : null;
 }
+
+/** The stage of each step's wording, left out where two steps word it alike with different stages. */
+const STAGE_BY_WORDING = new Map<string, Stage | undefined>();
+for (const { description, stage } of Object.values(STEP_DETAILS).flatMap((steps) => Object.values(steps))) {
+  const key = normalizeStatusWording(description);
+  STAGE_BY_WORDING.set(key, STAGE_BY_WORDING.has(key) && STAGE_BY_WORDING.get(key) !== stage ? undefined : stage);
+}
+
+/**
+ * What the map says about the order's one event: the wording of its step, as the adapter writes
+ * it. An unknown step's wording stays open, since the stored event does not keep the step.
+ */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => STAGE_BY_WORDING.get(wording), gaps: [] };

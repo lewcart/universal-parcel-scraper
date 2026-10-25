@@ -77,6 +77,7 @@ import { statusMap as bulgarianPosts } from '../../carriers/bulgarian-posts/stat
 import { statusMap as burdDelivery } from '../../carriers/burd-delivery/status.js';
 import { statusMap as bussgods } from '../../carriers/bussgods/status.js';
 import { statusMap as byhd } from '../../carriers/byhd/status.js';
+import { statusMap as cChezVous } from '../../carriers/c-chez-vous/status.js';
 import { statusMap as c3x } from '../../carriers/c3x/status.js';
 import { statusMap as cacesa } from '../../carriers/cacesa/status.js';
 import { statusMap as canadaPost } from '../../carriers/canada-post/status.js';
@@ -624,7 +625,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'atlantic-courier': atlanticCourier, 'australia-post': australiaPost, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'best-overnite-express': bestOverniteExpress, 'better-trucks': betterTrucks, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-dart': blueDart, 'blue-express': blueExpress, blueex, bombino,
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, bpost, 'bring-posten': bringPosten, 'bringer-parcel': bringerParcel, brt, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
-  byhd, c3x, cacesa, 'canada-post': canadaPost, cargus, 'castle-parcels': castleParcels, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
+  byhd, 'c-chez-vous': cChezVous, c3x, cacesa, 'canada-post': canadaPost, cargus, 'castle-parcels': castleParcels, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, 'citylink-express': citylinkExpress, citymail,
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'colis-prive': colisPrive, 'connect-couriers': connectCouriers, coordinadora,

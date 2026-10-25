@@ -7,9 +7,9 @@
  * "Chicago, IL" and "Koeln, DE" alike, so only the town tells them apart.
  *
  * Source: the server's gazetteer, places/places.tsv.br (GeoNames
- * towns of 1,000 people or more, CC BY 4.0). A town whose name the country
- * also has, for at least as many people, is left out: "Salem, IN" stays in
- * India.
+ * towns of 1,000 people or more and US post office towns, CC BY 4.0). A town
+ * whose name the country also has, for at least as many people, is left out:
+ * "Salem, IN" stays in India.
  *
  * It also lists two island groups that keep another clock than their country:
  * the Canary Islands (ES-CN) and the Azores (PT-20), by their towns and the

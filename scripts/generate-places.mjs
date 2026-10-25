@@ -20,8 +20,9 @@ const cache = process.argv[2] ?? '/tmp/universal-parcel-scraper-places';
 const output = join(root, 'places/places.tsv.br');
 // Small towns in these countries often host sorting centres, so every
 // locality in their postal files becomes a place. Belgian municipalities
-// ("Grâce-Hollogne", by Liège airport) are not GeoNames towns at all.
-const LOCALITY_COUNTRIES = ['CH', 'LI', 'AT', 'DE', 'FR', 'IT', 'BE', 'LU', 'NL'];
+// ("Grâce-Hollogne", by Liège airport) are not GeoNames towns at all, and US
+// distribution centres go by a post office's name ("Sparrows Point, MD").
+const LOCALITY_COUNTRIES = ['CH', 'LI', 'AT', 'DE', 'FR', 'IT', 'BE', 'LU', 'NL', 'US'];
 // Only these carriers print postcodes ("Härkingen 4622").
 const POSTCODE_COUNTRIES = new Set(['CH', 'LI']);
 // Exonyms and translations ("Genf", "Cologne") matter for towns, not hamlets,

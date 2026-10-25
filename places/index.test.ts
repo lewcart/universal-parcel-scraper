@@ -294,6 +294,9 @@ describe('locatePlace', () => {
     expectPlace('ABIUL - PORTUGAL', { country: 'PT', name: 'Abiul', latitude: 39.87, longitude: -8.51 });
     // A Taiwanese district by its Chinese name, without the word for district.
     expectPlace('五股郵局', { country: 'TW', name: 'Wugu', latitude: 25.1, longitude: 121.43 }, ['TW']);
+    // A US post office's town, though no town of 1,000 people: not Jaffa, once called Joppa.
+    expectPlace('SPARROWS POINT, MD', { country: 'US', name: 'Sparrows Point', latitude: 39.23, longitude: -76.45 });
+    expectPlace('JOPPA, MD', { country: 'US', name: 'Joppa', latitude: 39.42, longitude: -76.35 });
   });
 
   it('reads no town from a Chinese word for a facility', () => {

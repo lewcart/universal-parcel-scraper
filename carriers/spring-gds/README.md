@@ -74,10 +74,13 @@ native catalog all carry it; everything user-facing says PostNL.
   several milestones: sorting and the delivery round within `Processing`, PostNL's own
   acceptance within `Transit`, customs release within `Customs`, and a completed return
   within `Undelivered` ("will be returned" can still end in a new delivery attempt).
-  A stored scan keeps the event's status number, not its category, so the app's review
-  (`statusMap`) reads only the domestic labels.
   Unknown categories leave the event unstaged and the shipment status unknown.
-- Each scan's numeric `status` is kept as its `provider_code`.
+- Each scan keeps its numeric `status`, a slash and its category, trimmed and in lower case, as
+  its `provider_code` (`37/delivered`); a scan without a category keeps its number alone. The
+  parcel app's review asks the same map (`statusMap`) by that code, so it stages a scan by its
+  category and label as the adapter does. A domestic observation, or a scan stored with its
+  number alone, is read by the domestic labels. Adding the category changes no stored scan's
+  identity, which the app keys on its time, place and wording.
 - `unsuccesfull` is PostNL's own spelling. The corrected spelling is mapped too, so an
   upstream fix loses nothing.
 - The item's `destination_code` becomes `destination_country`. The host uses it as a hint to

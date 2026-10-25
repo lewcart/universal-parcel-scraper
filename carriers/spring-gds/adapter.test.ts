@@ -280,11 +280,12 @@ describe('PostNL declared capabilities and privacy', () => {
       expected_delivery: null,
       delivered_at: '2026-09-03T10:12:00+02:00',
     });
+    // Each scan keeps its category with its status number, which the parcel app's review reads.
     expect(delivered.events?.map((event) => [event.stage, event.location, event.provider_code])).toEqual([
-      ['delivered', 'Netherlands', '37'],
-      ['out_for_delivery', 'Netherlands', '74'],
-      ['customs', 'Netherlands', '6060'],
-      ['registered', 'CN', '1233'],
+      ['delivered', 'Netherlands', '37/delivered'],
+      ['out_for_delivery', 'Netherlands', '74/out for delivery'],
+      ['customs', 'Netherlands', '6060/customs'],
+      ['registered', 'CN', '1233/pre-advised'],
     ]);
   });
 
@@ -348,10 +349,15 @@ describe('PostNL ambiguity and clock safety', () => {
   });
 
   it.each([
-    [37, '37'], ['3054', '3054'], [' 74 ', '74'], [-1, undefined], [1.5, undefined], ['B24', undefined], [null, undefined],
+    [37, '37/processing'], ['3054', '3054/processing'], [' 74 ', '74/processing'], [-1, undefined], [1.5, undefined], ['B24', undefined], [null, undefined],
   ])('keeps only a numeric scan code as the provider code: %j', (status, expected) => {
     const result = parsePostNLTrackingResponse(payload([{ category: 'Processing', status }]), number);
     expect(result.events?.[0]?.provider_code).toBe(expected);
+  });
+
+  it('keeps a scan without a category under its status number alone', () => {
+    const result = parsePostNLTrackingResponse(payload([{ category: ' ', status: 37, status_description: 'Synthetic scan' }]), number);
+    expect(result.events?.[0]).toMatchObject({ provider_code: '37', description: 'Synthetic scan' });
   });
 
   it('reads incorrect as not found only for a 3S layout the endpoint reads, and asks the postcode a 3S barcode it lacks', () => {

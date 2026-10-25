@@ -34,7 +34,7 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { countryTimeZone, explicitOffsetTime, firstOccurrence, mislabeledWallTime, settleGuessedClocks, type FeedClock, type ParsedTime } from '../../core/time/index.js';
 import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { postNLDomesticStage, postNLStatus } from './status.js';
+import { postNLCode, postNLDomesticStage, postNLStatus } from './status.js';
 
 const PROVIDER = 'PostNL';
 const TOKEN_URL = 'https://postnl.post/api/v1/auth/token';
@@ -183,7 +183,7 @@ export function parsePostNLTrackingResponse(value: unknown, trackingNumber: stri
       ...(times[index] ? { time: times[index].iso } : local_time ? { local_time } : provider_time_text ? { provider_time_text } : {}),
       location: (text(event.country_name) || text(event.country_code)).slice(0, 200),
       description: (text(event.status_description) || text(event.category)).slice(0, 500),
-      ...(code ? { provider_code: code } : {}),
+      ...(code ? { provider_code: postNLCode(code, event.category) } : {}),
       ...(classified ? { stage: classified.stage } : {}),
     };
   });

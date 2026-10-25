@@ -418,9 +418,18 @@ describe('status map answers', () => {
     expect(answer('uniuni', null, 'Delivered')).toEqual(unknown);
   });
 
-  it("answers Spring GDS by PostNL's domestic labels, and leaves its international scans open", () => {
+  it("answers Spring GDS by PostNL's domestic labels, and an international scan by the category stored with its number", () => {
     expect(answer('spring-gds', 'Z1', 'Shipment received by PostNL')).toEqual(mapped('accepted'));
     expect(answer('spring-gds', null, 'Driver is en route')).toEqual(mapped('out_for_delivery'));
+    expect(answer('spring-gds', '37/delivered', 'Shipment delivered')).toEqual(mapped('delivered'));
+    expect(answer('spring-gds', '1233/pre-advised', 'Synthetic wording')).toEqual(mapped('registered'));
+    // The label refines an overloaded category, as in the adapter.
+    expect(answer('spring-gds', '74/processing', 'The item is out for delivery.')).toEqual(mapped('out_for_delivery'));
+    expect(answer('spring-gds', '74/processing', 'Synthetic wording')).toEqual(mapped('accepted'));
+    expect(answer('spring-gds', '9/undelivered', 'Undeliverable item, has been returned to shipper')).toEqual(mapped('returned'));
+    // An international scan reads no domestic label, and an unknown category stays open.
+    expect(answer('spring-gds', '9/future category', 'Driver is en route')).toEqual(unknown);
+    // A scan stored with its number alone keeps no category.
     expect(answer('spring-gds', '37', 'Shipment delivered')).toEqual(unknown);
   });
 

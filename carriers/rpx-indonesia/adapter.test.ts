@@ -181,17 +181,34 @@ describe('RPX HTTP adapter', () => {
   });
 
   it('tries once more after a read that hangs, inside the budget', async () => {
-    const signals: AbortSignal[] = [];
-    const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      const signal = init!.signal!;
-      signals.push(signal);
-      signal.addEventListener('abort', () => reject(signal.reason), { once: true });
-    }));
-    const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
-    expect(signals.every((signal) => signal.aborted)).toBe(true);
-    expect(Date.now() - started).toBeGreaterThanOrEqual(70);
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    // The budget's clock and timers are faked, so a busy event loop cannot fire the first
+    // attempt's timer after the budget has run out.
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'performance'] });
+    vi.spyOn(AbortSignal, 'timeout').mockImplementation((ms) => {
+      const controller = new AbortController();
+      setTimeout(() => { controller.abort(new DOMException('The operation timed out', 'TimeoutError')); }, ms);
+      return controller.signal;
+    });
+    try {
+      const signals: AbortSignal[] = [];
+      const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
+        const signal = init!.signal!;
+        signals.push(signal);
+        signal.addEventListener('abort', () => reject(signal.reason), { once: true });
+      }));
+      const started = performance.now();
+      const failed = expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 80 })).rejects.toThrow();
+      await vi.advanceTimersByTimeAsync(40);
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      await vi.advanceTimersByTimeAsync(40);
+      await failed;
+      expect(signals.every((signal) => signal.aborted)).toBe(true);
+      expect(performance.now() - started).toBe(80);
+      expect(fetcher).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    }
   });
 
   it('routes an AWB filed under RPX to the adapter', async () => {

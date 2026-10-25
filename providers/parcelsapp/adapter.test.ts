@@ -814,6 +814,25 @@ describe('ParcelsApp result parsing', () => {
     });
   });
 
+  it("reads ECMS's scans on their facility's clock, Japan's at Narita", () => {
+    // ECMS's own tracker gives these digits "+09:00" at Narita; China's clock put them an hour late.
+    const result = parseParcelsAppResponse({ carriers: ['ECMS Express'], destinationCode: 'US', states: [
+      { date: '2026-07-26T09:07:00Z', status: 'Shipment arrived at destination facility.', carrier: 0,
+        location: 'Example International Airport, United States' },
+      { date: '2026-07-24T17:05:16Z', status: 'Flight departure', carrier: 0, location: 'Example Town' },
+      { date: '2026-07-23T14:14:23Z', status: 'Shipment departed from origin facility.', carrier: 0,
+        location: 'Narita International Airport, Example Town, Japan' },
+      { date: '2026-07-20T10:02:29Z', status: 'Shipment arrived at origin facility.', carrier: 0, location: 'Example Town, China' },
+    ] }, number, identity(), 'Asia/Shanghai');
+    expect(Object.fromEntries(result.events!.map((scan) => [scan.description, scan.time ?? `local ${scan.local_time}`]))).toEqual({
+      // The United States keep several clocks, and a town alone names none.
+      'Shipment arrived at destination facility.': 'local 2026-07-26T09:07:00.000',
+      'Flight departure': 'local 2026-07-24T17:05:16.000',
+      'Shipment departed from origin facility.': '2026-07-23T05:14:23.000Z',
+      'Shipment arrived at origin facility.': '2026-07-20T02:02:29.000Z',
+    });
+  });
+
   it('reads Asendia scans filed under another name in their place\'s clock, not as UTC', () => {
     // Live shape (2026-09-30): an eBay shipment whose Asendia scans ParcelsApp
     // files under "EasyShip", on local clocks. Ship24's instants agree.

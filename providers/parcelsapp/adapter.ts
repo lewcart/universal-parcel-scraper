@@ -773,15 +773,18 @@ function brandNetworkZones(payload: Record<string, unknown>, name: string, numbe
  * at its Chinese warehouse, the Netherlands' at Schiphol and the destination
  * courier's at the courier's scans; read on China's clock, a parcel's scans at
  * Schiphol came six hours early, and another's landing at JFK under five
- * hours after its flight left China. Not every line on China's clock does
- * this: Hualei's tenants (Mayi Yinfu) and DHLink date their scans abroad on
- * Beijing time. A scan of these lines takes Beijing's clock in China (with JS
- * Express's own rule for its flights there), else that of the US state or
- * Canadian province its place names for certain ("New York, United States"),
- * else the single clock of the country it names. One with no place, only a
- * town or a country of several clocks keeps its wall clock.
+ * hours after its flight left China. ECMS's own tracker gives the digits
+ * ParcelsApp has with each facility's offset, "+09:00" at Narita: read on
+ * China's clock, they came an hour after ECMS's own rows. Not every line on
+ * China's clock does this: Hualei's tenants (Mayi Yinfu) and DHLink date
+ * their scans abroad on Beijing time. A scan of these lines takes Beijing's
+ * clock in China (with JS Express's own rule for its flights there), else
+ * that of the US state or Canadian province its place names for certain
+ * ("New York, United States"), else the single clock of the country it
+ * names. One with no place, only a town or a country of several clocks keeps
+ * its wall clock.
  */
-const PLACE_CLOCK_LINES = new Set(['js-express']);
+const PLACE_CLOCK_LINES = new Set(['js-express', 'ecms-express']);
 function placeClockLine(carrier: string, status: string, location: string): string | null {
   const china = carrier === 'js-express' ? jsExpressChinaClock(status, location) : undefined;
   if (china !== undefined) return china;

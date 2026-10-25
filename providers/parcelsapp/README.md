@@ -319,11 +319,13 @@ step exists for future protocol changes.
   the code names a country keeping one, else it keeps its wall clock, as Hrvatska pošta's
   own adapter reads it. Read on Zagreb's clock, a British office's scans came out an hour
   early. Its other scans take Zagreb's clock.
-- JS Express's dates are the clock of each scan's place, not the China time of its catalog
-  zone. Its own feed gives the same digits with China's offset at its Chinese warehouse,
-  the Netherlands' at Schiphol and the destination courier's at the courier's scans: read
-  on China's clock, its scans at Schiphol came six hours early, and a landing at JFK under
-  five hours after the flight left China. A scan in China takes Beijing's clock, except a
+- JS Express's and ECMS's dates are the clock of each scan's place, not the China time of
+  their catalog zone. JS Express's own feed gives the same digits with China's offset at
+  its Chinese warehouse, the Netherlands' at Schiphol and the destination courier's at the
+  courier's scans: read on China's clock, its scans at Schiphol came six hours early, and a
+  landing at JFK under five hours after the flight left China. ECMS's own tracker gives
+  them each facility's offset, Japan's at Narita, where China's clock put them an hour
+  after ECMS's own rows. A scan in China takes Beijing's clock, except a JS Express
   flight's departure filed there, which keeps its wall clock as in JS Express's own
   adapter. A scan elsewhere takes the clock of the US state or Canadian province its place
   names for certain, else the single clock of the country it names; one with no place,

@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 function comparable(value: string): string {
   return value.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/\s+/g, ' ').trim();
@@ -37,3 +38,13 @@ export function classifyCorreosChileScan(code: string, wording: string): Classif
   }
   return WORDINGS.get(label) ?? null;
 }
+
+/**
+ * What the map says about one scan: its wording, with the portal's code where a stage needs it,
+ * as the parser reads them. The neutral update that replaces free-form wording stays open, since
+ * the stored scan does not keep the wording it replaced.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => classifyCorreosChileScan(code ?? '', wording)?.stage,
+  gaps: [],
+};

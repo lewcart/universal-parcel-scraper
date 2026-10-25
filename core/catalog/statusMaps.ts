@@ -120,6 +120,7 @@ import { statusMap as corre } from '../../carriers/corre/status.js';
 import { statusMap as correiosBr } from '../../carriers/correios-br/status.js';
 import { statusMap as correoArgentino } from '../../carriers/correo-argentino/status.js';
 import { statusMap as correoUruguayo } from '../../carriers/correo-uruguayo/status.js';
+import { statusMap as correosChile } from '../../carriers/correos-chile/status.js';
 import { statusMap as correosCuba } from '../../carriers/correos-cuba/status.js';
 import { statusMap as correosDeMexico } from '../../carriers/correos-de-mexico/status.js';
 import { statusMap as correosElSalvador } from '../../carriers/correos-el-salvador/status.js';
@@ -647,7 +648,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, ciblex, 'city-express-rs': cityExpressRs, 'citylink-express': citylinkExpress, citymail,
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, cne, 'colis-prive': colisPrive, colisweb, 'connect-couriers': connectCouriers, coordinadora,
   'copa-courier': copaCourier, corre,
-  'correios-br': correiosBr, 'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
+  'correios-br': correiosBr, 'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-chile': correosChile, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, ctt, 'ctt-express': cttExpress, cttyex,
   'cyprus-post': cyprusPost, 'd-express': dExpress, dachser, 'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss,
   dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, delhivery, dellin, delnext, deppon, dhl, 'dhl-ecommerce': dhlEcommerce, 'dhl-ecommerce-es': dhlEcommerceEs, 'dhl-ecommerce-nl': dhlEcommerceNl, 'dhl-ecommerce-pl': dhlEcommercePl, 'dhl-ecommerce-uk': dhlEcommerceUk, 'dhl-express': dhlExpress,

@@ -27,7 +27,9 @@ replaced with a neutral update. A scan whose whole wording is a known status kee
 its wording and gets a stage. Customs entry, delivery rounds and delivery must also
 carry the portal's code. The scans of a parcel leaving Chile match by wording alone,
 since providers and an [open-source client's example](https://github.com/josemontesp/correos-chile-npm/blob/277942058928b2101ea8a1a3777e282bfcb48252/ReadMe.md)
-give them without one. A direct answer with no staged scan would read to a consumer
+give them without one. The parcel app's review (`statusMap`) reads the same, so the
+neutral update stays open there, since the stored scan does not keep the text it
+replaced. A direct answer with no staged scan would read to a consumer
 as lost progress. A missing shipment response may also mean its
 history expired, so it remains inconclusive.
 Its not-found notice carries the reason `portal_not_found`, so a consumer can

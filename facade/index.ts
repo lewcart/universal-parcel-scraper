@@ -179,6 +179,16 @@ export function createTracker(options: TrackerOptions = {}) {
           }
         }, left));
       }
+      // The budget's signal only aborts once the event loop runs its timer, which can be after a
+      // round's timer or a stalled loop has spent the budget. Waiting for it lets `track` see the
+      // budget spent rather than ask a source with none left. That timer does not keep the
+      // process alive, so a timer of the whole budget, set after it, does until it fires.
+      if (!signal.aborted && (inFlight > 0 || performance.now() >= end)) {
+        await new Promise<void>(resolve => {
+          const alive = setTimeout(resolve, ms);
+          signal.addEventListener('abort', () => { clearTimeout(alive); resolve(); }, { once: true });
+        });
+      }
       return outcomes;
     });
     const outcomes = await (context.signal ? bounded(ask, context.signal) : ask());

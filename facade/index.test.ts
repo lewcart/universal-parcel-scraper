@@ -213,11 +213,8 @@ describe('standalone tracker', () => {
     }) });
     const answer = { carrier: 'dpd', choices: [], asked: ['dpd', 'seur', 'brt', 'ciblex'], unanswered: ['seur', 'ciblex'] };
     await expect(tracker.recognize(ambiguous, { budgetMs: 30 })).resolves.toEqual(answer);
-    // The budget still cancels what was in flight. The wait ends on the round's own timer,
-    // which can fire just before the budget's, so wait for the abort instead of reading it.
-    const inFlight = waiting.mock.calls[0]![1]!.signal!;
-    if (!inFlight.aborted) await new Promise(resolve => inFlight.addEventListener('abort', resolve, { once: true }));
-    expect((inFlight.reason as Error).name).toBe('TimeoutError');
+    // The budget still cancels what was in flight, before the wait ends.
+    expect(waiting.mock.calls[0]![1]!.signal!.reason).toMatchObject({ name: 'TimeoutError' });
     // A caller's signal that stays quiet changes nothing.
     await expect(tracker.recognize(ambiguous, { budgetMs: 30, signal: new AbortController().signal })).resolves.toEqual(answer);
   });
@@ -293,6 +290,14 @@ describe('standalone tracker', () => {
       const failure = await tracker.track(input, { budgetMs: 30 }).catch((error: unknown) => error);
       expect(failure).toBeInstanceOf(TrackingError);
       expect(failure).toMatchObject({ attempts: [], hint: { kind: 'budget' } });
+    }
+    // So does a budget a stalled event loop spends before the first round, while its signal waits for its timer.
+    let now = 0;
+    const clock = vi.spyOn(performance, 'now').mockImplementation(() => now += 40);
+    try {
+      await expect(tracker.track({ number: ambiguous }, { budgetMs: 30 })).rejects.toMatchObject({ attempts: [], hint: { kind: 'budget' } });
+    } finally {
+      clock.mockRestore();
     }
   });
 

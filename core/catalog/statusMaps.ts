@@ -182,6 +182,7 @@ import { statusMap as envialia } from '../../carriers/envialia/status.js';
 import { statusMap as eparcelKr } from '../../carriers/eparcel-kr/status.js';
 import { statusMap as epostGlobal } from '../../carriers/epost-global/status.js';
 import { statusMap as equick } from '../../carriers/equick/status.js';
+import { statusMap as estafeta } from '../../carriers/estafeta/status.js';
 import { statusMap as estes } from '../../carriers/estes/status.js';
 import { statusMap as estesForwarding } from '../../carriers/estes-forwarding/status.js';
 import { statusMap as eurodis } from '../../carriers/eurodis/status.js';
@@ -276,6 +277,7 @@ import { statusMap as indahLogistik } from '../../carriers/indah-logistik/status
 import { statusMap as inpost } from '../../carriers/inpost/status.js';
 import { statusMap as instabox } from '../../carriers/instabox/status.js';
 import { statusMap as integralPack } from '../../carriers/integral-pack/status.js';
+import { statusMap as intelcom } from '../../carriers/intelcom/status.js';
 import { statusMap as internetExpress } from '../../carriers/internet-express/status.js';
 import { statusMap as interrapidisimo } from '../../carriers/interrapidisimo/status.js';
 import { statusMap as intexPaketdienst } from '../../carriers/intex-paketdienst/status.js';
@@ -315,6 +317,7 @@ import { statusMap as laPosteBurkinaFaso } from '../../carriers/la-poste-burkina
 import { statusMap as laPosteSenegal } from '../../carriers/la-poste-senegal/status.js';
 import { statusMap as laarCourier } from '../../carriers/laar-courier/status.js';
 import { statusMap as labaih } from '../../carriers/labaih/status.js';
+import { statusMap as landmarkGlobal } from '../../carriers/landmark-global/status.js';
 import { statusMap as lastOneMileCoop } from '../../carriers/last-one-mile-coop/status.js';
 import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status.js';
 import { statusMap as leopardsCourier } from '../../carriers/leopards-courier/status.js';
@@ -624,7 +627,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-ro': dpdRo, 'dpd-uk': dpdUk, 'dpd-za': dpdZa, dpex, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dx, dynalogic,
   'early-bird': earlyBird, 'easy-mail': easyMail,
   'ecms-express': ecmsExpress, econt, ecoscooting, ecourier, 'egypt-post': egyptPost, elta, emile, 'emirates-post': emiratesPost, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia,
-  envialia, 'eparcel-kr': eparcelKr, 'epost-global': epostGlobal, equick, estes, 'estes-forwarding': estesForwarding, eurodis, 'euroexpress-ba': euroexpressBa,
+  envialia, 'eparcel-kr': eparcelKr, 'epost-global': epostGlobal, equick, estafeta, estes, 'estes-forwarding': estesForwarding, eurodis, 'euroexpress-ba': euroexpressBa,
   'evdemo-lojistik': evdemoLojistik, evri, 'evri-uk': evriUk, evropat, ewe, exelot,
   'exline-kz': exlineKz, exmate, 'express-one': expressOne, 'fan-courier': fanCourier, 'far-international': farInternational, 'fargo-courier': fargoCourier, 'fargo-uz': fargoUz, fastdrop,
   fastfrate, fedex, 'fedex-freight': fedexFreight, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery, 'first-line': firstLine,
@@ -637,13 +640,13 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, hepsijet, hermes, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress,
   'houng-ah-loun': houngAhLoun, hovership, 'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, 'ilyang-logis': ilyangLogis, imile,
-  'indah-logistik': indahLogistik, inpost, instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
+  'indah-logistik': indahLogistik, inpost, instabox, 'integral-pack': integralPack, intelcom, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-au': jAndTAu, 'j-and-t-de': jAndTDe, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, 'japan-post': japanPost, jcex, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
   'kit-tk': kitTk, 'korea-post': koreaPost, 'kuehne-nagel': kuehneNagel, 'kun-express': kunExpress, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih,
-  'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, liccardi,
+  'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, liccardi,
   'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
   'line-clear': lineClear, lingdong, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,

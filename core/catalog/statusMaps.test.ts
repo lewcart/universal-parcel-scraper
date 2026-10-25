@@ -902,6 +902,31 @@ describe('status map answers', () => {
     expect(answer('planzer', null, 'Versandt')).toEqual(unknown);
   });
 
+  it('answers Estafeta by its Spanish wording', () => {
+    expect(answer('estafeta', null, 'Recibido por Estafeta')).toEqual(mapped('accepted'));
+    expect(answer('estafeta', null, 'En tránsito')).toEqual(mapped('in_transit'));
+    expect(answer('estafeta', null, 'En proceso de entrega a domicilio')).toEqual(mapped('out_for_delivery'));
+    expect(answer('estafeta', null, 'Entregado')).toEqual(mapped('delivered'));
+    expect(answer('estafeta', null, 'Una frase nueva')).toEqual(unknown);
+  });
+
+  it("answers Intelcom by its code, and leaves a code it does not know open", () => {
+    expect(answer('intelcom', '105', 'Synthetic label')).toEqual(mapped('accepted'));
+    expect(answer('intelcom', '300', 'Synthetic label')).toEqual(mapped('out_for_delivery'));
+    expect(answer('intelcom', '601', 'Synthetic label')).toEqual(mapped('delivered'));
+    expect(answer('intelcom', '999', 'Delivered')).toEqual(unknown);
+    expect(answer('intelcom', null, 'Synthetic label')).toEqual(unknown);
+  });
+
+  it("answers Landmark Global by its own labels", () => {
+    expect(answer('landmark-global', null, 'Shipment Data Uploaded')).toEqual(mapped('registered'));
+    expect(answer('landmark-global', null, 'Out for Delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('landmark-global', null, 'Out For Delivery To Courier')).toEqual(mapped('in_transit'));
+    expect(answer('landmark-global', null, 'Item deposited to local postal operator')).toEqual(mapped('in_transit'));
+    expect(answer('landmark-global', null, 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('landmark-global', null, 'A partner wording')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

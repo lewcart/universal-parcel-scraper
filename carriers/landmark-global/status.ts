@@ -1,4 +1,5 @@
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const WORDINGS = new Map<string, ClassifiedStatus>([
   ['Delivered', { status: 'delivered', stage: 'delivered' }],
@@ -22,3 +23,13 @@ const WORDINGS = new Map<string, ClassifiedStatus>([
 ]);
 
 export function landmarkStatus(wording: string): ClassifiedStatus | undefined { return WORDINGS.get(wording); }
+
+/** Each label's stage by its normalized wording, left out where two labels fold together with different stages. */
+const STAGE_BY_WORDING = new Map<string, Stage | undefined>();
+for (const [label, { stage }] of WORDINGS) {
+  const wording = normalizeStatusWording(label);
+  STAGE_BY_WORDING.set(wording, STAGE_BY_WORDING.has(wording) && STAGE_BY_WORDING.get(wording) !== stage ? undefined : stage);
+}
+
+/** What the map says about one scan: Landmark's own label, as the parser reads it; a delivery is stored as "Delivered". */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => STAGE_BY_WORDING.get(wording), gaps: [] };

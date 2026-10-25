@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 export function estafetaWording(value: string): string {
   return value.normalize('NFD').replace(/\p{Diacritic}/gu, '').trim().toLowerCase();
@@ -18,3 +19,6 @@ export function estafetaStatus(wording: string): ClassifiedStatus | undefined {
   if (/^.+ llegada a centro operativo plaza destino$/.test(normalized)) return { status: 'in_transit', stage: 'in_transit' };
   return WORDINGS.get(normalized);
 }
+
+/** What the map says about one scan: its Spanish wording, as the parser reads it. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => estafetaStatus(wording)?.stage, gaps: [] };

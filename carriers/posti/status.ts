@@ -41,14 +41,19 @@ export function postiEventStage(description: string): string {
 }
 
 /**
- * What the map says about one scan: its label, as the adapter reads it. Notifications, pre-advice
- * and unknown labels all read as pending there, so the map leaves them open, and so does a label
- * the adapter stored with its reason after it, when a rule needs the label alone.
+ * What the map says about one scan: its label, as the adapter reads it. The adapter stores a
+ * label with its reason after it as a sentence of its own, so the map reads the wording's start up
+ * to each sentence end, shortest first, then the whole wording; the reason alone is never read.
+ * Notifications, pre-advice and unknown labels all read as pending there, so the map leaves them
+ * open.
  */
 export const statusMap: CarrierStatusMap = {
   stage: (_code, wording) => {
-    const stage = postiEventStage(wording);
-    return stage === 'pending' ? undefined : stage as Stage;
+    for (const end of [...wording.matchAll(/[.!?](?= )/g)].map((stop) => stop.index + 1).concat(wording.length)) {
+      const stage = postiEventStage(wording.slice(0, end));
+      if (stage !== 'pending') return stage as Stage;
+    }
+    return undefined;
   },
   gaps: [],
 };

@@ -458,6 +458,12 @@ describe('status map answers', () => {
     expect(answer('posti', null, 'We sent the recipient an email about the item.')).toEqual(unknown);
   });
 
+  it('answers Posti by the label a scan was stored with before its reason, never by the reason', () => {
+    expect(answer('posti', null, 'Item is ready for a pick up. Synthetic reason for the change.')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('posti', null, 'The item has been delivered. Synthetic reason')).toEqual(mapped('delivered'));
+    expect(answer('posti', null, 'We sent the recipient an email about the item. The item has been delivered.')).toEqual(unknown);
+  });
+
   it("answers DHL Express's wait for collection, missed delivery and return", () => {
     expect(answer('dhl-express', 'CC', 'Awaiting collection by the consignee')).toEqual(mapped('ready_for_pickup'));
     expect(answer('dhl-express', 'ND', 'Delivery attempt could not be completed')).toEqual(mapped('failed_attempt'));

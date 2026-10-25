@@ -56,7 +56,8 @@ Bootstrap, lookup and refresh share one cancellable 15-second budget.
 - Pickup availability is not delivery; transport back to the sender is not a completed
   return. Notification and pre-advice rows prove no movement.
 - `reasonDescription` follows the event's label as a sentence of its own and is never used to
-  classify. A scan stored with the two run together keeps its row.
+  classify. A scan stored with the two run together keeps its row. The parcel app's review
+  (`statusMap`) reads the label at the start of a stored wording, never the reason.
 - Registration labels describe repeated handling during transport. Country arrival and
   readiness for delivery remain transit until a scan identifies the delivery round.
 - A scan outside Finland has `city` "ULKOMAILLA" ("abroad"), untranslated. It names no

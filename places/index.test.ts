@@ -349,6 +349,16 @@ describe('locatePlace', () => {
     expect(place('NEW DELHI IN', ['IT'])).toMatchObject({ country: 'IN' });
   });
 
+  it('takes no town from what a linking word ties a name to', () => {
+    expect(place('Bernau bei Berlin', ['DE'])).toMatchObject({ country: 'DE', name: 'Bernau bei Berlin' });
+    expect(place('Chazelles-sur-Lyon', ['FR'])).toMatchObject({ country: 'FR', name: 'Chazelles-sur-Lyon' });
+    // With nothing to confirm the smaller town, the name places none.
+    expect(place('Chazelles-sur-Lyon')).toBeNull();
+    // A name the town goes by on its own is still that town.
+    expect(place('Kingston upon Hull')).toMatchObject({ country: 'GB', name: 'Kingston upon Hull' });
+    expect(place('Freiburg im Breisgau', ['DE'])).toMatchObject({ country: 'DE', name: 'Freiburg' });
+  });
+
   it('finds a town between other words of a name, when it is a city where the parcel is', () => {
     expect(place('Example Reading Station Lockers', ['GB'])).toMatchObject({ country: 'GB', name: 'Reading' });
     expect(place('Punkt Pocztowy Example Lublin L999', ['PL'])).toMatchObject({ country: 'PL', name: 'Lublin' });

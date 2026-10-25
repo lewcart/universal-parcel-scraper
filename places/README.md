@@ -23,7 +23,8 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   ("Biel/Bienne"), but not a direction that halves a district's ("Neustadt/Süd").
 - A town is looked up at the start or the end of a name, and between other words when it is
   a city of 100,000 people where the parcel is ("Example Reading Station Lockers"), or
-  something else in the text confirms it.
+  something else in the text confirms it. Nothing after a linking word such as "am", "bei",
+  "sur" or "nad" is looked up as a town on its own: "Bernau bei Berlin" is not in Berlin.
 - A longer place name is the place it names, not a town that shares a word of it, when it
   is a town where the text or the parcel is, or a city and the shorter name names no town
   there: "Cartagena de Indias" is in Colombia, "San Jose de Costa Rica" in Costa Rica, but

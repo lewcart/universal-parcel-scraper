@@ -99,6 +99,9 @@ const AIRPORT_NAME_WORDS = new Set(`
 // Region names too vague to place a scan in their country on their own.
 const VAGUE_REGIONS = new Set('central capital north south east west centre center islands national federal'.split(' '));
 const LEADING_WORDS = new Set(['de', 'du', 'des', 'di', 'da', 'del', 'della', 'von', 'of']);
+// Words that join a town's name to the river, region or city it is told apart by: "Weil am Rhein",
+// "Bernau bei Berlin", "Boulogne-sur-Mer", "Ústí nad Labem".
+const LINKING_WORDS = new Set(['am', 'im', 'der', 'bei', 'upon', 'sur', 'nad', 'pod']);
 // Carriers print provinces the way the post does; GeoNames numbers them.
 const ADMIN_CODES: Record<string, Record<string, string>> = {
   CA: { AB: '01', BC: '02', MB: '03', NB: '04', NL: '05', NS: '07', ON: '08', PE: '09', QC: '10', SK: '11', YT: '12', NT: '13', NU: '14' },
@@ -443,9 +446,13 @@ function phrases(field: string): Phrase[] {
   while (words.length && LEADING_WORDS.has(words[0]!.key)) words = words.slice(1);
   const spans = (list: Token[], offset: number) => {
     for (let count = list.length; count > 0; count -= 1) add(list.slice(0, count), offset + list.length - count + 1, count === list.length);
-    for (let start = 1; start < list.length; start += 1) add(list.slice(start), offset + list.length + start);
+    // What follows a linking word tells the town apart and is not the town: "Chazelles-sur-Lyon" is
+    // not in Lyon, nor "Bernau bei Berlin" in Berlin.
+    const linked = list.findIndex((token, index) => index > 0 && LINKING_WORDS.has(token.key));
+    const end = linked > 0 ? linked + 1 : list.length;
+    for (let start = 1; start < end; start += 1) add(list.slice(start), offset + list.length + start);
     // "Example Reading Station Lockers": a town between other words.
-    for (let start = 1; start < list.length - 1; start += 1) {
+    for (let start = 1; start < Math.min(end, list.length - 1); start += 1) {
       for (let end = start + 1; end < list.length && end - start <= MIDDLE_WORDS; end += 1) {
         add(list.slice(start, end), offset + 2 * list.length + start + list.length - end, false, true);
       }

@@ -85,7 +85,7 @@
       "language": "en",
       "confirmedBy": "live",
       "firstSeen": "2026-09-12",
-      "note": "The guest API's catch-all; neither a status nor a stage is derived from it."
+      "note": "The guest API's catch-all; neither a status nor a stage is derived from it, and it keeps the stage of the scan before it."
     },
     {
       "code": "CCO",
@@ -306,7 +306,7 @@
       "language": "en",
       "confirmedBy": "live",
       "firstSeen": "2026-10-07",
-      "note": "A delivery estimate or a changed delivery day, not a scan; the date follows the colon."
+      "note": "A delivery estimate or a changed delivery day, not a scan; the date follows the colon. It keeps the stage of the scan before it."
     },
     {
       "code": "MSDLO",
@@ -314,7 +314,7 @@
       "language": "en",
       "confirmedBy": "live",
       "firstSeen": "2026-10-06",
-      "note": "The notice DPD emailed for the delivery round, not a scan."
+      "note": "The notice DPD emailed for the delivery round, not a scan; it keeps the stage of the scan before it."
     },
     {
       "code": "MSDLX",
@@ -330,7 +330,7 @@
       "language": "en",
       "confirmedBy": "live",
       "firstSeen": "2026-10-05",
-      "note": "The recipient's delivery instruction, not a scan."
+      "note": "The recipient's delivery instruction, not a scan; it can come while DPD has only the label, and keeps the stage of the scan before it."
     },
     {
       "code": "MIA",
@@ -338,7 +338,7 @@
       "language": "en",
       "confirmedBy": "live",
       "firstSeen": "2026-10-16",
-      "note": "The receipt of the recipient's delivery instruction, not a scan."
+      "note": "The receipt of the recipient's delivery instruction, not a scan; it can come while DPD has only the label, and keeps the stage of the scan before it."
     },
     {
       "code": "MII",
@@ -346,7 +346,7 @@
       "language": "en",
       "confirmedBy": "live",
       "firstSeen": "2026-10-16",
-      "note": "The recipient's delivery instruction, as MIDLI words it, not a scan."
+      "note": "The recipient's delivery instruction, as MIDLI words it, not a scan; it keeps the stage of the scan before it."
     },
     {
       "code": "ENA",

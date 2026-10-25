@@ -468,8 +468,38 @@ describe('DPD delivery notices', () => {
 
     expect(result.expected_delivery).toBe('2026-07-16');
     expect(result.events?.map((event) => event.description)).toEqual([SAFE_PLACE, CHANGED, ESTIMATED, DEPOT].map((scan) => scan[3]));
-    expect(result.events?.[1]).not.toHaveProperty('stage');
+    // Each notice keeps the stage of the scan before it and is never the summary.
+    expect(result.events?.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['MIDLI', 'in_transit', 'none'], ['SPE', 'in_transit', 'none'], ['SPE', 'in_transit', 'none'], ['ORI', undefined, undefined],
+    ]);
+    expect(result.last_status_text).toBe(DEPOT[3]);
     expect(notices([DEPOT, ESTIMATED]).expected_delivery).toBe('2026-07-17');
+  });
+
+  it('keeps a parcel DPD has only the label for registered through instructions, estimates and notices', () => {
+    const LABEL: Scan = ['2026-07-14', '08:00:00', 'CNP', 'We received your labelling information'];
+    const RECEIVED: Scan = ['2026-07-14', '22:55:00', 'MIA', 'We received your delivery instructions'];
+    const INSTRUCTED: Scan = ['2026-07-14', '22:56:00', 'MII', SAFE_PLACE[3]];
+    const OTHER: Scan = ['2026-07-14', '23:10:00', 'OTHER', 'Other tracking update'];
+    const INSTRUCTION: Scan = ['2026-07-14', '22:50:00', 'MIDLI', SAFE_PLACE[3]];
+    const ESTIMATE: Scan = ['2026-07-14', '23:00:00', 'SPE', ESTIMATED[3]];
+    const EMAIL: Scan = ['2026-07-14', '23:20:00', 'MSDLO', EMAILED[3]];
+    const result = notices([LABEL, INSTRUCTION, RECEIVED, INSTRUCTED, ESTIMATE, OTHER, EMAIL], {}, 'ORDER_CREATED');
+
+    expect(result.events?.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['MSDLO', 'registered', 'none'], ['OTHER', 'registered', 'none'], ['SPE', 'registered', 'none'],
+      ['MII', 'registered', 'none'], ['MIA', 'registered', 'none'], ['MIDLI', 'registered', 'none'], ['CNP', 'registered', undefined],
+    ]);
+    expect(result).toMatchObject({ status: 'pending', current_stage: 'registered', last_status_text: LABEL[3] });
+    expect(result.expected_delivery).toBe('2026-07-16 12:32–13:32');
+  });
+
+  it('keeps the round a notice follows', () => {
+    const result = notices([DEPOT, OUT, ['2026-07-16', '06:30:00', 'MSDLO', EMAILED[3]]]);
+    expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual([
+      ['MSDLO', 'out_for_delivery'], ['DLO', 'out_for_delivery'], ['ORI', undefined],
+    ]);
+    expect(result.last_status_text).toBe(OUT[3]);
   });
 
   it('reads the email window as a 24-hour wall clock', () => {
@@ -565,6 +595,21 @@ describe('DPD unverified guest payload', () => {
     expect(accepted.current_stage).toBeUndefined();
     expect(accepted.events?.map((event) => [event.provider_code, event.stage])).toEqual([
       ['IN_TRANSIT', undefined], ['PARCEL_HANDED', undefined],
+    ]);
+  });
+
+  it('reads no movement into the catch-all before a hand-over', () => {
+    const result = parseDPDTrackingApi({
+      parcelNumber: TRACKING_NUMBER,
+      status: { description: 'PARCEL_HANDED' },
+      parcelHistory: [
+        { description: 'PARCEL_HANDED', eventDateAndTime: '2026-10-23T18:47:42' },
+        { description: 'OTHER', eventDateAndTime: '2026-10-23T17:39:42' },
+      ],
+    }, TRACKING_NUMBER, false);
+    expect(result.current_stage).toBeUndefined();
+    expect(result.events?.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['PARCEL_HANDED', undefined, undefined], ['OTHER', 'registered', 'none'],
     ]);
   });
 });

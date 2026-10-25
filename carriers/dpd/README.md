@@ -76,10 +76,14 @@ signal.
   window for the reply's own day; a different day in the reply wins. An
   unreadable newest notice leaves no estimate, and a notice lapses at a pickup
   point or once a later scan passes its day. Notices remain events.
-- `MSDLX`, DPD failing to send the delivery details, reads like a failed round
-  to the shared wording rules. `ENA`, DPD's internal data exchange, matches no
-  rule, so an app would read it as news that the parcel moves. Each keeps the
-  stage of the scan before it and is never the summary.
+- Some scans are notices, not movements. `MSDLX`, DPD failing to send the
+  delivery details, reads like a failed round to the shared wording rules.
+  `ENA` (DPD's internal data exchange), `SPE` (a delivery estimate), `MSDLO`
+  (the emailed notice for the delivery round), `MIDLI`, `MII` and `MIA` (the
+  recipient's delivery instruction and its receipt) and `OTHER` (the guest
+  API's catch-all) read as in transit, even while DPD has only the label. Each
+  keeps the stage of the scan before it and is never the summary; the estimate
+  stays in `expected_delivery`.
 - While the parcel waits at a Pickup shop, the pickup point is the shop's
   name, then its street and its town on their own lines. Verified scans carry
   the shop's PUDO id: the newest scan with one names the shop, unless a depot

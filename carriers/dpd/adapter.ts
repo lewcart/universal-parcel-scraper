@@ -480,7 +480,7 @@ export function parseDPDTrackingApi(
     // after a later milestone, it is that hand-off between units, made in transit.
     const firstMove = Math.min(...history.filter((raw) => {
       const code = scanCode(raw.description);
-      return Object.hasOwn(API_LABELS, code) && code !== 'ORDER_CREATED' && code !== 'PARCEL_HANDED';
+      return Object.hasOwn(API_LABELS, code) && code !== 'ORDER_CREATED' && code !== 'PARCEL_HANDED' && !NOTICE_SCANS.has(code);
     }).map((raw) => Date.parse(timeOf(raw))).filter(Number.isFinite));
     for (const raw of history) {
       const code = scanCode(raw.description);

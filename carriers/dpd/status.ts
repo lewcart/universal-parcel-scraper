@@ -149,11 +149,16 @@ export const PROOF_OF_DELIVERY_SCAN = 'DEYY';
 
 /**
  * Notices that would move the parcel: MSDLX, DPD failing to send the delivery
- * details, reads as a failed round, and ENA, a data exchange inside DPD's
- * systems that no rule reads, as in transit to an app that takes such a scan
- * as news that the parcel moves. Each keeps the stage of the scan before it.
+ * details, reads as a failed round, and the others as in transit to an app
+ * that takes such a scan as news that the parcel moves. ENA is a data exchange
+ * inside DPD's systems; SPE a delivery estimate or a changed delivery day,
+ * which the shared rules read as in transit for its "to be delivered"; MSDLO
+ * the notice DPD emailed for the delivery round; MIDLI and MII the recipient's
+ * delivery instruction and MIA its receipt, which can come while DPD has only
+ * the label; OTHER the guest API's catch-all. Each keeps the stage of the scan
+ * before it.
  */
-export const NOTICE_SCANS: ReadonlySet<string> = new Set(['MSDLX', 'ENA']);
+export const NOTICE_SCANS: ReadonlySet<string> = new Set(['MSDLX', 'ENA', 'SPE', 'MSDLO', 'MIDLI', 'MII', 'MIA', 'OTHER']);
 
 const MOVES_WITHOUT_MILESTONE = "DPD's map leaves it unmapped on purpose: it moves the parcel in transit without a milestone of its own.";
 
@@ -174,13 +179,13 @@ export const statusMap: CarrierStatusMap = {
     { wording: 'your parcel is on its way', note: "The label of IN_TRANSIT, which DPD's map leaves unmapped on purpose." },
     { wording: 'at delivery center', note: "The label of AT_DELIVERY_CENTER, which DPD's map leaves unmapped on purpose." },
     { code: 'SPL', note: 'Worded like IN_TRANSIT and seen on both sides of the origin depot, so it names no movement of its own.' },
-    { code: 'OTHER', note: "The guest API's catch-all, which names no movement." },
-    { code: 'SPE', note: 'A delivery estimate or a changed delivery day, not a scan.' },
-    { code: 'MSDLO', note: 'The notice DPD emailed for the delivery round, not a scan.' },
+    { code: 'OTHER', note: "The guest API's catch-all, which names no movement: the parcel keeps the stage it had." },
+    { code: 'SPE', note: 'A delivery estimate or a changed delivery day, not a scan: the parcel keeps the stage it had.' },
+    { code: 'MSDLO', note: 'The notice DPD emailed for the delivery round, not a scan: the parcel keeps the stage it had.' },
     { code: 'MSDLX', note: 'DPD failing to send the delivery details, not a scan: the parcel keeps the stage it had.' },
-    { code: 'MIDLI', note: "The recipient's delivery instruction, not a scan." },
-    { code: 'MIA', note: "The receipt of the recipient's delivery instruction, not a scan." },
-    { code: 'MII', note: "The recipient's delivery instruction, as MIDLI words it, not a scan." },
+    { code: 'MIDLI', note: "The recipient's delivery instruction, not a scan: the parcel keeps the stage it had." },
+    { code: 'MIA', note: "The receipt of the recipient's delivery instruction, not a scan: the parcel keeps the stage it had." },
+    { code: 'MII', note: "The recipient's delivery instruction, as MIDLI words it, not a scan: the parcel keeps the stage it had." },
     { code: 'ENA', note: "A data exchange inside DPD's systems before the parcel reaches the origin depot, not a scan: the parcel keeps the stage it had." },
     { code: 'DEYY', note: 'The proof of delivery, paperwork after the delivery scan: dropped beside it, delivered alone only when the enumeration says so.' },
     { code: 'DODEYY', note: 'The proof of delivery after a collection from a pickup point, read like DEYY.' },

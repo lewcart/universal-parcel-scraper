@@ -1,4 +1,5 @@
 import type { Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // Ekart words a scan as prose ("Shipment Created", "Received at ExampleHub")
 // or as an operational code followed by its hub ("InscannedAtDH - ExampleHub").
@@ -26,3 +27,16 @@ export function ekartScan(description: string): { code?: string; stage?: Stage; 
   const stage = code ? STAGES.get(key(code)) : /^received at \S/i.test(description) ? 'in_transit' : STAGES.get(key(description));
   return { ...(code ? { code } : {}), ...(stage ? { stage } : {}), returning: !!code && /^(?:rto|return|shipmentrto)/i.test(code) };
 }
+
+/**
+ * What the map says about one scan: its wording, prose or a code before its hub, as the adapter
+ * reads it. A delivery after an RTO scan reaches the seller, and the stored scan does not keep
+ * the scans before it, so it stays open.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    const { stage } = ekartScan(wording);
+    return stage === 'delivered' ? undefined : stage;
+  },
+  gaps: [{ wording: 'delivered', note: 'Delivered to the recipient, or back to the seller once an earlier RTO scan started the return leg: the stored scan does not keep the scans before it.' }],
+};

@@ -1125,6 +1125,21 @@ describe('status map answers', () => {
     expect(answer('delhivery', null, 'Synthetic scan')).toEqual(unknown);
   });
 
+  it("answers Ekart by its prose or coded wording, and leaves a delivery out on purpose, since the stored scan does not keep the scans before it", () => {
+    expect(answer('ekart', null, 'Shipment Created')).toEqual(mapped('registered'));
+    expect(answer('ekart', 'PickupReceived', 'PickupReceived - Example Hub')).toEqual(mapped('accepted'));
+    expect(answer('ekart', 'InscannedAtDH', 'InscannedAtDH - Example Hub')).toEqual(mapped('in_transit'));
+    // A copy without the code reads the code from the wording.
+    expect(answer('ekart', null, 'InscannedAtDH - Example Hub')).toEqual(mapped('in_transit'));
+    expect(answer('ekart', null, 'Received at Example Hub')).toEqual(mapped('in_transit'));
+    expect(answer('ekart', null, 'Out For Delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('ekart', 'undelivered_attempted', 'undelivered_attempted - Example Hub')).toEqual(mapped('failed_attempt'));
+    expect(answer('ekart', 'ShipmentRtoConfirmed', 'ShipmentRtoConfirmed - Example Hub')).toEqual(mapped('exception'));
+    expect(answer('ekart', null, 'Delivered')).toEqual(gap);
+    expect(answer('ekart', null, 'Synthetic scan')).toEqual(unknown);
+    expect(answer('ekart', 'SyntheticCode', 'SyntheticCode - Example Hub')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

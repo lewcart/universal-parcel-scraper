@@ -400,6 +400,8 @@ describe('Cainiao projection', () => {
       ['CC_HO_IN_SUCCESS', 'Arrived at customs', 'customs'],
       ['CC_IM_START', 'Import customs clearance started', 'customs'],
       ['CC_IM_SUCCESS', 'Import customs clearance complete', 'in_transit'],
+      ['GTMS_ACCEPT', 'Received by local delivery company', 'in_transit'],
+      ['GTMS_RELABEL', 'Tracking number changed', 'in_transit'],
       ['GTMS_DO_ARRIVE', 'Arrived at local delivery center', 'in_transit'],
       ['GTMS_STATION_OUT', 'Delivery in process. Now left facility.', 'in_transit'],
       ['GTMS_DO_DEPART', 'Out for delivery', 'out_for_delivery'],

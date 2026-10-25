@@ -79,6 +79,11 @@
       "confidence": "high"
     },
     {
+      "id": "aliexpress-maersk",
+      "pattern": "^1MCAINIXX\\d{10}$",
+      "confidence": "high"
+    },
+    {
       "id": "aliexpress-lp-reference",
       "pattern": "^LP\\d{14}$",
       "confidence": "low"

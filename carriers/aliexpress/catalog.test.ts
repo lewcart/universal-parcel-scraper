@@ -49,6 +49,15 @@ describe('Cainiao DOFR detection', () => {
     expect(parseTrackingInput('cnfr 0000000000001 hd')).toMatchObject({ carrier: 'aliexpress', confidence: 'high' });
   });
 
+  it("routes Maersk eCommerce's numbers for Cainiao to Cainiao, and no other client's", () => {
+    for (const value of ['1MCAINIXX0000000001', '1mcainixx 00 0000 0001']) {
+      expect(detectCarrierMatch(value)).toMatchObject({ carrier: 'aliexpress', confidence: 'high', candidates: ['aliexpress'] });
+    }
+    for (const value of ['1MCAINIXX000000001', '1MCAINIXX00000000001', '1MCAINIXY0000000001', '1MSPRDNAB0000000001']) {
+      expect(detectCarrierMatch(value).candidates, value).not.toContain('aliexpress');
+    }
+  });
+
   it('routes CNG numbers to Cainiao, not to a postcode-ending Colis Privé number', () => {
     for (const value of ['CNG00123456789012', 'cng 99000000000001']) {
       expect(detectCarrierMatch(value)).toMatchObject({ carrier: 'aliexpress', confidence: 'high', candidates: ['aliexpress'] });

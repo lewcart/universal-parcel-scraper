@@ -765,6 +765,46 @@
       "note": "A Cainiao tracking link for a GOFO waybill, archived by the Wayback Machine. Cainiao's tracker returns its history: an AliExpress parcel GOFO delivers in the United States."
     },
     {
+      "number": "1MCAINIXX0000484416",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260406181439/https://global.cainiao.com/newDetail.htm?mailNoList=1MCAINIXX0000484416",
+        "date": "2026-04-06",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "aliexpress",
+        "confidence": "high"
+      },
+      "note": "A Cainiao tracking link for a Maersk eCommerce number, archived by the Wayback Machine. Cainiao's tracker returns its history: an AliExpress parcel Maersk eCommerce delivers in the United States."
+    },
+    {
+      "number": "1MCAINIXX0000134188",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251217022006/https://global.cainiao.com/newDetail.htm?mailNoList=1MCAINIXX0000134188",
+        "date": "2025-12-17",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "aliexpress",
+        "confidence": "high"
+      },
+      "note": "A Cainiao tracking link for a Maersk eCommerce number, archived by the Wayback Machine. Maersk's code for Cainiao opens the number."
+    },
+    {
       "number": "ECSC00AARO01096011",
       "role": "shipment",
       "evidence": "public_shipment_report",

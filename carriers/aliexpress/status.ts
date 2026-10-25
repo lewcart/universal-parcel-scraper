@@ -93,6 +93,8 @@ export const CAINIAO_ACTION_STATUS = new Map<string, CarrierStatus>([
   ['CC_IM_FAILURE', 'exception'],
   ['CC_IM_EXCEPTION', 'exception'],
   ['GTMS_ACCEPT', 'in_transit'],
+  // The partner relabelling the parcel with its own number at its facility.
+  ['GTMS_RELABEL', 'in_transit'],
   // A partner accepting the parcel after the hand-off: Cainiao accepted it long before.
   ['SL_ACCEPT', 'in_transit'],
   ['GTMS_SC_ARRIVE', 'in_transit'],

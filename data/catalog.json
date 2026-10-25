@@ -226,6 +226,10 @@
         "confidence": "high"
       },
       {
+        "pattern": "^1MCAINIXX\\d{10}$",
+        "confidence": "high"
+      },
+      {
         "pattern": "^LP\\d{14}$",
         "confidence": "low"
       },

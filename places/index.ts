@@ -855,14 +855,16 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
 
 /**
  * A state or province alone, by the code carriers print, as the country it is in with its code:
- * "VIC, AU", or "VIC" in the first country the parcel is likely in that has one, whatever else its
- * letters name (Vic in Spain, Tashkent's airport). Letters that are also a country's are that
- * country where the parcel may be: "SA" is Saudi Arabia on a parcel through it.
+ * "VIC, AU", "SA AUSTRALIA", or "VIC" in the first country the parcel is likely in that has one,
+ * whatever else its letters name (Vic in Spain, Tashkent's airport). Letters that are also a
+ * country's are that country where the parcel may be: "SA" is Saudi Arabia on a parcel through it.
  */
 function statePlace(data: Gazetteer, text: string, explicit: { country: string | null; place: string }, context: readonly string[]): Located | null {
-  const code = explicit.country && explicit.place ? explicit.place : text;
+  const spaced = !explicit.country && /^[A-Z]{2,3}\s+\p{L}/u.test(text) ? trackingPlace(text.replace(/\s+/, ', ')) : null;
+  const stated = explicit.country && explicit.place ? explicit : spaced?.country ? spaced : null;
+  const code = stated ? stated.place : text;
   if (!/^[A-Z]{2,3}$/.test(code) || (!explicit.place && context.includes(code))) return null;
-  const country = explicit.country && explicit.place ? explicit.country : context.find((other) => ADMIN_CODES[other]?.[code]);
+  const country = stated ? stated.country : context.find((other) => ADMIN_CODES[other]?.[code]);
   const found = country && ADMIN_CODES[country]?.[code] ? countryPlace(data, country, true) : null;
   return found && { ...found, place: { ...found.place, region: code } };
 }

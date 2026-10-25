@@ -478,6 +478,9 @@ describe('placesForEvents', () => {
     expect(states.map((found) => found && [found.country, found.precision, found.region])).toEqual(
       ['NSW', 'SA', 'VIC', 'TAS', 'WA', 'QLD', 'NT', 'ACT'].map((code) => ['AU', 'country', code]));
     expect(locatePlace('VIC, AU')).toMatchObject({ country: 'AU', region: 'VIC' });
+    expect(locatePlace('SA AUSTRALIA')).toMatchObject({ country: 'AU', region: 'SA', precision: 'country' });
+    expect(locatePlace('ON CANADA')).toMatchObject({ country: 'CA', region: 'ON' });
+    expect(locatePlace('NEW MEXICO')?.country).not.toBe('MX');
     expect(locatePlace('NT', { countries: ['CA', 'AU'] })).toMatchObject({ country: 'CA', region: 'NT' });
     // Without the country, the letters keep what they name; on a parcel through Saudi Arabia, so does "SA".
     expect(locatePlace('VIC')).toMatchObject({ country: 'ES', name: 'Vic' });

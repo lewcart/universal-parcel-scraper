@@ -57,9 +57,9 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   it: "Warsaw" between Lviv and New York is in Poland.
 - A state, province or canton written after the town holds: "Earth City, MO" is not Earth
   in Texas.
-- A state or province written alone by its code ("WA", "VIC, AU") is in the first country the
-  parcel is likely in that has it, before the country, town or airport its letters also name
-  (Saudi Arabia, Vic in Spain, Tashkent). The place is that country's and `region` holds the
+- A state or province written alone by its code ("WA", "VIC, AU", "SA AUSTRALIA") is in the
+  first country the parcel is likely in that has it, before the country, town or airport its
+  letters also name (Saudi Arabia, Vic in Spain, Tashkent). The place is that country's and `region` holds the
   code. Letters that are also a country's keep naming it on a parcel through that country.
 - Two letters after the town are a country when a town of that name is there ("MONTE CARLO
   MC"), or when the parcel is. Otherwise they may be a province or an office: "PINEROLO

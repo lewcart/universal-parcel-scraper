@@ -479,7 +479,7 @@ export function parseUPSTrackingResponse(
       const stage = code ? upsActivityStage(code) : upsUncodedScanStage(description);
       events.push({
         ...activityClock(raw),
-        location: text(raw.location),
+        location: pagePlace(text(raw.location)),
         description,
         ...(/^[A-Z0-9]{1,4}$/.test(code) ? { provider_code: code } : {}),
         ...(stage ? { stage, stage_source: 'carrier_map' } : {}),
@@ -563,6 +563,17 @@ const ENGLISH_REGIONS = new Intl.DisplayNames(['en'], { type: 'region' });
 function townCase(town: string): string {
   return /\p{Ll}/u.test(town) ? town
     : town.toLocaleLowerCase('en-US').replace(/(^|[\s\-.(/])(\p{L})/gu, (_, before: string, letter: string) => before + letter.toLocaleUpperCase('en-US'));
+}
+
+/**
+ * A scan's place on the page. A delivery's comes in capitals with codes ("KOELN, DE",
+ * "DES MOINES, IA, US"), and is written as the page writes every other scan's.
+ */
+function pagePlace(location: string): string {
+  const fields = location.split(/\s*,\s*/);
+  const code = fields.at(-1)!;
+  const country = fields.length > 1 && /^[A-Z]{2}$/.test(code) && !/\p{Ll}/u.test(location) ? ENGLISH_REGIONS.of(code) : undefined;
+  return country && country !== code ? [townCase(fields[0]!), ...fields.slice(1, -1), country].join(', ') : location;
 }
 
 /**

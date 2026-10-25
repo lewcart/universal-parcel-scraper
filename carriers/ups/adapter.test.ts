@@ -155,16 +155,16 @@ describe('UPS structured response', () => {
     const mapped = { stage_source: 'carrier_map' };
     expect(result.events).toEqual([
       {
-        time: '2026-08-04T09:12:04+02:00', location: 'ZUERICH, CH', description: 'Out For Delivery Today',
+        time: '2026-08-04T09:12:04+02:00', location: 'Zuerich, Switzerland', description: 'Out For Delivery Today',
         provider_code: 'OT', stage: 'out_for_delivery', ...mapped,
       },
       {
-        time: '2026-08-04T05:03:51+02:00', location: 'ZUERICH, CH', description: 'Arrived at Facility',
+        time: '2026-08-04T05:03:51+02:00', location: 'Zuerich, Switzerland', description: 'Arrived at Facility',
         provider_code: 'AR', stage: 'in_transit', ...mapped,
       },
       {
         time: '2026-08-03T23:41:10+02:00',
-        location: 'KOELN, DE',
+        location: 'Koeln, Germany',
         description: 'Departed from Facility — Your package is on the way',
         provider_code: 'DP', stage: 'in_transit', ...mapped,
       },
@@ -232,9 +232,19 @@ describe('UPS structured response', () => {
     expect(unmapped).toMatchObject({ status: 'in_transit' });
     expect(unmapped.current_stage).toBeUndefined();
     expect(unmapped.events?.[0]).toEqual({
-      time: '2026-08-06T15:50:00+00:00', location: 'EXAMPLE CITY, DE',
+      time: '2026-08-06T15:50:00+00:00', location: 'Example City, Germany',
       description: 'Wording UPS has not used before', provider_code: 'X9',
     });
+  });
+
+  it("writes a delivery's place in capitals and codes as the page writes its other scans'", () => {
+    const places = (...locations: string[]) => parseUPSTrackingResponse(withScans(locations.map((location, index) =>
+      scan(index ? 'AR' : 'KB', index ? 'Arrived at Facility' : 'Delivered', `2026080${6 - index} 15:50:00`, location))), TRACKING_NUMBER, TODAY)
+      .events?.map((event) => event.location);
+    expect(places('EXAMPLE CITY (NORTH), DE', 'Example City, Germany')).toEqual(['Example City (North), Germany', 'Example City, Germany']);
+    expect(places('SAMPLE-TOWN, NY, US', 'Sample-Town, NY, United States')).toEqual(['Sample-Town, NY, United States', 'Sample-Town, NY, United States']);
+    // Nothing else is rewritten: a place with no country code, or one already in lower case.
+    expect(places('FRONT DOOR', 'Example City, DE')).toEqual(['FRONT DOOR', 'Example City, DE']);
   });
 
   it('reads the preparation for clearance, duties to pay, and the hold until they are paid, as customs', () => {

@@ -1071,6 +1071,19 @@ describe('status map answers', () => {
     expect(answer('dachser', null, 'Synthetic scan')).toEqual(unknown);
   });
 
+  it('answers DHL eCommerce Iberia by its code, and a depot scan by its wording before the town', () => {
+    expect(answer('dhl-ecommerce-es', 'DOC', 'Shipment data received')).toEqual(mapped('registered'));
+    expect(answer('dhl-ecommerce-es', 'IS', 'Delivered to DHL ServicePoint, ready for collection by the recipient')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('dhl-ecommerce-es', 'PC', 'Delivered, POD pending')).toEqual(mapped('delivered'));
+    expect(answer('dhl-ecommerce-es', 'NH', 'The delivery could not be made due to consignee absent')).toEqual(mapped('failed_attempt'));
+    expect(answer('dhl-ecommerce-es', 'ZZZ', 'Picked up Example Town')).toEqual(mapped('accepted'));
+    expect(answer('dhl-ecommerce-es', 'ZZZ', 'Arrived at Example Town')).toEqual(mapped('in_transit'));
+    expect(answer('dhl-ecommerce-es', 'ZZZ', 'Synthetic depot scan')).toEqual(mapped('in_transit'));
+    expect(answer('dhl-ecommerce-es', null, 'Tránsito en Example Town')).toEqual(mapped('in_transit'));
+    expect(answer('dhl-ecommerce-es', null, 'Delivered')).toEqual(unknown);
+    expect(answer('dhl-ecommerce-es', 'XX', 'Arrived at Example Town')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

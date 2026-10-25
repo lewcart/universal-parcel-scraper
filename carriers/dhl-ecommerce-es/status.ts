@@ -8,6 +8,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const CODES = new Map<string, Stage>(statuses.entries.map((entry) => [entry.code, entry.stage as Stage]));
@@ -46,3 +47,16 @@ export function dhlEcommerceEsSummaryStage(status: unknown): Stage | undefined {
 export function statusForStage(stage: Stage): CarrierStatus {
   return STATUSES[stage];
 }
+
+/**
+ * What the map says about one scan: its code and wording, as the parser reads them. A depot scan
+ * is stored with its town after its wording, which still tells a pickup from transit and names a
+ * depot scan that came without a code.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    const movement = [...MOVEMENTS.keys()].find((key) => wording === key || wording.startsWith(`${key} `));
+    return dhlEcommerceEsStatus(code ?? undefined, movement ?? wording).stage;
+  },
+  gaps: [],
+};

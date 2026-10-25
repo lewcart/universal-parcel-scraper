@@ -81,6 +81,27 @@ describe('4PX result projection', () => {
       .toBe('2026-03-08T14:30:06+02:00');
   });
 
+  it("reads 4PX's copies of La Poste's arrival and transit in France as UTC, not on the Paris offset they are labelled with", () => {
+    const payload = fixture();
+    payload.data[0].ctEndCode = 'FR';
+    const tracks = payload.data[0].tracks;
+    const copy = (tkCode: string, tkDesc: string, tkDateStr: string) => ({ ...tracks.at(-5), tkCode, tkDesc, tkDateStr, tkTimezone: 'UTC+02:00' });
+    payload.data[0].tracks = [
+      copy('FPX_D_SD', 'Out for delivery', '2026-03-23 08:23:40'),
+      copy('FPX_D_HQ', 'Transport to delivery centre', '2026-03-22 08:16:04'),
+      copy('FPX_D_HQ', 'Transport to delivery centre', '2026-03-21 23:40:00'),
+      copy('FPX_M_IT', 'Handled by local carrier', '2026-03-21 21:40:13'),
+      copy('FPX_O_RR', 'Arrived at destination', '2026-03-21 13:49:55'),
+      ...tracks.slice(-5),
+    ];
+    const times = () => parse(payload, NUMBER).events!.slice(0, 5).map((event) => event.time);
+    // La Poste's copies keep its seconds; 4PX's own row to the minute and the round's copy show Paris's clock.
+    expect(times()).toEqual(['2026-03-23T08:23:40+02:00', '2026-03-22T08:16:04Z', '2026-03-21T23:40:00+02:00',
+      '2026-03-21T21:40:13Z', '2026-03-21T13:49:55Z']);
+    payload.data[0].ctEndCode = 'DE';
+    expect(times()[1]).toBe('2026-03-22T08:16:04+02:00');
+  });
+
   it('reads a scan whose zone is named rather than offset', () => {
     const payload = fixture();
     payload.data[0].tracks[0].tkTimezone = 'UTCAmerica/Vancouver';

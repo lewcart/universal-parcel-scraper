@@ -54,6 +54,20 @@ function partnerOf(card: unknown): string | undefined {
 // after the +08:00 measurement, labelled +02:00.
 const TRANSMITTED = /^order information has been transmitted to /i;
 
+// 4PX copies La Poste's arrival in France and its transit there with La
+// Poste's UTC digits under Paris's offset, two hours early in summer: arrived
+// at destination at Roissy, handled by local carrier, transport to delivery
+// centre. Those copies keep La Poste's seconds; 4PX's own transport rows, to
+// the minute, and the delivery round's copies show Paris's clock.
+const LA_POSTE_TRANSIT = /^(?:arrived at destination|handled by local carrier|transport to delivery cent(?:re|er))\.?$/i;
+const PARIS_LABEL = /^UTC\+0[12]:00$/;
+
+/** A copy of La Poste's arrival or transit scan on a parcel to France, whose digits are UTC. */
+function laPosteTransitCopy(raw: Record<string, unknown>, description: string, country: string): boolean {
+  return country === 'FR' && LA_POSTE_TRANSIT.test(description) && PARIS_LABEL.test(clean(raw.tkTimezone, 64))
+    && !clean(raw.tkDateStr, 64).endsWith(':00');
+}
+
 /** The offset 4PX's own facility scans (`FPX_C_…`) carry, if any. */
 function facilityZone(tracks: unknown[]): string | undefined {
   return tracks.map((raw) => (isRecord(raw) && clean(raw.tkCode, 64).startsWith('FPX_C_') ? clean(raw.tkTimezone, 64) : ''))
@@ -93,6 +107,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const seen = new Set<string>();
   let pickupPoint: string | undefined;
   const facility = facilityZone(item.tracks);
+  const country = clean(item.ctEndCode, 8).toUpperCase();
   for (const raw of item.tracks) {
     if (!isRecord(raw)) throw new SchemaError('4PX');
     const wording = clean(raw.tkDesc, 1000);
@@ -103,7 +118,8 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
       continue;
     }
     const description = clean(wording.replace(QUALIFIER, ''), 500);
-    const time = eventTime(facility && TRANSMITTED.test(description) ? { ...raw, tkTimezone: facility } : raw);
+    const time = eventTime(facility && TRANSMITTED.test(description) ? { ...raw, tkTimezone: facility }
+      : laPosteTransitCopy(raw, description, country) ? { ...raw, tkTimezone: 'UTC' } : raw);
     const location = clean(raw.tkLocation, 200);
     const code = clean(raw.tkCode, 64);
     const key = JSON.stringify([time, description, location, code]);
@@ -118,7 +134,6 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const classified = fourPxStatus(latest.provider_code ?? '', latest.description);
   // Result normalization keeps only the package number of a USPS routing barcode.
   const deliveryNumber = clean(item.serverCode, 64).toUpperCase();
-  const country = clean(item.ctEndCode, 8).toUpperCase();
   const partner = partnerOf(item.channelContact);
   return {
     status: classified?.status ?? 'unknown',

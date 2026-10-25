@@ -386,6 +386,34 @@ describe('DPD verified guest payload', () => {
     ]);
   });
 
+  it('keeps the stage of the scan before DPD’s internal data exchange, which no rule reads', () => {
+    const scan = (time: string, eventType: string, translation: string) => ({
+      date: '2026-10-19', time, city: 'Example', country: 'DE', translation, eventType,
+    });
+    const labelled = parseDPDTrackingApi({
+      parcelNumber: TRACKING_NUMBER,
+      parcelHistory: [],
+      parcelEvents: [
+        scan('08:00:00', 'CNP', 'We received your labelling information'),
+        scan('08:05:00', 'ENA', 'We are exchanging data internally'),
+      ],
+    }, TRACKING_NUMBER, true);
+    expect(labelled.last_status_text).toBe('We received your labelling information');
+    expect(labelled.events?.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['ENA', 'registered', 'none'], ['CNP', 'registered', undefined],
+    ]);
+
+    const collected = parseDPDTrackingApi({
+      parcelNumber: TRACKING_NUMBER,
+      parcelHistory: [],
+      parcelEvents: [
+        scan('09:00:00', 'PKY', 'We have collected your parcel'),
+        scan('09:30:00', 'ENA', 'We are exchanging data internally'),
+      ],
+    }, TRACKING_NUMBER, true);
+    expect(collected.events?.map((event) => [event.provider_code, event.stage])).toEqual([['ENA', 'accepted'], ['PKY', 'accepted']]);
+  });
+
   it('leaves unknown scan codes to the wording rules', () => {
     const result = parseDPDTrackingApi({
       parcelNumber: TRACKING_NUMBER,

@@ -77,8 +77,9 @@ signal.
   unreadable newest notice leaves no estimate, and a notice lapses at a pickup
   point or once a later scan passes its day. Notices remain events.
 - `MSDLX`, DPD failing to send the delivery details, reads like a failed round
-  to the shared wording rules. It keeps the stage of the scan before it and is
-  never the summary.
+  to the shared wording rules. `ENA`, DPD's internal data exchange, matches no
+  rule, so an app would read it as news that the parcel moves. Each keeps the
+  stage of the scan before it and is never the summary.
 - While the parcel waits at a Pickup shop, the pickup point is the shop's
   name, then its street and its town on their own lines. Verified scans carry
   the shop's PUDO id: the newest scan with one names the shop, unless a depot

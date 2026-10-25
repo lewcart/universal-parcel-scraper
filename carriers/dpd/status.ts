@@ -148,11 +148,12 @@ export function scanStage(code: string): Stage | null {
 export const PROOF_OF_DELIVERY_SCAN = 'DEYY';
 
 /**
- * Notices worded like a movement: MSDLX, DPD failing to send the delivery
- * details, would read as a failed round. Each keeps the stage of the scan
- * before it.
+ * Notices that would move the parcel: MSDLX, DPD failing to send the delivery
+ * details, reads as a failed round, and ENA, a data exchange inside DPD's
+ * systems that no rule reads, as in transit to an app that takes such a scan
+ * as news that the parcel moves. Each keeps the stage of the scan before it.
  */
-export const NOTICE_SCANS: ReadonlySet<string> = new Set(['MSDLX']);
+export const NOTICE_SCANS: ReadonlySet<string> = new Set(['MSDLX', 'ENA']);
 
 const MOVES_WITHOUT_MILESTONE = "DPD's map leaves it unmapped on purpose: it moves the parcel in transit without a milestone of its own.";
 
@@ -180,7 +181,7 @@ export const statusMap: CarrierStatusMap = {
     { code: 'MIDLI', note: "The recipient's delivery instruction, not a scan." },
     { code: 'MIA', note: "The receipt of the recipient's delivery instruction, not a scan." },
     { code: 'MII', note: "The recipient's delivery instruction, as MIDLI words it, not a scan." },
-    { code: 'ENA', note: "A data exchange inside DPD's systems, not a scan: it comes before the parcel reaches the origin depot." },
+    { code: 'ENA', note: "A data exchange inside DPD's systems before the parcel reaches the origin depot, not a scan: the parcel keeps the stage it had." },
     { code: 'DEYY', note: 'The proof of delivery, paperwork after the delivery scan: dropped beside it, delivered alone only when the enumeration says so.' },
     { code: 'DODEYY', note: 'The proof of delivery after a collection from a pickup point, read like DEYY.' },
   ],

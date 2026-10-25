@@ -227,8 +227,11 @@ for (const language of ['en', 'de', 'fr', 'it', 'es', 'nl']) {
     }
   }
 }
-// Full or former English names carriers print, which Intl shortens.
-for (const [name, code] of [['United States of America', 'US'], ['Czech Republic', 'CZ']] as const) REGION_BY_NAME.set(regionKey(name), code);
+// Full, former or abbreviated English names carriers print, which Intl writes otherwise: Cainiao
+// names the United States "USA".
+for (const [name, code] of [['United States of America', 'US'], ['USA', 'US'], ['Czech Republic', 'CZ']] as const) {
+  REGION_BY_NAME.set(regionKey(name), code);
+}
 
 /**
  * The ISO code of any country, whatever its clocks, from the code or its name

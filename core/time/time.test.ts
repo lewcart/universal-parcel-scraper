@@ -153,6 +153,7 @@ describe('time policies', () => {
     // Full or former names carriers still print.
     expect(countryCode('United States of America')).toBe('US');
     expect(countryCode('UNITED STATES OF AMERICA')).toBe('US');
+    expect(countryCode('USA')).toBe('US');
     expect(countryCode('Czech Republic')).toBe('CZ');
     expect(countryTimeZone('czech republic')).toBe('Europe/Prague');
     expect(countryTimeZone('United States of America')).toBeNull();

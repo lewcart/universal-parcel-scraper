@@ -12,6 +12,7 @@ import {
   normalizeGeodisTrackingNumber,
   parseGeodisTrackingResponse,
 } from './adapter.js';
+import { dateLocalClocks } from '../../places/clocks.js';
 import { classifyStatus } from './status.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -106,7 +107,8 @@ describe('GEODIS response normalization', () => {
       status: 'out_for_delivery',
       current_stage: 'out_for_delivery',
       last_status_text: 'En cours de livraison',
-      last_update: '29/08/2026 09:30:00',
+      last_update: null,
+      last_update_local: '2026-08-29T09:30:00',
       expected_delivery: '2026-08-30',
       sender_name: 'EXAMPLE SENDER',
       service_name: 'Example Express Service',
@@ -115,13 +117,13 @@ describe('GEODIS response normalization', () => {
     });
     expect(result.events).toEqual([
       {
-        time: '29/08/2026 09:30:00',
+        local_time: '2026-08-29T09:30:00',
         location: 'AGENCE PARIS',
         description: 'En cours de livraison',
         stage: 'out_for_delivery',
       },
       {
-        time: '28/08/2026 14:05:00',
+        local_time: '2026-08-28T14:05:00',
         location: 'CENTRE DE TRI',
         description: 'Envoi pris en charge',
         stage: 'in_transit',
@@ -236,10 +238,25 @@ describe('GEODIS response normalization', () => {
     expect(result.status).toBe('unknown');
     expect(result).not.toHaveProperty('current_stage');
     expect(result.events).toEqual([{
-      time: '29/08/2026 09:30:00',
+      local_time: '2026-08-29T09:30:00',
       location: '',
       description: 'Nouveau libellé GEODIS',
     }]);
+  });
+
+  it('keeps each scan as a Paris wall clock, or its day alone', () => {
+    const result = parseGeodisTrackingResponse(successPayload({
+      timeline: { listTimesteps: [] },
+      listJoursSuivis: [{
+        dateSuivi: '29/08/2026',
+        suivis: [{ heureSuivi: '', libelleSuivi: 'Nouveau libellé GEODIS' }, { heureSuivi: '09:30', libelleSuivi: 'Envoi pris en charge' }],
+      }],
+    }), OFFICIAL_SYNTHETIC_NUMBER);
+    expect(result.events?.map((event) => [event.time, event.local_time])).toEqual([
+      [undefined, '2026-08-29T09:30:00'], [undefined, '2026-08-29'],
+    ]);
+    expect(dateLocalClocks('geodis', result).events?.map((event) => event.time))
+      .toEqual(['2026-08-29T09:30:00+02:00', undefined]);
   });
 
   it('maps explicit delivered, collected, pickup-ready, and terminal failure states defensively', () => {

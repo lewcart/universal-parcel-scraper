@@ -52,9 +52,9 @@ interface ParsedEvent {
 
 /**
  * The endpoint reports a calendar day per group and a wall clock per scan, both
- * as display strings and never with an offset. No `core/time` policy fits: the
- * displayed value is kept verbatim as the event time, and the number below is
- * only a sort key, built in UTC so ordering never shifts with a DST boundary.
+ * as display strings and never with an offset. A scan keeps them as a wall clock
+ * in `local_time`, or its day alone, and the number below is only a sort key,
+ * built in UTC so ordering never shifts with a DST boundary.
  */
 function dateTimestamp(value: string): number | null {
   let match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
@@ -81,19 +81,17 @@ function dateTimestamp(value: string): number | null {
     : null;
 }
 
-function eventTime(dateValue: unknown, timeValue: unknown): { value: string; timestamp: number } | null {
-  const date = clean(dateValue, 32);
-  const timestamp = dateTimestamp(date);
+function eventTime(dateValue: unknown, timeValue: unknown): { local: string; timestamp: number } | null {
+  const timestamp = dateTimestamp(clean(dateValue, 32));
   if (timestamp === null) return null;
-  const clock = clean(timeValue, 16);
-  if (!clock) return { value: date, timestamp };
-  const match = /^([01]\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/.exec(clock);
-  if (!match) return { value: date, timestamp };
+  const day = new Date(timestamp).toISOString().slice(0, 10);
+  const match = /^([01]\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/.exec(clean(timeValue, 16));
+  if (!match) return { local: day, timestamp };
   const withClock = timestamp
     + Number(match[1]) * 3_600_000
     + Number(match[2]) * 60_000
     + Number(match[3] ?? 0) * 1_000;
-  return { value: `${date} ${clock}`, timestamp: withClock };
+  return { local: `${day}T${match[1]}:${match[2]}:${match[3] ?? '00'}`, timestamp: withClock };
 }
 
 function expectedDelivery(value: unknown): string | null {
@@ -122,13 +120,13 @@ function parseEvents(content: JsonObject): ParsedEvent[] {
       const description = clean(rawEvent.libelleSuivi);
       if (!time || !description) continue;
       const location = clean(rawEvent.libelleCentre, 160);
-      const identity = JSON.stringify([time.value, location, description]);
+      const identity = JSON.stringify([time.local, location, description]);
       if (seen.has(identity)) continue;
       seen.add(identity);
       const classified = classifyStatus(description);
       parsed.push({
         event: {
-          time: time.value,
+          local_time: time.local,
           location,
           description,
           // Unmapped wording carries no stage: the sync classifies and records it.
@@ -282,7 +280,8 @@ export function parseGeodisTrackingResponse(
     status,
     ...(stage ? { current_stage: stage } : {}),
     last_status_text: currentDescription,
-    last_update: events[0]?.time ?? null,
+    last_update: null,
+    ...(events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
     expected_delivery: isFinal
       ? null
       : expectedDelivery(content.dateLivraisonPrevue)

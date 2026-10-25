@@ -36,8 +36,9 @@ scope.
   `etatRetire` force `delivered`, `finDeVie` forces `exception`, or `returned` when the
   wording says so. `finDeVie` alone is not `returned`: it also covers write-offs and
   closures. The estimate is dropped once any of them is set.
-- Times are display strings (`DD/MM/YYYY HH:mm:ss`) kept verbatim: the endpoint sends no
-  offset, so no instant is invented. A UTC-based number is used only as a sort key.
+- The endpoint gives each day and scan clock as a display string without an offset. A scan
+  keeps them as an ISO wall clock in `local_time`, or its day alone, which Node lookups date
+  on Paris time or the scan's place. A UTC-based number is used only as a sort key.
 - Read: status, timeline, `libelleCentre` (location), the planned date, the sender's name
   (`expediteur.nom`, which the page prints after "Envoyé par"), the weight (`poids`, which
   the page prints in kilograms) and the service (`prestationCommerciale.libelle`, which the

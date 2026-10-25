@@ -1610,6 +1610,7 @@ describe("universal providers' answers", () => {
       ['The shipment has been posted by the sender at the retail outlet', 'accepted'], ['Label correction applied', 'in_transit'],
       ['Domestic allocation has begun', 'in_transit'], ['Under domestic allocation', 'in_transit'],
       ['Delivery to local courier', 'in_transit'],
+      ['Shipment manifest received', 'registered'], ['Parcel received by Maersk', 'in_transit'], ['Package relabeled', 'in_transit'],
       ['Item received at exchange office', 'in_transit'], ['Your delivery is in EXAMPLE TOWN, POST OFFICE', 'ready_for_pickup'],
       ['Delivery scheduled during the day.', 'out_for_delivery'], ['USPS in possession of the item, EXAMPLE, NY', 'accepted'],
       ['Order registered', 'registered'], ['Pickup scheduled for 01/02/2026', 'registered'],

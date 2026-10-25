@@ -300,6 +300,11 @@ function providerWordingStage(description: string): Stage | undefined {
   // destination's last-mile carrier, as its own map reads them.
   if (/^domestic allocation has begun[.!]?$|^under domestic allocation[.!]?$/i.test(value)) return 'in_transit';
   if (/^delivery to local courier[.!]?$/i.test(value)) return 'in_transit';
+  // Maersk's leg as ParcelsApp relays it after the first carrier's: the manifest announcing the parcel, then
+  // Maersk taking it over in the destination country, the step the first carrier calls its local delivery
+  // company's receipt. A parcel relabelled at a facility on the way moves on.
+  if (/^shipment manifest received[.!]?$/i.test(value)) return 'registered';
+  if (/^parcel received by maersk[.!]?$|^(?:package|parcel) relabell?ed[.!]?$/i.test(value)) return 'in_transit';
   // A consolidator's steps as aggregators relay them: the customer's data on its manifest, its origin
   // hub taking the parcel in, the parcel sent on, and a flight held up, for which results carry no delay flag.
   if (/^customer information manifested[.!]?$/i.test(value)) return 'registered';

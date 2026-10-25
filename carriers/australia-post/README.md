@@ -88,6 +88,12 @@ every outgoing request unless the consumer sets `tracePropagationTargets: []`. T
   filed under `Delivered`, a failed attempt abroad under `It's on its way`. Awaiting collection,
   attempted delivery and returns are not delivery. An article summary the map does not know takes
   the newest scan's stage.
+- A scan keeps both as its `provider_code`: the event code, a slash and the milestone label
+  (`TTP-ER81/It's on its way`), or the code alone without a label. The parcel app's review asks
+  the same map (`statusMap`) by that code, so it stages a scan as the adapter does. A scan stored
+  with its event code alone is staged by a listed code, or as a delivery by the wording
+  `Delivered`. Adding the label changes no stored scan's identity, which the app keys on its
+  time, place and wording.
 - Event time comes from `localeDateTime` (explicit offset), else the epoch-ms `dateTime`. If both
   exist and disagree, the parse fails. Events are sorted by instant.
 - Scans relayed from the post abroad carry that office's wall clock labelled as UTC. When the reply

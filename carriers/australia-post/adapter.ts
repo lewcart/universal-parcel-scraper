@@ -9,7 +9,7 @@ import { canadaProvinceTimeZone, countryCode, countryTimeZone, explicitOffsetTim
   mislabeledLocalTime, mislabeledWallTime, usStateTimeZone } from '../../core/time/index.js';
 import { clean, fetchBounded, TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { australiaPostStatus } from './status.js';
+import { australiaPostCode, australiaPostCodeParts, australiaPostStatus } from './status.js';
 
 const PROVIDER = 'Australia Post';
 const DETAIL = 'https://auspost.com.au/mypost/track/details/';
@@ -59,6 +59,8 @@ function abroadZone(location: string, abroad: string): string | null {
 const COLLECTION_SCANS = new Set(['DD-ER4', 'NT-ER4']);
 /** Deliveries left in a safe place, at the door. */
 const SAFE_PLACE = new Set(['DD-ER15', 'DD-ER38']);
+/** A scan's event code, without the milestone label its provider code adds. */
+const eventCode = (event: CarrierEvent) => australiaPostCodeParts(event.provider_code ?? '').code;
 
 /**
  * The post office or locker its awaiting-collection scan names: the newest scan while the
@@ -68,9 +70,9 @@ const SAFE_PLACE = new Set(['DD-ER15', 'DD-ER38']);
 function collectionPoint(stage: string | undefined, events: readonly CarrierEvent[]): string | undefined {
   const index = events.findIndex((event) => event.stage !== 'delivered');
   const placed = stage === 'ready_for_pickup' ? index === 0
-    : stage === 'delivered' && index > 0 && !events.slice(0, index).some((event) => SAFE_PLACE.has(String(event.provider_code)));
+    : stage === 'delivered' && index > 0 && !events.slice(0, index).some((event) => SAFE_PLACE.has(eventCode(event)));
   const scan = placed ? events[index] : undefined;
-  if (!scan || !COLLECTION_SCANS.has(String(scan.provider_code))) return undefined;
+  if (!scan || !COLLECTION_SCANS.has(eventCode(scan))) return undefined;
   return /^Awaiting collection at (.+)$/i.exec(scan.description ?? '')?.[1]?.trim() || undefined;
 }
 
@@ -178,11 +180,12 @@ function articleResult(selected: Record<string, unknown>, consignmentId: string)
     // Without a zone the wall clock stays local; its label still orders it as the reply does.
     const wall = zone === null ? mislabeledWallTime(raw.localeDateTime)?.replace(/\.000$/, '') : undefined;
     if (!at) throw new SchemaError(PROVIDER, 'Australia Post returned an invalid event date');
-    const classified = australiaPostStatus(clean(raw.milestone), code);
+    const milestone = clean(raw.milestone, 64);
+    const classified = australiaPostStatus(milestone, code);
     const event: CarrierEvent = { ...(wall ? { local_time: wall } : { time: at.iso }),
       description: classified?.stage === 'delivered' ? 'Delivered' : description,
       ...(location ? { location } : {}), ...(classified ? { stage: classified.stage } : {}),
-      ...(/^[A-Z0-9_-]{1,64}$/.test(code) ? { provider_code: code } : {}),
+      ...(/^[A-Z0-9_-]{1,64}$/.test(code) ? { provider_code: australiaPostCode(code, milestone) } : {}),
     };
     const key = JSON.stringify([at.timestamp, event.description, location, code]);
     if (seen.has(key)) continue;

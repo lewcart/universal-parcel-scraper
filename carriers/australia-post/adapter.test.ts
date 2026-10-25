@@ -24,7 +24,9 @@ describe('Australia Post parser', () => {
       last_update: '2026-06-08T14:10:00+10:00', delivered_at: '2026-06-08T14:10:00+10:00', expected_delivery: null });
     expect(result.events).toHaveLength(12);
     expect(result.events?.[0]).toEqual({ time: '2026-06-08T14:10:00+10:00', description: 'Delivered',
-      location: 'Example sorting facility', stage: 'delivered', provider_code: 'DD-ER15' });
+      location: 'Example sorting facility', stage: 'delivered', provider_code: 'DD-ER15/Delivered' });
+    // Each scan keeps its milestone label with its code, which the parcel app's review reads.
+    expect(result.events?.slice(1, 3).map((event) => event.provider_code)).toEqual(["AFP-ER13/It's coming today", "TTP-ER81/It's on its way"]);
     expect(result.events?.[1]?.stage).toBe('out_for_delivery');
     expect(result.events?.[8]?.stage).toBe('accepted');
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|example\.invalid|7T0000000001000000001|14:10:5[78]/);
@@ -122,11 +124,15 @@ describe('Australia Post parser', () => {
     article.trackStatusOfArticle = 'Future milestone';
     article.details[0].events[0].milestone = 'Future milestone';
     article.details[0].events[0].eventCode = 'NEW-CODE';
+    delete article.details[0].events[1].milestone;
     const result = parse(payload, NUMBER);
     expect(result.status).toBe('unknown');
     expect(result.current_stage).toBeUndefined();
     expect(result.delivered_at).toBeUndefined();
+    expect(result.events?.[0]).toMatchObject({ description: 'Delivered - Left in a safe place', provider_code: 'NEW-CODE/Future milestone' });
     expect(result.events?.[0]?.stage).toBeUndefined();
+    // A scan without a label keeps its code alone.
+    expect(result.events?.[1]).toMatchObject({ stage: 'out_for_delivery', provider_code: 'AFP-ER13' });
   });
 
   it.each([

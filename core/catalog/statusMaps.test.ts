@@ -442,6 +442,16 @@ describe('status map answers', () => {
     expect(answer('australia-post', 'AFP-ER99', "It's on its way")).toEqual(unknown);
   });
 
+  it('answers an Australia Post scan stored with its milestone label as the adapter stages it', () => {
+    // A listed code wins over its label; an unlisted one takes the label.
+    expect(answer('australia-post', 'INT-0075/Delivered', 'Awaiting collection at Example Town')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('australia-post', "AFP-ER99/It's on its way", 'Synthetic wording')).toEqual(mapped('in_transit'));
+    expect(answer('australia-post', 'AFP-ER99/It’s coming today', 'Synthetic wording')).toEqual(mapped('out_for_delivery'));
+    expect(answer('australia-post', 'DD-ER99/Delivered', 'Delivered')).toEqual(mapped('delivered'));
+    // Neither staged it, so its wording does not either.
+    expect(answer('australia-post', 'XX-ER99/A future milestone', 'Delivered')).toEqual(unknown);
+  });
+
   it("answers Paack by the description it writes, an aggregator's copy of its labels, and Evri's scans before the hand-over", () => {
     expect(answer('paack', null, 'Shipment registered')).toEqual(mapped('registered'));
     expect(answer('paack', null, 'Courier assigned')).toEqual(mapped('out_for_delivery'));

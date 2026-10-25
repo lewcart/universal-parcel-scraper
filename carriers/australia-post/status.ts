@@ -45,11 +45,30 @@ export function australiaPostStatus(label: string, code?: string): ClassifiedSta
 }
 
 /**
- * What the map says about one scan: its event code, as the adapter reads it. A scan without a
- * listed code took its milestone label, which the stored row does not keep, except a delivery:
- * the adapter words it "Delivered".
+ * A scan's provider code: its event code, a slash and the milestone label the scan is filed under
+ * ("TTP-ER81/It's on its way"), since the label stages a code the map does not list. A scan
+ * without a label keeps its event code alone.
+ */
+export function australiaPostCode(code: string, milestone: string): string {
+  return milestone ? `${code}/${milestone}` : code;
+}
+
+/** The event code and milestone label a provider code holds. A scan stored before the label joined its code has none. */
+export function australiaPostCodeParts(providerCode: string): { code: string; milestone?: string } {
+  const at = providerCode.indexOf('/');
+  return at < 0 ? { code: providerCode } : { code: providerCode.slice(0, at), milestone: providerCode.slice(at + 1) };
+}
+
+/**
+ * What the map says about one scan: its event code and milestone label, as the adapter reads
+ * them. A scan stored with its event code alone, or without one, has no label: a listed code
+ * stages it, and a delivery its wording, since the adapter words it "Delivered".
  */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => (code && Object.hasOwn(CODES, code) ? CODES[code]!.stage : wording === 'delivered' ? 'delivered' : undefined),
+  stage: (providerCode, wording) => {
+    const { code, milestone } = australiaPostCodeParts(providerCode ?? '');
+    if (milestone !== undefined) return australiaPostStatus(milestone, code)?.stage;
+    return australiaPostStatus('', code)?.stage ?? (wording === 'delivered' ? 'delivered' : undefined);
+  },
   gaps: [],
 };

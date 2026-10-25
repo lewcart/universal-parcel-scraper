@@ -477,6 +477,10 @@ describe('classifyWording', () => {
       ['Przesyłka w drodze', 'in_transit'],
       ['Pakket is onderweg', 'in_transit'],
       ['Entregado al transportista', 'in_transit'],
+      // MailAmericas' Spanish hand-overs in the destination country, as ParcelsApp relays them.
+      ['Arribado a país destino. Entregado por Aerolínea', 'in_transit'],
+      ['Recepción correo de destino. Entregado a Distribuidor', 'in_transit'],
+      ['Proceso finalizado. Entregado', 'delivered'],
       ['Entregue à transportadora', 'in_transit'],
       ['Entregado en el punto de recogida', 'ready_for_pickup'],
       ['Entregue no cacifo', 'ready_for_pickup'],

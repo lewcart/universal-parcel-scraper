@@ -535,6 +535,9 @@ step exists for future protocol changes.
   ParcelsApp words a leg's end so: a first carrier's on the day it hands the parcel to the
   next, and MailAmericas' "Delivered by Airline" before the destination's customs. The day
   covers the hours a reply's networks' clocks can stand apart.
+- MailAmericas' hand-overs in the destination country read as in transit in English and
+  in Spanish ("Entregado por Aerolínea", "Entregado a Distribuidor"); only its finished
+  process is the delivery.
 - Cross-border replies stay uncertain: scans can be filed under the wrong operator (an
   India-to-France parcel listed La Poste scans under India Post).
 - Notices are skipped, not events: `require_fields` rows, postcode, sign-in and

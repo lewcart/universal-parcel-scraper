@@ -1453,6 +1453,16 @@ describe('ParcelsApp result parsing', () => {
       identity()).events?.map((scan) => scan.time)).toEqual(['2026-07-10T10:55:00.000Z', '2026-07-10T07:02:00.000Z']);
   });
 
+  it('stages MailAmericas\' Spanish hand-overs as transit and its finished process as the delivery', () => {
+    const states = [
+      { date: '2026-07-14T15:00:00Z', status: 'Proceso finalizado. Entregado', carrier: 0, location: 'Example Town' },
+      { date: '2026-07-11T12:30:00Z', status: 'Recepción correo de destino. Entregado a Distribuidor', carrier: 0, location: 'Example Town' },
+      { date: '2026-07-09T04:45:00Z', status: 'Arribado a país destino. Entregado por Aerolínea', carrier: 0, location: 'Example Town' },
+    ];
+    expect(parseParcelsAppResponse({ carriers: ['MailAmericas'], destinationCode: 'CO', states }, number, identity())
+      .events?.map((scan) => scan.stage)).toEqual(['delivered', 'in_transit', 'in_transit']);
+  });
+
   it('reads a town of the state a country\'s code also names in that state, not the country', () => {
     const times = (location: string) => parseParcelsAppResponse({ carriers: ['Example Courier'], states: [
       { date: '2026-07-10T12:00:00Z', status: 'In transit', carrier: 0, location },

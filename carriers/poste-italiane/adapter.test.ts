@@ -372,9 +372,9 @@ describe('Poste Italiane response parsing', () => {
     const oneri = { importoDirittiDoganali: '1234', importoDirittiPostali: '2100', importoDirittiPostaliSmart: '1800' };
     expect(parsePosteItalianeTrackingResponse({ ...FROM_ABROAD, oneri: { ...oneri, statoOneri: 'PAGATO' } }, 'LX123456785JP').import_charges)
       .toEqual({ currency: 'EUR', customs: 12.34, carrier_fee: 21, carrier_fee_online: 18, paid: true, status_code: 'PAGATO' });
-    // A closed payment window says nothing sure about payment.
+    // A closed payment window leaves the price on delivery, and says nothing sure about payment.
     expect(parsePosteItalianeTrackingResponse({ ...FROM_ABROAD, oneri: { ...oneri, statoOneri: 'FINESTRA_PAGAMENTO_CHIUSA' } }, 'LX123456785JP')
-      .import_charges).toEqual({ currency: 'EUR', customs: 12.34, carrier_fee: 21, carrier_fee_online: 18, status_code: 'FINESTRA_PAGAMENTO_CHIUSA' });
+      .import_charges).toEqual({ currency: 'EUR', customs: 12.34, carrier_fee: 21, status_code: 'FINESTRA_PAGAMENTO_CHIUSA' });
     for (const empty of [undefined, null, {}, { importoDirittiDoganali: '12,34', statoOneri: '' }]) {
       expect(parsePosteItalianeTrackingResponse({ ...FROM_ABROAD, oneri: empty }, 'LX123456785JP')).not.toHaveProperty('import_charges');
     }

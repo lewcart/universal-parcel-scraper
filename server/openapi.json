@@ -724,7 +724,7 @@
               },
               "carrier_fee_online": {
                 "type": "number",
-                "description": "That fee when the charges are paid online before delivery."
+                "description": "That fee when the charges are paid online before delivery, while the carrier still takes payment online."
               },
               "paid": {
                 "type": "boolean",

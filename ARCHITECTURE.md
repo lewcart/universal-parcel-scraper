@@ -160,7 +160,8 @@ or the kind of parcel. The carriers whose `capabilities` list `service_name` fil
 A result's `import_charges` are the duties, taxes and fees the carrier lists for importing the
 parcel, in the currency's major unit: customs duty and import VAT in `customs`, the carrier's
 own clearance fee in `carrier_fee`, and its lower price for paying online first in
-`carrier_fee_online`. `paid` is set only when the carrier says; `status_code` keeps its code.
+`carrier_fee_online`, only while the carrier still takes payment online. `paid` is set only
+when the carrier says; `status_code` keeps its code.
 A provider's answer that lacks them takes the carrier's. The carriers whose `capabilities` list
 `import_charges` fill it.
 

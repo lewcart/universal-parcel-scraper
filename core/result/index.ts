@@ -61,7 +61,7 @@ export interface ImportCharges extends JsonObject {
   customs?: number;
   /** The carrier's own fee for clearing the parcel, as charged on delivery. */
   carrier_fee?: number;
-  /** That fee when the charges are paid online before delivery. */
+  /** That fee when the charges are paid online before delivery, while the carrier still takes payment online. */
   carrier_fee_online?: number;
   /** Whether the charges are paid, when the carrier says. */
   paid?: boolean;

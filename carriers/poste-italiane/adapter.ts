@@ -103,10 +103,12 @@ function importCharges(value: unknown): { import_charges: ImportCharges } | Reco
     const cents = clean(value[key], 12);
     if (/^\d{1,9}$/.test(cents)) charges[field] = Number(cents) / 100;
   }
-  // PAGATO is paid. Others, such as FINESTRA_PAGAMENTO_CHIUSA (the online payment window
-  // closed), say nothing sure about payment and stay codes.
+  // PAGATO is paid. FINESTRA_PAGAMENTO_CHIUSA closes the online payment window: what is
+  // left is paid on delivery, so the online price no longer applies. It says nothing sure
+  // about payment, and stays a code like any other.
   const status = clean(value.statoOneri, 60);
   if (status === 'PAGATO') charges.paid = true;
+  if (status === 'FINESTRA_PAGAMENTO_CHIUSA') delete charges.carrier_fee_online;
   if (/^[A-Z][A-Z_]*$/.test(status)) charges.status_code = status;
   return Object.keys(charges).length > 1 ? { import_charges: charges } : {};
 }

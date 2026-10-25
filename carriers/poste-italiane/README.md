@@ -130,8 +130,9 @@ Italiane for a number issued abroad.
 - `tipoProdotto` names the product, such as Poste Delivery Standard. Letter-post items echo
   their own number there, which is not kept.
 - `oneri` lists what an import owes, in euro cents, as `import_charges`: customs duty and VAT,
-  the postal fee on delivery and its lower online price. `statoOneri` `PAGATO` marks them paid;
-  another code stays a code, since `FINESTRA_PAGAMENTO_CHIUSA` only says the online window shut.
+  the postal fee on delivery and its lower online price. `statoOneri` `PAGATO` marks them paid.
+  `FINESTRA_PAGAMENTO_CHIUSA` says the online window shut: the online price is left out, as
+  what is left is paid on delivery. Every code stays in `status_code`.
 - `dataPrevistaConsegna` is Italian prose ("Consegna prevista entro Venerdì 2 Gennaio 2026"),
   reduced to a calendar day and cleared once delivered. Unparsable text yields no estimate.
 - `dataOra` is epoch milliseconds, so there is no zone to guess. A local helper renders it

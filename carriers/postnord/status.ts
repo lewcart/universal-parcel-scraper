@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // Codes and their labels come from the official tracking widget. EN_ROUTE and
 // OTHER also cover several distinct milestones and administrative notices.
@@ -21,8 +22,13 @@ const accepted: ClassifiedStatus = { status: 'in_transit', stage: 'accepted' };
 const moving: ClassifiedStatus = { status: 'in_transit', stage: 'in_transit' };
 const customs: ClassifiedStatus = { status: 'in_transit', stage: 'customs' };
 
+/** A wording table keyed in `normalizeStatusWording` form. */
+function byWording(table: Record<string, ClassifiedStatus>): ReadonlyMap<string, ClassifiedStatus> {
+  return new Map(Object.entries(table).map(([wording, status]) => [normalizeStatusWording(wording), status]));
+}
+
 /** EN_ROUTE and OTHER wordings that name a milestone of their own. */
-const milestones: Record<string, ClassifiedStatus> = {
+const milestones = byWording({
   'The delivery of the shipment item is in progress.': { status: 'out_for_delivery', stage: 'out_for_delivery' },
   'The shipment item is under transportation.': moving,
   'The shipment item has arrived at the distribution terminal.': moving,
@@ -34,13 +40,13 @@ const milestones: Record<string, ClassifiedStatus> = {
   'The shipment item has been picked-up for transportation.': accepted,
   'Customs VAT has been paid.': customs,
   'Import Charge sent to recipient.': customs,
-};
+});
 
 /** STOPPED wordings for a parcel held on purpose rather than in trouble. */
-const holds: Record<string, ClassifiedStatus> = {
+const holds = byWording({
   'The shipment item is being customs cleared by us.': customs,
   'The shipment item is being held at a distribution terminal awaiting the booked delivery date or, awaiting an agreement of delivery with the recipient.': moving,
-};
+});
 
 export function isPostnordAdministrativeEvent(code: string, description: string): boolean {
   return code === 'OTHER' && [
@@ -55,7 +61,18 @@ export function isPostnordAdministrativeEvent(code: string, description: string)
 }
 
 export function classifyPostnordStatus(code: string, description = ''): ClassifiedStatus | undefined {
-  if ((code === 'EN_ROUTE' || code === 'OTHER') && Object.hasOwn(milestones, description)) return milestones[description];
-  if (code === 'STOPPED' && Object.hasOwn(holds, description)) return holds[description];
+  const wording = normalizeStatusWording(description);
+  if ((code === 'EN_ROUTE' || code === 'OTHER') && milestones.has(wording)) return milestones.get(wording);
+  if (code === 'STOPPED' && holds.has(wording)) return holds.get(wording);
   return Object.hasOwn(codes, code) ? codes[code] : undefined;
 }
+
+/**
+ * What the map says about one scan: its code, narrowed by its wording where the code covers
+ * several milestones or a hold, as the parser reads it. Every scan carries a code; a copy
+ * without one gets a stage only from wording that names a milestone or a hold of its own.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? classifyPostnordStatus(code, wording) : milestones.get(wording) ?? holds.get(wording))?.stage,
+  gaps: [],
+};

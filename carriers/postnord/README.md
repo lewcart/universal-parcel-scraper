@@ -32,6 +32,8 @@ wall clock in a country of several, and a twin labelled with the instant counts 
 delivering abroad relays instants (Deutsche Post's have the minute of its own tracker's), and
 without a destination a foreign post's scan stays as labelled.
 Each event uses its own code and, where the code covers several milestones, exact portal wording.
+The parcel app's review asks the same map (`statusMap`); a copy without a code gets a stage only
+from wording that names a milestone or a hold of its own.
 Pickup availability remains distinct from parcel delivery. Confirmed notification and
 recipient-choice notices, a chosen pickup point among them, are omitted from shipment
 history, so a delivered message cannot become a parcel-delivery milestone. A notice-only

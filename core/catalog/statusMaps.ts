@@ -415,6 +415,7 @@ import { statusMap as postex } from '../../carriers/postex/status.js';
 import { statusMap as posti } from '../../carriers/posti/status.js';
 import { statusMap as postlogistics } from '../../carriers/postlogistics/status.js';
 import { statusMap as postmediaParcelServices } from '../../carriers/postmedia-parcel-services/status.js';
+import { statusMap as postnord } from '../../carriers/postnord/status.js';
 import { statusMap as posturinn } from '../../carriers/posturinn/status.js';
 import { statusMap as ppl } from '../../carriers/ppl/status.js';
 import { statusMap as precisionDeliveries } from '../../carriers/precision-deliveries/status.js';
@@ -643,7 +644,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'post-haste': postHaste, 'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, 'poste-italiane': posteItaliane, postex, posti, postlogistics, 'postmedia-parcel-services': postmediaParcelServices,
-  posturinn, ppl, 'precision-deliveries': precisionDeliveries,
+  postnord, posturinn, ppl, 'precision-deliveries': precisionDeliveries,
   'pro-carrier': proCarrier, 'prompt-xpress': promptXpress, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'pullman-cargo': pullmanCargo, 'quantium-solutions': quantiumSolutions,
   'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech,
   rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,

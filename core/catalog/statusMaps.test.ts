@@ -730,6 +730,22 @@ describe('status map answers', () => {
     expect(answer('inpost', null, 'Something new')).toEqual(unknown);
   });
 
+  it('answers PostNord by its code, narrowed by the wording of a milestone or a hold', () => {
+    expect(answer('postnord', 'EN_ROUTE', 'The shipment item has been dropped off by sender.')).toEqual(mapped('accepted'));
+    expect(answer('postnord', 'EN_ROUTE', 'The delivery of the shipment item is in progress.')).toEqual(mapped('out_for_delivery'));
+    expect(answer('postnord', 'EN_ROUTE', 'The transport of the shipment item has started.')).toEqual(mapped('in_transit'));
+    expect(answer('postnord', 'STOPPED', 'The shipment item is being customs cleared by us.')).toEqual(mapped('customs'));
+    expect(answer('postnord', 'STOPPED', 'The shipment item has been stored.')).toEqual(mapped('exception'));
+    expect(answer('postnord', 'AVAILABLE_FOR_DELIVERY', 'The shipment item has been delivered to a service point.')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('postnord', 'DELIVERED', 'The shipment item has been delivered.')).toEqual(mapped('delivered'));
+    // OTHER moves the parcel only when its wording names a milestone.
+    expect(answer('postnord', 'OTHER', 'Your item is being processed at our sorting center.')).toEqual(mapped('in_transit'));
+    expect(answer('postnord', 'OTHER', 'Any wording at all')).toEqual(unknown);
+    // Without a code, only a milestone's or a hold's own wording stages a scan.
+    expect(answer('postnord', null, 'The delivery of the shipment item is in progress.')).toEqual(mapped('out_for_delivery'));
+    expect(answer('postnord', null, 'The shipment item has been delivered.')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

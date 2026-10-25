@@ -1704,7 +1704,7 @@ describe('ParcelsApp result parsing', () => {
     ]));
   });
 
-  it('reads China Post\'s scans in China on Beijing\'s clock', () => {
+  it('reads China Post\'s scans in China, and those no place dates, on Beijing\'s clock', () => {
     // 17TRACK's copies of the same scans carry "+08:00"; ParcelsApp labels the digits UTC.
     const result = parseParcelsAppResponse({ carriers: ['China Post'], states: [
       { date: '2026-07-03T09:12:12Z', status: 'In transit', carrier: 0, location: 'Example Town ENG GB AB1' },
@@ -1715,13 +1715,17 @@ describe('ParcelsApp result parsing', () => {
       { date: '2026-06-28T01:00:00Z', status: 'Electronic information received', carrier: 0 },
     ] }, number, identity());
     expect(result.events?.map((scan) => scan.time)).toEqual([
-      '2026-07-03T09:12:12.000Z', // a place it cannot tell
+      '2026-07-03T01:12:12.000Z', // a place it cannot tell
       '2026-07-01T02:10:00.000Z', // Hong Kong
       '2026-06-29T15:01:26.000Z', // a mainland city alone
       '2026-06-28T13:40:07.000Z',
       '2026-06-28T02:05:16.000Z',
-      '2026-06-28T01:00:00.000Z', // no place
+      '2026-06-27T17:00:00.000Z', // no place
     ]);
+    // A place the steps date keeps its own clock.
+    expect(parseParcelsAppResponse({ carriers: ['China Post'], states: [
+      { date: '2026-07-04T09:12:12Z', status: 'Arrived', carrier: 0, location: 'Example Town, United Kingdom' },
+    ] }, number, identity()).events?.map((scan) => scan.time)).toEqual(['2026-07-04T08:12:12.000Z']);
   });
 
   it('reads CTT\'s copies on the clock of each side of the border, which its offices of exchange tell', () => {

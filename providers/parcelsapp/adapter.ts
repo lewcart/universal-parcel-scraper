@@ -836,6 +836,9 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
 /**
  * The zone a scan's place gives it: null for a DHL Express facility the rule
  * cannot place, and undefined for a scan only a guess can place (`guessedZone`).
+ * China Post's scans that no place dates, with none or one the steps cannot tell
+ * ("Example Town ENG GB AB1"), are on its own clock, Beijing's: 17TRACK's
+ * "+08:00" copies of its airline handovers and of such scans have their digits.
  */
 function siteZone(payload: Record<string, unknown>, state: Record<string, unknown>, number: string, inNorthAmerica = false,
   status = '', destination: string | null = null): string | null | undefined {
@@ -865,7 +868,7 @@ function siteZone(payload: Record<string, unknown>, state: Record<string, unknow
     const origin = replyOrigin(payload, number);
     return countryTimeZone(origin) ?? (origin === 'AU' ? australianZone(location, capitals) : null) ?? undefined;
   }
-  return undefined;
+  return carrier === 'china-post' ? 'Asia/Shanghai' : undefined;
 }
 
 /**

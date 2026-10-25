@@ -396,6 +396,68 @@ describe('status map answers', () => {
     expect(answer('gls-fr', null, 'Delivered')).toEqual(unknown);
   });
 
+  it("answers Poczta Polska and CTT Express by their scan codes", () => {
+    expect(answer('poczta-polska', 'P_REJ_KN1', 'Electronic item data received')).toEqual(mapped('registered'));
+    expect(answer('poczta-polska', 'P_ZWC', 'Customs service')).toEqual(mapped('customs'));
+    expect(answer('poczta-polska', 'P_ND', 'In delivery')).toEqual(mapped('exception'));
+    expect(answer('poczta-polska', 'P_D', 'Final delivery')).toEqual(mapped('delivered'));
+    expect(answer('poczta-polska', 'P_ROZL_CEL', 'Synthetic settlement')).toEqual(unknown);
+    expect(answer('poczta-polska', null, 'Final delivery')).toEqual(unknown);
+    expect(answer('ctt-express', '0000', 'Pendiente de recepción en CTT Express')).toEqual(mapped('registered'));
+    expect(answer('ctt-express', '2310', 'Disponible en Punto Collectt Express')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('ctt-express', '2100', 'El envío fue entregado correctamente')).toEqual(mapped('delivered'));
+    expect(answer('ctt-express', '9999', 'Synthetic scan')).toEqual(unknown);
+  });
+
+  it("answers UniUni by its state code and a Uni Store drop-off by its wording, and leaves 202 out on purpose", () => {
+    expect(answer('uniuni', '190', 'Order received')).toEqual(mapped('registered'));
+    expect(answer('uniuni', '211', 'Failed delivery attempt, returning to the warehouse')).toEqual(mapped('failed_attempt'));
+    expect(answer('uniuni', '203', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('uniuni', null, 'Parcel dropped off at Uni Store')).toEqual(mapped('accepted'));
+    expect(answer('uniuni', '202', 'Out for delivery')).toEqual(gap);
+    expect(answer('uniuni', null, 'Delivered')).toEqual(unknown);
+  });
+
+  it("answers Spring GDS by PostNL's domestic labels, and leaves its international scans open", () => {
+    expect(answer('spring-gds', 'Z1', 'Shipment received by PostNL')).toEqual(mapped('accepted'));
+    expect(answer('spring-gds', null, 'Driver is en route')).toEqual(mapped('out_for_delivery'));
+    expect(answer('spring-gds', '37', 'Shipment delivered')).toEqual(unknown);
+  });
+
+  it("answers Amazon Shipping by the description it writes for a rule, and leaves an exception open", () => {
+    expect(answer('amazon-shipping', 'CreationConfirmed', 'Shipment information received')).toEqual(mapped('registered'));
+    expect(answer('amazon-shipping', 'Departed', 'Departed facility')).toEqual(mapped('in_transit'));
+    expect(answer('amazon-shipping', 'OutForDelivery', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('amazon-shipping', 'Delivered', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('amazon-shipping', null, 'Returning to sender')).toEqual(mapped('returned'));
+    expect(answer('amazon-shipping', 'Rejected', 'Shipment exception')).toEqual(unknown);
+    expect(answer('amazon-shipping', null, 'Amazon Shipping update')).toEqual(unknown);
+  });
+
+  it("answers Australia Post by its event code, and a delivery by the wording the adapter gives it", () => {
+    expect(answer('australia-post', 'ADMIN-ER39', 'Shipping information received by Australia Post')).toEqual(mapped('registered'));
+    expect(answer('australia-post', 'AFC-ER36', 'Synthetic acceptance')).toEqual(mapped('accepted'));
+    expect(answer('australia-post', 'DD-ER15', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('australia-post', 'DD-ER99', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('australia-post', 'AFP-ER99', "It's on its way")).toEqual(unknown);
+  });
+
+  it("answers Paack by the description it writes, an aggregator's copy of its labels, and Evri's scans before the hand-over", () => {
+    expect(answer('paack', null, 'Shipment registered')).toEqual(mapped('registered'));
+    expect(answer('paack', null, 'Courier assigned')).toEqual(mapped('out_for_delivery'));
+    expect(answer('paack', null, 'New delivery attempt scheduled')).toEqual(mapped('failed_attempt'));
+    expect(answer('paack', null, "In Paack's distribution centre")).toEqual(mapped('accepted'));
+    expect(answer('paack', null, 'Received at Evri')).toEqual(mapped('accepted'));
+    expect(answer('paack', null, 'Shipment update')).toEqual(unknown);
+  });
+
+  it("answers Posti by its scan labels, and leaves notifications, which it reads as pending, open", () => {
+    expect(answer('posti', null, 'The item has been delivered')).toEqual(mapped('delivered'));
+    expect(answer('posti', null, 'Item is ready for a pick up')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('posti', null, 'Item accepted from transport')).toEqual(mapped('in_transit'));
+    expect(answer('posti', null, 'We sent the recipient an email about the item.')).toEqual(unknown);
+  });
+
   it("answers DHL Express's wait for collection, missed delivery and return", () => {
     expect(answer('dhl-express', 'CC', 'Awaiting collection by the consignee')).toEqual(mapped('ready_for_pickup'));
     expect(answer('dhl-express', 'ND', 'Delivery attempt could not be completed')).toEqual(mapped('failed_attempt'));

@@ -12,6 +12,7 @@
  * substring they contain, and delays before the transit words.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface ClassifiedStatus {
@@ -141,3 +142,16 @@ export function classifyStatus(...values: unknown[]): ClassifiedStatus {
 export function amazonShippingStatus(value: unknown): CarrierStatus {
   return classifyStatus(value).status;
 }
+
+/**
+ * What the map says about one scan: the adapter writes its own description for the rule that
+ * classified the row, so that description stages it again. A row the rules read from a code
+ * or string id the description does not name, an exception for one, stays open.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    const classified = classifyStatus(wording);
+    return classified.status === 'unknown' ? undefined : classified.stage;
+  },
+  gaps: [],
+};

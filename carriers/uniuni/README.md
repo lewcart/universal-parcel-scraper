@@ -32,7 +32,8 @@ summary, as does a Uni Store drop-off, which also has no status code. Their own
 short scan text is kept as the description; they carry no corrected seconds.
 Cross-border shippers' scans arrive the same way, but with code 202 on every row
 until delivery, so code 202 on such a row is read by its wording: it otherwise
-means out for delivery. The parcel's country, the United States or Canada, is the
+means out for delivery. The app's review asks the same map by code (`statusMap`)
+and leaves 202 open, since a stored row does not say whose scan it is. The parcel's country, the United States or Canada, is the
 destination.
 Detection claims the `UUS`, `UUSC`, `4C…US` and `U9999` formats and suggests
 UniUni for other `U` and fifteen-digit references, which Canadian parcels carry.

@@ -26,8 +26,10 @@
  * read alike.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
 import type { JsonObject } from '../../core/types.js';
+import { statusMap as evriStatusMap } from '../evri/status.js';
 
 export interface ClassifiedPaackStatus {
   status: CarrierStatus;
@@ -55,10 +57,18 @@ const OUT_FOR_DELIVERY: ClassifiedPaackStatus = {
 };
 const DELIVERED: ClassifiedPaackStatus = { status: 'delivered', stage: 'delivered', description: 'Delivered' };
 const DELIVERY_ISSUE: ClassifiedPaackStatus = { status: 'exception', stage: 'failed_attempt', description: 'Delivery issue' };
+const ATTEMPT_FAILED: ClassifiedPaackStatus = { status: 'exception', stage: 'failed_attempt', description: 'Delivery attempt failed' };
+const RETURNED: ClassifiedPaackStatus = { status: 'exception', stage: 'returned', description: 'Shipment returned' };
+const RETURNING: ClassifiedPaackStatus = { status: 'exception', stage: 'returned', description: 'Returning to sender' };
+const EXCEPTION: ClassifiedPaackStatus = { status: 'exception', stage: 'exception', description: 'Shipment exception' };
+const READY_FOR_PICKUP: ClassifiedPaackStatus = { status: 'out_for_delivery', stage: 'ready_for_pickup', description: 'Ready for pickup' };
+const NEW_ATTEMPT: ClassifiedPaackStatus = { status: 'exception', stage: 'failed_attempt', description: 'New delivery attempt scheduled' };
+const COURIER_ASSIGNED: ClassifiedPaackStatus = { ...OUT_FOR_DELIVERY, description: 'Courier assigned' };
+const IN_TRANSIT: ClassifiedPaackStatus = { status: 'in_transit', stage: 'in_transit', description: 'In transit' };
 
 /** History codes that come without a label, matched whole. */
 const CODES = new Map<string, ClassifiedPaackStatus>([
-  ['sa014', { status: 'exception', stage: 'failed_attempt', description: 'Delivery attempt failed' }],
+  ['sa014', ATTEMPT_FAILED],
 ]);
 
 /** Paack's English timeline labels, keyed like `statusKey`, with the identifier each one renders. */
@@ -84,7 +94,7 @@ export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {
     'returnedtosender',
     'returnedtoretailer',
   ])) {
-    return { status: 'exception', stage: 'returned', description: 'Shipment returned' };
+    return { ...RETURNED };
   }
   // Expired, refused or unpaid at the PaackGo Point: on its way back to the retailer.
   if (includesAny(key, [
@@ -92,7 +102,7 @@ export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {
     'inpudotoreturnrejected',
     'inpudotoreturncodnotaccepted',
   ])) {
-    return { status: 'exception', stage: 'returned', description: 'Returning to sender' };
+    return { ...RETURNING };
   }
   // The point was closed, full or refused the parcel; Paack tries again.
   if (includesAny(key, ['pudoclosed', 'pudofull', 'rejectedbypudo'])) {
@@ -108,7 +118,7 @@ export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {
     'integrationerror',
     'cancelled',
     'canceled',
-  ])) return { status: 'exception', stage: 'exception', description: 'Shipment exception' };
+  ])) return { ...EXCEPTION };
   if (includesAny(key, [
     'returntosenderscheduled',
     'returnabsent',
@@ -121,14 +131,10 @@ export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {
     'undelivered',
   ])) return { ...DELIVERY_ISSUE };
   if (includesAny(key, ['delivered', 'deliverycompleted', 'collectedbycustomer'])) return { ...DELIVERED };
-  if (includesAny(key, ['droppedinpudo'])) {
-    return { status: 'out_for_delivery', stage: 'ready_for_pickup', description: 'Ready for pickup' };
-  }
+  if (includesAny(key, ['droppedinpudo'])) return { ...READY_FOR_PICKUP };
   // The new attempt after a failed one: the stage stays on the failure until the courier sets out again.
-  if (includesAny(key, ['additionaldeliveryattemptscheduled'])) {
-    return { status: 'exception', stage: 'failed_attempt', description: 'New delivery attempt scheduled' };
-  }
-  if (includesAny(key, ['driverassigned'])) return { ...OUT_FOR_DELIVERY, description: 'Courier assigned' };
+  if (includesAny(key, ['additionaldeliveryattemptscheduled'])) return { ...NEW_ATTEMPT };
+  if (includesAny(key, ['driverassigned'])) return { ...COURIER_ASSIGNED };
   if (includesAny(key, ['outfordelivery', 'indelivery'])) return { ...OUT_FOR_DELIVERY };
   if (includesAny(key, [
     'manifested',
@@ -150,7 +156,23 @@ export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {
     'pudoassigned',
     'inprogress',
   ])) {
-    return { status: 'in_transit', stage: 'in_transit', description: 'In transit' };
+    return { ...IN_TRANSIT };
   }
   return { status: 'unknown', stage: 'in_transit', description: 'Shipment update' };
 }
+
+/** The stage of each description the adapter writes, keyed as the app keys its observations. */
+const DESCRIBED = new Map<string, Stage>([
+  REGISTERED, ACCEPTED, OUT_FOR_DELIVERY, DELIVERED, DELIVERY_ISSUE, ATTEMPT_FAILED, RETURNED, RETURNING,
+  EXCEPTION, READY_FOR_PICKUP, NEW_ATTEMPT, COURIER_ASSIGNED, IN_TRANSIT,
+].map(({ description, stage }) => [normalizeStatusWording(description), stage]));
+
+/**
+ * What the map says about one scan: the description the adapter writes for it, or a label of
+ * Paack's an aggregator relays. A parcel Evri International hands over keeps Evri's scans, which
+ * Evri's map reads.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => DESCRIBED.get(wording) ?? paackScan(wording)?.stage ?? evriStatusMap.stage(code, wording),
+  gaps: [],
+};

@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // The specific scan code takes precedence over its broader state label: an
 // unsuccessful delivery can still carry the state DOR (in delivery).
@@ -31,6 +32,12 @@ export function classifyPocztaPolskaStatus(code: string): ClassifiedStatus | und
   if (FAILED_DELIVERY.has(code)) return { status: 'exception', stage: 'exception' };
   return undefined;
 }
+
+/**
+ * What the map says about one scan: its code, as the adapter reads it. On the way back to the
+ * sender the adapter reads a delivery as the return, which the code alone does not show.
+ */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? classifyPocztaPolskaStatus(code)?.stage : undefined), gaps: [] };
 
 /**
  * A scan that sends the item back to its sender: the return code, or any scan

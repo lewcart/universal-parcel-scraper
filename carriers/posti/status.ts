@@ -1,4 +1,5 @@
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // ConsumerShipmentStatusMain in Posti's public parcels bundle, inspected
 // 2026-09-21. Return movement is not a completed return.
@@ -38,3 +39,16 @@ export function postiEventStage(description: string): string {
   // Notifications, electronic pre-advice and unmapped wording prove no new movement.
   return 'pending';
 }
+
+/**
+ * What the map says about one scan: its label, as the adapter reads it. Notifications, pre-advice
+ * and unknown labels all read as pending there, so the map leaves them open, and so does a label
+ * the adapter stored with its reason after it, when a rule needs the label alone.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    const stage = postiEventStage(wording);
+    return stage === 'pending' ? undefined : stage as Stage;
+  },
+  gaps: [],
+};

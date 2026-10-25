@@ -31,6 +31,7 @@ import { statusMap as algeriePoste } from '../../carriers/algerie-poste/status.j
 import { statusMap as aliexpress } from '../../carriers/aliexpress/status.js';
 import { statusMap as allegroOne } from '../../carriers/allegro-one/status.js';
 import { statusMap as amHomeDelivery } from '../../carriers/am-home-delivery/status.js';
+import { statusMap as amazonShipping } from '../../carriers/amazon-shipping/status.js';
 import { statusMap as americanWestExpress } from '../../carriers/american-west-express/status.js';
 import { statusMap as amerijet } from '../../carriers/amerijet/status.js';
 import { statusMap as ampm } from '../../carriers/ampm/status.js';
@@ -48,6 +49,7 @@ import { statusMap as aramexNz } from '../../carriers/aramex-nz/status.js';
 import { statusMap as arasKargo } from '../../carriers/aras-kargo/status.js';
 import { statusMap as arrowXl } from '../../carriers/arrow-xl/status.js';
 import { statusMap as atlanticCourier } from '../../carriers/atlantic-courier/status.js';
+import { statusMap as australiaPost } from '../../carriers/australia-post/status.js';
 import { statusMap as austrianPost } from '../../carriers/austrian-post/status.js';
 import { statusMap as averitt } from '../../carriers/averitt/status.js';
 import { statusMap as aymakan } from '../../carriers/aymakan/status.js';
@@ -116,6 +118,7 @@ import { statusMap as courierCenter } from '../../carriers/courier-center/status
 import { statusMap as couriersPlease } from '../../carriers/couriersplease/status.js';
 import { statusMap as cruzDelSur } from '../../carriers/cruz-del-sur/status.js';
 import { statusMap as cseRussia } from '../../carriers/cse-russia/status.js';
+import { statusMap as cttExpress } from '../../carriers/ctt-express/status.js';
 import { statusMap as ctt } from '../../carriers/ctt/status.js';
 import { statusMap as cttyex } from '../../carriers/cttyex/status.js';
 import { statusMap as cyprusPost } from '../../carriers/cyprus-post/status.js';
@@ -371,6 +374,7 @@ import { statusMap as omniva } from '../../carriers/omniva/status.js';
 import { statusMap as oneWorldExpress } from '../../carriers/one-world-express/status.js';
 import { statusMap as orlenPaczka } from '../../carriers/orlen-paczka/status.js';
 import { statusMap as osmWorldwide } from '../../carriers/osm-worldwide/status.js';
+import { statusMap as paack } from '../../carriers/paack/status.js';
 import { statusMap as packMan } from '../../carriers/pack-man/status.js';
 import { statusMap as packlink } from '../../carriers/packlink/status.js';
 import { statusMap as packs } from '../../carriers/packs/status.js';
@@ -393,6 +397,7 @@ import { statusMap as phlpost } from '../../carriers/phlpost/status.js';
 import { statusMap as pilotFreight } from '../../carriers/pilot-freight/status.js';
 import { statusMap as pitneyBowes } from '../../carriers/pitney-bowes/status.js';
 import { statusMap as pittOhio } from '../../carriers/pitt-ohio/status.js';
+import { statusMap as pocztaPolska } from '../../carriers/poczta-polska/status.js';
 import { statusMap as posIndonesia } from '../../carriers/pos-indonesia/status.js';
 import { statusMap as postHaste } from '../../carriers/post-haste/status.js';
 import { statusMap as postLuxembourg } from '../../carriers/post-luxembourg/status.js';
@@ -405,6 +410,7 @@ import { statusMap as postaSlovenije } from '../../carriers/posta-slovenije/stat
 import { statusMap as postaSrbije } from '../../carriers/posta-srbije/status.js';
 import { statusMap as posteItaliane } from '../../carriers/poste-italiane/status.js';
 import { statusMap as postex } from '../../carriers/postex/status.js';
+import { statusMap as posti } from '../../carriers/posti/status.js';
 import { statusMap as postlogistics } from '../../carriers/postlogistics/status.js';
 import { statusMap as postmediaParcelServices } from '../../carriers/postmedia-parcel-services/status.js';
 import { statusMap as posturinn } from '../../carriers/posturinn/status.js';
@@ -476,6 +482,7 @@ import { statusMap as speedex } from '../../carriers/speedex/status.js';
 import { statusMap as speedpak } from '../../carriers/speedpak/status.js';
 import { statusMap as speedx } from '../../carriers/speedx/status.js';
 import { statusMap as speedy } from '../../carriers/speedy/status.js';
+import { statusMap as springGds } from '../../carriers/spring-gds/status.js';
 import { statusMap as spxBr } from '../../carriers/spx-br/status.js';
 import { statusMap as spxId } from '../../carriers/spx-id/status.js';
 import { statusMap as spxMy } from '../../carriers/spx-my/status.js';
@@ -530,6 +537,7 @@ import { statusMap as tufesa } from '../../carriers/tufesa/status.js';
 import { statusMap as twsExpress } from '../../carriers/tws-express/status.js';
 import { statusMap as ubiSmartParcel } from '../../carriers/ubi-smart-parcel/status.js';
 import { statusMap as unitedDeliveryService } from '../../carriers/united-delivery-service/status.js';
+import { statusMap as uniuni } from '../../carriers/uniuni/status.js';
 import { statusMap as upaya } from '../../carriers/upaya/status.js';
 import { statusMap as ups } from '../../carriers/ups/status.js';
 import { statusMap as urbano } from '../../carriers/urbano/status.js';
@@ -576,10 +584,10 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '2go': twoGo, '4-72': fourSeventyTwo, '4sides': fourSides, '5post': fivePost, '99minutos': ninetynineMinutos,
   'a-duie-pyle': aDuiePyle, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'ab-courier': abCourier, 'abf-freight': abfFreight, 'aci-express-kr': aciExpressKr,
   'acs-courier': acsCourier, 'aex-paraguay': aexParaguay, 'airpak-express': airpakExpress, 'ait-worldwide': aitWorldwide, ajex,
-  'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne, 'am-home-delivery': amHomeDelivery, 'american-west-express': americanWestExpress, amerijet, ampm, 'an-post': anPost,
+  'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne, 'am-home-delivery': amHomeDelivery, 'amazon-shipping': amazonShipping, 'american-west-express': americanWestExpress, amerijet, ampm, 'an-post': anPost,
   andreani, anjun, anousith, anserx, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics,
   'apple-express': appleExpress, 'aramex-au': aramexAu,
-  'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'atlantic-courier': atlanticCourier, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
+  'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'atlantic-courier': atlanticCourier, 'australia-post': australiaPost, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'best-overnite-express': bestOverniteExpress, 'better-trucks': betterTrucks, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, blueex, bombino,
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, bpost, 'bringer-parcel': bringerParcel, brt, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
   byhd, c3x, cacesa, 'canada-post': canadaPost, cargus, 'castle-parcels': castleParcels, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
@@ -588,7 +596,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
   'copa-courier': copaCourier, corre,
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
-  'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, ctt, cttyex,
+  'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, ctt, 'ctt-express': cttExpress, cttyex,
   'cyprus-post': cyprusPost, 'd-express': dExpress, 'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss,
   dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, dellin, delnext, deppon, dhl, 'dhl-express': dhlExpress,
   'dhl-freight': dhlFreight, dhlink, direx, dobropost, 'dohrn-transfer': dohrnTransfer, 'domain-logistics': domainLogistics, domex, dpd,
@@ -625,14 +633,14 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,
   northline, 'nova-global': novaGlobal, 'now-couriers': nowCouriers, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
-  'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
+  'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, paack, 'pack-man': packMan, packlink, packs,
   'pakistan-post': pakistanPost, palletways, 'pandu-logistics': panduLogistics, paperfly, paquetexpress, parcelpoint, passport,
   'pathao-courier': pathaoCourier, pbt, 'pcp-express': pcpExpress, 'pcs-logistics-vn': pcsLogisticsVn, 'pdn-express': pdnExpress,
   'pdq-chile': pdqChile, pecom, 'pfc-express': pfcExpress, phlpost, 'pilot-freight': pilotFreight,
-  'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, 'pos-indonesia': posIndonesia,
+  'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, 'poczta-polska': pocztaPolska, 'pos-indonesia': posIndonesia,
   'post-haste': postHaste, 'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
-  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, 'poste-italiane': posteItaliane, postex, postlogistics, 'postmedia-parcel-services': postmediaParcelServices,
+  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, 'poste-italiane': posteItaliane, postex, posti, postlogistics, 'postmedia-parcel-services': postmediaParcelServices,
   posturinn, ppl, 'precision-deliveries': precisionDeliveries,
   'pro-carrier': proCarrier, 'prompt-xpress': promptXpress, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'pullman-cargo': pullmanCargo, 'quantium-solutions': quantiumSolutions,
   'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech,
@@ -643,14 +651,14 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
-  'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-sg': spxSg,
+  'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spring-gds': springGds, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-sg': spxSg,
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, techlink, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, thhy, tiki, tipsa, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,
   trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
   'ubi-smart-parcel': ubiSmartParcel,
-  'united-delivery-service': unitedDeliveryService, upaya, ups, urbano, urvaam, usps,
+  'united-delivery-service': unitedDeliveryService, uniuni, upaya, ups, urbano, urvaam, usps,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, 'viettel-post': viettelPost,
   vimenpaq, 'vinted-go': vintedGo, vozovoz, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl,
   yanwen, 'ycs-logistics': ycsLogistics, 'yilong-logistics': yilongLogistics, yto, yunexpress, ywe, yypost, zto, 'zto-international': ztoInternational,

@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const codes: Record<string, ClassifiedStatus> = {
   '0000': { status: 'pending', stage: 'registered' },
@@ -23,3 +24,9 @@ const codes: Record<string, ClassifiedStatus> = {
 export function classifyCttExpressStatus(code: string): ClassifiedStatus | undefined {
   return Object.hasOwn(codes, code) ? codes[code] : undefined;
 }
+
+/**
+ * What the map says about one scan: its code, as the adapter reads it. After the turn back to
+ * the sender (2500) the adapter reads a delivery as the return, which the code alone does not show.
+ */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? classifyCttExpressStatus(code)?.stage : undefined), gaps: [] };

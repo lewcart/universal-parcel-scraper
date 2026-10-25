@@ -1,4 +1,5 @@
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const filed = (codes: readonly string[], stage: Stage, status: ClassifiedStatus['status']): Record<string, ClassifiedStatus> =>
   Object.fromEntries(codes.map((code) => [code, { stage, status }]));
@@ -42,3 +43,13 @@ export function australiaPostStatus(label: string, code?: string): ClassifiedSta
   const key = label.trim().toLowerCase().replace(/’/g, "'");
   return Object.hasOwn(LABELS, key) ? LABELS[key] : undefined;
 }
+
+/**
+ * What the map says about one scan: its event code, as the adapter reads it. A scan without a
+ * listed code took its milestone label, which the stored row does not keep, except a delivery:
+ * the adapter words it "Delivered".
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code && Object.hasOwn(CODES, code) ? CODES[code]!.stage : wording === 'delivered' ? 'delivered' : undefined),
+  gaps: [],
+};

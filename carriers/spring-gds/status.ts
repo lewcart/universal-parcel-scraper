@@ -13,6 +13,7 @@
  * alongside it so a fix upstream does not silently lose the classification.
  */
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const CATEGORY_STATUS = new Map<string, ClassifiedStatus>([
   ['pre-advised', { status: 'pending', stage: 'registered' }],
@@ -78,3 +79,10 @@ const DOMESTIC_STAGE = new Map<string, Stage>([
 export function postNLDomesticStage(description: string): Stage | undefined {
   return DOMESTIC_STAGE.get(description.trim().toLocaleLowerCase('en-US').replace(/[.!]+$/, ''));
 }
+
+/**
+ * What the map says about one scan: the domestic tracker's labels by their wording. An
+ * international scan is staged by its category, which the stored row does not keep (its code is
+ * the event's status number), so it stays open.
+ */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => postNLDomesticStage(wording), gaps: [] };

@@ -136,6 +136,12 @@ it('distinguishes export-customs entry and exit under the same event type', () =
   expect(classifyIndiaPostEvent('ExportCustoms', 'Sent to Export Customs').stage).toBe('customs');
 });
 
+it('reads "lost" only as a whole word, not Lagos before "To" in a flight remark', () => {
+  expect(classifyIndiaPostEvent('MailArrived', 'MAIL_ARRIVED', 'Flight No: ZZ0102 (From LOS To CDG)').stage).toBe('in_transit');
+  expect(classifyIndiaPostEvent('ItemLost', 'Item Lost').stage).toBe('exception');
+  expect(classifyIndiaPostEvent('ITEM_LOST').stage).toBe('exception');
+});
+
 describe('India Post tracking input', () => {
   it('accepts only valid India-issued S10 identifiers and builds the scraper URL', () => {
     expect(normalizeIndiaPostTrackingNumber('jn 067.614-884 in')).toBe(SAMPLE_NUMBER);

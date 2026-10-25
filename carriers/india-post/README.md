@@ -47,8 +47,8 @@ Outcomes:
   `CUSTOM_RECEIVE`…). Known codes are spelled out, with `ITEM_BOOK` → "Item Booked" to match the old
   prose so stored rows don't duplicate. Other codes become title case.
 - Most rows have no stable status code. `event_type`, `event` and `remarks` are joined into one normalized
-  key and matched by substring, most specific first. Unrecognized rows keep an `in_transit` stage with
-  an `unknown` status, so no scan is dropped and no terminal stage is invented.
+  key and matched by substring, most specific first; "lost" must be a whole word. Unrecognized rows keep
+  an `in_transit` stage with an `unknown` status, so no scan is dropped and no terminal stage is invented.
   The parcel app's review (`statusMap`) reads a stored scan's code and wording the same way, without
   the remarks it does not keep, which can give a row another stage. It leaves an unrecognized row
   open, so the review shows wording no rule knows.

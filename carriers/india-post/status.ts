@@ -22,6 +22,12 @@ function statusKey(value: unknown): string {
   return cleanScalar(value, 200).toLocaleLowerCase('en-US').replace(/[^a-z0-9]+/g, '');
 }
 
+/** The values' words, camel case split, for a cue too short to find inside joined words ("From LOS To"). */
+function statusWords(values: unknown[]): string[] {
+  return values.flatMap((value) => cleanScalar(value, 200).replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .toLocaleLowerCase('en-US').split(/[^a-z0-9]+/)).filter(Boolean);
+}
+
 function includesAny(value: string, candidates: string[]): boolean {
   return candidates.some((candidate) => value.includes(candidate));
 }
@@ -45,8 +51,7 @@ export function classifyIndiaPostEvent(...values: unknown[]): ClassifiedStatus {
     'addresseecannotbelocated',
     'damaged',
     'refused',
-    'lost',
-  ])) return { status: 'exception', stage: 'exception' };
+  ]) || statusWords(values).includes('lost')) return { status: 'exception', stage: 'exception' };
   if (includesAny(key, [
     'deliveryattempted',
     'deliveryfailed',

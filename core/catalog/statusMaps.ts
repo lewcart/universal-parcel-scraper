@@ -266,6 +266,7 @@ import { statusMap as idsLogistik } from '../../carriers/ids-logistik/status.js'
 import { statusMap as ilyangLogis } from '../../carriers/ilyang-logis/status.js';
 import { statusMap as imile } from '../../carriers/imile/status.js';
 import { statusMap as indahLogistik } from '../../carriers/indah-logistik/status.js';
+import { statusMap as inpost } from '../../carriers/inpost/status.js';
 import { statusMap as instabox } from '../../carriers/instabox/status.js';
 import { statusMap as integralPack } from '../../carriers/integral-pack/status.js';
 import { statusMap as internetExpress } from '../../carriers/internet-express/status.js';
@@ -618,7 +619,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, 'hermes-de': hermesDe, hispapost, homexpress,
   'houng-ah-loun': houngAhLoun, hovership, 'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, 'ilyang-logis': ilyangLogis, imile,
-  'indah-logistik': indahLogistik, instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
+  'indah-logistik': indahLogistik, inpost, instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-au': jAndTAu, 'j-and-t-de': jAndTDe, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, jcex, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,

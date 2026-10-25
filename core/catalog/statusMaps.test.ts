@@ -717,6 +717,19 @@ describe('status map answers', () => {
     expect(answer('mondial-relay', 'EOL.9999', 'Any wording at all')).toEqual(unknown);
   });
 
+  it("answers InPost by the wording of the code that staged the scan, and leaves its redirect and delay notice out on purpose", () => {
+    expect(answer('inpost', null, 'Collected by the Courier')).toEqual(mapped('accepted'));
+    expect(answer('inpost', null, 'Handed over for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('inpost', null, 'Ready for collection')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('inpost', null, 'Returned to Sender')).toEqual(mapped('returned'));
+    // A scan the hub sent without wording keeps its code as its wording.
+    expect(answer('inpost', null, 'EOL.1001')).toEqual(mapped('delivered'));
+    expect(answer('inpost', null, 'INF.9001')).toEqual(unknown);
+    expect(answer('inpost', null, 'Possible delivery delay')).toEqual(gap);
+    expect(answer('inpost', null, 'Paczka przekierowana')).toEqual(gap);
+    expect(answer('inpost', null, 'Something new')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

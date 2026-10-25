@@ -11,7 +11,9 @@
  * https://github.com/ha-parcel-integrations/ha-inpost (MIT,
  * `TRACKING_STATUS_MAP`), live-confirmed on IT/PT/GB consignments 2026-08-31.
  */
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import statuses from './statuses.json' with { type: 'json' };
 
 const TRACKING_STATUS: Record<string, ClassifiedStatus> = {
   // Creation and handover: the sender posts the parcel at a locker or pickup
@@ -62,3 +64,32 @@ export function keepsInpostStage(code: string): boolean {
 export function classifyInpostStatus(code: string): ClassifiedStatus | undefined {
   return TRACKING_STATUS[code];
 }
+
+/** A hub status code. ShipX's statuses give a summary, never a scan. */
+const HUB_CODE = /^[A-Z]{3}\.\d{4}$/;
+
+/** The hub's wording of a code, as recorded in statuses.json. */
+const HUB_WORDINGS = statuses.entries.flatMap((entry) => (entry.wording && HUB_CODE.test(entry.code)
+  ? [{ code: entry.code, wording: normalizeStatusWording(entry.wording), note: entry.note }]
+  : []));
+
+/** The stage of a hub wording through the codes it comes with: none when they disagree or one has none. */
+const STAGE_BY_WORDING = new Map<string, Stage | undefined>();
+for (const { code, wording } of HUB_WORDINGS) {
+  const stage = classifyInpostStatus(code)?.stage;
+  STAGE_BY_WORDING.set(wording, STAGE_BY_WORDING.has(wording) && STAGE_BY_WORDING.get(wording) !== stage ? undefined : stage);
+}
+
+/**
+ * What the map says about one scan. A hub scan keeps its wording but not the code that staged
+ * it, so the wording stages it through the code it comes with; a scan without wording keeps
+ * its code as its wording. A redirect or a delay notice takes the stage of the scan before it,
+ * which the stored scan does not keep.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    const code = wording.toLocaleUpperCase('en-US');
+    return HUB_CODE.test(code) ? classifyInpostStatus(code)?.stage : STAGE_BY_WORDING.get(wording);
+  },
+  gaps: HUB_WORDINGS.filter(({ code }) => keepsInpostStage(code)).map(({ wording, note }) => ({ wording, note })),
+};

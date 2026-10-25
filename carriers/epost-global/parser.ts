@@ -92,7 +92,7 @@ function projectScan(row: unknown): { key: string; event: CarrierEvent } | null 
   const stamp = text(row, 'EventDT', 64);
   const place = placeOf(text(row, 'Loc', 200));
   const code = text(row, 'ECode', 32);
-  const staged = epostGlobalStage(description);
+  const staged = epostGlobalStage(description, code);
   const event: CarrierEvent = {
     ...clockOf(stamp, facilityZone(description, place)),
     description,

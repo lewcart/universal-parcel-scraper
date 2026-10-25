@@ -5,6 +5,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, EPOST_GLOBAL_ENDPOINT, EpostGlobalTracker } from './adapter.js';
 import { normalizeEpostGlobalNumber, parseEpostGlobal } from './parser.js';
+import { osmStage } from '../osm-worldwide/status.js';
 import { epostGlobalScanStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -105,6 +106,28 @@ describe('ePost Global HTTP adapter', () => {
     }), ROYAL);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Shipment Announced' });
     expect(result.events![0]).toMatchObject({ stage: 'registered' });
+  });
+
+  it('reads the rows it relays from OSM Worldwide by OSM’s codes, in the stages OSM’s own tracker gives them', () => {
+    const osm = (ECode: string, Event: string, EventDT: string, Loc = '') => ({ ParcelID: 12345678, ECategory: '', ECategoryID: 0, ECode, Event, EventDT, Loc, Zip: '' });
+    const result = parseEpostGlobal(rewrite('royal-mail-in-transit', (details) => {
+      details.Events = [
+        osm('OSM09', 'Package processed by courier partner', '2026-07-14T16:56:00', 'EXAMPLE CITY NV 00000'),
+        osm('OSM07', 'Package accepted at courier partner', '2026-07-14T15:41:00', 'EXAMPLE TOWN CA 00000'),
+        osm('OSM05', 'Departed OSM facility', '2026-07-14T13:33:00', 'EXAMPLE CITY NV 00000'),
+        osm('OSM04', 'Arrived at OSM facility', '2026-07-14T08:21:00', 'EXAMPLE CITY NV 00000'),
+        osm('OSM02', 'Shipping label created - OSM awaiting item', '2026-07-12T18:50:00', 'EXAMPLE PORT CA 00000'),
+        osm('41', 'In transit', '2026-07-12T18:38:46'),
+      ];
+    }), ROYAL);
+    const flags = { group: 0, instructionsNeeded: false, isException: false };
+    expect(result.events!.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual(result.events!.map((event) => [
+      event.provider_code, ...event.provider_code === '41' ? ['in_transit', 'carrier_map'] : Object.values(osmStage(event.provider_code!, event.description!, flags)!),
+    ]));
+    expect(result.events!.map((event) => event.stage)).toEqual(['in_transit', 'in_transit', 'in_transit', 'in_transit', 'registered', 'in_transit']);
+    expect(result.events!.every((event) => event.stage_source === 'carrier_map')).toBe(true);
+    expect(statusMapAnswer({ carrier: 'epost-global', providerCode: 'OSM07', description: 'Package accepted at courier partner' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
   });
 
   it('names a partner only from a name the catalog knows and a link that agrees, and keeps its number', () => {
@@ -232,7 +255,7 @@ describe('ePost Global HTTP adapter', () => {
 describe('ePost Global status vocabulary', () => {
   it('records every wording the map knows with the stage it gives, whatever the code', () => {
     for (const entry of statuses.entries) {
-      expect(epostGlobalScanStage(entry.wording)).toBe(entry.stage);
+      expect(epostGlobalScanStage(entry.wording, entry.code)).toBe(entry.stage);
       expect(statusMap.stage(entry.code, entry.wording.toLowerCase())).toBe(entry.stage);
     }
     expect(statusMapAnswer({ carrier: 'epost-global', providerCode: '41', description: 'In transit via Post NL PACKTRACKED DIRECT tracking #:  LX000000005NL' }))

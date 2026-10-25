@@ -40,7 +40,8 @@ without the recipient's ZIP code at its start.
   attempt and one it flags as an exception is an exception; otherwise the tracker's milestone
   group, then the shared wording rules, decide.
 - OSM's FAQ says "Picked Up by Shipping Partner" is made when the label is uploaded, before OSM
-  has the parcel, so it is registered.
+  has the parcel, so it is registered. "Package accepted at courier partner" is the last mile
+  partner taking the parcel from OSM's facility, so it is in transit, not an acceptance.
 - The expected day is kept until the parcel is delivered or an attempt fails, as on the tracker.
 - The reply also carries the scans' postcodes and place lines, the scan ids the page sends back
   with delivery instructions, and the shipper's package reference. None of them is read.

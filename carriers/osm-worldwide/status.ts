@@ -4,14 +4,17 @@ import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status
 /**
  * The codes (`eventCode`) on OSM Worldwide's scans. The tracker gives the last
  * mile partner's scans OSM codes of their own, "courier partner" in the
- * wording. A partner that leaves with the parcel is on its way, not yet out
- * for delivery: the same scan can come days before the delivery.
+ * wording. The partner accepting the parcel takes it from OSM, which has moved
+ * it already: no acceptance. A partner that leaves with the parcel is on its
+ * way, not yet out for delivery: the same scan can come days before the delivery.
  */
 const CODES: Readonly<Record<string, Stage>> = {
   OSM02: 'registered',
   OSM04: 'in_transit',
   OSM05: 'in_transit',
   OSM06: 'in_transit',
+  OSM07: 'in_transit',
+  OSM09: 'in_transit',
   OSM13: 'in_transit',
   OSM01: 'delivered',
 };

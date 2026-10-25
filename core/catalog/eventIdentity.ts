@@ -20,6 +20,7 @@ import { sameInstantIdentityPolicy as fedex } from '../../carriers/fedex/identit
 import { sameInstantIdentityPolicy as hermesGermany } from '../../carriers/hermes-de/identity.js';
 import { sameInstantIdentityPolicy as imile } from '../../carriers/imile/identity.js';
 import { sameInstantIdentityPolicy as indiaPost } from '../../carriers/india-post/app.js';
+import { sameInstantIdentityPolicy as jAndTAu } from '../../carriers/j-and-t-au/identity.js';
 import { sameInstantIdentityPolicy as inpost } from '../../carriers/inpost/identity.js';
 import { sameInstantIdentityPolicy as jdLogistics } from '../../carriers/jd-logistics/identity.js';
 import { sameInstantIdentityPolicy as jrt } from '../../carriers/jrt/identity.js';
@@ -96,7 +97,7 @@ export interface SameInstantIdentityPolicy {
 }
 
 const policies: ReadonlyMap<string, SameInstantIdentityPolicy> = new Map(
-  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhl, dhlEcommerce, dhlExpress, dhlink, dpd, dpdGermany, dpdFrance, fedex, hermesGermany, imile, indiaPost, inpost, jdLogistics, jrt, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, pitneyBowes, pocztaPolska, posMalaysia, postlogistics, postnord, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, thhy, ups, swissPost, vintedGo, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
+  [aliexpress, amazonShipping, australiaPost, austrianPost, canadaPost, chronopost, ciblex, correosExpress, correosSpain, ctt, cttyex, dhl, dhlEcommerce, dhlExpress, dhlink, dpd, dpdGermany, dpdFrance, fedex, hermesGermany, imile, indiaPost, inpost, jAndTAu, jdLogistics, jrt, laPoste, lbcExpress, linhan, mondialRelay, mrw, nzPost, packeta, parcelforce, pitneyBowes, pocztaPolska, posMalaysia, postlogistics, postnord, postaSlovenije, posteItaliane, posti, royalMail, sfExpress, speedpak, sunYou, thhy, ups, swissPost, vintedGo, yanwen, yunExpress, ztoInternational, universal].map((policy) => [policy.sourceCarrierId, policy]),
 );
 
 const wording = (scan: SameInstantScan) => scan.description.replace(/\s+/g, ' ').trim().toLowerCase();

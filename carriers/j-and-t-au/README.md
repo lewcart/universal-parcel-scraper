@@ -30,8 +30,9 @@ the reading of its reply for both networks.
   map in `status.ts` stages the sentences seen live, in English and in the Chinese the tracker
   answers other languages with; other sentences fall to the shared wording rules.
 - The page marks text in `【】` and turns phone numbers into links. Sentences lose anything in
-  brackets, the customer service number, who signed for the parcel, a person named after their
-  role and every phone number.
+  brackets, the customer service number and the courtesy that offers it ("If you have any
+  questions, please call …"), who signed for the parcel, a person named after their role and
+  every phone number. A scan stored with the courtesy keeps its row.
 - `scanTime` has no offset, but the reply writes it in the zone the request names in
   `timezone`, which the page sets to its visitor's, as `GMT+1100`. The adapter names
   `GMT+0000`, so each scan time is an instant in UTC wherever in Australia or New Zealand the

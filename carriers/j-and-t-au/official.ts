@@ -18,6 +18,7 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import type { CarrierId } from '../../generated/catalog.js';
+import { withoutCourtesy } from './identity.js';
 
 export interface JAndTNetwork {
   readonly id: CarrierId;
@@ -103,11 +104,11 @@ const PHONE = /(?<![A-Z\d])(?!\d{4}-\d{2}-\d{2}(?!\d))\+?\d(?:[\s().-]{0,2}\d){7
 
 /**
  * A scan's sentence without the people and phones it can name: anything in
- * brackets, the customer service line, who signed for the parcel, a person
- * after their role, and phone numbers.
+ * brackets, the customer service line and the courtesy that offers it, who
+ * signed for the parcel, a person after their role, and phone numbers.
  */
 export function jAndTWording(sentence: string): string {
-  return clean(sentence.replace(BRACKETED, ' ').replace(HOTLINE, '').replace(RECEIVER, '$1').replace(NAMED, '$1')
+  return clean(withoutCourtesy(sentence).replace(BRACKETED, ' ').replace(HOTLINE, '').replace(RECEIVER, '$1').replace(NAMED, '$1')
     .replace(NAMED_ZH, '$1').replace(PHONE, '').replace(/\(\s*\)|（\s*）/gu, '').replace(/\s+([,.;:!?，。；：])/gu, '$1'))
     .replace(/([,;:，；：])(?=[.。])/gu, '').replace(BARE_ROLE, '').replace(/^[\s,;:，；：\-–]+|[\s,;:，；：\-–]+$/gu, '');
 }

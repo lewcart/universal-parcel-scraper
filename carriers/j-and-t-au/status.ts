@@ -1,8 +1,9 @@
 import { classifyWording, type ClassifiedWording, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import { withoutCourtesy } from './identity.js';
 
-/** A wording as the map keys it: normalized, without a closing full stop. */
-const key = (wording: string) => normalizeStatusWording(wording).replace(/[\s.。]+$/u, '');
+/** A wording as the map keys it: normalized, without its closing courtesy or full stop. */
+const key = (wording: string) => normalizeStatusWording(withoutCourtesy(wording)).replace(/[\s.。]+$/u, '');
 
 /**
  * The tracker's scans carry no code, only a sentence. Those seen in replies are
@@ -19,8 +20,8 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map(([
   ['快件到达转运中心，做发往下一站的运输准备', 'in_transit'],
   ['The parcel is dispatched from the transit center to the next destination', 'in_transit'],
   ['快件从转运中心发往下一站', 'in_transit'],
-  ['Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.', 'out_for_delivery'],
-  ['Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.', 'delivered'],
+  ['Your parcel is out for delivery.', 'out_for_delivery'],
+  ['Your parcel has been delivered.', 'delivered'],
   // The delivery round's outcome when it fails: the shared rules would read a closed building as transit.
   ["The building was closed when we arrived. We'll try again.", 'failed_attempt'],
   ["We couldn't deliver - the address details appear to be incorrect. Please update your delivery address.", 'failed_attempt'],

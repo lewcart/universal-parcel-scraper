@@ -182,6 +182,15 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...stored, location: 'OTHERLAND' }, stored)).toBe(false);
   });
 
+  it('lets a J&T Australia scan whose sentence lost its closing courtesy take over its stored row', () => {
+    const policy = sameInstantIdentityPolicy('j-and-t-au', { supportsScanMatching: true });
+    const stored = { stage: 'delivered', description: 'Your parcel has been delivered.If you have any questions,please call. We look forward to serving you again.',
+      location: '', providerCode: '' };
+    expect(policy?.matches?.({ ...stored, description: 'Your parcel has been delivered.' }, stored)).toBe(true);
+    expect(policy?.matches?.({ ...stored, description: 'Your parcel has been delivered.', stage: 'in_transit' }, stored)).toBe(false);
+    expect(policy?.matches?.({ ...stored, description: 'Your parcel is out for delivery.' }, stored)).toBe(false);
+  });
+
   it('lets a Vinted Go scan whose town lost a space before its comma take over its stored row', () => {
     const policy = sameInstantIdentityPolicy('vinted-go', { supportsScanMatching: true });
     const stored = { stage: 'in_transit', description: 'At sorting center in Example Town , FR', location: 'Example Town , FR', providerCode: 'delivery/in_transit' };

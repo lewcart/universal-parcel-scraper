@@ -104,6 +104,11 @@ describe('J&T Express Australia HTTP adapter', () => {
     expect(jAndTAuWording('快件已由派件员派送中')).toBe('快件已由派件员派送中');
     expect(jAndTAuWording('Received by Sample Person; awaiting collection')).toBe('Received; awaiting collection');
     expect(jAndTAuWording('The courier is delivering the parcel. Please call 0400-000-000')).toBe('The courier is delivering the parcel. Please call');
+    // The courtesy offering the customer service line goes with its number.
+    expect(jAndTAuWording('Your parcel is out for delivery. If you have any questions, please call 1300 000 000, Thank you for your patience.'))
+      .toBe('Your parcel is out for delivery.');
+    expect(jAndTAuWording('Your parcel has been delivered.If you have any questions,please call 1300000000. We look forward to serving you again.'))
+      .toBe('Your parcel has been delivered.');
     // A date stays, and a sentence that is only a phone number is empty.
     expect(jAndTAuWording('Delivery rescheduled to 2026-05-20')).toBe('Delivery rescheduled to 2026-05-20');
     expect(jAndTAuWording('0400 000 000')).toBe('');

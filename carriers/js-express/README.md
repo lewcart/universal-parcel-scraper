@@ -38,7 +38,8 @@ delivers them. Tracked through the lookup its English tracking page makes.
   no zone, and one history mixes China's with the airports' and the destination courier's, so
   the reply's order stands.
 - A row at a place in mainland China, named for the country, a region such as South China, a
-  province or a city, is on Beijing time. A flight's departure filed there keeps its wall clock:
+  province or a city, or written in Chinese other than Hong Kong's, Macau's or Taiwan's, is on
+  Beijing time. A flight's departure filed there keeps its wall clock:
   one has come hours after its flight could have left, given the landing that followed.
 - In a history that names Straightship, its rows, those that name it and those whose wording
   ends with a town and a Canadian province, are on UTC, the clock of Straightship's own page.

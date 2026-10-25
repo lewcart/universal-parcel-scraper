@@ -123,8 +123,10 @@ describe('JS Express tracking adapter', () => {
       row('2026-05-01 06:00:00', 'Zhejiang', 'Domestic allocation has begun'),
       row('2026-05-01 05:00:00', 'Yiwu Sorting Center', 'Item inbound in sorting center.'),
       row('2026-05-01 04:00:00', "Xi'an Operation Center", 'Item has been collected'),
+      // A warehouse written in Chinese.
+      row('2026-05-01 03:00:00', '示例总仓库-操作中心', 'Item has been collected'),
     )).toEqual(['2026-05-01T09:00:00+08:00', '2026-05-01T08:00:00+08:00', '2026-05-01T07:00:00+08:00', '2026-05-01T06:00:00+08:00',
-      '2026-05-01T05:00:00+08:00', '2026-05-01T04:00:00+08:00']);
+      '2026-05-01T05:00:00+08:00', '2026-05-01T04:00:00+08:00', '2026-05-01T03:00:00+08:00']);
     expect(clocks(
       // A flight filed in China, an airport's code in China, Hong Kong and no place.
       row('2026-05-02 09:00:00', 'China', 'Item Flight departure'),
@@ -137,8 +139,11 @@ describe('JS Express tracking adapter', () => {
       row('2026-05-02 03:30:00', 'Chinatown', 'Out for delivery'),
       row('2026-05-02 03:00:00', 'China', 'Delivered (China, ME)'),
       row('2026-05-02 02:00:00', 'Sample General Warehouse-Operation Center', 'Item has been collected'),
+      // Hong Kong and a Japanese place, written in their scripts.
+      row('2026-05-02 01:30:00', '香港转运中心', 'Arrive at transit center'),
+      row('2026-05-02 01:00:00', '東京センター', 'Arrive at transit center'),
     )).toEqual(['2026-05-02T09:00:00', '2026-05-02T08:00:00', '2026-05-02T07:00:00', '2026-05-02T06:00:00', '2026-05-02T05:00:00',
-      '2026-05-02T04:00:00', '2026-05-02T03:30:00', '2026-05-02T03:00:00', '2026-05-02T02:00:00']);
+      '2026-05-02T04:00:00', '2026-05-02T03:30:00', '2026-05-02T03:00:00', '2026-05-02T02:00:00', '2026-05-02T01:30:00', '2026-05-02T01:00:00']);
   });
 
   it('dates Straightship\'s rows on UTC only in a history that names it, and keeps other couriers\' wall clocks', () => {

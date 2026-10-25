@@ -15,18 +15,22 @@ const CHINA_NAMES = [
 // A label opening with a region of China, as "South China Transit Center", or with one of those names.
 const CHINA_PLACE = new RegExp(`^(?:(?:north|south|east|west|central|north-?east|north-?west|south-?east|south-?west)\\s+china|${
   CHINA_NAMES.join('|')})(?![a-z'])`, 'i');
+// A place written in Chinese, as a warehouse's "安徽总仓库-操作中心", with no Japanese kana or Korean
+// script; Hong Kong, Macau and Taiwan written so are no mainland China.
+const CHINESE_SCRIPT = /^(?=.*\p{Script=Han})(?!.*[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}])(?!.*(?:香港|澳[门門]|台[湾灣]|臺灣))/u;
 // A flight's departure, take-off or landing.
 const FLIGHT = /\b(?:flights?|landing|landed|take-?off|uplifted)\b/i;
 
 /**
  * Whether a row's place lies in mainland China: its first part is the
- * country, or it opens with a region, province or city of China. A town of a
- * US state or a Canadian province, as "China, ME", does not.
+ * country, or it opens with a region, province or city of China, or it is
+ * written in Chinese. A town of a US state or a Canadian province, as
+ * "China, ME", does not.
  */
 function inChina(place: string): boolean {
   const [first = '', ...rest] = place.split(',').map((part) => part.trim());
   if (rest.some((part) => usStateTimeZone(part) || canadaProvinceTimeZone(part))) return false;
-  return countryCode(first) === 'CN' || CHINA_PLACE.test(first);
+  return countryCode(first) === 'CN' || CHINA_PLACE.test(first) || CHINESE_SCRIPT.test(place);
 }
 
 /**

@@ -313,7 +313,10 @@ step exists for future protocol changes.
   ("Electronic Sender"), carry the digits and offset of Poczta Polska's own tracker and are
   taken as given, whatever zone routing passes for a parcel filed under the line carrier
   that sent it. Its relays from abroad, with no place or at the "International Postal
-  System", put Poland's offset on the other country's clock and are read as before.
+  System", put Poland's offset on the other country's clock. Their digits are read as
+  written on the partner post's clock that Poczta Polska's own adapter uses: the post that
+  issued an S10 number from abroad, else a destination abroad. With neither, they are read
+  as before.
 - Croatia Post's dates have the digits of Hrvatska pošta's tracker under a UTC label. A
   scan at a facility abroad, named by its UPU office code, is on that facility's clock when
   the code names a country keeping one, else it keeps its wall clock, as Hrvatska pošta's

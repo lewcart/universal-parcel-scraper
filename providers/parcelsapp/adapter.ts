@@ -35,6 +35,7 @@ import { cttyexChinaStep } from '../../carriers/cttyex/status.js';
 import { FIRST_LINE_CHINA_ZONE, firstLineInChina } from '../../carriers/first-line/clock.js';
 import { hrvatskaPostaForeignZone } from '../../carriers/hrvatska-posta/parser.js';
 import { jsExpressChinaClock } from '../../carriers/js-express/clock.js';
+import { pocztaPolskaPartnerClock } from '../../carriers/poczta-polska/clock.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
 import { event, isNotice, localEvent, numberOf, place as reportedPlace, result, type UniversalSource } from '../shared/result.js';
@@ -734,6 +735,21 @@ function ownOffset(name: unknown, date: unknown, location = ''): string | null {
 }
 
 /**
+ * The clock of Poland Post's relay from abroad (`ownOffset`): the partner
+ * post's, as Poczta Polska's own tracker reads it (`pocztaPolskaPartnerClock`),
+ * with the digits as written. Taking Poland's offset off first put a Latvian
+ * item's relayed scans two hours early on Riga's clock. With no partner clock
+ * a relay keeps the reading it had.
+ */
+function polandPostRelay(name: unknown, date: unknown, location: string, number: string,
+  destination: string | null): { zone: string; date: string } | null {
+  if (nameKey(name) !== 'polandpost' || (location !== '' && !POLAND_POST_RELAY.test(location)) || typeof date !== 'string') return null;
+  const written = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?)(?:Z|[+-]\d{2}:\d{2})?$/i.exec(date.trim())?.[1];
+  const partner = written ? pocztaPolskaPartnerClock(number, destination) : null;
+  return written && partner ? { zone: partner.zone, date: `${written}Z` } : null;
+}
+
+/**
  * The clock of the number's own network of a brand, when a country-qualified
  * name gives another: the depot prefix of a DPD UK number outweighs "DPD
  * France", the network ParcelsApp asked (checked 2026-10-10: DPD UK's own
@@ -969,7 +985,8 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const offset = ownOffset(name, raw.date, location);
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
   const laterLeg = cttyexLaterLeg(name, status);
-  const own = laterLeg ? null : carrierClock(payload, raw, number, status, destination);
+  const relay = polandPostRelay(name, raw.date, location, number, destination);
+  const own = laterLeg ? null : relay?.zone ?? carrierClock(payload, raw, number, status, destination);
   // iMile's page writes every scan on the recipient country's clock, wherever it happened, and
   // ParcelsApp has its digits; read on iMile's catalog zone they came out early. A destination
   // of one zone places them, and without one they keep their wall clock. So does Croatia Post's
@@ -988,7 +1005,7 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   // A local clock that nothing places, in the US or Canada alone ("US 12345").
   const country = countryCode(lastPlace(location));
   const nationwide = placed === undefined && zone === null && LOCAL_CLOCK_CARRIERS.has(nameKey(name)) && (country === 'US' || country === 'CA');
-  return { name, date: raw.date, zone, placed: placed ?? null, sited: sited ?? null, guessed: placed === undefined && !wallClock,
+  return { name, date: relay?.date ?? raw.date, zone, placed: placed ?? null, sited: sited ?? null, guessed: placed === undefined && !wallClock,
     offset, location, wallClock, nationwide, office,
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
     fallback: wallClock || office ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null,

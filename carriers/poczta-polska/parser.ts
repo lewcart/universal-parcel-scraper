@@ -2,9 +2,10 @@ import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { countryTimeZone, explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
+import { explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { pocztaPolskaPartnerClock, type PocztaPolskaPartnerClock } from './clock.js';
 import { isPocztaPolskaSystemOffice } from './identity.js';
 import { classifyPocztaPolskaStatus, settlesPocztaPolskaDuty, startsPocztaPolskaReturn } from './status.js';
 
@@ -41,25 +42,7 @@ function zoneTime(local: string, zone: string): string | null {
   return parsed.toISO({ suppressMilliseconds: true });
 }
 
-interface PartnerClock { zone: string; basis: string }
-
-/**
- * The clock of the partner post whose scans the tracker relays. Posts relay
- * scans on the scanning office's wall clock: an item another country's post
- * numbered is posted and sent off there, and one Poczta Polska numbered for
- * abroad meets the destination's post. A Latvian item's relayed posting and
- * departure show Latvijas Pasts's instants on Riga's clock. None for a country
- * with several clocks, Spain's and Portugal's islands among them.
- */
-function partnerClock(number: string, destination: unknown): PartnerClock | null {
-  const issuer = isValidS10TrackingNumber(number) ? number.slice(-2) : '';
-  const [country, basis] = issuer && issuer !== 'PL' ? [issuer, 'carrier']
-    : typeof destination === 'string' && destination !== 'PL' ? [destination, 'destination'] : ['', ''];
-  const zone = country !== 'ES' && country !== 'PT' ? countryTimeZone(country) : null;
-  return zone ? { zone, basis } : null;
-}
-
-function eventClock(value: unknown, polish: boolean, partner: PartnerClock | null): Record<string, string> {
+function eventClock(value: unknown, polish: boolean, partner: PocztaPolskaPartnerClock | null): Record<string, string> {
   if (value != null && typeof value !== 'string') throw new SchemaError('poczta-polska', 'Poczta Polska returned an invalid clock field');
   const raw = clean(value, 64);
   if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-](?:[01]\d|2[0-3]):?[0-5]\d)$/i.test(raw)) {
@@ -102,7 +85,7 @@ export function parsePocztaPolska(payload: unknown, number: string): CarrierResu
   // Source rows run oldest first. A return scan turns the rest of the trip
   // around: movement stays movement, and a final delivery is the sender's.
   let returning = false;
-  const partner = partnerClock(requested, item.recipientCountryCode);
+  const partner = pocztaPolskaPartnerClock(requested, item.recipientCountryCode);
   const projected = item.events.map((raw): CarrierEvent => {
     if (!isRecord(raw)) throw new SchemaError('poczta-polska');
     if (raw.canceled === true) throw new IndeterminateError('poczta-polska', 'Poczta Polska returned an invalidated scan');

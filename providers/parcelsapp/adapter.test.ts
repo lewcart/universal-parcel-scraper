@@ -1512,9 +1512,23 @@ describe('ParcelsApp result parsing', () => {
       const times = parseParcelsAppResponse(payload, number, identity(), zone).events?.map((scan) => scan.time);
       expect([times?.[1], times?.[4]]).toEqual(['2026-10-20T09:11:00.000Z', '2026-07-06T15:11:00.000Z']);
     }
-    // The relays keep the reading they had: the label, or routing's zone.
+    // With no partner post to name a clock, the relays keep the reading they had: the label, or routing's zone.
     expect(parseParcelsAppResponse(payload, number, identity(), 'Asia/Shanghai').events?.slice(2, 4).map((scan) => scan.time))
       .toEqual(['2026-07-16T03:11:00.000Z', '2026-07-14T04:25:00.000Z']);
+  });
+
+  it('reads Poland Post\'s relays of a partner post\'s scans as written, on that post\'s clock', () => {
+    // A Latvian item to Poland: the relays carry Riga's wall clock under Poland's offset.
+    const latvian = 'RR123456785LV';
+    const payload = { carriers: ['Poland Post'], destinationCode: 'PL', states: [
+      { date: '2026-10-22T10:05:00+02:00', status: 'Doręczono', carrier: 0, location: 'Placówka Pocztowa Example 1' },
+      { date: '2026-10-21T08:30:00+02:00', status: 'Obsługa celna', carrier: 0, location: 'International Postal System' },
+      { date: '2026-10-20T12:10:00+02:00', status: 'Wysłanie z kraju nadania', carrier: 0 },
+    ] };
+    for (const zone of [null, 'Europe/Riga']) {
+      expect(parseParcelsAppResponse(payload, latvian, identity(latvian), zone).events?.map((scan) => scan.time))
+        .toEqual(['2026-10-22T08:05:00.000Z', '2026-10-21T05:30:00.000Z', '2026-10-20T09:10:00.000Z']);
+    }
   });
 
   it('reads a network nothing places on its copies\' clock, and a later acceptance by another carrier as a hand-over', () => {

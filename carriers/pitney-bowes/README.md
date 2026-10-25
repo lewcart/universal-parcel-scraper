@@ -34,8 +34,10 @@ tracking page makes.
 - The scans the platform writes without a place when the UK hub processes a parcel for
   Interpost each show the instant of the hub's processing scan: "In Transit" and "Item
   processed at Interpost" on UTC, an hour before it in British summer time, and "Interpost
-  handed item over to postal company" on Central European time, an hour after it. They are
-  dated on those clocks, with `time_zone_basis` `carrier`.
+  handed item over to postal company" on a fixed UTC+2, two hours after Interpost's processing
+  in winter too; Central European time put it an hour after the hub's scan in winter. They are
+  dated on those clocks, with `time_zone_basis` `carrier`. ParcelsApp reads its copies of them
+  on the same clocks ([clock.ts](clock.ts)).
 - Some partners' scans come twice: once with the place, on its clock, and once in capitals
   without the place, a whole number of hours away (UTC in the scans seen). The copy without the
   place is dropped, as is a scan repeated whole. A relayed place's `XX` for a missing region

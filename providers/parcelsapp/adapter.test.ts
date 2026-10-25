@@ -1878,6 +1878,47 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
+  it("reads Pitney Bowes's unplaced platform scans and postal relays as its own adapter does, and TrackYourParcel's copies with them", () => {
+    const scan = (date: string, status: string, carrier: number, location?: string) => ({ date, status, carrier, ...(location ? { location } : {}) });
+    const hub = 'Example Town, Exampleshire, GB';
+    const read = (states: Record<string, unknown>[], destinationCode?: string) => parseParcelsAppResponse({
+      carriers: ['Pitney Bowes', 'TrackYourParcel'], originCode: 'GB', ...(destinationCode ? { destinationCode } : {}), states,
+    }, number, identity(), 'Europe/London').events?.map((event) => [event.description, event.time ?? event.local_time]);
+    // Each platform scan is at the instant of the hub's processing; the hand-over is on a fixed UTC+2, in winter too.
+    const platform = (day: string, hub1: string, hub0: string, handOver: string) => [
+      scan(`${day}T${handOver}:00Z`, 'Interpost handed item over to postal company', 0),
+      scan(`${day}T${handOver}:00Z`, 'Shipped. Departure to country of destination', 1),
+      scan(`${day}T${hub1}:00Z`, 'Processing at Shipping Center', 0, hub),
+      scan(`${day}T${hub0}:00Z`, 'Item processed at Interpost', 0),
+      scan(`${day}T${hub0}:00Z`, 'Ready to Ship. FML label requested', 1),
+    ];
+    expect(read(platform('2026-05-11', '08:58', '07:58', '09:58'))).toEqual([
+      ['Interpost handed item over to postal company', '2026-05-11T07:58:00.000Z'],
+      ['Shipped. Departure to country of destination', '2026-05-11T07:58:00.000Z'],
+      ['Processing at Shipping Center', '2026-05-11T07:58:00.000Z'],
+      ['Item processed at Interpost', '2026-05-11T07:58:00.000Z'],
+      ['Ready to Ship. FML label requested', '2026-05-11T07:58:00.000Z'],
+    ]);
+    expect(read(platform('2026-01-06', '13:14', '13:14', '15:14'))?.map(([, time]) => time)).toEqual(Array(5).fill('2026-01-06T13:14:00.000Z'));
+    // The destination post's scans it relays are on that post's clock: Rome's for a parcel bound for Italy.
+    const relays = [
+      scan('2026-05-21T14:48:00Z', 'Item has been delivered', 0),
+      scan('2026-05-21T13:41:00Z', 'Parcel is out for delivery', 0),
+      scan('2026-05-21T13:41:00Z', 'Out for Delivery. Example caption', 1),
+    ];
+    expect(read(relays, 'IT')).toEqual([
+      ['Delivered', '2026-05-21T12:48:00.000Z'],
+      ['Parcel is out for delivery', '2026-05-21T11:41:00.000Z'],
+      ['Out for Delivery. Example caption', '2026-05-21T11:41:00.000Z'],
+    ]);
+    // Bound for no single clock, they keep their wall clock, as Pitney Bowes's own adapter does.
+    expect(read(relays)).toEqual([
+      ['Delivered', '2026-05-21T14:48:00.000'],
+      ['Parcel is out for delivery', '2026-05-21T13:41:00.000'],
+      ['Out for Delivery. Example caption', '2026-05-21T13:41:00.000'],
+    ]);
+  });
+
   it('reads the South African post\'s and EMS\'s copies of a UK parcel\'s scans on the clock where each happened', () => {
     // Parcelforce's labels are London's; SAPO's and EMS's copies are the wall clock of the office that scanned.
     const scan = (date: string, status: string, carrier: number, location?: string) => ({ date, status, carrier, ...(location ? { location } : {}) });

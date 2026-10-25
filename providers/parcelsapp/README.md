@@ -382,13 +382,15 @@ step exists for future protocol changes.
   scan located in another European country on Brussels time, and so one with no place that
   puts the item "in the destination country" on a parcel bound there, and so for
   Parcelforce's names. A name or relay added here moves its stored scans (see Limitations).
-- Interpost's import declaration and clearance on a Pitney Bowes parcel are read on the
-  clock of the country they name, as Pitney Bowes's own adapter reads them, not on its
-  London clock, which is only its UK hub's. "Pitney Bowes" relays them with the country
-  alone as their place ("Customs Clearance" at "IT"); "TrackYourParcel" relays them at the
-  same digits with none, and takes the country of Pitney Bowes's copy at the same minute.
-  Both write the destination post's scans on its clock. Read on London's, the two came an
-  hour after Pitney Bowes's own rows.
+- Pitney Bowes's London clock is only its UK hub's. Its other scans are read as Pitney
+  Bowes's own adapter reads them: Interpost's import declaration and clearance, placed by a
+  country alone ("Customs Clearance" at "IT"), on that country's clock; the platform's
+  unplaced scans at the hub ("In Transit", "Item processed at Interpost", the hand-over) on
+  their fixed clocks; and the destination post's scans it relays with no place on the
+  destination's single clock, else as wall clocks. Its relays of Poste Italiane's delivery
+  have the digits of Poste's own instant on Rome time. "TrackYourParcel" relays the same
+  scans at the same digits in its own words, and takes the clock of Pitney Bowes's scans at
+  the same minute. Read on London's, they came an hour or two off Pitney Bowes's own rows.
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
   written in Chinese, ends with a mainland province ("Example City, Guangdong") or is only
   the city of one of its processing centres ("Shenzhen") is read on China time, as

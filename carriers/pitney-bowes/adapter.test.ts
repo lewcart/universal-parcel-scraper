@@ -71,7 +71,22 @@ describe('Pitney Bowes HTTP adapter', () => {
     expect(at(delivered, 'In Transit')).toEqual([['2026-05-11T07:57:00', '2026-05-11T07:57:00Z', 'UTC', 'carrier']]);
     expect(at(delivered, 'Item processed at Interpost')).toEqual([['2026-05-11T07:58:00', '2026-05-11T07:58:00Z', 'UTC', 'carrier']]);
     expect(at(delivered, 'Interpost handed item over to postal company'))
-      .toEqual([['2026-05-11T09:58:00', '2026-05-11T09:58:00+02:00', 'Europe/Brussels', 'carrier']]);
+      .toEqual([['2026-05-11T09:58:00', '2026-05-11T09:58:00+02:00', 'Etc/GMT-2', 'carrier']]);
+    // In winter the hand-over is still two hours after Interpost's processing: on Central European time it came an hour after the hub's scan.
+    const winter = parsePitneyBowes(changed('delivered', (body) => {
+      body.trackingEventsModule.trackingEvents = [
+        scan('Interpost handed item over to postal company', 'Jan 6, 2026', '03:14 PM'),
+        scan('Processing at Shipping Center', 'Jan 6, 2026', '01:14 PM', 'Sample Hub, Sampleshire, GB'),
+        scan('Item processed at Interpost', 'Jan 6, 2026', '01:14 PM'),
+        scan('In Transit', 'Jan 6, 2026', '01:13 PM'),
+      ];
+    }), DELIVERED);
+    expect(winter.events!.map((event) => [event.description, event.time && new Date(event.time).toISOString()])).toEqual([
+      ['Interpost handed item over to postal company', '2026-01-06T13:14:00.000Z'],
+      ['Processing at Shipping Center', undefined],
+      ['Item processed at Interpost', '2026-01-06T13:14:00.000Z'],
+      ['In Transit', '2026-01-06T13:13:00.000Z'],
+    ]);
     // Other unplaced scans, and those wordings with a place, keep their wall clock alone.
     expect(at(delivered, 'Tracking details uploaded')).toEqual([['2026-05-06T17:53:00', null, null, null]]);
     const placed = parsePitneyBowes(changed('in-transit', (body) => {

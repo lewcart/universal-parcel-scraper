@@ -35,6 +35,7 @@ import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { FIRST_LINE_CHINA_ZONE, firstLineInChina } from '../../carriers/first-line/clock.js';
 import { hrvatskaPostaForeignZone } from '../../carriers/hrvatska-posta/parser.js';
 import { jsExpressChinaClock } from '../../carriers/js-express/clock.js';
+import { pitneyBowesPlatformClock, pitneyBowesPostalRelay } from '../../carriers/pitney-bowes/clock.js';
 import { pocztaPolskaPartnerClock } from '../../carriers/poczta-polska/clock.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
@@ -494,36 +495,50 @@ function royalMailRelay(location: string, status: string, destination: string | 
   return !location && europeanAbroad(destination) && ROYAL_MAIL_ABROAD.test(status);
 }
 /**
- * Interpost's import declaration and clearance on a Pitney Bowes parcel are on
- * the clock of the country they name, not on the UK hub's. Pitney Bowes's
- * tracker relays them with that country alone as their place ("Customs
- * Clearance" at "IT", "B2C ClearanceStatus4" at "NL"), and Pitney Bowes's own
- * adapter reads them there. TrackYourParcel, B2C Europe's tracker, relays them
- * at the same digits with no place ("Customs Clearance. Customs Import
- * submitted", "B2C Clearance 4. Customs Import cleared"), so its copy takes the
- * country of Pitney Bowes's copy at the same minute. The London clock is only
- * the hub's: both trackers write the destination post's scans on its clock, and
- * their copies of Poste Italiane's delivery have the digits of Poste's own
- * instant on Rome time. Read on Pitney Bowes's London clock, or routing's for
- * TrackYourParcel, the declaration and clearance came an hour after Pitney
- * Bowes's own rows.
+ * Pitney Bowes's catalog clock, London's, is only its UK hub's. Its tracker
+ * writes the other scans as Pitney Bowes's own adapter reads them:
+ * - Interpost's import declaration and clearance, with the country they name
+ *   alone as their place ("Customs Clearance" at "IT", "B2C ClearanceStatus4"
+ *   at "NL"), on that country's clock;
+ * - the platform's scans with no place at the hub's processing ("In Transit",
+ *   "Item processed at Interpost", the hand-over), on their own fixed clocks
+ *   (`pitneyBowesPlatformClock`);
+ * - the destination post's scans it relays with no place
+ *   (`pitneyBowesPostalRelay`), on that post's clock: the destination's single
+ *   clock, else their wall clock. Its copies of Poste Italiane's delivery have
+ *   the digits of Poste's own instant on Rome time.
+ * Read on London's clock, all of them were an hour or two off Pitney Bowes's
+ * own rows. TrackYourParcel, B2C Europe's tracker, relays the same scans at the
+ * same digits in its own words and with no place ("Customs Clearance. Customs
+ * Import submitted", "Shipped. Departure to country of destination"), so its
+ * copy takes the clock of Pitney Bowes's scans at the same minute, when they
+ * agree. Undefined leaves a scan to the hub's clock, or for TrackYourParcel to
+ * the steps; a null zone keeps the wall clock.
  */
 const INTERPOST_CUSTOMS = /^(?:customs clearance|b2c clearance ?(?:status ?)?\d{1,3})\b/i;
-const INTERPOST_RELAYS = new Set(['pitneybowes', 'trackyourparcel']);
-function interpostCustomsZone(payload: Record<string, unknown>, state: Record<string, unknown>, status: string): string | undefined {
+function pitneyBowesOwnClock(state: Record<string, unknown>, status: string, destination: string | null): { zone: string | null } | undefined {
+  const location = typeof state.location === 'string' ? state.location.trim() : '';
+  const country = /^[A-Z]{2}$/.test(location) && INTERPOST_CUSTOMS.test(status) ? countryCode(location) : null;
+  const declared = country ? mainZone(country) : null;
+  if (declared) return { zone: declared };
+  if (location) return undefined;
+  const platform = pitneyBowesPlatformClock(status);
+  if (platform) return { zone: platform };
+  return pitneyBowesPostalRelay(status) ? { zone: countryTimeZone(destination) } : undefined;
+}
+function pitneyBowesClock(payload: Record<string, unknown>, state: Record<string, unknown>, status: string,
+  destination: string | null): { zone: string | null } | undefined {
   const network = nameKey(stateCarrierName(payload, state));
-  if (!INTERPOST_RELAYS.has(network) || !INTERPOST_CUSTOMS.test(status)) return undefined;
-  const named = (scan: Record<string, unknown>) => {
-    const location = typeof scan.location === 'string' ? scan.location.trim() : '';
-    return /^[A-Z]{2}$/.test(location) && INTERPOST_CUSTOMS.test(relayedLabel(scan.status)) ? countryCode(location) : null;
-  };
+  if (network === 'pitneybowes') return pitneyBowesOwnClock(state, status, destination);
+  if (network !== 'trackyourparcel') return undefined;
   const wall = mislabeledWallTime(state.date);
-  const copies = network === 'pitneybowes' ? [state] : (Array.isArray(payload.states) ? payload.states : []).filter(
-    (scan): scan is Record<string, unknown> => isRecord(scan) && wall !== null && mislabeledWallTime(scan.date) === wall
-      && nameKey(stateCarrierName(payload, scan)) === 'pitneybowes');
-  const countries = new Set(copies.map(named));
-  const [country] = [...countries];
-  return countries.size === 1 && country ? mainZone(country) ?? undefined : undefined;
+  const clocks = new Set((Array.isArray(payload.states) ? payload.states : []).flatMap((scan: unknown) => {
+    if (!isRecord(scan) || wall === null || mislabeledWallTime(scan.date) !== wall || nameKey(stateCarrierName(payload, scan)) !== 'pitneybowes') return [];
+    const clock = pitneyBowesOwnClock(scan, relayedLabel(scan.status), destination);
+    return clock ? [clock.zone] : [];
+  }));
+  const [zone] = [...clocks];
+  return clocks.size === 1 ? { zone: zone ?? null } : undefined;
 }
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
@@ -868,8 +883,6 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   if (carrier === 'swiftx' && SWIFTX_LABEL.test(status.trim())) return SWIFTX_LABEL_CLOCK;
   if (carrier === 'swiftx' && swiftxSiteZone(scanLocation(name, state.location))) return undefined;
   if (ROYAL_MAIL_NAMES.has(key) && royalMailRelay(scanLocation(name, state.location), status, destination)) return ROYAL_MAIL_RELAY_CLOCK;
-  const customs = interpostCustomsZone(payload, state, status);
-  if (customs) return customs;
   if (key === '1st') {
     const location = scanLocation(name, state.location);
     return !location || firstLineInChina(location) ? FIRST_LINE_CHINA_ZONE : undefined;
@@ -1012,16 +1025,18 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const offset = ownOffset(name, raw.date, location);
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
   const relay = polandPostRelay(name, raw.date, location, number, destination);
-  const own = relay?.zone ?? carrierClock(payload, raw, number, status, destination);
+  const pitneyBowes = relay ? undefined : pitneyBowesClock(payload, raw, status, destination);
+  const own = relay?.zone ?? (pitneyBowes ? pitneyBowes.zone : carrierClock(payload, raw, number, status, destination));
   // iMile's page writes every scan on the recipient country's clock, wherever it happened, and
   // ParcelsApp has its digits; read on iMile's catalog zone they came out early. A destination
   // of one zone places them, and without one they keep their wall clock. So does Croatia Post's
   // scan at a facility abroad whose office code names no single clock, Correos's and Correo
-  // Uruguayo's copies of an origin post's scan from a country of several clocks, and a scan of a
-  // line on its place's clock that its place does not date (`PLACE_CLOCK_LINES`).
+  // Uruguayo's copies of an origin post's scan from a country of several clocks, a scan of a
+  // line on its place's clock that its place does not date (`PLACE_CLOCK_LINES`), and Pitney
+  // Bowes's relay of a destination post's scan on a parcel bound for no single clock (`pitneyBowesClock`).
   const ownCarrier = typeof name === 'string' ? carrierIdFromName(name) ?? '' : '';
-  const unplacedWall = own === null && !offset && (['imile', 'hrvatska-posta', 'correos-spain', 'correo-uruguayo'].includes(ownCarrier)
-    || PLACE_CLOCK_LINES.has(ownCarrier));
+  const unplacedWall = own === null && !offset && (pitneyBowes?.zone === null
+    || ['imile', 'hrvatska-posta', 'correos-spain', 'correo-uruguayo'].includes(ownCarrier) || PLACE_CLOCK_LINES.has(ownCarrier));
   const sited = own === undefined ? siteZone(payload, raw, number, inNorthAmerica, status, destination) : undefined;
   const placed = own !== undefined ? own : sited;
   // A posting that only its office's capital places borrows first (`postingOffice`).

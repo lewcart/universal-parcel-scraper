@@ -7,6 +7,7 @@ import { firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { mainZone } from '../../places/zones.js';
+import { pitneyBowesPlatformClock } from './clock.js';
 import { declarationCountry } from './identity.js';
 import { interpostClearance, pitneyBowesStage, pitneyBowesSummaryStage } from './status.js';
 
@@ -76,21 +77,9 @@ function withoutDeclarationCountry(event: CarrierEvent): CarrierEvent {
   return zone ? { ...unplaced, ...dated(event.local_time!, zone, 'place') } : unplaced;
 }
 
-/**
- * The scans Pitney Bowes's platform writes without a place when its UK hub
- * processes a parcel for Interpost, each at the instant of the hub's
- * processing scan: its own "In Transit" and Interpost's processing on UTC, an
- * hour before the hub's scan in British summer time, and Interpost's hand-over
- * to the postal company on Central European time, an hour after it.
- */
-const PLATFORM_CLOCKS: ReadonlyMap<string, string> = new Map([
-  ['in transit', 'UTC'],
-  ['item processed at interpost', 'UTC'],
-  ['interpost handed item over to postal company', 'Europe/Brussels'],
-]);
-
+/** A scan the platform writes without a place, on its own clock (`pitneyBowesPlatformClock`). */
 function onPlatformClock(event: CarrierEvent): CarrierEvent {
-  const zone = event.location || event.time ? undefined : PLATFORM_CLOCKS.get(event.description!.toLowerCase());
+  const zone = event.location || event.time ? undefined : pitneyBowesPlatformClock(event.description!);
   return zone ? { ...event, ...dated(event.local_time!, zone, 'carrier') } : event;
 }
 

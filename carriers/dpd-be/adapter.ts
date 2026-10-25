@@ -1,5 +1,5 @@
 import type { AdapterFactory } from '../../core/adapter/index.js';
-import { DPDTracker } from '../dpd/adapter.js';
+import { DPD_DELIVERY_UNITS, DPDTracker } from '../dpd/adapter.js';
 
 /** Belgium reads the myDPD guest protocol with its own business-unit selector. */
 export const adapter: AdapterFactory = (environment) => {
@@ -8,8 +8,8 @@ export const adapter: AdapterFactory = (environment) => {
     fetcher: environment.fetcher,
     recorder: environment.recorder,
     userAgent: environment.userAgent,
-    // DPD Switzerland reads the same parcel with a Swiss postcode's scans, places and Pickup shops.
-    handsTo: { CH: 'dpd' },
+    // The unit of the country DPD delivers in reads the same parcel with its own scans and places.
+    handsTo: DPD_DELIVERY_UNITS,
   });
   return {
     id: 'dpd-be', recordsSteps: true, steps: ['direct'],

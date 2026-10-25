@@ -80,6 +80,13 @@ const GUEST_ONLY: ReadonlySet<DPDCountry> = new Set(['BE', 'NL']);
 const DELIVERY_SIDE: ReadonlySet<string> = new Set([
   'AT_DELIVERY_CENTER', 'PARCEL_OUT_FOR_DELIVERY', 'AVAILABLE_FOR_COLLECTION', 'UNSUCCESSFUL_DELIVERY_ATTEMPT', 'DELIVERED',
 ]);
+/**
+ * DPD's units that read a parcel in their country with its own scans and places, by the country
+ * code DPD gives: Switzerland's, Germany's and the units DPD Germany's abroad step asks.
+ */
+export const DPD_DELIVERY_UNITS: Readonly<Record<string, string>> = {
+  CH: 'dpd', DE: 'dpd-de', AT: 'dpd-at', GB: 'dpd-uk', IE: 'dpd-ie', PL: 'dpd-pl', PT: 'dpd-pt', FR: 'dpd-fr',
+};
 const DEFAULT_TIMEOUT_MS = 90_000;
 /** How long a failed guest login answers new lookups before the next attempt. */
 const TOKEN_FAILURE_MEMORY_MS = 30_000;

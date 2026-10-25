@@ -25,8 +25,8 @@ Netherlands' business unit.
 - The guest service is group-wide, as [DPD Belgium's notes](../dpd-be/README.md#notes)
   describe, so a matching number does not make a parcel Dutch: recognition needs the Dutch
   current country. A parcel filed under DPD Netherlands is read wherever DPD places it, and
-  one it places in Switzerland from the delivery depot on names DPD Switzerland as its
-  `delivery_carrier`, as [DPD Belgium's notes](../dpd-be/README.md#notes) describe.
+  from the delivery depot on, one it places in another country names that country's unit as
+  its `delivery_carrier`, as [DPD Belgium's notes](../dpd-be/README.md#notes) describe.
 - DPD's current country can change as the parcel travels, from Belgium to the Netherlands
   for instance, and recognition then names the network the parcel has reached.
 - Without a postcode DPD gives each milestone once, with its newest date and DPD's offset but

@@ -28,10 +28,12 @@ through the myDPD guest service with Belgium's business unit.
   who sent it instead. DPD Belux's GeoData guide puts `034` before every Belgian customer's
   depot, where DPD's GeoRouting specification puts the business unit. A parcel filed under DPD
   Belgium is read wherever DPD places it.
-- A parcel DPD places in Switzerland at its delivery depot or later names
-  [DPD Switzerland](../dpd/README.md) as its `delivery_carrier`, under the same number. DPD
-  Switzerland reads it with a Swiss postcode's scans and places, and its Pickup shop's address,
-  which this lookup cannot. Before the delivery depot, the current country can be the sender's.
+- A parcel DPD places in another country at its delivery depot or later names that country's
+  unit as its `delivery_carrier`, under the same number, when the unit has a source of its own:
+  [DPD Switzerland](../dpd/README.md), [DPD Germany](../dpd-de/README.md) and the units DPD
+  Germany's [`abroad` step](../dpd-de/README.md#how-it-works) asks. The unit reads it with its
+  own scans and places, which this lookup cannot. Before the delivery depot, the current country
+  can be the sender's.
 - Without a postcode DPD gives each milestone once, with its newest date and DPD's offset but
   no place. Earlier rounds of a milestone and the scans between are missing, so the answer is
   marked `history_truncated` for enabled providers to complete. The milestones can come out of

@@ -960,6 +960,16 @@ describe('status map answers', () => {
     expect(answer('spx-ph', 'F777', 'Delivered')).toEqual(unknown);
   });
 
+  it("answers Yunda by its Chinese label, and a return leg by the wording the parser gives it", () => {
+    expect(answer('yunda', '已揽件', 'Picked up')).toEqual(mapped('accepted'));
+    expect(answer('yunda', '派送中', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('yunda', '已签收', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('yunda', '已签收', 'Returned to the sender')).toEqual(mapped('returned'));
+    expect(answer('yunda', '待取件', 'Ready for pickup on its way back')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('yunda', '示例状态', 'Synthetic label')).toEqual(unknown);
+    expect(answer('yunda', null, 'Delivered')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

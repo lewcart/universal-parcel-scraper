@@ -11,7 +11,7 @@ describe('same-instant identity policies', () => {
 
   // A carrier giving wall clocks in no stated zone also matches a scan a better deduced zone re-dates.
   it.each([
-    ['ctt', 'UTC', {}],
+    ['ctt', 'UTC', { matchWallClock: true }],
     ['canada-post', 'Etc/GMT+5', { matchWallClock: true }],
     ['royal-mail', 'Europe/London', { matchWallClock: true }],
     ['parcelforce', 'Europe/London', {}],

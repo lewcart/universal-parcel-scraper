@@ -55,11 +55,16 @@ carrier.
     post's wall clock: they are read in the zone of the sender's country, else of the country
     that issued the number, unless the location names a Portuguese office or CTT site. An
     origin with several zones keeps CTT's `Z`.
+  - On a parcel CTT Express hands over in Spain, a scan at one of its agencies (a six-digit
+    code starting `00`, as in `009999 - (PL) …`) and the acceptance CTT records with no
+    place up to a minute before it are on Madrid's clock: CTT Express's own tracker dates
+    that arrival two hours before the digits CTT shows.
   - Any other scan is CTT's, on Portugal's clock.
   - Any other offset is taken as sent. Wall times sort among instants by their digits.
 - The app identity policy in [app.ts](app.ts) requires the same instant and `StateId` before
   updating a stored scan. Its `relabelledFrom: 'UTC'` lets a scan on its own clock take over
-  the row stored under CTT's `Z`, by wall clock, provider code and location.
+  the row stored under CTT's `Z`, by wall clock, provider code and location, and its
+  `matchWallClock` lets a scan read on another zone take over the row showing its wall clock.
 - Event `Local` mixes depot codes and point names. It is kept as a coarse location and never
   refined into an address.
 - Sender and recipient names, contacts and addresses are on the record but never read; a

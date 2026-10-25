@@ -13,7 +13,7 @@ import {
   parseJsonBytes,
 } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { cttSiteZone, portugalZone } from './clock.js';
+import { cttSiteZone, isCttExpressAgency, portugalZone } from './clock.js';
 import { classifyCttStatus } from './status.js';
 
 // Protocol provenance:
@@ -106,6 +106,14 @@ const DESTINATION_EVENT = /^(?:EM[D-I]|ED[A-H])$/;
 /** UPU events an origin post records: from posting to dispatch from its office of exchange. */
 const ORIGIN_EVENT = /^(?:EM[A-C]|EX[A-DX])$/;
 const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d{1,3})?(?:Z|\+00:?00)?$/i;
+/** The acceptance CTT records with no place as a CTT Express agency takes a parcel in comes up to this long before. */
+const AGENCY_INTAKE_MS = 60_000;
+
+/** A scan's wall clock read as UTC, only to compare it with another's. */
+function wallMillis(value: unknown): number {
+  const wall = WALL_CLOCK.exec(typeof value === 'string' ? value.trim() : '')?.[1];
+  return wall ? Date.parse(`${wall}Z`) : Number.NaN;
+}
 
 /**
  * A scan's clock. CTT's Z is no offset: the digits are the wall clock where
@@ -117,7 +125,7 @@ const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d{1,3})?(?:Z|\+0
  * reply keeps its instant. Only a wall clock sent with no Z stays a wall time
  * there. Any other offset is taken as sent.
  */
-function scanClock(value: unknown, location: string, partner: string | null):
+function scanClock(value: unknown, location: string, partner: string | null, spanish: boolean):
   { time?: string; local_time?: string; timestamp: number } | null {
   const raw = typeof value === 'string' ? value.trim() : '';
   const wall = WALL_CLOCK.exec(raw)?.[1];
@@ -125,7 +133,8 @@ function scanClock(value: unknown, location: string, partner: string | null):
     const time = explicitOffsetTime(raw);
     return time ? { time: time.iso, timestamp: time.timestamp } : null;
   }
-  const zone = cttSiteZone(location, partner ? [partner] : []) ?? (partner ? countryTimeZone(partner) : portugalZone(location));
+  const zone = cttSiteZone(location, partner ? [partner] : []) ?? (spanish ? 'Europe/Madrid' : null)
+    ?? (partner ? countryTimeZone(partner) : portugalZone(location));
   const placed = zone ? isoTime(wall, zone) : null;
   if (placed) return { time: placed.iso, timestamp: placed.timestamp };
   const labelled = explicitOffsetTime(raw);
@@ -154,15 +163,23 @@ export function parseCttTrackingResponse(payload: unknown, trackingNumber: strin
   const abroad = /^[A-Z]{2}$/.test(recipient) && recipient !== 'PT' ? recipient : null;
   const sender = clean(record.SenderCountryCode, 8).toUpperCase();
   const origin = requested.endsWith('PT') ? null : /^[A-Z]{2}$/.test(sender) && sender !== 'PT' ? sender : requested.slice(-2);
+  const rows = eventsList.filter(isRecord).slice(0, 500);
+  // A parcel CTT Express hands over in Spain: its agencies' scans, and the
+  // acceptance CTT records with no place as one takes the parcel in, are on
+  // Madrid's clock (clock.ts).
+  const agencyScans = rows.filter((row) => isCttExpressAgency(clean(row.Local, 160))).map((row) => wallMillis(row.DateTime));
   const parsed: Array<{ event: CarrierEvent; classified: ClassifiedStatus | undefined; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
-  eventsList.filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
+  rows.forEach((rawEvent, index) => {
     const stateId = typeof rawEvent.StateId === 'number' ? rawEvent.StateId : Number.NaN;
     const description = clean(rawEvent.Event, 500) || clean(rawEvent.State, 200);
     const location = clean(rawEvent.Local, 160);
     const code = clean(rawEvent.EventCode, 8);
     const partner = abroad && DESTINATION_EVENT.test(code) ? abroad : origin && ORIGIN_EVENT.test(code) ? origin : null;
-    const clock = scanClock(rawEvent.DateTime, location, partner);
+    const at = wallMillis(rawEvent.DateTime);
+    const spanish = isCttExpressAgency(location)
+      || (!location && agencyScans.some((agency) => agency - at >= 0 && agency - at <= AGENCY_INTAKE_MS));
+    const clock = scanClock(rawEvent.DateTime, location, partner, spanish);
     if (!clock || !description) return;
     const identity = `${clock.time ?? clock.local_time}\u0000${description}\u0000${Number.isSafeInteger(stateId) ? stateId : ''}`;
     if (seen.has(identity)) return;

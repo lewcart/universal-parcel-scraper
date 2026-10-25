@@ -32,6 +32,20 @@ export function portugalZone(location: string): string {
 }
 
 /**
+ * One of CTT Express's agencies in Spain, as CTT names it on a parcel CTT
+ * Express hands over: a six-digit code starting 00, like every code in CTT
+ * Express's agency list, and its kind ("009999 - (PL) CENTRO DE TRATAMIENTO
+ * ADUANERO"). CTT gives such a scan Madrid's wall clock: CTT Express's own
+ * tracker dates the same arrival 17:12:27.063Z where CTT shows 19:12:27.
+ */
+const CTT_EXPRESS_AGENCY = /^00\d{4}\s+-\s+\(/;
+
+/** Whether a location names one of CTT Express's agencies, not one of CTT's own sites. */
+export function isCttExpressAgency(location: string): boolean {
+  return CTT_EXPRESS_AGENCY.test(location) && !CTT_SITE.test(location);
+}
+
+/**
  * The clock a CTT scan's location itself names: the country of the office of
  * exchange leading it, when that is Portugal or one of `countries` (the
  * parcel's), else Portugal's for one of CTT's own sites. Null when the

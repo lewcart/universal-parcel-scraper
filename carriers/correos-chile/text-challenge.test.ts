@@ -26,9 +26,42 @@ it('sends only bounded questions through the supplied transport and accepts shor
   const signal = new AbortController().signal;
   await expect(answerCorreosChileText('http://model.test/v1/chat/completions', 'Select a fruit', 'apple chair clock', signal, 500, fetcher)).resolves.toBe('apple');
   const body = JSON.parse(String(fetcher.mock.calls[0]![1]?.body));
-  expect(body).toEqual({ messages: [{ role: 'system', content: expect.any(String) }, { role: 'user', content: 'Select a fruit\napple chair clock' }], max_tokens: 32, temperature: 0, stream: false });
+  expect(body).toMatchObject({ messages: expect.arrayContaining([{ role: 'system', content: expect.any(String) }]), max_tokens: 32, temperature: 0, stream: false });
+  expect(body.messages.at(-1)).toEqual({ role: 'user', content: 'Select a fruit\napple chair clock' });
   await expect(answerCorreosChileText('http://model.test', 'x'.repeat(151), 'q', signal, 500, fetcher)).resolves.toBeNull();
   expect(fetcher).toHaveBeenCalledOnce();
+});
+
+// Recorded question shapes with synthetic words.
+it('asks once more with the choices when the model answers a word the question does not list', async () => {
+  const replies = (...contents: string[]) => {
+    const fetcher = vi.fn<typeof fetch>();
+    for (const content of contents) fetcher.mockResolvedValueOnce(Response.json({ choices: [{ message: { content } }] }));
+    return fetcher;
+  };
+  const signal = new AbortController().signal, url = 'http://model.test';
+  const fetcher = replies('shirt', 'Jacket');
+  await expect(answerCorreosChileText(url, 'Write the clothing word from these three words', 'apple jacket tree', signal, 500, fetcher)).resolves.toBe('jacket');
+  expect(JSON.parse(String(fetcher.mock.calls[1]![1]?.body)).messages.slice(-2)).toEqual([{ role: 'assistant', content: 'shirt' },
+    { role: 'user', content: 'Answer with exactly one of: apple, jacket, tree.' }]);
+  await expect(answerCorreosChileText(url, 'Name the object made to produce light when lit or switched on in this list.', 'plate, lightbulb, chair',
+    signal, 500, replies('lamp', 'lantern'))).resolves.toBeNull();
+  const listed = replies('pencil');
+  await expect(answerCorreosChileText(url, 'Write the item that is not clothing from these three words', 'pencil vest boots', signal, 500, listed)).resolves.toBe('pencil');
+  const open = replies('door');
+  await expect(answerCorreosChileText(url, 'Answer the following question with a single word, number, or phrase.', 'What opens and closes to enter a room?',
+    signal, 500, open)).resolves.toBe('door');
+  expect([listed, open].map(f => f.mock.calls.length)).toEqual([1, 1]);
+});
+
+it('asks whether a thing floats rather than whether it sinks or floats', async () => {
+  const signal = new AbortController().signal, question = 'Will an inflated beach ball sink or float when released in fresh water?';
+  const ask = (content: string) => vi.fn<typeof fetch>().mockResolvedValue(Response.json({ choices: [{ message: { content } }] }));
+  const yes = ask('Yes.');
+  await expect(answerCorreosChileText('http://model.test', 'Respond with the matching property from the question.', question, signal, 500, yes)).resolves.toBe('float');
+  expect(JSON.parse(String(yes.mock.calls[0]![1]?.body)).messages.at(-1)).toEqual({ role: 'user', content: 'Does an inflated beach ball float on fresh water?' });
+  await expect(answerCorreosChileText('http://model.test', 'Respond with the matching property from the question.', question, signal, 500, ask('no'))).resolves.toBe('sink');
+  await expect(answerCorreosChileText('http://model.test', 'Respond with the matching property from the question.', question, signal, 500, ask('it floats'))).resolves.toBeNull();
 });
 
 it('strips model diagnostics while preserving rate limits and cancellation', async () => {

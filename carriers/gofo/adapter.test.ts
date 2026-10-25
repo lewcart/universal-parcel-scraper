@@ -259,6 +259,17 @@ describe('GOFO direct retrieval', () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response('Failure', { status: Number(status) }));
     await expect(new GofoTracker({ fetcher }).fetch(NUMBER)).rejects.toMatchObject({ kind }); expect(fetcher).toHaveBeenCalledOnce();
   });
+  it('recognizes a waybill GOFO answers, and none on its explicit US error list or of another region', async () => {
+    const environment = (fetcher: typeof fetch) => ({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    const known = adapter(environment(vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(fixture())))));
+    expect(await known.recognize!(NUMBER)).toMatchObject({ known: true, lastActivityAt: expect.any(String) });
+    const negative = { success: 1, code: 200, data: { success: [], error: { errorCount: 1, us: [NUMBER] } } };
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(negative)));
+    const unknown = adapter(environment(fetcher));
+    expect(await unknown.recognize!(NUMBER)).toEqual({ known: false });
+    expect(await unknown.recognize!('GFFR00000000000001')).toEqual({ known: false });
+    expect(fetcher).toHaveBeenCalledOnce();
+  });
   it('rejects invalid input, cancellation, oversized and malformed responses within a fractional budget', async () => {
     const unused = vi.fn<typeof fetch>();
     await expect(new GofoTracker({ fetcher: unused }).fetch(`${NUMBER}&other=1`)).rejects.toThrow(InvalidInputError);

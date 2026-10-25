@@ -119,6 +119,11 @@
       "confidence": "low"
     },
     {
+      "id": "aliexpress-gfus",
+      "pattern": "^GFUS\\d{14}$",
+      "confidence": "low"
+    },
+    {
       "id": "aliexpress-ecsc-aaro",
       "pattern": "^ECSC00AARO\\d{8}$",
       "confidence": "low"

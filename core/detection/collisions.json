@@ -4588,6 +4588,14 @@
     "reason": "Janio delivers these AliExpress parcels and Cainiao tracks them too; both rules are low confidence and only suggest the carriers."
   },
   {
+    "shape": "GFUS followed by fourteen digits",
+    "carriers": [
+      "aliexpress",
+      "gofo"
+    ],
+    "reason": "GOFO delivers AliExpress parcels in the United States under its own GFUS waybills, and Cainiao's tracker follows them from China while GOFO shows only the label. Other senders' GOFO parcels are GOFO's alone. Both rules are low confidence; the one that knows the number confirms it, and once both know it, it is filed under AliExpress, which proposes GOFO as the delivery carrier."
+  },
+  {
     "shape": "Two digits, LP and thirteen digits ending in a French postcode range",
     "carriers": [
       "colis-prive",

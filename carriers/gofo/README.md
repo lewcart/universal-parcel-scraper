@@ -11,8 +11,12 @@ The shared home page leaves the national service ambiguous.
 
 One bounded JSON POST asks for Pacific clocks, one of the public page's time
 options. GOFO US waybills are `GFUS` and 14 digits, or the older `GF` and 13 and
-`CR` and 12 series its tracker still serves; detection only suggests the older
-two. The waybill must be the requested number; the tracking number repeats it
+`CR` and 12 series its tracker still serves. Detection only suggests GOFO, and
+recognition asks it: for an AliExpress parcel GOFO shows only the label while
+Cainiao's tracker follows the GFUS waybill from China, so recognition asks
+[AliExpress](../aliexpress/README.md) too.
+
+The waybill must be the requested number; the tracking number repeats it
 or is the shipper's own reference, never another GOFO number. The exception is a
 GFUS waybill whose tracking number is a CR number: asked for either, GOFO returns
 that one parcel, so both are tracked. The latest summary must agree with the

@@ -18,6 +18,9 @@
     "steps": [
       "direct"
     ],
+    "recognition": {
+      "rank": 475
+    },
     "localClocks": true
   },
   "capabilities": [
@@ -77,7 +80,7 @@
     {
       "id": "gofo-1",
       "pattern": "^GFUS\\d{14}$",
-      "confidence": "high"
+      "confidence": "low"
     },
     {
       "id": "gofo-2",

@@ -14,9 +14,9 @@ does not select the last-mile carrier.
 AliExpress often gives the buyer the delivery partner's number while the parcel is still on
 Cainiao's leg. The partner does not know the parcel yet, so only Cainiao's tracker answers for that
 number. Detection suggests AliExpress for the partner shapes with such a lookup on record, for
-example SDA's thirteen-character waybills in Italy, and recognition asks Cainiao beside the
-partner. The rules are in [`carrier.json`](carrier.json) and their evidence in
-[`numbers.json`](numbers.json).
+example SDA's thirteen-character waybills in Italy or GOFO's `GFUS` waybills in the United
+States, and recognition asks Cainiao beside the partner. The rules are in
+[`carrier.json`](carrier.json) and their evidence in [`numbers.json`](numbers.json).
 
 Once the parcel has crossed the border both know the number. It is one journey, so recognition
 files it under AliExpress, which holds the scans from before the border, instead of leaving the

@@ -741,6 +741,30 @@
       "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Singapore."
     },
     {
+      "number": "GFUS01070377636994",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260904190410/https://global.cainiao.com/newDetail.htm?mailNoList=GFUS01070377636994&otherMailNoList=",
+        "date": "2026-09-04",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress",
+          "gofo"
+        ]
+      },
+      "note": "A Cainiao tracking link for a GOFO waybill, archived by the Wayback Machine. Cainiao's tracker returns its history: an AliExpress parcel GOFO delivers in the United States."
+    },
+    {
       "number": "ECSC00AARO01096011",
       "role": "shipment",
       "evidence": "public_shipment_report",

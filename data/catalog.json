@@ -258,6 +258,10 @@
         "confidence": "low"
       },
       {
+        "pattern": "^GFUS\\d{14}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^ECSC00AARO\\d{8}$",
         "confidence": "low"
       },
@@ -3650,6 +3654,7 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo",
+      "recognitionRank": 475,
       "localClocks": true
     },
     "canaryUrl": "https://www.gofo.com/us/track",
@@ -3677,7 +3682,7 @@
     "detectionRules": [
       {
         "pattern": "^GFUS\\d{14}$",
-        "confidence": "high"
+        "confidence": "low"
       },
       {
         "pattern": "^GF\\d{13}$",

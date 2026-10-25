@@ -88,6 +88,8 @@ describe('status map answers', () => {
     expect(answer('gofo', '802', 'Pickup Exception, GOFO has not Received the Package from the Warehouse yet.')).toEqual(mapped('registered'));
     expect(answer('gofo', '205', 'Delivered, In Mailbox')).toEqual(mapped('delivered'));
     expect(answer('gofo', '205', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('gofo', '202', 'Arrived at GOFO Regional Origin Hub')).toEqual(mapped('accepted'));
+    expect(answer('gofo', '202', 'Arrived at GOFO Regional Hub')).toEqual(mapped('in_transit'));
     expect(answer('aliexpress', 'GTMS_ORDER_INFO_UPDATE', 'Delivery details updated')).toEqual(gap);
     // Without a code, UPS's map reads only the rendered page's banner.
     expect(answer('ups', null, 'Delivered')).toEqual(mapped('delivered'));

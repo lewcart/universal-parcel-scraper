@@ -206,13 +206,24 @@ describe('GOFO US history', () => {
   });
 
   it('maps every code in the status catalogue, including the hub departure and line-haul codes', () => {
-    const catalogue = JSON.parse(readFileSync(new URL('./statuses.json', import.meta.url), 'utf8')) as { entries: { code: string; stage: string }[] };
-    for (const entry of catalogue.entries) expect(gofoStatus(entry.code)?.stage).toBe(entry.stage);
+    const catalogue = JSON.parse(readFileSync(new URL('./statuses.json', import.meta.url), 'utf8')) as { entries: { code: string; wording: string; stage: string }[] };
+    for (const entry of catalogue.entries) expect(gofoStatus(entry.code, entry.wording)?.stage).toBe(entry.stage);
     const value = fixture();
     item(value).trackEventList.unshift({ ...item(value).trackEventList.at(-1), processCode: '412', processContent: 'In Transit to Next Facility' });
     item(value).trackEventList.splice(1, item(value).trackEventList.length - 2);
     bind(value);
     expect(parseGofo(value, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'In Transit to Next Facility' });
+  });
+
+  it("reads the origin hub's arrival as GOFO's acceptance and later hub arrivals as transit", () => {
+    const value = fixture();
+    item(value).trackEventList.unshift({ ...item(value).trackEventList.at(-1), processCode: '202', processContent: 'Arrived at GOFO Regional Origin Hub' });
+    item(value).trackEventList.splice(1, item(value).trackEventList.length - 2);
+    bind(value);
+    expect(parseGofo(value, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'accepted' });
+    expect(parseGofo(value, NUMBER).events?.[0]).toMatchObject({ provider_code: '202', stage: 'accepted' });
+    expect(gofoStatus('202', 'Arrived at GOFO Regional Hub')?.stage).toBe('in_transit');
+    expect(gofoStatus('203', 'Arrived at GOFO Regional Origin Hub')?.stage).toBe('in_transit');
   });
 
   it('requires affirmative delivered wording and preserves unknown scans, equal clocks and provider order', () => {

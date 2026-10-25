@@ -70,6 +70,15 @@
       "confirmedBy": "live"
     },
     {
+      "code": "202",
+      "wording": "Arrived at GOFO Regional Origin Hub",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-25",
+      "note": "GOFO's first physical scan after the label; the same code names later hubs on the way."
+    },
+    {
       "code": "200",
       "wording": "Loaded on Vehicle",
       "language": "en",

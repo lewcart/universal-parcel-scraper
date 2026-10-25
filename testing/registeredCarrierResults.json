@@ -2634,7 +2634,7 @@
           "description": "Arrived at GOFO Regional Origin Hub",
           "provider_code": "202",
           "location": "Origin City, EX",
-          "stage": "in_transit"
+          "stage": "accepted"
         },
         {
           "time": "2026-01-14T18:00:00-08:00",

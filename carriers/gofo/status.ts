@@ -17,12 +17,17 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['205', { status: 'delivered', stage: 'delivered' }],
 ]);
 
-export function gofoStatus(code: string): ClassifiedStatus | undefined { return CODES.get(code); }
+// GOFO's first physical scan after the label: 202 also names later hubs on the way.
+const ORIGIN_HUB = /^arrived at gofo regional origin hub$/i;
+
+export function gofoStatus(code: string, wording = ''): ClassifiedStatus | undefined {
+  return code === '202' && ORIGIN_HUB.test(wording.trim()) ? { status: 'in_transit', stage: 'accepted' } : CODES.get(code);
+}
 
 /** By code; the parser refuses a delivery code whose wording is not a delivery. */
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => {
-    const stage = code ? gofoStatus(code)?.stage : undefined;
+    const stage = code ? gofoStatus(code, wording)?.stage : undefined;
     return stage === 'delivered' && !/^delivered(?:,|$)/.test(wording) ? undefined : stage;
   },
   gaps: [],

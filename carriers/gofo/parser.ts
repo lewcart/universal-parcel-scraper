@@ -113,7 +113,7 @@ export function parseGofo(payload: unknown, rawNumber: string): CarrierResult {
     const code = clean(row.processCode, 32);
     const rawDescription = scanText(row.processContent);
     if (!code || !rawDescription) throw new SchemaError('GOFO', 'GOFO returned an incomplete scan');
-    const mapped = gofoStatus(code);
+    const mapped = gofoStatus(code, rawDescription);
     if (mapped?.stage === 'delivered' && !/^Delivered(?:,|$)/.test(rawDescription)) throw new IndeterminateError('GOFO', 'GOFO returned inconsistent delivery evidence');
     if ((row.waybillNo != null && row.waybillNo !== waybill) || (row.trackingNumber != null && row.trackingNumber !== reference)) {
       throw new SchemaError('GOFO', 'GOFO returned a scan for a different parcel');
@@ -127,7 +127,7 @@ export function parseGofo(payload: unknown, rawNumber: string): CarrierResult {
     if (!seen.has(key)) { seen.add(key); events.push(event); }
   }
   const latest = events[0]!;
-  const current = gofoStatus(String(latest.provider_code));
+  const current = gofoStatus(String(latest.provider_code), latest.description);
   const service = clean(item.serviceName, 80);
   return { status: current?.status ?? 'unknown', ...(current ? { current_stage: current.stage } : {}),
     last_status_text: latest.description, last_update: latest.time ?? null, last_update_local: latest.local_time ?? null,

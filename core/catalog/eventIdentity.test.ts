@@ -182,6 +182,14 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...stored, location: 'OTHERLAND' }, stored)).toBe(false);
   });
 
+  it('lets a Vinted Go scan whose town lost a space before its comma take over its stored row', () => {
+    const policy = sameInstantIdentityPolicy('vinted-go', { supportsScanMatching: true });
+    const stored = { stage: 'in_transit', description: 'At sorting center in Example Town , FR', location: 'Example Town , FR', providerCode: 'delivery/in_transit' };
+    expect(policy?.matches?.({ ...stored, location: 'Example Town, FR' }, stored)).toBe(true);
+    expect(policy?.matches?.({ ...stored, location: 'Other Town, FR' }, stored)).toBe(false);
+    expect(policy?.matches?.({ ...stored, location: 'Example Town, FR' }, { ...stored, location: 'Example Town, FR' })).toBe(false);
+  });
+
   it('lets a universal copy that lost a status given as its location take over its stored row', () => {
     const policy = sameInstantIdentityPolicy('unknown', { supportsScanMatching: true });
     const stored = { stage: 'in_transit', description: '离开处理中心', location: 'Departure from【Example City】', providerCode: 'InTransit_Other' };

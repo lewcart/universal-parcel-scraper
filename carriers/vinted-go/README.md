@@ -32,7 +32,8 @@ Portugal and Finland. Tracked through the service its tracking page's search box
   place rule and the pickup point read English wording.
 - Clocks are UTC instants.
 - A scan's location is the town of a sorting centre ("At sorting center in {town}, {country}").
-  "In transit to" names where the parcel is going and is not a location.
+  "In transit to" names where the parcel is going and is not a location. Some towns come with a
+  space before the comma, which the location leaves out; a scan stored with it keeps its row.
 - The pickup point is the locker or parcel shop a parcel waits at, or was collected from: the
   point the scan before its ready-to-collect scan sends it to, when no redirection comes between
   and both name the same kind of point. Neighbourhood points are not named; they can be someone's

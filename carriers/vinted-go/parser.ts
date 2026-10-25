@@ -24,8 +24,9 @@ const VGS_NUMBER = /^VGS\d{13,14}$/;
 // answers like the others. A VGS number with a digit missing is not one.
 const CODE = /^(?!VGS?\d+$)(?=\d*[A-Z])[A-Z\d]{16}$/;
 // A sorting centre's town and country, the only place a scan's wording names
-// as the parcel's own. "In transit to" names where it is going.
-const SORTING_CENTER = /^(?:Return: )?At sorting center in ([^,]{2,80}), ([A-Z]{2})$/;
+// as the parcel's own. "In transit to" names where it is going. Some towns come
+// with a space before the comma.
+const SORTING_CENTER = /^(?:Return: )?At sorting center in ([^,]{2,80}?) ?, ([A-Z]{2})$/;
 // The point a parcel is on its way to. Only lockers and parcel shops are named:
 // a neighbourhood point can be someone's home.
 const ON_ITS_WAY = /^The parcel is on its way to the (locker|parcel shop) \((.{1,120})\)$/;

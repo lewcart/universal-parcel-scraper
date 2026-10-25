@@ -110,6 +110,14 @@ describe('Vinted Go HTTP adapter', () => {
     expect(JSON.stringify(result)).not.toMatch(/Example Lane|Sample Avenue|selected point|lost in transit\./);
   });
 
+  it('reads a town given with a space before its comma without it', () => {
+    const payload = fixture('returned');
+    const [first, ...rest] = rows(payload);
+    const scan = { ...first, message: 'Return: At sorting center in Sampleville , FR' };
+    const result = parseVintedGo({ ...payload, tracking_events: [scan, ...rest] }, RETURNED);
+    expect(result.events?.[0]).toMatchObject({ description: scan.message, location: 'Sampleville, FR' });
+  });
+
   it('reports the new tracking code a parcel left the network under, with the network its link names', () => {
     expect(parseVintedGo(fixture('handover'), HANDOVER)).toMatchObject({ current_stage: 'in_transit', last_status_text: 'Parcel left our network',
       delivery_tracking_number: '990000000001', delivery_carrier: 'mondial-relay' });

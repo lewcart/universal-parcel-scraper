@@ -809,15 +809,19 @@ describe('ParcelsApp result parsing', () => {
 
   it('reads iMile\'s scans on the destination\'s clock, wherever they happened', () => {
     // iMile's page writes every scan on the recipient country's clock and ParcelsApp has its
-    // digits; read on iMile's catalog zone they came out two hours early in Italy.
+    // digits; read on iMile's catalog zone they came out two hours early in Italy, and nine
+    // hours early in Colombia. A take-off ParcelsApp places at the departing airport abroad
+    // is on the destination's clock too, and the zone routing passes, iMile's, plays no part.
     const parse = (destinationCode: string) => parseParcelsAppResponse({ carriers: ['iMile'], destinationCode, states: [
       { date: '2026-09-24T17:14:34Z', status: '【Example center】Your order has been received.', carrier: 0, location: 'Example center' },
+      { date: '2026-09-19T19:00:00Z', status: '【EXA】The flight has taken off.', carrier: 0, location: 'Example Intl (EXA), Miami, United States' },
       { date: '2026-09-17T19:16:16Z', status: 'Order submitted, pending to receive.', carrier: 0 },
-    ] }, number, identity());
-    expect(parse('IT').events?.map((scan) => scan.time)).toEqual(['2026-09-24T15:14:34.000Z', '2026-09-17T17:16:16.000Z']);
+    ] }, number, identity(), 'Asia/Dubai');
+    expect(parse('IT').events?.map((scan) => scan.time)).toEqual(['2026-09-24T15:14:34.000Z', '2026-09-19T17:00:00.000Z', '2026-09-17T17:16:16.000Z']);
+    expect(parse('CO').events?.map((scan) => scan.time)).toEqual(['2026-09-24T22:14:34.000Z', '2026-09-20T00:00:00.000Z', '2026-09-18T00:16:16.000Z']);
     // A destination of several clocks leaves them wall clocks, as iMile's own lookup does.
     expect(parse('AU').events?.map((scan) => [scan.time, scan.local_time])).toEqual([
-      [undefined, '2026-09-24T17:14:34.000'], [undefined, '2026-09-17T19:16:16.000'],
+      [undefined, '2026-09-24T17:14:34.000'], [undefined, '2026-09-19T19:00:00.000'], [undefined, '2026-09-17T19:16:16.000'],
     ]);
   });
 

@@ -1084,6 +1084,16 @@ describe('status map answers', () => {
     expect(answer('dhl-ecommerce-es', 'XX', 'Arrived at Example Town')).toEqual(unknown);
   });
 
+  it('answers DHL eCommerce UK by its sentence without the number, with either apostrophe', () => {
+    expect(answer('dhl-ecommerce-uk', null, 'Your shipment has been collected')).toEqual(mapped('accepted'));
+    expect(answer('dhl-ecommerce-uk', null, 'Your shipment is out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('dhl-ecommerce-uk', null, 'Collected')).toEqual(mapped('delivered'));
+    expect(answer('dhl-ecommerce-uk', null, 'Delivery Attempted')).toEqual(mapped('failed_attempt'));
+    expect(answer('dhl-ecommerce-uk', null, 'We’re sorry but your shipment was refused on delivery. Please contact your sender for further information'))
+      .toEqual(mapped('exception'));
+    expect(answer('dhl-ecommerce-uk', null, 'Synthetic scan wording')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

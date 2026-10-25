@@ -8,6 +8,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 // The page writes some apostrophes curly.
@@ -27,3 +28,6 @@ export function dhlEcommerceUkStage(wording: string): Stage | undefined {
 export function statusForStage(stage: Stage): CarrierStatus {
   return STATUSES[stage];
 }
+
+/** What the map says about one scan: its sentence, as the parser keeps it without the number. */
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => dhlEcommerceUkStage(wording), gaps: [] };

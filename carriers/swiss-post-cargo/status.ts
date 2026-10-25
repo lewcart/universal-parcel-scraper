@@ -9,6 +9,7 @@
  */
 import { cleanScalar } from '../../core/transport/index.js';
 import type { CarrierStatus } from '../../core/result/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
 
 /** Lower-cased, accent-free wording, for language-independent matching. */
@@ -25,6 +26,11 @@ export function comparable(value: unknown): string {
  * announcement, RFS an acceptance. Everything else stays in transit.
  */
 export function statusFor(code: string, description: string): { status: CarrierStatus; stage: Stage } {
+  return namedStatus(code, description) ?? { status: 'in_transit', stage: 'in_transit' };
+}
+
+/** The status a scan's code or wording names, without the in-transit default. */
+function namedStatus(code: string, description: string): { status: CarrierStatus; stage: Stage } | undefined {
   const normalizedCode = code.toLocaleUpperCase('en-US');
   const text = comparable(description);
   if (['retour', 'return', 'zuruck'].some((term) => text.includes(term))) {
@@ -53,5 +59,11 @@ export function statusFor(code: string, description: string): { status: CarrierS
       .some((term) => text.includes(term))) {
     return { status: 'pending', stage: 'registered' };
   }
-  return { status: 'in_transit', stage: normalizedCode === 'RFS' ? 'accepted' : 'in_transit' };
+  return normalizedCode === 'RFS' ? { status: 'in_transit', stage: 'accepted' } : undefined;
 }
+
+/**
+ * What the map says about one scan: its wording and code, as the adapter reads them. A scan
+ * neither names stays open, since the adapter's in-transit default names nothing.
+ */
+export const statusMap: CarrierStatusMap = { stage: (code, wording) => namedStatus(code ?? '', wording)?.stage, gaps: [] };

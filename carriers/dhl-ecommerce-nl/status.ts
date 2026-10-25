@@ -8,6 +8,7 @@
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 interface Entry { wording: string; stage: Stage }
@@ -44,3 +45,20 @@ export function dhlEcommerceNlStatus(code: string, category: unknown): DhlEcomme
 export function statusForStage(stage: Stage): CarrierStatus {
   return STATUSES[stage];
 }
+
+/** The stage of each recorded wording, left out where two codes word it alike with different stages. */
+const WORDINGS = new Map<string, Stage | undefined>();
+for (const { wording, stage } of CODES.values()) {
+  const key = normalizeStatusWording(wording);
+  WORDINGS.set(key, WORDINGS.has(key) && WORDINGS.get(key) !== stage ? undefined : stage);
+}
+
+/**
+ * What the map says about one scan: its code, else, for a copy without one, the wording the
+ * tracking page gives a code. A code the list does not know stays open, since its category
+ * staged it and the stored scan does not keep that.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? CODES.get(code)?.stage : WORDINGS.get(wording)),
+  gaps: [],
+};

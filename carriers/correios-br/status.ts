@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // Subtypes distinguish delivery from address problems and cancelled dispatches.
 // BDE, BDI and BDR are the same delivery outcomes recorded by different units.
@@ -33,3 +34,6 @@ const codes: Record<string, ClassifiedStatus> = {
 export function classifyCorreiosStatus(code: string): ClassifiedStatus | undefined {
   return Object.hasOwn(codes, code) ? codes[code] : undefined;
 }
+
+/** What the map says about one scan: its code and subtype, as the parser stores them (`BDE/01`). */
+export const statusMap: CarrierStatusMap = { stage: (code) => (code ? classifyCorreiosStatus(code)?.stage : undefined), gaps: [] };

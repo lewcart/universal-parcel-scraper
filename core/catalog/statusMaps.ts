@@ -108,6 +108,7 @@ import { statusMap as connectCouriers } from '../../carriers/connect-couriers/st
 import { statusMap as coordinadora } from '../../carriers/coordinadora/status.js';
 import { statusMap as copaCourier } from '../../carriers/copa-courier/status.js';
 import { statusMap as corre } from '../../carriers/corre/status.js';
+import { statusMap as correiosBr } from '../../carriers/correios-br/status.js';
 import { statusMap as correoArgentino } from '../../carriers/correo-argentino/status.js';
 import { statusMap as correoUruguayo } from '../../carriers/correo-uruguayo/status.js';
 import { statusMap as correosCuba } from '../../carriers/correos-cuba/status.js';
@@ -134,6 +135,8 @@ import { statusMap as dao } from '../../carriers/dao/status.js';
 import { statusMap as dellin } from '../../carriers/dellin/status.js';
 import { statusMap as delnext } from '../../carriers/delnext/status.js';
 import { statusMap as deppon } from '../../carriers/deppon/status.js';
+import { statusMap as dhlEcommerce } from '../../carriers/dhl-ecommerce/status.js';
+import { statusMap as dhlEcommerceNl } from '../../carriers/dhl-ecommerce-nl/status.js';
 import { statusMap as dhlExpress } from '../../carriers/dhl-express/status.js';
 import { statusMap as dhlFreight } from '../../carriers/dhl-freight/status.js';
 import { statusMap as dhl } from '../../carriers/dhl/status.js';
@@ -365,6 +368,7 @@ import { statusMap as noest } from '../../carriers/noest/status.js';
 import { statusMap as norskGlobal } from '../../carriers/norsk-global/status.js';
 import { statusMap as northline } from '../../carriers/northline/status.js';
 import { statusMap as novaGlobal } from '../../carriers/nova-global/status.js';
+import { statusMap as novaPoshta } from '../../carriers/nova-poshta/status.js';
 import { statusMap as nowCouriers } from '../../carriers/now-couriers/status.js';
 import { statusMap as nox } from '../../carriers/nox/status.js';
 import { statusMap as nzCouriers } from '../../carriers/nz-couriers/status.js';
@@ -506,6 +510,7 @@ import { statusMap as straightship } from '../../carriers/straightship/status.js
 import { statusMap as sundarbanCourier } from '../../carriers/sundarban-courier/status.js';
 import { statusMap as swiftx } from '../../carriers/swiftx/status.js';
 import { statusMap as swissPost } from '../../carriers/swiss-post/status.js';
+import { statusMap as swissPostCargo } from '../../carriers/swiss-post-cargo/status.js';
 import { statusMap as tCat } from '../../carriers/t-cat/status.js';
 import { statusMap as tGroup } from '../../carriers/t-group/status.js';
 import { statusMap as tanzaniaPosts } from '../../carriers/tanzania-posts/status.js';
@@ -602,10 +607,10 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, 'citylink-express': citylinkExpress, citymail,
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'colis-prive': colisPrive, 'connect-couriers': connectCouriers, coordinadora,
   'copa-courier': copaCourier, corre,
-  'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
+  'correios-br': correiosBr, 'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, ctt, 'ctt-express': cttExpress, cttyex,
   'cyprus-post': cyprusPost, 'd-express': dExpress, 'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss,
-  dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, dellin, delnext, deppon, dhl, 'dhl-express': dhlExpress,
+  dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, dellin, delnext, deppon, dhl, 'dhl-ecommerce': dhlEcommerce, 'dhl-ecommerce-nl': dhlEcommerceNl, 'dhl-express': dhlExpress,
   'dhl-freight': dhlFreight, dhlink, direx, dobropost, 'dohrn-transfer': dohrnTransfer, 'domain-logistics': domainLogistics, domex, dpd,
   'dpd-at': dpdAt, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe,
   'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-ro': dpdRo, 'dpd-uk': dpdUk, 'dpd-za': dpdZa, dpex, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dx, dynalogic,
@@ -638,7 +643,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'mds-collivery': mdsCollivery, meest, 'meihoo-pegasus': meihooPegasus, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
   'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mondial-relay': mondialRelay, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mrw, mtscn, mylerz, nacex, naqel, nationex,
   'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,
-  northline, 'nova-global': novaGlobal, 'now-couriers': nowCouriers, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
+  northline, 'nova-global': novaGlobal, 'nova-poshta': novaPoshta, 'now-couriers': nowCouriers, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, paack, 'pack-man': packMan, packeta, packlink, packs,
   'pakistan-post': pakistanPost, palletways, 'pandu-logistics': panduLogistics, paperfly, paquetexpress, parcelpoint, passport,
@@ -659,7 +664,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
   'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spring-gds': springGds, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-sg': spxSg,
-  'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
+  'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost, 'swiss-post-cargo': swissPostCargo,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, techlink, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, thhy, tiki, tipsa, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,

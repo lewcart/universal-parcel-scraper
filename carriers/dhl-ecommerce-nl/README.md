@@ -24,6 +24,9 @@ Benelux, through the gateway behind its tracking page. German DHL Paket is
 - A code missing from that list takes the stage of its category. The page
   files clearance and courier scans in categories that also hold sorting scans
   and next-day plans, so those two categories only mean movement.
+- The parcel app's review (`statusMap`) reads the code, or a copy's wording
+  through that list. A code missing from the list stays open there, since the
+  stored scan does not keep its category.
 - A delivery or a return to the sender stays the current stage when a notice
   follows it.
 - A ServicePoint notice that failed to reach the recipient still means the

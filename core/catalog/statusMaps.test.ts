@@ -788,6 +788,56 @@ describe('status map answers', () => {
     expect(answer('evri-uk', null, 'Out for delivery')).toEqual(unknown);
   });
 
+  it("answers Correios by its code and subtype", () => {
+    expect(answer('correios-br', 'BDE/01', 'Objeto entregue ao destinatário')).toEqual(mapped('delivered'));
+    expect(answer('correios-br', 'OEC/01', 'Objeto saiu para entrega ao destinatário')).toEqual(mapped('out_for_delivery'));
+    expect(answer('correios-br', 'BDE/20', 'Carteiro não atendido')).toEqual(mapped('failed_attempt'));
+    expect(answer('correios-br', 'XX/99', 'Objeto em trânsito')).toEqual(unknown);
+    expect(answer('correios-br', null, 'Objeto entregue ao destinatário')).toEqual(unknown);
+  });
+
+  it("answers DHL eCommerce by the wording its adapter reads, and leaves what only UTAPI's status code stages open", () => {
+    expect(answer('dhl-ecommerce', null, 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('dhl-ecommerce', null, 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('dhl-ecommerce', null, 'Label created')).toEqual(mapped('registered'));
+    expect(answer('dhl-ecommerce', null, 'Tendered to delivery service provider')).toEqual(mapped('in_transit'));
+    expect(answer('dhl-ecommerce', null, 'Returned to sender')).toEqual(mapped('returned'));
+    expect(answer('dhl-ecommerce', null, 'Synthetic scan wording')).toEqual(unknown);
+  });
+
+  it('answers DHL eCommerce Netherlands by its code, and a copy without one by the wording the tracking page gives a code', () => {
+    expect(answer('dhl-ecommerce-nl', 'DELIVERED_AT_NEIGHBOURS', 'Delivered at the neighbours')).toEqual(mapped('delivered'));
+    expect(answer('dhl-ecommerce-nl', 'DELIVERED_AT_ACCESSPOINT', 'Delivered at DHL ServicePoint')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('dhl-ecommerce-nl', null, 'Delivered at DHL ServicePoint')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('dhl-ecommerce-nl', null, 'Address details corrected')).toEqual(mapped('in_transit'));
+    // Four codes word a courier's collection alike, at two stages.
+    expect(answer('dhl-ecommerce-nl', null, 'Picked up at DHL ServicePoint by the courier')).toEqual(unknown);
+    // A code the list does not know was staged by its category, which is not stored.
+    expect(answer('dhl-ecommerce-nl', 'SYNTHETIC_CODE', 'Synthetic code')).toEqual(unknown);
+  });
+
+  it('answers Nova Poshta by its movement code, and leaves the codes a return shares out on purpose', () => {
+    expect(answer('nova-poshta', '4', 'Synthetic movement')).toEqual(mapped('accepted'));
+    expect(answer('nova-poshta', '7', 'Synthetic movement')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('nova-poshta', '101', 'Synthetic movement')).toEqual(mapped('out_for_delivery'));
+    expect(answer('nova-poshta', '115', 'Synthetic movement')).toEqual(mapped('customs'));
+    expect(answer('nova-poshta', '10', 'Synthetic movement')).toEqual(mapped('delivered'));
+    expect(answer('nova-poshta', '9', 'Synthetic movement')).toEqual(gap);
+    expect(answer('nova-poshta', '102', 'Synthetic movement')).toEqual(gap);
+    expect(answer('nova-poshta', '999', 'Synthetic movement')).toEqual(unknown);
+    expect(answer('nova-poshta', null, 'Synthetic movement')).toEqual(unknown);
+  });
+
+  it("answers Swiss Post Cargo by its wording and codes, without the adapter's in-transit default", () => {
+    expect(answer('swiss-post-cargo', 'DLV', 'Sendung')).toEqual(mapped('delivered'));
+    expect(answer('swiss-post-cargo', null, 'Zugestellt')).toEqual(mapped('delivered'));
+    expect(answer('swiss-post-cargo', 'SCA', 'Sendung')).toEqual(mapped('out_for_delivery'));
+    expect(answer('swiss-post-cargo', 'NTF', 'Sendung')).toEqual(mapped('registered'));
+    expect(answer('swiss-post-cargo', 'RFS', 'Sendung')).toEqual(mapped('accepted'));
+    expect(answer('swiss-post-cargo', 'XYZ', 'Retour an Absender')).toEqual(mapped('returned'));
+    expect(answer('swiss-post-cargo', 'XYZ', 'Sortierung')).toEqual(unknown);
+  });
+
   it('does not know a scan without wording', () => {
     expect(answer('dpd', 'DLO', '   ')).toEqual(unknown);
   });

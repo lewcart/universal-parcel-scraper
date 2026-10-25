@@ -52,6 +52,8 @@ its published source map).
 - Negative wording (return, incident, failure) is checked before delivery words
   and codes — "Not delivered" contains "delivered", and a false delivery ends
   tracking.
+- A row neither its wording nor its code names reads as movement. The parcel
+  app's review (`statusMap`) leaves such a row open instead.
 - `DLV` is confirmed from a capture and `POD`, `SIG` and `IMG` from live
   histories, where the delivery picture (`IMG`) comes at or just before the
   delivery scan's instant, listed ahead of it, and the signature (`SIG`) at

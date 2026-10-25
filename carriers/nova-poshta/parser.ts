@@ -19,6 +19,10 @@ const MOVEMENT_STAGES: Readonly<Record<string, Stage>> = {
   '112': 'in_transit', '115': 'customs', '119': 'customs', '120': 'in_transit', '121': 'in_transit', '122': 'in_transit',
   '199': 'customs',
 };
+/** A movement code's stage, unless its event names a return. */
+export function movementStage(code: string): Stage | undefined {
+  return Object.hasOwn(MOVEMENT_STAGES, code) ? MOVEMENT_STAGES[code] : undefined;
+}
 // Code 9 also closes a return at the sending branch, and code 102 opens it.
 const EVENT_STAGES: Readonly<Record<string, Stage>> = { OrderCargoReturn: 'returned', ShipmentReturnReceived: 'returned' };
 // Arrival at, and collection from, the branch or locker the recipient chose.
@@ -114,7 +118,7 @@ export function parseNovaPoshtaHistory(payload: unknown, raw: string): CarrierRe
     if (!description || !code) throw new SchemaError(PROVIDER, 'Nova Poshta returned an empty movement');
     const timeText = clean(row.date, 64), time = movementTime(timeText);
     const name = clean(row.event, 64);
-    const stage = EVENT_STAGES[name] ?? MOVEMENT_STAGES[code];
+    const stage = EVENT_STAGES[name] ?? movementStage(code);
     const location = clean(row.settlement_name, 200);
     const event: CarrierEvent = { description, provider_code: code, ...(time ? { time } : timeText ? { provider_time_text: timeText } : {}),
       ...(location ? { location } : {}), ...(stage ? { stage, stage_source: 'carrier_map' } : {}) };

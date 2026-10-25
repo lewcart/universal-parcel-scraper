@@ -73,6 +73,9 @@ spellings of its place; one row is kept, with the fuller place. The handover to 
 last-mile partner ("TENDERED TO DELIVERY SERVICE PROVIDER", "HANDED OVER TO PARTNER
 CARRIER") is in transit, and so is USPS accepting the parcel after it.
 
+The parcel app's review asks the same wording rules (`statusMap`). A scan that only
+UTAPI's status code staged stays open there, since the stored scan does not keep the code.
+
 ## Limitations
 
 US parcels handed to USPS carry a USPS number, with or without the 420 routing

@@ -8,7 +8,8 @@
  * intuitive translation of the text.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
-import { trackingLanguageStage } from '../../core/status/index.js';
+import { trackingLanguageStage, type Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import { clean as cleanText } from '../../core/transport/index.js';
 import type { JsonObject } from '../../core/types.js';
 
@@ -69,3 +70,17 @@ export function statusFor(stage: string): CarrierStatus {
   if (stage === 'registered' || stage === 'pending') return 'pending';
   return 'in_transit';
 }
+
+/**
+ * What the map says about one scan. Its wording stages it as the adapter reads it, and a delivery
+ * is stored as "Delivered". Wording that only UTAPI's status code would stage stays open: the
+ * stored scan does not keep that code.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (_code, wording) => {
+    if (wording === 'delivered') return 'delivered';
+    const stage = stageFor({ description: wording });
+    return stage === 'pending' ? undefined : stage as Stage;
+  },
+  gaps: [],
+};

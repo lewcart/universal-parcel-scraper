@@ -315,7 +315,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A public government response identifies Viettel Post as the carrier. The official legacy API repeats the whole waybill in its registration record, without current tracking history."

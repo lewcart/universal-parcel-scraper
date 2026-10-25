@@ -15,6 +15,7 @@ import { emileScan } from '../../carriers/emile/status.js';
 import { firstLineScan } from '../../carriers/first-line/status.js';
 import { hrvatskaPostaScan } from '../../carriers/hrvatska-posta/status.js';
 import { paackScan } from '../../carriers/paack/status.js';
+import { sendingScan } from '../../carriers/sending/status.js';
 import { ytoScan } from '../../carriers/yto/status.js';
 
 export interface CarrierScan {
@@ -31,6 +32,7 @@ const VOCABULARIES: Readonly<Record<string, (label: string) => CarrierScan | und
   'first-line': firstLineScan,
   'hrvatska-posta': hrvatskaPostaScan,
   paack: paackScan,
+  sending: sendingScan,
   yto: ytoScan,
 };
 

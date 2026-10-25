@@ -27,7 +27,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived reply of the lookup bridge on TCS's own site, captured with the lookup of this number on its tracker, lists the consignment from Karachi to Islamabad with its checkpoints."
@@ -61,7 +62,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived reply of the lookup bridge on TCS's own site, captured with the lookup of this number on its tracker, lists the consignment from Karachi with its booking date and an in-transit summary; it holds no checkpoints."
@@ -93,7 +95,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived reply of the lookup bridge on TCS's own site lists the consignment from Islamabad to Rawalpindi with its pickup and facility checkpoints."
@@ -133,7 +136,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived reply of the lookup bridge on TCS's own site lists the consignment from Lahore to Rawalpindi with its checkpoints up to out for delivery."
@@ -168,7 +172,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived reply of the lookup bridge on TCS's own site lists the consignment within Karachi with its checkpoints up to out for delivery."
@@ -200,7 +205,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived reply of the lookup bridge on TCS's own site, captured with the lookup of this number on its tracker, lists the consignment from Lahore to Karachi with its first checkpoints."
@@ -232,7 +238,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "Sent to TCS's own tracker at tcsexpress.com/track/, as an archived address shows; the capture was not opened."
@@ -263,7 +270,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent to TCS's own tracker at tcsexpress.com/track/, as an archived address shows; the capture was not opened."
@@ -294,7 +302,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent to TCS's own tracker at tcsexpress.com/track/, as an archived address shows; the capture was not opened."
@@ -419,7 +428,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A customer's Trustpilot review of TCS gives it as the consignment booked from Karachi to Rawalpindi under the Time Choice service."

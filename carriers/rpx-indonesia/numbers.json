@@ -30,7 +30,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "The AWB in the sample success reply of RPX's own getTracking API documentation, with one tracking event."
@@ -65,7 +66,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "The AWB in the sample success reply of RPX's own shipment-creation API documentation."
@@ -97,7 +99,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The RPX AWB a shopper's complaint gives for an online order; RPX's tracking knows it, with a history from the shipper's booking to the delivery."
@@ -128,7 +131,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived address on RPX's own corporate AWB print service returned a PDF for this AWB; the PDF was not opened, so no shipment history is visible."
@@ -162,7 +166,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived address on RPX's own corporate AWB print service returned a PDF for this AWB; the PDF was not opened, so no shipment history is visible."
@@ -194,7 +199,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived address on RPX's own corporate AWB print service returned a PDF for this AWB; the PDF was not opened, so no shipment history is visible."
@@ -225,7 +231,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived address on RPX's own corporate AWB print service returned a PDF for this AWB; the PDF was not opened, so no shipment history is visible."
@@ -256,7 +263,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived address on RPX's own corporate AWB print service returned a PDF for this AWB; the PDF was not opened, so no shipment history is visible."
@@ -290,7 +298,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived address on RPX's own corporate AWB print service returned a PDF for this AWB; the PDF was not opened, so no shipment history is visible."
@@ -321,7 +330,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived address on RPX's own corporate AWB print service returned a PDF for this AWB; the PDF was not opened, so no shipment history is visible."
@@ -352,7 +362,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived address on RPX's own corporate AWB print service; the capture shows the host's bot-protection page, so no shipment detail is visible."

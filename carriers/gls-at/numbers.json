@@ -369,7 +369,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived reply of GLS Austria's tracking service for the number with its check digit: a registered parcel from GLS Germany for delivery by GLS Austria (owner ATNU), shown under its eleven digits."
@@ -403,7 +404,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived reply of GLS Austria's tracking service for the number with its check digit; it shows the parcel out for delivery under its eleven digits, without the event list or an owner."

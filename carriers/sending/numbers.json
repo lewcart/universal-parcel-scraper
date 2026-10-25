@@ -29,7 +29,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the shipment's número de expedición."
@@ -60,7 +61,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the Nº Seguimiento of the parcel."
@@ -91,7 +93,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the número de envío, separately from the shop's order number."
@@ -123,7 +126,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the tracking number of a parcel carried by Sending."
@@ -155,7 +159,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint against Sending / InPost gives it as the shipment number. Sending's tracker shows it delivered after failed attempts."
@@ -187,7 +192,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the parcel's tracking code at Sending."
@@ -219,7 +225,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the número de expedición, separately from the shop's order number."
@@ -251,7 +258,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the shipment number of an AliExpress order sent by Sending."
@@ -285,7 +293,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the parcel's tracking reference. Sending's tracker shows its failed delivery attempts and writes it off as missing."
@@ -319,7 +328,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the tracking number of a parcel held at Sending's office."
@@ -350,7 +360,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the tracking number."
@@ -384,7 +395,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint says the order was sent through Sending under this número de expedición, separately from the sender's reference."
@@ -419,7 +431,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the shipment number handled by a Sending branch."
@@ -450,7 +463,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the shipment number. Sending's tracker shows it on its delivery rounds."
@@ -481,7 +495,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the parcel's number. Sending's tracker shows it delivered after failed attempts."
@@ -513,7 +528,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the reference of one of two undelivered parcels."

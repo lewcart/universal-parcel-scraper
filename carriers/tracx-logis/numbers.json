@@ -335,7 +335,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived lookup on Qxpress's own tracker, opened but without visible history; the twelve digits pass the mod 7 check Japanese domestic carriers use, and the tracker hands Japanese deliveries to Sagawa, so it may be a partner's number."
@@ -371,7 +372,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived lookup on Qxpress's own tracker, not opened; the twelve digits pass the mod 7 check Japanese domestic carriers use, and the tracker hands Japanese deliveries to Sagawa, so it may be a partner's number."

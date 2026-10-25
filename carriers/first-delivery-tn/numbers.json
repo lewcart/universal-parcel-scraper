@@ -28,7 +28,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Barcode returned in the 'Ajouter une commande' response example of First Delivery's own merchant API documentation (API v2.4)."
@@ -59,7 +60,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Barcode in the 'Consulter l'état d'une commande' request and response example of First Delivery's own merchant API documentation (API v2.4)."

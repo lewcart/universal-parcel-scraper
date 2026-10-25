@@ -162,7 +162,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The customer also names 44620855 for the same shipment; this pair does not follow the documented embedded shipment mapping. No conversion rule is inferred. Detection remains ambiguous."

@@ -193,7 +193,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An IP High Court judgment cites Japan Post's delivery record for this Letter Pack Plus. Twelve digits stay a suggestion shared with other carriers."
@@ -230,7 +231,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Recipient quotes the number given for a Letter Pack that tracking did not yet show; not independently verified."
@@ -264,7 +266,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Mail-parser fixture: a retailer's shipping notice names Japan Post Yu-Pack and links the number to Japan Post's tracking."
@@ -298,7 +301,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Mail-parser fixture: a retailer's shipping notice names Japan Post Yu-Pack."
@@ -336,7 +340,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A guide lists it as a past Click Post number; not independently verified."
@@ -836,7 +841,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Japan Post tracking link archived by the Wayback Machine. Japan Post's tracker returns its Yu-Pack history."
@@ -871,7 +877,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Japan Post tracking link archived by the Wayback Machine. Japan Post's tracker returns its Yu-Pack history."
@@ -906,7 +913,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Japan Post tracking link archived by the Wayback Machine. Japan Post's tracker returns its Yu-Pack history with a designated delivery date."
@@ -944,7 +952,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Japan Post tracking link archived by the Wayback Machine. Japan Post's tracker returns its Yu-Pack history."

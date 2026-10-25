@@ -28,7 +28,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "ShipBlu's own API collection, published on its developer documentation site, uses it as the tracking_number filter in the delivery-orders request; no history is shown."

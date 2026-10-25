@@ -28,7 +28,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on T-CAT's own tracker; the opened capture shows this twelve-digit number with its scans from collection to delivery."
@@ -62,7 +63,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on T-CAT's own tracker; the opened capture shows this twelve-digit number with its scans from collection to delivery."
@@ -93,7 +95,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on T-CAT's own tracker; the opened capture shows this twelve-digit number with its scans from collection to delivery."
@@ -125,7 +128,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on T-CAT's own tracker; the opened capture shows this twelve-digit number with its scans, including a rescheduled delivery, up to delivery."
@@ -157,7 +161,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "An archived lookup on T-CAT's own tracker; the opened capture shows this twelve-digit number with its scans from collection to delivery."

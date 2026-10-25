@@ -28,7 +28,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Opened capture of Envía's own tracker on portal.envia.co shows this guía with its history up to the delivery round."
@@ -60,7 +61,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Opened capture of Envía's own tracker on portal.envia.co shows this guía with its history through delivery."
@@ -93,7 +95,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on portal.envia.co, as an archived address shows; the capture was not opened."
@@ -124,7 +127,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on enviacolvanes.com.co, as an archived address shows; the capture was not opened."
@@ -156,7 +160,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on enviacolvanes.com.co, as an archived address shows; the capture was not opened."
@@ -189,7 +194,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on enviacolvanes.com.co, as an archived address shows; the capture was not opened."
@@ -221,7 +227,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on enviacolvanes.com.co, as an archived address shows; the capture was not opened."
@@ -253,7 +260,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on enviacolvanes.com.co, as an archived address shows; the capture was not opened."
@@ -285,7 +293,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on enviacolvanes.com.co, as an archived address shows; the capture was not opened."
@@ -323,7 +332,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on enviacolvanes.com.co, as an archived address shows; the capture was not opened."
@@ -356,7 +366,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Example guía on a third-party tracking site's Envía page; Envía's own tracker returns its history through delivery."
@@ -386,7 +397,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Title of a shared Envía guía document, as a search engine indexed it; Envía's own tracker returns its history through delivery."

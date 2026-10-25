@@ -23,7 +23,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to Purolator, which stays one candidate among several."
@@ -49,7 +50,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to Purolator, which stays one candidate among several."
@@ -76,7 +78,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to Purolator, which stays one candidate among several."
@@ -173,7 +176,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The reviewer labels it as the tracking number. Purolator's tracker returns its history as a twelve-digit PIN.",
@@ -206,7 +210,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Twelve-digit PIN in a public bug report about Purolator's shipping site. Purolator's tracker returns a label-only shipment."
@@ -239,7 +244,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A twelve-digit Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history, with delays in its own network."
@@ -272,7 +278,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A twelve-digit Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
@@ -399,7 +406,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A twelve-digit Purolator PIN starting with a 6, whose tracking page the Wayback Machine archived. Purolator's tracker returns its history, from pickup to delivery."
@@ -434,7 +442,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A twelve-digit PIN starting with a 6 that passes the Luhn check, archived on Purolator's tracking page with a ship date years old. Purolator's tracker no longer finds it."
@@ -466,7 +475,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A twelve-digit PIN starting with a 6 that passes the Luhn check, archived on Purolator's tracking page with a ship date years old. Purolator's tracker no longer finds it."

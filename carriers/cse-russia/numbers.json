@@ -124,7 +124,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The archived reply of CSE's own tracking API at lk.cse.ru shows a waybill from order to delivery."
@@ -256,7 +257,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CSE's own tracking page at cse.ru, as an archived address shows; the capture holds only the page shell, which loads history by script, so the history is not visible."
@@ -288,7 +290,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CSE's own tracking page at cse.ru, as an archived address shows; the capture holds only the page shell, which loads history by script, so the history is not visible."
@@ -370,7 +373,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CSE's own tracking page at old.cse.ru, as an archived address shows; the page loads the result in an embedded frame that the capture does not hold, so the history is not visible."

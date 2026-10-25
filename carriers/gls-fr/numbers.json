@@ -65,7 +65,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Published integration example, not a real shipment. The source attributes it to GLS France, which stays one candidate among several."

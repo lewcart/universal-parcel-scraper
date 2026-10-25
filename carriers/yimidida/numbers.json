@@ -27,7 +27,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on Yimidida's own tracker carries this waybill in its address: the home page search sends numbers to the goods-tracking menu page in params. The capture holds the page shell, and the history loads in a frame that was not archived."
@@ -58,7 +59,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Yimidida's former cargo tracking page ships its waybill box filled with this number as the example to search."

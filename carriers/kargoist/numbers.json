@@ -119,7 +119,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Şikayetvar complaint about Kargoist giving it as the tracking number of a parcel sent through a Kargoist branch."
@@ -169,7 +170,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Şikayetvar complaint about Kargoist giving it as the tracking number of a delayed Kargoist parcel."

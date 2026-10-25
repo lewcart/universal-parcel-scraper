@@ -30,7 +30,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived reply of Taxydema's own tracking API, looked up with this number, shows its history from creation by the customer through the Athens distribution centre and a partner network to delivery."
@@ -61,7 +62,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived reply of Taxydema's own tracking API echoes this number with its history from the Kalochori hub to arrival at the Kallithea delivery station, for a parcel Meest International sent."
@@ -94,7 +96,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived reply of Taxydema's own tracking API echoes this number with its receipt at the Kalochori hub, for a parcel Meest International sent."
@@ -129,7 +132,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Looked up on Taxydema's own tracker, as an archived address shows; the opened capture holds only the page, whose script loads the result, and that reply was not archived."

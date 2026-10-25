@@ -21,7 +21,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Synthetic tracking-number shape for offline detection and transport tests."
@@ -53,7 +54,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Publicly reported shipment number. LBC's tracker returns its history."
@@ -82,7 +84,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Publicly reported shipment number. LBC's tracker returns its history."
@@ -114,7 +117,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An LBC tracking link archived by the Wayback Machine. LBC's tracker returns its history."
@@ -237,7 +241,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The source attributes this identifier to LBC; the public page echoes it without usable scans. Carrier confirmation remains unresolved."
@@ -301,7 +306,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The source attributes this identifier to LBC; the public page echoes it without usable scans. Carrier confirmation remains unresolved."

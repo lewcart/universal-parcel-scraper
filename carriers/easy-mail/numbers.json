@@ -291,7 +291,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The tracker prints the voucher in this twelve-digit form, with a leading zero, in the opened capture of its own lookup."

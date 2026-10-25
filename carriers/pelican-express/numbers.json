@@ -32,7 +32,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived lookup on Pelican's own tracker; the opened capture shows this twelve-digit number with its scans from the pickup request to delivery."
@@ -66,7 +67,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived lookup on Pelican's own tracker; the opened capture shows this twelve-digit number with its dated scans."
@@ -100,7 +102,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived lookup on Pelican's own tracker; the opened capture shows this twelve-digit number with its dated scans."
@@ -158,7 +161,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived lookup on Pelican's own tracker; the opened capture shows this twelve-digit number with its scans from pickup to delivery, including a delayed-arrival exception."
@@ -194,7 +198,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived lookup on Pelican's own tracker; the opened capture shows this twelve-digit number with its dated scans."
@@ -229,7 +234,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An archived lookup on Pelican's own tracker; the opened capture shows this twelve-digit number with its dated scans."
@@ -263,7 +269,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "The Pelican example in a Taiwanese parcel-tracker browser extension, which opens it on Pelican's id_link_c.asp page; not checked against Pelican's tracker."

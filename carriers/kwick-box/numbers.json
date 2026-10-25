@@ -29,7 +29,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "KwickBox's API reference, which its developer page loads, gives it as the example shipment number for the cancel request; no history is shown."

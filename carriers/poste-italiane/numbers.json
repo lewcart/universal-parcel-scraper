@@ -568,7 +568,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The example code Poste Italiane's FAQ gives for tracking a Raccomandata or Raccomandata 1. Its check digit holds."
@@ -601,7 +602,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "One of the example codes Poste Italiane's FAQ lists for a search of several shipments. Its check digit holds."
@@ -634,7 +636,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The example Poste Italiane's barcode specification for registered mail prints under its sample barcode: eleven digits, a dash and the check digit."
@@ -666,7 +669,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The example Poste Italiane's barcode specification gives for the printed code, with the check digit after a dash."
@@ -702,7 +706,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Registered letter an AGCOM decision on a complaint against Poste Italiane quotes; the same decision also prints it without the dash."
@@ -736,7 +741,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Raccomandata A.R. an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -769,7 +775,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Raccomandata A.R. an AGCOM decision on a complaint against Poste Italiane quotes; Poste's reply in it gives the same code without the dash."
@@ -802,7 +809,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Raccomandata A.R. an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -836,7 +844,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Registered letter an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -868,7 +877,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Registered letter carrying a refund cheque that an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -900,7 +910,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Registered letter an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -935,7 +946,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Registered letter with a tax demand that an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -967,7 +979,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Judicial document sent by registered post that an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -999,7 +1012,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Registered letter an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -1031,7 +1045,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Item code of a judicial notification's return card that an AGCOM sanction against Poste Italiane lists."
@@ -1064,7 +1079,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Item code of a judicial notification's return card that an AGCOM sanction against Poste Italiane lists."
@@ -1096,7 +1112,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Judicial notification of a traffic fine that an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -1128,7 +1145,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Judicial document sent by registered post that an AGCOM decision on a complaint against Poste Italiane quotes."
@@ -1163,7 +1181,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Tracking code of a registered letter sent through Poste Italiane's online service, quoted in a complaint against Poste Italiane."
@@ -1197,7 +1216,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Code of a registered letter from a public office, quoted in a complaint about a Poste Italiane delivery notice."
@@ -1232,7 +1252,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Code of a registered letter on a Poste Italiane delivery notice, quoted in a complaint against Poste Italiane."
@@ -1267,7 +1288,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Registered letter held at a post office, quoted in a complaint against Poste Italiane."
@@ -1306,7 +1328,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Raccomandata A.R. its sender quotes, with the check digit after a dash, in a complaint against Poste Italiane."

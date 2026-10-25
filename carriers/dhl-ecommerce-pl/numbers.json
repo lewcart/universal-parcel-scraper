@@ -90,7 +90,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Official documentation example, not a real shipment. No rule offers this network for twelve digits; the adapter reads one when the carrier is named."

@@ -25,7 +25,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to Yamato Transport, which stays one candidate among several."
@@ -58,7 +59,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Publicly reported shipment number. Yamato's tracker returns its history. Twelve digits stay a suggestion shared with other carriers."
@@ -95,7 +97,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Yamato tracking link archived by the Wayback Machine. Yamato's tracker returns its history, ending with delivery into a parcel box."
@@ -129,7 +132,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Yamato tracking link archived by the Wayback Machine. Yamato's tracker returns its history, with two returns to the depot before delivery."
@@ -163,7 +167,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Yamato tracking link archived by the Wayback Machine. Yamato's tracker returns its history, with a missed delivery before the final one."
@@ -198,7 +203,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Yamato tracking link archived by the Wayback Machine. Yamato's tracker returns its history."
@@ -233,7 +239,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Yamato tracking link archived by the Wayback Machine. Yamato's tracker returns its history."
@@ -270,7 +277,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Yamato tracking link archived by the Wayback Machine. Yamato's tracker returns its history."

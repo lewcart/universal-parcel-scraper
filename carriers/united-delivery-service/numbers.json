@@ -191,7 +191,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An opened capture of UDS's own tracker shows this twelve-digit barcode with shipment data sent to UDS but not yet received."

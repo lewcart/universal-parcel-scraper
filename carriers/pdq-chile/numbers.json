@@ -27,7 +27,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The guide-number example of PDQ's tracking page, in the field it shows when a reference matches several shipments. PDQ's tracker knows it as a delivered shipment."
@@ -60,7 +61,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The format example PDQ's tracking page prints under its search box. Its digits are a placeholder that the tracker does not know."

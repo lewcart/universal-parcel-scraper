@@ -26981,12 +26981,18 @@
       "mode": "automatic",
       "adapter": "sending",
       "recognitionRank": 891,
+      "recognitionServedCountriesOnly": true,
       "localClocks": true
     },
     "canaryUrl": "https://www.sending.es/localiza-tu-envio/",
     "trackingSearchUrl": "https://www.sending.es/localiza-tu-envio/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low"
+      }
+    ]
   },
   "sendle": {
     "displayName": "Sendle",

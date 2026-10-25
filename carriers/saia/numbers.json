@@ -26,7 +26,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "TrackingMore lists it as an example on its Saia LTL Freight page; it is not described as a live shipment."
@@ -330,7 +331,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "Looked up on Saia's own tracer, as an archived reply shows: it answered for the first eleven digits with a shipment scheduled for delivery."
@@ -363,7 +365,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "Looked up on Saia's own tracer, as an archived address shows; the capture holds only a redirect."

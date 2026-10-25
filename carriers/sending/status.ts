@@ -41,9 +41,24 @@ const PHASES: ReadonlyMap<string, Stage> = new Map([
   ['FALT', 'exception'],
 ]);
 
+// ParcelsApp's English for the tracker's scans, at the same minute as the
+// tracker's own. A relayed scan keeps the tracker's wording, so both copies
+// read alike.
+const RELAYED: ReadonlyMap<string, string> = new Map([
+  ['RECEPTION IN THE DELEGATION', 'Mercancia recogida'],
+  ['OUT IN NATIONAL ROUTE', 'Salida en ruta nacional'],
+]);
+
 /** The stage Sending's wording gives a scan. */
 export function sendingMappedStage(wording: string): Stage | undefined {
   return WORDINGS.get(comparable(wording));
+}
+
+/** The stage and stored wording of a scan an aggregator relays from Sending's tracker. */
+export function sendingScan(label: string): { stage: Stage; wording: string } | undefined {
+  const wording = RELAYED.get(comparable(label)) ?? label;
+  const stage = sendingMappedStage(wording);
+  return stage && { stage, wording };
 }
 
 export function isSendingNotice(wording: string): boolean {
@@ -70,6 +85,6 @@ export function sendingStage(wording: string): ClassifiedWording | null {
 
 /** The scans carry no codes: the map reads their wording. Notices are left without a stage on purpose. */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => (code ? undefined : sendingMappedStage(wording)),
+  stage: (code, wording) => (code ? undefined : sendingScan(wording)?.stage),
   gaps: [...NOTICES].map(([wording, note]) => ({ wording: wording.toLowerCase(), note })),
 };

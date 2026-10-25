@@ -27,7 +27,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened. The former doortodoor.co.kr tracker."
@@ -58,7 +59,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened. The former doortodoor.co.kr tracker."
@@ -89,7 +91,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened. The former doortodoor.co.kr tracker; the archived address keeps escaped ampersands."
@@ -121,7 +124,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened. The former doortodoor.co.kr tracker."
@@ -153,7 +157,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened. The former doortodoor.co.kr tracker."
@@ -184,7 +189,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened."
@@ -216,7 +222,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened."
@@ -247,7 +254,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened."
@@ -278,7 +286,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A developer's blog post on calling CJ Logistics' tracker prints the tracker's JSON reply for this waybill, with its scans."
@@ -310,7 +319,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened. The tracker answered with a delivered history."
@@ -344,7 +354,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's trace.cjlogistics.com tracker, as an archived address shows; the capture was not opened. The tracker answered with a delivered history."
@@ -375,7 +386,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on CJ Logistics's own tracker, as an archived address shows; the capture was not opened. The tracker answered with a delivered history whose out-for-delivery scan comes after the delivery."

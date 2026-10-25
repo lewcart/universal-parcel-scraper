@@ -28,7 +28,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on To-Day's own tracker shows the parcel picked up, passing a To-Day station and out for delivery."
@@ -59,7 +60,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived page on To-Day's tracker for this waybill's building-access instructions; it shows no history."
@@ -90,7 +92,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived page on To-Day's tracker for this waybill's building-access instructions; it shows no history."

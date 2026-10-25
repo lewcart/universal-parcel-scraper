@@ -31,7 +31,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The first example in the placeholder of Intercourier's own tracking form."
@@ -65,7 +66,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The second example in the placeholder of Intercourier's own tracking form."
@@ -97,7 +99,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The example in the placeholder of Intercourier's earlier tracking form, in an archived capture of its track-and-trace page."

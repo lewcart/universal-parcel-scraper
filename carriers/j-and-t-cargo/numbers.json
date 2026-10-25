@@ -63,7 +63,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Shipment-specific public response by J&T Cargo lists five waybills; not documentation placeholders."
@@ -98,7 +99,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Shipment-specific public response by J&T Cargo lists five waybills; not documentation placeholders."
@@ -132,7 +134,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Shipment-specific public response by J&T Cargo lists five waybills; not documentation placeholders."
@@ -167,7 +170,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Shipment-specific public response by J&T Cargo lists five waybills; not documentation placeholders."
@@ -201,7 +205,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Shipment-specific public response by J&T Cargo lists five waybills; not documentation placeholders."
@@ -236,7 +241,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "First consignment reportedly has three pieces."
@@ -270,7 +276,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Customer J&T Cargo consignment."
@@ -304,7 +311,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "First consignment reportedly has three pieces."
@@ -338,7 +346,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Customer J&T Cargo shipment; fragile-parcel report."
@@ -373,7 +382,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Customer reports three large boxes under one J&T Cargo shipment."
@@ -410,7 +420,8 @@
           "j-and-t-cargo",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Customer explicitly names J&T Cargo and consignment."
@@ -444,7 +455,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Customer reports insured fragile J&T Cargo shipment."
@@ -478,7 +490,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Customer reports 44 pieces under this J&T Cargo master. The reported child is linked separately."
@@ -550,7 +563,8 @@
           "j-and-t",
           "j-and-t-cargo",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Customer reports fragile insured J&T Cargo shipment."
@@ -587,7 +601,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Customer comment supplies a J&T Cargo waybill beginning 57, unlike the 20 prefix of every other report."

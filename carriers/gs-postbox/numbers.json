@@ -27,7 +27,8 @@
           "lbc-express",
           "metropolitan-warehouse",
           "sagawa",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "Made-up number in the shape of the half-price (반값택배) parcels GS Postbox's tracker shows: twelve digits starting 210. Every public number found is a lookup on that tracker, which shows the sender's and the recipient's partly masked names."

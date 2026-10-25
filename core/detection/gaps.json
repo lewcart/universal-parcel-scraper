@@ -3233,12 +3233,6 @@
     "reason": "Twelve digits are printed by many carriers and nothing in the number points to Sendex."
   },
   {
-    "carrier": "sending",
-    "pattern": "^\\d{12}$",
-    "kind": "by_design",
-    "reason": "Twelve digits are shared by many carriers and nothing in the number points to Sending."
-  },
-  {
     "carrier": "sendle",
     "pattern": "^QS\\d{6}$",
     "kind": "by_design",

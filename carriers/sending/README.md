@@ -25,7 +25,8 @@ Tracks Sending shipments through the lookup the search page on sending.es makes.
 - Scans sit under day headings with a time to the minute and no zone, so they stay wall
   clocks. Some carry midnight, which marks a scan dated to the day alone: they keep the day.
 - The wordings are mapped in [status.ts](status.ts). An address the recipient corrected keeps
-  the stage of the scan before it.
+  the stage of the scan before it. ParcelsApp relays some scans in its own English at the
+  tracker's minute; those are stored in the tracker's wording, so both copies read alike.
 - The page's progress rail has a phase. Its end phases, delivered and `FALTA DEFINITIVA` for a
   parcel written off as missing, set the current status even when the scans stop earlier. Its
   other phases are coarser than the scans and are not read.
@@ -44,8 +45,9 @@ Tracks Sending shipments through the lookup the search page on sending.es makes.
 
 Customers quote twelve-digit shipment numbers (número de expedición or de seguimiento) in
 public complaints addressed to Sending, leading zeros included. Twelve digits are shared by
-many carriers and nothing in the number points to Sending, so no rule claims them. The
-adapter takes twelve digits and refuses anything else without a request.
+many carriers and nothing in the number points to Sending, so a low rule only offers them:
+recognition asks Sending about them for a lookup in Spain alone. The adapter takes twelve
+digits and refuses anything else without a request.
 
 ## Links
 

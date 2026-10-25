@@ -24,7 +24,8 @@
       "retry"
     ],
     "recognition": {
-      "rank": 891
+      "rank": 891,
+      "servedCountriesOnly": true
     },
     "localClocks": true
   },
@@ -76,5 +77,11 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "sending-1",
+      "pattern": "^\\d{12}$",
+      "confidence": "low"
+    }
+  ]
 }

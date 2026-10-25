@@ -27,7 +27,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on TDN's own tracker shows this expedition's coded history from registration at the origin branch to delivery with proof of delivery confirmed."
@@ -58,7 +59,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on TDN's own tracker shows this expedition as delivered, with the branch and the time."

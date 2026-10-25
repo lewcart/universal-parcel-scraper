@@ -761,6 +761,18 @@ describe('ParcelsApp result parsing', () => {
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'accepted', discovered_carrier: 'paack' });
   });
 
+  it("stores ParcelsApp's English for Sending scans in the tracker's own wording", () => {
+    const result = parseParcelsAppResponse({ carriers: ['Sending'], states: [
+      { date: '2026-07-02T21:05:00Z', status: 'Out in national route', carrier: 0, location: 'Example Town' },
+      { date: '2026-07-02T16:10:00Z', status: 'Reception in the delegation', carrier: 0, location: 'Example Town' },
+    ] }, number, identity(), 'Europe/Madrid');
+    expect(result.events?.map((scan) => [scan.description, scan.stage, scan.stage_source])).toEqual([
+      ['Salida en ruta nacional', 'in_transit', 'carrier_map'],
+      ['Mercancia recogida', 'accepted', 'carrier_map'],
+    ]);
+    expect(result).toMatchObject({ current_stage: 'in_transit', discovered_carrier: 'sending' });
+  });
+
   it('keeps the UTC instants ParcelsApp gives Vinted Go scans', () => {
     // Vinted Go's own instants have ParcelsApp's UTC digits, in the Netherlands
     // and Spain alike; read on its catalog clock they came out two hours early.

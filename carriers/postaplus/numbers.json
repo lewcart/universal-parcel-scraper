@@ -29,7 +29,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The opened capture of PostaPlus's shipment details page names this AWB with its history from collection in Dubai to delivery in Kuwait."
@@ -64,7 +65,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The opened capture of PostaPlus's shipment details page names this AWB with its history from Dubai to delivery in Kuwait."
@@ -97,7 +99,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The opened capture of PostaPlus's shipment details page names this AWB with its history from China to a courier in Cairo."
@@ -129,7 +132,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived lookup on PostaPlus's own shipment details page; the capture was not opened, so the history was not visible."
@@ -161,7 +165,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived lookup on PostaPlus's own shipment details page; the capture was not opened, so the history was not visible."
@@ -193,7 +198,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived lookup on PostaPlus's own shipment details page; the capture was not opened, so the history was not visible."

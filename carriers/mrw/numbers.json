@@ -82,7 +82,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to MRW, which stays one candidate among several."
@@ -295,7 +296,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "Public report names this carrier; shipment identity remains unconfirmed."
@@ -328,7 +330,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Twelve-digit shipment number a review quotes; MRW's tracker returned its history, with a breakdown of each parcel's scans under some rows."

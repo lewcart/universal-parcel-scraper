@@ -29,7 +29,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Saved Sagawa tracking page in an open-source tracker's fixtures, showing the parcel delivered. The project found it by querying numbers built with the mod 7 check digit."
@@ -65,7 +66,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Recipient quotes a Sagawa notice that gives this waybill number; not independently verified."
@@ -100,7 +102,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Recipient gives the number of a Sagawa parcel and says the lookup shows it shipped; not independently verified."
@@ -136,7 +139,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Buyer quotes a seller's message naming Sagawa's Hikyaku Takkyubin; not independently verified."
@@ -172,7 +176,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An answer pastes an Amazon shipping notice that names Sagawa; not independently verified."
@@ -205,7 +210,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Mail-parser fixture of Sagawa's delivery-complete notice."
@@ -239,7 +245,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Mail-parser fixture: a retailer's shipping notice names Sagawa and links its tracking site."
@@ -263,7 +270,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ],
         "not": [
           "japan-post",
@@ -295,7 +303,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Synthetic twelve-digit waybill in the form the official app accepts, with the mod 7 check digit. Shared numeric shapes do not select Sagawa."
@@ -331,7 +340,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Sagawa tracking link archived by the Wayback Machine. The capture is Sagawa's own tracker showing the parcel in transit to the delivery office."
@@ -365,7 +375,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Sagawa tracking link archived by the Wayback Machine. The capture is Sagawa's own tracker showing the parcel delivered."
@@ -399,7 +410,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Sagawa tracking link archived by the Wayback Machine. The capture is Sagawa's own tracker showing the parcel in transit to the delivery office, with a delivery date and time slot."
@@ -434,7 +446,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Sagawa tracking link archived by the Wayback Machine. The capture is Sagawa's own tracker showing the parcel in transit to the delivery office."
@@ -471,7 +484,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Sagawa tracking link archived by the Wayback Machine. The capture is Sagawa's own tracker showing the parcel delivered."
@@ -505,7 +519,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Sagawa tracking link archived by the Wayback Machine. The capture is Sagawa's own tracker showing the parcel in transit to the delivery office, with a delivery date."
@@ -539,7 +554,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A Sagawa tracking link archived by the Wayback Machine. The capture is Sagawa's own tracker showing the parcel out for delivery."

@@ -27,7 +27,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "ParcelPanel's SMSA Express page offers it to try. SMSA's tracker answers it as a parcel from Kuwait delivered in Saudi Arabia."
@@ -58,7 +59,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The archived lookup on SMSA's current tracker shows a domestic shipment through sorting facilities, out for delivery and delivered."
@@ -92,7 +94,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "The archived lookup on SMSA's tracker shows the shipment picked up in Jeddah, through the Jeddah and Riyadh hubs and delivered."
@@ -124,7 +127,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The archived lookup on SMSA's Arabic tracker shows the shipment collected in Jeddah, through two hubs and waiting at a branch for collection."
@@ -161,7 +165,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -192,7 +197,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -223,7 +229,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -254,7 +261,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -285,7 +293,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -317,7 +326,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -348,7 +358,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -379,7 +390,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -411,7 +423,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -442,7 +455,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."
@@ -474,7 +488,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The README of an open-source client for SMSA's web service uses it as the AWB its tracking and status calls take."
@@ -508,7 +523,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Looked up on SMSA's own tracker, as an archived address shows; the capture was not opened."

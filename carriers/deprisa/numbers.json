@@ -31,7 +31,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -63,7 +64,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -94,7 +96,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -125,7 +128,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -156,7 +160,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -190,7 +195,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "The opened archived reply of Deprisa's own tracking API (services.deprisa.com, called by its tracker) returns this guía with a DEPRISA MERCANCIAS history from creation in Bogotá to delivery in Cali."
@@ -222,7 +228,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "saia"
+          "saia",
+          "sending"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com; the opened capture echoes it as the guía number, but the history loads by script and is not in the capture."

@@ -27,7 +27,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation returns this reference number for a newly registered shipment and cancels it in its cancellation example."
@@ -58,7 +59,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation tracks this shipment in its tracking example, where it was redirected to a new shipment."
@@ -89,7 +91,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation gives this as the shipment that continues a redirected one, collected by the recipient."
@@ -120,7 +123,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation gives this as the earlier shipment in the chain of its tracking example."
@@ -151,7 +155,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation tracks this shipment in its bulk tracking example, where it was not collected and went back to the sender."
@@ -186,7 +191,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation sends this reference number in its bulk tracking request example."
@@ -230,7 +236,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation gives this as the return shipment, on its way back to the sender, of an uncollected shipment in its bulk tracking example."
@@ -261,7 +268,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation gives this reference number, created by the sender, in its shipment detail example."
@@ -334,7 +342,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Pigeon Express's own API documentation lists this waybill in its cash on delivery payments example."

@@ -58,7 +58,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on Orian's own domestic barcode tracker carries this delivery order number; the capture is a redirect whose target was not archived, so no history was seen."

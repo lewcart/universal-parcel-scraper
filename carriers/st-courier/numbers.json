@@ -28,7 +28,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on ST Courier's own tracker shows this AWB moving from Chennai to Ooty, taken for delivery and delivered."
@@ -60,7 +61,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on ST Courier's own tracker shows this AWB moving from Bangalore through Chennai and delivered."

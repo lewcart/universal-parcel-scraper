@@ -27,7 +27,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A public OCU complaint filed against Closer Logistics gives this as Closer's tracking number for a Zara order, next to Zara's own order number. Closer Logistics' tracker answers it as a delivered Zara order."
@@ -58,7 +59,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A public OCU complaint filed against Closer Logistics gives this as the shipment number of a Zara order it was delivering. Closer Logistics' tracker answers it as a delivered Zara order."
@@ -92,7 +94,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A review on Closer Logistics' Trustpilot page about a failed Zara delivery gives this number, labelled as the order, in Closer's twelve-digit layout. Closer Logistics' tracker answers it as a delivered Zara order."

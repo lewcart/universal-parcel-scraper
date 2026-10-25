@@ -28,7 +28,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An opened capture of TIKI's mobile tracker shows this REG resi in eight pieces, from data entry in Denpasar through Palembang to delivery; sender and receiver details were not copied."
@@ -63,7 +64,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An opened capture of TIKI's mobile tracker shows this REG resi in several pieces, from data entry in Jakarta Pusat to arrival at TIKI Manado; sender and receiver details were not copied."
@@ -96,7 +98,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on TIKI's mobile tracker; the capture was not opened. TIKI's tracking service shows it in several pieces, all delivered."
@@ -127,7 +130,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An archived lookup on TIKI's own tracker; the opened capture shows the number filled into the search form, but the history was not visible. TIKI's tracking service shows it delivered."
@@ -161,7 +165,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "TIKI's reply on Media Konsumen gives it as the resi of the shipment it rechecked. TIKI's tracking service shows a delivery, then the parcel held at TIKI on request."
@@ -192,7 +197,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "TIKI's reply on Media Konsumen gives it as the resi of a pickup order it cancelled and refunded. TIKI's tracking service shows its data entry, then the shipment cancelled."
@@ -223,7 +229,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A Media Konsumen letter gives it as the resi a TIKI courier messaged about. TIKI's tracking service shows failed deliveries for an incomplete address and a return to the sender."
@@ -258,7 +265,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "A Media Konsumen letter gives it as the resi of a COD parcel sent with TIKI Reg. TIKI's tracking service shows failed deliveries and a return to the sender."

@@ -1,12 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, SENDING_LOOKUP, SendingTracker } from './adapter.js';
 import { normalizeSendingNumber, parseSending } from './parser.js';
-import { isSendingNotice, sendingMappedStage, sendingStage, statusMap } from './status.js';
+import { isSendingNotice, sendingMappedStage, sendingScan, sendingStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = '123400000011';
@@ -204,5 +206,30 @@ describe('Sending tracking adapter', () => {
       .toEqual({ kind: 'mapped', stage: 'delivered' });
     expect(statusMapAnswer({ carrier: 'sending', providerCode: null, description: 'Direccion corregida por el destinatario' }))
       .toEqual({ kind: 'intentional_gap', note: expect.any(String) });
+  });
+
+  it("stores an aggregator's English for a scan in the tracker's own wording, at the tracker's stage", () => {
+    expect(sendingScan('Reception in the delegation')).toEqual({ stage: 'accepted', wording: 'Mercancia recogida' });
+    expect(sendingScan('OUT IN NATIONAL ROUTE')).toEqual({ stage: 'in_transit', wording: 'Salida en ruta nacional' });
+    expect(sendingScan('Mercancia recogida')).toEqual({ stage: 'accepted', wording: 'Mercancia recogida' });
+    expect(sendingScan('Reception in the warehouse')).toBeUndefined();
+    expect(statusMapAnswer({ carrier: 'sending', providerCode: null, description: 'Reception in the delegation' }))
+      .toEqual({ kind: 'mapped', stage: 'accepted' });
+    expect(statusMapAnswer({ carrier: 'sending', providerCode: null, description: 'Out in national route' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
+  });
+});
+
+describe('Sending numbers', () => {
+  it('suggests twelve digits and is asked about them only for a lookup in Spain', () => {
+    expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'unknown' });
+    expect(detectCarrierMatch(DELIVERED).candidates).toContain('sending');
+    expect(recognitionAskedCarriers(DELIVERED, { countryHint: 'ES' })[0]).toBe('sending');
+    for (const countryHint of [undefined, 'FR', 'IT', 'PT', 'US']) {
+      expect(recognitionAskedCarriers(DELIVERED, { countryHint }), `${countryHint}`).not.toContain('sending');
+    }
+    for (const other of ['12340000001', '1234000000111', 'ES1234000000']) {
+      expect(detectCarrierMatch(other).candidates ?? [], other).not.toContain('sending');
+    }
   });
 });

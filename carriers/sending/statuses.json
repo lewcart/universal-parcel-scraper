@@ -7,6 +7,8 @@
     {"wording": "Mercancia recogida", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Collected from the sender."},
     {"wording": "En transito internacional / in international transit", "stage": "in_transit", "language": "es", "confirmedBy": "portal"},
     {"wording": "Salida en ruta nacional", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Left on the line haul to the delivering branch."},
+    {"wording": "Reception in the delegation", "stage": "accepted", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-25", "note": "ParcelsApp's English for \"Mercancia recogida\", at the same minute as the tracker's scan; stored as that wording."},
+    {"wording": "Out in national route", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-25", "note": "ParcelsApp's English for \"Salida en ruta nacional\", at the same minute as the tracker's scan; stored as that wording."},
     {"wording": "El envio ha llegado a tu delegacion mas cercana", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "At the delivering branch; often dated to the day alone."},
     {"wording": "Tu envio esta en reparto", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal"},
     {"wording": "Has sido ausente", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "The recipient was not in."},

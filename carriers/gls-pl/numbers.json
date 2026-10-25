@@ -123,7 +123,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived reply of GLS Poland's tracking service for the number with its check digit; it shows the parcel in transit under its eleven digits, without the event list."
@@ -218,7 +219,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived lookup with a check digit on GLS Poland's tracking page; capture not opened."
@@ -253,7 +255,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived lookup with a check digit on GLS Poland's tracking page; capture not opened."
@@ -351,7 +354,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Archived reply of GLS Poland's tracking service for the number with its check digit; it shows the parcel's data received under its eleven digits, without the event list."

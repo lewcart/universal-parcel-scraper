@@ -31,7 +31,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "The archived Chilexpress tracking page shows this transport order with its delivery history. Twelve digits."
@@ -131,7 +132,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "An open-source Chilexpress scraper keeps a saved copy of the tracker's result page for this number as its test fixture."
@@ -165,7 +167,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A later fixture of the same open-source scraper, a saved copy of the tracker's result page for this number."
@@ -200,7 +203,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
@@ -234,7 +238,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
@@ -305,7 +310,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
@@ -437,7 +443,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "Looked up on Chilexpress's help-centre tracking page, as an archived address shows; the capture was not opened."
@@ -532,7 +539,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A reclamos.cl complaint about a late delivery by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
@@ -564,7 +572,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A reclamos.cl complaint about a delivery to another address by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
@@ -596,7 +605,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A reclamos.cl complaint about a parcel sent back by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
@@ -628,7 +638,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A reclamos.cl complaint about a parcel that was not delivered by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
@@ -664,7 +675,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "A reclamos.cl complaint about poor delivery service by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."

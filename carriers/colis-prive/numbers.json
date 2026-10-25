@@ -22,7 +22,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Colis Privé, which stays one candidate among several."
@@ -184,7 +185,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The customer explicitly lists this among Colis Privé parcels. Its numeric format remains ambiguous and does not establish carrier ownership."
@@ -219,7 +221,8 @@
           "j-and-t",
           "lbc-express",
           "metropolitan-warehouse",
-          "sagawa"
+          "sagawa",
+          "sending"
         ]
       },
       "note": "The customer explicitly lists this among Colis Privé parcels. Its numeric format remains ambiguous and does not establish carrier ownership."
@@ -251,7 +254,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The customer explicitly lists this among Colis Privé parcels. Its numeric format remains ambiguous and does not establish carrier ownership."
@@ -283,7 +287,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The customer explicitly lists this among Colis Privé parcels. Its numeric format remains ambiguous and does not establish carrier ownership."
@@ -436,7 +441,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "The customer quotes a Colis Privé reply acknowledging receipt and subsequent loss of this Pixmania parcel. It remains a reported carrier association without independently matching history."

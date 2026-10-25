@@ -26983,12 +26983,18 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "sending",
       "recognitionRank": 891,
+      "recognitionServedCountriesOnly": true,
       "localClocks": true
     },
     "canaryUrl": "https://www.sending.es/localiza-tu-envio/",
     "trackingSearchUrl": "https://www.sending.es/localiza-tu-envio/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low"
+      }
+    ]
   },
   "sendle": {
     "displayName": "Sendle",
@@ -34103,7 +34109,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "seino": [],
   "seko": [],
   "sendex": [],
-  "sending": [],
+  "sending": ["sending-1"],
   "sendle": ["sendle-1"],
   "serpost": ["serpost-s10"],
   "servientrega": [],

@@ -55,7 +55,8 @@
           "zto",
           "j-and-t",
           "lbc-express",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "sending"
         ]
       },
       "note": "An open-source client for CBL's customer web service recorded this status reply from CBL's test account; it gives this as the carrier number of a newly registered shipment."

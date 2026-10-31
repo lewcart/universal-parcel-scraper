@@ -77,7 +77,8 @@ const withoutContact = (text: string): string => CONTACT.test(text) ? text.repla
 // transit, "Shipment in transit at AU,TOWN, please wait in patience", and an operation centre's
 // departure (302) and arrival (305), "The shipment has departed from A ,has been sent to B" and
 // "The shipment has arrived atA". A remark about a courier or whoever signed may name a person
-// there instead, and a country code given twice, "AU,AU", is no place.
+// there instead, and a country code given twice, "AU,AU", is no place. The place waited in leads
+// with its country and ends with its town, "US,TX,TOWN"; it reads town first, "TOWN, TX, US".
 const PERSON = /courier|deliver(?:y|er) ?(?:man|person|staff)|sign(?:ed|er)|recipient|收派员|快递员|派件员|配送员|签收|簽收|联系|聯繫/iu;
 const IN_TRANSIT_AT = /\bin transit at\s+([^【】]*?\p{L}[^【】]*?)\s*[,，]\s*please wait/iu;
 const CENTRE: ReadonlyMap<string, RegExp> = new Map([
@@ -85,9 +86,13 @@ const CENTRE: ReadonlyMap<string, RegExp> = new Map([
   ['305', /\barrived at\s*([^【】,，]*?\p{L}[^【】,，]*?)\s*$/iu],
 ]);
 const COUNTRY_TWICE = /^([A-Z]{2})\s*[,，]\s*\1$/iu;
+const COUNTRY_FIRST = /^[A-Z]{2}\s*[,，]/u;
 function scanSite(remark: string, code: string): string | undefined {
-  const site = (/【([^【】]*\p{L}[^【】]*)】/u.exec(remark) ?? IN_TRANSIT_AT.exec(remark) ?? CENTRE.get(code)?.exec(remark))?.[1]?.trim();
-  return site && site.length <= 100 && !COUNTRY_TWICE.test(site) && !PERSON.test(remark) ? site : undefined;
+  const bracketed = /【([^【】]*\p{L}[^【】]*)】/u.exec(remark);
+  const waited = bracketed ? null : IN_TRANSIT_AT.exec(remark);
+  const site = (bracketed ?? waited ?? CENTRE.get(code)?.exec(remark))?.[1]?.trim();
+  if (!site || site.length > 100 || COUNTRY_TWICE.test(site) || PERSON.test(remark)) return undefined;
+  return waited && COUNTRY_FIRST.test(site) ? site.split(/[,，]/u).map((part) => part.trim()).filter(Boolean).reverse().join(', ') : site;
 }
 
 /** Parse the anonymous Taiwan routes endpoint, never a logged-in waybill detail. */

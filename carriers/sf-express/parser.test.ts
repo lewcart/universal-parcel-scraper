@@ -213,13 +213,13 @@ describe('SF Express public route parsing', () => {
     expect(events[0]).not.toHaveProperty('location');
   });
 
-  it('names the place a remark waits in transit at without brackets, and no place for a country given twice', () => {
+  it('names the place a remark waits in transit at without brackets, town first, and no place for a country given twice', () => {
     const value = copy(); const routes = value.result[0]!.routes;
     routes[2]!.remark = 'Shipment in transit at AU,SAMPLE TOWN, please wait in patience';
     routes[3]!.remark = 'Shipment in transit at AU,AU, please wait in patience';
     routes[1]!.remark = 'The shipment has arrived at the transit place【AU,AU】, flight arrival';
     const events = parse(value, NUMBER).events!;
-    expect(events[3]).toMatchObject({ description: 'Shipment in transit at AU,SAMPLE TOWN, please wait in patience', location: 'AU,SAMPLE TOWN' });
+    expect(events[3]).toMatchObject({ description: 'Shipment in transit at AU,SAMPLE TOWN, please wait in patience', location: 'SAMPLE TOWN, AU' });
     expect(events[2]).toMatchObject({ description: 'Shipment in transit at AU,AU, please wait in patience' });
     expect(events[2]).not.toHaveProperty('location');
     expect(events[4]).not.toHaveProperty('location');
@@ -227,10 +227,14 @@ describe('SF Express public route parsing', () => {
     Object.assign(routes[2]!, { opCode: '302', remark: 'The shipment has departed from 样本国际件操作中心 ,has been sent to CN Sample Province Sample Parcels Center' });
     Object.assign(routes[3]!, { opCode: '305', remark: 'The shipment has arrived atCN Sample Province Sample Parcels Center' });
     Object.assign(routes[1]!, { opCode: '31', remark: 'The shipment has arrived at the next station' });
+    routes[0]!.remark = 'Shipment in transit at US,EX,Sample Town, please wait in patience';
+    routes[4]!.remark = 'Shipment in transit at Sample Town, please wait in patience';
     const centres = parse(value, NUMBER).events!;
     expect(centres[3]).toMatchObject({ description: routes[2]!.remark, location: '样本国际件操作中心' });
     expect(centres[2]).toMatchObject({ description: routes[3]!.remark, location: 'CN Sample Province Sample Parcels Center' });
     expect(centres[4]).not.toHaveProperty('location');
+    expect(centres[5]).toMatchObject({ description: routes[0]!.remark, location: 'Sample Town, EX, US' });
+    expect(centres[1]).toMatchObject({ description: routes[4]!.remark, location: 'Sample Town' });
   });
 
   it('bounds retained and inspected scans, deduplicates exact repeats and sorts like the portal', () => {

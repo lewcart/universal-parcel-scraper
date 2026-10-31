@@ -68,6 +68,9 @@ const NOT_PLACES = /^(?:(?:[A-Z]{2}, )?system(?:, system)*|(?:uni )?data cent(?:
 // States with its state and postcode, "Example Town;CA;99999;-07:00", or the country JCEX files
 // the row under, "US+08:00".
 const OFFSET_PLACE = /^(?:([^;]{1,80});([A-Z]{2})?;[A-Z\d -]{0,10};|([A-Z]{2}))([+-]\d{2}:\d{2})$/;
+// A postcode after the country, as 17TRACK also relays JCEX's places in the United States:
+// "Example Town,CA,US,99999".
+const POSTCODE_AFTER_COUNTRY = /^(.+,\s*([A-Z]{2}))\s*,\s*\d{4,6}(?:-\d{4})?$/;
 // Poste Italiane delivers "dalla sede operativa di" the depot's town, which providers also translate.
 const DEPOT_PREFIX = /^(?:dalla sede operativa di|from the operational headquarters in)\s+/i;
 // Royal Mail appends a Post Office branch's postcode in brackets ("Example Post Office [ZZ9 9ZZ]"), which providers copy.
@@ -130,6 +133,12 @@ function withoutRepeatedParts(location: string): string {
   return parts.some(repeated) ? parts.filter((part, at) => !repeated(part, at)).join(', ') : location;
 }
 
+/** A place without a postcode given after its country. */
+function withoutPostcodeAfterCountry(location: string): string {
+  const match = POSTCODE_AFTER_COUNTRY.exec(location);
+  return match && countryCode(match[2]) === match[2] && !NOT_COUNTRIES.test(match[2]) ? match[1]! : location;
+}
+
 /** The place a status given as a location names in 【】 or before its airport, '' when it names none, or undefined for any other location. */
 function statusPlace(location: string): string | undefined {
   const status = STATUS_PLACE.exec(location);
@@ -157,13 +166,14 @@ function offsetPlace(location: string): string | undefined {
  * area, a "Country" label or a status given before the place, unless it is a
  * label or placeholder ("--") that names no place, holds private delivery
  * details or is Posti's "abroad" label. A postcode given alone is the country
- * its code names, if any. A place with its row's offset after it is read without
- * it (`offsetPlace`). A part given twice in a row is read once (`withoutRepeatedParts`)
+ * its code names, if any, and one given after the country goes. A place with its
+ * row's offset after it is read without it (`offsetPlace`). A part given twice in a
+ * row is read once (`withoutRepeatedParts`)
  * and a country a feed added goes (`withoutAddedCountry`).
  */
 export function place(value: unknown): string {
   const read = withoutRepeatedParts(text(value).slice(0, 200).replace(DEPOT_PREFIX, '').replace(BRACKETED_POSTCODE, '').replace(OFFICE_CODE, '').replace(COUNTRY_LABEL, ''));
-  const location = statusPlace(read) ?? offsetPlace(read) ?? postcodeCountry(read) ?? withoutAddedCountry(read);
+  const location = statusPlace(read) ?? offsetPlace(read) ?? postcodeCountry(read) ?? withoutAddedCountry(withoutPostcodeAfterCountry(read));
   return /[\p{L}\p{N}]/u.test(location) && !NOT_PLACES.test(location) && !hasPrivateDeliveryDetails(location) && !isPostiAbroadLabel(location)
     ? location : '';
 }

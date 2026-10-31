@@ -238,7 +238,8 @@ carrier.
   takes the new form in place. JCEX's places come with the row's offset after them: a US town
   as "TOWN;ST;POSTCODE;-07:00", kept as the town and state, or the destination JCEX files the
   row under, "US+08:00", which names no place under an offset the country never keeps (JCEX's
-  rows in China). JCEX's "The carrier" names none either.
+  rows in China). A US town can also come as "TOWN,ST,US,POSTCODE", kept without the postcode.
+  JCEX's "The carrier" names none either.
 - At most 20 carrier legs and 1000 events. Per-event `address` is never read, and of
   `shipping_info` only the recipient's country, for an NZ Post, Poland Post or Swiss Post leg: the
   address can be the recipient's street.

@@ -259,6 +259,9 @@ describe('17TRACK result parsing', () => {
     } }] }, number).events?.[0]?.location;
     expect(located('Example Town;CA;;-07:00')).toBe('Example Town, CA');
     expect(located('Example Town;CA;99999;-07:00')).toBe('Example Town, CA');
+    // Or as a town, its state and country, then the postcode.
+    expect(located('Example Town,CA,US,99999')).toBe('Example Town,CA,US');
+    expect(located('Example Town,CA,US')).toBe('Example Town,CA,US');
     // The destination JCEX files a row under is no place under a clock it never keeps: a row in China at +08:00.
     expect(located('US-07:00')).toBe('US');
     expect(located('US+08:00')).toBeUndefined();

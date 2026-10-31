@@ -299,6 +299,8 @@ interface FedExScan {
   code: string;
   clock: Pick<CarrierEvent, 'time'> & { local_time?: string };
   location: string;
+  /** Its place's zone, when the place keeps one clock. */
+  zone: string | null;
 }
 
 /** A shipment as either reply gives it, its scans in FedEx's order, newest first. */
@@ -354,6 +356,10 @@ function shipmentResult(shipment: FedExShipment, number: string): CarrierResult 
   const estimate = delivered ? null : expectedDelivery(shipment.estimate);
   const pickupPoint = stage === 'ready_for_pickup' ? shipment.holdLocation : '';
   const postal = uspsHandoff(shipment.scans, number);
+  // A host starts a scan dated by its day alone at midnight on the result's zone, else the catalog's
+  // UTC, the evening before for a pickup in the United States: the day's scans' place gives it.
+  const dayZones = new Set(shipment.scans.filter(({ clock }) => !clock.time && clock.local_time).map(({ zone }) => zone));
+  const dayZone = dayZones.size === 1 ? [...dayZones][0] : null;
   return {
     status,
     ...(stage ? { current_stage: stage } : {}),
@@ -361,6 +367,7 @@ function shipmentResult(shipment: FedExShipment, number: string): CarrierResult 
     last_update: newest?.time || null,
     // A newest scan dated by its day alone has no instant, only that day.
     ...(!newest?.time && typeof newest?.local_time === 'string' ? { last_update_local: newest.local_time } : {}),
+    ...(dayZone ? { timezone: dayZone } : {}),
     expected_delivery: estimate,
     ...(delivered && deliveredAt(shipment.deliveredAt)
       ? { delivered_at: deliveredAt(shipment.deliveredAt) } : {}),
@@ -419,6 +426,7 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
       code: cleanScalar(raw.statusCD).toLocaleUpperCase('en-US'),
       clock: placeClock(scanClock(raw), pageZone(clean(raw.scanLocation)), readAt),
       location: clean(raw.scanLocation),
+      zone: pageZone(clean(raw.scanLocation)),
     })),
     statusText: keyStatus,
     statusCode: keyStatusCD,
@@ -484,6 +492,7 @@ export function parseFedExApiResponse(payload: unknown, trackingNumber: string, 
       code: cleanScalar(raw.eventType).toLocaleUpperCase('en-US'),
       clock: placeClock(apiClock(raw.date), apiZone(raw.scanLocation), readAt),
       location: apiPlace(raw.scanLocation),
+      zone: apiZone(raw.scanLocation),
     })),
     statusText,
     statusCode,

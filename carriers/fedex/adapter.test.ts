@@ -146,6 +146,8 @@ describe('FedEx structured response', () => {
       { local_time: '2026-08-31', location: 'SEOUL, KR', description: 'Picked up', provider_code: 'PU', stage: 'accepted' },
       { time: '2026-08-30T09:05:00+09:00', location: 'SEOUL, KR', description: 'Shipment information sent to FedEx', provider_code: 'OC', stage: 'registered' },
     ]);
+    // The pickup, dated by its day alone, starts that day on its place's clock, not on the catalog's UTC.
+    expect(result.timezone).toBe('Asia/Seoul');
   });
 
   it('projects an out-for-delivery parcel with its estimate', () => {
@@ -276,6 +278,16 @@ describe('FedEx structured response', () => {
     ]);
     expect(picked).toMatchObject({ last_update: '2026-09-10T21:00:00-08:00' });
     expect(picked).not.toHaveProperty('last_update_local');
+    // A day scan in a state of one clock gives the result its zone; one of several clocks, or days in two zones, none.
+    const located = (...places: string[]) => read([
+      { ...scan('2026-09-11', '00:00:00', '', 'Picked up', 'PU'), scanLocation: places[0] },
+      ...places.slice(1).map((place) => ({ ...scan('2026-09-10', '00:00:00', '', 'Picked up', 'PU'), scanLocation: place })),
+      scan('2026-09-09', '17:30:00', '-07:00', 'Shipment information sent to FedEx', 'OC'),
+    ]);
+    expect(located('PACOIMA, CA').timezone).toBe('America/Los_Angeles');
+    expect(located('EXAMPLE CITY, TX')).not.toHaveProperty('timezone');
+    expect(located('PACOIMA, CA', 'FORT MILL, SC')).not.toHaveProperty('timezone');
+    expect(located('PACOIMA, CA', 'EXAMPLE CITY, CA').timezone).toBe('America/Los_Angeles');
 
     // The newest scan has no instant: the result keeps its day, never a midnight.
     const fresh = read([

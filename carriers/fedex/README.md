@@ -127,6 +127,9 @@ fallback')`.
   overlaps other scans, except that it goes above the shipper's data sent that day: FedEx lists
   it at midnight, below the label it follows. Any other scan without a usable triple keeps no time rather than a
   guessed zone.
+- The result's `timezone` is the zone of the place of its day-dated scans, when they share one
+  that keeps a single clock. A host starts such a day there; the catalog's UTC would start a US
+  pickup on the evening before.
 - FedEx enters some transit scans at their planned time, before they happen. A scan dated
   more than five minutes after the lookup is held back until it is due (`plannedScans`).
 - FedEx labels a scan it records after a clock change with the offset its place has kept since,

@@ -258,9 +258,10 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   // Correos Express's way to the destination town, as Ship24 words it: "now out for delivery to
   // the destination facilities on one of our vehicles". Its own map reads it as transit.
   if (/^en route to the destination location\b/i.test(description)) return 'in_transit';
-  // "The status will be updated once shipment is out for delivery" is not the round itself.
+  // "The status will be updated once shipment is out for delivery" is not the round itself, nor is
+  // Apple Express's "Parcel Received, Out for Delivery Soon".
   if (/out for delivery/i.test(description)
-    && !/(?:once|when|as soon as) (?:the |your )?(?:shipment|parcel|package|item) is out for delivery/i.test(description)) return 'out_for_delivery';
+    && !/(?:once|when|as soon as) (?:the |your )?(?:shipment|parcel|package|item) is out for delivery|\bout for delivery soon\b/i.test(description)) return 'out_for_delivery';
   // Customs wording outranks a provider's own stage. The shared rules tell a
   // release or a completed clearance from customs still at work.
   if (/customs|clearance/i.test(description)) return trackingLanguageStage(description) === 'in_transit' ? 'in_transit' : 'customs';

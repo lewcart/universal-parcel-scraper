@@ -162,6 +162,8 @@ describe('classifyWording', () => {
     // New instructions with the round still to come, like "Delivery option requested".
     expect(wordingStage('The customer has shared new delivery instructions and the status will be updated once shipment is out for delivery'))
       .toBe('in_transit');
+    // A depot's receipt with the round still to come, as Apple Express words it.
+    expect(wordingStage('Parcel Received, Out for Delivery Soon')).toBe('in_transit');
   });
 
   it('keeps sender pre-advice and labels the carrier has not received at registered', () => {

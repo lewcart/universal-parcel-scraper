@@ -1552,6 +1552,8 @@ describe("universal providers' answers", () => {
     // MailAmericas' hand-overs on the way to the last mile are no delivery, and its customs release moves the parcel on.
     for (const wording of ['Arrived at destination country. Delivered by Airline', 'Receiving destination mail. Delivered to Distributor',
       'Deliver to distributor', 'Destination customs. Released']) expect(answer('unknown', null, wording), wording).toEqual(mapped('in_transit'));
+    // Apple Express's depot receipt as ParcelsApp relays it: the round is still to come.
+    expect(answer('unknown', null, 'Parcel Received, Out for Delivery Soon')).toEqual(mapped('in_transit'));
     // Postal Ninja's, ParcelsApp's and Ship24's relayed steps, read whole.
     for (const [wording, stage] of [['registered in the system', 'registered'], ['2) Example Center Your order has been received', 'in_transit'],
       ['USPS in possession of item, EXAMPLE, ST 00000', 'accepted'], ['inventory in a warehouse', 'in_transit'], ['hand over to airline', 'in_transit'],

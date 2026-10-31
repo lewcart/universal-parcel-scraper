@@ -9857,6 +9857,29 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "bridge-intl": {
+    "displayName": "Bridge Intl",
+    "color": "#f1a135",
+    "aliases": [
+      "珀斯宏桥国际速递",
+      "宏桥国际速递",
+      "Bridge International Express"
+    ],
+    "countries": [
+      "AU",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Perth",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.bri-ems.com/query",
+    "trackingSearchUrl": "https://www.bri-ems.com/query",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "bringer-parcel": {
     "displayName": "Bringer Parcel Xpress",
     "color": "#150773",
@@ -10723,6 +10746,30 @@ export const CARRIER_CATALOG = {
         "rawPattern": "^\\d{9}-\\d$"
       }
     ]
+  },
+  "cel-changda": {
+    "displayName": "CEL Changda",
+    "color": "#4c9529",
+    "aliases": [
+      "CEL HCCD",
+      "珲春畅达",
+      "珲春畅达电子商务有限公司",
+      "深圳畅达数贸跨境电商服务有限公司"
+    ],
+    "countries": [
+      "CN",
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tms.celdt.cn/track_query.aspx",
+    "trackingSearchUrl": "https://tms.celdt.cn/track_query.aspx",
+    "linkRules": [],
+    "detectionRules": []
   },
   "celeritas": {
     "displayName": "Celeritas",
@@ -12666,6 +12713,43 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "cpszy": {
+    "displayName": "CPSZY",
+    "color": "#192a51",
+    "aliases": [
+      "CPS华中转运",
+      "CPS华中转运速递",
+      "華中轉運",
+      "华中转运",
+      "Hunter Logistics Inc."
+    ],
+    "countries": [
+      "US",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cpszy.com/trace.html",
+    "trackingUrlTemplate": "https://www.cpszy.com/trace.html?sn={trackingNumber}",
+    "trackingSearchUrl": "https://www.cpszy.com/trace.html",
+    "linkRules": [
+      {
+        "domains": [
+          "cpszy.com",
+          "www.cpszy.com"
+        ],
+        "pathPattern": "^/trace\\.html$",
+        "params": [
+          "sn"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "credifin": {
     "displayName": "Credifin Logística",
@@ -23753,6 +23837,41 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "jiachen-express": {
+    "displayName": "Jiachen International Express",
+    "color": "#184a96",
+    "aliases": [
+      "佳辰国际速递",
+      "JIACHEN INTERNATIONAL",
+      "Jiachen Express"
+    ],
+    "countries": [
+      "US",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jiachenexpress.com/",
+    "trackingUrlTemplate": "https://www.jiachenexpress.com/select.html?num={trackingNumber}",
+    "trackingSearchUrl": "https://www.jiachenexpress.com/select.html",
+    "linkRules": [
+      {
+        "domains": [
+          "jiachenexpress.com",
+          "www.jiachenexpress.com"
+        ],
+        "pathPattern": "^/select\\.html$",
+        "params": [
+          "num"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "jifan": {
     "displayName": "Jifan",
     "color": "#c81011",
@@ -23824,6 +23943,28 @@ export const CARRIER_CATALOG = {
         "path": "^/(?:noredirect/)?([^/?#]+)/?$"
       }
     ],
+    "detectionRules": []
+  },
+  "jiufang": {
+    "displayName": "JiuFang Logistics",
+    "color": "#304773",
+    "aliases": [
+      "九方通逊",
+      "九方物流",
+      "JiuFang"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jiufanglogistics.cn/shipmentQueryList",
+    "trackingSearchUrl": "https://www.jiufanglogistics.cn/shipmentQueryList",
+    "linkRules": [],
     "detectionRules": []
   },
   "jne": {
@@ -26219,6 +26360,38 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "longcps": {
+    "displayName": "LONGCPS",
+    "color": "#1e3d7e",
+    "aliases": [
+      "龙行速运",
+      "龙行供应链"
+    ],
+    "countries": [
+      "CA",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.longcps.com/",
+    "trackingUrlTemplate": "https://www.longcps.com/select.html?type=cnum&num={trackingNumber}",
+    "trackingSearchUrl": "https://www.longcps.com/select.html",
+    "linkRules": [
+      {
+        "domains": [
+          "longcps.com",
+          "www.longcps.com"
+        ],
+        "pathPattern": "^/select\\.html$",
+        "query": "^(?=(?:.*&)?type=cnum(?:&|$))(?:.*&)?num=([^&]+)(?=&|$)"
+      }
+    ],
+    "detectionRules": []
   },
   "loomis-express": {
     "displayName": "Loomis Express",
@@ -37801,6 +37974,29 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "sxjd-freight": {
+    "displayName": "SXJD Freight",
+    "color": "#ba0c2f",
+    "aliases": [
+      "顺心捷达",
+      "顺心快运",
+      "SXJD",
+      "Shunxin Jieda"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.sxjdfreight.com/service/waybillList.html",
+    "trackingSearchUrl": "https://www.sxjdfreight.com/service/waybillList.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "syd": {
     "displayName": "SYD Express",
     "color": "#ff0000",
@@ -40955,6 +41151,30 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "valueway": {
+    "displayName": "Valueway Express",
+    "color": "#186fb5",
+    "aliases": [
+      "Valueway",
+      "美通快递",
+      "美通物流",
+      "Valueway Global Logistics"
+    ],
+    "countries": [
+      "CA",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.valueway.net/main.html",
+    "trackingSearchUrl": "https://www.valueway.net/main.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "vasp-expresso": {
     "displayName": "Vasp Expresso",
     "color": "#02518a",
@@ -43821,6 +44041,7 @@ export const CARRIER_IDS = [
   "boxtal",
   "boyuan",
   "bqc-logistics",
+  "bridge-intl",
   "bringer-parcel",
   "btd",
   "bts-uz",
@@ -43844,6 +44065,7 @@ export const CARRIER_IDS = [
   "ccfs",
   "cdek",
   "cdl",
+  "cel-changda",
   "celeritas",
   "central-transport",
   "centurion-transport",
@@ -43896,6 +44118,7 @@ export const CARRIER_IDS = [
   "courier-it",
   "courier-plus-ng",
   "couriersplease",
+  "cpszy",
   "credifin",
   "cruz-del-sur",
   "cse-russia",
@@ -44184,8 +44407,10 @@ export const CARRIER_IDS = [
   "jetline-couriers",
   "jetpak",
   "jhgj",
+  "jiachen-express",
   "jifan",
   "jitsu",
+  "jiufang",
   "jne",
   "joom-logistics",
   "jordan-post",
@@ -44251,6 +44476,7 @@ export const CARRIER_IDS = [
   "logisimple",
   "logistiq",
   "logoix",
+  "longcps",
   "loomis-express",
   "lotte-global",
   "lso",
@@ -44548,6 +44774,7 @@ export const CARRIER_IDS = [
   "surat-kargo",
   "sway",
   "swiftx",
+  "sxjd-freight",
   "syd",
   "t-cat",
   "t-group",
@@ -44635,6 +44862,7 @@ export const CARRIER_IDS = [
   "uzbekistan-post",
   "v-xpress",
   "valmo",
+  "valueway",
   "vasp-expresso",
   "veho",
   "veloces",
@@ -44929,6 +45157,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "boxtal": ["boxtal-1"],
   "boyuan": ["boyuan-1"],
   "bqc-logistics": [],
+  "bridge-intl": [],
   "bringer-parcel": ["bringer-parcel-1"],
   "btd": [],
   "bts-uz": [],
@@ -44952,6 +45181,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ccfs": [],
   "cdek": ["cdek-1"],
   "cdl": ["cdl-1","cdl-2"],
+  "cel-changda": [],
   "celeritas": [],
   "central-transport": [],
   "centurion-transport": [],
@@ -45004,6 +45234,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "courier-it": [],
   "courier-plus-ng": [],
   "couriersplease": ["couriersplease-1"],
+  "cpszy": [],
   "credifin": [],
   "cruz-del-sur": [],
   "cse-russia": [],
@@ -45292,8 +45523,10 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jetline-couriers": [],
   "jetpak": [],
   "jhgj": ["jhgj-1"],
+  "jiachen-express": [],
   "jifan": ["jifan-1"],
   "jitsu": [],
+  "jiufang": [],
   "jne": ["jne-1"],
   "joom-logistics": [],
   "jordan-post": ["jordan-post-s10"],
@@ -45359,6 +45592,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "logisimple": [],
   "logistiq": [],
   "logoix": ["logoix-1"],
+  "longcps": [],
   "loomis-express": ["loomis-express-1","loomis-express-2"],
   "lotte-global": [],
   "lso": ["lso-1"],
@@ -45656,6 +45890,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "surat-kargo": [],
   "sway": [],
   "swiftx": ["swiftx-1"],
+  "sxjd-freight": [],
   "syd": [],
   "t-cat": [],
   "t-group": ["t-group-1"],
@@ -45743,6 +45978,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "uzbekistan-post": ["uzbekistan-post-s10"],
   "v-xpress": [],
   "valmo": ["valmo-1"],
+  "valueway": [],
   "vasp-expresso": [],
   "veho": ["veho-1","veho-2"],
   "veloces": [],

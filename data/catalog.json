@@ -9855,6 +9855,29 @@
     "linkRules": [],
     "detectionRules": []
   },
+  "bridge-intl": {
+    "displayName": "Bridge Intl",
+    "color": "#f1a135",
+    "aliases": [
+      "珀斯宏桥国际速递",
+      "宏桥国际速递",
+      "Bridge International Express"
+    ],
+    "countries": [
+      "AU",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Perth",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.bri-ems.com/query",
+    "trackingSearchUrl": "https://www.bri-ems.com/query",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "bringer-parcel": {
     "displayName": "Bringer Parcel Xpress",
     "color": "#150773",
@@ -10721,6 +10744,30 @@
         "rawPattern": "^\\d{9}-\\d$"
       }
     ]
+  },
+  "cel-changda": {
+    "displayName": "CEL Changda",
+    "color": "#4c9529",
+    "aliases": [
+      "CEL HCCD",
+      "珲春畅达",
+      "珲春畅达电子商务有限公司",
+      "深圳畅达数贸跨境电商服务有限公司"
+    ],
+    "countries": [
+      "CN",
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tms.celdt.cn/track_query.aspx",
+    "trackingSearchUrl": "https://tms.celdt.cn/track_query.aspx",
+    "linkRules": [],
+    "detectionRules": []
   },
   "celeritas": {
     "displayName": "Celeritas",
@@ -12664,6 +12711,43 @@
         "confidence": "high"
       }
     ]
+  },
+  "cpszy": {
+    "displayName": "CPSZY",
+    "color": "#192a51",
+    "aliases": [
+      "CPS华中转运",
+      "CPS华中转运速递",
+      "華中轉運",
+      "华中转运",
+      "Hunter Logistics Inc."
+    ],
+    "countries": [
+      "US",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cpszy.com/trace.html",
+    "trackingUrlTemplate": "https://www.cpszy.com/trace.html?sn={trackingNumber}",
+    "trackingSearchUrl": "https://www.cpszy.com/trace.html",
+    "linkRules": [
+      {
+        "domains": [
+          "cpszy.com",
+          "www.cpszy.com"
+        ],
+        "pathPattern": "^/trace\\.html$",
+        "params": [
+          "sn"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "credifin": {
     "displayName": "Credifin Logística",
@@ -23751,6 +23835,41 @@
       }
     ]
   },
+  "jiachen-express": {
+    "displayName": "Jiachen International Express",
+    "color": "#184a96",
+    "aliases": [
+      "佳辰国际速递",
+      "JIACHEN INTERNATIONAL",
+      "Jiachen Express"
+    ],
+    "countries": [
+      "US",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jiachenexpress.com/",
+    "trackingUrlTemplate": "https://www.jiachenexpress.com/select.html?num={trackingNumber}",
+    "trackingSearchUrl": "https://www.jiachenexpress.com/select.html",
+    "linkRules": [
+      {
+        "domains": [
+          "jiachenexpress.com",
+          "www.jiachenexpress.com"
+        ],
+        "pathPattern": "^/select\\.html$",
+        "params": [
+          "num"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "jifan": {
     "displayName": "Jifan",
     "color": "#c81011",
@@ -23822,6 +23941,28 @@
         "path": "^/(?:noredirect/)?([^/?#]+)/?$"
       }
     ],
+    "detectionRules": []
+  },
+  "jiufang": {
+    "displayName": "JiuFang Logistics",
+    "color": "#304773",
+    "aliases": [
+      "九方通逊",
+      "九方物流",
+      "JiuFang"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jiufanglogistics.cn/shipmentQueryList",
+    "trackingSearchUrl": "https://www.jiufanglogistics.cn/shipmentQueryList",
+    "linkRules": [],
     "detectionRules": []
   },
   "jne": {
@@ -26217,6 +26358,38 @@
         "confidence": "high"
       }
     ]
+  },
+  "longcps": {
+    "displayName": "LONGCPS",
+    "color": "#1e3d7e",
+    "aliases": [
+      "龙行速运",
+      "龙行供应链"
+    ],
+    "countries": [
+      "CA",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.longcps.com/",
+    "trackingUrlTemplate": "https://www.longcps.com/select.html?type=cnum&num={trackingNumber}",
+    "trackingSearchUrl": "https://www.longcps.com/select.html",
+    "linkRules": [
+      {
+        "domains": [
+          "longcps.com",
+          "www.longcps.com"
+        ],
+        "pathPattern": "^/select\\.html$",
+        "query": "^(?=(?:.*&)?type=cnum(?:&|$))(?:.*&)?num=([^&]+)(?=&|$)"
+      }
+    ],
+    "detectionRules": []
   },
   "loomis-express": {
     "displayName": "Loomis Express",
@@ -37799,6 +37972,29 @@
       }
     ]
   },
+  "sxjd-freight": {
+    "displayName": "SXJD Freight",
+    "color": "#ba0c2f",
+    "aliases": [
+      "顺心捷达",
+      "顺心快运",
+      "SXJD",
+      "Shunxin Jieda"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.sxjdfreight.com/service/waybillList.html",
+    "trackingSearchUrl": "https://www.sxjdfreight.com/service/waybillList.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "syd": {
     "displayName": "SYD Express",
     "color": "#ff0000",
@@ -40952,6 +41148,30 @@
         "confidence": "high"
       }
     ]
+  },
+  "valueway": {
+    "displayName": "Valueway Express",
+    "color": "#186fb5",
+    "aliases": [
+      "Valueway",
+      "美通快递",
+      "美通物流",
+      "Valueway Global Logistics"
+    ],
+    "countries": [
+      "CA",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.valueway.net/main.html",
+    "trackingSearchUrl": "https://www.valueway.net/main.html",
+    "linkRules": [],
+    "detectionRules": []
   },
   "vasp-expresso": {
     "displayName": "Vasp Expresso",

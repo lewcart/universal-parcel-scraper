@@ -673,6 +673,26 @@ describe('EES Logistics, ANNTO and JDIEX from TrackingMore\'s Chinese names', ()
   });
 });
 
+describe('SXJD, CPSZY, Valueway, Jiachen, LONGCPS, Bridge Intl, JiuFang and CEL Changda', () => {
+  it('names the carriers from providers and reads their tracker links', () => {
+    for (const [name, id] of [['SXJD Freight', 'sxjd-freight'], ['顺心捷达', 'sxjd-freight'], ['CPSZY', 'cpszy'],
+      ['華中轉運', 'cpszy'], ['Valueway Express', 'valueway'], ['美通快递', 'valueway'],
+      ['JIACHEN INTERNATIONAL', 'jiachen-express'], ['佳辰国际速递', 'jiachen-express'], ['LONGCPS', 'longcps'],
+      ['龙行速运', 'longcps'], ['Bridge Intl', 'bridge-intl'], ['珀斯宏桥国际速递', 'bridge-intl'], ['JiuFang Logistics', 'jiufang'],
+      ['九方通逊', 'jiufang'], ['CEL HCCD', 'cel-changda'], ['珲春畅达', 'cel-changda'], ['Jiacheng International', 'jcex']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    for (const [url, carrier] of [
+      ['https://www.cpszy.com/trace.html?sn=AB1000000017', 'cpszy'],
+      ['https://www.jiachenexpress.com/select.html?num=AB1000000017', 'jiachen-express'],
+      ['https://www.longcps.com/select.html?type=cnum&num=AB1000000017', 'longcps'],
+    ] as const) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: 'AB1000000017', carrier, source: 'link' });
+    }
+    expect(parseTrackingInput('https://www.longcps.com/select.html?type=mobile&num=6470000000').carrier ?? 'none').not.toBe('longcps');
+  });
+});
+
 describe('Performance Freight, STG LTL, TSB and Senyu International', () => {
   it('names the carriers from providers and reads their tracker links', () => {
     for (const [name, id] of [['Performance Freight Systems, Inc.', 'performance-freight'], ['STG LTL', 'stg-ltl'],

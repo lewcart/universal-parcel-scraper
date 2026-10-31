@@ -1502,16 +1502,22 @@ const CARRIER_FAILURES = new Set(['DOWN', 'BUSY', 'PARSER', 'CAPTCHA', 'MAINTENA
  * row on China's clock and the partner's copy on the partner's US wall clock
  * (carriers/dhlink). ParcelsApp files both under DHLink, where the copy, read
  * on China's clock, would come hours early: it goes when a US reading of its
- * clock gives the instant of DHLink's row with the same wording.
+ * clock gives the instant of DHLink's row with the same wording, or when the
+ * partner's own row, filed under the partner, has the same wording at the
+ * same digits. The reply can hold the copy without DHLink's row.
  */
 function dropDhlinkCopies(entries: { name: unknown; date: unknown; wording: string }[]): void {
-  const dhlink = entries.filter(({ name }) => typeof name === 'string' && carrierIdFromName(name) === 'dhlink');
+  const fromDhlink = ({ name }: { name: unknown }) => typeof name === 'string' && carrierIdFromName(name) === 'dhlink';
+  const dhlink = entries.filter(fromDhlink);
+  const scanKey = (wall: string, wording: string) => `${wall}|${wording.replace(/\s+/g, ' ').trim().toLowerCase()}`;
+  const partners = new Set(entries.filter((entry) => !fromDhlink(entry))
+    .map(({ date, wording }) => scanKey(mislabeledWallTime(date) ?? '', wording)));
   const copies = new Set(dhlink.filter((copy) => {
     const wall = mislabeledWallTime(copy.date);
-    return wall && dhlink.some((own) => {
+    return wall && (partners.has(scanKey(wall, copy.wording)) || dhlink.some((own) => {
       const time = own !== copy && own.wording === copy.wording ? mislabeledLocalTime(own.date, DHLINK_RECORD_ZONE) : null;
       return time && usClockCopy(wall, time.timestamp);
-    });
+    }));
   }));
   if (copies.size) entries.splice(0, entries.length, ...entries.filter((entry) => !copies.has(entry)));
 }

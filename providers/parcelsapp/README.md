@@ -214,7 +214,8 @@ step exists for future protocol changes.
   [DHLink adapter](../../carriers/dhlink/README.md) reads them. ParcelsApp files both under
   DHLink, and read on China's clock, a copy of SwiftX's label came 15 hours early. A DHLink
   scan whose US reading is the instant of another DHLink scan with the same wording is that
-  copy and is dropped.
+  copy and is dropped. So is a DHLink scan with the wording and digits of the partner's own
+  row: the reply can hold SwiftX's copies of its hub scans without DHLink's rows.
 - Wall clocks: the dates of USPS, Canada Post, GOFO's US scans, SpeedPAK, EMS, Cainiao,
   EcoScooting, 4PX, MailAmericas and FIRST LINE abroad are each scan's local clock under a label that is
   never its instant (checked 2026-10-10 scan for scan: USPS's page and the "at 8:25 am" in

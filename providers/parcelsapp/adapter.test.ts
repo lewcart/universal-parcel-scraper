@@ -1794,6 +1794,27 @@ describe('ParcelsApp result parsing', () => {
     expect(times([own, warehouse, copy], 'MX')).toHaveLength(3);
   });
 
+  it("drops DHLink's copy of a SwiftX scan at SwiftX's digits when the reply has SwiftX's own row and not DHLink's", () => {
+    // Live shape: DHLink's feed relays SwiftX's label and hub scans at SwiftX's digits under the town and
+    // state; read on China's clock, each came 13 to 15 hours early beside SwiftX's own row.
+    const swx = 'SWX000000000000000001';
+    const result = parseParcelsAppResponse({ carriers: ['SwiftX', 'DHLink'], originCode: 'CN', destinationCode: 'US', states: [
+      { date: '2026-10-29T11:51:17Z', status: 'Arrived at Destination Hub', carrier: 0, location: 'US, EXAMPLE TOWN, LAX HUB' },
+      { date: '2026-10-29T11:51:17Z', status: 'Arrived at Destination Hub', carrier: 1, location: 'EXAMPLE TOWN, California, United States' },
+      { date: '2026-10-27T03:10:56Z', status: 'Arrived at Origin Hub', carrier: 0, location: 'US, EXAMPLE TOWN, ORD HUB' },
+      { date: '2026-10-27T03:10:56Z', status: 'Arrived at Origin Hub', carrier: 1, location: 'EXAMPLE TOWN, Illinois, United States' },
+      { date: '2026-10-09T00:33:06Z', status: 'Package received & scanned at warehouse', carrier: 1 },
+      { date: '2026-10-08T19:32:09Z', status: 'Shipping Label Created', carrier: 0, location: 'US, SYSTEM, SYSTEM' },
+      { date: '2026-10-08T19:32:09Z', status: 'Shipping Label Created', carrier: 1, location: 'SYSTEM, United States' },
+    ] }, swx, identity(swx), 'UTC');
+    expect(result.events?.map(({ time, description }) => [time, description])).toEqual([
+      ['2026-10-29T18:51:17.000Z', 'Arrived at Destination Hub'], ['2026-10-27T08:10:56.000Z', 'Arrived at Origin Hub'],
+      ['2026-10-09T02:32:09.000Z', 'Shipping Label Created'],
+      // DHLink's own row stays on China's clock.
+      ['2026-10-08T16:33:06.000Z', 'Package received & scanned at warehouse'],
+    ]);
+  });
+
   it('reads SwiftX\'s listed sites in their zone, its labels on GMT-07:00 in every season and its other scans on Pacific time', () => {
     const swx = 'SWX000000000000000001';
     const times = (states: Record<string, unknown>[]) =>

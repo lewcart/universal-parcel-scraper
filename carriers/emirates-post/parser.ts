@@ -99,5 +99,5 @@ export function parseEmiratesPost(html: string, raw: string): CarrierResult {
     ...(classified ? { current_stage: classified.stage, current_stage_source: classified.source } : {}),
     last_status_text: current.description, provider_code: current.code, last_update: newest.time ?? null,
     ...(newest.local_time ? { last_update_local: newest.local_time } : {}), ...(destination ? { destination_country: destination } : {}),
-    timezone: 'UTC', events };
+    events };
 }

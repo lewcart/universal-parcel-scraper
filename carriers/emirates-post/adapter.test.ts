@@ -8,6 +8,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
 import { createTracker } from '../../facade/index.js';
 import { REGISTRY } from '../../generated/registry.js';
+import { dateLocalClocks } from '../../places/clocks.js';
 import { adapter, EmiratesPostTracker } from './adapter.js';
 import { EMIRATES_POST_MAX_BYTES, emiratesPostUrl, normalizeEmiratesPostNumber, parseEmiratesPost } from './parser.js';
 import statuses from './statuses.json' with { type: 'json' };
@@ -86,6 +87,14 @@ describe('Emirates Post page projection', () => {
     expect(result.events![0]).toMatchObject({ local_time: '2026-04-05T12:00:00', time: '2026-04-05T12:00:00+04:00' });
     expect(result.events![1]).toMatchObject({ local_time: '2026-04-05T00:00:00' });
     expect(result.events![1]).not.toHaveProperty('time');
+  });
+
+  it('leaves a history no office places on UAE time, not UTC', () => {
+    const data = item(DOMESTIC); data.lastStatus = status('CLC12');
+    data.events = [scan('05/04/2026 09:00:00 AM', 'CLC12', 'Delivered', 'Synthetic office')];
+    const result = dateLocalClocks('emirates-post', parseEmiratesPost(page(document(data, DOMESTIC)), DOMESTIC));
+    expect(result).toMatchObject({ last_update: '2026-04-05T09:00:00+04:00' });
+    expect(result.events![0]).toMatchObject({ time: '2026-04-05T09:00:00+04:00', time_zone: 'Asia/Dubai', time_zone_basis: 'carrier' });
   });
 
   it('deduplicates identical scans and retains Arabic wording when English is absent', () => {

@@ -1,5 +1,6 @@
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import { countryCode } from '../../core/time/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import { chinaPostEnglish, chinaPostRelayedStage } from '../china-post/status.js';
 import statuses from './statuses.json' with { type: 'json' };
@@ -172,6 +173,18 @@ const MARKUP = /<\/?(?:a|b|i|u|em|strong|span|font|br|p|div)\b[^<>]{0,1000}>/gi;
 /** A partner's line without its tracking page's markup. */
 export function withoutMarkup(text: string): string {
   return text.replace(MARKUP, ' ');
+}
+
+/**
+ * A place with each part given once in a row: a partner's place can give the
+ * town twice ("Example, Example, ES"). A country after a town of its name
+ * ("Mexico, Mexico") stays.
+ */
+export function withoutRepeatedParts(location: string): string {
+  const parts = location.split(',').map((part) => part.trim());
+  const repeated = (part: string, at: number) => part !== '' && part.toLowerCase() === parts[at - 1]?.toLowerCase()
+    && !(at === parts.length - 1 && countryCode(part));
+  return parts.some(repeated) ? parts.filter((part, at) => !repeated(part, at)).join(', ') : location;
 }
 
 // A relayed notice about the parcel rather than a scan of it names no stage,

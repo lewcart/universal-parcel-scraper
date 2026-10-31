@@ -15,7 +15,7 @@ import { withLocalBrowser } from '../../core/transport/localBrowser.js';
 import { isRecord } from '../../core/types.js';
 import { hasSeveralClocks, mainZone } from '../../places/zones.js';
 import { chinaPostAirline, chinaPostDestinationScan } from '../china-post/status.js';
-import { chinaPostOffice, chinaPostRelayEnglish, isYunExpressNotice, withoutMarkup, yunExpressCodeStatus, yunExpressStatus } from './status.js';
+import { chinaPostOffice, chinaPostRelayEnglish, isYunExpressNotice, withoutMarkup, withoutRepeatedParts, yunExpressCodeStatus, yunExpressStatus } from './status.js';
 
 const API = 'https://services.yuntrack.com/Track/Query';
 const MAX_BYTES = 1_000_000;
@@ -238,7 +238,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
         && split.fullDescription === clean(last.ProcessContent, MAX_BYTES) && split.fullLocation === clean(last.ProcessLocation, MAX_BYTES);
       const { fullDescription, fullLocation } = (events.length === 0 ? splits.find(isLast) : undefined) ?? splits[0]!;
       const description = clean(withoutMarkup(fullDescription), 500);
-      const location = /^-+$/.test(fullLocation) ? '' : clean(withoutMarkup(fullLocation), 200);
+      const location = /^-+$/.test(fullLocation) ? '' : withoutRepeatedParts(clean(withoutMarkup(fullLocation), 200));
       // The portal can list an older row with a place but no wording. It names
       // no status, so it is skipped; the newest row must still say something.
       if (!description && events.length) continue;

@@ -1,11 +1,11 @@
 import type { SameInstantIdentityPolicy, SameInstantScan } from '../../core/catalog/eventIdentity.js';
 import { chinaPostAirline } from '../china-post/status.js';
-import { chinaPostOffice, chinaPostRelayEnglish } from './status.js';
+import { chinaPostOffice, chinaPostRelayEnglish, withoutRepeatedParts } from './status.js';
 
 const normalized = (text: string) => text.replace(/\s+/g, ' ').trim().toLowerCase();
 const wording = (scan: SameInstantScan) => normalized(scan.description);
-/** A stored row's place: an airline stored as one (邮政航空) is none. */
-const place = (scan: SameInstantScan) => chinaPostAirline(scan.location) ? '' : scan.location.trim();
+/** A stored row's place: an airline stored as one (邮政航空) is none, and a part stored twice in a row is read once. */
+const place = (scan: SameInstantScan) => chinaPostAirline(scan.location) ? '' : withoutRepeatedParts(scan.location.trim());
 
 /** One row, by its wording and place. Yuntrack's rows have no code. */
 function sameRow(incoming: SameInstantScan, stored: SameInstantScan): boolean {

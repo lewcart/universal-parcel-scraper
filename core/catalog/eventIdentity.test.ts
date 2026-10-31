@@ -766,6 +766,8 @@ describe('same-instant identity policies', () => {
       { ...stored, location: 'Mainland China, CN' },
     ]) expect(policy?.matches?.(incoming, different)).toBe(false);
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+    // A place stored with its town twice is the same place read once.
+    expect(policy?.matches?.({ ...incoming, location: 'EXAMPLE, ES' }, { ...stored, location: 'EXAMPLE, EXAMPLE, ES' })).toBe(true);
   });
 
   it('lets a China Post arrival or departure YunExpress relays take over the row stored with its office in the wording', () => {

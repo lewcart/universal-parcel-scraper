@@ -9,7 +9,7 @@ import { adapter, parse, parseCaptured, YunExpressTracker } from './adapter.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
-import { statusMap, yunExpressCodeStatus, yunExpressStatus } from './status.js';
+import { statusMap, withoutRepeatedParts, yunExpressCodeStatus, yunExpressStatus } from './status.js';
 
 const NUMBER = 'YT0000000000000001';
 const API = 'https://services.yuntrack.com/Track/Query';
@@ -51,6 +51,17 @@ describe('YunExpress captured response projection', () => {
     expect(result.events?.[1]!.stage).toBe('in_transit');
     item.TrackInfo.LastTrackEvent.ProcessContent = 'Different description';
     expect(() => parse(payload, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+
+  it('reads a place part given twice in a row once, but keeps a country after a town of its name', () => {
+    const payload = fixture();
+    const item = payload.ResultList[0];
+    item.TrackInfo.LastTrackEvent.ProcessLocation = 'EXAMPLE, EXAMPLE, ES';
+    item.TrackData.ProcessGroupList[0].ProcessDetailList[0].ProcessContent = 'Customs inspection - Import----EXAMPLE, EXAMPLE, ES';
+    expect(parse(payload, NUMBER).events?.[0]).toMatchObject({ location: 'EXAMPLE, ES' });
+    expect(withoutRepeatedParts('Mexico, Mexico')).toBe('Mexico, Mexico');
+    expect(withoutRepeatedParts('Example, Example')).toBe('Example');
+    expect(withoutRepeatedParts('Example facility')).toBe('Example facility');
   });
 
   it('stages the destination leg, and a hand-over to the local carrier is no delivery', () => {

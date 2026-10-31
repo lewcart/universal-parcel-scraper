@@ -22,6 +22,8 @@ const REFERENCES_LOOKED_UP: Readonly<Record<string, (number: string) => boolean>
   'poste-italiane': isPosteItalianeLookup,
   // DHL Express tracks its waybills and the piece identifiers on its labels.
   'dhl-express': (number) => isValidDhlExpressWaybill(number) || dhlExpressPieceId(number) !== null,
+  // Blue Dart's waybills have eleven digits; ICC Worldwide can link it to other references.
+  'blue-dart': (number) => /^\d{11}$/.test(number),
 };
 
 // DHL Paket's international parcels, its `C` postal numbers, go to the partner

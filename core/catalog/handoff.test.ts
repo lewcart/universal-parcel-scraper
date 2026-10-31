@@ -293,6 +293,19 @@ describe('delivery partners that look up only their own references', () => {
     expect(carrierErrorKind(error)).toBe('invalid_input');
     expect(fetcher).not.toHaveBeenCalled();
   });
+  it('asks Blue Dart only about its eleven-digit waybills', async () => {
+    expect(deliveryHandoff('icc-worldwide', '12345678901', { delivery_carrier: 'blue-dart', delivery_tracking_number: '69000000011' }))
+      .toEqual({ carrier: 'blue-dart', number: '69000000011', basis: 'partner' });
+    expect(deliveryHandoff('icc-worldwide', '12345678901', { delivery_carrier: 'blue-dart', delivery_tracking_number: 'SYNTH1234' })).toBeNull();
+    // The check mirrors the adapter, which refuses any other reference before a request.
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('offline'));
+    vi.stubGlobal('fetch', fetcher);
+    const registry = new AdapterRegistry(REGISTRY, { fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    const error = await (async () => registry.for('blue-dart')!.track({ number: 'SYNTH1234', postcode: null }, { budgetMs: 2_000 }))()
+      .catch((caught: unknown) => caught);
+    expect(carrierErrorKind(error)).toBe('invalid_input');
+    expect(fetcher).not.toHaveBeenCalled();
+  });
 });
 
 describe('a partner number another tracker also knows', () => {

@@ -26,6 +26,8 @@ activation marker makes a missing summary a confirmed negative.
 ## Limitations
 
 Reference-number searches and international partner histories are outside this adapter's scope.
+A partner that names Blue Dart hands over only an eleven-digit waybill; the adapter refuses
+any other reference before a request.
 
 ## Testing
 

@@ -270,9 +270,16 @@ function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number)
     } });
   });
   const { repeats } = tenant;
-  const unique = repeats ? kept.filter((entry) => !kept.some((other) => other !== entry && other.clock === entry.clock
+  const unrepeated = repeats ? kept.filter((entry) => !kept.some((other) => other !== entry && other.clock === entry.clock
     && other.event.location === entry.event.location && other.event.provider_code === entry.event.provider_code
     && repeats(entry.event.description!, other.event.description!))) : kept;
+  // The platform can write a partner's row again, and a copy written after a European clock change
+  // reads the partner's clock an hour off: meso-global's DHL rows written in October summer time at
+  // 17:09 came again, written after the change, at 18:09. The copy written later goes.
+  const unique = unrepeated.filter((entry) => !unrepeated.some((other) => other !== entry
+    && other.event.description === entry.event.description && other.event.location === entry.event.location
+    && other.event.provider_code === entry.event.provider_code && hourApart(other.clock, entry.clock)
+    && Date.parse(other.event.written_at ?? '') < Date.parse(entry.event.written_at ?? '')));
   // Rows come newest first; rows on one clock keep the reply's order.
   unique.sort((a, b) => (a.clock === b.clock ? a.index - b.index : a.clock < b.clock ? 1 : -1));
   const leg = returnLeg(unique.map(({ event }) => event));
@@ -280,6 +287,9 @@ function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number)
     ...(leg[index] ? { stage: 'returned' } : {}) }));
   return { events: events.slice(0, MAX_EVENTS), truncated: events.length > MAX_EVENTS, ahead: [...ahead] };
 }
+
+/** Two wall clocks exactly an hour apart. */
+const hourApart = (left: string, right: string): boolean => Math.abs(Date.parse(`${left}Z`) - Date.parse(`${right}Z`)) === 3_600_000;
 
 const RETURN_LEG: ReadonlySet<string> = new Set(['in_transit', 'out_for_delivery', 'delivered']);
 

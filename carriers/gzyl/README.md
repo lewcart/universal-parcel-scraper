@@ -60,6 +60,10 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
   are on the facility's clock. Each scan keeps the platform's clock when its row was written as
   `written_at`, from the track interface: a row written as it happens is written minutes after
   its clock, so stored rows show which clock a destination's rows are on.
+- The platform can write a partner's row again. A copy written after a European clock change
+  reads the partner's clock an hour off: Meso Global's DHL rows written in summer time came again,
+  written after the change, an hour later. Of two rows alike but for clocks an hour apart, the one
+  written later is dropped.
 - GZYL leaves a row's place empty and writes the town after some wordings, as in "Leaving the
   sorting center" followed by the town. The adapter reads that town as the place, so a wording
   reads the same for every town. A row can also name its city after the wording, in brackets;

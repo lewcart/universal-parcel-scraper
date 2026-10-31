@@ -104,6 +104,22 @@ describe('Hualei track interface', () => {
     }
   });
 
+  it('reads a row the platform wrote again an hour off, after a clock change, once, as first written', () => {
+    const airport = (record: Reply) => record.trackDetails.find((row: Reply) => row.track_content === 'Item arrives at destination airport');
+    const rewritten = (written: string, clock = '2026-03-04 15:40:05') => edited((record) => {
+      for (const row of record.trackDetails) row.track_createdate = row.track_date;
+      record.trackDetails.unshift({ ...airport(record), track_date: clock, track_createdate: written });
+    });
+    const times = (payload: Reply) => parseHualeiTrack(payload, NUMBER, GZYL, READ_AT)!.events!
+      .filter((event) => event.description === 'Item arrives at destination airport').map((event) => event.time);
+    expect(times(rewritten('2026-03-05 20:00:00'))).toEqual(['2026-03-04T14:40:05+08:00']);
+    // Written before the first, the copy is the one kept.
+    expect(times(rewritten('2026-03-04 14:00:00'))).toEqual(['2026-03-04T15:40:05+08:00']);
+    // Two hours off, or without the time it was written, it is another scan.
+    expect(times(rewritten('2026-03-05 20:00:00', '2026-03-04 16:40:05'))).toHaveLength(2);
+    expect(times(edited((record) => { record.trackDetails.unshift({ ...airport(record), track_date: '2026-03-04 15:40:05', track_createdate: '' }); }))).toHaveLength(2);
+  });
+
   it('holds back a timeline written ahead: a row written well before its own clock is no scan', () => {
     // The order's whole script, written at its creation; the delivery's row came with the delivery.
     const script = (delivery?: string) => edited((record) => {

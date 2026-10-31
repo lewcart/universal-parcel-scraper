@@ -287,6 +287,14 @@ describe('FedEx structured response', () => {
       .toEqual(['2026-09-11', '2026-09-11T09:15:00+09:00', '2026-09-10T20:00:00+09:00']);
     expect(fresh).toMatchObject({ status: 'in_transit', current_stage: 'accepted', last_update: null, last_update_local: '2026-09-11' });
 
+    // FedEx lists the pickup at its day's midnight, below the shipper's data
+    // sent that day; the pickup goes above that data.
+    expect(read([
+      scan('2026-09-10', '19:33:00', '-07:00', 'Arrived at FedEx location', 'AR'),
+      scan('2026-09-10', '12:12:00', '-07:00', 'Shipment information sent to FedEx', 'OC'),
+      scan('2026-09-10', '00:00:00', '', 'Picked up', 'PU'),
+    ]).events?.map(({ provider_code }) => provider_code)).toEqual(['AR', 'PU', 'OC']);
+
     // A day ahead of every timed scan goes on top, one behind them goes below.
     expect(read([
       scan('2026-09-10', '08:00:00', '+09:00', 'Departed FedEx location', 'DP'),

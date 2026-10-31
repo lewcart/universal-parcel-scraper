@@ -124,7 +124,8 @@ fallback')`.
   00:00:00 time and no offset. That scan keeps its day in `local_time`, and in
   `last_update_local` when it is the newest, instead of an invented midnight. It sorts by the
   span its day could cover, from UTC+14 to UTC−12, and in FedEx's own order where that span
-  overlaps other scans. Any other scan without a usable triple keeps no time rather than a
+  overlaps other scans, except that it goes above the shipper's data sent that day: FedEx lists
+  it at midnight, below the label it follows. Any other scan without a usable triple keeps no time rather than a
   guessed zone.
 - FedEx enters some transit scans at their planned time, before they happen. A scan dated
   more than five minutes after the lookup is held back until it is due (`plannedScans`).

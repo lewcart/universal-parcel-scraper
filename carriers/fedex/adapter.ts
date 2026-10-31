@@ -164,7 +164,9 @@ interface ListedScan {
  * its own offset, and one without a clock comes last. A scan dated by its day
  * alone could be any time from the day's start at UTC+14 to its end at UTC−12:
  * it goes below every scan certainly later, above every scan certainly earlier,
- * and in FedEx's own order among the rest.
+ * and in FedEx's own order among the rest. FedEx sorts it at its day's
+ * midnight, below the shipper's data it received that day, which comes first:
+ * it goes above that data.
  */
 function newestFirst(scans: readonly ListedScan[]): CarrierEvent[] {
   const instant = (scan: ListedScan) => Date.parse(scan.event.time ?? '') || 0;
@@ -172,7 +174,8 @@ function newestFirst(scans: readonly ListedScan[]): CarrierEvent[] {
   for (const scan of scans.filter((scan) => scan.day)) {
     const start = Date.parse(`${scan.day}T00:00:00Z`);
     const at = ordered.findIndex((other) => other.day ? other.index > scan.index
-      : instant(other) < start - 14 * HOUR_MS || (instant(other) < start + 36 * HOUR_MS && other.index > scan.index));
+      : instant(other) < start - 14 * HOUR_MS
+        || (instant(other) < start + 36 * HOUR_MS && (other.index > scan.index || other.event.stage === 'registered')));
     ordered.splice(at < 0 ? ordered.length : at, 0, scan);
   }
   return ordered.map((scan) => scan.event);

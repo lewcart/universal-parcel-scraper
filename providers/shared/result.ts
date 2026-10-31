@@ -318,6 +318,16 @@ function providerWordingStage(description: string): Stage | undefined {
   // means, delivers the parcel, and to the sender ends its return.
   if (/^вручение адресату(?: [\p{L} ]+)?[.!]?$|^вручено \d{1,2} \p{L}+[.!]?$|^handed over\. delivery to the addressee(?: [a-z ]+)?[.!]?$/iu.test(value)) return 'delivered';
   if (/^вручение отправителю(?: [\p{L} ]+)?[.!]?$|^handed over\. delivery to the sender(?: [a-z ]+)?[.!]?$/iu.test(value)) return 'returned';
+  // Russian Post's steps on mail from abroad, as 17TRACK and ParcelsApp relay them: the shop's customs data, sent
+  // before the parcel is posted, which ParcelsApp's English copy calls "Prepared for shipping"; the acceptance; the
+  // office of exchange; and customs taking the parcel in, or clearing it with no outcome yet, as "Customs clearance"
+  // reads. The wording has lost its diacritics: "приём" reads "прием", "торговой" reads "торговои".
+  if (/^таможенное декларирование[,.:–—-]\s*данные от торговои площадки получены[.!]?$|^prepared for shipping[.!]?$/iu.test(value)) return 'registered';
+  if (/^прием[.!]?$|^acceptance[.!]?$/iu.test(value)) return 'accepted';
+  if (/^(?:обработка[,.:–—-]\s*)?(?:прибыло в|покинуло) место международного обмена[.!]?$/iu.test(value)) return 'in_transit';
+  if (/^прием на таможню[.!]?$|^таможенное оформление[.!]?$/iu.test(value)) return 'customs';
+  // The origin country a parcel left, as 17TRACK words the export.
+  if (/^shipped from \p{L}[\p{L} .'-]{1,39}[.!]?$/iu.test(value)) return 'in_transit';
   // MRW's delivery address lacking details, as its own map reads it: the wording names no attempt.
   if (/^direccion entrega incompleta[.!]?$/i.test(value)) return 'exception';
   // A return on its way back to the sender, as other unfinished returns.

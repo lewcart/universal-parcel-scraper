@@ -180,6 +180,28 @@ describe('shared provider result', () => {
     expect(event('2026-01-07T12:45:00+03:00', 'Tracking number assigned')).toMatchObject({ stage: 'registered', stage_source: 'wording:provider' });
   });
 
+  it("reads Russian Post's steps on mail from abroad, as 17TRACK and ParcelsApp relay them", () => {
+    const stages: ReadonlyArray<readonly [string, string]> = [
+      ['Таможенное декларирование,Данные от торговой площадки получены', 'registered'],
+      ['Prepared for shipping', 'registered'],
+      ['Прием', 'accepted'],
+      ['Приём', 'accepted'],
+      ['Acceptance', 'accepted'],
+      ['Обработка,Прибыло в место международного обмена', 'in_transit'],
+      ['Покинуло место международного обмена', 'in_transit'],
+      ['Shipped from China', 'in_transit'],
+      ['Прием на таможню', 'customs'],
+      ['Таможенное оформление', 'customs'],
+    ];
+    for (const [wording, stage] of stages) {
+      expect(event('2026-01-07T12:45:00+03:00', wording)).toMatchObject({ stage, stage_source: 'wording:provider' });
+    }
+    // A clearance with its outcome, and the delivery office, are other steps.
+    for (const wording of ['Таможенное оформление, Выпущено таможней', 'Обработка, Прибыло в место вручения']) {
+      expect(event('2026-01-07T12:45:00+03:00', wording)).toMatchObject({ stage_source: 'none' });
+    }
+  });
+
   it("reads Yanwen's scan after its pickup, as ParcelsApp relays it", () => {
     expect(event('2026-01-07T12:45:00+08:00', 'Processing information input'))
       .toMatchObject({ stage: 'accepted', stage_source: 'wording:provider' });

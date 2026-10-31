@@ -230,7 +230,9 @@ step exists for future protocol changes.
      that the reply places by its carrier's zone, its place or its offset, not by a guess
      (EMS's "Delivered" and Japan Post's "Final delivery" in the UK). The copy then reads
      as the same instant and merges into that scan's row. Two such scans on different
-     clocks give no copy;
+     clocks give no copy. A scan written to the minute alone, at :00, is copied by one
+     that keeps its seconds: Cainiao relays YFH's scans with their seconds and no place,
+     and its own tracker gives them GMT+08:00, the clock YFH's are read on;
   3. a borrowed clock, a guess: the zone of the scan of the same network just before it by
      wall clock that steps 1 or 2 place, else of the one just after it; for a scan known
      to be in the destination (Known clocks below), only of one placed there;

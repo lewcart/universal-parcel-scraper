@@ -1586,9 +1586,21 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   for (const [key, zone] of [...entries.flatMap((entry) => entry.placed ? [[copyKey(entry), entry.placed] as const] : []), ...offsetClocks]) {
     if (key) placedClocks.set(key, placedClocks.has(key) && placedClocks.get(key) !== zone ? '' : zone);
   }
+  // A placed scan written to the minute alone is copied by one that keeps its seconds: YFH's
+  // scans come at :00 and Cainiao's copies of them, with no place, at the second. Cainiao's
+  // own tracker gives those copies GMT+08:00, the clock YFH's are read on.
+  const minuteKey = (entry: typeof entries[number]) => {
+    const wall = mislabeledWallTime(entry.date);
+    return wall ? copyKey(entry, wall.slice(0, 16)) : '';
+  };
+  const minuteClocks = new Map<string, string>();
+  for (const entry of entries) {
+    const key = entry.placed && /:00(?:\.0+)?$/.test(mislabeledWallTime(entry.date) ?? '') ? minuteKey(entry) : '';
+    if (key) minuteClocks.set(key, minuteClocks.has(key) && minuteClocks.get(key) !== entry.placed ? '' : entry.placed!);
+  }
   const zones = wallClockZones(entries.map((entry) => ({ ...entry,
     zone: entry.wallClock ? entry.zone : (localClocks.size && !entry.local && !entry.offset ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone,
-    copy: entry.wallClock && !entry.zone ? placedClocks.get(copyKey(entry)) || undefined : undefined })));
+    copy: entry.wallClock && !entry.zone ? placedClocks.get(copyKey(entry)) || minuteClocks.get(minuteKey(entry)) || undefined : undefined })));
   placeCopies(entries).forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
   copiedNetworkZones(entries.map((entry, index) => ({ name: entry.name, key: copyKey(entry), zone: zones[index]!.zone,
     fixed: Boolean(entry.offset) || relaysFacilityClock(entry.name), location: entry.location })))

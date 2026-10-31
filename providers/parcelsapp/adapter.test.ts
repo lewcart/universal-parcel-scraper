@@ -1935,6 +1935,31 @@ describe('ParcelsApp result parsing', () => {
     ]));
   });
 
+  it('reads Cainiao\'s copies of YFH\'s scans, which keep the seconds YFH leaves out, on YFH\'s clock', () => {
+    // Live shape: YFH writes its scans to the minute with a place, Cainiao the same digits to the
+    // second with none. Cainiao's own tracker gives them GMT+08:00; read on ParcelsApp's UTC
+    // label they came eight hours after YFH's.
+    const states = [
+      { date: '2026-10-29T12:11:55Z', status: 'Customs clearance in progress', carrier: 0 },
+      { date: '2026-10-29T12:11:00Z', status: 'Customs clearance in progress', carrier: 1, location: 'France' },
+      { date: '2026-10-24T16:04:25Z', status: 'Shipment departed from facility', carrier: 0 },
+      { date: '2026-10-24T16:04:00Z', status: 'Shipment departed from sorting center', carrier: 1, location: 'Example, China' },
+      { date: '2026-10-23T18:51:18Z', status: 'Shipment picked up', carrier: 0 },
+      { date: '2026-10-23T18:51:00Z', status: 'Shipment picked up', carrier: 1, location: 'Example, China' },
+    ];
+    const parse = (rows: typeof states) => parseParcelsAppResponse({ carriers: ['Cainiao', 'YFH'], destinationCode: 'FR', states: rows },
+      number, identity()).events?.map((scan) => [scan.time, scan.location ?? null]);
+    // The departure's wording differs; it takes the clock of Cainiao's copies around it.
+    expect(parse(states)).toEqual([
+      ['2026-10-29T04:11:55.000Z', null], ['2026-10-29T04:11:00.000Z', 'France'],
+      ['2026-10-24T08:04:25.000Z', null], ['2026-10-24T08:04:00.000Z', 'Example, China'],
+      ['2026-10-23T10:51:18.000Z', null], ['2026-10-23T10:51:00.000Z', 'Example, China'],
+    ]);
+    // A scan at another minute, or one with seconds of its own, is no copy to the minute.
+    expect(parse([states[0]!, { ...states[1]!, date: '2026-10-29T12:12:00Z' }])?.[0]).toEqual(['2026-10-29T12:11:55.000Z', null]);
+    expect(parse([states[0]!, { ...states[1]!, date: '2026-10-29T12:11:30Z' }])?.[0]).toEqual(['2026-10-29T12:11:55.000Z', null]);
+  });
+
   it('reads China Post\'s scans in China, and those no place dates, on Beijing\'s clock', () => {
     // 17TRACK's copies of the same scans carry "+08:00"; ParcelsApp labels the digits UTC.
     const result = parseParcelsAppResponse({ carriers: ['China Post'], states: [

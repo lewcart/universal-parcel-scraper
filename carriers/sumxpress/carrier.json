@@ -32,6 +32,14 @@
     "discarded": [],
     "unavailable": []
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "oms.sumxpress.com"
+      ],
+      "pathPattern": "^/?$",
+      "fragment": "^/query\\?(?:[^#]*&)?trackingNo=([^&]+)"
+    }
+  ],
   "detection": []
 }

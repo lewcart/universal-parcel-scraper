@@ -7556,6 +7556,41 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "annto": {
+    "displayName": "ANNTO",
+    "color": "#007ac3",
+    "aliases": [
+      "安得智联",
+      "安得物流",
+      "Annto Logistics",
+      "安得智联供应链科技股份有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.annto.com/order",
+    "trackingUrlTemplate": "https://www.annto.com/order?orderNoFormMain={trackingNumber}",
+    "trackingSearchUrl": "https://www.annto.com/order",
+    "linkRules": [
+      {
+        "domains": [
+          "annto.com",
+          "www.annto.com"
+        ],
+        "pathPattern": "^/order$",
+        "params": [
+          "orderNoFormMain"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "anousith": {
     "displayName": "Anousith Logistics",
     "color": "#e0353a",
@@ -15913,6 +15948,29 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "ees-logistics": {
+    "displayName": "EES Logistics",
+    "color": "#b62126",
+    "aliases": [
+      "EES",
+      "百福东方",
+      "百福东方国际物流",
+      "北京百福东方国际物流有限责任公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://api.eesimp.com/imc/pub_logi_info",
+    "trackingSearchUrl": "https://api.eesimp.com/imc/pub_logi_info",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "efs-asia": {
     "displayName": "EFS Asia",
     "color": "#224f8c",
@@ -23456,6 +23514,38 @@ export const CARRIER_CATALOG = {
         "params": [
           "codes"
         ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "jdiex": {
+    "displayName": "JDIEX",
+    "color": "#0166e2",
+    "aliases": [
+      "JDI国际物流",
+      "JDI International Logistics"
+    ],
+    "countries": [
+      "US",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jdiex.com/",
+    "trackingUrlTemplate": "https://www.jdiex.com/select.html?type=cnum&num={trackingNumber}",
+    "trackingSearchUrl": "https://www.jdiex.com/select.html",
+    "linkRules": [
+      {
+        "domains": [
+          "jdiex.com",
+          "www.jdiex.com"
+        ],
+        "pathPattern": "^/select\\.html$",
+        "query": "^(?=(?:.*&)?type=cnum(?:&|$))(?:.*&)?num=([^&]+)(?=&|$)"
       }
     ],
     "detectionRules": []
@@ -37454,7 +37544,15 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://oms.sumxpress.com/",
     "trackingUrlTemplate": "https://oms.sumxpress.com/#/query?trackingNo={trackingNumber}",
     "trackingSearchUrl": "https://oms.sumxpress.com/#/query",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "oms.sumxpress.com"
+        ],
+        "pathPattern": "^/?$",
+        "fragment": "^/query\\?(?:[^#]*&)?trackingNo=([^&]+)"
+      }
+    ],
     "detectionRules": []
   },
   "sundarban-courier": {
@@ -43666,6 +43764,7 @@ export const CARRIER_IDS = [
   "andreani",
   "ane-logistics",
   "anjun",
+  "annto",
   "anousith",
   "anserx",
   "anteraja",
@@ -43878,6 +43977,7 @@ export const CARRIER_IDS = [
   "ecom-logistics",
   "econt",
   "ecourier",
+  "ees-logistics",
   "efs-asia",
   "egxpress",
   "egypt-post",
@@ -44077,6 +44177,7 @@ export const CARRIER_IDS = [
   "jaskipin",
   "jcex",
   "jcw-express",
+  "jdiex",
   "jeebly",
   "jersey-post",
   "jet-logistic",
@@ -44771,6 +44872,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "andreani": ["andreani-1"],
   "ane-logistics": [],
   "anjun": ["anjun-aj"],
+  "annto": [],
   "anousith": [],
   "anserx": ["anserx-1"],
   "anteraja": ["anteraja-1"],
@@ -44983,6 +45085,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ecom-logistics": ["ecom-logistics-1"],
   "econt": [],
   "ecourier": ["ecourier-1"],
+  "ees-logistics": [],
   "efs-asia": [],
   "egxpress": ["egxpress-1"],
   "egypt-post": ["egypt-post-1","egypt-post-s10"],
@@ -45182,6 +45285,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jaskipin": [],
   "jcex": ["jcex-1"],
   "jcw-express": [],
+  "jdiex": [],
   "jeebly": ["jeebly-1"],
   "jersey-post": ["jersey-post-s10"],
   "jet-logistic": [],

@@ -653,6 +653,26 @@ describe('Chinese, Hong Kong and Australian lines from TrackingMore\'s Chinese n
   });
 });
 
+describe('EES Logistics, ANNTO and JDIEX from TrackingMore\'s Chinese names', () => {
+  it('names the carriers from providers and reads their tracker links', () => {
+    for (const [name, id] of [['EES Logistics', 'ees-logistics'], ['EES', 'ees-logistics'], ['百福东方', 'ees-logistics'],
+      ['ANNTO', 'annto'], ['安得智联', 'annto'], ['安得物流', 'annto'], ['JDIEX', 'jdiex'], ['JDI国际物流', 'jdiex'],
+      ['JDI International Logistics', 'jdiex']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    for (const [url, carrier] of [
+      ['https://www.annto.com/order?orderNoFormMain=AB1000000017', 'annto'],
+      ['https://www.jdiex.com/select.html?type=cnum&num=AB1000000017', 'jdiex'],
+      ['https://www.jdiex.com/select.html?num=AB1000000017&type=cnum', 'jdiex'],
+      ['https://oms.sumxpress.com/#/query?trackingNo=AB1000000017', 'sumxpress'],
+    ] as const) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: 'AB1000000017', carrier, source: 'link' });
+    }
+    // the same page looks up a phone number when type is mobile
+    expect(parseTrackingInput('https://www.jdiex.com/select.html?type=mobile&num=6260000000').carrier ?? 'none').not.toBe('jdiex');
+  });
+});
+
 describe('Performance Freight, STG LTL, TSB and Senyu International', () => {
   it('names the carriers from providers and reads their tracker links', () => {
     for (const [name, id] of [['Performance Freight Systems, Inc.', 'performance-freight'], ['STG LTL', 'stg-ltl'],

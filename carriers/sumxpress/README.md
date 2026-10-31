@@ -16,7 +16,7 @@ is known to see a found reply.
 
 ## Links
 
-Its query page reads the number from the address fragment, which link reading does not see.
+Tracking links carry the number as `trackingNo` in the address fragment of its query page.
 
 ## Testing
 

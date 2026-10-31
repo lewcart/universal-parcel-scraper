@@ -30429,6 +30429,48 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "performance-freight": {
+    "displayName": "Performance Freight",
+    "color": "#842d44",
+    "aliases": [
+      "Performance Freight Systems",
+      "Performance Freight Systems, Inc.",
+      "Performance Freight Systems Inc"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.carrierlogistics.com/scripts/pfeg.pol/facts.htm",
+    "trackingUrlTemplate": "https://tracking.carrierlogistics.com/scripts/pfeg.pol/boldetail.htm?wbtn=PRO&wpro1={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.carrierlogistics.com/scripts/pfeg.pol/facts.htm",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.carrierlogistics.com"
+        ],
+        "pathPattern": "^/scripts/pfeg\\.pol/boldetail\\.htm$",
+        "params": [
+          "wpro1"
+        ]
+      },
+      {
+        "domains": [
+          "tracking.carrierlogistics.com"
+        ],
+        "pathPattern": "^/scripts/pfeg\\.pol/facts\\.htm$",
+        "params": [
+          "pronum"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "pfc-express": {
     "displayName": "PFC Express",
     "color": "#0e84d6",
@@ -34344,6 +34386,30 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "senyu": {
+    "displayName": "Senyu International",
+    "color": "#2a2d6a",
+    "aliases": [
+      "森屿国际",
+      "Swift Span",
+      "Shenzhen Senyu International Freight Forwarding",
+      "Shenzhen Senyu International Freight Forwarding Co., Ltd.",
+      "Senyu International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://senyugg.cn/",
+    "trackingSearchUrl": "https://tracking.nextsls.com/trace?app=6ac6efd5743c40077e4616ff",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "serpost": {
     "displayName": "Serpost",
     "color": "#00308a",
@@ -36719,6 +36785,48 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "stg-ltl": {
+    "displayName": "STG LTL",
+    "color": "#142e75",
+    "aliases": [
+      "Frontline Freight",
+      "Frontline Freight, Inc.",
+      "Frontline Freight Inc"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.carrierlogistics.com/scripts/fro.pol/facts.htm",
+    "trackingUrlTemplate": "https://tracking.carrierlogistics.com/scripts/fro.pol/boldetail.htm?wbtn=PRO&wpro1={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.carrierlogistics.com/scripts/fro.pol/facts.htm",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.carrierlogistics.com"
+        ],
+        "pathPattern": "^/scripts/fro\\.pol/boldetail\\.htm$",
+        "params": [
+          "wpro1"
+        ]
+      },
+      {
+        "domains": [
+          "tracking.carrierlogistics.com"
+        ],
+        "pathPattern": "^/scripts/fro\\.pol/facts\\.htm$",
+        "params": [
+          "pronum"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "stone3pl": {
     "displayName": "Stone3PL",
@@ -39189,6 +39297,29 @@ export const CARRIER_CATALOG = {
         "path": "^/(?!barcode/)([A-Za-z0-9]{5,40})/[^/?#]+/?$"
       }
     ],
+    "detectionRules": []
+  },
+  "tsb-es": {
+    "displayName": "TSB",
+    "color": "#32499c",
+    "aliases": [
+      "TSB Transdina",
+      "Transdina",
+      "Transdina Cargo",
+      "TSBTrack"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tsbconnect.net/app/tracking/public",
+    "trackingSearchUrl": "https://www.tsbconnect.net/app/tracking/public?search=true",
+    "linkRules": [],
     "detectionRules": []
   },
   "tsjy": {
@@ -43489,6 +43620,7 @@ export const CARRIER_IDS = [
   "pengyou",
   "peninsula-truck-lines",
   "peqasus-az",
+  "performance-freight",
   "pfc-express",
   "pflogistics",
   "phlpost",
@@ -43588,6 +43720,7 @@ export const CARRIER_IDS = [
   "sendle",
   "sengi-express",
   "sentral-cargo",
+  "senyu",
   "serpost",
   "servientrega",
   "seven-eleven-tw",
@@ -43646,6 +43779,7 @@ export const CARRIER_IDS = [
   "starlinks",
   "starlinks-global",
   "steadfast",
+  "stg-ltl",
   "stone3pl",
   "straightship",
   "sundarban-courier",
@@ -43714,6 +43848,7 @@ export const CARRIER_IDS = [
   "trendyol-express",
   "trexity",
   "trunkrs",
+  "tsb-es",
   "tsjy",
   "tst-cf-express",
   "ttk-europe",
@@ -44566,6 +44701,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pengyou": ["pengyou-1"],
   "peninsula-truck-lines": [],
   "peqasus-az": [],
+  "performance-freight": [],
   "pfc-express": ["pfc-express-1"],
   "pflogistics": ["pflogistics-1"],
   "phlpost": ["phlpost-s10"],
@@ -44665,6 +44801,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sendle": ["sendle-1"],
   "sengi-express": ["sengi-express-1"],
   "sentral-cargo": [],
+  "senyu": [],
   "serpost": ["serpost-s10"],
   "servientrega": [],
   "seven-eleven-tw": [],
@@ -44723,6 +44860,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "starlinks": ["starlinks-1"],
   "starlinks-global": ["starlinks-global-1"],
   "steadfast": ["steadfast-1"],
+  "stg-ltl": [],
   "stone3pl": ["stone3pl-s18"],
   "straightship": ["straightship-1","straightship-2"],
   "sundarban-courier": [],
@@ -44791,6 +44929,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "trendyol-express": [],
   "trexity": [],
   "trunkrs": [],
+  "tsb-es": [],
   "tsjy": ["tsjy-1"],
   "tst-cf-express": [],
   "ttk-europe": [],

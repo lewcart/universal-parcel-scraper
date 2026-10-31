@@ -599,6 +599,24 @@ describe('FlashBird', () => {
   });
 });
 
+describe('Performance Freight, STG LTL, TSB and Senyu International', () => {
+  it('names the carriers from providers and reads their tracker links', () => {
+    for (const [name, id] of [['Performance Freight Systems, Inc.', 'performance-freight'], ['STG LTL', 'stg-ltl'],
+      ['Frontline Freight', 'stg-ltl'], ['TSB', 'tsb-es'], ['Transdina Cargo', 'tsb-es'], ['Senyu International', 'senyu'],
+      ['森屿国际', 'senyu'], ['Swift Span', 'senyu']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    for (const [url, carrier] of [
+      ['https://tracking.carrierlogistics.com/scripts/pfeg.pol/boldetail.htm?wbtn=PRO&wpro1=1000017', 'performance-freight'],
+      ['https://tracking.carrierlogistics.com/scripts/pfeg.pol/facts.htm?pronum=1000017', 'performance-freight'],
+      ['https://tracking.carrierlogistics.com/scripts/fro.pol/boldetail.htm?wbtn=PRO&wpro1=1000017', 'stg-ltl'],
+      ['https://tracking.carrierlogistics.com/scripts/fro.pol/facts.htm?pronum=1000017', 'stg-ltl'],
+    ] as const) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: '1000017', carrier, source: 'link' });
+    }
+  });
+});
+
 describe('LM Parcel, Emirates Courier Express, Viet An Express and ESPOIRER', () => {
   it('names the carriers from providers and reads their tracker links', () => {
     for (const [name, id] of [['LM Parcel', 'lm-parcel'], ['六脉速运', 'lm-parcel'], ['Emirates Courier Express', 'emirates-courier-express'],

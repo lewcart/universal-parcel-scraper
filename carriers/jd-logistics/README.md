@@ -20,6 +20,11 @@ when the service itself selects the branch without verification.
 When a prompt mask falls outside the accepted foreground size, verification diagnostics
 keep only its pixel count; puzzle images and mask data are not logged.
 
+The matcher declines most puzzles. After it declines a waybill, the page is not opened for that
+waybill for 6 hours, then twice as long after each next decline in a row, up to a day. Those
+lookups fail as the same declined verification, so enabled providers answer them. A bound
+answer clears the wait; a restart forgets it.
+
 Domestic replies require exactly one matching `rawWaybillCode` and an explicit `exists`.
 Only a bound `exists:false` is not found. Empty or refused replies stay inconclusive, and
 browser failure or abstention leaves enabled providers available. No phone, login, map,
@@ -68,9 +73,9 @@ in JD's order; any local clock keeps JD's order, newest first.
 
 Domestic recovery needs the TRAWL image with the JD helper. Its conservative matcher supports
 one observed image geometry and declines other puzzles; it does not promise verification on
-every lookup. Public unattended history has been observed for JDJ, while JDAZ coverage remains
-unproved. Domestic clocks without a stated offset remain unresolved. Other domestic service
-variants can require recipient inputs and are not followed. The international feed's empty
+every lookup. Public unattended history has been observed for JDJ and JDAZ. Domestic clocks
+without a stated offset remain unresolved. Other domestic service variants can require
+recipient inputs and are not followed. The international feed's empty
 answer remains inconclusive with `portal_not_found`, never proof that a parcel does not exist.
 A scan without an epoch is not dated from its declared zone alone.
 

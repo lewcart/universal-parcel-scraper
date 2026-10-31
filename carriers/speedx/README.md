@@ -27,7 +27,8 @@ or a browser.
   page shows it, so a scan keeps its facility's clock. `localTs` restates the same instant
   and is not read; an event without a known zone stays in UTC.
 - Event codes map through `status.ts`, then the event's category. Shipping Label Created
-  is the shipper's label, so it is `registered`, not `accepted`. Other codes stay unmapped
+  is the shipper's label, and Pickup Requested the pickup the shipper booked, so both are
+  `registered`, not `accepted` or in transit. Other codes stay unmapped
   for the shared wording rules. `statusMap` answers the app's review by code alone, so a code
   staged only by its category is not answered.
 - The page prints each event's wording, then its note. A delivery's note says where the

@@ -10,9 +10,10 @@ const EXCEPTION: ClassifiedStatus = { status: 'exception', stage: 'exception' };
 const RETURNED: ClassifiedStatus = { status: 'exception', stage: 'returned' };
 
 // Event codes seen on the tracking page. A label is only data from the
-// shipper, not a parcel SpeedX holds.
+// shipper, not a parcel SpeedX holds, and nor is the pickup it books.
 const CODES = new Map<string, ClassifiedStatus>([
   ['50001', REGISTERED],
+  ['51001', REGISTERED],
   ['52002', IN_TRANSIT],
   ['57112', IN_TRANSIT],
   ['57101', IN_TRANSIT],

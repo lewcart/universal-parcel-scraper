@@ -628,6 +628,31 @@ describe('Zippd, Global Delivery Network, VIP Posta, SFYD Express, BFE Express, 
   });
 });
 
+describe('Chinese, Hong Kong and Australian lines from TrackingMore\'s Chinese names', () => {
+  it('names the carriers from providers and reads their tracker links', () => {
+    for (const [name, id] of [['Feiyang GCEx', 'shipgce'], ['GCEx', 'shipgce'], ['飛洋轉運', 'shipgce'],
+      ['Espeedpost', 'espeedpost'], ['易速国际物流', 'espeedpost'], ['360 Zebra', '360zebra'], ['斑马物联网', '360zebra'],
+      ['AuExpress', 'auexpress'], ['澳邮', 'auexpress'], ['ANE Logistics', 'ane-logistics'], ['Ane Express', 'ane-logistics'],
+      ['安能物流', 'ane-logistics'], ['China Railway Express', 'china-railway-express'], ['中铁快运', 'china-railway-express'],
+      ['LHT Express', 'lhtex'], ['联昊通速递', 'lhtex'], ['Showl', 'showl'], ['森鸿国际物流', 'showl'], ['Elianpost', 'elianpost'],
+      ['易连供应链', 'elianpost'], ['BQC Logistics', 'bqc-logistics'], ['百千诚物流', 'bqc-logistics'],
+      ['King Kong Express', 'king-kong-express'], ['京廣速遞', 'king-kong-express'],
+      ['LiBang International Logistics', 'libang-logistics'], ['立邦国际物流', 'libang-logistics'], ['Sumxpress', 'sumxpress'],
+      ['速玛物流', 'sumxpress'], ['Suning Logistics', 'suning-logistics'], ['苏宁物流', 'suning-logistics'],
+      ['RRS Logistics', 'rrs-logistics'], ['日日顺', 'rrs-logistics'], ['ChangJiang Express', 'changjiang-express'],
+      ['长江国际速递', 'changjiang-express']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    for (const [url, number, carrier] of [
+      ['https://www.espeedpost.com/html-tracking.html?trackingnumber=AB1000000017', 'AB1000000017', 'espeedpost'],
+      ['https://www.360zebra.com/web/tracking?trackingnbrs=AB1000000017', 'AB1000000017', '360zebra'],
+      ['https://www.auexpress.com/tracking?OrderId=AB1000000017', 'AB1000000017', 'auexpress'],
+    ] as const) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: number, carrier, source: 'link' });
+    }
+  });
+});
+
 describe('Performance Freight, STG LTL, TSB and Senyu International', () => {
   it('names the carriers from providers and reads their tracker links', () => {
     for (const [name, id] of [['Performance Freight Systems, Inc.', 'performance-freight'], ['STG LTL', 'stg-ltl'],

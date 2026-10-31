@@ -16031,6 +16031,38 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "emirates-courier-express": {
+    "displayName": "Emirates Courier Express",
+    "color": "#d71920",
+    "aliases": [
+      "Emirates Courier"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.emiratescx.com/en/tracking",
+    "trackingUrlTemplate": "https://www.emiratescx.com/en/tracking-details?awb_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.emiratescx.com/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "emiratescx.com",
+          "www.emiratescx.com"
+        ],
+        "pathPattern": "^/(?:en/|ar/)?tracking-details/?$",
+        "params": [
+          "awb_number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "emirates-post": {
     "displayName": "Emirates Post",
     "color": "#004a98",
@@ -16454,6 +16486,29 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "espoirer": {
+    "displayName": "ESPOIRER",
+    "color": "#e84730",
+    "aliases": [
+      "エスポリア",
+      "エスポ便",
+      "Espoirer"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.console.espoirer.com/express-tracking",
+    "trackingUrlTemplate": "https://www.console.espoirer.com/express-tracking",
+    "trackingSearchUrl": "https://www.console.espoirer.com/express-tracking",
+    "linkRules": [],
+    "detectionRules": []
   },
   "estes": {
     "displayName": "Estes",
@@ -25466,6 +25521,44 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "lm-parcel": {
+    "displayName": "LM Parcel",
+    "color": "#955b99",
+    "aliases": [
+      "六脉速运",
+      "六脉小包"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.lmparcel.com/search",
+    "trackingUrlTemplate": "https://www.lmparcel.com/search?nums={trackingNumber}",
+    "trackingSearchUrl": "https://www.lmparcel.com/search",
+    "linkRules": [
+      {
+        "domains": [
+          "lmparcel.com",
+          "www.lmparcel.com"
+        ],
+        "pathPattern": "^/search/?$",
+        "params": [
+          "nums"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^LM\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "logen": {
     "displayName": "Logen",
@@ -40344,6 +40437,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "viet-an-express": {
+    "displayName": "Viet An Express",
+    "color": "#89c53b",
+    "aliases": [
+      "Việt An Express",
+      "Vietan International"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://vietanexpress.com/tracking-2",
+    "trackingUrlTemplate": "https://vietanexpress.com/tracking-2?tracking_num={trackingNumber}",
+    "trackingSearchUrl": "https://vietanexpress.com/tracking-2",
+    "linkRules": [
+      {
+        "domains": [
+          "vietanexpress.com",
+          "www.vietanexpress.com"
+        ],
+        "pathPattern": "^/tracking-2/?$",
+        "params": [
+          "tracking_num"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "viettel-post": {
     "displayName": "Viettel Post",
     "color": "#ee0033",
@@ -42983,6 +43109,7 @@ export const CARRIER_IDS = [
   "elta",
   "emex",
   "emile",
+  "emirates-courier-express",
   "emirates-post",
   "emons",
   "ems-vietnam",
@@ -42993,6 +43120,7 @@ export const CARRIER_IDS = [
   "eparcel-kr",
   "epost-global",
   "equick",
+  "espoirer",
   "estes",
   "estes-forwarding",
   "ethiopian-post",
@@ -43233,6 +43361,7 @@ export const CARRIER_IDS = [
   "linhan",
   "lion-parcel",
   "liuchen",
+  "lm-parcel",
   "logen",
   "loggi",
   "logisimple",
@@ -43618,6 +43747,7 @@ export const CARRIER_IDS = [
   "via-cargo",
   "viadireta",
   "victorian-freight-specialists",
+  "viet-an-express",
   "viettel-post",
   "vimenpaq",
   "vinted-go",
@@ -44056,6 +44186,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "elta": ["elta-s10"],
   "emex": [],
   "emile": ["emile-1","emile-2"],
+  "emirates-courier-express": [],
   "emirates-post": ["emirates-post-own","emirates-post-s10"],
   "emons": [],
   "ems-vietnam": ["ems-vietnam-s10"],
@@ -44066,6 +44197,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "eparcel-kr": ["eparcel-kr-1"],
   "epost-global": ["epost-global-1"],
   "equick": ["equick-eqk"],
+  "espoirer": [],
   "estes": [],
   "estes-forwarding": [],
   "ethiopian-post": [],
@@ -44306,6 +44438,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "linhan": ["linhan-1"],
   "lion-parcel": ["lion-parcel-1"],
   "liuchen": [],
+  "lm-parcel": ["lm-parcel-1"],
   "logen": [],
   "loggi": ["loggi-1"],
   "logisimple": [],
@@ -44691,6 +44824,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "via-cargo": [],
   "viadireta": ["viadireta-1","viadireta-2"],
   "victorian-freight-specialists": [],
+  "viet-an-express": [],
   "viettel-post": ["viettel-post-1"],
   "vimenpaq": [],
   "vinted-go": ["vinted-go-1","vinted-go-vgs","vinted-go-uw"],

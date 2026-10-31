@@ -16029,6 +16029,38 @@
       }
     ]
   },
+  "emirates-courier-express": {
+    "displayName": "Emirates Courier Express",
+    "color": "#d71920",
+    "aliases": [
+      "Emirates Courier"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.emiratescx.com/en/tracking",
+    "trackingUrlTemplate": "https://www.emiratescx.com/en/tracking-details?awb_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.emiratescx.com/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "emiratescx.com",
+          "www.emiratescx.com"
+        ],
+        "pathPattern": "^/(?:en/|ar/)?tracking-details/?$",
+        "params": [
+          "awb_number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "emirates-post": {
     "displayName": "Emirates Post",
     "color": "#004a98",
@@ -16452,6 +16484,29 @@
         "confidence": "high"
       }
     ]
+  },
+  "espoirer": {
+    "displayName": "ESPOIRER",
+    "color": "#e84730",
+    "aliases": [
+      "エスポリア",
+      "エスポ便",
+      "Espoirer"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.console.espoirer.com/express-tracking",
+    "trackingUrlTemplate": "https://www.console.espoirer.com/express-tracking",
+    "trackingSearchUrl": "https://www.console.espoirer.com/express-tracking",
+    "linkRules": [],
+    "detectionRules": []
   },
   "estes": {
     "displayName": "Estes",
@@ -25464,6 +25519,44 @@
       }
     ],
     "detectionRules": []
+  },
+  "lm-parcel": {
+    "displayName": "LM Parcel",
+    "color": "#955b99",
+    "aliases": [
+      "六脉速运",
+      "六脉小包"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.lmparcel.com/search",
+    "trackingUrlTemplate": "https://www.lmparcel.com/search?nums={trackingNumber}",
+    "trackingSearchUrl": "https://www.lmparcel.com/search",
+    "linkRules": [
+      {
+        "domains": [
+          "lmparcel.com",
+          "www.lmparcel.com"
+        ],
+        "pathPattern": "^/search/?$",
+        "params": [
+          "nums"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^LM\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "logen": {
     "displayName": "Logen",
@@ -40337,6 +40430,39 @@
         "pathPattern": "^/webconsignment/FTSSearch-v2\\.aspx$",
         "params": [
           "connum"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "viet-an-express": {
+    "displayName": "Viet An Express",
+    "color": "#89c53b",
+    "aliases": [
+      "Việt An Express",
+      "Vietan International"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://vietanexpress.com/tracking-2",
+    "trackingUrlTemplate": "https://vietanexpress.com/tracking-2?tracking_num={trackingNumber}",
+    "trackingSearchUrl": "https://vietanexpress.com/tracking-2",
+    "linkRules": [
+      {
+        "domains": [
+          "vietanexpress.com",
+          "www.vietanexpress.com"
+        ],
+        "pathPattern": "^/tracking-2/?$",
+        "params": [
+          "tracking_num"
         ]
       }
     ],

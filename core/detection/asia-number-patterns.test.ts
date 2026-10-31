@@ -599,6 +599,31 @@ describe('FlashBird', () => {
   });
 });
 
+describe('LM Parcel, Emirates Courier Express, Viet An Express and ESPOIRER', () => {
+  it('names the carriers from providers and reads their tracker links', () => {
+    for (const [name, id] of [['LM Parcel', 'lm-parcel'], ['六脉速运', 'lm-parcel'], ['Emirates Courier Express', 'emirates-courier-express'],
+      ['Emirates Courier', 'emirates-courier-express'], ['Viet An Express', 'viet-an-express'], ['Việt An Express', 'viet-an-express'],
+      ['ESPOIRER', 'espoirer'], ['エスポ便', 'espoirer']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    expect(carrierIdFromName('Emirates Post')).toBe('emirates-post');
+    for (const [url, number, carrier] of [
+      ['https://www.lmparcel.com/search?nums=LM0123456789', 'LM0123456789', 'lm-parcel'],
+      ['https://www.emiratescx.com/en/tracking-details?awb_number=123456789012', '123456789012', 'emirates-courier-express'],
+      ['https://vietanexpress.com/tracking-2?tracking_num=1234567', '1234567', 'viet-an-express'],
+    ] as const) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: number, carrier, source: 'link' });
+    }
+  });
+
+  it('suggests LM Parcel for LM and ten digits', () => {
+    expect(detectCarrierMatch('LM0123456789').candidates).toContain('lm-parcel');
+    for (const number of ['LM012345678', 'LM01234567890', 'LN0123456789', 'XLM0123456789']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('lm-parcel');
+    }
+  });
+});
+
 describe('Komon Express, BEL, ParcelABC, PAGO Logistics, Safe Way Express Cargo, W Express and Ecohai', () => {
   it('names the carriers from providers and reads their tracker links', () => {
     for (const [name, id] of [['Komon Express', 'komon-express'], ['可蒙快运', 'komon-express'], ['BEL', 'bel'], ['北俄国际', 'bel'],

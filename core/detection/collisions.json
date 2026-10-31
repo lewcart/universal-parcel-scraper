@@ -6679,5 +6679,15 @@
       "tnt-it"
     ],
     "reason": "Safe Way Express Cargo's Bahrain numbers have the shape of TNT Italy's national waybills, two letters and eight digits; both stay low-confidence suggestions."
+  },
+  {
+    "shape": "LM and ten digits",
+    "carriers": [
+      "aramex-au",
+      "aramex-nz",
+      "colis-prive",
+      "lm-parcel"
+    ],
+    "reason": "LM Parcel's LM numbers fall in the Aramex rules for two letters and ten digits and in Colis Privé's generic rule; all are low confidence, so recognition asks them in turn."
   }
 ]

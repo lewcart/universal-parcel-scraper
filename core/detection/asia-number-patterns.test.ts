@@ -599,6 +599,26 @@ describe('FlashBird', () => {
   });
 });
 
+describe('Zippd, Global Delivery Network, VIP Posta, SFYD Express, BFE Express, Paisley Freight, MAX Pakket and Diakinisis', () => {
+  it('names the carriers from providers and reads their tracker links', () => {
+    for (const [name, id] of [['Zippd', 'zippd'], ['DeliveryApp', 'zippd'], ['Global Delivery Network', 'global-delivery-network'],
+      ['VIP Posta', 'vip-posta'], ['Вип Пошта', 'vip-posta'], ['SFYD Express', 'sfyd-express'], ['云速递', 'sfyd-express'],
+      ['BFE Express', 'bfe-express'], ['Paisley Freight', 'paisley-freight'], ['Max Pakket', 'max-pakket'],
+      ['Diakinisis', 'diakinisis'], ['Διακίνησις', 'diakinisis']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    for (const [url, number, carrier] of [
+      ['https://www.zippd.com/tracking/?code=DAAB12CD-12345-12345678', 'DAAB12CD-12345-12345678', 'zippd'],
+      ['https://pds.gdnparcel.com/pds_tracking.asp?track=100000000017', '100000000017', 'global-delivery-network'],
+      ['https://vipposta.mk/home/tracking?id=1000017', '1000017', 'vip-posta'],
+      ['https://sfydexpress.com/tracking.html?c=SF1000000017', 'SF1000000017', 'sfyd-express'],
+      ['https://www.bfeexpress.com/track?track_number=CK512100000000017', 'CK512100000000017', 'bfe-express'],
+    ] as const) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: number, carrier, source: 'link' });
+    }
+  });
+});
+
 describe('Performance Freight, STG LTL, TSB and Senyu International', () => {
   it('names the carriers from providers and reads their tracker links', () => {
     for (const [name, id] of [['Performance Freight Systems, Inc.', 'performance-freight'], ['STG LTL', 'stg-ltl'],

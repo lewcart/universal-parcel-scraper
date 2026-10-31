@@ -9054,6 +9054,41 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "bfe-express": {
+    "displayName": "BFE Express",
+    "color": "#122a88",
+    "aliases": [
+      "BFEexpress"
+    ],
+    "countries": [
+      "AR",
+      "PE",
+      "UY",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Argentina/Buenos_Aires",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.bfeexpress.com/tracking",
+    "trackingUrlTemplate": "https://www.bfeexpress.com/track?track_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.bfeexpress.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "bfeexpress.com",
+          "www.bfeexpress.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "track_number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "big-smart": {
     "displayName": "Big Smart",
     "color": "#2f2f5e",
@@ -14025,6 +14060,27 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "diakinisis": {
+    "displayName": "Diakinisis",
+    "color": "#ed1c24",
+    "aliases": [
+      "Διακίνησις",
+      "Diakinisis Logistics Services"
+    ],
+    "countries": [
+      "GR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Athens",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pod.diakinisis.gr/tnt.php",
+    "trackingSearchUrl": "https://pod.diakinisis.gr/tnt.php",
+    "linkRules": [],
+    "detectionRules": []
   },
   "direct-couriers": {
     "displayName": "Direct Couriers",
@@ -19447,6 +19503,39 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/tracking/?$",
         "params": [
           "tracking"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "global-delivery-network": {
+    "displayName": "Global Delivery Network",
+    "color": "#00588a",
+    "aliases": [
+      "GDN Parcel"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gdnparcel.com/",
+    "trackingUrlTemplate": "https://pds.gdnparcel.com/pds_tracking.asp?track={trackingNumber}",
+    "trackingSearchUrl": "https://gdnparcel.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "gdnparcel.com",
+          "www.gdnparcel.com",
+          "pds.gdnparcel.com"
+        ],
+        "pathPattern": "^/pds_tracking\\.asp$",
+        "params": [
+          "track"
         ]
       }
     ],
@@ -26653,6 +26742,26 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "max-pakket": {
+    "displayName": "MAX Pakket",
+    "color": "#fed300",
+    "aliases": [
+      "MaxPakket"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://emens.mendrix.cloud/TrackAndTrace",
+    "trackingSearchUrl": "https://emens.mendrix.cloud/TrackAndTrace",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "mayiyinfu": {
     "displayName": "Mayi Yinfu",
     "color": "#000000",
@@ -29240,6 +29349,23 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "paisley-freight": {
+    "displayName": "Paisley Freight",
+    "color": "#2b70b7",
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.paisleyfreight.com/tracking",
+    "trackingSearchUrl": "https://www.paisleyfreight.com/tracking",
+    "linkRules": [],
     "detectionRules": []
   },
   "paket-cl": {
@@ -34545,6 +34671,39 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "sfyd-express": {
+    "displayName": "SFYD Express",
+    "color": "#f47920",
+    "aliases": [
+      "云速递",
+      "云速递国际物流"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://sfydexpress.com/tracking.html",
+    "trackingUrlTemplate": "https://sfydexpress.com/tracking.html?c={trackingNumber}",
+    "trackingSearchUrl": "https://sfydexpress.com/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "sfydexpress.com",
+          "www.sfydexpress.com"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "c"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "shadowfax": {
     "displayName": "Shadowfax",
@@ -40725,6 +40884,40 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "vip-posta": {
+    "displayName": "VIP Posta",
+    "color": "#02422a",
+    "aliases": [
+      "Вип Пошта",
+      "VIP Pošta",
+      "VIP Poshta"
+    ],
+    "countries": [
+      "MK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Skopje",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://vipposta.mk/",
+    "trackingUrlTemplate": "https://vipposta.mk/home/tracking?id={trackingNumber}",
+    "trackingSearchUrl": "https://vipposta.mk/",
+    "linkRules": [
+      {
+        "domains": [
+          "vipposta.mk",
+          "www.vipposta.mk"
+        ],
+        "pathPattern": "^/home/tracking/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "vitran-express": {
     "displayName": "Vitran Express",
     "color": "#004bac",
@@ -42734,6 +42927,38 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "zippd": {
+    "displayName": "Zippd",
+    "color": "#173ded",
+    "aliases": [
+      "DeliveryApp"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.zippd.com/tracking/",
+    "trackingUrlTemplate": "https://www.zippd.com/tracking/?code={trackingNumber}",
+    "trackingSearchUrl": "https://www.zippd.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "zippd.com",
+          "www.zippd.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "code"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "zoom-ve": {
     "displayName": "Zoom",
     "color": "#006ab0",
@@ -43066,6 +43291,7 @@ export const CARRIER_IDS = [
   "best-transport",
   "better-trucks",
   "bex-express",
+  "bfe-express",
   "big-smart",
   "bjs-home-delivery",
   "blue-express",
@@ -43193,6 +43419,7 @@ export const CARRIER_IDS = [
   "dhl-express",
   "dhl-freight",
   "dhlink",
+  "diakinisis",
   "direct-couriers",
   "direct-freight-express",
   "direx",
@@ -43331,6 +43558,7 @@ export const CARRIER_IDS = [
   "gibraltar-post",
   "gig-logistics",
   "gio-express",
+  "global-delivery-network",
   "globalpost",
   "gls-at",
   "gls-es",
@@ -43521,6 +43749,7 @@ export const CARRIER_IDS = [
   "maruti-air",
   "matkahuolto",
   "mauritius-post",
+  "max-pakket",
   "mayiyinfu",
   "mds-collivery",
   "meest",
@@ -43588,6 +43817,7 @@ export const CARRIER_IDS = [
   "packs",
   "pactic",
   "pago",
+  "paisley-freight",
   "paket-cl",
   "pakistan-post",
   "palletways",
@@ -43725,6 +43955,7 @@ export const CARRIER_IDS = [
   "servientrega",
   "seven-eleven-tw",
   "sfc",
+  "sfyd-express",
   "shadowfax",
   "shipa",
   "shipblu",
@@ -43887,6 +44118,7 @@ export const CARRIER_IDS = [
   "viettel-post",
   "vimenpaq",
   "vinted-go",
+  "vip-posta",
   "vitran-express",
   "vnlin",
   "vnpost",
@@ -43943,6 +44175,7 @@ export const CARRIER_IDS = [
   "zes-express",
   "zheldor",
   "zimpost",
+  "zippd",
   "zoom-ve",
   "zr-express",
   "zto-international"
@@ -44147,6 +44380,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "best-transport": [],
   "better-trucks": ["better-trucks-1"],
   "bex-express": [],
+  "bfe-express": [],
   "big-smart": [],
   "bjs-home-delivery": ["bjs-home-delivery-1"],
   "blue-express": [],
@@ -44274,6 +44508,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhl-express": ["dhl-express-waybill","dhl-express-piece","dhl-express-piece-label","dhl-express-piece-label-after"],
   "dhl-freight": ["dhl-freight-2"],
   "dhlink": ["dhlink-1","dhlink-xzg","dhlink-ylus","dhlink-eyt","dhlink-qh","dhlink-yf","dhlink-ktdwe","dhlink-yhkj","dhlink-by","dhlink-tdt"],
+  "diakinisis": [],
   "direct-couriers": [],
   "direct-freight-express": [],
   "direx": [],
@@ -44412,6 +44647,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gibraltar-post": [],
   "gig-logistics": [],
   "gio-express": [],
+  "global-delivery-network": [],
   "globalpost": ["globalpost-1"],
   "gls-at": ["gls-at-1"],
   "gls-es": ["gls-es-1"],
@@ -44602,6 +44838,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "maruti-air": [],
   "matkahuolto": ["matkahuolto-1","matkahuolto-2","matkahuolto-3","matkahuolto-4"],
   "mauritius-post": [],
+  "max-pakket": [],
   "mayiyinfu": ["mayiyinfu-1"],
   "mds-collivery": [],
   "meest": ["meest-1"],
@@ -44669,6 +44906,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "packs": [],
   "pactic": ["pactic-1"],
   "pago": [],
+  "paisley-freight": [],
   "paket-cl": [],
   "pakistan-post": ["pakistan-post-1","pakistan-post-s10"],
   "palletways": [],
@@ -44806,6 +45044,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "servientrega": [],
   "seven-eleven-tw": [],
   "sfc": ["sfc-1","sfc-ae"],
+  "sfyd-express": [],
   "shadowfax": ["shadowfax-1","shadowfax-2"],
   "shipa": ["shipa-1"],
   "shipblu": [],
@@ -44968,6 +45207,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "viettel-post": ["viettel-post-1"],
   "vimenpaq": [],
   "vinted-go": ["vinted-go-1","vinted-go-vgs","vinted-go-uw"],
+  "vip-posta": [],
   "vitran-express": [],
   "vnlin": [],
   "vnpost": [],
@@ -45024,6 +45264,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "zes-express": ["zes-express-1"],
   "zheldor": [],
   "zimpost": [],
+  "zippd": [],
   "zoom-ve": [],
   "zr-express": ["zr-express-1"],
   "zto-international": ["zto-international-1"],

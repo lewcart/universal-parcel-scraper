@@ -1,0 +1,46 @@
+{
+  "id": "global-delivery-network",
+  "displayName": "Global Delivery Network",
+  "aliases": [
+    "GDN Parcel"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#00588a"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://pds.gdnparcel.com/pds_tracking.asp?track={trackingNumber}",
+    "searchUrl": "https://gdnparcel.com/",
+    "canaryUrl": "https://gdnparcel.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "gdnparcel.com",
+        "www.gdnparcel.com",
+        "pds.gdnparcel.com"
+      ],
+      "pathPattern": "^/pds_tracking\\.asp$",
+      "params": [
+        "track"
+      ]
+    }
+  ],
+  "detection": []
+}

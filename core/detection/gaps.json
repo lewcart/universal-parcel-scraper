@@ -4355,5 +4355,11 @@
     "pattern": "^\\d{12}$",
     "kind": "collision",
     "reason": "FlashBird parcel numbers are twelve digits, a shape Sending, BRT, Colis Privé and other networks print, FedEx's with the same leading digits, so the shape cannot name FlashBird."
+  },
+  {
+    "carrier": "global-delivery-network",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Global Delivery Network numbers are twelve digits, a shape FedEx, Sending, BRT and other networks print, so the shape cannot name Global Delivery Network."
   }
 ]

@@ -9,6 +9,8 @@ import {
   parsePosteItalianeTrackingResponse,
   PosteItalianeTracker,
   adapter,
+  CAPTCHA_PAUSE_MS,
+  HOURLY_SEARCHES,
 } from './adapter.js';
 import { trackingLocationCountry, trackingPlace } from '../../places/trackingLocation.js';
 import { classifyPosteItalianeStatus } from './status.js';
@@ -674,10 +676,6 @@ describe('PosteItalianeTracker fetch', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({}, 503));
     await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
       .rejects.toMatchObject({ name: 'UpstreamHttpError', status: 503 });
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ id: '1', tipo: 'error',
-      descrizione: "Non e' possibile effettuare ulteriori richieste senza specificare una captcha valida" }, 400));
-    await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
-      .rejects.toMatchObject({ name: 'ChallengeError', kind: 'challenge' });
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ id: '1', tipo: 'error', descrizione: 'Richiesta non valida' }, 400));
     await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
       .rejects.toMatchObject({ name: 'UpstreamHttpError', kind: 'transport', status: 400 });
@@ -687,5 +685,41 @@ describe('PosteItalianeTracker fetch', () => {
     expect(() => new PosteItalianeTracker({ timeoutMs: 0 })).toThrow(TypeError);
     await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch('nope'))
       .rejects.toThrow(InvalidInputError);
+    // Last: the CAPTCHA pauses the global fetch's searches.
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ id: '1', tipo: 'error',
+      descrizione: "Non e' possibile effettuare ulteriori richieste senza specificare una captcha valida" }, 400));
+    await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
+      .rejects.toMatchObject({ name: 'ChallengeError', kind: 'challenge' });
+  });
+
+  it('paces the searches sent through one transport, recognition included, and pauses them after a CAPTCHA', async () => {
+    let now = Date.parse('2026-01-05T08:00:00Z');
+    vi.spyOn(Date, 'now').mockImplementation(() => now);
+    const service = browser([capture(parcel())]);
+    const fetcher = vi.fn<typeof fetch>(async () => response(parcel()));
+    const tracker = new PosteItalianeTracker({ fetcher, trawl: service.trawl });
+    const recognition = adapter({ fetcher, trawl: null, recorder: NOOP_RECORDER, env: {}, browserExecutablePath: null });
+    for (let search = 1; search < HOURLY_SEARCHES; search++) {
+      await tracker.fetch(TRACKING_NUMBER);
+      now += 60_000;
+    }
+    expect(await recognition.recognize!(TRACKING_NUMBER)).toMatchObject({ known: true });
+    now += 60_000;
+    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 42 * 60_000 });
+    await expect(recognition.recognize!(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited' });
+    expect(fetcher).toHaveBeenCalledTimes(HOURLY_SEARCHES);
+    now += 42 * 60_000;
+    await tracker.fetch(TRACKING_NUMBER);
+    expect(fetcher).toHaveBeenCalledTimes(HOURLY_SEARCHES + 1);
+
+    const refused = vi.fn<typeof fetch>(async () => response(gate, 400));
+    const paused = new PosteItalianeTracker({ fetcher: refused, trawl: null });
+    await expect(paused.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    now += CAPTCHA_PAUSE_MS - 1;
+    await expect(paused.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 1 });
+    now += 1;
+    await expect(paused.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    expect(refused).toHaveBeenCalledTimes(2);
+    expect(service.fetcher).not.toHaveBeenCalled();
   });
 });

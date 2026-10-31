@@ -43,7 +43,7 @@ export async function runPosteItalianeBrowser({ url, handle, tier, maxTimeout, c
   const controller = new AbortController();
   let context, page, timer, onResponse, onRequest, onFailed, abort;
   let accepting = true, expired = false, totalBytes = 0, statusCode = 0;
-  let sawChallenge = false, waitedForRequest = false, nativeOutcome = 'not_started';
+  let sawChallenge = false, paused = false, waitedForRequest = false, nativeOutcome = 'not_started';
   let finish, challenge;
   const terminal = new Promise(resolve => { finish = resolve; });
   const challenged = new Promise(resolve => { challenge = resolve; });
@@ -63,6 +63,12 @@ export async function runPosteItalianeBrowser({ url, handle, tier, maxTimeout, c
   try {
     if (!Number.isFinite(maxTimeout) || maxTimeout < 1) throw new Error('No browser budget');
     signal?.throwIfAborted();
+    // The page is asked only after a direct search drew the CAPTCHA from the same address, so
+    // while Google refuses the audio it would only show the challenge again.
+    if (await audioBackoff.remainingMs() > 0) {
+      paused = true; nativeOutcome = 'audio_cooldown';
+      return result();
+    }
     await Promise.race([
       (async () => {
         const created = await handle.browser.newContext();
@@ -186,11 +192,11 @@ export async function runPosteItalianeBrowser({ url, handle, tier, maxTimeout, c
       if (onFailed) page.off('requestfailed', onFailed);
     }
     if (context) await close(context);
-    if (sawChallenge) {
+    if (sawChallenge || paused) {
       const last = entries.at(-1);
       try {
         onVerification({ nativeOutcome, waitedForRequest, responses: entries.length, pending: pending.size,
-          outcome: !last || last.error || last.truncated ? 'incomplete' : last.status === 400 ? 'challenge' : 'http_response',
+          outcome: paused ? 'not_opened' : !last || last.error || last.truncated ? 'incomplete' : last.status === 400 ? 'challenge' : 'http_response',
           durationMs: Date.now() - started });
       } catch { /* Diagnostics must not change the tracking result or cleanup. */ }
     }

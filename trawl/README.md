@@ -69,7 +69,9 @@ Poste Italiane uses that solver only after its tracking API requests a CAPTCHA. 
 submits the issued token and the helper captures the matching history, keeping the earlier
 refusal and excluding verification tokens and recipient fields. A disappearing widget does
 not override a tracking request already in flight: its response and body finish within the
-same deadline. Failed or unfinished later requests stay failures. The fixed-label
+same deadline. Failed or unfinished later requests stay failures. While the audio pause below
+is on, the helper does not open the page: the adapter asks it only after a direct search drew
+the CAPTCHA from the same address, so the page would show it again. The fixed-label
 `poste.verification` log records native solver outcomes and pending-request counts without
 tokens, parcel identifiers or page text.
 Its scoped native modules replace upstream raw debug logs with fixed events.
@@ -149,8 +151,9 @@ TRAWL's reCAPTCHA audio solver stops as soon as Google's challenge frame shows i
 automated-traffic page or refuses an answer. It reads both from the frame's class names, so a
 widget in any language counts. An automated-traffic page also pauses audio for six hours
 across the service's solver copies, Poste Italiane and DHL Poland helpers. Skipped lookups
-do not extend the pause; a wrong transcription does not start it. Clear tracking replies
-and forms already verified by the page still work, while unresolved challenges stay available
+do not extend the pause; a wrong transcription does not start it. Except on Poste Italiane's
+page, which is not opened, clear tracking replies and forms already verified by the page still
+work, while unresolved challenges stay available
 to enabled provider fallback. With `REDIS_URL`, the pause survives service restarts and rollouts
 in the existing Redis store. It keeps only the deadline, shared across solver copies and concurrent
 service processes. Without Redis, or while it is unavailable, the pause stays in process memory;

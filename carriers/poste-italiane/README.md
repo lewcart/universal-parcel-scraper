@@ -42,12 +42,18 @@ Italiane for a number issued abroad.
    - HTTP 404/410 means the tracking endpoint is unavailable. After a burst of searches from one
      address, the service answers HTTP 400 with an error envelope asking for a CAPTCHA: a
      challenge. Other non-200 replies remain upstream errors.
+   - The CAPTCHA comes once an address has sent twenty searches in the past hour, the refused
+     ones included, and stays until the hour holds fewer. So at most eighteen searches an hour
+     go through one transport, recognition included, and none for fifteen minutes after a
+     CAPTCHA. A lookup over that fails as rate-limited without a request, and the browser step
+     does not run.
    - Missing or unusable history is a schema failure. Unrecognized empty envelopes remain inconclusive.
 2. `trawl`, only after a challenge: the official page opens in a fresh browser context.
    TRAWL solves its reCAPTCHA checkbox/audio challenge and observes the page retrying the
    same lookup with its issued token. The final response must name the whole requested
    identifier and passes through the same history parser. An unsolved or rejected challenge
-   remains a failure, allowing enabled providers to recover. HTTP recognition uses only `direct`.
+   remains a failure, allowing enabled providers to recover. While TRAWL's audio pause is on,
+   the page is not opened: it would show the same challenge. HTTP recognition uses only `direct`.
    Both steps share the caller's budget; browser recovery needs at least eight seconds left.
    If the widget disappears while its verified lookup is in flight, capture waits for that
    request within the same deadline. A later failed request cannot leave an earlier answer

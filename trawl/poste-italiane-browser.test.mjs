@@ -64,24 +64,22 @@ test('a blocked solve suppresses later solves, preserving the observed challenge
   const first = fixture(); first.options.audioBackoff = backoff;
   first.options.solveCaptcha = async (_page, _timeout, _signal, report) => { report('audio_blocked'); return false; };
   assert.equal((await runPosteItalianeBrowser(first.options)).capturedResponses.at(-1).status, 400);
+  // While paused, the page is not opened: it would only show the challenge again.
   const second = fixture(); second.options.audioBackoff = backoff;
   const result = await runPosteItalianeBrowser(second.options);
-  assert.equal(second.state.solved, 0); assert.equal(second.state.closed, 1);
-  assert.equal(result.capturedResponses.at(-1).status, 400);
-  assert.equal(second.state.diagnostics[0].nativeOutcome, 'audio_cooldown');
-  const clear = fixture(); clear.options.audioBackoff = backoff;
-  clear.page.goto = async () => { clear.handlers.response(response()); return { status: () => 200 }; };
-  assert.equal((await runPosteItalianeBrowser(clear.options)).capturedResponses.at(-1).status, 200);
-  assert.equal(clear.state.solved, 0);
+  assert.equal(second.state.solved, 0); assert.equal(second.state.closed, 0); assert.equal(second.state.policy, 0);
+  assert.deepEqual(result.capturedResponses, []);
+  assert.deepEqual(second.state.diagnostics.map(row => [row.nativeOutcome, row.outcome]), [['audio_cooldown', 'not_opened']]);
   now += 6 * 60 * 60 * 1000;
   const retry = fixture(); retry.options.audioBackoff = backoff;
   await runPosteItalianeBrowser(retry.options);
   assert.equal(retry.state.solved, 1);
 });
-test('a cooldown still finishes an automatically verified tracking request already in flight', async () => {
-  const f = fixture(); f.options.audioBackoff.block();
+test('a pause begun while the page loads still finishes an automatically verified tracking request in flight', async () => {
+  const f = fixture();
   let deliver;
   f.page.goto = async () => {
+    f.options.audioBackoff.block();
     f.handlers.response(response(400, gate));
     const verified = response(200, history, { captcha: 'PRIVATE' });
     f.handlers.request(verified.request());
@@ -95,12 +93,12 @@ test('a cooldown still finishes an automatically verified tracking request alrea
     assert.equal(f.state.diagnostics[0].waitedForRequest, true);
   } finally { clearTimeout(deliver); }
 });
-test('a restored shared pause is awaited before the Poste solver starts', async () => {
+test('a restored shared pause is awaited before the Poste page opens', async () => {
   const f = fixture();
   f.options.audioBackoff = createRecaptchaAudioBackoff(() => 1000, { load: async () => 21601000 });
   const result = await runPosteItalianeBrowser(f.options);
-  assert.equal(f.state.solved, 0);
-  assert.equal(result.capturedResponses.at(-1).status, 400);
+  assert.equal(f.state.solved, 0); assert.equal(f.state.closed, 0);
+  assert.deepEqual(result.capturedResponses, []);
   assert.equal(f.state.diagnostics[0].nativeOutcome, 'audio_cooldown');
 });
 test('waits for the final response after solver success and retains a rejected token as challenge', async () => {

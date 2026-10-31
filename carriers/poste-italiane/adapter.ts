@@ -9,6 +9,7 @@ import { isRecord } from '../../core/types.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
+import { transportOf } from '../../core/transport/transportOf.js';
 import { classifyPosteItalianeStatus, posteItalianeMovementWording } from './status.js';
 
 // Protocol provenance:
@@ -111,6 +112,39 @@ function importCharges(value: unknown): { import_charges: ImportCharges } | Reco
   if (status === 'FINESTRA_PAGAMENTO_CHIUSA') delete charges.carrier_fee_online;
   if (/^[A-Z][A-Z_]*$/.test(status)) charges.status_code = status;
   return Object.keys(charges).length > 1 ? { import_charges: charges } : {};
+}
+
+/**
+ * How many searches are sent through one transport in an hour. The service asks for its CAPTCHA
+ * once an address has sent twenty in the past hour, the refused ones included, and until the
+ * hour holds fewer: a search over the limit would only prolong the refusals.
+ */
+export const HOURLY_SEARCHES = 18;
+/** How long after a CAPTCHA no search is sent, since searches this transport did not send drew it. */
+export const CAPTCHA_PAUSE_MS = 15 * 60_000;
+const HOUR_MS = 60 * 60_000;
+
+/**
+ * When one transport sent its past hour's searches and last drew the CAPTCHA. The service counts
+ * an address's searches, so every tracker in the process that sends through the same fetcher,
+ * recognition included, shares this. A restart forgets it.
+ */
+interface SearchState { sentAt: number[]; captchaAt: number | null }
+const searchStates = new WeakMap<object, SearchState>();
+const GLOBAL_FETCH = {};
+
+function searchState(fetcher: typeof fetch | undefined): SearchState {
+  const key = transportOf(fetcher) ?? GLOBAL_FETCH;
+  let state = searchStates.get(key);
+  if (!state) searchStates.set(key, state = { sentAt: [], captchaAt: null });
+  return state;
+}
+
+/** How long until the transport may search again, 0 when it may now. */
+function pacedMs(state: SearchState, now: number): number {
+  const sentAt = state.sentAt = state.sentAt.filter((at) => now - at < HOUR_MS);
+  const hourly = sentAt.length < HOURLY_SEARCHES ? 0 : sentAt[sentAt.length - HOURLY_SEARCHES]! + HOUR_MS - now;
+  return Math.max(hourly, state.captchaAt === null ? 0 : state.captchaAt + CAPTCHA_PAUSE_MS - now);
 }
 
 /**
@@ -308,6 +342,11 @@ export class PosteItalianeTracker {
   private async direct(trackingNumber: string, context: TrackingContext): Promise<CarrierResult> {
     // The default budget covers the request, the pause and the one transient retry.
     const budget = lookupBudget(context, 2 * this.timeoutMs + TRANSIENT_RETRY_DELAY_MS);
+    const state = searchState(this.fetcher);
+    const waitMs = pacedMs(state, Date.now());
+    if (waitMs > 0) throw new RateLimitedError('Poste Italiane', waitMs, 'Poste Italiane was searched as often as an hour allows');
+    budget.signal.throwIfAborted();
+    state.sentAt.push(Date.now());
     const { response, bytes } = await fetchBounded(TRACKING_ENDPOINT, {
       method: 'POST',
       signal: budget.signal,
@@ -335,6 +374,7 @@ export class PosteItalianeTracker {
       });
     }
     if (response.status === 400 && captchaRequired(bytes)) {
+      state.captchaAt = Date.now();
       throw new ChallengeError('Poste Italiane', 'Poste Italiane asks for a CAPTCHA before more searches');
     }
     if (!response.ok) throw new UpstreamHttpError('Poste Italiane tracking', response.status);

@@ -262,6 +262,15 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
+
+  it('asks DHLink about YLE line numbers, two letters, ten digits and YQ, without naming it from the shape', () => {
+    expect(detectCarrierMatch('YLEAA1000000017YQ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(detectCarrierMatch('yleaa 1000000017 yq')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(recognitionAskedCarriers('YLEAA1000000017YQ')).toEqual(['dhlink']);
+    for (const number of ['YLEAA100000017YQ', 'YLEAA10000000017YQ', 'YLEA1000000017YQ', 'YLXAA1000000017YQ', 'YLEAA1000000017YX', 'YLEAA1000000017']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
+    }
+  });
 });
 
 describe('wave seven South-East Asian courier rules', () => {

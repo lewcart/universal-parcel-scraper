@@ -133,6 +133,11 @@
       "id": "dhlink-tdt",
       "pattern": "^TDT\\d{10}CN$",
       "confidence": "low"
+    },
+    {
+      "id": "dhlink-yle",
+      "pattern": "^YLE[A-Z]{2}\\d{10}YQ$",
+      "confidence": "low"
     }
   ]
 }

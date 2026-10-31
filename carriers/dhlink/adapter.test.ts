@@ -251,6 +251,15 @@ describe('DHLink HTTP adapter', () => {
     // A single-zone destination's clock, and a row recorded too soon for it.
     expect(relayed([row('2026-03-10 18:00:00', '2026-03-11 03:30:00', 'none', 'Delivered')], 'GB')).toMatchObject({ last_update: null, last_update_local: '2026-03-10T18:00:00' });
     expect(relayed([row('2026-03-10 18:00:00', '2026-03-10 18:20:00', 'none', 'Delivered')], 'GB').last_update).toBe('2026-03-10T18:00:00+08:00');
+    // DHLink's UK is Britain.
+    expect(relayed([row('2026-03-10 18:00:00', '2026-03-10 18:20:00', 'none', 'Delivered')], 'UK'))
+      .toMatchObject({ last_update: '2026-03-10T18:00:00+08:00', destination_country: 'GB' });
+    // A destination keeping several zones: a row recorded before even its easternmost reading, Newfoundland's,
+    // is on Beijing time, though its place names only the country.
+    const exported = (createDate: string) => relayed([{ ...row('2026-03-10 21:04:00', createDate, 'Canada', 'Package handed over to airline'),
+      nodeCode: 'JH001', nodeName: 'Handed over to airline' }], 'CA');
+    expect(exported('2026-03-10 21:04:30').events![0]).toMatchObject({ time: '2026-03-10T21:04:00+08:00', location: 'Canada' });
+    expect(exported('2026-03-11 08:00:00')).toMatchObject({ last_update: null, last_update_local: '2026-03-10T21:04:00' });
     // Without the record, only a place settles a clock, and only up to the read.
     expect(relayed([row('2026-03-10 18:00:00', null, 'none', 'Delivered')], 'GB').last_update).toBeNull();
     expect(relayed([row('2026-03-10 18:00:00', null, '示例市', '已出库')]).last_update).toBe('2026-03-10T18:00:00+08:00');

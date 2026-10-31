@@ -3,9 +3,10 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { countryTimeZone, firstOccurrence, isoTime, usStateTimeZone } from '../../core/time/index.js';
+import { firstOccurrence, isoTime, usStateTimeZone } from '../../core/time/index.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { countryZones } from '../../places/zones.js';
 import { DHLINK_RECORD_ZONE as RECORD_ZONE, usClockCopy } from './clock.js';
 import { dhlinkEnglish, dhlinkStage, FLIGHT_BOOKED } from './status.js';
 
@@ -17,9 +18,6 @@ const NUMBER = /^(?=[A-Z]*\d)[A-Z0-9]{8,40}$/;
 const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
 // The earliest instant a wall clock can stand for: a row still after the read at UTC+14 is written ahead of its time.
 const EARLIEST = FixedOffsetZone.instance(14 * 60);
-// A destination spanning several zones, by its easternmost: a row recorded before
-// even that reading of its clock cannot keep the destination's time.
-const EASTERNMOST: Readonly<Record<string, string>> = { US: 'America/New_York' };
 // Some scanners run early.
 const CLOCK_SKEW_MS = 3_600_000;
 // Stages of a parcel on its way, after which a receipt is no new acceptance.
@@ -149,8 +147,8 @@ function recordedAt(row: Record<string, unknown>): number | null {
  * Beijing time, but a pickup that names a hub on the partner's clock. A US
  * post office's row, or that pickup, keeps its state's when the row was
  * recorded after that reading. A row recorded before its clock could have
- * struck at the destination keeps DHLink's own Beijing time. Null when either
- * clock could be the row's.
+ * struck at the destination, in any of its zones, keeps DHLink's own Beijing
+ * time. Null when either clock could be the row's.
  */
 function scanZone(scan: Scan, destination: string, beijingClock: boolean): string | null {
   const fits = (zone: string) => {
@@ -159,8 +157,8 @@ function scanZone(scan: Scan, destination: string, beijingClock: boolean): strin
   };
   if (scan.china || beijingClock) return fits(RECORD_ZONE) ? RECORD_ZONE : null;
   if (scan.state && fits(scan.state)) return scan.state;
-  const away = scan.state ?? EASTERNMOST[destination] ?? countryTimeZone(destination);
-  return away && away !== RECORD_ZONE && !fits(away) && fits(RECORD_ZONE) ? RECORD_ZONE : null;
+  const away = scan.state ? [scan.state] : countryZones(destination);
+  return away.length && !away.includes(RECORD_ZONE) && !away.some(fits) && fits(RECORD_ZONE) ? RECORD_ZONE : null;
 }
 
 function projectRow(row: unknown, readAt: number): Scan | 'ahead' | null {
@@ -259,7 +257,9 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
     scans.set(scan.stamp, held ? { ...kept, china: held.china || scan.china, state: held.state ?? scan.state,
       hub: held.hub || scan.hub, recorded: Math.min(held.recorded, scan.recorded) } : kept);
   }
-  const destination = text(entry, 'destCountryCode', 8).toUpperCase();
+  const code = text(entry, 'destCountryCode', 8).toUpperCase();
+  // DHLink writes Britain's code as UK.
+  const destination = code === 'UK' ? 'GB' : code;
   const last = lastLeg(entry);
   // Newest first, as the tracking page lists them; the clocks sort as written.
   const dated = [...scans.values()].sort((left, right) => (left.stamp < right.stamp ? 1 : left.stamp > right.stamp ? -1 : 0))

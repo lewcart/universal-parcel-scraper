@@ -160,6 +160,14 @@ export function keepsZone(country: string, zone: string): boolean {
   return clocks ? clocks.some(([clock]) => clock === zone) : (SINGLE_CLOCKS[country] ?? countryTimeZone(country)) === zone;
 }
 
+/** The zones a country keeps: its one clock or each of its several; none for an unknown code. */
+export function countryZones(country: string): readonly string[] {
+  const clocks = COUNTRY_CLOCKS[country];
+  if (clocks) return clocks.map(([zone]) => zone);
+  const zone = SINGLE_CLOCKS[country] ?? countryTimeZone(country);
+  return zone ? [zone] : [];
+}
+
 /** The zone of a country that keeps one, or the one most of its people live on; null for an unknown code. */
 export function mainZone(country: string): string | null {
   return MAIN_CLOCKS[country] ?? SINGLE_CLOCKS[country] ?? countryTimeZone(country);

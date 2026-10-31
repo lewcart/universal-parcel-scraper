@@ -85,6 +85,8 @@ page makes.
   post appends, and the row's own clock a node's wording ends with ("Shipment has delivered
   at …"); a scan stored with that clock keeps its row. The order id, the DHLink number and
   the feeds' and rows' ids are never read.
+- The destination is the reply's `destCountryCode`, where DHLink writes Britain as UK; it is
+  read as GB.
 - The tracking link adds `lang=en`: the page shows Chinese otherwise.
 
 ## Limitations

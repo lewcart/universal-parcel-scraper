@@ -391,6 +391,13 @@ describe('locatePlace', () => {
     // InPost's sorting centres in villages, by Wrocław, Poznań and Siedlce, and Amazon's station in Bobes, Asturias.
     expect(locatePlace('MOKRONOS DOLNY (PL)', { carriers: ['inpost'], countries: ['PL'] })).toMatchObject({ country: 'PL', name: 'Mokronos Dolny', latitude: 51.071 });
     expect(locatePlace('SZYMANÓW (PL)', { carriers: ['inpost'], countries: ['PL'] })).toMatchObject({ country: 'PL', name: 'Szymanów', latitude: 50.999 });
+    // By Szczecin, Gliwice and Piotrków Trybunalski; InPost's ŁAZY is its centre by Warsaw, not the town of Łazy in Silesia,
+    // and its WOLA BYKOWSKA is not Warsaw's Wola district.
+    expect(locatePlace('ŁOZIENICA (PL)', { carriers: ['inpost'], countries: ['PL'] })).toMatchObject({ country: 'PL', name: 'Łozienica', latitude: 53.539 });
+    expect(locatePlace('SZAŁSZA (PL)', { carriers: ['inpost'], countries: ['PL'] })).toMatchObject({ country: 'PL', name: 'Szałsza', latitude: 50.337 });
+    expect(locatePlace('WOLA BYKOWSKA (PL)', { carriers: ['inpost'], countries: ['PL'] })).toMatchObject({ country: 'PL', name: 'Wola Bykowska', latitude: 51.458 });
+    expect(locatePlace('ŁAZY (PL)', { carriers: ['inpost'], countries: ['PL'] })).toMatchObject({ country: 'PL', name: 'Łazy', latitude: 52.082 });
+    expect(locatePlace('Łazy', { countries: ['PL'] })).toMatchObject({ country: 'PL', name: 'Łazy', latitude: 50.428 });
     expect(locatePlace('Bobes, Asturias, ES', { carriers: ['amazon-shipping'], countries: ['ES'] })).toMatchObject({ country: 'ES', name: 'Bobes', latitude: 43.396 });
   });
 

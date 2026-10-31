@@ -930,6 +930,7 @@ describe('classifyWording', () => {
       ['Parcel was dropped off at the parcel shop', 'accepted'], ['create, Shipment order created', 'registered'],
       ['Create. Shipment order created', 'registered'], ['Handover to airline', 'in_transit'],
       ['Shipping Order Created.', 'registered'], ['Parcel received by in ORD01.', 'in_transit'], ['到达收货点', 'accepted'],
+      ['快件电子信息已经收到', 'registered'],
       ['The goods leave the operation center', 'in_transit'], ['Goods leaving the operation center', 'in_transit'],
       ['Parcel was handed over to Pickup parcel shop', 'ready_for_pickup'], ['Takeover by Pickup parcel shop', 'ready_for_pickup'],
       ['Takeover by pickup parcel shop_shop', 'ready_for_pickup'], ['Parcel handed over to DPD at the Pickup parcel shop', 'accepted'],

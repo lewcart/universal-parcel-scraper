@@ -230,6 +230,7 @@ import { adapter as fgDelivery } from '../carriers/fg-delivery/adapter.js';
 import { adapter as firstLine } from '../carriers/first-line/adapter.js';
 import { adapter as flashExpress } from '../carriers/flash-express/adapter.js';
 import { adapter as flashExpressPh } from '../carriers/flash-express-ph/adapter.js';
+import { adapter as flashbirdCa } from '../carriers/flashbird-ca/adapter.js';
 import { adapter as fleetex } from '../carriers/fleetex/adapter.js';
 import { adapter as fleetoptics } from '../carriers/fleetoptics/adapter.js';
 import { adapter as flippost } from '../carriers/flippost/adapter.js';
@@ -901,6 +902,7 @@ export const REGISTRY: RegistryDefinition = {
     "first-line": firstLine,
     "flash-express": flashExpress,
     "flash-express-ph": flashExpressPh,
+    "flashbird-ca": flashbirdCa,
     "fleetex": fleetex,
     "fleetoptics": fleetoptics,
     "flippost": flippost,
@@ -1702,7 +1704,7 @@ export const REGISTRY: RegistryDefinition = {
     "first-line": "first-line",
     "flash-express": "flash-express",
     "flash-express-ph": "flash-express-ph",
-    "flashbird-ca": "universal",
+    "flashbird-ca": "flashbird-ca",
     "fleetex": "fleetex",
     "fleetoptics": "fleetoptics",
     "flippost": "flippost",

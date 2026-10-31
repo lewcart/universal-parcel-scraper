@@ -18168,7 +18168,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "flashbird-ca",
+      "recognitionRank": 106
     },
     "canaryUrl": "https://flashbird.ca/tracking",
     "trackingUrlTemplate": "https://flashbird.ca/tracking/{trackingNumber}",

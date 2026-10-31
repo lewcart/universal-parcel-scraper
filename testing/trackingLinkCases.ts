@@ -2011,6 +2011,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'whiz-delivery', number: 'SW0000000000',
     route: /^https:\/\/track\.whizdelivery\.ca\/track\/SW0000000000$/,
     marker: /We couldn't find that shipment|Tracking History/ },
+  // The page fills its field with the number in its address and asks the tracking service.
+  { carrier: 'flashbird-ca', number: '100000000033',
+    route: /^https:\/\/flashbird\.ca\/tracking\/100000000033$/,
+    marker: /No parcel details found|Aucun renseignement trouvé pour ce colis|Tracking Parcels|Suivi des colis/ },
   // The server renders the shipment's row, or a placeholder row for a number it does not hold.
   { carrier: 'ats-healthcare', number: '000000017',
     route: /^https:\/\/www\.atshealthcare\.ca\/quickTrackResult\?ship=000000017$/,

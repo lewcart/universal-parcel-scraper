@@ -175,6 +175,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "fg-delivery": 879,
   "flash-express": 525,
   "flash-express-ph": 902,
+  "flashbird-ca": 106,
   "fleetex": 571,
   "fleetoptics": 763,
   "flippost": 568,

@@ -21,18 +21,34 @@
   "timezone": "America/Bogota",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "tcc-co",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://tcc.com.co/rastreo/?documento={trackingNumber}",
     "searchUrl": "https://tcc.com.co/rastreo/",
     "canaryUrl": "https://tcc.com.co/rastreo/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "eta",
+      "location",
+      "weight",
+      "service_name"
+    ]
   },
   "links": [
     {

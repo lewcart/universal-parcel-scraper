@@ -2067,6 +2067,8 @@ export const trackingLinkCases: TrackingLinkCase[] = [
  * tracking comes from shared providers, not the page the link opens.
  */
 export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
+  'tcc-co': 'the public tracking page submits a reCAPTCHA token; native history comes from its separate guest endpoint',
+  'toyou': 'the page can remain on its loading view; native tracking reads server-rendered guest state and a separate parcel API',
   'zoom-ve': 'the result is rendered after the application Turnstile callback, which the daily link check does not submit',
   'fm-transportes': 'the parcel view needs a Turnstile guest session, and its initial empty view is not a number-bound missing-parcel notice',
   roadie: 'The tracker requires US egress; the rendered-link canary has no scoped US browser transport.',

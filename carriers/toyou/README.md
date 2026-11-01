@@ -1,26 +1,31 @@
 # toyou
 
-toyou parcels use enabled universal providers. There is no dedicated adapter.
+The native adapter reads the public customer history for Asda's British collection and returns
+network. Parcel ids overlap other carriers, so native tracking needs an explicit carrier or a
+recognized toyou link.
 
-toyou is Asda's parcel collection and returns network, run through Asda stores and petrol
-station kiosks in Great Britain; the retailer's own carrier usually does the trunk leg. Its site
-is toyou.co.uk.
+## Retrieval
 
-## Numbers
+TRAWL opens the blank tracking page through its browser protection. The server-rendered
+`mobify-data` state supplies the guest token that the official client uses. The adapter sends
+one whole-id lookup to `/api/external/toyou/web/track/parcel/{number}` through TRAWL's HTTP tier.
+An unfinished rendered page does not hide the structured history this read returns.
 
-Its parcel IDs are a four-letter retailer code and nine digits, the layout of Sunyou, BYHD and
-Z-Leading numbers, so there is no rule.
+The reply must identify the whole parcel id. Customer-history rows keep their complete local
+calendar clocks without inventing an offset. Undated progress-rail entries are ignored.
+Dispatch back to a retailer remains in transit. Order capabilities, personal details and the
+guest token stay out of results and error diagnostics.
 
-## Why there is no adapter
+## Limitations
 
-The site sits behind a Cloudflare bot check, and its parcel API needs a short-lived token the
-page gives each visitor, so an adapter would need a browser helper.
-
-## Links
-
-The track page opens a parcel ID from its path.
+TRAWL is required; HTTP recognition does not run a browser. Only the
+explicit structured no-content error bound to the requested id establishes absence; an empty
+success, rejected guest session or unavailable route does not.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Use private inputs outside Git:
+
+```sh
+FLARESOLVERR_URL=… TOYOU_TRACKING_NUMBER=… npm run test:carriers:live -- carriers/toyou
+```

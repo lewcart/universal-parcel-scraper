@@ -592,6 +592,7 @@ import { adapter as tCat } from '../carriers/t-cat/adapter.js';
 import { adapter as tGroup } from '../carriers/t-group/adapter.js';
 import { adapter as tanzaniaPosts } from '../carriers/tanzania-posts/adapter.js';
 import { adapter as taxydema } from '../carriers/taxydema/adapter.js';
+import { adapter as tccCo } from '../carriers/tcc-co/adapter.js';
 import { adapter as tciExpress } from '../carriers/tci-express/adapter.js';
 import { adapter as tcsPakistan } from '../carriers/tcs-pakistan/adapter.js';
 import { adapter as tdn } from '../carriers/tdn/adapter.js';
@@ -619,6 +620,7 @@ import { adapter as toptrans } from '../carriers/toptrans/adapter.js';
 import { adapter as topyou } from '../carriers/topyou/adapter.js';
 import { adapter as torrestir } from '../carriers/torrestir/adapter.js';
 import { adapter as totalExpress } from '../carriers/total-express/adapter.js';
+import { adapter as toyou } from '../carriers/toyou/adapter.js';
 import { adapter as trackon } from '../carriers/trackon/adapter.js';
 import { adapter as tracxLogis } from '../carriers/tracx-logis/adapter.js';
 import { adapter as transaher } from '../carriers/transaher/adapter.js';
@@ -664,6 +666,7 @@ import { adapter as xingheFreight } from '../carriers/xinghe-freight/adapter.js'
 import { adapter as xlcourier } from '../carriers/xlcourier/adapter.js';
 import { adapter as xpoLtl } from '../carriers/xpo-ltl/adapter.js';
 import { adapter as xpressbees } from '../carriers/xpressbees/adapter.js';
+import { adapter as yalidine } from '../carriers/yalidine/adapter.js';
 import { adapter as yamato } from '../carriers/yamato/adapter.js';
 import { adapter as yanwen } from '../carriers/yanwen/adapter.js';
 import { adapter as ycsLogistics } from '../carriers/ycs-logistics/adapter.js';
@@ -1275,6 +1278,7 @@ export const REGISTRY: RegistryDefinition = {
     "t-group": tGroup,
     "tanzania-posts": tanzaniaPosts,
     "taxydema": taxydema,
+    "tcc-co": tccCo,
     "tci-express": tciExpress,
     "tcs-pakistan": tcsPakistan,
     "tdn": tdn,
@@ -1302,6 +1306,7 @@ export const REGISTRY: RegistryDefinition = {
     "topyou": topyou,
     "torrestir": torrestir,
     "total-express": totalExpress,
+    "toyou": toyou,
     "trackon": trackon,
     "tracx-logis": tracxLogis,
     "transaher": transaher,
@@ -1347,6 +1352,7 @@ export const REGISTRY: RegistryDefinition = {
     "xlcourier": xlcourier,
     "xpo-ltl": xpoLtl,
     "xpressbees": xpressbees,
+    "yalidine": yalidine,
     "yamato": yamato,
     "yanwen": yanwen,
     "ycs-logistics": ycsLogistics,
@@ -2423,7 +2429,7 @@ export const REGISTRY: RegistryDefinition = {
     "tas-courier": "universal",
     "tawssil": "universal",
     "taxydema": "taxydema",
-    "tcc-co": "universal",
+    "tcc-co": "tcc-co",
     "tccs": "universal",
     "tci-express": "tci-express",
     "tcs-pakistan": "tcs-pakistan",
@@ -2465,7 +2471,7 @@ export const REGISTRY: RegistryDefinition = {
     "topyou": "topyou",
     "torrestir": "torrestir",
     "total-express": "total-express",
-    "toyou": "universal",
+    "toyou": "toyou",
     "tp-logistics-th": "universal",
     "tpl-rider": "universal",
     "trackon": "trackon",
@@ -2576,7 +2582,7 @@ export const REGISTRY: RegistryDefinition = {
     "xpressbees": "xpressbees",
     "xpressen": "universal",
     "xyl": "universal",
-    "yalidine": "universal",
+    "yalidine": "yalidine",
     "yamato": "yamato",
     "yamato-america": "universal",
     "yanwen": "yanwen",

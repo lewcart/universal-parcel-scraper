@@ -76,6 +76,25 @@
         "confidence": "none"
       },
       "note": "A toyou parcel ID a customer quoted in a public review of the service."
+    },
+    {
+      "number": "ASDF159017190",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://uk.trustpilot.com/reviews/6ae5cf74887e277eb14a24c5",
+        "date": "2026-11-01",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A public customer review quotes this return-parcel id. The official guest tracker confirms the whole id and its dated return movements."
     }
   ]
 }

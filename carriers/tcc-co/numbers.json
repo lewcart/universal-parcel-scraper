@@ -139,6 +139,30 @@
         "confidence": "none"
       },
       "note": "The transport regulator's reply to a complaint quotes a customer who sent equipment through TCC under this guía number."
+    },
+    {
+      "number": "466222746",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://operaciones.colombiacompra.gov.co/sites/cce_public/files/documentos_adicionales_oc/consolidado_factura_has_final.pdf",
+        "date": "2025-10-08",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt",
+          "tforce-freight",
+          "xpo-ltl"
+        ]
+      },
+      "note": "The government procurement execution report names this TCC guide. The public secondary history confirms its dated novelty and delivery."
     }
   ]
 }

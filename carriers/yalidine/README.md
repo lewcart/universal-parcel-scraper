@@ -1,27 +1,30 @@
 # Yalidine
 
-Yalidine parcels use enabled universal providers. There is no dedicated adapter.
+The native adapter reads Algerian guest-tracking history through TRAWL.
 
-## Numbers
+## Retrieval
 
-Yalidine tracking numbers are `yal-` and six letters or digits. Its tracking form takes exactly
-ten characters with that placeholder, and the examples in Yalidine's API documentation and an
-open-source client follow it. `yalidine-1` claims the layout, read without the dash: no other
-carrier prints the prefix.
+The browser opens the blank form so its Turnstile response remains unused. The adapter then
+posts the whole tracking number and that response to the same page through another browser
+context on the service's egress. Only carrier-domain cookies enter that request. The HTTP tier
+can classify the returned form as needing JavaScript and discard its response body.
 
-## Links
-
-The tracking page fills its field from `yalidine.com/suivre-un-colis/?tracking={number}`, but it
-shows a history only after a Cloudflare Turnstile check, so no address opens one parcel.
+A dedicated result card must identify the whole number. The scan table supplies wording,
+location and the carrier's order. Its French weekday, day, month and time omit the year; those
+validated clocks remain in `provider_time_text`. No lookup year, instant or freshness watermark
+is invented. The presentation-only current-scan badge is discarded.
 
 ## Limitations
 
-Yalidine's server verifies the Turnstile token before it looks the number up; without one it
-answers the same retry message for every number. The merchant dashboard and the developer API
-need a Yalidine account, and Yalidine publishes no tracking app, so Yalidine stays on universal
-providers.
+TRAWL is required. HTTP recognition never invokes this browser flow. Only the explicit
+missing-parcel notice after a bound form POST establishes absence. Generic retry notices and
+verification refusals remain challenges. The merchant dashboard and developer API require a
+Yalidine account and are outside this guest flow.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Use private inputs outside Git:
+
+```sh
+FLARESOLVERR_URL=… YALIDINE_TRACKING_NUMBER=… npm run test:carriers:live -- carriers/yalidine
+```

@@ -18,18 +18,37 @@
   "timezone": "Europe/London",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "toyou",
+    "steps": [
+      "trawl"
+    ],
+    "browser": true,
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://www.toyou.co.uk/track/{trackingNumber}",
     "searchUrl": "https://www.toyou.co.uk/track",
     "canaryUrl": "https://www.toyou.co.uk/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "eta",
+      "location",
+      "weight",
+      "service_name",
+      "provider_code",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

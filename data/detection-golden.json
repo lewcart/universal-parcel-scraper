@@ -43026,6 +43026,24 @@
     ]
   },
   {
+    "input": "466222746",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt",
+      "tforce-freight",
+      "xpo-ltl"
+    ],
+    "preferred": [
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "tforce-freight",
+      "xpo-ltl"
+    ]
+  },
+  {
     "input": "46P00023155",
     "carrier": "wedo",
     "confidence": "high",
@@ -70570,6 +70588,12 @@
     "asked": [
       "colis-prive"
     ]
+  },
+  {
+    "input": "ASDF159017190",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "ASDLP2465555",
@@ -100103,6 +100127,14 @@
     ]
   },
   {
+    "input": "WBX190000059587",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "western-bid"
+    ]
+  },
+  {
     "input": "WC203026210GB",
     "carrier": "royal-mail",
     "confidence": "high",
@@ -102974,6 +103006,14 @@
   },
   {
     "input": "yal-64BPEK",
+    "carrier": "yalidine",
+    "confidence": "high",
+    "candidates": [
+      "yalidine"
+    ]
+  },
+  {
+    "input": "yal-Y50WRW",
     "carrier": "yalidine",
     "confidence": "high",
     "candidates": [

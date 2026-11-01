@@ -57,6 +57,23 @@
         "confidence": "high"
       },
       "note": "The README of an open-source Laravel client for Yalidine's API uses it as a tracking number to retrieve and delete parcels."
+    },
+    {
+      "number": "yal-Y50WRW",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://fr.scribd.com/document/976873304/Exportation-Paiement-Pmt-N54CSF",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "yalidine",
+        "confidence": "high"
+      },
+      "note": "A public sender-export row lists this whole number; the official guest tracker confirms its identity and scan history."
     }
   ]
 }

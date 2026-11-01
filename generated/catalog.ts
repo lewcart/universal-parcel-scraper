@@ -41600,7 +41600,7 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tcc-co"
     },
     "canaryUrl": "https://tcc.com.co/rastreo/",
     "trackingUrlTemplate": "https://tcc.com.co/rastreo/?documento={trackingNumber}",
@@ -42974,7 +42974,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "toyou",
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.toyou.co.uk/",
     "trackingUrlTemplate": "https://www.toyou.co.uk/track/{trackingNumber}",
@@ -46781,7 +46783,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Algiers",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "yalidine",
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.yalidine.com/suivre-un-colis/",
     "trackingSearchUrl": "https://www.yalidine.com/suivre-un-colis/",

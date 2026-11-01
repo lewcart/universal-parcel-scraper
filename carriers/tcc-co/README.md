@@ -1,26 +1,33 @@
 # TCC
 
-TCC parcels use enabled universal providers. There is no dedicated adapter.
+The native adapter reads TCC Colombia's public secondary history. TCCS in India is a separate carrier.
 
-TCC, formerly Transportadora Comercial Colombia, is a Medellín courier and freight company delivering parcels
-across Colombia. TCCS, the Indian courier, is a separate entry. Its site is tcc.com.co.
+## Retrieval
 
-## Numbers
+The main tracking form verifies reCAPTCHA before its first search. Its detail view separately
+posts to `tccrestify-dot-tcc-cloud.appspot.com/tracking/estados` with the whole remesa and
+`infoadicional: "2"`. That read needs no CAPTCHA. The adapter sends the fixed `appId` header
+that the official client gives every guest; no account credentials or browser are required.
 
-Its remesa (guía) numbers are nine digits, as complaints the transport regulator quotes show, with no check
-digit. Nine digits are shared by other carriers, so there is no rule.
+The returned remesa must match the request. Dated history and novelty rows retain their stated
+timestamp offsets and precision. A completed progress position can contribute the API's actual
+delivery timestamp using the page's delivery label. Undated progress positions do not become
+scans. Free-text observations and related remesas are discarded.
 
-## Why there is no adapter
+## Limitations
 
-Its tracker posts the number to a JSON endpoint that needs a reCAPTCHA v3 token with every lookup.
+This feed can omit ordinary scans, so its history is marked partial and enabled providers can
+supply a fuller timeline. Expired genuine remesas and unknown numbers share an empty success
+reply; that remains inconclusive. Nine-digit remesas overlap other carriers, so tracking uses
+an explicit carrier or a recognized TCC link. No number rule or HTTP recognition claims them.
 
-## Links
-
-The tracking page fills its field in from its `documento` parameter; the visitor still presses search. The
-library reads the number from these links only when their `tipo` is missing or names a remesa: the other types
-carry the sender's order, invoice or reference numbers.
+The link parser accepts `documento` only when `tipo` is absent or names a remesa. Other form
+types search sender references rather than tracking numbers.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Use private inputs outside Git:
+
+```sh
+TCC_CO_TRACKING_NUMBER=… npm run test:carriers:live -- carriers/tcc-co
+```

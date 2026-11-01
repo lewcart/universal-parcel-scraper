@@ -451,6 +451,10 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^courier pick up$/.test(text)) return 'accepted';
   // A Chinese forwarder's collection from the sender, as ParcelsApp relays it.
   if (/^shipment pick ?up$/.test(text)) return 'accepted';
+  // China Post collecting an express item, as providers relay it with no carrier. For a parcel a
+  // consolidator took first it is a hand-over on the way, so it reads in transit and never moves a
+  // parcel back, as YunExpress's and PFC Express's maps read China Post's receipt of mail.
+  if (/^中国邮政 ?已收取快件$/.test(text)) return 'in_transit';
   // A Chinese courier's (业务员) collection from the sender, as providers translate it.
   if (/^(?:the )?salesperson (?:has )?(?:collects|collected|picks up|picked up) (?:the )?(?:package|parcel|shipment)$/.test(text)) return 'accepted';
   // Nova Poshta's English as providers relay it: the shipment registered, then its departure from the branch,

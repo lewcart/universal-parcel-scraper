@@ -270,6 +270,13 @@
       "language": "en",
       "confirmedBy": "live",
       "note": "Relayed from Colis Privé before it has the parcel."
+    },
+    {
+      "wording": "The shipment has been processed in the parcel center of origin",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "DHL's first scan in Germany, relayed after the sort that follows customs at the destination."
     }
   ]
 }

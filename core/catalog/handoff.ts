@@ -35,6 +35,10 @@ const DHL_PARCEL_PARTNERS: Readonly<Record<string, CarrierId | null>> = {
   CH: null, FI: 'postnord', LT: null, LV: null, PL: null, UA: 'meest',
 };
 
+// Waybills that take the S10 layout without being postal items: Morning Global's carry
+// Madagascar's code, and one in ten passes the check digit.
+const OWN_S10_LAYOUTS: Readonly<Record<string, RegExp>> = { 'morning-global': /^BR\d{9}MG$/ };
+
 export function hasDirectHandoffAdapter(carrier: string, number: string): boolean {
   if (!AUTOMATIC_CARRIER_IDS.has(carrier) || carrierAdapter(carrier) === 'universal') return false;
   if (REFERENCES_LOOKED_UP[carrier]?.(number) === false) return false;
@@ -69,7 +73,7 @@ export function deliveryHandoff(carrier: string, number: string, result: Carrier
   // Japan Post and Chunghwa Post do not track `U`-prefixed customs labels.
   // Chronopost names La Poste itself for the other posts' items it scans; it
   // delivers the rest.
-  if (!target && isValidS10TrackingNumber(reference)
+  if (!target && isValidS10TrackingNumber(reference) && !OWN_S10_LAYOUTS[carrier]?.test(reference)
     && (carrier !== 'chronopost' || isAnotherPostItemAtChronopost(reference))) {
     // Origins such as An Post name no destination. The recipient of an item
     // from abroad is likely the one looking it up; in the issuer's own

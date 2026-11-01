@@ -51,7 +51,8 @@ the carrier numbered those parcels, so no rule claims that layout and it is a de
 current tracker shows `BR`, nine digits and `MG`: the UPU S10 form with Madagascar's code, which
 Morning Global's waybills fail on the check digit. A low-confidence rule offers Morning Global for
 that layout, and recognition asks it. A number of that form that passes the check is detected as
-postal, and recognition asks Morning Global about it too.
+postal, and recognition asks Morning Global about it too. Under Morning Global it stays its
+waybill: no destination post is asked about it.
 The adapter sends eight to forty letters and digits. The samples and their sources are in
 [`numbers.json`](numbers.json).
 

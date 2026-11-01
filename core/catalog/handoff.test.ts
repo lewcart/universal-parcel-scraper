@@ -70,6 +70,13 @@ describe('general delivery handoff candidates', () => {
       expect(carrierErrorKind(error), `${carrier} ${number}`).not.toBe('invalid_input');
     }
   });
+  it('hands no post a waybill that only takes the S10 layout', () => {
+    // Morning Global's BR…MG waybill passing the check digit, and Madagascar's own item.
+    expect(deliveryHandoff('morning-global', 'BR123456785MG', { destination_country: 'CA' })).toBeNull();
+    expect(deliveryHandoff('morning-global', 'BR123456785MG', {}, 'FR')).toBeNull();
+    expect(deliveryHandoff('aliexpress', 'RR123456785MG', { destination_country: 'CA' }))
+      .toEqual({ carrier: 'canada-post', number: 'RR123456785MG', basis: 'destination' });
+  });
   it('hands Japan Post no customs label, which it does not track', () => {
     expect(deliveryHandoff('aliexpress', 'RA123456785CN', { destination_country: 'JP' }))
       .toEqual({ carrier: 'japan-post', number: 'RA123456785CN', basis: 'destination' });

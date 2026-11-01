@@ -59,7 +59,8 @@ barcode with low confidence. The samples and their sources are in [`numbers.json
 ## Links
 
 The online tracker at `bexonline.borderexpress.com.au/bxo/track` takes the number as
-`consignmentNumber`. The website's older tracker, `borderexpress.com.au/tracking/?cn=`, no longer
+`consignmentNumber`; a unit barcode's link gives it the consignment read from the barcode. The
+website's older tracker, `borderexpress.com.au/tracking/?cn=`, no longer
 answers.
 
 ## Testing

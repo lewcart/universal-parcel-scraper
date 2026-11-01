@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter } from './adapter.js';
-import { borderExpressNumber } from './parser.js';
+import { borderExpressNumber } from './number.js';
 
 const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 const NUMBER = process.env.BORDER_EXPRESS_TRACKING_NUMBER;

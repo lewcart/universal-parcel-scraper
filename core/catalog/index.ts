@@ -7,6 +7,7 @@
  * What it is not: no provider I/O, no HTTP, no application or framework code.
  * Everything here is a pure function of the catalog and its arguments.
  */
+import { borderExpressBarcodeConsignment } from '../../carriers/border-express/number.js';
 import { cdlRequestNumber } from '../../carriers/cdl/number.js';
 import { ecoscootingReference } from '../../carriers/ecoscooting/number.js';
 import { FLIPPOST_ONE_LAYOUT, flippostWaybills } from '../../carriers/flippost/number.js';
@@ -63,6 +64,8 @@ export function trackingNumberForLink(carrierId: CarrierId, raw: string): string
   // Paperfly's page finds a number only with the hyphens between its parts.
   if (carrierId === 'paperfly' && PAPERFLY_LAYOUT.test(normalized)) return paperflyRequestNumber(normalized);
   if (carrierId === 'gofo-fr') return regionalGofoRequestNumber(normalized);
+  // Border Express's tracker takes a consignment, not the barcode of one of its units.
+  if (carrierId === 'border-express') return borderExpressBarcodeConsignment(normalized) ?? raw;
   // tnt.com's page takes a consignment's nine digits, without the GE and WW a label can print around them.
   if (carrierId === 'tnt' && /^GE\d{9}WW$/.test(normalized)) return normalized.slice(2, 11);
   // tnt.it's tracker finds a waybill only without the check digit its label prints after a dash.

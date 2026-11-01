@@ -6,7 +6,8 @@ import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { BORDER_EXPRESS_MAX_BYTES, borderExpressNumber, CARRIER, parseBorderExpress, PROVIDER } from './parser.js';
+import { borderExpressNumber } from './number.js';
+import { BORDER_EXPRESS_MAX_BYTES, CARRIER, parseBorderExpress, PROVIDER } from './parser.js';
 
 /** The request BEX Online's Quick Track makes first; its id goes with the lookup that follows. */
 export const BORDER_EXPRESS_VERIFICATION = 'https://bexonlineapi.borderexpress.com.au/v1/consignments/quicktrackverification';

@@ -1,10 +1,11 @@
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { IndeterminateError, InvalidInputError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { calendarDay, explicitOffsetTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { BORDER_EXPRESS_BARCODE, borderExpressNumber } from './number.js';
 import { BOOKING_CODES, borderExpressMappedStage, borderExpressStage } from './status.js';
 
 export const PROVIDER = 'Border Express';
@@ -12,39 +13,10 @@ export const CARRIER = 'border-express';
 // A consignment of four units is under four kilobytes.
 export const BORDER_EXPRESS_MAX_BYTES = 512 * 1024;
 
-// A plain eight-digit consignment, or a four-letter sender prefix and its range.
-const CONSIGNMENT = /^(?:\d{8}|[A-Z]{4}\d{5,8})$/;
-// A unit's label: the prefix, `BX`, the range zero-padded to eleven digits and a three-digit unit number.
-const BARCODE = /^([A-Z]{4})BX(\d{11})\d{3}$/;
 const ETA = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
 const MAX_CONSIGNMENTS = 20;
 const MAX_ROWS = 100;
 const MAX_UNITS = 2000;
-
-/** The consignment to ask for, and the unit barcode it was read from, if any. */
-export interface BorderExpressNumber {
-  consignment: string;
-  barcode?: string;
-}
-
-/**
- * A number for Border Express's tracker; anything else is not one it issues.
- * The tracker does not take a unit's barcode, so the barcode is read back into
- * its consignment by the label specification's formula: the range is the
- * barcode's digits without its padding, and six digits long when shorter, as
- * ranges are documented.
- */
-export function borderExpressNumber(raw: string): BorderExpressNumber {
-  const number = typeof raw === 'string' && raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (CONSIGNMENT.test(number)) return { consignment: number };
-  const label = BARCODE.exec(number);
-  const range = label ? label[2]!.replace(/^0+/, '').padStart(6, '0') : '';
-  const consignment = label ? `${label[1]}${range}` : '';
-  if (!CONSIGNMENT.test(consignment)) {
-    throw new InvalidInputError(PROVIDER, 'Border Express numbers are eight digits, a sender prefix and its range, or a unit barcode');
-  }
-  return { consignment, barcode: number };
-}
 
 /** An optional text field; anything but a string is a changed reply. */
 function text(row: Record<string, unknown>, key: string, maxLength = 200): string {
@@ -145,7 +117,7 @@ export function parseBorderExpress(payload: unknown, raw: string): CarrierResult
     .filter((row): row is Row => row !== null);
   if (barcode) {
     // The label stem, the prefix, `BX` and the padded range, is the consignment's on every unit.
-    const labels = units.filter((unit) => BARCODE.test(unit));
+    const labels = units.filter((unit) => BORDER_EXPRESS_BARCODE.test(unit));
     if (labels.length && !labels.some((unit) => unit.slice(0, 17) === barcode.slice(0, 17))) {
       throw new IndeterminateError(PROVIDER, 'Border Express answered for a consignment whose units carry other labels');
     }

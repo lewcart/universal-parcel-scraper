@@ -55,6 +55,9 @@ describe('the derived CARRIERS record', () => {
 
   it('shortens the numbers whose portal expects a different form', () => {
     expect(trackingNumberForLink('mondial-relay', '12123456780101006623123454')).toBe('121234567801');
+    // Border Express's tracker takes the consignment a unit's barcode is read into.
+    expect(trackingNumberForLink('border-express', 'ZZZZBX00000010000001')).toBe('ZZZZ010000');
+    expect(trackingNumberForLink('border-express', '00000001')).toBe('00000001');
     expect(trackingNumberForLink('c-chez-vous', 'ABC12345678-75001')).toBe('ABC12345678--75001');
     expect(trackingNumberForLink('the-courier-guy', 'ld 000001')).toBe('LD-000001');
     expect(trackingNumberForLink('the-courier-guy', 'DD-000001')).toBe('DD-000001');

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { SEVENTEENFEIA_API } from '../17feia/adapter.js';
@@ -150,6 +151,14 @@ describe('TSJY HTTP adapter', () => {
     expect(result.delivery_carrier).toBeUndefined();
     expect(result.delivery_tracking_number).toBeUndefined();
     expect(parseTsjy(changed('at-line', (order) => { delete order.channelNo; }), AT_LINE, LATER).delivery_carrier).toBeUndefined();
+  });
+
+  it('names TSJY from its order search link only for its own numbers', () => {
+    expect(parseTrackingInput(`https://www.tsjy56.com/orderResult.html?nos=${AT_LINE}`))
+      .toMatchObject({ trackingNumber: AT_LINE, carrier: 'tsjy', source: 'link' });
+    // The search takes the numbers of the lines TSJY books on too; they keep their own carrier.
+    expect(parseTrackingInput(`https://www.tsjy56.com/orderResult.html?nos=${LINE}`))
+      .toMatchObject({ trackingNumber: LINE, carrier: '17feia' });
   });
 
   it('counts an order only when its own number is the one asked', () => {

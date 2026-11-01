@@ -61,6 +61,12 @@ check digit of the eight before it; the rule does not test it, since a new check
 port in every consumer. No public TSJY number has been found, so the corpus holds a synthetic
 one.
 
+## Links
+
+`www.tsjy56.com/orderResult.html?nos=` followed by a number opens its history. The search also
+takes the numbers of the lines TSJY books parcels on, so the link names TSJY only for its own
+numbers.
+
 ## Testing
 
 `TSJY_TRACKING_NUMBER=... TSJY_UNKNOWN_NUMBER=... npm run test:carriers:live -- carriers/tsjy`

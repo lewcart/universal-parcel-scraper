@@ -80,7 +80,8 @@
       "pathPattern": "^/orderResult\\.html$",
       "params": [
         "nos"
-      ]
+      ],
+      "ownNumbersOnly": true
     }
   ],
   "detection": [

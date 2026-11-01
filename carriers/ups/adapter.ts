@@ -346,6 +346,8 @@ function keepNoticeStages(events: CarrierEvent[]): void {
 }
 
 /** Stages a parcel reaches only on its delivery leg. */
+/** Delivered to an access point, and held there: the scans whose parcel waits at the reply's access point. */
+const AT_ACCESS_POINT: ReadonlySet<string> = new Set(['2Q', 'ZP']);
 const DELIVERY_LEG: ReadonlySet<string> = new Set(['out_for_delivery', 'failed_attempt', 'ready_for_pickup', 'delivered']);
 
 /**
@@ -581,7 +583,10 @@ export function parseUPSTrackingResponse(
   const country = [detail.shipToAddress, detail.deliveryAddress]
     .map((address) => (isRecord(address) ? cleanScalar(address.country, 8).toUpperCase() : ''))
     .find((code) => /^[A-Z]{2}$/.test(code));
-  const pickupPoint = stage === 'ready_for_pickup' ? accessPoint(detail) : '';
+  // Only a parcel the newest scan has at the access point waits there: a reminder to collect a held parcel
+  // does not say where it is held, and the reply can name an access point the parcel has left.
+  const pickupPoint = stage === 'ready_for_pickup' && AT_ACCESS_POINT.has(clean(decider?.provider_code).toUpperCase())
+    ? accessPoint(detail) : '';
   // UPS writes its service names with trademark signs ("UPS Standard&#174;"), which are not part of the name.
   const information = isRecord(detail.additionalInformation) ? detail.additionalInformation.serviceInformation : null;
   const service = isRecord(information) ? clean(text(information.serviceName, 200).replace(/[®™℠]/g, ' '), 80) : '';

@@ -404,6 +404,18 @@ describe('UPS structured response', () => {
     }
   });
 
+  it("reads UPS's reminder to collect a held parcel as waiting for pickup, not as its return", () => {
+    const reminded = parseUPSTrackingResponse(withScans([
+      scan('5G', 'Pick up your package soon as it is nearing the maximum hold limit and may be returned to the sender.', '20260813 11:16:56'),
+      scan('48', "The receiver was not available for delivery. We'll make a second attempt the next business day.", '20260812 12:39:00'),
+    ], { upsAccessPoint: ACCESS_POINT }), TRACKING_NUMBER, TODAY);
+    expect(reminded).toMatchObject({ current_stage: 'ready_for_pickup' });
+    expect(reminded.events?.map((event) => [event.stage, event.stage_source])).toEqual([
+      ['ready_for_pickup', 'carrier_map'], ['failed_attempt', 'carrier_map']]);
+    // The reminder does not say where the parcel is held.
+    expect(reminded.pickup_point).toBeUndefined();
+  });
+
   it('lays out the access point address as UPS gives it, and keeps the name alone without a street or town', () => {
     const point = (location: Record<string, string>) => parseUPSTrackingResponse(withScans(
       [scan('ZP', 'UPS Access Point™ possession ', '20260811 09:22:52')],

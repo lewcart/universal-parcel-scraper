@@ -92,6 +92,8 @@ rendered status, after that wait.
   access point it waited at, is transit.
 - Duties or taxes due (`7F`) and the hold until they are paid (`OQ`) set `recipient_action`
   to `duties` by their code, whatever words UPS adds beside it.
+- UPS's reminder to collect a parcel before its hold ends (`5G`) is `ready_for_pickup`: the parcel
+  is returned only if no one collects it. It does not say where the parcel is held.
 - `pickup_point` names the access point only while the newest scan is `2Q` or `ZP`. Replies
   can carry an access point the parcel never reached. It is the business name, then the
   street and the town on their own lines when `upsAccessPoint.location` gives both, as the

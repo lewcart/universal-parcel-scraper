@@ -222,6 +222,8 @@ describe('4PX result projection', () => {
 
   it.each([
     ['FPX_D_FD', 'Delivery attempt unsuccessful', 'exception', 'failed_attempt', 'carrier_map'],
+    ['FPX_D_FDIA', 'Delivery attempt (incorrect address)', 'exception', 'failed_attempt', 'carrier_map'],
+    ['FPX_M_PRTS', 'Returned (incorrect address)', 'exception', 'exception', 'carrier_map'],
     ['FPX_F_ST', 'Shipment in transit', 'in_transit', 'in_transit', 'carrier_map'],
     ['FPX_D_AOPC', 'Arrive in transit center', 'in_transit', 'in_transit', 'carrier_map'],
     ['FPX_M_PT', 'Pending transportation', 'in_transit', 'in_transit', 'carrier_map'],

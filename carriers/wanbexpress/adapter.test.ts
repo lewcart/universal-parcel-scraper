@@ -107,6 +107,10 @@ describe('WanbExpress', () => {
     expect(statusMapAnswer({ carrier: 'wanbexpress', providerCode: null, description: 'Scheduled to <2031-04-23> .' }))
       .toEqual({ kind: 'intentional_gap', note: expect.stringMatching(/keeps the stage it had/) });
     expect(statusMapAnswer({ carrier: 'wanbexpress', providerCode: null, description: 'Sample wording' }).kind).toBe('unknown');
+    // A US partner's codeless scans between its receipt and the run.
+    expect(wanbStage(null, 'In Processing at Transit Facility.')).toBe('in_transit');
+    expect(statusMap.stage(null, 'in transit to next facility.')).toBe('in_transit');
+    expect(wanbStage('LastMileNew', 'In Transit to Next Facility.')).toBeUndefined();
   });
 
   it('keeps the courier\'s number and names the courier the last-mile panel gives for the shipping service', async () => {

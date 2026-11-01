@@ -154,6 +154,32 @@
       "firstSeen": "2026-10-08"
     },
     {
+      "code": "FPX_D_FD",
+      "wording": "Delivery failed",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-30"
+    },
+    {
+      "code": "FPX_D_FDIA",
+      "wording": "Delivery attempt (incorrect address)",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-30",
+      "note": "The partner found the address incomplete or incorrect and is checking it; La Poste's own scan of that instant is a missed delivery."
+    },
+    {
+      "code": "FPX_M_PRTS",
+      "wording": "Returned (incorrect address)",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-30",
+      "note": "The decision to send the parcel back to its sender for that address, at the instant La Poste says it will be returned; the parcel is not back yet."
+    },
+    {
       "code": "FPX_F_ST",
       "wording": "Shipment in transit",
       "language": "en",

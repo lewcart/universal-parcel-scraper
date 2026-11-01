@@ -8,6 +8,10 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['FPX_D_SASPS', { status: 'out_for_delivery', stage: 'ready_for_pickup' }],
   ['FPX_D_FD', { status: 'exception', stage: 'failed_attempt' }],
   ['FPX_D_DDRH', { status: 'exception', stage: 'failed_attempt' }], // The recipient was not in; a notice was left.
+  // The partner could not deliver to the address given and is checking it, before 4PX's "Delivery failed".
+  ['FPX_D_FDIA', { status: 'exception', stage: 'failed_attempt' }],
+  // The partner's decision to send the parcel back for that address: the return is under way, not yet with the sender.
+  ['FPX_M_PRTS', { status: 'exception', stage: 'exception' }],
   ['FPX_L_RPIF', { status: 'pending', stage: 'registered' }],
   ['FPX_L_SC', { status: 'in_transit', stage: 'accepted' }],
   ['FPX_C_SPLS', { status: 'in_transit', stage: 'accepted' }],

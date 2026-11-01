@@ -1,5 +1,5 @@
 import type { Stage } from '../../core/status/index.js';
-import type { CarrierStatusMap } from '../../core/status/statusMap.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import { imileMappedStage } from '../imile/status.js';
 
 const STAGES: Readonly<Record<string, Stage>> = {
@@ -11,13 +11,21 @@ const STAGES: Readonly<Record<string, Stage>> = {
   LastMileDelivered: 'delivered',
 };
 
+// A US last-mile partner's scans between its receipt and the delivery run, relayed without a code,
+// by `normalizeStatusWording` wording.
+const UNCODED: ReadonlyMap<string, Stage> = new Map([
+  ['in processing at transit facility.', 'in_transit'],
+  ['in transit to next facility.', 'in_transit'],
+]);
+
 /**
- * A scan's stage by its code, else by iMile's sentences: the tracker relays the last-mile
+ * A scan's stage by its code, else by the partners' sentences: the tracker relays the last-mile
  * partner's scans in the partner's words, iMile's on a parcel to Germany, most without a code.
  * Null marks a scan that moves nothing.
  */
 export function wanbStage(code: string | null, wording: string): Stage | null | undefined {
-  return code && Object.hasOwn(STAGES, code) ? STAGES[code] : imileMappedStage('', wording);
+  if (code && Object.hasOwn(STAGES, code)) return STAGES[code];
+  return (code ? undefined : UNCODED.get(normalizeStatusWording(wording))) ?? imileMappedStage('', wording);
 }
 
 export const statusMap: CarrierStatusMap = {

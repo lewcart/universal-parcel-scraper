@@ -21330,6 +21330,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "gofast": {
+    "displayName": "GoFast",
+    "color": "#f46a0e",
+    "aliases": [
+      "够快供应链",
+      "够快"
+    ],
+    "countries": [
+      "CN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.gofastcn.com/",
+    "trackingUrlTemplate": "https://gzgk.hailei2018.com/trackIndex.htm?documentCode={trackingNumber}",
+    "trackingSearchUrl": "https://gzgk.hailei2018.com/trackIndex.htm",
+    "linkRules": [
+      {
+        "domains": [
+          "gzgk.hailei2018.com"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "gofo-ca": {
     "displayName": "GOFO Canada",
     "color": "#fc4c02",
@@ -22451,6 +22484,30 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "hiyes": {
+    "displayName": "Hiyes",
+    "color": "#00af50",
+    "aliases": [
+      "新航通運",
+      "新航通運有限公司",
+      "新航通运",
+      "Hiyes Logistics",
+      "Hiyes Logistics Corporation"
+    ],
+    "countries": [
+      "TW"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Taipei",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.hiyes.com.tw/",
+    "trackingSearchUrl": "https://www.hiyes.com.tw/CargoTracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "hkd-express": {
     "displayName": "HKD Express",
     "color": "#140b68",
@@ -22876,6 +22933,28 @@ export const CARRIER_CATALOG = {
         "path": "^/public/tracking/([^/]+)/?$"
       }
     ],
+    "detectionRules": []
+  },
+  "htt-logistics": {
+    "displayName": "HTT Logistics",
+    "color": "#006dba",
+    "aliases": [
+      "昊通国际物流",
+      "深圳昊通国际物流有限公司",
+      "OOPSTON (昊通国际物流)"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://httlogistics.com/",
+    "trackingSearchUrl": "https://tracking.httlogistics.com/tracking.aspx",
+    "linkRules": [],
     "detectionRules": []
   },
   "huahan": {
@@ -29494,6 +29573,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "nas-express": {
+    "displayName": "NAS Express",
+    "color": "#f92205",
+    "aliases": [
+      "NAS Express Couriers",
+      "NAS Express Couriers LLC",
+      "NASEX"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://nasxpress.com/",
+    "trackingSearchUrl": "https://online.nasxpress.com/track/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "nationex": {
     "displayName": "Nationex",
     "color": "#006736",
@@ -30562,6 +30663,35 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "odm-express": {
+    "displayName": "ODM Express",
+    "color": "#272f6f",
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://odmexpress.com.mx/",
+    "trackingUrlTemplate": "https://odmexpress.com.mx/rastreo-2/?rastreo_fall={trackingNumber}",
+    "trackingSearchUrl": "https://odmexpress.com.mx/rastreo/",
+    "linkRules": [
+      {
+        "domains": [
+          "odmexpress.com.mx",
+          "www.odmexpress.com.mx"
+        ],
+        "pathPattern": "^/rastreo-2/?$",
+        "params": [
+          "rastreo_fall"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "okaken": {
     "displayName": "Okayamaken Freight Transportation",
     "color": "#008041",
@@ -30817,6 +30947,67 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://onex.am/",
     "trackingUrlTemplate": "https://onex.am/en/onextrack?track={trackingNumber}",
     "trackingSearchUrl": "https://onex.am/en/onextrack",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "online-worldwide-logistics": {
+    "displayName": "Online Worldwide",
+    "color": "#8bc43f",
+    "aliases": [
+      "Online Worldwide Logistics (欧莱物流)",
+      "Online Worldwide Logistics",
+      "Guangzhou Online Worldwide Logistics",
+      "Online Logistics",
+      "欧莱国际货运",
+      "欧莱物流供应链",
+      "广州市欧莱国际货运代理有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.online56.com.cn/",
+    "trackingUrlTemplate": "https://www.online56.com.cn/cargo-tracking/?sn={trackingNumber}",
+    "trackingSearchUrl": "https://www.online56.com.cn/cargo-tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.online56.com.cn",
+          "online56.com.cn"
+        ],
+        "pathPattern": "^/cargo-tracking/?$",
+        "params": [
+          "sn"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "ontask-express": {
+    "displayName": "Ontask Express",
+    "color": "#030097",
+    "aliases": [
+      "Ontask Express (广州安时达)",
+      "安时达",
+      "广州安时达",
+      "广州安时达国际供应链有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ontaskd2d.com/",
+    "trackingSearchUrl": "https://logistics.ontaskksad2d.com/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -46713,6 +46904,7 @@ export const CARRIER_IDS = [
   "go-world-express",
   "go4",
   "gobolt",
+  "gofast",
   "gofo-ca",
   "gofo-es",
   "gofo-fr",
@@ -46744,6 +46936,7 @@ export const CARRIER_IDS = [
   "hi-trans",
   "hispapost",
   "hitch",
+  "hiyes",
   "hkd-express",
   "holisol",
   "homexpress",
@@ -46757,6 +46950,7 @@ export const CARRIER_IDS = [
   "hr-parcel",
   "hrvatska-posta",
   "hrx",
+  "htt-logistics",
   "huahan",
   "huaya-express",
   "hunter-express",
@@ -46940,6 +47134,7 @@ export const CARRIER_IDS = [
   "myanmar-post",
   "mylerz",
   "naqel",
+  "nas-express",
   "nationex",
   "ncs-courier",
   "nege",
@@ -46967,6 +47162,7 @@ export const CARRIER_IDS = [
   "oca",
   "ocasa",
   "ocs-ana",
+  "odm-express",
   "okaken",
   "olva-courier",
   "omgo",
@@ -46974,6 +47170,8 @@ export const CARRIER_IDS = [
   "ondot-courier",
   "one-world-express",
   "onex",
+  "online-worldwide-logistics",
+  "ontask-express",
   "opt-nc",
   "optima-overnight",
   "orian",
@@ -47912,6 +48110,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "go-world-express": [],
   "go4": [],
   "gobolt": [],
+  "gofast": [],
   "gofo-ca": ["gofo-ca-1"],
   "gofo-es": ["gofo-es-1"],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
@@ -47943,6 +48142,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hi-trans": [],
   "hispapost": [],
   "hitch": ["hitch-1"],
+  "hiyes": [],
   "hkd-express": [],
   "holisol": [],
   "homexpress": [],
@@ -47956,6 +48156,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hr-parcel": [],
   "hrvatska-posta": ["hrvatska-posta-own","hrvatska-posta-s10"],
   "hrx": [],
+  "htt-logistics": [],
   "huahan": ["huahan-1"],
   "huaya-express": ["huaya-express-1"],
   "hunter-express": [],
@@ -48139,6 +48340,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "myanmar-post": [],
   "mylerz": ["mylerz-1"],
   "naqel": [],
+  "nas-express": [],
   "nationex": [],
   "ncs-courier": [],
   "nege": [],
@@ -48166,6 +48368,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "oca": [],
   "ocasa": ["ocasa-1"],
   "ocs-ana": [],
+  "odm-express": [],
   "okaken": [],
   "olva-courier": ["olva-courier-3"],
   "omgo": ["omgo-1"],
@@ -48173,6 +48376,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ondot-courier": [],
   "one-world-express": ["one-world-express-1"],
   "onex": [],
+  "online-worldwide-logistics": [],
+  "ontask-express": [],
   "opt-nc": [],
   "optima-overnight": ["optima-overnight-1"],
   "orian": [],

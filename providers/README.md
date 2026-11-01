@@ -168,3 +168,5 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
 
 Track718 is an opt-in source restricted to Juxi Express. That carrier uses Track718, ParcelsApp
 and Ship24, leaving 17TRACK out. See [the scoped integration](track718/README.md).
+
+[Track123](track123/README.md) is an additional opt-in public-page fallback restricted to named FedEx lookups. Its guest flow uses no paid API credentials.

@@ -77,7 +77,7 @@ export class TrackingError extends Error {
   }
 }
 
-const sources: readonly UniversalSource[] = ['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja', 'Track718', 'UPU'];
+const sources: readonly UniversalSource[] = ['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja', 'Track718', 'Track123', 'UPU'];
 
 function budget(value: number | undefined, fallback: number): number {
   const ms = value ?? fallback;
@@ -286,7 +286,7 @@ export function createTracker(options: TrackerOptions = {}) {
     const reserve = named && registry.has(named.carrier) ? Math.min(HANDOFF_RESERVE_MS, Math.floor(ms / 3)) : 0;
     let relayed: ResolvedResult | null = null;
     if (!result || partial) {
-      const plan = universalPlan({ carriers: [carrier], trackingNumber: number, enablePostalNinja: enabled.includes('Postal Ninja') });
+      const plan = universalPlan({ carriers: [carrier], trackingNumber: number, enablePostalNinja: enabled.includes('Postal Ninja'), enableTrack123: enabled.includes('Track123') });
       const zone = carrierTimezone(carrier) === 'UTC' ? null : carrierTimezone(carrier);
       for (const candidate of input.source ? [input.source] : plan.sources.filter(source => enabled.includes(source))) {
         const left = remaining();

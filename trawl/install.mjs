@@ -58,6 +58,7 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
     return await sfExpressSessions.run({ ...carrierRun, signal: budget.signal })
   }
   if (carrierPage && australiaPostBrowserRequest(url, capture)) return await runAustraliaPostBrowser(carrierRun)
+  if (carrierPage && track123Number(url, capture)) return await runTrack123Browser(carrierRun)
   if (carrierPage && fedexSessionNumber(url, capture)) return await fedexSessions.run(carrierRun)
   if (carrierPage && wanbBrowserNumber(url, capture)) {
     return await runWanbBrowser({ ...carrierRun, signal: budget.signal,
@@ -94,6 +95,7 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
     + 'import { jdDomesticNumber, runJdDomestic } from "../utils/jd-domestic-browser.mjs"\n'
     + 'import { australiaPostBrowserRequest, runAustraliaPostBrowser } from "../utils/australia-post-browser.mjs"\n'
     + 'import { sfExpressSessionNumber, sfExpressSessions } from "../utils/sf-express-session.mjs"\n'
+    + 'import { track123Number, runTrack123Browser } from "../utils/track123-browser.mjs"\n'
     + 'import { fedexSessions, fedexSessionNumber } from "../utils/fedex-session.mjs"\n'
     + source.replace(entry, carrierRunners)
       .replace(documentCapture, 'captureBrowserDocument(page, pageCapture.contentOptions?.(capture) ?? capture, pageCapture, budget, screenshot)')

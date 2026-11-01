@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { brotliCompressSync, constants } from 'node:zlib';
+import { alphabet, encodeSource, decodeSource } from './source-encoding.mjs';
 const read = name => readFileSync(new URL(name, import.meta.url), 'utf8');
 const git = (...args) => execFileSync('git', args, { cwd: fileURLToPath(new URL('.', import.meta.url)), encoding: 'utf8' }).trim();
 // The image names the commit its sources come from, so a redeploy from any
@@ -12,7 +13,9 @@ const revision = `${git('rev-parse', 'HEAD')}${git('status', '--porcelain', '--'
 const dockerfile = read('Dockerfile');
 const copies = [...dockerfile.matchAll(/^COPY (\S+) (\S+)$/gm)];
 const sources = Object.fromEntries(copies.map(([, name, target]) => [target, read(name)]));
-const payload = brotliCompressSync(JSON.stringify(sources), { params: { [constants.BROTLI_PARAM_QUALITY]: 11 } }).toString('base64');
+const compressed = brotliCompressSync(JSON.stringify(sources), { params: { [constants.BROTLI_PARAM_QUALITY]: 11 } });
+const payload = encodeSource(compressed);
+const decoder = decodeSource.toString().replaceAll(/\s+/g, ' ').replaceAll("'", '"');
 // Docker limits physical lines even when the complete SSH argument still fits.
 // printf joins these arguments without adding bytes to the compressed archive.
 const chunks = payload.match(/.{1,16000}/g).map(chunk => `'${chunk}'`).join(' \\\n    ');
@@ -25,7 +28,7 @@ if (!copies.length || commands !== 'bun /tmp/install-tracking-capture.mjs && rm 
 }
 console.log(`${header}
 LABEL org.opencontainers.image.revision="${revision}"
-RUN printf '%s' ${chunks} | base64 -d > /tmp/upc-trawl-sources.br \\
- && bun -e 'import{readFileSync,writeFileSync,mkdirSync}from"node:fs";import{dirname}from"node:path";import{brotliDecompressSync}from"node:zlib";for(const[path,text]of Object.entries(JSON.parse(brotliDecompressSync(readFileSync("/tmp/upc-trawl-sources.br")).toString("utf8")))){mkdirSync(dirname(path),{recursive:true});writeFileSync(path,text)}' \\
- && rm /tmp/upc-trawl-sources.br \\
+RUN printf '%s' ${chunks} > /tmp/upc-trawl-sources.z85 \\
+ && bun -e 'import{readFileSync,writeFileSync,mkdirSync}from"node:fs";import{dirname}from"node:path";import{brotliDecompressSync}from"node:zlib";for(const[path,text]of Object.entries(JSON.parse(brotliDecompressSync((${decoder})(readFileSync("/tmp/upc-trawl-sources.z85","utf8"),${compressed.length},"${alphabet}")).toString("utf8")))){mkdirSync(dirname(path),{recursive:true});writeFileSync(path,text)}' \\
+ && rm /tmp/upc-trawl-sources.z85 \\
  && ${commands}`);

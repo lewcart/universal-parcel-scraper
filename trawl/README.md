@@ -24,6 +24,8 @@ is the service's network, and no browser is launched. MTCaptcha (Hongkong Post)
 needs handling that this image's solvers do not provide; its
 [documentation](../carriers/hongkong-post/README.md) describes the verification flow.
 
+Track123 uses a fresh context for its public FedEx form. The page owns guest verification and polling; only the matching history is captured. It adds no challenge attempts or retained verification state.
+
 ## Sessions
 
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
@@ -190,3 +192,20 @@ This derivative is [AGPL-3.0](LICENSE), separate from the core package's Apache 
 Track718 has a Juxi-only helper for its guest detail page. It binds the selected Juxi carrier,
 complete number, signed tracking request and WebSocket session, retaining the completed replies
 without account or recipient fields. Other Track718 carrier selections use no helper.
+
+## Independent FedEx IPv6 worker
+
+Run `bun /app/packages/tiers/src/utils/fedex-ipv6-server.mjs` from this same image
+in a separate container with its own browser pool. `HOST` defaults to loopback;
+`PORT` defaults to 8192. Keep its endpoint private and set `LOG_LEVEL=warn`.
+It serves only the exact FedEx capture flow, one lookup at a time, with no shared
+browser profile or session cache. Keep the primary service's deployment settings.
+
+A per-context loopback CONNECT proxy resolves the FedEx page and tracking API
+with IPv6 only, connects to a validated public address, and verifies the socket
+family. It preserves public HTTPS page dependencies, including IPv4-only resources.
+Missing IPv6 never falls back to IPv4 for the page or API. DNS answers, URLs and
+cookies are not logged; the response reports aggregate connection proof. The
+worker returns no rendered page or cookies. Failed contexts and their proxies
+are closed together. Use `FEDEX_IPV6_TRAWL_URL` in the consumer and compare retry
+outcomes against the original route with `FEDEX_IPV6_RETRY_PERCENT`.

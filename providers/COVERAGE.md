@@ -1,5 +1,7 @@
 # Carrier coverage by tracking source
 
+Track123 is an opt-in public-page fallback for named FedEx lookups. Its response must identify FedEx and match the whole number. It runs before the existing providers when enabled; no coverage is inferred for other carriers. See [retrieval and limitations](track123/README.md).
+
 [coverage.json](coverage.json) is the evidence provider order follows: what each provider
 returned for references of a carrier. Most comparison references were private numbers, which
 are not kept, so this table cannot be rerun as is. The README's figures come from

@@ -194,6 +194,17 @@ describe('Ukrposhta status API projection', () => {
     expect(api.delivered_at).toBeUndefined();
   });
 
+  it('keeps the country of an office of exchange and of scans abroad, which the API names "TERMINAL"', () => {
+    const rows = statuses().slice(0, 3);
+    Object.assign(rows[0], { name: 'TERMINAL', country: 'UKRAINE' });
+    Object.assign(rows[1], { name: 'Terminal', country: '' });
+    Object.assign(rows[2], { event: '29200', eventName: 'Item into sorting centre', name: '', country: 'EXAMPLE COUNTRY' });
+    const events = parseUkrposhtaStatuses(rows, NUMBER).events ?? [];
+    expect(events.map(event => [event.location, event.stage])).toEqual([
+      ['EXAMPLE COUNTRY', 'in_transit'], [undefined, events[1]!.stage], ['UKRAINE', events[2]!.stage]]);
+    expect(events[1]).not.toHaveProperty('location');
+  });
+
   it('dates a delivery in Ukraine, but not one abroad', () => {
     const rows = statuses().slice(0, 2);
     Object.assign(rows[1], { event: '41000', eventName: 'Delivered to Recipient', country: 'UKRAINE', date: '2026-03-29T16:03:37' });

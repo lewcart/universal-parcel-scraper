@@ -82,6 +82,12 @@ export function parseUkrposhtaOverview(payload: unknown, requested: string): Ukr
 
 interface ScanRow { date: string; code: string; label: string; location: string; country: string; reason: string }
 
+/**
+ * The name the API gives an office of exchange, and an airport or another post's scan abroad: the
+ * kind of facility, not a place. The row keeps its country.
+ */
+const FACILITY_KIND = /^terminal$/i;
+
 /** One result from current-first scans, following a return decision into its own leg. */
 function project(rows: ScanRow[]): CarrierResult {
   const latest = rows[0]!;
@@ -98,9 +104,10 @@ function project(rows: ScanRow[]): CarrierResult {
     if (classified?.stage === 'delivered' && returnLeg) classified = { status: 'exception', stage: 'returned' };
     const local = ukrposhtaWallClock(row.date);
     const time = local && countryCode(row.country) === 'UA' ? kyivTime(local) : null;
+    const site = FACILITY_KIND.test(row.location) ? '' : row.location;
     events[index] = {
       description: row.label, provider_code: row.code,
-      ...(row.location || row.country ? { location: [row.location, row.country].filter(Boolean).join(', ') } : {}),
+      ...(site || row.country ? { location: [site, row.country].filter(Boolean).join(', ') } : {}),
       ...(time ? { time } : local ? { local_time: local } : row.date ? { provider_time_text: row.date } : {}),
       ...(classified ? { stage: classified.stage } : {}), ...(returnLeg ? { provider_leg: 'return' } : {}),
     };

@@ -79,6 +79,14 @@
       "confirmedBy": "live"
     },
     {
+      "code": "29200",
+      "wording": "Item into sorting centre",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "The destination post's sorting after the inward office of exchange, before the delivery office."
+    },
+    {
       "code": "29500",
       "wording": "Item out for physical delivery",
       "language": "en",

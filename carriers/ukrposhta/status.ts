@@ -11,6 +11,7 @@ const CODES: Record<string, ClassifiedStatus> = {
   '2201': { status: 'in_transit', stage: 'in_transit' },
   '24300': { status: 'in_transit', stage: 'customs' },
   '27900': { status: 'in_transit', stage: 'in_transit' },
+  '29200': { status: 'in_transit', stage: 'in_transit' },
   '29500': { status: 'out_for_delivery', stage: 'out_for_delivery' },
   '31200': { status: 'exception', stage: 'exception' },
   '4006': { status: 'in_transit', stage: 'in_transit' },

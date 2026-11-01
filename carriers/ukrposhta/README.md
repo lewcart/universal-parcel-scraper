@@ -43,7 +43,9 @@ portal the batch clock includes seconds, while full history has minute precision
 matching uses that shared precision. Clocks carry no offset. A row naming Ukraine
 is dated on Kyiv time (`Europe/Kyiv`) to the shared minute, so both sources date
 a scan alike. Rows naming another country or none, such as airline legs, and wall
-clocks a daylight-saving change skips or repeats keep their local digits. Scans
+clocks a daylight-saving change skips or repeats keep their local digits. The status
+API names an office of exchange, and an airport or another post's scan abroad,
+`TERMINAL`; that is a kind of facility, so the place is the row's country. Scans
 retain native order. See [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md)
 for unresolved history handling. A return decision starts a separate leg; later
 transport remains active until a delivery scan completes that leg.

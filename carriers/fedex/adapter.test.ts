@@ -5,6 +5,7 @@ import { recognizeFromLookup } from '../../core/adapter/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import {
   FedExTracker,
+  adapter,
   fedexTrackingUrl,
   parseFedExTrackingHtml,
   parseFedExTrackingResponse,
@@ -749,9 +750,11 @@ describe('FedEx lookup steps', () => {
       .mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '<body>Tracking</body>',
         fedexEgress: { family: 'IPv6', pageConnections: 1, apiConnections: 1 },
         capturedResponses: [{ url: TRACK_API, status: 200, body: JSON.stringify(deliveredFixture()) }] }));
-    const tracker = new FedExTracker({ trawl: new TrawlClient(TRAWL_URL), ipv6Trawl: new TrawlClient('http://trawl-ipv6.test:8192'),
+    const tracker = adapter({ trawl: new TrawlClient(TRAWL_URL),
+      trawlRoutes: { 'fedex-ipv6': new TrawlClient('http://trawl-ipv6.test:8192') },
+      env: { FEDEX_IPV6_RETRY_PERCENT: '100' }, browserExecutablePath: null,
       recorder: { step: record => records.push(record), lookup() {} } });
-    await expect(tracker.fetch(DELIVERED_NUMBER)).resolves.toMatchObject({ status: 'delivered' });
+    await expect(tracker.track({ number: DELIVERED_NUMBER })).resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher.mock.calls.map(call => String(call[0]))).toEqual([`${TRAWL_URL}/scrape`, 'http://trawl-ipv6.test:8192/scrape']);
     expect(records).toMatchObject([{ networkRoute: 'default', networkFamily: 'IPv4', historyAvailable: false },
       { networkRoute: 'ipv6', networkFamily: 'IPv6', historyAvailable: true, fallbackFrom: 'trawl', outcome: 'ok' }]);

@@ -119,10 +119,12 @@ export function createTracker(options: TrackerOptions = {}) {
     const signal = current && inherited ? AbortSignal.any([current, inherited]) : current ?? inherited;
     return baseFetcher(url, { ...init, ...(signal ? { signal } : {}) });
   }, options.fetcher);
+  const ipv6Url = options.env?.FEDEX_IPV6_TRAWL_URL?.trim();
   const environment: AdapterEnvironment = {
     fetcher,
     userAgent: userAgentOf(options.userAgent),
     trawl: options.trawlUrl ? new TrawlClient(options.trawlUrl, fetcher) : null,
+    trawlRoutes: ipv6Url ? { 'fedex-ipv6': new TrawlClient(ipv6Url, fetcher) } : undefined,
     browserExecutablePath: options.chromiumPath || null,
     recorder: options.recorder ?? NOOP_RECORDER,
     env: options.env ?? {},

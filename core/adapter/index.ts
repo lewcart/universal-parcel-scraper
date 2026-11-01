@@ -111,6 +111,8 @@ export interface AdapterEnvironment {
   userAgent?: string;
   /** The private browser service, or null when not configured. */
   trawl: TrawlClient | null;
+  /** Optional named browser routes, constructed and isolated by the host. */
+  trawlRoutes?: Readonly<Record<string, TrawlClient | null>>;
   /** A Chromium executable for adapters that must run a browser locally, or null. */
   browserExecutablePath: string | null;
   recorder: StepRecorder;

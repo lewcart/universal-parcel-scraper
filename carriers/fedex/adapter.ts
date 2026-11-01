@@ -25,7 +25,7 @@ import {
   firstOccurrence,
   usStateTimeZone,
 } from '../../core/time/index.js';
-import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, TrawlClient } from '../../core/transport/index.js';
+import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { FedExApiClient, fedexApiCredentials, type FedExApiCredentials } from './api.js';
 import { FEDEX_CODE_STAGE, fedexScanStage, fedexStage, fedexStatus, statusForStage } from './status.js';
@@ -730,12 +730,11 @@ export class FedExTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const api = fedexApiCredentials(environment.env);
-  const ipv6Url = environment.env.FEDEX_IPV6_TRAWL_URL?.trim();
   const percent = environment.env.FEDEX_IPV6_RETRY_PERCENT;
   const tracker = new FedExTracker({
     fetcher: environment.fetcher,
     trawl: environment.trawl,
-    ipv6Trawl: ipv6Url ? new TrawlClient(ipv6Url, environment.fetcher) : null,
+    ipv6Trawl: environment.trawlRoutes?.['fedex-ipv6'] ?? null,
     ipv6RetryShare: percent === undefined ? 1 : Number(percent) / 100,
     api,
     recorder: environment.recorder,

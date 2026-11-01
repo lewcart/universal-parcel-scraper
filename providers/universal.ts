@@ -187,6 +187,7 @@ export class UniversalTracker {
       fetcher,
       userAgent: partial.userAgent,
       trawl: this.trawl(fetcher, partial),
+      trawlRoutes: partial.trawlRoutes,
       browserExecutablePath: partial.browserExecutablePath ?? this.options.executablePath ?? null,
       recorder: partial.recorder ?? NOOP_RECORDER,
       env: partial.env ?? {},

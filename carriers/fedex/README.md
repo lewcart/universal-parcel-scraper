@@ -196,3 +196,5 @@ connections to both the public page and tracking API. Missing proof is a transpo
 failure, never a successful IPv6 answer. The attempt count, total deadline,
 whole-number checks and provider fallback remain unchanged. Step telemetry records
 the selected route, observed family and presence of dated history.
+
+Custom adapter hosts supply the isolated client as `environment.trawlRoutes["fedex-ipv6"]`. The facade constructs it from `FEDEX_IPV6_TRAWL_URL`; the carrier never constructs a browser service itself.

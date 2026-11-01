@@ -270,6 +270,21 @@ describe('JS Express tracking adapter', () => {
     expect(jsExpressMappedStage('Alert, Forwarded')).toBeUndefined();
   });
 
+  it("reads iMile's scans as its destination courier by iMile's sentences, whichever centres they name", () => {
+    for (const [wording, stage] of [
+      ['【iMile Sample DC Center】Received.', 'in_transit'],
+      ['【iMile Sample DC Center】Parcel shipped to【Sample01】.', 'in_transit'],
+      ['【Other Hub】Parcel shipped to【Other02】.', 'in_transit'],
+      ['【Sample DS】Shipment out for delivery.', 'out_for_delivery'],
+    ] as const) {
+      expect(jsExpressMappedStage(wording), wording).toBe(stage);
+      expect(statusMapAnswer({ carrier: 'js-express', description: wording }), wording).toEqual({ kind: 'mapped', stage });
+    }
+    // Only a wording that opens with a centre's name in 【】 is iMile's; a scan that moves nothing has no stage.
+    expect(jsExpressMappedStage('Parcel shipped to【Sample01】.')).toBeUndefined();
+    expect(jsExpressMappedStage('【Sample Hub】Inventory count scan.')).toBeUndefined();
+  });
+
   it("keeps a Colissimo leg's announced return open until the parcel is back with its sender", () => {
     const announced = parseJsExpress(withList([
       row('2026-05-03 14:00:00', 'Sample Center', "Votre Colissimo n'a pas pu vous être livré en raison d'un problème d'adresse. Il va être retourné à l'expéditeur.")]), DELIVERED);

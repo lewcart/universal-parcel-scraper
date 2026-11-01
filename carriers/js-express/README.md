@@ -58,6 +58,9 @@ delivers them. Tracked through the lookup its English tracking page makes.
   A place without a letter, such as "1", names no place and is left out.
   JS Express's own status in Chinese shows the English its entry in
   [statuses.json](statuses.json) gives, and takes over the row stored in Chinese.
+- iMile's scans as the destination courier open with the centre's name in 【】, so each pair of
+  centres makes a new wording. They take the stage iMile's own sentences give, as its adapter
+  reads them.
 - Partners' records of the parcel's data move nothing and have no stage. Straightship's "Package
   will be delivered before 9:00pm" is its driver's round, out for delivery, as Straightship's own
   map reads it.

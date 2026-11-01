@@ -48,6 +48,8 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
   ['arrived in warehouse', 'in_transit'],
   ['arrived', 'in_transit'],
   ['your order has been shipped from', 'in_transit'],
+  // A centre sends the parcel on to the next, the delivery station in 【】 after it, as JS Express relays it.
+  ['parcel shipped to', 'in_transit'],
   ['goods put on shelves completed', 'in_transit'],
   ['parcel is currently being processed', 'in_transit'],
   ['the flight has taken off', 'in_transit'],
@@ -126,6 +128,15 @@ function phraseStage(code: string, wording: string): Stage | null | undefined {
   const stage = read(phrase);
   const heading = stage === undefined ? HEADING.exec(phrase) : null;
   return heading ? read(phrase.slice(heading[0].length)) : stage;
+}
+
+/**
+ * The stage one of iMile's sentences gives its scan as another tracker relays it, without a code:
+ * opening with the centre's name in 【】, as iMile writes it. Undefined for any other wording and for
+ * a scan that moves nothing.
+ */
+export function imileRelayedStage(wording: string): Stage | undefined {
+  return /^\s*【[^】]+】/.test(wording) ? phraseStage('', wording) ?? undefined : undefined;
 }
 
 /** The stage iMile's code and sentences give a scan, null for one that moves nothing, undefined when neither decides. */

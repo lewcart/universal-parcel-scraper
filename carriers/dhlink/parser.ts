@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { firstOccurrence, isoTime, usStateTimeZone } from '../../core/time/index.js';
+import { countryCode, firstOccurrence, isoTime, usStateTimeZone } from '../../core/time/index.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { countryZones } from '../../places/zones.js';
@@ -273,8 +273,14 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
   const copies = destination === 'US' ? dated.filter(({ scan }) => dated.some((other) =>
     other.scan !== scan && other.time && (last?.leg.beijingClock || other.zone === RECORD_ZONE)
     && other.scan.event.description === scan.event.description && usClockCopy(scan.stamp, other.time.timestamp))) : [];
+  // A place naming only the destination country is the parcel's, not the scan's: a Canada line's
+  // airline hand-over in China reads "Canada".
   const events = dated.filter((entry) => !copies.includes(entry))
-    .map(({ scan, time }): CarrierEvent => ({ ...(time ? { time: time.iso } : { local_time: scan.stamp }), ...scan.event }));
+    .map(({ scan, time }): CarrierEvent => {
+      const { location, ...event } = scan.event;
+      const placed = location && !(destination && countryCode(location) === destination) ? { location } : {};
+      return { ...(time ? { time: time.iso } : { local_time: scan.stamp }), ...event, ...placed };
+    });
   if (!events.length) throw new IndeterminateError(PROVIDER, 'DHLink has no scans for the parcel yet');
   // A receipt after DHLink moved the parcel on, at another warehouse or the post a line hands it
   // to, takes the parcel along its way: no step back.

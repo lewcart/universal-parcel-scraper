@@ -670,6 +670,17 @@ describe('same-instant identity policies', () => {
     ]) expect(policy?.matches?.(cleared, different)).toBe(false);
   });
 
+  it('lets a DHLink scan shown without a place take over the row stored with only a country as its place', () => {
+    const policy = sameInstantIdentityPolicy('dhlink', { supportsScanMatching: true });
+    const handed = { stage: 'in_transit', description: 'Package handed over to airline', location: '', providerCode: '' };
+    expect(policy?.matches?.(handed, { ...handed, location: 'Canada' })).toBe(true);
+    for (const different of [
+      { ...handed, location: 'Sample Town' },
+      { ...handed, location: 'Canada', description: 'Package departed from the warehouse' },
+    ]) expect(policy?.matches?.(handed, different)).toBe(false);
+    expect(policy?.matches?.({ ...handed, location: 'Sample Town' }, { ...handed, location: 'Canada' })).toBe(false);
+  });
+
   it('lets a LinHan row read on Beijing time take over the row stored on its town’s zone, by wall clock, town and wording', () => {
     expect(sameInstantIdentityPolicy('linhan')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('linhan', { supportsScanMatching: true });

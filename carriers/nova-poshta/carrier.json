@@ -100,6 +100,11 @@
       "id": "nova-poshta-domestic",
       "pattern": "^(?:(?:20[4678]|590|595)\\d{11}|(?:21|51)\\d{12})$",
       "confidence": "low"
+    },
+    {
+      "id": "nova-poshta-international",
+      "pattern": "^SH(?!O[CPR])[A-Z]{2}\\d{10}$",
+      "confidence": "low"
     }
   ]
 }

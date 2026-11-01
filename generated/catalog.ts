@@ -30272,6 +30272,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^(?:(?:20[4678]|590|595)\\d{11}|(?:21|51)\\d{12})$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^SH(?!O[CPR])[A-Z]{2}\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -48399,7 +48403,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "norsk-global": ["norsk-global-pkg"],
   "northline": [],
   "nova-global": ["nova-global-1"],
-  "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],
+  "nova-poshta": ["nova-poshta-export","nova-poshta-domestic","nova-poshta-international"],
   "now-couriers": [],
   "nox": ["nox-1"],
   "nz-couriers": [],

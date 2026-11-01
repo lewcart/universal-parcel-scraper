@@ -894,6 +894,29 @@
         "confidence": "none"
       },
       "note": "Nova Post Global reference published beside a Nova Poshta waybill; that portal is outside this adapter's scope."
+    },
+    {
+      "number": "SHUA5994810530",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250710134509/https://novapost.com/uk-pl/tracking/SHUA5994810530",
+        "date": "2025-07-10",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Nova Post international"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "nova-poshta"
+        ]
+      },
+      "note": "Looked up on Nova Post's international tracker for Ukraine to Poland, as an archived address shows; the capture keeps the page without its answer."
     }
   ]
 }

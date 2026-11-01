@@ -35,9 +35,11 @@ const REFERENCES_LOOKED_UP: Readonly<Record<string, (number: string) => boolean>
 // DHL names for their destination, not always that country's post: DHL Express
 // in Poland and Switzerland, PostNord in Finland, Itella in Lithuania and
 // Latvia, Meest in Ukraine. Null where the partner does not look up DHL's
-// number; DHL's arrival scan then links the one that delivers.
+// number, or where DHL's arrival scans link another partner than its country
+// page names: DHL Parcel Spain rather than Correos, DHL Express in Italy rather
+// than SDA. DHL's arrival scan then links the one that delivers.
 const DHL_PARCEL_PARTNERS: Readonly<Record<string, CarrierId | null>> = {
-  CH: null, FI: 'postnord', LT: null, LV: null, PL: null, UA: 'meest',
+  CH: null, ES: null, FI: 'postnord', IT: null, LT: null, LV: null, PL: null, UA: 'meest',
 };
 
 // Waybills that take the S10 layout without being postal items: Morning Global's carry

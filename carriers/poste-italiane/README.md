@@ -75,7 +75,8 @@ Italiane for a number issued abroad.
   as the same moments Poste's own copies give.
 - [SDA's site](https://www.sda.it/) says its courier services moved to Poste Italiane, so a
   link on sda.it names Poste, and its old shipment links carry the waybill as
-  `tracing.letteraVettura`. DHL names SDA as its partner in Italy.
+  `tracing.letteraVettura`. DHL's country page names SDA as its partner in Italy, but
+  [DHL](../dhl/README.md) proposes its parcels to no one there until a scan links the partner.
 - Partners abroad hand Poste Italiane parcels under a DHL Parcel Connect plate, `JJD` and
   twenty-one digits, and link to Poste's tracker with it, as PPL does. The adapter takes those
   plates for that hand-off. DHL issues them, so no detection rule names Poste for them.

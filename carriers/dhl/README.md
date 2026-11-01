@@ -134,8 +134,10 @@ how a consumer learns that DHL holds one behind a postcode.
   name, which is not always the destination's post: PostNord in Finland and
   Meest in Ukraine. DHL Express in Poland and Switzerland and Itella in
   Lithuania and Latvia do not look up DHL's number, so no one is asked there
-  until the arrival scan links the partner. Deutsche Post's letter-post items
-  go to the destination's post.
+  until the arrival scan links the partner. Nor is anyone asked for Spain and
+  Italy, where the pages name Correos and SDA but DHL's arrival scans link DHL
+  Parcel Spain and DHL Express, and Correos does not know the parcels.
+  Deutsche Post's letter-post items go to the destination's post.
 - `zielland`, the destination country DHL names in the lookup's language, becomes
   `destination_country`, or `destination_country_name` when the name maps to no
   ISO code. Nothing else of the delivery address is read.

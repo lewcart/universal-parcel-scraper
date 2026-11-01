@@ -238,8 +238,8 @@ describe('DHL public tracking normalization', () => {
     return parseDHLTrackingResponse(payload, PARCEL);
   }
   it.each([
-    ['Italy', 'poste-italiane'], ['Finland', 'postnord'], ['Ukraine', 'meest'],
-    ['Poland', null], ['Switzerland', null], ['Lithuania', null], ['Latvia', null],
+    ['Finland', 'postnord'], ['Ukraine', 'meest'], ['Poland', null], ['Switzerland', null],
+    ['Lithuania', null], ['Latvia', null], ['Spain', null], ['Italy', null],
   ])('proposes a parcel bound for %s to the partner DHL names there, when it looks up DHL’s number', (zielland, partner) => {
     expect(deliveryHandoff('dhl', PARCEL, parcel(zielland))).toEqual(partner && { carrier: partner, number: PARCEL, basis: 'destination' });
     expect(deliveryHandoff('dhl', PARCEL, { status: 'in_transit' }, countryCode(zielland))?.carrier ?? null).toBe(partner);
@@ -254,6 +254,8 @@ describe('DHL public tracking normalization', () => {
       .toEqual({ carrier: 'swiss-post', number: PARCEL, basis: 'partner' });
     expect(deliveryHandoff('dhl', PARCEL, parcel('Lithuania', `https://www.itella.lt/en/private-customer/track-shipment/?trackingCode=${PARCEL}`)))
       .toEqual({ carrier: 'posti', number: PARCEL, basis: 'partner' });
+    expect(deliveryHandoff('dhl', PARCEL, parcel('Spain', `https://clientesparcel.dhl.es/LiveTracking/ModifyMyShipment/en?codigo=${PARCEL}&app=TRACKING`)))
+      .toEqual({ carrier: 'dhl-ecommerce-es', number: PARCEL, basis: 'partner' });
     const express = parcel('Italy', `https://www.logistics.dhl/it-it/home/tracking/tracking-express.html?submit=1&tracking-id=${PARCEL}`);
     expect(express.delivery_carrier).toBe('dhl-express');
     expect(deliveryHandoff('dhl', PARCEL, express)).toBeNull();

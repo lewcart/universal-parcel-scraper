@@ -23,6 +23,7 @@
     {"wording": "Receive item at office of exchange in origin country", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Insert item into domestic bag EP KARACHI", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "An outbound item bagged at Pakistan's office of exchange; the wording names the bag."},
     {"wording": "Send item to destination country", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"wording": "Send item abroad (EDI-received)", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The sending post's despatch of an item bound for Pakistan, received as its data after its acceptance and office-of-exchange scans."},
     {"wording": "Handedover to airline flight no:EY 0232 / EY 0404, Destination THBKKD", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The shared rules read a handover as an acceptance."},
     {"wording": "Flight departure", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Handed over from airline to office of exchange in destination country", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The airline handing the item to the destination's post; the shared rules read a handover as an acceptance."},

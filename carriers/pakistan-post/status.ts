@@ -23,6 +23,9 @@ const SCANS: readonly (readonly [RegExp, Stage])[] = [
   [/^delivered\b/, 'delivered'],
   [/^receive item at office of exchange\b/, 'in_transit'],
   [/^send item to destination country\b/, 'in_transit'],
+  // The sending post's despatch abroad, which reaches Pakistan Post as data after that post's own scans:
+  // not a pre-advice.
+  [/^send item abroad\b/, 'in_transit'],
   [/^send item to domestic location\b/, 'in_transit'],
   [/^insert item into (?:domestic )?bag\b/, 'in_transit'],
   [/^handed ?over to airline\b/, 'in_transit'],

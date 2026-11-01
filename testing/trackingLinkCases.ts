@@ -968,6 +968,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'epost-global', number: 'EPG999999999999999',
     route: /^https:\/\/epgtrack\.com\/EPG999999999999999$/,
     marker: /We haven.t received any tracking updates|Track your shipments here/ },
+  // The page for a number the tracker does not know says so and leaves the number out.
+  { carrier: 'global-delivery-network', number: '999999999999',
+    route: /^https:\/\/pds\.gdnparcel\.com\/pds_tracking\.asp\?track=999999999999$/,
+    marker: /GDN Tracking|Unable to locate the selected Package/,
+    forwarding: { notFound: /Unable to locate the selected Package\./ } },
   // The server renders the shipment for the number in its address and sends an unknown one to its search page with a notice.
   { carrier: 'globalpost', number: 'GPZZZZ9999999999US',
     route: /^https:\/\/www\.goglobalpost\.com\/tracking\/\?t=GPZZZZ9999999999US&status=not_found$/,

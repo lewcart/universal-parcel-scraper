@@ -16,18 +16,48 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "global-delivery-network",
+    "steps": [
+      "direct"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://pds.gdnparcel.com/pds_tracking.asp?track={trackingNumber}",
     "searchUrl": "https://gdnparcel.com/",
     "canaryUrl": "https://gdnparcel.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "destination",
+      "recipient_name",
+      "recipient_address",
+      "weight",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "destination_country"
+    ],
+    "discarded": [
+      "recipient_name",
+      "recipient_address",
+      "weight",
+      "delivery_tracking_number"
+    ],
+    "unavailable": [
+      "provider_code",
+      "delivery_partner",
+      "eta",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

@@ -19884,7 +19884,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "global-delivery-network",
+      "localClocks": true
     },
     "canaryUrl": "https://gdnparcel.com/",
     "trackingUrlTemplate": "https://pds.gdnparcel.com/pds_tracking.asp?track={trackingNumber}",

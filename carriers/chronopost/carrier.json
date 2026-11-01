@@ -87,6 +87,11 @@
       "checksum": "dpd"
     },
     {
+      "id": "chronopost-5",
+      "pattern": "^(?!10)\\d{14}$",
+      "confidence": "low"
+    },
+    {
       "id": "chronopost-3",
       "pattern": "^[A-Z]{2}\\d{9}[A-Z]{2}$",
       "confidence": "low",

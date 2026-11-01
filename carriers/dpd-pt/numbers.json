@@ -47,6 +47,7 @@
           "dpd-pl",
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",
@@ -83,6 +84,7 @@
           "dpd-de",
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",
@@ -142,6 +144,7 @@
           "dpd-pt",
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "hermes-de",
           "seur",
@@ -175,6 +178,7 @@
         "candidates": [
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",
@@ -209,6 +213,7 @@
           "dpd-pl",
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "hermes-de",
           "seur",
@@ -270,6 +275,7 @@
         "confidence": "low",
         "candidates": [
           "dpd",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",
@@ -303,6 +309,7 @@
         "confidence": "low",
         "candidates": [
           "dpd",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",
@@ -388,6 +395,7 @@
         "confidence": "low",
         "candidates": [
           "dpd",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",

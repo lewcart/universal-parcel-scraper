@@ -55,6 +55,7 @@
         "candidates": [
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",
@@ -88,6 +89,7 @@
         "candidates": [
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",
@@ -121,6 +123,7 @@
         "candidates": [
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",

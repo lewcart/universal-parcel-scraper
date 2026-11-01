@@ -31,10 +31,12 @@ outside the dedicated prefixes, so there they only suggest Chronopost, with or
 without a check digit. Other posts' codes suggest Chronopost only when their
 S10 check digit passes: a failed one is a mistyped number, which Chronopost's
 hubs never scanned. A fifteen-character numeric identifier
-must pass the shared DPD check-character validation. These shapes suggest a
-lookup, not carrier ownership. Asked directly, as when a provider names
-Chronopost, the adapter also takes the fourteen digits without their check
-character, as DPD's notices print them: Chronopost answers either form.
+must pass the shared DPD check-character validation. The fourteen digits
+without their check character, as DPD's notices print them, suggest Chronopost
+too, beside the DPD network's other carriers: Chronopost answers either form
+for a DPD parcel it delivers in France, and only the parcel's destination tells
+the carriers apart. Numbers from DPD France's own depots, starting 10, stay DPD
+France's. These shapes suggest a lookup, not carrier ownership.
 XN and twelve digits suggest Chronopost alone: its tracker answers that shape,
 which no public source documents.
 

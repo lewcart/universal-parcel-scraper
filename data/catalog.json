@@ -1453,6 +1453,10 @@
         "checksum": "dpd"
       },
       {
+        "pattern": "^(?!10)\\d{14}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}[A-Z]{2}$",
         "confidence": "low",
         "checksum": "s10"

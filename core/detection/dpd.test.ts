@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { carrierIdFromPartner } from '../catalog/hints.js';
-import { recognitionAskedCarriers } from '../catalog/recognition.js';
+import { recognitionAskedCarriers, recognitionCandidates } from '../catalog/recognition.js';
 import { dpdParcelNumber } from './dpd.js';
 import { detectCarrierMatch, isValidDpdParcelNumber, parseTrackingInput } from './index.js';
 
@@ -29,6 +29,16 @@ describe('DPD parcel number check character', () => {
     // A digit can be the check character too.
     expect(isValidDpdParcelNumber('012345678901233')).toBe(true);
     expect(detectCarrierMatch('012345678901233').candidates).toEqual(expect.arrayContaining(['dpd', 'dpd-de', 'dpd-uk']));
+  });
+
+  it('offers Chronopost the fourteen digits too, first for a French reader', () => {
+    const digits = detectCarrierMatch('04000000000019');
+    expect(digits).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(digits.candidates).toEqual(expect.arrayContaining(['dpd', 'dpd-fr', 'chronopost', 'brt', 'seur']));
+    expect(recognitionCandidates('04000000000019', { countryHint: 'FR' })[0]).toMatchObject({ carrier: 'chronopost', countryMatch: 'home' });
+    // Another country's own network stays first.
+    expect(recognitionAskedCarriers('04000000000019', { countryHint: 'IT' })[0]).toBe('brt');
+    expect(recognitionAskedCarriers('04000000000019', { countryHint: 'ES' })[0]).toBe('seur');
   });
 
   it('keeps a mistyped character away from DPD', () => {

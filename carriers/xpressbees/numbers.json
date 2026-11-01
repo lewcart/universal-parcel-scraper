@@ -16,6 +16,7 @@
         "confidence": "low",
         "candidates": [
           "dpd",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",
@@ -125,6 +126,7 @@
         "confidence": "low",
         "candidates": [
           "dpd",
+          "chronopost",
           "ciblex",
           "hermes-de",
           "seur",
@@ -161,6 +163,7 @@
           "dpd-pl",
           "dpd",
           "dpd-fr",
+          "chronopost",
           "ciblex",
           "seur",
           "brt",

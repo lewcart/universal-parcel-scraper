@@ -11,7 +11,8 @@ import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status
  */
 const STAGES: ReadonlyMap<string, Stage> = new Map([
   ['pranim objekti nga klienti', 'accepted'],
-  // Taken out of its bag at the office of exchange or a sorting centre.
+  // Taken out of its bag at a post office or sorting centre in Albania after the posting,
+  // though its English half says inbound.
   ['objekti u nxor nga thesi per perpunim', 'in_transit'],
   // The foreign post's office of exchange received it.
   ['objekti u pranua ne zyren e shkembimit', 'in_transit'],

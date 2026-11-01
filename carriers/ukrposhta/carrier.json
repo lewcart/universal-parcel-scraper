@@ -73,6 +73,12 @@
       "checksum": "ukrposhta"
     },
     {
+      "id": "ukrposhta-own",
+      "pattern": "^[CELR][A-Z]\\d{9}UA$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "ukrposhta-s10",
       "pattern": "^[A-Z]{2}\\d{9}UA$",
       "confidence": "low",

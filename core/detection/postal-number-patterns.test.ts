@@ -139,12 +139,12 @@ describe('S10-shaped numbers', () => {
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
     expect(recognitionAskedCarriers('RR123456789AU')).not.toContain('australia-post');
-    expect(detectCarrierMatch('RR123456785UA')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionCandidates('RR123456785UA')).toEqual([
+    expect(detectCarrierMatch('PA123456785UA')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionCandidates('PA123456785UA')).toEqual([
       { carrier: 'ukrposhta', needsInput: null, preferred: true },
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
-    expect(recognitionAskedCarriers('RR123456789UA')).not.toContain('ukrposhta');
+    expect(recognitionAskedCarriers('PA123456789UA')).not.toContain('ukrposhta');
   });
 
   it('names USPS for the parcels, EMS, registered and tracked-letter items it issues', () => {

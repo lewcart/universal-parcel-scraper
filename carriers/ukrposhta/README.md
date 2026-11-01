@@ -4,11 +4,13 @@ Tracks domestic barcodes and international postal references through Ukrposhta's
 status API and the official consumer tracker, including the destination post's
 scans when it supplies them. Detection offers a 13-digit barcode only when its
 last digit passes the mod 11 check (weights 2 to 7 from the right); other
-carriers share that length, so it stays a suggestion. A Ukrainian-issued postal
-number makes Ukrposhta the first carrier recognition asks. The
-[UPU S10 standard](https://www.upu.int/UPU/media/upu/files/postalSolutions/programmesAndServices/standards/S10-12.pdf)
-names the issuing country, not the deliverer, so the suffix alone never selects
-Ukrposhta.
+carriers share that length, so it stays a suggestion. Ukrposhta's tracker relays
+the foreign post's scans for the parcels, EMS, letter and registered items it
+sends abroad, so detection names it for
+[UPU S10](https://www.upu.int/UPU/media/upu/files/postalSolutions/programmesAndServices/standards/S10-12.pdf)
+codes ending UA that start C, E, L or R, as for the neighbouring posts. For the
+other UA codes the suffix names the issuing country, not the deliverer: they stay
+with the generic postal carrier and recognition asks Ukrposhta first.
 
 ## How it works
 

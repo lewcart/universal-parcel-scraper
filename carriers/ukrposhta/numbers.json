@@ -37,10 +37,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "ukrposhta",
         "confidence": "high"
       },
-      "note": "Publicly reported return to China, reviewed on AliExpress's page. Ukrposhta's tracker returns its history; detection selects the generic postal carrier."
+      "note": "Publicly reported return to China, reviewed on AliExpress's page. Ukrposhta's tracker returns its history."
     },
     {
       "number": "RF426331371SG",
@@ -307,6 +307,63 @@
         "confidence": "high"
       },
       "note": "Mail from Estonia whose Ukrposhta tracking page the Wayback Machine archived. Ukrposhta's status API returns its journey, from posting abroad to delivery in Ukraine, under the sending post's number."
+    },
+    {
+      "number": "CR062438499UA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20261026184738/https://track.ukrposhta.ua/en/?barcode=CR062438499UA",
+        "date": "2026-10-26",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "ukrposhta",
+        "confidence": "high"
+      },
+      "note": "Looked up on Ukrposhta's own tracker, as an archived address shows; the capture holds only the search page. Ukrposhta's tracker returns the history of a parcel sent abroad from Ukraine, with the destination post's scans."
+    },
+    {
+      "number": "CR062611988UA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20261018212414/https://track.ukrposhta.ua/en/?barcode=CR062611988UA",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "ukrposhta",
+        "confidence": "high"
+      },
+      "note": "Looked up on Ukrposhta's own tracker, as an archived address shows; the capture holds only the search page. Ukrposhta's tracker returns the history of a parcel sent abroad from Ukraine, with the destination post's scans."
+    },
+    {
+      "number": "LP064992122UA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260907012610/https://track.ukrposhta.ua/?barcode=LP064992122UA",
+        "date": "2026-09-07",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "ukrposhta",
+        "confidence": "high"
+      },
+      "note": "Looked up on Ukrposhta's own tracker, as an archived address shows; the capture holds only the search page. Ukrposhta's tracker returns the history of a small packet sent abroad from Ukraine, with the destination post's scans."
     }
   ]
 }

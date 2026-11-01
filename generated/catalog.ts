@@ -2200,7 +2200,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|F[TZ])\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}AL$)(?![CELR][A-Z]\\d{9}RS$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!(?:[CE][A-Z]|HC)\\d{9}LT$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$)(?!AS\\d{9}US$)(?!(?:C[A-DF-UW-Z]|[ELR][A-Z])\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|F[TZ])\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}AL$)(?![CELR][A-Z]\\d{9}RS$)(?![CELR][A-Z]\\d{9}UA$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!(?:[CE][A-Z]|HC)\\d{9}LT$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$)(?!AS\\d{9}US$)(?!(?:C[A-DF-UW-Z]|[ELR][A-Z])\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -3306,6 +3306,11 @@ export const CARRIER_CATALOG = {
         "pattern": "^\\d{13}$",
         "confidence": "low",
         "checksum": "ukrposhta"
+      },
+      {
+        "pattern": "^[CELR][A-Z]\\d{9}UA$",
+        "confidence": "high",
+        "checksum": "s10"
       },
       {
         "pattern": "^[A-Z]{2}\\d{9}UA$",
@@ -47340,7 +47345,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id","brt-customer-parcel-id"],
   "ecoscooting": ["ecoscooting-postcode-label","ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn","ecoscooting-shein-package"],
   "tipsa": ["tipsa-1","tipsa-2"],
-  "ukrposhta": ["ukrposhta-1","ukrposhta-s10"],
+  "ukrposhta": ["ukrposhta-1","ukrposhta-own","ukrposhta-s10"],
   "usps": ["usps-impb","usps-impb-26","usps-3","usps-1","usps-2","usps-impb-routing","usps-4","usps-own","usps-s10"],
   "canada-post": ["canada-post-1","canada-post-2"],
   "purolator": ["purolator-1","purolator-pin-6","purolator-2"],

@@ -29,6 +29,15 @@ export interface TrackingLinkCase {
 // independently of the generated link templates, so a template that drifts
 // fails here instead of passing against itself.
 export const trackingLinkCases: TrackingLinkCase[] = [
+  { carrier: 'rex-indonesia', number: '22201740631928',
+    route: /^https:\/\/www\.rex\.co\.id\/id\/tracking\/\?airwaybill=22201740631928$/,
+    marker: /Data Not Found for Konosemen Number|No Konosemen/ },
+  { carrier: 'linear-logistics', number: '7096137284',
+    route: /^https:\/\/linearlogistics\.co\.uk\/tracking\?q=7096137284$/,
+    marker: /Enter your tracking number:/ },
+  { carrier: 'shipglobal-in', number: 'SG32606018374621',
+    route: /^https:\/\/shipglobal\.in\/tracking\/\?awb=SG32606018374621$/,
+    marker: /OrderId not found/ },
   { carrier: 'pflogistics', number: 'NEXAU1000000025YQ',
     route: /^https:\/\/pflogistics\.com\.au\/tracking-result\?tracking=NEXAU1000000025YQ$/,
     marker: /We couldn't find your tracking number|Tracking Number/ },

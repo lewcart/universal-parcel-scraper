@@ -371,6 +371,7 @@ import { adapter as liccardi } from '../carriers/liccardi/adapter.js';
 import { adapter as lietuvosPastas } from '../carriers/lietuvos-pastas/adapter.js';
 import { adapter as lightningExpress } from '../carriers/lightning-express/adapter.js';
 import { adapter as lineClear } from '../carriers/line-clear/adapter.js';
+import { adapter as linearLogistics } from '../carriers/linear-logistics/adapter.js';
 import { adapter as lingdong } from '../carriers/lingdong/adapter.js';
 import { adapter as linhan } from '../carriers/linhan/adapter.js';
 import { adapter as lionParcel } from '../carriers/lion-parcel/adapter.js';
@@ -516,6 +517,7 @@ import { adapter as redur } from '../carriers/redur/adapter.js';
 import { adapter as redx } from '../carriers/redx/adapter.js';
 import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
 import { adapter as relaytech } from '../carriers/relaytech/adapter.js';
+import { adapter as rexIndonesia } from '../carriers/rex-indonesia/adapter.js';
 import { adapter as rivigo } from '../carriers/rivigo/adapter.js';
 import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
 import { adapter as roadie } from '../carriers/roadie/adapter.js';
@@ -525,6 +527,7 @@ import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
 import { adapter as rpxIndonesia } from '../carriers/rpx-indonesia/adapter.js';
 import { adapter as russianPost } from '../carriers/russian-post/adapter.js';
 import { adapter as safewayExpressCargo } from '../carriers/safeway-express-cargo/adapter.js';
+import { adapter as safexpress } from '../carriers/safexpress/adapter.js';
 import { adapter as sagawa } from '../carriers/sagawa/adapter.js';
 import { adapter as sagawaGlobal } from '../carriers/sagawa-global/adapter.js';
 import { adapter as saia } from '../carriers/saia/adapter.js';
@@ -547,6 +550,7 @@ import { adapter as shadowfax } from '../carriers/shadowfax/adapter.js';
 import { adapter as shipa } from '../carriers/shipa/adapter.js';
 import { adapter as shipblu } from '../carriers/shipblu/adapter.js';
 import { adapter as shipentegra } from '../carriers/shipentegra/adapter.js';
+import { adapter as shipglobalIn } from '../carriers/shipglobal-in/adapter.js';
 import { adapter as shiprocket } from '../carriers/shiprocket/adapter.js';
 import { adapter as shouwu } from '../carriers/shouwu/adapter.js';
 import { adapter as shreeAnjani } from '../carriers/shree-anjani/adapter.js';
@@ -1065,6 +1069,7 @@ export const REGISTRY: RegistryDefinition = {
     "lietuvos-pastas": lietuvosPastas,
     "lightning-express": lightningExpress,
     "line-clear": lineClear,
+    "linear-logistics": linearLogistics,
     "lingdong": lingdong,
     "linhan": linhan,
     "lion-parcel": lionParcel,
@@ -1210,6 +1215,7 @@ export const REGISTRY: RegistryDefinition = {
     "redx": redx,
     "relais-colis": relaisColis,
     "relaytech": relaytech,
+    "rex-indonesia": rexIndonesia,
     "rivigo": rivigo,
     "rl-carriers": rlCarriers,
     "roadie": roadie,
@@ -1219,6 +1225,7 @@ export const REGISTRY: RegistryDefinition = {
     "rpx-indonesia": rpxIndonesia,
     "russian-post": russianPost,
     "safeway-express-cargo": safewayExpressCargo,
+    "safexpress": safexpress,
     "sagawa": sagawa,
     "sagawa-global": sagawaGlobal,
     "saia": saia,
@@ -1241,6 +1248,7 @@ export const REGISTRY: RegistryDefinition = {
     "shipa": shipa,
     "shipblu": shipblu,
     "shipentegra": shipentegra,
+    "shipglobal-in": shipglobalIn,
     "shiprocket": shiprocket,
     "shouwu": shouwu,
     "shree-anjani": shreeAnjani,
@@ -2069,7 +2077,7 @@ export const REGISTRY: RegistryDefinition = {
     "lietuvos-pastas": "lietuvos-pastas",
     "lightning-express": "lightning-express",
     "line-clear": "line-clear",
-    "linear-logistics": "universal",
+    "linear-logistics": "linear-logistics",
     "lingdong": "lingdong",
     "linhan": "linhan",
     "lion-parcel": "lion-parcel",
@@ -2320,7 +2328,7 @@ export const REGISTRY: RegistryDefinition = {
     "redx": "redx",
     "relais-colis": "relais-colis",
     "relaytech": "relaytech",
-    "rex-indonesia": "universal",
+    "rex-indonesia": "rex-indonesia",
     "rhenus-de": "universal",
     "rhenus-it": "universal",
     "rincos": "universal",
@@ -2346,7 +2354,7 @@ export const REGISTRY: RegistryDefinition = {
     "ryder-last-mile": "universal",
     "saee": "universal",
     "safeway-express-cargo": "safeway-express-cargo",
-    "safexpress": "universal",
+    "safexpress": "safexpress",
     "sagawa": "sagawa",
     "sagawa-global": "sagawa-global",
     "sahara-express": "universal",
@@ -2386,7 +2394,7 @@ export const REGISTRY: RegistryDefinition = {
     "shipblu": "shipblu",
     "shipentegra": "shipentegra",
     "shipgce": "universal",
-    "shipglobal-in": "universal",
+    "shipglobal-in": "shipglobal-in",
     "shipglobal-us": "universal",
     "shippify": "universal",
     "shiprocket": "shiprocket",

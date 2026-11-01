@@ -28472,7 +28472,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "linear-logistics",
+      "localClocks": true
     },
     "canaryUrl": "https://linearlogistics.co.uk/",
     "trackingUrlTemplate": "https://linearlogistics.co.uk/tracking?q={trackingNumber}",
@@ -37077,7 +37078,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "rex-indonesia",
+      "recognitionRank": 766,
+      "localClocks": true
     },
     "canaryUrl": "https://www.rex.co.id/id",
     "trackingUrlTemplate": "https://www.rex.co.id/id/tracking/?airwaybill={trackingNumber}",
@@ -37943,7 +37946,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "safexpress",
+      "localClocks": true
     },
     "canaryUrl": "https://www.safexpress.com/",
     "trackingSearchUrl": "https://www.safexpress.com/",
@@ -39290,7 +39294,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shipglobal-in",
+      "recognitionRank": 758,
+      "localClocks": true
     },
     "canaryUrl": "https://shipglobal.in/",
     "trackingUrlTemplate": "https://shipglobal.in/tracking/?awb={trackingNumber}",

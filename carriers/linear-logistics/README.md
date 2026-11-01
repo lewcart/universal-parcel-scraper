@@ -1,25 +1,37 @@
 # Linear Logistics
 
-Linear Logistics parcels use enabled universal providers. There is no dedicated adapter.
+Linear Logistics delivers long items in the UK, including blinds and curtain poles. Its
+native adapter reads the public tracker’s DX history without a session, postcode or browser.
 
-Linear Logistics, formerly Parcelink Logistics, delivers long items such as blinds and curtain poles across
-the UK. Its scans are DX's. Its site is linearlogistics.co.uk.
+## Retrieval
 
-## Numbers
+`direct` calls `https://linearlogistics.co.uk/tracking/lookup?q={number}`, the request built by
+[the public tracking page](https://linearlogistics.co.uk/tracking). The former tracker at
+`tracking.linearlogistics.co.uk` calls
+`https://portal.linearlogistics.co.uk/api/v1/tracking/json?lpn={number}` and returns the same
+history. The adapter uses the current site and retries once only after a network failure,
+inside the caller’s remaining budget.
 
-Its numbers are ten digits starting `70`, the layout of DX's secure-delivery references, and ten digits are
-shared by many carriers, so there is no rule. Archived lookups on its own tracker show two.
+Every scan must name the whole requested `lpn` and the supported DX feed. The adapter
+preserves the full timeline, including failed attempts and the booking of a later delivery.
+A booking changes no stage. Scan clocks keep their local date and time because the tracker
+states no offset. Receiver names, contacts and future delivery estimates are removed from
+scan wording.
 
-## Why there is no adapter
+## Limitations
 
-Its tracker reads an open JSON lookup without a session or CAPTCHA and says when a number is not found.
-No adapter has been written for it yet.
+Only the DX references represented in the carrier’s number corpus are supported. The lookup
+stays scoped to Linear’s endpoint; a DX-format number alone does not establish Linear
+ownership. There is no detection rule or automatic recognition eligibility. Other carrier
+feeds need separate validation.
 
-## Links
-
-The tracking page opens numbers from its `q` parameter, as did the older tracking.linearlogistics.co.uk.
+The response has no event codes, parcel weight or proof of delivery. The adapter retains up
+to 100 distinct scans and marks a longer history as truncated.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Parser and HTTP tests use synthetic fixtures. Live inputs stay outside Git:
+
+```sh
+LINEAR_LOGISTICS_TRACKING_NUMBER=… LINEAR_LOGISTICS_UNKNOWN_NUMBER=… npm run test:carriers:live -- carriers/linear-logistics/adapter.live.test.ts
+```

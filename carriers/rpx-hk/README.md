@@ -2,24 +2,29 @@
 
 RPX Online parcels use enabled universal providers. There is no dedicated adapter.
 
-RPX is the eCommerce parcel arm of Hong Kong's Lenton Group, which also runs DPD Hong Kong.
-Its tracker at tracking.rpxonline.com is the Lenton tracker app that DPD Hong Kong and Hub-ez
-share, and it is RPX's own lookup, separate from DPD's network. Its former tracker page on
-rpxonline.com showed parcels from RPX's London depot through the flight and customs to
-delivery by its own drivers in Hong Kong.
+RPX is Hong Kong Lenton Group’s eCommerce parcel operation. Its tracker shares an app and
+backend with DPD Hong Kong, Hub-ez and Linex; access to that backend does not establish which
+operation owns a shipment.
 
-## Numbers
+## Retrieval
 
-The archived lookups on RPX's former tracker page show `HKGL` and ten digits, the first two
-of them the year, on parcels from London to Hong Kong. `rpx-hk-1` claims that layout; no
-other carrier prints it. The current tracker takes up to 40 numbers at once and also searches
-customer references; no lookup of it is archived, so other layouts it may answer are unknown.
+The [public tracker](https://tracking.rpxonline.com/) sends an anonymous JSON POST to
+`https://apitracking.hub-ez.com/api/services/app/tracking/GetTrackingNew`. The body’s `para`
+is JSON text containing `trackingNumber` and `hawbType`: `H` searches tracking numbers and
+`C` searches customer references. The current request builder adds no session or verification
+token and no RPX service filter. The reply’s `result` is JSON text containing shipment rows
+and their scan histories.
+
+The archived samples establish RPX’s former service and its history layout. The current
+service returns empty not-found rows for numbers with confirmed archived histories. Those
+rows repeat the submitted number; the echo does not confirm shipment identity or carrier
+ownership.
 
 ## Links
 
-`tracking.rpxonline.com/?trackNo={number}` opens the tracker and looks the number up: its
-script reads `trackNo`, and `trackingNumber` too. The former tracker page took the number in
-the path, `rpxonline.com/component/track/{number}`; that page is gone.
+`tracking.rpxonline.com/?trackNo={number}` opens the tracker and submits a tracking-number
+search; its script also reads `trackingNumber`. The former
+`rpxonline.com/component/track/{number}` page is gone.
 
 ## Testing
 

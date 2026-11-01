@@ -18,18 +18,51 @@
   "timezone": "Asia/Jakarta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "rex-indonesia",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true,
+    "recognition": {
+      "rank": 766
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://www.rex.co.id/id/tracking/?airwaybill={trackingNumber}",
     "searchUrl": "https://www.rex.co.id/id",
     "canaryUrl": "https://www.rex.co.id/id",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "sender_details",
+      "recipient_details",
+      "weight",
+      "parcel_count",
+      "service_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "sender_details",
+      "recipient_details",
+      "weight",
+      "parcel_count",
+      "service_name"
+    ],
+    "unavailable": [
+      "eta",
+      "offset_timestamps",
+      "provider_code"
+    ]
   },
   "links": [
     {

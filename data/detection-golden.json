@@ -96279,6 +96279,9 @@
     "confidence": "low",
     "candidates": [
       "shipglobal-in"
+    ],
+    "asked": [
+      "shipglobal-in"
     ]
   },
   {
@@ -96286,6 +96289,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "shipglobal-in"
+    ],
+    "asked": [
       "shipglobal-in"
     ]
   },
@@ -96295,6 +96301,9 @@
     "confidence": "low",
     "candidates": [
       "shipglobal-in"
+    ],
+    "asked": [
+      "shipglobal-in"
     ]
   },
   {
@@ -96302,6 +96311,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "shipglobal-in"
+    ],
+    "asked": [
       "shipglobal-in"
     ]
   },

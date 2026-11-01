@@ -380,6 +380,7 @@ import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status
 import { statusMap as lbcExpress } from '../../carriers/lbc-express/status.js';
 import { statusMap as leopardsCourier } from '../../carriers/leopards-courier/status.js';
 import { statusMap as liccardi } from '../../carriers/liccardi/status.js';
+import { statusMap as linearLogistics } from '../../carriers/linear-logistics/status.js';
 import { statusMap as lietuvosPastas } from '../../carriers/lietuvos-pastas/status.js';
 import { statusMap as lightningExpress } from '../../carriers/lightning-express/status.js';
 import { statusMap as lineClear } from '../../carriers/line-clear/status.js';
@@ -524,6 +525,7 @@ import { statusMap as raben } from '../../carriers/raben/status.js';
 import { statusMap as ramHandToHand } from '../../carriers/ram-hand-to-hand/status.js';
 import { statusMap as redpack } from '../../carriers/redpack/status.js';
 import { statusMap as redur } from '../../carriers/redur/status.js';
+import { statusMap as rexIndonesia } from '../../carriers/rex-indonesia/status.js';
 import { statusMap as redx } from '../../carriers/redx/status.js';
 import { statusMap as relaisColis } from '../../carriers/relais-colis/status.js';
 import { statusMap as relaytech } from '../../carriers/relaytech/status.js';
@@ -535,6 +537,7 @@ import { statusMap as royalMail } from '../../carriers/royal-mail/status.js';
 import { statusMap as rpxIndonesia } from '../../carriers/rpx-indonesia/status.js';
 import { statusMap as saia } from '../../carriers/saia/status.js';
 import { statusMap as sagawa } from '../../carriers/sagawa/status.js';
+import { statusMap as safexpress } from '../../carriers/safexpress/status.js';
 import { statusMap as sagawaGlobal } from '../../carriers/sagawa-global/status.js';
 import { statusMap as safewayExpressCargo } from '../../carriers/safeway-express-cargo/status.js';
 import { statusMap as sailpost } from '../../carriers/sailpost/status.js';
@@ -557,6 +560,7 @@ import { statusMap as shipa } from '../../carriers/shipa/status.js';
 import { statusMap as shipblu } from '../../carriers/shipblu/status.js';
 import { statusMap as shipentegra } from '../../carriers/shipentegra/status.js';
 import { statusMap as shiprocket } from '../../carriers/shiprocket/status.js';
+import { statusMap as shipglobalIn } from '../../carriers/shipglobal-in/status.js';
 import { statusMap as shouwu } from '../../carriers/shouwu/status.js';
 import { statusMap as shreeAnjani } from '../../carriers/shree-anjani/status.js';
 import { statusMap as shreeMaruti } from '../../carriers/shree-maruti/status.js';
@@ -751,7 +755,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   jhgj, jifan, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
   'kit-tk': kitTk, 'komon-express': komonExpress, 'korea-post': koreaPost, 'kolay-gelsin': kolayGelsin, 'kuehne-nagel': kuehneNagel, 'kun-express': kunExpress, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih,
-  'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'lbc-express': lbcExpress, 'leopards-courier': leopardsCourier, liccardi,
+  'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'lbc-express': lbcExpress, 'leopards-courier': leopardsCourier, liccardi, 'linear-logistics': linearLogistics,
   'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
   'line-clear': lineClear, lingdong, linhan, 'lion-parcel': lionParcel, logen, loggi, logisimple, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
@@ -771,10 +775,10 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, 'poste-italiane': posteItaliane, postex, posti, postlogistics, 'postmedia-parcel-services': postmediaParcelServices,
   postnord, posturinn, ppl, 'precision-deliveries': precisionDeliveries,
   'pro-carrier': proCarrier, 'prompt-xpress': promptXpress, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'pullman-cargo': pullmanCargo, purolator, 'quantium-solutions': quantiumSolutions,
-  'quick-rabbit': quickRabbit, 'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, 'relais-colis': relaisColis, relaytech,
+  'quick-rabbit': quickRabbit, 'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, 'rex-indonesia': rexIndonesia, redx, 'relais-colis': relaisColis, relaytech,
   rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,
-  'rpx-indonesia': rpxIndonesia, 'safeway-express-cargo': safewayExpressCargo, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
-  'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sendle, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket, shouwu,
+  'rpx-indonesia': rpxIndonesia, 'safeway-express-cargo': safewayExpressCargo, sagawa, safexpress, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
+  'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sendle, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket, 'shipglobal-in': shipglobalIn, shouwu,
   'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'singapore-post': singaporePost, 'skroutz-last-mile': skroutzLastMile,
   skybox, skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
   'slovak-parcel-service': slovakParcelService,

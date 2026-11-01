@@ -19,18 +19,56 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "shipglobal-in",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 758
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "destination_country",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://shipglobal.in/tracking/?awb={trackingNumber}",
     "searchUrl": "https://shipglobal.in/tracking/",
     "canaryUrl": "https://shipglobal.in/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "destination_country",
+      "delivery_tracking_number",
+      "recipient_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "destination_country",
+      "delivery_tracking_number",
+      "provider_code"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name",
+      "postcode",
+      "delivery_partner",
+      "tracking_url"
+    ],
+    "unavailable": [
+      "eta",
+      "offset_timestamps",
+      "weight",
+      "service_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

@@ -2,20 +2,24 @@
 
 SBS Sokuhai parcels use enabled universal providers. There is no dedicated adapter.
 
-SBS Sokuhai Support (SBS即配サポート) is the SBS group's parcel delivery company in Japan. Its
-tracker is hosted on saqura-web.com.
+SBS Sokuhai Support (SBS即配サポート) is the SBS group’s parcel delivery company in Japan.
+Its [public tracker](https://www.saqura-web.com/SBS_LTRC/) is dedicated to SBS即配便 and retains
+history for two months after collection.
 
-## Numbers
+## Retrieval
 
-The お問い合わせ番号 has thirteen digits. In every archived lookup the last digit is the rest of
-the first twelve modulo 7, and the numbers start with 04 or 05. Rule `sbs-sokuhai-1` claims
-that shape with low confidence: other carriers print thirteen-digit numbers starting with 0,
-and the check digit does not establish ownership.
+`https://www.saqura-web.com/SBS_LTRC/KF_5020.aspx?IraNo={number}` returns the detail page as
+HTML without a browser bootstrap. Shipment details and scan rows are input values. The
+not-found page repeats the requested number while leaving the scan fields empty. An expired
+history produces that same page, so it does not prove the parcel never existed.
+
+Archived lookups establish the former positive layout. The current positive flow needs a
+number within the retention window before a native adapter can be enabled.
 
 ## Links
 
-`saqura-web.com/SBS_LTRC/KF_5020.aspx?IraNo={number}` opens one parcel; archived lookups also
-use the `numberms` parameter there and `number01` on the `/SBS_LTRC/` list page.
+Archived lookups also use `numberms` on the detail page and `number01` on the `/SBS_LTRC/`
+list page. The list’s search form uses ASP.NET Web Forms state.
 
 ## Testing
 

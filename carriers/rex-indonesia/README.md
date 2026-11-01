@@ -1,29 +1,23 @@
 # REX Indonesia
 
-REX Indonesia parcels use enabled universal providers. There is no dedicated adapter.
+The native adapter reads the [Indonesian guest tracking page](https://www.rex.co.id/id/tracking/)
+with the complete waybill in `airwaybill`. It needs no session or CAPTCHA. The
+consignment heading must match the whole requested number before milestones are read.
+Older numeric waybills work when the caller selects REX; the existing detection rule
+remains narrower.
 
-REX Indonesia, run by PT Royal Express Indonesia in Jakarta, is an express courier for documents and
-parcels within Indonesia and abroad, with its own counters and agents. Its site is rex.co.id.
+The page supplies a milestone view, so native history remains partial and enabled
+universal providers can supply a fuller scan log. Only dated milestones are retained;
+blank template dates do not establish movement. Local clocks keep the printed minute
+or day precision, with no asserted offset. Origin and destination labels alone do not
+establish acceptance or arrival. Delivery labels omit the signatory, and the separate
+sender, recipient and package details are discarded. HTTP failure diagnostics omit
+the unprojected response body and private transport state.
 
-## Numbers
+An unknown waybill counts as not found only when the carrier's specific notice names
+the same complete number. Changed pages, browser checks and empty histories retain
+their own failure kinds. HTTP recognition reads the same public milestone view.
 
-Its tracker takes the air waybill (konosemen) number. Its waybills have fourteen digits starting
-22201, and `rex-indonesia-1` suggests REX Indonesia for them at low confidence, as many carriers'
-rules read fourteen digits. Older waybills have twelve digits, a shape many carriers share, so no
-rule claims them.
-
-## Why there is no adapter
-
-The tracker is a plain page that reads the number from its address and draws a shipment's history on
-the server without a session or CAPTCHA. It also shows the sender's and recipient's names, which an
-adapter must drop. An adapter can follow.
-
-## Links
-
-Tracking links carry the number as `airwaybill` on the Indonesian or English tracking page. The home
-page's form posts to the same page.
-
-## Testing
-
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Run `npm run test:carriers:live -- carriers/rex-indonesia` with private
+`REX_INDONESIA_TRACKING_NUMBER`, optionally `REX_INDONESIA_SECOND_TRACKING_NUMBER`
+and `REX_INDONESIA_UNKNOWN_NUMBER`.

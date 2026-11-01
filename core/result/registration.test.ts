@@ -22,7 +22,7 @@ describe('late registrations', () => {
     { carrier: 'iMile', events: [
       scan('2030-01-11T10:00:00+04:00', 'Order submitted, pending to receive.', 'registered'),
       scan('2030-01-11T08:30:00+04:00', 'Picked up by courier', 'accepted'),
-      scan('2030-01-10T12:00:00+04:00', 'Order submitted, pending to receive.', 'registered')], late: 'accepted' },
+      scan('2030-01-10T12:00:00+04:00', 'Order submitted, pending to receive.', 'registered')], late: 'in_transit' },
     { carrier: '4PX', events: [
       scan('2030-01-12T03:00:00+08:00', 'Order data transmitted', 'registered'),
       scan('2030-01-11T20:00:00+08:00', 'Departed from facility', 'in_transit'),
@@ -35,7 +35,7 @@ describe('late registrations', () => {
     { carrier: 'Spring GDS on Swiss Post', events: [
       scan('2030-01-11T16:00:00+01:00', 'Consignment recorded by the foreign sender (data delivered)', 'registered'),
       scan('2030-01-11T12:00:00+01:00', 'Item received by the foreign post', 'accepted'),
-      scan('2030-01-10T12:00:00+01:00', 'Consignment recorded by the foreign sender (data delivered)', 'registered')], late: 'accepted' },
+      scan('2030-01-10T12:00:00+01:00', 'Consignment recorded by the foreign sender (data delivered)', 'registered')], late: 'in_transit' },
   ])('reads $carrier registration after the first movement as $late and keeps the first one', ({ events, late }) => {
     const answer = readLateRegistrations(result(events));
     expect(stages(answer)[0]).toEqual([events[0]!.description, late, 'carrier_map']);
@@ -72,7 +72,7 @@ describe('late registrations', () => {
   it('orders scans by their instants, or by wall clocks in a history without one, and skips a wall clock among instants', () => {
     const walls = [{ local_time: '2030-01-11T10:00:00', description: 'Shipping label created', stage: 'registered' },
       { local_time: '2030-01-10T10:00:00', description: 'Picked up', stage: 'accepted' }];
-    expect(stages(readLateRegistrations(result(walls)))[0]).toEqual(['Shipping label created', 'accepted', 'carrier_map']);
+    expect(stages(readLateRegistrations(result(walls)))[0]).toEqual(['Shipping label created', 'in_transit', 'carrier_map']);
     const mixed = [walls[0]!, scan('2030-01-10T10:00:00Z', 'Picked up', 'accepted')];
     expect(readLateRegistrations(result(mixed))).toEqual(result(mixed));
     const dated = [scan('2030-01-11', 'Shipping label created', 'registered'), scan('2030-01-10T10:00:00Z', 'Picked up', 'accepted')];
@@ -82,10 +82,10 @@ describe('late registrations', () => {
   it('gives the current stage of a newest late registration to the result, and only that one', () => {
     const events = [scan('2030-01-11T10:00:00Z', 'Shipping label created', 'registered'), scan('2030-01-10T10:00:00Z', 'Picked up', 'accepted')];
     expect(readLateRegistrations(result(events, { status: 'pending', current_stage: 'registered', current_stage_source: 'carrier_map' })))
-      .toMatchObject({ status: 'in_transit', current_stage: 'accepted', current_stage_source: 'carrier_map' });
+      .toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map' });
     const older = [scan('2030-01-12T10:00:00Z', 'Synthetic summary row', 'registered'), ...events];
     expect(readLateRegistrations(result(older, { status: 'pending', current_stage: 'registered' })))
-      .toMatchObject({ status: 'in_transit', current_stage: 'accepted' });
+      .toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
     const first = [scan('2030-01-10T10:00:00Z', 'Shipping label created', 'registered')];
     expect(readLateRegistrations(result(first, { status: 'pending', current_stage: 'registered' }))).toMatchObject({ current_stage: 'registered' });
   });
@@ -94,7 +94,7 @@ describe('late registrations', () => {
     const events = [scan('2030-01-12T10:00:00Z', 'Shipping label created', 'registered'), scan('2030-01-11T10:00:00Z', 'Departed', 'in_transit'),
       scan('2030-01-11T09:00:00Z', 'Shipment information received', 'registered'), scan('2030-01-10T10:00:00Z', 'Picked up', 'accepted')];
     const once = readLateRegistrations(result(events, { current_stage: 'registered', status: 'pending' }));
-    expect(stages(once).map(([, stage]) => stage)).toEqual(['in_transit', 'in_transit', 'accepted', 'accepted']);
+    expect(stages(once).map(([, stage]) => stage)).toEqual(['in_transit', 'in_transit', 'in_transit', 'accepted']);
     expect(readLateRegistrations(once)).toEqual(once);
   });
 
@@ -102,10 +102,10 @@ describe('late registrations', () => {
     const events = [scan('2030-01-11T10:00:00Z', 'Shipping label created', 'registered'), scan('2030-01-10T10:00:00Z', 'Picked up', 'accepted')];
     const registry = { for: () => ({ steps: ['direct'], recordsSteps: true, track: async () => result(events) }) } as unknown as AdapterRegistry;
     const universal = {} as UniversalTracker;
-    expect(stages(await trackCarrier('dhl', { number: '00340434000000000001' }, { registry, universal }))[0]![1]).toBe('accepted');
+    expect(stages(await trackCarrier('dhl', { number: '00340434000000000001' }, { registry, universal }))[0]![1]).toBe('in_transit');
     const browserLookup = vi.fn().mockResolvedValue(result(events));
     const tracker = new UniversalTracker({ providers: ['Ship24'], fetcher: vi.fn<typeof fetch>(), browserLookup });
-    expect(stages(await tracker.fetchSource('Ship24', 'ZZ12340678900'))[0]![1]).toBe('accepted');
-    expect(resolveResult(result(events)).events[0]).toMatchObject({ stage: 'accepted', stage_source: 'carrier_map' });
+    expect(stages(await tracker.fetchSource('Ship24', 'ZZ12340678900'))[0]![1]).toBe('in_transit');
+    expect(resolveResult(result(events)).events[0]).toMatchObject({ stage: 'in_transit', stage_source: 'carrier_map' });
   });
 });

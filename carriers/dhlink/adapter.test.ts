@@ -86,7 +86,7 @@ describe('DHLink HTTP adapter', () => {
       ['Customs export clearance completed', 'in_transit', 'carrier_map'],
       ['货物电子信息已经收到', 'in_transit', 'carrier_map'],
       ['Package departed from the warehouse', 'in_transit', 'carrier_map'],
-      ['Shipping Label Created', 'accepted', 'carrier_map'],
+      ['Shipping Label Created', 'in_transit', 'carrier_map'],
       ['Package received & scanned at warehouse', 'accepted', 'carrier_map'],
       ['货物电子信息已经收到', 'registered', 'carrier_map'],
     ]);

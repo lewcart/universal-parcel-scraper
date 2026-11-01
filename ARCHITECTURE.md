@@ -350,9 +350,9 @@ return the newer scans without a stage may have undone.
 
 A registration (a label created, data received, a pre-advice) dated after a scan that moved
 the parcel is no step back: a partner's label or a line's order row is often written once the
-parcel is on its way. Every adapter's and provider's result reads it as accepted while the
-latest movement before it is an acceptance, and in transit otherwise, with the source
-`carrier_map`; one dated first stays registered ([registration.ts](core/result/registration.ts)).
+parcel is on its way. Every adapter's and provider's result reads it as in transit, even right
+after an acceptance, since a label is not one, with the source `carrier_map`; one dated first
+stays registered ([registration.ts](core/result/registration.ts)).
 Scans are compared by their instants, or by wall clocks in a history with no instant. A customs
 filing, a problem or a scan no rule read is not a movement. A result whose current stage is
 registered for its newest scan, read so, takes that scan's stage.

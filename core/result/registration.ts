@@ -40,10 +40,10 @@ export function clocks(events: readonly unknown[]): (number | null)[] {
 /**
  * A registration (a label created, data received, a pre-advice) dated after a scan that moved
  * the parcel, such as a partner's label or a line's order row written once the parcel is on its
- * way, is no step back: it is accepted while the latest movement before it is an acceptance, and
- * in transit otherwise. One dated first, or at the instant of the first movement, stays registered.
- * Its stage then comes from this reading of the carrier's sequence, so its source is `carrier_map`.
- * A result whose current stage is registered for its newest scan, read so, takes that scan's stage.
+ * way, is no step back: it is in transit, even after an acceptance, since a label is not one.
+ * One dated first, or at the instant of the first movement, stays registered. Its stage then
+ * comes from this reading of the carrier's sequence, so its source is `carrier_map`. A result
+ * whose current stage is registered for its newest scan, read so, takes that scan's stage.
  */
 export function readLateRegistrations(result: CarrierResult): CarrierResult {
   const events: unknown[] = Array.isArray(result.events) ? result.events : [];
@@ -51,29 +51,24 @@ export function readLateRegistrations(result: CarrierResult): CarrierResult {
   const read = events.map(reading);
   const at = clocks(events);
   const order = events.flatMap((_, index) => at[index] === null ? [] : [index]).sort((left, right) => at[left]! - at[right]!);
-  const settled = new Map<number, Stage>();
-  let reached: Stage | undefined;
+  const settled = new Set<number>();
+  let moved = false;
   for (let start = 0; start < order.length;) {
     let end = start;
     while (end < order.length && at[order[end]!] === at[order[start]!]) end++;
     const together = order.slice(start, end);
-    for (const index of together) {
-      if (reached && read[index] === 'registered') settled.set(index, reached === 'accepted' ? 'accepted' : 'in_transit');
-    }
-    const moved = together.filter(index => MOVED.has(read[index] as Stage));
-    if (moved.length) reached = moved.every(index => read[index] === 'accepted') ? 'accepted' : 'in_transit';
+    for (const index of together) if (moved && read[index] === 'registered') settled.add(index);
+    if (together.some(index => MOVED.has(read[index] as Stage))) moved = true;
     start = end;
   }
   if (!settled.size) return result;
   const newest = order.filter(index => at[index] === at[order.at(-1)!]);
-  const headline = result.current_stage === 'registered' && newest.every(index => read[index] !== 'registered' || settled.has(index))
-    ? newest.map(index => settled.get(index)).find(Boolean) : undefined;
+  const headline = result.current_stage === 'registered' && newest.some(index => settled.has(index))
+    && newest.every(index => read[index] !== 'registered' || settled.has(index));
   return {
     ...result,
-    ...(headline ? { current_stage: headline, current_stage_source: 'carrier_map', ...(result.status === 'pending' ? { status: 'in_transit' } : {}) } : {}),
-    events: events.map((event, index) => {
-      const stage = settled.get(index);
-      return stage ? { ...event as CarrierEvent, stage, stage_source: 'carrier_map' } : event;
-    }) as CarrierEvent[],
+    ...(headline ? { current_stage: 'in_transit', current_stage_source: 'carrier_map', ...(result.status === 'pending' ? { status: 'in_transit' } : {}) } : {}),
+    events: events.map((event, index) => settled.has(index)
+      ? { ...event as CarrierEvent, stage: 'in_transit', stage_source: 'carrier_map' } : event) as CarrierEvent[],
   };
 }

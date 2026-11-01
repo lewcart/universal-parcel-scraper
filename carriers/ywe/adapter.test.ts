@@ -81,6 +81,7 @@ describe('YWE HTTP adapter', () => {
   it('maps the recorded wording whatever hub, reason or place it names, and stages new wording through the shared rules', () => {
     expect(yweStage('Container picked up by YWE,JFK02 Awaiting Item.')).toEqual({ stage: 'accepted', source: 'carrier_map' });
     expect(yweStage('Parcel received by in ORD01.')).toEqual({ stage: 'accepted', source: 'carrier_map' });
+    expect(yweStage('Parcel received by SFO02.')).toEqual({ stage: 'accepted', source: 'carrier_map' });
     // A failed delivery goes back to YWE's warehouse, not to the sender, with or without a space after its full stop.
     for (const wording of ['Parcel delivery abnormal [Business Closed].Parcel will be returned to the warehouse.',
       'Parcel delivery abnormal [No Access]. Parcel will be returned to the warehouse.',

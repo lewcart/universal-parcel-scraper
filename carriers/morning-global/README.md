@@ -36,8 +36,11 @@ through the lookup its tracker page makes.
   scans. The former tracking API gave each a code; the current reply has none.
 - The destination country is the summary's destination when it names a country, else the
   country of the scan that reports the arrival at destination.
-- The summary's `reference` is the delivery partner's number, but no field names the partner,
-  so there is no hand-off. The signatory, origin, weight, pieces and estimate are not kept.
+- The summary's `reference` is another number of the parcel's, which the tracker shows as
+  Reference. The former tracking API called it the foreign courier's waybill, but the archived
+  reply of the public sample holds an AliExpress logistics reference there, and no field names
+  whose number it is, so there is no hand-off. The signatory, origin, weight, pieces and
+  estimate are not kept.
 
 ## Limitations
 

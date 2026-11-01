@@ -5,7 +5,7 @@ import { coverageTiers, type CoverageTier } from './coverage.js';
 import type { UniversalSource as Source } from './types.js';
 export const UNIVERSAL_SOURCES: Source[] = ['ParcelsApp', 'Ship24', '17TRACK', 'Track718', 'UPU'];
 /** Providers reached only through the browser service: slower, and sharing one TRAWL. */
-export const BROWSER_SOURCES: ReadonlySet<Source> = new Set(['17TRACK', 'Postal Ninja']);
+export const BROWSER_SOURCES: ReadonlySet<Source> = new Set(['17TRACK', 'Postal Ninja', 'Track718']);
 
 /** Lookup time reserved by the chain and host router, before transport allowance. */
 export function universalSourceBudget(source: Source): number {

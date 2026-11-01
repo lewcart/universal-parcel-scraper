@@ -45,7 +45,8 @@ export async function runTrack123Browser({ url, capture, handle, tier, maxTimeou
   const remaining = () => Math.max(1, maxTimeout - (Date.now() - started));
   const changed = () => { lastActivity = Date.now(); wake?.(); };
   const result = () => ({ tier, status: 'success', statusCode, durationMs: Date.now() - started,
-    effectiveUrl: PAGE, html: '', cookies: [], capturedResponses: [...entries, ...(pending > 0 ? [{ url: POLL, status: 0, headers: {}, body: null,
+    // TRAWL requires a payload to return captures instead of escalating to another tier.
+    effectiveUrl: PAGE, html: '<html><head><title>Track123 capture</title></head><body></body></html>', cookies: [], capturedResponses: [...entries, ...(pending > 0 ? [{ url: POLL, status: 0, headers: {}, body: null,
       error: 'track123-request-pending', trackingNumberSubmitted: number }] : [])].slice(-12) });
   const observe = request => {
     if (!submitted || request.method() !== 'POST' || ![QUERY, POLL].includes(request.url())) return;

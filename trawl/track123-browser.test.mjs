@@ -41,6 +41,8 @@ test('observes before submission, waits for history and closes its context', asy
   const context = { newPage: async () => page, close: async () => { closed++; } };
   const result = await runTrack123Browser({ url, capture, maxTimeout: 1500, tier: 3,
     handle: { browser: { newContext: async () => context } } });
+  assert.ok(result.html.length > 0); // A capture-only result must survive the orchestrator's payload gate.
+  assert.ok(!result.html.includes(number));
   assert.equal(result.capturedResponses.length, 1);
   assert.equal(result.capturedResponses[0].trackingNumberSubmitted, number);
   assert.equal(clicks, 1); assert.equal(closed, 1);

@@ -10,7 +10,7 @@
  */
 import { DateTime } from 'luxon';
 import { trackingLanguageStage } from '../../core/status/index.js';
-import { countryCode, countryKeepsOffset } from '../../core/time/index.js';
+import { countryCode, countryKeepsOffset, usStateTimeZone } from '../../core/time/index.js';
 import { CHINESE_CITIES, CHINESE_PROVINCES } from './china.js';
 import { deliveryForecastRemainder, nonterminalEnglishReturn } from '../../core/status/language.js';
 import type { Stage } from '../../generated/catalog.js';
@@ -68,6 +68,9 @@ const NOT_PLACES = /^(?:(?:[A-Z]{2}, )?system(?:, system)*|(?:uni )?data cent(?:
 // States with its state and postcode, "Example Town;CA;99999;-07:00", or the country JCEX files
 // the row under, "US+08:00".
 const OFFSET_PLACE = /^(?:([^;]{1,80});([A-Z]{2})?;[A-Z\d -]{0,10};|([A-Z]{2}))([+-]\d{2}:\d{2})$/;
+// China Post's feed, as 17TRACK relays it, gives a US facility's town and state, then a town with
+// the ZIP code, which can be another town's name: "Example Town, NC, Example Town 99999".
+const US_FACILITY_PLACE = /^([^,]{1,60}), ([A-Z]{2}), [^,]{1,60} \d{5}(?:-\d{4})?$/;
 // A postcode after the country, as 17TRACK also relays JCEX's places in the United States:
 // "Example Town,CA,US,99999".
 const POSTCODE_AFTER_COUNTRY = /^(.+,\s*([A-Z]{2}))\s*,\s*\d{4,6}(?:-\d{4})?$/;
@@ -139,6 +142,12 @@ function withoutPostcodeAfterCountry(location: string): string {
   return match && countryCode(match[2]) === match[2] && !NOT_COUNTRIES.test(match[2]) ? match[1]! : location;
 }
 
+/** A US facility's town and state, without the town and ZIP code after them, or undefined for any other place. */
+function usFacilityPlace(location: string): string | undefined {
+  const match = US_FACILITY_PLACE.exec(location);
+  return match && usStateTimeZone(match[2]) ? `${match[1]!.trim()}, ${match[2]}` : undefined;
+}
+
 /** The place a status given as a location names in 【】 or before its airport, '' when it names none, or undefined for any other location. */
 function statusPlace(location: string): string | undefined {
   const status = STATUS_PLACE.exec(location);
@@ -167,13 +176,15 @@ function offsetPlace(location: string): string | undefined {
  * label or placeholder ("--") that names no place, holds private delivery
  * details or is Posti's "abroad" label. A postcode given alone is the country
  * its code names, if any, and one given after the country goes. A place with its
- * row's offset after it is read without it (`offsetPlace`). A part given twice in a
+ * row's offset after it is read without it (`offsetPlace`), and a US facility's town
+ * and state without the town and ZIP code after them (`usFacilityPlace`). A part given twice in a
  * row is read once (`withoutRepeatedParts`)
  * and a country a feed added goes (`withoutAddedCountry`).
  */
 export function place(value: unknown): string {
   const read = withoutRepeatedParts(text(value).slice(0, 200).replace(DEPOT_PREFIX, '').replace(BRACKETED_POSTCODE, '').replace(OFFICE_CODE, '').replace(COUNTRY_LABEL, ''));
-  const location = statusPlace(read) ?? offsetPlace(read) ?? postcodeCountry(read) ?? withoutAddedCountry(withoutPostcodeAfterCountry(read));
+  const location = statusPlace(read) ?? offsetPlace(read) ?? usFacilityPlace(read) ?? postcodeCountry(read)
+    ?? withoutAddedCountry(withoutPostcodeAfterCountry(read));
   return /[\p{L}\p{N}]/u.test(location) && !NOT_PLACES.test(location) && !hasPrivateDeliveryDetails(location) && !isPostiAbroadLabel(location)
     ? location : '';
 }

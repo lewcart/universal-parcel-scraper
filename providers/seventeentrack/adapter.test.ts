@@ -268,6 +268,17 @@ describe('17TRACK result parsing', () => {
     expect(located('The carrier')).toBeUndefined();
   });
 
+  it("reads China Post's US places 17TRACK relays as the facility's town and state", () => {
+    const located = (location: string) => parse17TrackResponse(postalHistory([{ ...postalScan('InTransit_Other', 'In transit'), location }]), number)
+      .events?.[0]?.location;
+    expect(located('Example Town, NC, Example Town 99999')).toBe('Example Town, NC');
+    // The town before the ZIP code can be another's.
+    expect(located('Example Town, NC, Sample City 99999')).toBe('Example Town, NC');
+    expect(located('Example Town, NC 99999')).toBe('Example Town, NC 99999');
+    // Only a US state's code.
+    expect(located('Example Town, ZZ, Example Town 99999')).toBe('Example Town, ZZ, Example Town 99999');
+  });
+
   it('does not convert stale tracking or unknown codes into shipment progress', () => {
     expect(parse17TrackResponse(postalHistory([postalScan('Future_Unknown')]), number).current_stage).toBe('pending');
     expect(parse17TrackResponse(postalHistory([postalScan('InTransit_Other')]), number).status).toBe('in_transit');

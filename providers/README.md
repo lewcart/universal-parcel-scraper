@@ -81,8 +81,9 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   signature is dropped, and a delivered event's text becomes `Delivered`. Recipient
   fields are never read. A place leaves out a branch's postcode, and a postcode given
   alone as a place, as UPU posting scans relay it, becomes the country its code names
-  or no place. A place loses a country given twice, and the destination's country a line
-  appends to its warehouse in China ("Shanghai, United States").
+  or no place. A place loses a country given twice, the destination's country a line
+  appends to its warehouse in China ("Shanghai, United States"), and the town and ZIP code
+  China Post's feed adds after a US facility's town and state.
 - One wording-to-stage vocabulary serves all providers. Unmatched wording stays
   `pending` and never inherits the shipment's stage. GLS's "The parcel has reached the
   ParcelShop" is read by the scans around it: after a carrier scan the parcel waits for

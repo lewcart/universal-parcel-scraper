@@ -33,7 +33,33 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
   ['den004', 'failed_attempt'],
   ['den005', 'failed_attempt'],
   ['den006', 'failed_attempt'],
+  ['dex001', 'exception'], // Cancelled at the customer's request.
   ['dex002', 'exception'], // Damaged and not delivered.
+  // A delivery moved to another run, date or address, with no attempt at the door.
+  ['dex100', 'in_transit'],
+  ['dex101', 'in_transit'],
+  ['dex102', 'in_transit'],
+  ['dex103', 'in_transit'],
+  ['rescheduled', 'in_transit'],
+  // Waiting at the hub for its next run.
+  ['shelved', 'in_transit'],
+  ['arrived_at_airport', 'in_transit'],
+  // A pickup cancelled, so nothing was collected.
+  ['pkx001', 'exception'],
+  ['pkx002', 'exception'],
+  ['pkx003', 'exception'],
+  ['pkx004', 'exception'],
+  ['pkx005', 'exception'],
+  // A pickup moved or failed: the parcel still waits for the courier.
+  ['pkx100', 'registered'],
+  ['pkx101', 'registered'],
+  ['pkx102', 'registered'],
+  ['pkx103', 'registered'],
+  ['pkn001', 'registered'],
+  ['pkn002', 'registered'],
+  ['pkn003', 'registered'],
+  ['pkn004', 'registered'],
+  ['pkn005', 'registered'],
   ['cancelled', 'exception'],
   // A return to the sender, started and then delivered back.
   ['rto', 'returned'],

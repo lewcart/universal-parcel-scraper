@@ -41820,7 +41820,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "topyou",
       "recognitionRank": 58,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://track.szty56.com/",
     "trackingUrlTemplate": "https://track.szty56.com/",

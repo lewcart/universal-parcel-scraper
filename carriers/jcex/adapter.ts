@@ -1,11 +1,13 @@
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
 import { ChallengeError, SchemaError, TransportError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
+import type { Dispatcher } from 'undici';
 import { runSteps } from '../../core/runner/index.js';
-import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
+import { firstAttemptMs, isNetworkFailure, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { JCEX_MAX_BYTES, normalizeJcexNumber, parseJcex, PROVIDER } from './parser.js';
+import { withJcexOrigin } from './origin.js';
 
 /** The lookup track.jcex.com makes for the numbers typed in. */
 export const JCEX_API = 'https://track.jcex.com/api/track/tracking';
@@ -19,11 +21,12 @@ export class JcexTracker {
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeJcexNumber(raw);
-    const read = async (signal: AbortSignal, timeoutMs: number): Promise<CarrierResult> => {
-      const { response, bytes } = await fetchBounded(JCEX_API, { method: 'POST', signal, body: JSON.stringify({ numberList: [number] }), headers: {
+    const read = async (signal: AbortSignal, timeoutMs: number, dispatcher?: Dispatcher): Promise<CarrierResult> => {
+      const request = { method: 'POST', signal, body: JSON.stringify({ numberList: [number] }), headers: {
         Accept: 'application/json', 'Content-Type': 'application/json', Origin: JCEX_ORIGIN, Referer: `${JCEX_ORIGIN}/`,
         'User-Agent': userAgentOf(this.options.userAgent),
-      } }, { provider: PROVIDER, timeoutMs: Math.max(1, Math.floor(timeoutMs)), maxBytes: JCEX_MAX_BYTES,
+      }, ...(dispatcher ? { dispatcher } : {}) };
+      const { response, bytes } = await fetchBounded(JCEX_API, { ...request, signal }, { provider: PROVIDER, timeoutMs: Math.max(1, Math.floor(timeoutMs)), maxBytes: JCEX_MAX_BYTES,
         redirect: 'manual', fetcher: this.options.fetcher, allowHttpStatuses: [...REDIRECTS, 404, 410] });
       if (REDIRECTS.includes(response.status)) throw new TransportError(PROVIDER, 'JCEX redirected its tracking lookup', { status: response.status });
       // The route answers every number with HTTP 200; a missing route is a moved service, not a missing waybill.
@@ -38,11 +41,15 @@ export class JcexTracker {
       }
       return parseJcex(payload, number);
     };
-    // A request that fails to reach JCEX, or hangs, gets one more try: the
-    // first gets half of the budget, so the retry fits in the rest.
-    return runSteps({ carrier: 'jcex', budgetMs: context.budgetMs ?? 15_000, signal: context.signal,
+    // A failed CDN connection first tries the origin with verified TLS. A
+    // second failed connection can still use the existing ordinary retry.
+    return runSteps({ carrier: 'jcex', budgetMs: context.budgetMs ?? 30_000, signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
+      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(Math.min(15_000, remainingMs))) },
+      { id: 'origin', recovers: isNetworkFailure, run: ({ signal, remainingMs }) => {
+        const timeoutMs = Math.max(1, Math.min(10_000, Math.floor(remainingMs)));
+        return withJcexOrigin(signal, timeoutMs, dispatcher => read(signal, timeoutMs, dispatcher));
+      } },
       networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
     ]);
   }
@@ -51,7 +58,7 @@ export class JcexTracker {
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new JcexTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return {
-    id: 'jcex', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'jcex', recordsSteps: true, steps: ['direct', 'origin', 'retry'],
     track: (input, context) => tracker.fetch(input.number, context),
   };
 };

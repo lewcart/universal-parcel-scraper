@@ -23,6 +23,7 @@
     "adapter": "jcex",
     "steps": [
       "direct",
+      "origin",
       "retry"
     ],
     "localClocks": true

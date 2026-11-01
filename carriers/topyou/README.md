@@ -20,6 +20,11 @@ session: one entry per number with its scans, oldest first, each with a clock, a
 code and an English wording. The adapter sends the waybill in capitals, since the tracker matches
 it case for case, and reads the entry that echoes it.
 
+When the direct connection fails or returns a browser check, configured TRAWL repeats that
+POST through its HTTP tier. It launches no browser and uses the same identity and scan parser.
+Answered lookups, rate limits and changed schemas are not repeated. HTTP recognition always
+uses the direct connection. A missing API route is a transport failure, not a missing parcel.
+
 TopYou's own scans carry `+08:00`. The delivery carrier's scans it relays, USPS's in the United
 States, come without an offset and keep their wall clock, which their place dates. GOFO's in France
 and Italy come with the destination's offset on a UTC wall clock: stated `+01:00`, each came an hour
@@ -51,4 +56,5 @@ The tracker reads the number from its form only, so no link opens one parcel.
 ## Testing
 
 `npm run test:carriers:live -- carriers/topyou`, with `TOPYOU_TRACKING_NUMBER` and optionally
-`TOPYOU_UNKNOWN_NUMBER` set outside the repository.
+`TOPYOU_UNKNOWN_NUMBER` set outside the repository. `FLARESOLVERR_URL` enables TRAWL recovery
+for the tracking check.

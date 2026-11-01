@@ -11,8 +11,11 @@ Tracked through the lookup its tracking page makes.
    token, key, account or browser. The JSON reply holds one entry per number with JCEX's
    waybill and order numbers, the shipment's status and its rows newest first, each in English
    and Chinese with a place, a country and an offset.
-2. `retry`: one more try when the request fails to reach the site or hangs. The first try gets
-   half of the budget.
+2. `origin`: after a connection failure, send the same request to JCEX's origin using a
+   request-scoped DNS override. The URL, HTTP host, TLS server name and certificate verification
+   remain those of `track.jcex.com`. This uses the supplied Node fetch transport's Undici
+   dispatcher support; no global resolver or TLS setting changes.
+3. `retry`: one more ordinary connection attempt if the origin also fails to connect.
 
 - The shipment counts only when its waybill or order number is the one asked.
 - An unknown number comes back with neither number and the status `NotFound`. A waybill JCEX
@@ -67,10 +70,9 @@ Tracked through the lookup its tracking page makes.
   destination's on Beijing's wall clock. The app's scan-identity policy lets that scan take the
   copy's row over once JCEX lists it.
 - Other JCEX number layouts are not looked up until one is seen.
-- `track.jcex.com` and `www.jcex.com` go through one CDN edge, which can stop answering outside
-  China while JCEX's origin still serves the tracker under the same name. No other public
-  hostname reaches the API, and the supplied transport cannot pin an address, so lookups then
-  fail as network errors and enabled providers answer.
+- The origin address can change. A custom fetch transport must support the request's
+  `dispatcher` option to use the origin fallback. Definite replies, rate limits and browser
+  checks are not retried at the origin.
 
 ## Numbers
 

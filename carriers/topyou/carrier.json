@@ -20,12 +20,14 @@
     "mode": "automatic",
     "adapter": "topyou",
     "steps": [
-      "direct"
+      "direct",
+      "trawl"
     ],
     "recognition": {
       "rank": 58
     },
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

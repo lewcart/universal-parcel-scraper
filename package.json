@@ -1,6 +1,6 @@
 {
   "name": "universal-parcel-scraper",
-  "version": "0.895.1",
+  "version": "0.896.0",
   "description": "Self-hosted parcel tracking: carrier detection, dedicated scrapers and optional universal providers.",
   "type": "module",
   "license": "Apache-2.0",
@@ -79,7 +79,8 @@
     "cheerio": "^1.2.0",
     "tough-cookie": "^6.0.2",
     "fetch-cookie": "^3.2.0",
-    "saxes": "^6.0.0"
+    "saxes": "^6.0.0",
+    "undici": "^8.12.3"
   },
   "peerDependencies": {
     "playwright-core": "1.63.0",

@@ -30,6 +30,7 @@ import { adapter as parcelsAppAdapter } from './parcelsapp/adapter.js';
 import { adapter as postalNinjaAdapter } from './postal-ninja/adapter.js';
 import { adapter as seventeenTrackAdapter } from './seventeentrack/adapter.js';
 import { adapter as ship24Adapter } from './ship24/adapter.js';
+import { adapter as track718Adapter } from './track718/adapter.js';
 import { adapter as upuAdapter } from './upu/adapter.js';
 import { numberOf, type UniversalSource as Source } from './shared/result.js';
 
@@ -41,7 +42,7 @@ export { TrackingCaptureError } from './shared/capture.js';
 export type { UniversalSource } from './shared/result.js';
 
 export * from './plan.js';
-import { universalSources, universalSourceBudget } from './plan.js';
+import { universalPlan, universalSourceBudget } from './plan.js';
 
 /**
  * A source is asked only with this much budget left. A provider that runs out
@@ -58,6 +59,7 @@ const FACTORIES = {
   'Postal Ninja': postalNinjaAdapter,
   '17TRACK': seventeenTrackAdapter,
   'UPU': upuAdapter,
+  'Track718': track718Adapter,
 } as const satisfies Record<Source, unknown>;
 
 interface SourceFailure {
@@ -112,7 +114,7 @@ export class UniversalTracker {
     context.signal?.throwIfAborted();
     const deadline = context.budgetMs === undefined ? Infinity : performance.now() + context.budgetMs;
     const failures: SourceFailure[] = [];
-    const sources = universalSources(this.options.enablePostalNinja, trackingNumber).filter(source => (this.options.providers ?? ['UPU']).includes(source));
+    const sources = universalPlan({ carriers: [carrier], trackingNumber, enablePostalNinja: this.options.enablePostalNinja }).sources.filter(source => (this.options.providers ?? ['UPU']).includes(source));
     for (const source of sources) {
       const remaining = deadline - performance.now();
       if (remaining < MIN_SOURCE_BUDGET_MS) {

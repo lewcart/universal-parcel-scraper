@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../core/detection/normalize.js';
 import { CARRIER_IDS } from '../generated/catalog.js';
 import { coverageTiers, type CoverageTier } from './coverage.js';
 import type { UniversalSource as Source } from './types.js';
-export const UNIVERSAL_SOURCES: Source[] = ['ParcelsApp', 'Ship24', '17TRACK', 'UPU'];
+export const UNIVERSAL_SOURCES: Source[] = ['ParcelsApp', 'Ship24', '17TRACK', 'Track718', 'UPU'];
 /** Providers reached only through the browser service: slower, and sharing one TRAWL. */
 export const BROWSER_SOURCES: ReadonlySet<Source> = new Set(['17TRACK', 'Postal Ninja']);
 
@@ -84,12 +84,16 @@ export function universalPlan(options: {
   const named = carriers.some((candidate) => candidate && CARRIERS.has(candidate));
   const postalNinja = enablePostalNinja && (!named || ['full', 'partial'].includes(tiers?.['Postal Ninja'] ?? 'unknown'));
   const defaults: Source[] = postalNinja ? ['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU'] : [...UNIVERSAL_SOURCES];
-  const eligible = defaults.filter((source) => source !== 'UPU' || trackingNumber === undefined || isValidS10TrackingNumber(trackingNumber));
+  const juxi = carriers.find(candidate => candidate && CARRIERS.has(candidate)) === 'juxi-express' || !named && !!trackingNumber && /^JXC[A-Z]{2}\d{10}YQ$/.test(normalizeTrackingNumber(trackingNumber));
+  const eligible = defaults.filter(source => (source !== 'Track718' || juxi) && (source !== '17TRACK' || !juxi)
+    && (source !== 'UPU' || trackingNumber === undefined || isValidS10TrackingNumber(trackingNumber)));
+  if (juxi && !eligible.includes('Track718')) eligible.unshift('Track718');
   const ordered = orderUniversalSources(eligible, tiers);
   // The number's priority provider goes first, unless the carrier's evidence left it out.
   const priority = ordered.find((source) => source === priorityUniversalSource(trackingNumber));
   return {
-    sources: priority ? [priority, ...ordered.filter((source) => source !== priority)] : ordered,
+    sources: juxi ? ['Track718', ...ordered.filter(source => source !== 'Track718')]
+      : priority ? [priority, ...ordered.filter((source) => source !== priority)] : ordered,
     carrier,
     tier: (source) => tiers?.[source] ?? 'unknown',
     rank: (source) => tierRank(tiers, source),

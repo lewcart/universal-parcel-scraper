@@ -186,3 +186,7 @@ a build does not show a changed deadline or a field missing from a reply.
 
 This derivative is [AGPL-3.0](LICENSE), separate from the core package's Apache license.
 [Matching source and redistribution](SOURCE.md).
+
+Track718 has a Juxi-only helper for its guest detail page. It binds the selected Juxi carrier,
+complete number, signed tracking request and WebSocket session, retaining the completed replies
+without account or recipient fields. Other Track718 carrier selections use no helper.

@@ -38,7 +38,7 @@ describe('universal discovery chain', () => {
   });
 
   it('keeps the persisted provider names and the opt-in position of Postal Ninja', () => {
-    expect(UNIVERSAL_SOURCES).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'UPU']);
+    expect(UNIVERSAL_SOURCES).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'Track718', 'UPU']);
     expect(universalSources()).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'UPU']);
     expect(universalSources(true)).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU']);
     expect(universalSources(false, number)).toEqual(['ParcelsApp', 'Ship24', '17TRACK']);

@@ -77,7 +77,7 @@ export class TrackingError extends Error {
   }
 }
 
-const sources: readonly UniversalSource[] = ['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja', 'UPU'];
+const sources: readonly UniversalSource[] = ['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja', 'Track718', 'UPU'];
 
 function budget(value: number | undefined, fallback: number): number {
   const ms = value ?? fallback;

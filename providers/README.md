@@ -6,7 +6,7 @@ library uses them as fallbacks, when a carrier has no dedicated adapter or its a
 no history or only part of it. They are not carriers a user can select.
 
 The aggregators run only when the caller names them in `providers` (`SCRAPER_PROVIDERS` for
-the CLI and the server). UPU is on by default. Every enabled provider receives the tracking
+the CLI and the server). UPU is on by default. Every eligible enabled provider receives the tracking
 number. [universal.ts](universal.ts) owns the factories, the order and the provider names.
 
 | Provider | Retrieval | Steps | Strength |
@@ -129,7 +129,7 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
 - A brand's network none of whose rules fits the number names the brand's network the
   number points to, as a bare brand would: ParcelsApp names DPD France for DPD UK's depot
   numbers with their check character, which DPD France's adapter refuses.
-- The names `Ship24`, `ParcelsApp`, `17TRACK`, `Postal Ninja` and `UPU` are public, and
+- The names `Ship24`, `ParcelsApp`, `17TRACK`, `Postal Ninja`, `Track718` and `UPU` are public, and
   consumers store them. Don't rename them.
 
 ## Shared implementation
@@ -165,3 +165,6 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
 - Add the name to `SOURCES` in `scripts/benchmark-data.mjs` and run the
   [benchmark](../benchmark/README.md) for it: `node scripts/benchmark.mjs probe --sources <name>`.
 - Run the package checks.
+
+Track718 is an opt-in source restricted to Juxi Express. That carrier uses Track718, ParcelsApp
+and Ship24, leaving 17TRACK out. See [the scoped integration](track718/README.md).

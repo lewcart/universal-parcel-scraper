@@ -31,6 +31,7 @@ import { adapter as postalNinja } from '../providers/postal-ninja/adapter.js';
 import { adapter as seventeenTrack } from '../providers/seventeentrack/adapter.js';
 import { adapter as ship24 } from '../providers/ship24/adapter.js';
 import type { UniversalTracker } from '../providers/universal.js';
+import { adapter as track718 } from '../providers/track718/adapter.js';
 import { adapter as upu } from '../providers/upu/adapter.js';
 
 vi.mock('playwright-core', () => ({ chromium: { launch: vi.fn() } }));
@@ -66,6 +67,7 @@ const ENVIRONMENTS: Readonly<Record<string, Browsers>> = {
  * request. Every other lookup reaches its transport in every environment.
  */
 const BROWSER_ONLY: Readonly<Record<string, readonly (keyof Browsers)[]>> = {
+  Track718: ['service'],
   fedex: ['service'], 'magyar-posta': ['service'], 'mondial-relay': ['service'], 'old-dominion': ['chromium'], 'royal-mail': ['chromium'],
   loggi: ['service'], 'sf-express': ['service'], swiftx: ['service'], usps: ['service'], 'emirates-post': ['service'], '17TRACK': ['service'],
   'trendyol-express': ['service'],
@@ -121,6 +123,7 @@ interface Subject { factory: AdapterFactory; inputs: () => TrackingInput[] }
 
 /** Each adapter with the numbers of the carriers it serves; each provider with postal and courier numbers. */
 const SUBJECTS: Readonly<Record<string, Subject>> = {
+  Track718: { factory: track718, inputs: () => carrierInputs('juxi-express') },
   ...Object.fromEntries(Object.entries(REGISTRY.factories).map(([id, factory]) => [id, { factory, inputs: () =>
     [...new Set([id, ...Object.entries(REGISTRY.carriers).filter(([, adapter]) => adapter === id).map(([carrier]) => carrier)])]
       .flatMap(carrierInputs) }])),

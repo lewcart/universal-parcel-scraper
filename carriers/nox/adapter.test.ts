@@ -184,6 +184,7 @@ describe('nox tracking adapter', () => {
       await expect(carrier(fetcher).recognize!(number)).resolves.toEqual({ known: false });
     }
     expect(fetcher).not.toHaveBeenCalled();
+    expect(() => normalizeNoxNumber('ABC')).toThrow('24 digits, SWR and 21 digits, RA and 22 characters, or C and 29 digits');
     expect(normalizeNoxNumber(' swr-0000 0000 2610 2300 0000 1 ')).toBe(OLDER);
     expect(normalizeNoxNumber('ra1zz9900000001000000001')).toBe(RETURN);
     await expect(carrier(fetcher).track({ number: RETURN })).rejects.toMatchObject({ kind: 'not_found' });

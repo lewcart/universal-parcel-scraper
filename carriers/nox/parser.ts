@@ -31,7 +31,7 @@ const MAX_ROWS = 300;
 /** A nox barcode in capitals, as the tracker matches it; anything else is not one nox prints. */
 export function normalizeNoxNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw).toUpperCase() : '';
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'nox barcodes are 24 digits, SWR or RA and 21 characters, or C and 29 digits');
+  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'nox barcodes are 24 digits, SWR and 21 digits, RA and 22 characters, or C and 29 digits');
   return number;
 }
 
@@ -59,9 +59,10 @@ function scanTime(row: Record<string, unknown>): string {
 }
 
 /**
- * One scan: its status wording and clock. The place, the remark and the
- * postcode the page shows once the recipient's postcode is checked are left
- * out, and so are the shipping date, the branch and consignment numbers.
+ * One scan: its status wording and clock. The reply leaves the place, the
+ * remark and the postcode empty until the recipient's postcode is checked,
+ * which the adapter never does. The shipping date, the branch and consignment
+ * numbers are left out.
  */
 function projectRow(row: Record<string, unknown>): CarrierEvent {
   const description = text(row, 'status');

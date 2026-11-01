@@ -68,6 +68,11 @@ bot check, from `GET https://appmovil.correos.cl/api/tracking/tracking_code/{num
 That host only accepts connections from Chilean networks, so the adapter does
 not use it. An unknown or expired number answers there with an empty history.
 
+## Numbers
+
+The adapter takes thirteen digits, or an S10 number ending `CL` with a valid check digit, and
+refuses other posts' numbers without a request, so a hand-off never asks it about one.
+
 ## Testing
 
 Set `CORREOS_CHILE_TRACKING_NUMBER` to an authorized real reference and

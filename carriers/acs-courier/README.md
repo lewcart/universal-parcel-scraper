@@ -31,7 +31,8 @@ enforce it. Ten digits are shared with several carriers, so `acs-courier-1` only
 for ten plain digits whose check holds. DHL Express's waybills carry the same check, so for a
 lookup from Greece or Cyprus recognition asks ACS right after DHL Express, and a number both
 know stays a choice: the check digit backs neither. Speedy and DPD Romania name ACS and its
-number when they hand it the receiving leg, as for parcels to Cyprus.
+number when they hand it the receiving leg, as for parcels to Cyprus; ACS is asked only about a
+ten-digit one.
 
 ## Notes
 

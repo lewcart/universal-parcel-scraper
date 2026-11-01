@@ -1,3 +1,4 @@
+import { isAcsVoucherNumber } from '../../core/detection/acsCourier.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { InvalidInputError, IndeterminateError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -16,10 +17,10 @@ const NOT_FOUND_NOTES = new Set(['Shipment not found', 'Η αποστολή δε
 /** A naive wall clock, to the second with an optional fraction. */
 const CLOCK = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}(?::\d{2})?)(?:\.\d{1,7})?$/;
 
-/** An ACS voucher number: ten digits, as on every label and sample seen. */
+/** An ACS voucher number, normalized. */
 export function normalizeAcsNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!/^\d{10}$/.test(number)) throw new InvalidInputError(PROVIDER, 'ACS Courier voucher numbers are ten digits');
+  if (!isAcsVoucherNumber(number)) throw new InvalidInputError(PROVIDER, 'ACS Courier voucher numbers are ten digits');
   return number;
 }
 

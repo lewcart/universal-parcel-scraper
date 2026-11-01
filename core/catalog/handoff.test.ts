@@ -313,6 +313,22 @@ describe('delivery partners that look up only their own references', () => {
     expect(carrierErrorKind(error)).toBe('invalid_input');
     expect(fetcher).not.toHaveBeenCalled();
   });
+  it('asks ACS only about its ten-digit vouchers and Correos de Chile only about its own numbers', async () => {
+    expect(deliveryHandoff('dpd-ro', '80000000002', { delivery_carrier: 'acs-courier', delivery_tracking_number: '9900000001' }))
+      .toEqual({ carrier: 'acs-courier', number: '9900000001', basis: 'partner' });
+    expect(deliveryHandoff('dpd-ro', '80000000002', { delivery_carrier: 'acs-courier', delivery_tracking_number: 'SYNTH1234' })).toBeNull();
+    expect(deliveryHandoff('aliexpress', 'LX123456785CN', { destination_country: 'CL', delivery_carrier: 'correos-chile' })).toBeNull();
+    for (const number of ['1234567890123', 'RR123456785CL']) expect(hasDirectHandoffAdapter('correos-chile', number)).toBe(true);
+    // The check mirrors the adapters, which refuse any other reference before a request.
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('offline'));
+    vi.stubGlobal('fetch', fetcher);
+    const registry = new AdapterRegistry(REGISTRY, { fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    const outcome = (carrier: string, number: string) => (async () => registry.for(carrier)!.track({ number, postcode: null }, { budgetMs: 2_000 }))()
+      .then(() => null, (caught: unknown) => carrierErrorKind(caught));
+    expect(await outcome('acs-courier', 'SYNTH1234')).toBe('invalid_input');
+    for (const number of ['LX123456785CN', 'RR123456780CL']) expect(await outcome('correos-chile', number)).toBe('invalid_input');
+    expect(fetcher).not.toHaveBeenCalled();
+  });
 });
 
 describe('a partner number another tracker also knows', () => {

@@ -47,7 +47,8 @@ shipments, so each carrier asks its own host.
 The estimate is the expected delivery day on the shipment-data scan, kept while the shipment is
 on its way. Scan comments, which can hold the receiver's name, a proof-of-delivery link or the
 return waybill, are dropped. When DPD Romania hands the receiving leg to ACS, as for parcels to
-Cyprus, the adapter names ACS and its number, as Speedy's does, so the partner can be asked.
+Cyprus, the adapter names ACS and its number, as Speedy's does, so the partner can be asked
+when the number is a ten-digit ACS voucher.
 
 ## Limitations
 

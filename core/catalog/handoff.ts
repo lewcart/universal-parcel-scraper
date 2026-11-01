@@ -6,7 +6,9 @@ import { carrierIdsFromPartnerLinks, nationalPostCandidate } from './hints.js';
 import { followsPartnerNumbers } from './partners.js';
 import { dhlExpressPieceId } from '../detection/dhlExpress.js';
 import { detectCarrierMatch, isValidDhlExpressWaybill, isValidS10TrackingNumber, supportsSwissPostHandoff } from '../detection/index.js';
+import { isAcsVoucherNumber } from '../detection/acsCourier.js';
 import { isAnotherPostItemAtChronopost } from '../detection/chronopost.js';
+import { isCorreosChileLookup } from '../detection/correosChile.js';
 import { isPosteItalianeLookup } from '../detection/posteItaliane.js';
 import { countryCode } from '../time/index.js';
 
@@ -24,6 +26,9 @@ const REFERENCES_LOOKED_UP: Readonly<Record<string, (number: string) => boolean>
   'dhl-express': (number) => isValidDhlExpressWaybill(number) || dhlExpressPieceId(number) !== null,
   // Blue Dart's waybills have eleven digits; ICC Worldwide can link it to other references.
   'blue-dart': (number) => /^\d{11}$/.test(number),
+  // Speedy and DPD Romania name ACS for the leg it delivers, by whatever reference they hold.
+  'acs-courier': isAcsVoucherNumber,
+  'correos-chile': isCorreosChileLookup,
 };
 
 // DHL Paket's international parcels, its `C` postal numbers, go to the partner

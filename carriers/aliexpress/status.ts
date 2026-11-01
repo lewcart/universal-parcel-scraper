@@ -99,6 +99,8 @@ export const CAINIAO_ACTION_STATUS = new Map<string, CarrierStatus>([
   ['GTMS_RELABEL', 'in_transit'],
   // A partner accepting the parcel after the hand-off: Cainiao accepted it long before.
   ['SL_ACCEPT', 'in_transit'],
+  // "Shipment departed from facility": the hand-over to the courier that delivers the parcel, before its round.
+  ['LAST_MILE_HO_SUCCESS', 'in_transit'],
   ['GTMS_SC_ARRIVE', 'in_transit'],
   ['GTMS_DO_ARRIVE', 'in_transit'],
   ['GTMS_STATION_OUT', 'in_transit'],

@@ -409,6 +409,15 @@
       "note": ""
     },
     {
+      "code": "LAST_MILE_HO_SUCCESS",
+      "wording": "Shipment departed from facility",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "The hand-over to the courier that delivers the parcel, worded as a departure, between the transit scans and the courier's own."
+    },
+    {
       "code": "LAST_MILE_ASN_NOTIFY",
       "wording": "Last-mile delivery forecast",
       "language": "en",

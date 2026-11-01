@@ -31100,6 +31100,12 @@ export const CARRIER_CATALOG = {
           "novaposhta.ua"
         ],
         "path": "^/(?:en/)?tracking/(\\d{14})(?:/|$)"
+      },
+      {
+        "domains": [
+          "novapost.com"
+        ],
+        "path": "^/[a-z]{2}-[a-z]{2}/tracking/((?:RS)?(?:SH|TN)[A-Z]{2}\\d{10}|1\\d{13}|(?:20[4678]|590|595)\\d{11}|(?:21|51)\\d{12})(?:/|$)"
       }
     ],
     "detectionRules": [

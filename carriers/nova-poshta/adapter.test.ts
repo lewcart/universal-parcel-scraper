@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, NovaPoshtaTracker } from './adapter.js';
 import { parseNovaPoshta, parseNovaPoshtaHistory } from './parser.js';
@@ -189,9 +190,39 @@ describe('Nova Poshta retrieval', () => {
     await expect(carrier.recognize!('NP00000000000001')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
+  // Synthetic numbers in the layouts novapost.com's tracker routes to the same movement feed; none is a real parcel.
+  const INTERNATIONAL = 'SHPL0000000001';
+  const international = () => JSON.parse(JSON.stringify(history()).replaceAll(NUMBER, INTERNATIONAL));
+  it('reads a Nova Post international number from the movement feed alone', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(international())));
+    await expect(new NovaPoshtaTracker({ fetcher }).fetch(' shpl 0000000001 ')).resolves.toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+    expect(fetcher.mock.calls[0]![0]).toBe(`https://api.novapost.com/site/v.1.0/shipments/tracking/${INTERNATIONAL}`);
+    for (const number of ['SHUA0000000001', 'TNUA0000000001', 'RSSHUA0000000001']) {
+      await expect(new NovaPoshtaTracker({ fetcher }).fetch(number), number).rejects.toMatchObject({ kind: 'schema' });
+    }
+    expect(fetcher).toHaveBeenCalledTimes(4);
+  });
+  it('reads novapost.com links to the numbers it takes', () => {
+    for (const [link, number] of [[`https://novapost.com/en-pl/tracking/${INTERNATIONAL}`, INTERNATIONAL],
+      [`https://www.novapost.com/de-de/tracking/${NUMBER}/`, NUMBER]]) {
+      expect(parseTrackingInput(link!), link).toMatchObject({ trackingNumber: number, carrier: 'nova-poshta' });
+    }
+    expect(parseTrackingInput('https://novapost.com/en-pl/tracking/NP00000000000001').carrier).not.toBe('nova-poshta');
+  });
+  it('never asks the older status API about an international number, which it reads as unknown', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(JSON.stringify({ errors: { errorMessage: 'shipment_received' } }), { status: 422 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ errors: { errorMessage: 'not_found' } }), { status: 404 }));
+    await expect(new NovaPoshtaTracker({ fetcher }).fetch(INTERNATIONAL)).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(new NovaPoshtaTracker({ fetcher }).fetch(INTERNATIONAL)).rejects.toMatchObject({ kind: 'not_found' });
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual(Array(2).fill(`https://api.novapost.com/site/v.1.0/shipments/tracking/${INTERNATIONAL}`));
+    const unknown = fixture(); unknown.data[0].Number = INTERNATIONAL; unknown.data[0].StatusCode = '3';
+    expect(() => parseNovaPoshta(unknown, INTERNATIONAL)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  });
   it('rejects cross-border input and cancellation before any request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    await expect(new NovaPoshtaTracker({ fetcher }).fetch('NP00000000000001')).rejects.toMatchObject({ kind: 'invalid_input' });
+    for (const number of ['NP00000000000001', 'SHUA000000001', 'SH1A0000000001', 'XSHUA0000000001']) {
+      await expect(new NovaPoshtaTracker({ fetcher }).fetch(number), number).rejects.toMatchObject({ kind: 'invalid_input' });
+    }
     await expect(new NovaPoshtaTracker({ fetcher }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
     expect(fetcher).not.toHaveBeenCalled();
   });

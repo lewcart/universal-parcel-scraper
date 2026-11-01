@@ -41,13 +41,21 @@ function statusOf(stage: string | undefined): CarrierStatus {
     : ['returned', 'exception', 'failed_attempt'].includes(stage ?? '') ? 'exception'
       : ['registered', 'pending'].includes(stage ?? '') ? 'pending' : stage ? 'in_transit' : 'unknown';
 }
+// Domestic families named by the official tracking client's router.
+const WAYBILL = /^(?:1\d{13}|(?:20[4678]|590|595)\d{11}|(?:21|51)\d{12})$/;
+// Nova Post's international shipments as novapost.com's tracker routes them to the same
+// movement feed: SH or TN, two letters for the country and ten digits, at times after RS.
+const INTERNATIONAL = /^(?:RS)?(?:SH|TN)[A-Z]{2}\d{10}$/;
 export function normalizeNovaPoshtaNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  // Domestic families named by the official tracking client's router.
-  if (!/^(?:1\d{13}|(?:20[4678]|590|595)\d{11}|(?:21|51)\d{12})$/.test(number)) {
-    throw new InvalidInputError(PROVIDER, 'Nova Poshta requires a Ukrainian waybill number');
+  if (!WAYBILL.test(number) && !INTERNATIONAL.test(number)) {
+    throw new InvalidInputError(PROVIDER, 'Nova Poshta requires a Ukrainian waybill or a Nova Post international number');
   }
   return number;
+}
+/** Whether a number is a Ukrainian waybill, the only kind the older status API knows. */
+export function isNovaPoshtaWaybill(number: string): boolean {
+  return WAYBILL.test(number);
 }
 function receiptTime(value: unknown): string | undefined {
   const text = clean(value, 64);
@@ -57,6 +65,8 @@ function receiptTime(value: unknown): string | undefined {
 }
 export function parseNovaPoshta(payload: unknown, raw: string): CarrierResult {
   const number = normalizeNovaPoshtaNumber(raw);
+  // It answers "not found" for any international number, so its answer says nothing about one.
+  if (!isNovaPoshtaWaybill(number)) throw new IndeterminateError(PROVIDER, 'Nova Poshta status summaries cover Ukrainian waybills only');
   if (!isRecord(payload) || !Array.isArray(payload.errors) || !Array.isArray(payload.data)) throw new SchemaError(PROVIDER);
   if (payload.success === false || payload.errors.length) throw new IndeterminateError(PROVIDER, 'Nova Poshta could not return shipment details');
   if (payload.success !== true || payload.data.length !== 1 || !isRecord(payload.data[0])) throw new SchemaError(PROVIDER);

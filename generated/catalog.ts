@@ -4344,7 +4344,8 @@ export const CARRIER_CATALOG = {
     "color": "#ff6700",
     "aliases": [
       "STO Global",
-      "申通国际"
+      "申通国际",
+      "申通快递"
     ],
     "countries": [
       "CN"
@@ -4361,6 +4362,7 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://page.sto.cn/ued-projects/sto-customer-onlinekf",
     "trackingUrlTemplate": "https://www.sto.cn/",
     "trackingSearchUrl": "https://www.sto.cn/",
+    "helpUrl": "https://page.sto.cn/ued-projects/sto-customer-onlinekf",
     "linkRules": [],
     "detectionRules": [
       {
@@ -24383,6 +24385,7 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.jtexpress.com.cn/",
     "trackingUrlTemplate": "https://www.jtexpress.com.cn/service.html?indexIpt={trackingNumber}",
     "trackingSearchUrl": "https://www.jtexpress.com.cn/",
+    "helpUrl": "https://www.jtexpress.com.cn/aboutUs.html?type=LX",
     "linkRules": [
       {
         "domains": [

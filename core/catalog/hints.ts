@@ -90,14 +90,16 @@ const CATALOG_NAMES = new Set([
 // and Pos Indonesia its scans once it handles the item, on clocks in three zones
 // that name none. NZ Post follows mail from abroad under the sending post's
 // number; its own scans carry UTC instants, and it relays the origin post's on
-// Auckland's reading, which its adapter gives back. The host also checks adapter availability and required inputs before
+// Auckland's reading, which its adapter gives back. Israel Post's tracker says
+// it follows EMS and ECO POST items sent from abroad, and dates scans to the
+// day. The host also checks adapter availability and required inputs before
 // making a request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AT', 'austrian-post'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
   ['BE', 'bpost'], ['BG', 'bulgarian-posts'], ['BR', 'correios-br'], ['BY', 'belpost'], ['CA', 'canada-post'],
   ['CH', 'swiss-post'], ['CU', 'correos-cuba'], ['CY', 'cyprus-post'], ['CZ', 'ceska-posta'], ['DE', 'dhl'], ['DK', 'postnord'], ['DZ', 'algerie-poste'],
   ['EE', 'omniva'], ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FO', 'posta-faroe'], ['FR', 'la-poste'],
-  ['GB', 'royal-mail'], ['GR', 'elta'], ['HR', 'hrvatska-posta'], ['HU', 'magyar-posta'], ['ID', 'pos-indonesia'], ['IE', 'an-post'], ['IS', 'posturinn'],
+  ['GB', 'royal-mail'], ['GR', 'elta'], ['HR', 'hrvatska-posta'], ['HU', 'magyar-posta'], ['ID', 'pos-indonesia'], ['IE', 'an-post'], ['IL', 'israel-post'], ['IS', 'posturinn'],
   ['IT', 'poste-italiane'], ['JO', 'jordan-post'], ['JP', 'japan-post'], ['KE', 'posta-kenya'], ['KG', 'kyrgyz-post'], ['LT', 'lietuvos-pastas'],
   ['LU', 'post-luxembourg'], ['LV', 'latvijas-pasts'], ['MA', 'barid-al-maghrib'], ['MK', 'posta-north-macedonia'], ['MT', 'maltapost'],
   ['NL', 'spring-gds'],

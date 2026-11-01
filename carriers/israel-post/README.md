@@ -21,6 +21,10 @@ Its courier service numbers items with eleven digits and `IL`, which `israel-pos
 archived lookups on the tracker show both layouts. Other layouts looked up there, such as
 eleven digits and `RG`, are not described and stay unclaimed.
 
+Its [tracker page](https://web.archive.org/web/20201129223749/https://www.israelpost.co.il/itemtrace.nsf/mainsearchNOHE?OpenForm&L=EN)
+says it follows EMS and ECO POST items sent from abroad, so a postal item going to Israel is
+handed to it under the sending post's number.
+
 ## Links
 
 The tracker reads the number from `itemcode` on its Hebrew tracking page, often with

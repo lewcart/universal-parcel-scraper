@@ -3,7 +3,8 @@
   "displayName": "STO Express",
   "aliases": [
     "STO Global",
-    "申通国际"
+    "申通国际",
+    "申通快递"
   ],
   "region": {
     "countries": [
@@ -37,6 +38,7 @@
   "portal": {
     "url": "https://www.sto.cn/",
     "searchUrl": "https://www.sto.cn/",
+    "helpUrl": "https://page.sto.cn/ued-projects/sto-customer-onlinekf",
     "canaryUrl": "https://page.sto.cn/ued-projects/sto-customer-onlinekf",
     "shows": [
       "status",

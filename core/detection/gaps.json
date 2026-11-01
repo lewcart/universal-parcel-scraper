@@ -4361,5 +4361,35 @@
     "pattern": "^\\d[A-Z]{3}\\d{10}$",
     "kind": "open",
     "reason": "One example on Kuayuan Express's tracker page, a digit and three letters followed by ten digits; the family is not established."
+  },
+  {
+    "carrier": "2ebox",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are printed by many carriers and nothing in the number points to 2ebox."
+  },
+  {
+    "carrier": "antaria",
+    "pattern": "^\\d{10}$",
+    "kind": "collision",
+    "reason": "Antaria delivery-note numbers are ten digits, a shape DHL, Tipsa and other networks print, so the shape cannot name Antaria."
+  },
+  {
+    "carrier": "ezship",
+    "pattern": "^\\d{8,9}$",
+    "kind": "by_design",
+    "reason": "Eight or nine digits are printed by many carriers and nothing in the number points to ezShip."
+  },
+  {
+    "carrier": "fxdc-post",
+    "pattern": "^\\d{8}$",
+    "kind": "collision",
+    "reason": "FXDC Post references are eight digits, a shape Mondial Relay, Colisweb and Heppner print, so the shape cannot name FXDC Post."
+  },
+  {
+    "carrier": "royale-international",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Royale International waybills are twelve digits, a shape FedEx, BRT, SF Express and other networks print, so the shape cannot name Royale International."
   }
 ]

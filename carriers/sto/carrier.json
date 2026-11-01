@@ -1,7 +1,10 @@
 {
   "id": "sto",
   "displayName": "STO Express",
-  "aliases": [],
+  "aliases": [
+    "STO Global",
+    "申通国际"
+  ],
   "region": {
     "countries": [
       "CN"

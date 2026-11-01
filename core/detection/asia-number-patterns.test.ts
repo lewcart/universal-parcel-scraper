@@ -1384,3 +1384,50 @@ describe('SPT Express, Hitch, Consegnia, FMX, JANCO Express, ARK Express, Fastgo
     expect(carrierIdFromName('CityMail')).toBe('citymail');
   });
 });
+
+describe('Etomars, HY Express, ten national posts and the other Ship24-listed carriers', () => {
+  it('names the carriers from providers', () => {
+    for (const [name, id] of [['2ebox', '2ebox'], ['BEE FAST', 'bee-fast'], ['Choir Express Indonesia', 'choir-express'],
+      ['DTD Worldwide Express', 'dtd-pk'], ['Endeavour Delivery', 'endeavour-delivery'], ['ezShip', 'ezship'], ['Fast Track', 'fasttrack-ar'],
+      ['HY Express', 'hy-express'], ['浩远快递', 'hy-express'], ['HYE', 'hye'], ['HYEXP', 'hye'], ['MOBI Logistica', 'mobi-logistica'],
+      ['Tai Wan Global Business', 'global-business-tw'], ['Tolos', 'tolos'], ['ViaXpress', 'viaxpress'], ['Antaria Services', 'antaria'],
+      ['Beexprss', 'beexprss'], ['Corporate Couriers', 'corporate-couriers'], ['Dan Niao', 'danniao'], ['丹鸟', 'danniao'],
+      ['ETOMARS', 'etomars'], ['SHIPNERGY', 'etomars'], ['Mikropakket', 'mikropakket'], ['Royale International', 'royale-international'],
+      ['Suto Logistics', 'suto-logistics'], ['Wepost', 'wepost'], ['FXDC Post', 'fxdc-post'], ['Carry Flap', 'carry-flap'],
+      ['CKEEX', 'ckeex'], ['DDU Express', 'ddu-express'], ['INDOPAKET', 'indopaket'], ['Redbox MV', 'redbox-mv'], ['Shippify', 'shippify'],
+      ['Swftbox', 'swftbox'], ['Xpressen', 'xpressen'], ['STO Global', 'sto'], ['申通国际', 'sto'],
+      ['Correios de Angola', 'correios-angola'], ['Correios de Macau', 'macau-post'], ['Correos del Ecuador', 'correos-ecuador'],
+      ['Honducor', 'honducor'], ['Ipostel', 'ipostel'], ['Libya Post', 'libya-post'], ['MPT', 'myanmar-post'],
+      ['Paositra Malagasy', 'paositra-malagasy'], ['OPT (French Polynesia Post)', 'fare-rata'], ['Vatican Post', 'vatican-post']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+  });
+
+  it('offers Etomars its SN…JP registration numbers and leaves valid Japan Post items to Japan Post', () => {
+    expect(detectCarrierMatch('SN000000000JP')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['etomars'] });
+    expect(detectCarrierMatch('SN000000005JP')).toMatchObject({ carrier: 'japan-post', confidence: 'high' });
+    for (const value of ['SA000000000JP', 'SN00000000JP', 'SN0000000000JP', 'SN000000000KR']) {
+      expect(detectCarrierMatch(value).candidates ?? [], value).not.toContain('etomars');
+    }
+  });
+
+  it('reads their tracker links', () => {
+    for (const [url, carrier] of [
+      ['https://portal.dtd.com.pk/index.php/public/tracking?tracking=AB1000000017', 'dtd-pk'],
+      ['https://order.hy-express.com/track_query.aspx?track_number=AB1000000017', 'hy-express'],
+      ['https://beexprss.com/tracking?tracking_name=AB1000000017', 'beexprss'],
+      ['https://www.danniao.com/?mailNoList=AB1000000017', 'danniao'],
+      ['https://cbt.shipnergy.com/Track/Result?mode=0&ids=AB1000000017&lang=en-US', 'etomars'],
+      ['https://tracking.carry-flap.com/#/home?invoiceNo=AB1000000017', 'carry-flap'],
+      ['https://rastreo.honducor.gob.hn/rastreo?tracking_number=AB1000000017', 'honducor'],
+      ['https://tracking.libyapost.ly:7040/ipswt/IPSWeb_item_events.aspx?itemid=AB1000000017', 'libya-post'],
+      ['https://myanmarpost.com.mm/track/AB1000000017', 'myanmar-post'],
+      ['https://postevaticane.va/it/tracking?trackingNumber=AB1000000017', 'vatican-post'],
+      ['https://track.xpressen.dk/Tracking?t=AB1000000017', 'xpressen'],
+    ] as const) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: 'AB1000000017', carrier, source: 'link' });
+    }
+    // Order and delivery-number lookups on the same page are not Etomars registration numbers.
+    expect(parseTrackingInput('https://cbt.shipnergy.com/Track/Result?mode=1&ids=AB1000000017').carrier ?? 'none').not.toBe('etomars');
+  });
+});

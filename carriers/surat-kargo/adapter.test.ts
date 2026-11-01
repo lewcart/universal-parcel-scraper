@@ -83,4 +83,14 @@ describe('Sürat Kargo merchant tracking flow', () => {
       expect(JSON.stringify(error)).not.toContain(TOKEN);
     }
   });
+
+  it('omits guest capabilities and recipient details from malformed-history errors', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(fixture()))
+      .mockResolvedValueOnce(new Response(`<html>${TOKEN} PRIVATE recipient</html>`));
+    try { await carrier(fetcher).track({ number: NUMBER }); expect.fail('expected malformed history'); }
+    catch (error) {
+      expect(error).toMatchObject({ kind: 'schema' });
+      expect(JSON.stringify(error)).not.toMatch(/aaaaaaaaaaaaaaaa|PRIVATE/);
+    }
+  });
 });

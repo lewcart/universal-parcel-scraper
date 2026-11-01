@@ -1,7 +1,7 @@
 import makeFetchCookie from 'fetch-cookie';
 import { CookieJar } from 'tough-cookie';
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { ChallengeError, TransportError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
+import { ChallengeError, SchemaError, TransportError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
@@ -43,7 +43,10 @@ export class SuratKargoTracker {
         const bytes = await read(`${SURAT_ORIGIN}${SURAT_HISTORY}`, { method: 'POST',
           headers: { Accept: 'application/json', 'Content-Type': 'application/json; charset=utf-8', 'User-Agent': userAgent, Referer: pageUrl },
           body: JSON.stringify({ kargotakipno: token }) });
-        histories.push(parseSuratHistory(parseJsonBytes(bytes, PROVIDER)));
+        let payload: unknown;
+        try { payload = parseJsonBytes(bytes, PROVIDER); }
+        catch { throw new SchemaError(PROVIDER, 'Sürat Kargo returned an invalid history response'); }
+        histories.push(parseSuratHistory(payload));
       }
       return suratKargoResult(histories);
     } }]);

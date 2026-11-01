@@ -83,6 +83,14 @@ describe('Asyad Express mobile guest tracking', () => {
     for (const entry of statuses.entries) expect(statusMap.stage(entry.code, entry.wording)).toBe(entry.stage);
   });
 
+  it('keeps a skipped foreign wall clock without shifting it to infer an instant', () => {
+    const body = postal();
+    body.track[0] = { ...body.track[0]!, EventDate: '3/29/2026 2:30:00 AM', city: 'DEFRAA' };
+    const event = parseOmanPost(body, POSTAL).events![1]!;
+    expect(event).toMatchObject({ local_time: '2026-03-29T02:30:00', location: 'DEFRAA' });
+    expect(event.time).toBeUndefined();
+  });
+
   it.each([[401, 'challenge'], [403, 'challenge'], [429, 'rate_limited'], [500, 'indeterminate']] as const)('preserves HTTP %i as %s', async (status, kind) => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply({}, status));
     await expect(carrier(fetcher).track({ number: NUMBER })).rejects.toMatchObject({ kind });

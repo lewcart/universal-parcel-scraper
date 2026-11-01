@@ -33,7 +33,8 @@ function clock(value: unknown, postal: boolean, zone: string | null): Pick<Carri
   const local_time = wall.toFormat("yyyy-MM-dd'T'HH:mm:ss");
   if (!zone) return { local_time };
   const instant = firstOccurrence(DateTime.fromISO(local_time, { zone }));
-  return { local_time, time: instant.toISO({ suppressMilliseconds: true })!, time_zone: zone, time_zone_basis: 'place' };
+  if (!instant.isValid || instant.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== local_time) return { local_time };
+  return { local_time, time: instant.toISO({ suppressMilliseconds: true }), time_zone: zone, time_zone_basis: 'place' };
 }
 
 function result(events: CarrierEvent[], postal: boolean): CarrierResult {

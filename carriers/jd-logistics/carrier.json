@@ -28,7 +28,8 @@
   "capabilities": [
     "history",
     "location",
-    "provider_code"
+    "provider_code",
+    "delivery_tracking_number"
   ],
   "portal": {
     "url": "https://www.jingdonglogistics.com/Tracking?waybillCodes={trackingNumber}",
@@ -38,12 +39,14 @@
     "shows": [
       "status",
       "history",
-      "location"
+      "location",
+      "delivery_tracking_number"
     ],
     "scraped": [
       "status",
       "history",
-      "location"
+      "location",
+      "delivery_tracking_number"
     ],
     "discarded": [
       "recipient_details",

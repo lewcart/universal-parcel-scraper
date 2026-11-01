@@ -188,6 +188,60 @@ describe('JD Logistics international projection', () => {
     expect(parseJdLogistics(reply, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map' });
   });
 
+  it('stages a line from China to GOFO\'s last mile by its codes', () => {
+    const reply = history();
+    const nodes = reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList as Record<string, unknown>[];
+    const steps = [
+      ['DMLMOP', 'Out for Delivery'], ['DMAPR', 'Arrived at GOFO Delivery Station'], ['DMLMIT', 'In Transit to Next Facility'],
+      ['DMSCD', 'Loaded on Vehicle'], ['DMLMLW', 'Arrived at GOFO Regional Hub'], ['CXLMHL', 'Handover to local carrier'],
+      ['CXLHCP', 'Cleanrance agency picked'], ['CXCCRS', 'Customs clearance completed'], ['CXLHAP', 'Arrive at destination port'],
+      ['CXLHDP', 'Departure from origin port'], ['CXCCOE', 'Customs released from origin port'], ['CXCCAP', 'Arrive at airport'],
+      ['CXWHSO', 'Departed from Warehouse.'], ['CXWHSP', 'Consolidation Completed'], ['CXWHRC', 'Weighed at Warehouse'],
+      ['ECWHRC', 'Arrived at Warehouse'], ['FMPU', 'Shipment Picked up'], ['COSH', 'Order Created.'],
+    ];
+    nodes.splice(0, nodes.length, ...steps.map(([operationCode, operatorDesc], index) => ({
+      operatorTime: `2026-09-${String(30 - index).padStart(2, '0')} 08:00:00`, operatorDesc, operationCode })));
+    const result = parseJdLogistics(reply, NUMBER);
+    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', current_stage_source: 'carrier_map' });
+    expect(result.events?.map(event => event.stage)).toEqual([
+      'out_for_delivery', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit',
+      'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit',
+      'in_transit', 'accepted', 'accepted', 'accepted', 'accepted', 'registered',
+    ]);
+    expect(result.events?.filter(event => event.provider_code !== 'DMSCD').every(event => event.stage_source === 'carrier_map')).toBe(true);
+  });
+
+  it('keeps the partner\'s number out of the departure\'s wording and gives it as the delivery number', () => {
+    const reply = history();
+    const nodes = reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList as Record<string, unknown>[];
+    nodes[1] = { ...nodes[1], operationCode: 'CXWHSO', operatorDesc: 'Departed from Warehouse.Tracking no GFUS01000000000001' };
+    const result = parseJdLogistics(reply, NUMBER);
+    expect(result.events?.[1]).toMatchObject({ description: 'Departed from Warehouse.', provider_code: 'CXWHSO', stage: 'in_transit' });
+    expect(result.delivery_tracking_number).toBe('GFUS01000000000001');
+    expect(JSON.stringify({ ...result, delivery_tracking_number: undefined })).not.toContain('GFUS');
+    // A row holding nothing but the number is left out.
+    nodes.push({ operatorTime: '2026-09-01 08:00:00', operatorDesc: 'Tracking no GFUS01000000000001', timeZone: 'CST' });
+    expect(parseJdLogistics(reply, NUMBER).events).toHaveLength(2);
+    // Two numbers, or JD's own, give no delivery number.
+    nodes[2] = { ...nodes[2], operatorDesc: 'Departed from Warehouse.Tracking no GFUS01000000000002' };
+    expect(parseJdLogistics(reply, NUMBER).delivery_tracking_number).toBeUndefined();
+    nodes.splice(2, 1);
+    nodes[1] = { ...nodes[1], operatorDesc: `Departed from Warehouse.Tracking no ${NUMBER}` };
+    expect(parseJdLogistics(reply, NUMBER)).not.toHaveProperty('delivery_tracking_number');
+    // Other wording ending in "Tracking no…" is not a number.
+    nodes[1] = { ...nodes[1], operatorDesc: 'Tracking not available' };
+    expect(parseJdLogistics(reply, NUMBER).events?.[1]?.description).toBe('Tracking not available');
+  });
+
+  it('lets a stored departure that still holds the partner\'s number take the scan without it', () => {
+    const policy = sameInstantIdentityPolicy('jd-logistics', { supportsScanMatching: true });
+    const stored = { stage: 'in_transit', location: 'Example City', description: 'Departed from Warehouse.Tracking no GFUS01000000000001',
+      providerCode: 'CXWHSO' };
+    const incoming = { ...stored, description: 'Departed from Warehouse.' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(incoming, { ...stored, providerCode: 'CXWHSP' })).toBe(false);
+  });
+
   it('drops the courier\'s name and phone from the out-for-delivery wording', () => {
     const reply = history();
     const nodes = reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList as Record<string, unknown>[];

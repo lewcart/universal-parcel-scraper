@@ -47,6 +47,12 @@ JD's own warehouse abroad is accepted there while it is picked and weighed, then
 last-mile partner such as GOFO, whose steps JD relays. GOFO's label comes under a code JD has
 shown with that step alone, and GOFO's loading at a hub, before its delivery station, under the
 code of JD's courier out with the parcel, so their wording decides them rather than the code.
+On a line from China, the parcel is accepted while JD's warehouse there receives, weighs and
+consolidates it. The clearance agent's collection at the port of arrival ("Cleanrance agency
+picked") and the hand-over to the local carrier are in transit. The departure from the warehouse
+ends with the last-mile partner's number ("Tracking no …"), which becomes the delivery tracking
+number and leaves the wording; a row stored with it keeps its row. The number names no partner,
+and JD already relays the partner's steps, so it hands nothing off.
 The newest scan decides the status. The courier's name and phone are dropped from the out-for-delivery wording
 (`wording.ts`).
 

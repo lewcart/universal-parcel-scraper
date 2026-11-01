@@ -19,12 +19,32 @@ const CODES = new Map<string, ClassifiedStatus>([
   // Handed to the last-mile partner, whose first scan follows under DMPU.
   ['1060', MOVING],
   ['DMPU', MOVING],
+  // A line from China: picked up from the shop, then received, weighed and consolidated at
+  // JD's warehouse there, which holds it until it departs.
+  ['FMPU', { status: 'in_transit', stage: 'accepted' }],
+  ['ECWHRC', IN_WAREHOUSE],
+  ['CXWHRC', IN_WAREHOUSE],
+  ['CXWHSP', IN_WAREHOUSE],
+  ['CXWHSO', MOVING],
+  // At the airport: arrival, export customs released, departure; then the port of arrival.
+  ['CXCCAP', MOVING],
+  ['CXCCOE', MOVING],
+  ['CXLHDP', MOVING],
+  ['CXLHAP', MOVING],
   ['CCL', { status: 'in_transit', stage: 'customs' }],
   // Clearance completed: the parcel moves on.
   ['CXCCRS', MOVING],
+  // The clearance agent collects the cleared parcel and hands it to the last-mile carrier.
+  ['CXLHCP', MOVING],
+  ['CXLMHL', MOVING],
   ['DMSCR', MOVING],
   ['SCVS', MOVING],
   ['VUVU', MOVING],
+  // GOFO's hubs, the line haul between them and its delivery station, relayed under JD's codes.
+  ['DMLMLW', MOVING],
+  ['DMLMIT', MOVING],
+  ['DMAPR', MOVING],
+  ['DMLMOP', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['DMLMLS', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['DLV', { status: 'delivered', stage: 'delivered' }],
   // The domestic tracker's states, whose Chinese wording the shared rules do not read.
@@ -42,7 +62,7 @@ const CODES = new Map<string, ClassifiedStatus>([
 // A last-mile partner's step, read by its wording ahead of the code JD relays it under: GOFO's
 // label comes under SRRF3P, a code JD has shown with that step alone, and GOFO's loading at a
 // hub under DMLMLS, which is otherwise JD's courier out with the parcel. GOFO's arrival at its
-// delivery station and its own out-for-delivery follow under other codes.
+// delivery station and its own out-for-delivery follow under DMAPR and DMLMOP.
 const RELAYED = new Map<string, ClassifiedStatus>([
   ['shipping label created', { status: 'pending', stage: 'registered' }],
   ['loaded on vehicle', MOVING],

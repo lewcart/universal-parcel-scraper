@@ -8,7 +8,7 @@ import { countryCode, countryTimeZone, EXPLICIT_OFFSET_PATTERN, explicitOffsetTi
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { jdLogisticsStatus } from './status.js';
-import { withoutCourierContact } from './wording.js';
+import { partnerNumber, scanWording } from './wording.js';
 
 const PROVIDER = 'JD Logistics';
 
@@ -146,12 +146,17 @@ export function parseJdLogistics(payload: unknown, raw: string): CarrierResult {
     throw new SchemaError(PROVIDER, 'JD Logistics returned an invalid waybill history');
   }
   if (!waybill.trackNodeList.length) throw noHistory();
-  const events: CarrierEvent[] = waybill.trackNodeList.map(node => {
+  const partners = new Set<string>();
+  const events: CarrierEvent[] = waybill.trackNodeList.flatMap(node => {
     if (!isRecord(node)) throw new SchemaError(PROVIDER);
-    // Never keep the courier's name and phone.
-    const description = withoutCourierContact(clean(node.operatorDesc, 1000));
+    // Never keep the courier's name and phone, nor the partner's number in the wording.
+    const text = clean(node.operatorDesc, 1000);
+    const description = scanWording(text);
     const clock = clean(node.operatorTime, 64);
-    if (!description || !clock) throw new SchemaError(PROVIDER, 'JD Logistics returned an incomplete scan');
+    if (!text || !clock) throw new SchemaError(PROVIDER, 'JD Logistics returned an incomplete scan');
+    const partner = partnerNumber(text);
+    if (partner) partners.add(partner);
+    if (!description) return [];
     if (!/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:?\d{2})?$/.test(clock)) {
       throw new SchemaError(PROVIDER, 'JD Logistics returned an invalid scan clock');
     }
@@ -168,11 +173,12 @@ export function parseJdLogistics(payload: unknown, raw: string): CarrierResult {
     const code = clean(node.operationCode, 32);
     const mapped = jdLogisticsStatus(code, description);
     const classification = classifyWording(description);
-    return { description, ...(instant ? { time: instant.iso } : { local_time: wall.toFormat("yyyy-MM-dd'T'HH:mm:ss") }),
+    return [{ description, ...(instant ? { time: instant.iso } : { local_time: wall.toFormat("yyyy-MM-dd'T'HH:mm:ss") }),
       ...(location ? { location } : {}), ...(code ? { provider_code: code } : {}),
       ...(mapped ? { stage: mapped.stage, stage_source: 'carrier_map' }
-        : classification.source !== 'none' ? { stage: classification.stage, stage_source: classification.source } : {}) };
+        : classification.source !== 'none' ? { stage: classification.stage, stage_source: classification.source } : {}) }];
   });
+  if (!events.length) throw new SchemaError(PROVIDER, 'JD Logistics returned an incomplete scan');
   // JD lists the newest first. Only a fully dated history is ordered by instant, ties kept.
   if (events.every(event => event.time)) events.sort((a, b) => Date.parse(b.time!) - Date.parse(a.time!));
   const seen = new Set<string>();
@@ -187,5 +193,7 @@ export function parseJdLogistics(payload: unknown, raw: string): CarrierResult {
   return { status: coded?.status ?? (classified.source !== 'none' ? languageStageStatus(classified.stage) : 'unknown'),
     ...(latest.stage ? { current_stage: latest.stage, current_stage_source: latest.stage_source } : {}),
     last_status_text: latest.description, last_update: latest.time ?? null,
-    ...(latest.local_time ? { last_update_local: latest.local_time } : {}), events: unique };
+    ...(latest.local_time ? { last_update_local: latest.local_time } : {}),
+    // The last-mile partner's number, when JD gives one other than its own.
+    ...(partners.size === 1 && !partners.has(number) ? { delivery_tracking_number: [...partners][0]! } : {}), events: unique };
 }

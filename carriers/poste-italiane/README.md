@@ -45,8 +45,11 @@ Italiane for a number issued abroad.
    - The CAPTCHA comes once an address has sent twenty searches in the past hour, the refused
      ones included, and stays until the hour holds fewer. So at most eighteen searches an hour
      go through one transport, recognition included, and none for fifteen minutes after a
-     CAPTCHA. A lookup over that fails as rate-limited without a request, and the browser step
-     does not run.
+     CAPTCHA. An HTTP 429 pauses them for the wait its `Retry-After` names, else for those
+     fifteen minutes. A lookup over that fails as rate-limited without a request, with the time
+     left to wait, and the browser step does not run. The catalog asks for a refresh at most
+     every half hour, and an hour after a failed one, so that a handful of followed parcels,
+     including one out for delivery, keeps within the hour's searches.
    - Missing or unusable history is a schema failure. Unrecognized empty envelopes remain inconclusive.
 2. `trawl`, only after a challenge: the official page opens in a fresh browser context.
    TRAWL solves its reCAPTCHA checkbox/audio challenge and observes the page retrying the

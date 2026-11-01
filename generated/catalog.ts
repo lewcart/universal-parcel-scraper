@@ -3011,6 +3011,10 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "poste-italiane",
       "recognitionRank": 900,
+      "refresh": {
+        "minMinutes": 30,
+        "afterFailureMinutes": 60
+      },
       "browser": true
     },
     "canaryUrl": "https://www.poste.it/",

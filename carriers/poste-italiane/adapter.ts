@@ -120,23 +120,26 @@ function importCharges(value: unknown): { import_charges: ImportCharges } | Reco
  * hour holds fewer: a search over the limit would only prolong the refusals.
  */
 export const HOURLY_SEARCHES = 18;
-/** How long after a CAPTCHA no search is sent, since searches this transport did not send drew it. */
+/**
+ * How long after a CAPTCHA no search is sent, since searches this transport did not send drew it,
+ * and after an HTTP 429 that names no wait of its own.
+ */
 export const CAPTCHA_PAUSE_MS = 15 * 60_000;
 const HOUR_MS = 60 * 60_000;
 
 /**
- * When one transport sent its past hour's searches and last drew the CAPTCHA. The service counts
- * an address's searches, so every tracker in the process that sends through the same fetcher,
- * recognition included, shares this. A restart forgets it.
+ * When one transport sent its past hour's searches and until when the service asked it to wait.
+ * The service counts an address's searches, so every tracker in the process that sends through
+ * the same fetcher, recognition included, shares this. A restart forgets it.
  */
-interface SearchState { sentAt: number[]; captchaAt: number | null }
+interface SearchState { sentAt: number[]; pausedUntil: number }
 const searchStates = new WeakMap<object, SearchState>();
 const GLOBAL_FETCH = {};
 
 function searchState(fetcher: typeof fetch | undefined): SearchState {
   const key = transportOf(fetcher) ?? GLOBAL_FETCH;
   let state = searchStates.get(key);
-  if (!state) searchStates.set(key, state = { sentAt: [], captchaAt: null });
+  if (!state) searchStates.set(key, state = { sentAt: [], pausedUntil: 0 });
   return state;
 }
 
@@ -144,7 +147,20 @@ function searchState(fetcher: typeof fetch | undefined): SearchState {
 function pacedMs(state: SearchState, now: number): number {
   const sentAt = state.sentAt = state.sentAt.filter((at) => now - at < HOUR_MS);
   const hourly = sentAt.length < HOURLY_SEARCHES ? 0 : sentAt[sentAt.length - HOURLY_SEARCHES]! + HOUR_MS - now;
-  return Math.max(hourly, state.captchaAt === null ? 0 : state.captchaAt + CAPTCHA_PAUSE_MS - now);
+  return Math.max(hourly, state.pausedUntil - now);
+}
+
+/**
+ * An HTTP 429 pauses the transport's searches for the wait its Retry-After names, in seconds or as
+ * a date, at most an hour, else for the CAPTCHA's pause. The lookup fails as rate-limited with the
+ * time until the transport searches again.
+ */
+function rateLimited(state: SearchState, retryAfter: string | null | undefined): RateLimitedError {
+  const value = retryAfter?.trim() ?? '';
+  const named = /^\d+$/.test(value) ? Number(value) * 1000 : Date.parse(value) - Date.now();
+  const waitMs = Number.isFinite(named) && named > 0 ? Math.min(named, HOUR_MS) : CAPTCHA_PAUSE_MS;
+  state.pausedUntil = Math.max(state.pausedUntil, Date.now() + waitMs);
+  return new RateLimitedError('Poste Italiane', pacedMs(state, Date.now()));
 }
 
 /**
@@ -373,8 +389,9 @@ export class PosteItalianeTracker {
         cause: new UpstreamHttpError('Poste Italiane tracking', response.status),
       });
     }
+    if (response.status === 429) throw rateLimited(state, response.headers.get('retry-after'));
     if (response.status === 400 && captchaRequired(bytes)) {
-      state.captchaAt = Date.now();
+      state.pausedUntil = Math.max(state.pausedUntil, Date.now() + CAPTCHA_PAUSE_MS);
       throw new ChallengeError('Poste Italiane', 'Poste Italiane asks for a CAPTCHA before more searches');
     }
     if (!response.ok) throw new UpstreamHttpError('Poste Italiane tracking', response.status);
@@ -390,7 +407,7 @@ export class PosteItalianeTracker {
     const responses = page.capturedResponses.filter(row => row.url === TRACKING_ENDPOINT);
     const response = responses.at(-1);
     if (!response || responses.length > 10) throw new ChallengeError('Poste Italiane', 'Poste Italiane returned no matching browser response');
-    if (response.status === 429) throw new RateLimitedError('Poste Italiane');
+    if (response.status === 429) throw rateLimited(searchState(this.fetcher), response.headers['retry-after'] ?? response.headers['Retry-After']);
     const bytes = new TextEncoder().encode(response.body ?? '');
     if ([401, 403].includes(response.status) || (response.status === 400 && captchaRequired(bytes))) {
       throw new ChallengeError('Poste Italiane', 'Poste Italiane still requires verification');

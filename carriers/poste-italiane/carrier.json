@@ -28,6 +28,10 @@
     ],
     "recognition": {
       "rank": 900
+    },
+    "refresh": {
+      "minMinutes": 30,
+      "afterFailureMinutes": 60
     }
   },
   "capabilities": [

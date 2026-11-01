@@ -722,4 +722,39 @@ describe('PosteItalianeTracker fetch', () => {
     expect(refused).toHaveBeenCalledTimes(2);
     expect(service.fetcher).not.toHaveBeenCalled();
   });
+
+  it('waits out an HTTP 429 for its Retry-After, else the CAPTCHA pause, and passes the wait on', async () => {
+    let now = Date.parse('2026-01-05T08:00:00Z');
+    vi.spyOn(Date, 'now').mockImplementation(() => now);
+    const limited = (headers: Record<string, string>) => vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response('{}', { status: 429, headers })).mockResolvedValue(response(parcel()));
+    const named = limited({ 'Retry-After': '120' });
+    const tracker = new PosteItalianeTracker({ fetcher: named, trawl: null });
+    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 120_000 });
+    now += 119_000;
+    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 1000 });
+    now += 1000;
+    await expect(tracker.fetch(TRACKING_NUMBER)).resolves.toMatchObject({ status: 'delivered' });
+    expect(named).toHaveBeenCalledTimes(2);
+
+    const dated = limited({ 'Retry-After': new Date(now + 300_000).toUTCString() });
+    await expect(new PosteItalianeTracker({ fetcher: dated, trawl: null }).fetch(TRACKING_NUMBER))
+      .rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 300_000 });
+    const unnamed = limited({});
+    const quiet = new PosteItalianeTracker({ fetcher: unnamed, trawl: null });
+    await expect(quiet.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: CAPTCHA_PAUSE_MS });
+    now += CAPTCHA_PAUSE_MS - 1;
+    await expect(quiet.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 1 });
+    expect(unnamed).toHaveBeenCalledTimes(1);
+
+    // The browser's 429 pauses the transport the same way, beyond the CAPTCHA that sent the lookup there.
+    const gated = vi.fn<typeof fetch>(async () => response(gate, 400));
+    const service = browser([{ ...capture({}, 429), headers: { 'retry-after': '3600' } }]);
+    const recovering = new PosteItalianeTracker({ fetcher: gated, trawl: service.trawl });
+    await expect(recovering.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 3_600_000 });
+    now += CAPTCHA_PAUSE_MS;
+    await expect(recovering.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 3_600_000 - CAPTCHA_PAUSE_MS });
+    expect(gated).toHaveBeenCalledTimes(1);
+    expect(service.fetcher).toHaveBeenCalledTimes(1);
+  });
 });

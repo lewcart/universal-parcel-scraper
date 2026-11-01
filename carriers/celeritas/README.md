@@ -19,6 +19,11 @@ referencia no existe", which is the only missing shipment. Another notice, the p
 lookup, a redirect and HTTP 404 stay inconclusive. Block pages, rate limits and other HTTP errors
 keep their own failure kinds.
 
+After an identified browser challenge, `trawl` opens the same tracking address in the
+configured browser service. The carrier parser checks the whole shipment identity.
+Definite answers, rate limits and malformed replies do not launch a browser.
+Recognition stays HTTP-only.
+
 ## Notes
 
 - The tracker also finds a shipment by the shop's order number, and then names the shipment's

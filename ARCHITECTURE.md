@@ -101,6 +101,10 @@ workers, models and geographic data resolve against their own module, never the 
 working directory.
 
 An adapter declares its steps, for example `direct` then `trawl`.
+Server-rendered tracking pages can use `trawlPageStep` after an identified browser
+challenge. It opens the same whole-identifier address, rejects redirects and oversized
+pages, and leaves identity and not-found checks to the carrier parser. Rate limits and
+malformed replies do not trigger it. HTTP recognition uses a browserless tracker instance.
 [runSteps](core/runner/index.ts) runs them in order under one time budget. A later step runs
 after a challenge, a transport failure or an inconclusive answer, and never after a definite
 one. An adapter whose own read fails to reach the carrier or hangs can send it once more

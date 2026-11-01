@@ -24,6 +24,8 @@ export interface TrawlScrapeRequest extends JsonObject {
   /** In-page API URLs whose responses the browser should capture. */
   captureResponses?: string[];
   settleTimeout?: number;
+  /** Wait for a visible result marker before reading a client-rendered page. */
+  contentWaitForSelector?: string;
 }
 
 export interface TrawlCapturedResponse {

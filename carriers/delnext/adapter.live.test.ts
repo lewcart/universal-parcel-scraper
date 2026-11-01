@@ -10,14 +10,14 @@ const WALL_CLOCK = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00$/;
 
 describe('Delnext live retrieval', () => {
   it.skipIf(!NUMBER)('retrieves the history of the requested parcel with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: NUMBER!, carrier: 'delnext' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: NUMBER!, carrier: 'delnext' });
     expect(answer).toMatchObject({ carrier: 'delnext', source: 'delnext' });
     expect(answer.attempts[0]).toMatchObject({ source: 'delnext', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
     // Every scan keeps the page's wall clock, without an offset.
     expect(answer.result.events.every(event => event.description && !event.time && WALL_CLOCK.test(String(event.local_time)))).toBe(true);
     await expect(direct().recognize!(NUMBER!)).resolves.toMatchObject({ known: true });
-  }, 60_000);
+  }, 75_000);
 
   it.skipIf(!UNKNOWN)('reads an unknown code as not found', async () => {
     await expect(direct().track({ number: UNKNOWN! })).rejects.toMatchObject({ kind: 'not_found' });

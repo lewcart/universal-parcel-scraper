@@ -221,7 +221,7 @@ describe('MRL Global HTTP adapter', () => {
     expect(parseTrackingInput(`https://www.mrlglobal.com/tracking/?connoteno=${IN_TRANSIT}`))
       .toMatchObject({ trackingNumber: IN_TRANSIT, carrier: 'mrl-global', source: 'link' });
     const metadata = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
-    expect(metadata.tracking).toEqual({ mode: 'automatic', adapter: 'mrl-global', steps: ['direct', 'retry'], localClocks: true });
+    expect(metadata.tracking).toEqual({ mode: 'automatic', adapter: 'mrl-global', steps: ['direct', 'retry', 'trawl'], localClocks: true, browser: true });
   });
 });
 

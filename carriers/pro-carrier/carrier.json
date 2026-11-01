@@ -22,12 +22,14 @@
     "adapter": "pro-carrier",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "trawl"
     ],
     "recognition": {
       "rank": 843
     },
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

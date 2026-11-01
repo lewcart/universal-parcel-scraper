@@ -5,6 +5,8 @@ import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
+import { trawlPageStep } from '../../core/transport/trawlPage.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
 import { MRL_MAX_BYTES, MRL_TRACKING, normalizeMrlNumber, parseMrl, PROVIDER } from './parser.js';
 
 export { MRL_TRACKING } from './parser.js';
@@ -18,7 +20,7 @@ export function mrlTrackingUrl(number: string): string {
 }
 
 export class MrlTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; trawl?: TrawlClient | null } = {}) {}
 
   private async read(number: string, signal: AbortSignal, timeoutMs: number): Promise<CarrierResult> {
     const { response, bytes } = await fetchBounded(mrlTrackingUrl(number), { method: 'GET', signal, headers: {
@@ -36,18 +38,20 @@ export class MrlTracker {
     const number = normalizeMrlNumber(raw);
     // A lookup that fails to reach MRL Global, or hangs, is asked once more:
     // the first try gets half of the budget. An HTTP status is never sent again.
-    return runSteps({ carrier: 'mrl-global', budgetMs: context.budgetMs ?? DEFAULT_BUDGET_MS, signal: context.signal,
+    return runSteps({ carrier: 'mrl-global', budgetMs: context.budgetMs ?? (this.options.trawl ? 60_000 : DEFAULT_BUDGET_MS), signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => this.read(number, signal, firstAttemptMs(remainingMs)) },
-      networkRetryStep(({ signal, remainingMs }) => this.read(number, signal, remainingMs)),
+      { id: 'direct', run: ({ signal, remainingMs }) => this.read(number, signal, firstAttemptMs(this.options.trawl ? Math.min(15_000, remainingMs) : remainingMs)) },
+      networkRetryStep(({ signal, remainingMs }) => this.read(number, signal, this.options.trawl ? Math.min(7_500, remainingMs) : remainingMs)),
+      trawlPageStep({ ...this.options, provider: PROVIDER, url: mrlTrackingUrl(number), maxBytes: MRL_MAX_BYTES,
+        parse: html => parseMrl(html, number) }),
     ]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new MrlTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  const tracker = new MrlTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent, trawl: environment.trawl });
   return {
-    id: 'mrl-global', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'mrl-global', recordsSteps: true, steps: ['direct', 'retry', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
   };
 };

@@ -18,18 +18,44 @@
   "timezone": "Europe/Istanbul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "trendyol-express",
+    "steps": [
+      "trawl"
+    ],
+    "browser": true,
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://kargotakip.trendyol.com/?orderNumber={trackingNumber}",
     "searchUrl": "https://trendyolexpress.com/",
     "canaryUrl": "https://trendyolexpress.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "recipient_name",
+      "recipient_address"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "eta",
+      "recipient_name",
+      "recipient_address"
+    ],
+    "unavailable": [
+      "weight",
+      "service_name",
+      "provider_code"
+    ]
   },
   "links": [
     {

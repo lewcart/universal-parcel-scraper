@@ -267,7 +267,7 @@ describe('PBT HTTP adapter', () => {
       .resolves.toMatchObject({ carrier: 'pbt', source: 'pbt', result: { current_stage: 'delivered' } });
     expect(fetcher.mock.calls.some(([url]) => String(url) === pbtResultUrl(DELIVERED))).toBe(true);
     const metadata = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
-    expect(metadata.tracking).toMatchObject({ adapter: 'pbt', steps: ['direct', 'retry'], recognition: { rank: 623 }, localClocks: true });
+    expect(metadata.tracking).toMatchObject({ adapter: 'pbt', steps: ['direct', 'retry', 'trawl'], recognition: { rank: 623 }, localClocks: true, browser: true });
   });
 });
 

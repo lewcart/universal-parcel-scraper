@@ -22,6 +22,11 @@ through its tracker's page.
   so that alone is no check.
 - Recognition makes the same request.
 
+After an identified browser challenge, `trawl` opens the same tracking address in the
+configured browser service. The carrier parser checks the whole shipment identity.
+Definite answers, rate limits and malformed replies do not launch a browser.
+Recognition stays HTTP-only.
+
 ## Notes
 
 - Times have no zone. Delnext collects in Spain and its scans name towns abroad, so they stay

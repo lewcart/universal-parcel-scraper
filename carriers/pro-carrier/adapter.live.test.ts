@@ -7,14 +7,14 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 
 describe('Pro Carrier live retrieval', () => {
   it.skipIf(!process.env.PRO_CARRIER_TRACKING_NUMBER)('retrieves the history of the requested parcel with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.PRO_CARRIER_TRACKING_NUMBER!, carrier: 'pro-carrier' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.PRO_CARRIER_TRACKING_NUMBER!, carrier: 'pro-carrier' });
     expect(answer).toMatchObject({ carrier: 'pro-carrier', source: 'pro-carrier' });
     expect(answer.attempts[0]).toMatchObject({ source: 'pro-carrier', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
     // Every scan keeps the tracker's wall clock to the second, without an offset.
     expect(answer.result.events.every((event) => event.description && !event.time
       && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(event.local_time)))).toBe(true);
-  }, 45_000);
+  }, 75_000);
 
   it.skipIf(!process.env.PRO_CARRIER_TRACKING_NUMBER)('recognizes the requested parcel', async () => {
     await expect(direct().recognize!(process.env.PRO_CARRIER_TRACKING_NUMBER!)).resolves.toMatchObject({ known: true });

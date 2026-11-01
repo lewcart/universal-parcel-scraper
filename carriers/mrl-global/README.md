@@ -22,6 +22,10 @@ through its tracking page.
   challenge. The package's default User-Agent passes.
 - No detection rule offers MRL Global numbers, so the adapter has no recognition.
 
+After an identified browser challenge, `trawl` opens the same tracking address in the
+configured browser service. The carrier parser checks the whole shipment identity.
+Definite answers, rate limits and malformed replies do not launch a browser.
+
 ## Notes
 
 - The history is grouped by event label and then by day, newest first within a group, but the

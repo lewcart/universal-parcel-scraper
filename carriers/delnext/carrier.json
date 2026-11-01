@@ -18,12 +18,14 @@
     "adapter": "delnext",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "trawl"
     ],
     "recognition": {
       "rank": 889
     },
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

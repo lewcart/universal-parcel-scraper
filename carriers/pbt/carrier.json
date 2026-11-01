@@ -23,12 +23,14 @@
     "adapter": "pbt",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "trawl"
     ],
     "recognition": {
       "rank": 623
     },
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

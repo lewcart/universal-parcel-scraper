@@ -7,7 +7,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 
 describe('AIT Worldwide Logistics live retrieval', () => {
   it.skipIf(!process.env.AIT_WORLDWIDE_TRACKING_NUMBER)('retrieves the history of the requested number with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.AIT_WORLDWIDE_TRACKING_NUMBER!, carrier: 'ait-worldwide' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.AIT_WORLDWIDE_TRACKING_NUMBER!, carrier: 'ait-worldwide' });
     expect(answer).toMatchObject({ carrier: 'ait-worldwide', source: 'ait-worldwide' });
     expect(answer.attempts[0]).toMatchObject({ source: 'ait-worldwide', kind: 'ok' });
     expect(answer.result).toMatchObject({ last_update: null });
@@ -20,7 +20,7 @@ describe('AIT Worldwide Logistics live retrieval', () => {
     expect(answer.result.events.some((event) => /APPOINTMENT/i.test(event.description ?? ''))).toBe(false);
     expect(answer.result.receiver_name ?? null).toBeNull();
     expect(answer.result.sender_name ?? null).toBeNull();
-  }, 45_000);
+  }, 75_000);
 
   it.skipIf(!process.env.AIT_WORLDWIDE_TRACKING_NUMBER)('recognizes the requested number', async () => {
     await expect(direct().recognize!(process.env.AIT_WORLDWIDE_TRACKING_NUMBER!)).resolves.toMatchObject({ known: true });

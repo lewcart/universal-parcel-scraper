@@ -19,6 +19,11 @@ warehousing and fulfilment. Its site is hitch.com.ph; zip-ph.com now only points
   names the tracking number as its canonical number.
 - Recognition makes the same request.
 
+After an identified browser challenge, `trawl` opens the same tracking address in the
+configured browser service. The carrier parser checks the whole shipment identity.
+Definite answers, rate limits and malformed replies do not launch a browser.
+Recognition stays HTTP-only.
+
 ## Notes
 
 - The timeline lists each step oldest first, with its name, a day such as `April 12, 2022` and a

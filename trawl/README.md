@@ -5,6 +5,12 @@ Some carriers and universal providers only answer a full browser session. This i
 Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, Correios Brazil, DHL Poland, Magyar Posta, Poste Italiane, SwiftX, China Post, JD Logistics and ZTO. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
 
+Pro Carrier, Delnext, MRL Global, AIT Worldwide, Hitch, PBT and Celeritas also use the
+ordinary browser tiers after a challenged HTTP lookup. Their adapters read the rendered
+page through the same identity checks as HTTP; no carrier helper or image rebuild is needed.
+Trendyol Express uses those tiers for its public shipment page and reads the complete
+collapsed timeline without recipient details or delivery controls.
+
 USPS also captures its tracking request's redirect to the official outage page.
 That redirect can leave the verification wrapper blank; retaining it lets the
 adapter distinguish temporary unavailability from an unresolved challenge.

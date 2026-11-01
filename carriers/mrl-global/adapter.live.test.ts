@@ -7,7 +7,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 
 describe('MRL Global live retrieval', () => {
   it.skipIf(!process.env.MRL_GLOBAL_TRACKING_NUMBER)('reads the requested consignment’s history with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.MRL_GLOBAL_TRACKING_NUMBER!, carrier: 'mrl-global' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.MRL_GLOBAL_TRACKING_NUMBER!, carrier: 'mrl-global' });
     expect(answer).toMatchObject({ carrier: 'mrl-global', source: 'mrl-global' });
     expect(answer.attempts[0]).toMatchObject({ source: 'mrl-global', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
@@ -17,7 +17,7 @@ describe('MRL Global live retrieval', () => {
       expect(event.time).toBeUndefined();
     }
     expect(answer.result.events.some((event) => event.stage)).toBe(true);
-  }, 45_000);
+  }, 75_000);
 
   it.skipIf(!process.env.MRL_GLOBAL_UNKNOWN_NUMBER)('reads an unknown number as not found', async () => {
     await expect(direct().track({ number: process.env.MRL_GLOBAL_UNKNOWN_NUMBER! })).rejects.toMatchObject({ kind: 'not_found' });

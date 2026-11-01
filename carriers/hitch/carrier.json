@@ -24,12 +24,14 @@
     "adapter": "hitch",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "trawl"
     ],
     "recognition": {
       "rank": 117
     },
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

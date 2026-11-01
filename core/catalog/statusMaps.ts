@@ -625,6 +625,7 @@ import { statusMap as trackon } from '../../carriers/trackon/status.js';
 import { statusMap as tracxLogis } from '../../carriers/tracx-logis/status.js';
 import { statusMap as transaher } from '../../carriers/transaher/status.js';
 import { statusMap as transcorp } from '../../carriers/transcorp/status.js';
+import { statusMap as trendyolExpress } from '../../carriers/trendyol-express/status.js';
 import { statusMap as transmission } from '../../carriers/transmission/status.js';
 import { statusMap as tsjy } from '../../carriers/tsjy/status.js';
 import { statusMap as tstCfExpress } from '../../carriers/tst-cf-express/status.js';
@@ -764,7 +765,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, techlink, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, 'the-courier-guy': theCourierGuy, thhy, tiki, 'timely-titan': timelyTitan, tipsa, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, tonami, toptrans, topyou, torrestir, 'total-express': totalExpress,
-  trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
+  trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, 'trendyol-express': trendyolExpress, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
   'ubi-smart-parcel': ubiSmartParcel, 'ukp-worldwide': ukpWorldwide, ukrposhta,
   'united-delivery-service': unitedDeliveryService, uniuni, upaya, ups, urbano, urvaam, usps,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, viadireta, 'viettel-post': viettelPost,

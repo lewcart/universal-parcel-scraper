@@ -20,12 +20,14 @@
     "adapter": "ait-worldwide",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "trawl"
     ],
     "recognition": {
       "rank": 625
     },
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

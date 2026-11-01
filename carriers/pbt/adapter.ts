@@ -5,6 +5,8 @@ import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
+import { trawlPageStep } from '../../core/transport/trawlPage.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
 import { normalizePbtNumber, parsePbt, PBT_MAX_BYTES, PBT_RESULT, PROVIDER, readPbtRedirect } from './parser.js';
 
 export { PBT_RESULT } from './parser.js';
@@ -17,7 +19,7 @@ export function pbtResultUrl(number: string): string {
 }
 
 export class PbtTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; trawl?: TrawlClient | null } = {}) {}
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizePbtNumber(raw);
@@ -32,20 +34,23 @@ export class PbtTracker {
     };
     // A request that fails to reach the site, or hangs, gets one more try: the
     // first gets half of the budget, so the retry fits in the rest.
-    return runSteps({ carrier: 'pbt', budgetMs: context.budgetMs ?? 15_000, signal: context.signal,
+    return runSteps({ carrier: 'pbt', budgetMs: context.budgetMs ?? (this.options.trawl ? 60_000 : 15_000), signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
-      networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
+      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(this.options.trawl ? Math.min(15_000, remainingMs) : remainingMs)) },
+      networkRetryStep(({ signal, remainingMs }) => read(signal, this.options.trawl ? Math.min(7_500, remainingMs) : remainingMs)),
+      trawlPageStep({ ...this.options, provider: PROVIDER, url: pbtResultUrl(number), maxBytes: PBT_MAX_BYTES,
+        parse: html => parsePbt(html, number) }),
     ]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new PbtTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  const tracker = new PbtTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent, trawl: environment.trawl });
+  const http = new PbtTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return {
-    id: 'pbt', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'pbt', recordsSteps: true, steps: ['direct', 'retry', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+    recognize: (number, context) => recognizeFromLookup(() => http.fetch(number, context),
       () => accepted(() => normalizePbtNumber(number))),
   };
 };

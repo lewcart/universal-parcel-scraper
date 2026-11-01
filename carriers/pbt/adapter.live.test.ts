@@ -7,7 +7,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 
 describe('PBT live retrieval', () => {
   it.skipIf(!process.env.PBT_TRACKING_NUMBER)('retrieves the history of the requested consignment with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.PBT_TRACKING_NUMBER!, carrier: 'pbt' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.PBT_TRACKING_NUMBER!, carrier: 'pbt' });
     expect(answer).toMatchObject({ carrier: 'pbt', source: 'pbt' });
     expect(answer.attempts[0]).toMatchObject({ source: 'pbt', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
@@ -16,7 +16,7 @@ describe('PBT live retrieval', () => {
       && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00$/.test(String(event.local_time)))).toBe(true);
     // A place is always one of PBT's own sites.
     expect(answer.result.events.every((event) => !event.location || /^PBT\s/.test(String(event.location)))).toBe(true);
-  }, 45_000);
+  }, 75_000);
 
   it.skipIf(!process.env.PBT_TRACKING_NUMBER)('recognizes the requested consignment', async () => {
     await expect(direct().recognize!(process.env.PBT_TRACKING_NUMBER!)).resolves.toMatchObject({ known: true });

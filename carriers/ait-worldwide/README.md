@@ -24,6 +24,11 @@ delivery. Tracked through FasTrak.
   alert form.
 - Recognition makes the same request.
 
+After an identified browser challenge, `trawl` opens the same tracking address in the
+configured browser service. The carrier parser checks the whole shipment identity.
+Definite answers, rate limits and malformed replies do not launch a browser.
+Recognition stays HTTP-only.
+
 ## Notes
 
 - A row's clock is a wall time to the second without a zone, and the page names none, so scans

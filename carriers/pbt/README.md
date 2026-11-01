@@ -27,6 +27,11 @@ through its tracking page.
 - The adapter sends whole numbers only.
 - Recognition makes the same request.
 
+After an identified browser challenge, `trawl` opens the same tracking address in the
+configured browser service. The carrier parser checks the whole shipment identity.
+Definite answers, rate limits and malformed replies do not launch a browser.
+Recognition stays HTTP-only.
+
 ## Notes
 
 - A row gives a day with a two-digit year and a wall clock to the minute, without a zone, so

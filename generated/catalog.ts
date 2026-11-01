@@ -6817,7 +6817,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "ait-worldwide",
       "recognitionRank": 625,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://fastrak.aitworldwide.com/",
     "trackingUrlTemplate": "https://fastrak.aitworldwide.com/?trackingnumber={trackingNumber}",
@@ -11100,7 +11101,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "celeritas",
       "recognitionRank": 996,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://celeritastransporte.com/seguimiento-paquete-pedidos/",
     "trackingUrlTemplate": "https://celeritastransporte.com/seguimiento-paquete-pedidos/?refer={trackingNumber}&lang=es",
@@ -14338,7 +14340,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "delnext",
       "recognitionRank": 889,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.delnext.com/PT/track_your_parcel",
     "trackingUrlTemplate": "https://www.delnext.com/PT/track_your_parcel?tracking_code={trackingNumber}",
@@ -22461,7 +22464,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "hitch",
       "recognitionRank": 117,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://hitch.com.ph/",
     "trackingUrlTemplate": "https://hitch.com.ph/tracking?no={trackingNumber}",
@@ -29409,7 +29413,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "mrl-global",
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.mrlglobal.com/tracking/",
     "trackingUrlTemplate": "https://www.mrlglobal.com/tracking/?connoteno={trackingNumber}",
@@ -32444,7 +32449,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "pbt",
       "recognitionRank": 623,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.pbt.nz/",
     "trackingUrlTemplate": "https://www.pbt.nz/tracking-result/?consignmentNumber={trackingNumber}",
@@ -34489,7 +34495,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "pro-carrier",
       "recognitionRank": 843,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://tracking.weareprocarrier.com/",
     "trackingUrlTemplate": "https://tracking.weareprocarrier.com/?tn={trackingNumber}",
@@ -42371,7 +42378,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "trendyol-express",
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://trendyolexpress.com/",
     "trackingUrlTemplate": "https://kargotakip.trendyol.com/?orderNumber={trackingNumber}",

@@ -70,6 +70,12 @@ The tracking form on `track.fleetopticsinc.com` sends the number as `tracking_nu
 under `/fr/`. The older `delivery.fleetopticsinc.com/tracking/` and `fleetopticsinc.ca`
 portal addresses carry the same parameter; the library reads the number from all of them.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/fleetoptics`, with `FLEETOPTICS_TRACKING_NUMBER` and

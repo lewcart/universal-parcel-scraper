@@ -75,6 +75,12 @@ OCASA's tracking form sends the number as `airbillnumber` to
 Archived lookups also use `tracking.ocasa.com/TrackingOnline/index` and the former
 `tracking.ocasa.com/tracking.aspx` with the same parameter.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/ocasa`, with `OCASA_TRACKING_NUMBER` and optionally

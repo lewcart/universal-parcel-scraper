@@ -50,6 +50,12 @@ Speedex's search form sends the number as `voucher_code` to `www.speedex.gr/isap
 frames `www.speedex.gr/speedex/NewTrackAndTrace.aspx?number={number}` with the history. Both
 addresses open one parcel.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/speedex`, with `SPEEDEX_TRACKING_NUMBER` and optionally

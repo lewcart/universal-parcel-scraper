@@ -8,7 +8,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 describe('Whistl live retrieval', () => {
   it.skipIf(!process.env.WHISTL_TRACKING_NUMBER)('retrieves dated history for the requested reference with providers disabled', async () => {
     const number = process.env.WHISTL_TRACKING_NUMBER!;
-    const answer = await createTracker({ providers: [] }).track({ number, carrier: 'whistl' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number, carrier: 'whistl' });
     expect(answer).toMatchObject({ carrier: 'whistl', source: 'whistl', attempts: [{ source: 'whistl', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
     expect(answer.result.events.every(event => event.local_time && event.description && event.provider_code)).toBe(true);

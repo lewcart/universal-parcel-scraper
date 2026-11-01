@@ -64,6 +64,12 @@ The tracker on `tracking.citymail.se` is a GET form that sends the reference as 
 address. The Spåra paket page on `citymail.se` posts the number to the site, which redirects
 to that address.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/citymail`, with `CITYMAIL_TRACKING_NUMBER` and

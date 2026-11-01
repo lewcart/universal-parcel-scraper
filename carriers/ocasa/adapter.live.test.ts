@@ -7,7 +7,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 
 describe('OCASA live retrieval', () => {
   it.skipIf(!process.env.OCASA_TRACKING_NUMBER)('retrieves the history of the requested shipment with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.OCASA_TRACKING_NUMBER!, carrier: 'ocasa' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.OCASA_TRACKING_NUMBER!, carrier: 'ocasa' });
     expect(answer).toMatchObject({ carrier: 'ocasa', source: 'ocasa', attempts: [{ source: 'ocasa', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
     // Every event keeps its wall clock, without an offset, and no place.

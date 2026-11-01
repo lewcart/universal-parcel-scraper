@@ -7,7 +7,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 
 describe('Speedex live retrieval', () => {
   it.skipIf(!process.env.SPEEDEX_TRACKING_NUMBER)('retrieves the history of the requested parcel with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.SPEEDEX_TRACKING_NUMBER!, carrier: 'speedex' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.SPEEDEX_TRACKING_NUMBER!, carrier: 'speedex' });
     expect(answer).toMatchObject({ carrier: 'speedex', source: 'speedex' });
     expect(answer.attempts[0]).toMatchObject({ source: 'speedex', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
@@ -15,7 +15,7 @@ describe('Speedex live retrieval', () => {
     expect(answer.result.events.every((event) => event.description && !event.time
       && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00$/.test(String(event.local_time)))).toBe(true);
     expect(answer.result.events.some((event) => event.stage)).toBe(true);
-  }, 45_000);
+  }, 60_000);
 
   it.skipIf(!process.env.SPEEDEX_TRACKING_NUMBER)('recognizes the requested parcel', async () => {
     await expect(direct().recognize!(process.env.SPEEDEX_TRACKING_NUMBER!)).resolves.toMatchObject({ known: true });

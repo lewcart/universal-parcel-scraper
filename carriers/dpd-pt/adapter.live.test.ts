@@ -10,7 +10,7 @@ const WALL_CLOCK = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00$/;
 
 describe('DPD Portugal live retrieval', () => {
   it.skipIf(!NUMBER)('retrieves the history of the requested parcel with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: NUMBER!, carrier: 'dpd-pt' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: NUMBER!, carrier: 'dpd-pt' });
     expect(answer).toMatchObject({ carrier: 'dpd-pt', source: 'dpd-pt' });
     expect(answer.attempts[0]).toMatchObject({ source: 'dpd-pt', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);

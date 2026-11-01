@@ -11940,7 +11940,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "citymail",
-      "recognitionRank": 868
+      "recognitionRank": 868,
+      "browser": true
     },
     "canaryUrl": "https://www.citymail.se/spara-paket/",
     "trackingUrlTemplate": "https://tracking.citymail.se/?search={trackingNumber}",
@@ -15631,7 +15632,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "dpd-pt",
       "recognitionRank": 815,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://tracking.dpd.pt/",
     "trackingUrlTemplate": "https://tracking.dpd.pt/?reference={trackingNumber}",
@@ -19510,7 +19512,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "fleetoptics",
       "recognitionRank": 763,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://track.fleetopticsinc.com/",
     "trackingUrlTemplate": "https://track.fleetopticsinc.com/?tracking_number={trackingNumber}",
@@ -22665,7 +22668,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "horoz",
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://app3.horoz.com.tr/wsKurumsal/_genel/frmGonderiTakip.aspx",
     "trackingUrlTemplate": "https://app3.horoz.com.tr/wsKurumsal/_genel/frmAtfDetay.aspx?Ptn={trackingNumber}",
@@ -30601,7 +30605,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "ocasa",
       "recognitionRank": 797,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://tracking.ocasa.com/TrackingOnline/index",
     "trackingUrlTemplate": "https://tracking.ocasa.com/Tracking/index?client=&airbillnumber={trackingNumber}&i=18&url=ocasa",
@@ -38826,7 +38831,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "speedex",
       "recognitionRank": 938,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.speedex.gr/isapohi.asp",
     "trackingUrlTemplate": "https://www.speedex.gr/isapohi.asp?voucher_code={trackingNumber}",
@@ -44636,7 +44642,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "whistl",
       "recognitionRank": 320,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://web.parcelhub.net/Tracking",
     "trackingUrlTemplate": "https://web.parcelhub.net/Tracking/reference/{trackingNumber}",

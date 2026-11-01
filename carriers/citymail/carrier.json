@@ -21,11 +21,13 @@
     "adapter": "citymail",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "trawl"
     ],
     "recognition": {
       "rank": 868
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

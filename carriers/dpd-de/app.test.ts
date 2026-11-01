@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { IndeterminateError } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { TrawlClient } from '../../core/transport/trawl.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter } from './adapter.js';
 import { DPD_DE_APP_RAIL, DpdDeAppClient } from './app.js';
@@ -474,7 +475,7 @@ describe('DPD Germany tiers', () => {
   /** The guest protocol's typed refusal for a number it has no parcel for. */
   const unknownParcel = () => Response.json({ error: 'ParcelException', exceptionType: 'PARCEL_NOT_FOUND' }, { status: 400 });
   /** The app service, the guest protocol's replies in turn, and the pages of other hosts. */
-  function tiers(replies: Response[], pages: Record<string, string> = {}) {
+  function tiers(replies: Response[], pages: Record<string, string> = {}, trawl: TrawlClient | null = null) {
     const app = service();
     const steps: Array<[string, string]> = [];
     const guestCalls: string[] = [];
@@ -485,7 +486,7 @@ describe('DPD Germany tiers', () => {
       guestCalls.push(String(url));
       return Promise.resolve(replies.shift() ?? new Response('', { status: 500 }));
     }) as typeof fetch;
-    const tracking = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {},
+    const tracking = adapter({ fetcher, trawl, browserExecutablePath: null, env: {},
       recorder: { ...NOOP_RECORDER, step: event => { steps.push([event.step, event.outcome]); } } });
     /** Opens the session the adapter reads with, as an earlier lookup would have. */
     const opened = () => sharedDpdAppService({ fetcher }).session(new AbortController().signal, 1_000);
@@ -794,6 +795,16 @@ describe('DPD Germany tiers', () => {
     // DPD Portugal's delivery, on Lisbon's clock, an hour behind Berlin's in March.
     expect(result.events?.[0]).toMatchObject({ provider_code: 'POD', local_time: '2026-03-05T11:30:00', time: '2026-03-05T11:30:00+00:00',
       time_zone: 'Europe/Lisbon' });
+  });
+
+  it('keeps the Portuguese handoff HTTP-only when a browser service is configured', async () => {
+    const blocked = '<html><title>Just a moment...</title></html>';
+    const { app, opened, guestCalls, tracking } = tiers([new Response('', { status: 500 })],
+      { 'tracking.dpd.pt': blocked }, new TrawlClient('https://browser.test'));
+    await opened();
+    app.replies.getTrackingScanList = [() => xml(fixture('scans').replaceAll('Musterstadt (DE)', 'Musterville (PT)'))];
+    await expect(tracking.track({ number: NUMBER })).rejects.toMatchObject({ kind: 'indeterminate' });
+    expect(guestCalls.some(url => new URL(url).host === 'browser.test')).toBe(false);
   });
 
   it.each([

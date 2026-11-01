@@ -64,6 +64,12 @@ offers only narrows the search and is not sent.
 The link opens the Parcelhub tracker for the reference. Pasted links to it, with or without a
 postcode, to `despatch.whistl.co.uk` and to `trackmyitem.whistl.co.uk` are read too.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Live test
 
 Set `WHISTL_TRACKING_NUMBER` outside the repository and run

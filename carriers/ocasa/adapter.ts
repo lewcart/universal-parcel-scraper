@@ -4,6 +4,8 @@ import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
+import { trawlPageStep } from '../../core/transport/trawlPage.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { normalizeOcasaNumber, OCASA_MAX_BYTES, parseOcasa, PROVIDER } from './parser.js';
 
@@ -17,7 +19,7 @@ const REDIRECTS = [301, 302, 303, 307, 308];
 const GONE = [404, 410];
 
 export class OcasaTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; now?: () => number } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; trawl?: TrawlClient | null; now?: () => number } = {}) {}
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeOcasaNumber(raw);
@@ -36,20 +38,23 @@ export class OcasaTracker {
     // A request that fails to reach OCASA, or hangs, gets one more try: the
     // first gets half of the budget, so the retry fits in the rest. An HTTP
     // status, a rate limit included, is never sent again.
-    return runSteps({ carrier: 'ocasa', budgetMs: context.budgetMs ?? 15_000, signal: context.signal,
+    return runSteps({ carrier: 'ocasa', budgetMs: context.budgetMs ?? (this.options.trawl ? 60_000 : 15_000), signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
-      networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
+      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(this.options.trawl ? Math.min(15_000, remainingMs) : remainingMs)) },
+      networkRetryStep(({ signal, remainingMs }) => read(signal, this.options.trawl ? Math.min(7_500, remainingMs) : remainingMs)),
+      trawlPageStep({ ...this.options, provider: PROVIDER, url, maxBytes: OCASA_MAX_BYTES,
+        parse: html => parseOcasa(html, number, (this.options.now ?? Date.now)()) }),
     ]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new OcasaTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  const tracker = new OcasaTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent, trawl: environment.trawl });
+  const http = new OcasaTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return {
-    id: 'ocasa', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'ocasa', recordsSteps: true, steps: ['direct', 'retry', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+    recognize: (number, context) => recognizeFromLookup(() => http.fetch(number, context),
       () => accepted(() => normalizeOcasaNumber(number))),
   };
 };

@@ -74,6 +74,12 @@ The tracker reads the number from `reference` on `tracking.dpd.pt/`, so
 `dpd.pt`, which forwards to the tracker, and archived lookups also use the English page
 `/en/getting-parcel/track-trace`.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/dpd-pt`, with `DPD_PT_TRACKING_NUMBER` and optionally

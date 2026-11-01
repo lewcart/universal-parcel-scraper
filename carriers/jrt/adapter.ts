@@ -1,9 +1,14 @@
-import { accepted, recognizeFromLookup, type AdapterFactory } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import type { CarrierResult } from '../../core/result/index.js';
 import { HualeiTracker } from '../gzyl/hualei.js';
-import { JRT, normalizeJrtNumber } from './parser.js';
+import { dateJrtDhlRows, JRT, normalizeJrtNumber } from './parser.js';
 
 export class JrtTracker extends HualeiTracker {
   constructor(options: ConstructorParameters<typeof HualeiTracker>[1] = {}) { super(JRT, options); }
+
+  override async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
+    return dateJrtDhlRows(await super.fetch(raw, context));
+  }
 }
 
 export const adapter: AdapterFactory = (environment) => {

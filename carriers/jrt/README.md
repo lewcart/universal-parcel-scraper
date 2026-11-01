@@ -48,6 +48,12 @@ browser is needed, and no portal link is published.
   Beijing time would fall before dawn there. Rows in UPS's words or at a place in the United
   States keep their wall clocks, which the scan's state dates, or a neighbouring scan's for a
   row without a place. The flight row names its month and day, read as an ellipsis.
+- On the line into Europe the tracker also copies DHL's rows in DHL's own English sentences
+  without a place. Those come to the minute on DHL's wall clock where it scanned the parcel, the
+  wall clocks DHL's own reply gives: DHL's rows from Germany (the sender's data, the parcel centre
+  of origin, the export centre, the transport abroad) are read on DHL's German clock, and the others
+  on the destination's. Read on Beijing time, each would sit six or seven hours before DHL's own
+  row and show twice. A help link DHL adds to a row is left out of its text.
 - Other scan times are wall clocks without an offset on the platform's Beijing clock, as
   [GZYL's](../gzyl/README.md) are, and are read on it; a row dated after the lookup is held back.
 

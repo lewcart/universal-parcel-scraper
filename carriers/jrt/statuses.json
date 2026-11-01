@@ -528,6 +528,138 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-30",
       "note": "Copied from UPS."
+    },
+    {
+      "wording": "Package has been packed and delivered to airport",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01"
+    },
+    {
+      "wording": "Domestic customs clearance completed",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Export clearance in China, before the flight."
+    },
+    {
+      "wording": "Cargo handed over to the airline",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01"
+    },
+    {
+      "wording": "Estimated departure is …",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Names the booked flight's day, read as an ellipsis: \"Estimated departure is October 23th\"."
+    },
+    {
+      "wording": "Estimated arrival date is …",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Names the booked flight's arrival day, read as an ellipsis."
+    },
+    {
+      "wording": "The flight has taken off",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01"
+    },
+    {
+      "wording": "Arrived at Destinated Airport",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01"
+    },
+    {
+      "wording": "Arrived at customs clearance warehouse",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "At the destination's customs warehouse after the landing, before the clearance."
+    },
+    {
+      "wording": "In transit to final service provider",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "On the way to the delivering carrier after the clearance."
+    },
+    {
+      "wording": "Delivery to final service provider",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Handed to the delivering carrier, such as DHL. It is not a delivery to the recipient."
+    },
+    {
+      "wording": "The international shipment has been processed in the parcel center of origin",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Copied from DHL, whose own adapter reads the same sentence in transit."
+    },
+    {
+      "wording": "The international shipment has been processed in the export parcel center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Copied from DHL, whose own adapter reads the same sentence in transit."
+    },
+    {
+      "wording": "The shipment will be transported to the destination country/destination area and, from there, handed over to the delivery organization.",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Copied from DHL, whose own adapter reads the same sentence in transit."
+    },
+    {
+      "wording": "The shipment has arrived at the parcel center.",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Copied from DHL, whose own adapter reads the same sentence in transit."
+    },
+    {
+      "wording": "The shipment has been processed in the parcel center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Copied from DHL, whose own adapter reads the same sentence in transit."
+    },
+    {
+      "wording": "The shipment is being prepared for delivery in the delivery depot",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Copied from DHL, whose own adapter reads the same sentence in transit: the depot prepares the round, which has not left."
+    },
+    {
+      "wording": "The shipment could not be delivered. Please find more information here.",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-01",
+      "note": "Copied from DHL, whose own adapter reads the same sentence as a failed attempt. The tracker copies it with DHL's help link, which the scan text leaves out."
     }
   ]
 }

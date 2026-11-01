@@ -160,6 +160,64 @@ describe('JRT tracking adapter', () => {
     ]);
   });
 
+  it('reads DHL’s rows copied without a place on DHL’s wall clock, in Germany and then at the destination', async () => {
+    const readAt = Date.parse('2026-03-15T00:00:00Z');
+    const result = dateLocalClocks('jrt', parseJrtTrack(fixture('track-dhl-placeless'), 'UP0000000000000004', readAt)!);
+    expect(result).toMatchObject({
+      status: 'exception', current_stage: 'failed_attempt', current_stage_source: 'carrier_map',
+      last_status_text: 'The shipment could not be delivered. Please find more information here.',
+      last_update: '2026-03-12T16:35:00+01:00', destination_country: 'IT', delivery_carrier: 'dhl', delivery_tracking_number: 'CJ000000005DE',
+    });
+    expect(result).not.toHaveProperty('last_update_local');
+    expect(result.events?.map(({ time, local_time, time_zone, time_zone_basis, location, description, stage }) => [
+      time, local_time, time_zone, time_zone_basis, location, description, stage,
+    ])).toEqual([
+      // DHL's rows at the destination, on its clock: DHL's own reply gives the same wall clocks there.
+      ['2026-03-12T16:35:00+01:00', '2026-03-12T16:35:00', 'Europe/Rome', 'destination', undefined,
+        'The shipment could not be delivered. Please find more information here.', 'failed_attempt'],
+      ['2026-03-12T08:21:00+01:00', '2026-03-12T08:21:00', 'Europe/Rome', 'destination', undefined,
+        'The shipment is being prepared for delivery in the delivery depot', 'in_transit'],
+      ['2026-03-11T20:11:00+01:00', '2026-03-11T20:11:00', 'Europe/Rome', 'destination', undefined,
+        'The shipment has been processed in the parcel center', 'in_transit'],
+      ['2026-03-11T20:10:00+01:00', '2026-03-11T20:10:00', 'Europe/Rome', 'destination', undefined,
+        'The shipment has arrived at the parcel center.', 'in_transit'],
+      // DHL's rows in Germany, on its German clock.
+      ['2026-03-10T09:14:00+01:00', '2026-03-10T09:14:00', 'Europe/Berlin', 'carrier', undefined,
+        'The shipment will be transported to the destination country/destination area and, from there, handed over to the delivery organization.', 'in_transit'],
+      ['2026-03-10T09:09:00+01:00', '2026-03-10T09:09:00', 'Europe/Berlin', 'carrier', undefined,
+        'The international shipment has been processed in the export parcel center', 'in_transit'],
+      ['2026-03-09T02:16:00+01:00', '2026-03-09T02:16:00', 'Europe/Berlin', 'carrier', undefined,
+        'The international shipment has been processed in the parcel center of origin', 'in_transit'],
+      // JRT's own rows stay on the platform's clock.
+      ['2026-03-08T14:12:52+08:00', undefined, undefined, undefined, undefined, 'Delivery to final service provider', 'in_transit'],
+      ['2026-03-08T12:12:43+08:00', undefined, undefined, undefined, undefined, 'In transit to final service provider', 'in_transit'],
+      ['2026-03-08T09:12:00+08:00', undefined, undefined, undefined, undefined, 'Customs clearance completed', 'in_transit'],
+      ['2026-03-07T08:11:01+08:00', undefined, undefined, undefined, undefined, 'Arrived at customs clearance warehouse', 'customs'],
+      ['2026-03-06T23:28:48+08:00', undefined, undefined, undefined, undefined, 'Arrived at Destinated Airport', 'in_transit'],
+      ['2026-03-05T23:12:32+08:00', undefined, undefined, undefined, undefined, 'The flight has taken off', 'in_transit'],
+      ['2026-03-04T18:30:57+08:00', undefined, undefined, undefined, undefined, 'Estimated arrival date is March 6th', 'in_transit'],
+      ['2026-03-04T18:30:47+08:00', undefined, undefined, undefined, undefined, 'Estimated departure is March 5th', 'in_transit'],
+      ['2026-03-03T04:54:17+08:00', undefined, undefined, undefined, 'CN', 'Cargo handed over to the airline', 'in_transit'],
+      ['2026-03-03T03:54:53+08:00', undefined, undefined, undefined, 'CN', 'Domestic customs clearance completed', 'in_transit'],
+      ['2026-03-03T03:54:17+08:00', undefined, undefined, undefined, 'CN', 'Package has been packed and delivered to airport', 'in_transit'],
+      ['2026-03-02T12:15:00+01:00', '2026-03-02T12:15:00', 'Europe/Berlin', 'carrier', undefined,
+        'The instruction data for this shipment have been provided by the sender to DHL electronically', 'registered'],
+      ['2026-03-01T18:37:40+08:00', undefined, undefined, undefined, undefined, 'The electronic cargo information has been received', 'registered'],
+    ]);
+    // The adapter dates them the same way, and a destination on another clock takes its own.
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('track-dhl-placeless')));
+    await expect(adapter(environment(fetcher)).track({ number: 'UP0000000000000004' })).resolves
+      .toMatchObject({ last_update: '2026-03-12T16:35:00+01:00', events: expect.arrayContaining([result.events![0]]) });
+    const payload = fixture('track-dhl-placeless') as { data: Record<string, unknown>[] }[];
+    payload[0]!.data[0]!.consigneeCountry = 'GR';
+    const greek = parseJrtTrack(payload, 'UP0000000000000004', readAt)!;
+    expect(greek.events?.slice(0, 5).map(({ time, time_zone }) => [time, time_zone])).toEqual([
+      ['2026-03-12T16:35:00+02:00', 'Europe/Athens'], ['2026-03-12T08:21:00+02:00', 'Europe/Athens'],
+      ['2026-03-11T20:11:00+02:00', 'Europe/Athens'], ['2026-03-11T20:10:00+02:00', 'Europe/Athens'],
+      ['2026-03-10T09:14:00+01:00', 'Europe/Berlin'],
+    ]);
+  });
+
   it('reads DHL’s return as returned, the delivery back to the sender included', () => {
     const payload = fixture('track-dhl') as { data: { trackDetails: Record<string, string>[] }[] }[];
     const rows = payload[0]!.data[0]!.trackDetails;

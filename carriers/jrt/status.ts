@@ -20,10 +20,13 @@ const LANDING_DATE = /^(the flight has departed and is expected to )\d{1,2}\.\d{
 // On the line into the United States JRT books the flight by its month and day alone: "10/22号航班".
 const BOOKED_FLIGHT = /^\d{1,2}\/\d{1,2}(号航班)$/;
 
+// The English rows of a booked flight name its departure and arrival days: "Estimated departure is October 23th".
+const ESTIMATED_DAY = /^(estimated (?:departure|arrival date) is )[a-z]+ \d{1,2}(?:st|nd|rd|th)$/;
+
 /** The key a row's `normalizeStatusWording` wording is mapped under: a booked flight's day becomes an ellipsis. */
 export const jrtScanKey = (wording: string): string => wording.replace(FLIGHT_DAY, '$1…$2…')
   .replace(CLEARED_FLIGHT_DAY, '$1…$2…').replace(TAKE_OFF_DAY, '$1…')
-  .replace(FLIGHT_DATES, '$1…$2…').replace(LANDING_DATE, '$1…$2').replace(BOOKED_FLIGHT, '…$1');
+  .replace(FLIGHT_DATES, '$1…$2…').replace(LANDING_DATE, '$1…$2').replace(BOOKED_FLIGHT, '…$1').replace(ESTIMATED_DAY, '$1…');
 
 /**
  * The stage JRT's map gives a row, by its whole `normalizeStatusWording` wording:
@@ -48,5 +51,20 @@ const UPS_ROWS = new Set(['发件人已创建标签，但是 UPS 尚未收到包
 /** Whether a row is one UPS wrote, by its wording or its place in the United States: it is on UPS's wall clock. */
 export const isJrtUpsRow = (wording: string, place: string): boolean =>
   UPS_ROWS.has(normalizeStatusWording(wording)) || /(?:^|,)\s*US$/.test(place.trim());
+
+// DHL's English sentences, as the tracker copies them on the line into Europe: "The shipment has arrived at the parcel center."
+const DHL_SENTENCE = /^the (?:international )?shipment\b|^the instruction data for this shipment\b/i;
+// DHL's rows from Germany, before the parcel leaves for the destination country: the sender's data, the parcel
+// centre of origin, the export parcel centre and the transport abroad.
+const DHL_GERMAN_ROW = /^the instruction data\b|\b(?:of origin|export parcel center|transported to the destination country)\b/i;
+
+/**
+ * Whether a row is one DHL wrote that the tracker copies without a place, on DHL's wall clock where it scanned
+ * the parcel, to the minute. With a place the row is on the platform's clock, as JRT's own rows are.
+ */
+export const isJrtDhlRow = (wording: string, place: string): boolean => !place.trim() && DHL_SENTENCE.test(wording.trim());
+
+/** Whether a DHL row is one from Germany, before the parcel leaves for the destination country. */
+export const isJrtDhlGermanRow = (wording: string): boolean => DHL_GERMAN_ROW.test(wording);
 
 export const statusMap: CarrierStatusMap = { stage: jrtStage, gaps: [] };

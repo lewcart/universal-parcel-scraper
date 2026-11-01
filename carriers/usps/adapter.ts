@@ -31,10 +31,33 @@ const MAX_EVENTS_TO_RETURN = 100;
 /** Pages a second browser read within the same budget can complete. */
 const RECOVERABLE_PAGES = new Set(['incomplete_page', 'interstitial_page']);
 
-/** A read the verification wrapper sent to the outage page. The redirect concerns that read:
- * a later one loads tracking about as often as after the interstitial, whose blank wrapper it leaves. */
+/** A read the verification wrapper sent to the outage page, or one not made while reads pause. */
 function outageRedirect(error: unknown): boolean {
   return error instanceof IndeterminateError && error.reason === 'maintenance_page';
+}
+
+/**
+ * Redirects come in runs: after a lookup whose reads were all redirected, the next lookup's
+ * first read loads tracking about one time in ten, against more than four after a read that
+ * loaded. So once three reads in a row through one browser service land on the outage page,
+ * its reads pause for five minutes and lookups end at once, for enabled providers to answer.
+ * The next read after the pause pauses them again if it is redirected too; a loaded page
+ * ends the run.
+ */
+const OUTAGE_RUN = 3;
+const OUTAGE_PAUSE_MS = 5 * 60_000;
+interface OutageRun { redirects: number; pausedUntil: number }
+const outageRuns = new Map<string, OutageRun>();
+
+function outageRun(trawl: TrawlClient): OutageRun {
+  const key = trawl.endpoint.href;
+  let run = outageRuns.get(key);
+  if (!run) outageRuns.set(key, run = { redirects: 0, pausedUntil: 0 });
+  return run;
+}
+
+function pausedMs(run: OutageRun): number {
+  return Math.max(0, run.pausedUntil - Date.now());
 }
 
 /** The number as typed, upper case and without the spaces, dots and dashes of a printed label. */
@@ -302,11 +325,13 @@ export class USPSTracker {
       recorder: this.#recorder,
     }, [
       { id: 'trawl', run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
-      { id: 'trawl', recovers: error => (error instanceof ChallengeError && RECOVERABLE_PAGES.has(error.reason ?? '')) || outageRedirect(error),
+      // A read after a redirect loads tracking about one time in three; one after two, one in ten.
+      { id: 'trawl', recovers: error => (error instanceof ChallengeError && RECOVERABLE_PAGES.has(error.reason ?? ''))
+        || (outageRedirect(error) && pausedMs(outageRun(trawl)) === 0),
         run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
       // A second read stays on the interstitial about as often as a first one, so
       // a third read passes as often as the second.
-      { id: 'trawl', recovers: error => (error instanceof ChallengeError && error.reason === 'interstitial_page') || outageRedirect(error),
+      { id: 'trawl', recovers: error => error instanceof ChallengeError && error.reason === 'interstitial_page',
         run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
     ]);
     // A typed routing barcode opens with the recipient's ZIP code. The package
@@ -317,6 +342,12 @@ export class USPSTracker {
   /** Read the browser's rendered page without replaying its session. An
    * unresolved challenge remains an error so universal fallback can run. */
   async #trawlResult(trawl: TrawlClient, number: string, timeoutMs: number, signal: AbortSignal): Promise<CarrierResult> {
+    const run = outageRun(trawl);
+    const waitMs = pausedMs(run);
+    if (waitMs > 0) {
+      throw new IndeterminateError('USPS', 'USPS sent the last lookups to its service outage page; no read until the pause ends',
+        { reason: 'maintenance_page', retryAfterMs: waitMs });
+    }
     const page = await trawl.scrape({
       url: uspsTrackingUrl(number),
       skipHttp: true,
@@ -341,11 +372,15 @@ export class USPSTracker {
         response.url === uspsTrackingUrl(number) && response.trackingNumberSubmitted === number
         && response.status === 302 && response.headers.location === OUTAGE && !response.error
         && !response.truncated && !response.base64Encoded)) {
+        if (++run.redirects >= OUTAGE_RUN) run.pausedUntil = Math.max(run.pausedUntil, Date.now() + OUTAGE_PAUSE_MS);
         // This lookup was redirected; it does not prove every USPS lookup is down.
         throw new IndeterminateError('USPS', 'USPS sent the lookup to its service outage page', { reason: 'maintenance_page' });
       }
+      // A page that loaded, even without the parcel or with another one, ends a run of redirects.
+      if (!(error instanceof ChallengeError)) run.redirects = 0;
       throw error;
     }
+    run.redirects = 0;
     result.tracking_url = uspsTrackingUrl(number);
     result.tracking_source = 'rendered-page';
     return result;

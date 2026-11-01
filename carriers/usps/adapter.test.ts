@@ -13,6 +13,9 @@ import { uspsStage, uspsStatus } from './status.js';
 const DELIVERED_NUMBER = '9400111899223397910421';
 const IN_TRANSIT_NUMBER = '9400111899223397910438';
 const TRAWL_URL = 'http://trawl.internal:8191';
+// Reads pause per browser service after a run of outage redirects, so a test that meets them asks its own.
+let services = 0;
+const ownTrawl = () => new TrawlClient(`http://trawl-${++services}.internal:8191`);
 const DELIVERED_PAGE = readFileSync(new URL('./fixtures/delivered.html', import.meta.url), 'utf8');
 const IN_TRANSIT_PAGE = readFileSync(new URL('./fixtures/in-transit.html', import.meta.url), 'utf8');
 const TIMELINE_PAGE = readFileSync(new URL('./fixtures/timeline.html', import.meta.url), 'utf8');
@@ -380,14 +383,14 @@ describe('USPS lookup steps', () => {
     body: null, error: null, truncated: false, base64Encoded: false,
   };
 
-  it('reads twice more after a bound outage redirect and ends as unavailability, not a missing parcel', async () => {
+  it('reads once more after a bound outage redirect and ends as unavailability, not a missing parcel', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
       trawlReply(INTERSTITIAL_PAGE, DELIVERED_NUMBER, [outageReply]));
     const { recorder, records } = stepRecorder();
-    await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER))
+    await expect(new USPSTracker({ trawl: ownTrawl(), recorder }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ kind: 'indeterminate', reason: 'maintenance_page' });
-    expect(fetcher).toHaveBeenCalledTimes(3);
-    expect(records).toEqual(['trawl:indeterminate', 'trawl:indeterminate', 'trawl:indeterminate', 'lookup:trawl:indeterminate']);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(records).toEqual(['trawl:indeterminate', 'trawl:indeterminate', 'lookup:trawl:indeterminate']);
     expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({
       captureResponses: [uspsTrackingUrl(DELIVERED_NUMBER)],
     });
@@ -399,11 +402,42 @@ describe('USPS lookup steps', () => {
       .mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE))
       .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
     const step = vi.fn();
-    const result = await new USPSTracker({ trawl: new TrawlClient(TRAWL_URL), recorder: { step, lookup: vi.fn() } }).fetch(DELIVERED_NUMBER);
+    const result = await new USPSTracker({ trawl: ownTrawl(), recorder: { step, lookup: vi.fn() } }).fetch(DELIVERED_NUMBER);
     expect(result.events).toHaveLength(5);
     expect(fetcher).toHaveBeenCalledTimes(3);
     expect(step).toHaveBeenNthCalledWith(2, expect.objectContaining({ step: 'trawl', outcome: 'challenge',
       fallbackError: expect.objectContaining({ reason: 'maintenance_page' }) }));
+  });
+
+  it('pauses a browser service\'s reads after three redirects in a row, until a read after the pause loads', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      trawlReply(INTERSTITIAL_PAGE, DELIVERED_NUMBER, [outageReply]));
+    const { recorder, records } = stepRecorder();
+    const tracker = new USPSTracker({ trawl: ownTrawl(), recorder });
+    const redirected = { kind: 'indeterminate', reason: 'maintenance_page', retryAfterMs: undefined };
+    // Two redirects, then a page that loads: the run starts again.
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject(redirected);
+    fetcher.mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+    expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    // The third redirect in a row ends its lookup without the second read, and the next lookup reads nothing.
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject(redirected);
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject(redirected);
+    expect(fetcher).toHaveBeenCalledTimes(6);
+    records.length = 0;
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'maintenance_page',
+      retryAfterMs: expect.any(Number) });
+    expect(fetcher).toHaveBeenCalledTimes(6);
+    expect(records).toEqual(['trawl:indeterminate', 'lookup:trawl:indeterminate']);
+    // Another browser service is not paused.
+    await expect(new USPSTracker({ trawl: ownTrawl() }).fetch(DELIVERED_NUMBER)).rejects.toMatchObject(redirected);
+    expect(fetcher).toHaveBeenCalledTimes(8);
+    // After the pause one read is made, and a redirect pauses reads again at once.
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 5 * 60_000 + 1);
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject(redirected);
+    expect(fetcher).toHaveBeenCalledTimes(9);
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ retryAfterMs: 5 * 60_000 });
+    expect(fetcher).toHaveBeenCalledTimes(9);
   });
 
   it.each([
@@ -419,7 +453,7 @@ describe('USPS lookup steps', () => {
 
   it('keeps matching full history despite an earlier outage and still rejects a wrong identity', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(TIMELINE_PAGE, DELIVERED_NUMBER, [outageReply]));
-    const tracker = new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) });
+    const tracker = new USPSTracker({ trawl: ownTrawl() });
     expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
     fetcher.mockResolvedValueOnce(trawlReply(TIMELINE_PAGE.replaceAll(DELIVERED_NUMBER, IN_TRANSIT_NUMBER),
       DELIVERED_NUMBER, [outageReply]));

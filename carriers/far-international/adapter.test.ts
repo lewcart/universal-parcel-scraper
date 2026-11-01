@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
-import { detectCarrierMatch } from '../../core/detection/index.js';
+import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { NoHistoryError } from '../../core/errors/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
@@ -219,8 +219,12 @@ describe('FAR International HTTP adapter', () => {
     await expect(carrier(large).track({ number: PARCEL })).rejects.toThrow('unexpectedly large');
   });
 
-  it('answers a number detection names FAR International for', async () => {
+  it('answers a number detection or a link to its results page names FAR International for', async () => {
     expect(detectCarrierMatch(PARCEL)).toMatchObject({ carrier: 'far-international', confidence: 'high', candidates: ['far-international'] });
+    expect(parseTrackingInput(`https://www.far800.com/logistics/result?key=${PARCEL}`))
+      .toMatchObject({ trackingNumber: PARCEL, carrier: 'far-international', source: 'link' });
+    // The page takes any number; the link names FAR only for one it issues.
+    expect(parseTrackingInput('https://www.far800.com/logistics/result?key=AB0000000000').carrier).not.toBe('far-international');
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => (String(url).startsWith(FAR_RESULT)
       ? html(page('delivered')) : new Response('', { status: 503 })));
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: PARCEL }, { budgetMs: 3000 });

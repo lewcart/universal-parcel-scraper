@@ -18255,7 +18255,8 @@
         "pathPattern": "^/logistics/result/?$",
         "params": [
           "key"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -24711,7 +24712,8 @@
         "pathPattern": "^/index/tracknumber/track$",
         "params": [
           "nos"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [

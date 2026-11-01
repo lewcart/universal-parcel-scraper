@@ -70,7 +70,8 @@
       "pathPattern": "^/index/tracknumber/track$",
       "params": [
         "nos"
-      ]
+      ],
+      "ownNumbersOnly": true
     }
   ],
   "detection": [

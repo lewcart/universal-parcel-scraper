@@ -73,7 +73,8 @@
       "pathPattern": "^/logistics/result/?$",
       "params": [
         "key"
-      ]
+      ],
+      "ownNumbersOnly": true
     }
   ],
   "detection": [

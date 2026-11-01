@@ -45,7 +45,8 @@ fails that check, so the rule checks no digit.
 ## Links
 
 `www.szjf56.cn/index/tracknumber/track?nos={number}` opens one parcel on the tracker, which looks
-the number up on load.
+the number up on load. The page takes any number, so the link names Jifan only for one in its
+layout.
 
 ## Testing
 

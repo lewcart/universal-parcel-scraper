@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
-import { detectCarrierMatch } from '../../core/detection/index.js';
+import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { delayedFetcher } from '../../core/testing/hang.js';
@@ -121,7 +121,7 @@ describe('Jifan HTTP adapter', () => {
     expect(ended).toEqual([60, 120]);
   });
 
-  it('routes a number filed under Jifan, or detected as one of its numbers, to the adapter', async () => {
+  it('routes a number filed under Jifan, or detected or linked as one of its numbers, to the adapter', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(fixture('in-transit')));
     const tracker = createTracker({ fetcher, providers: [], env: {} });
     await expect(tracker.track({ number: IN_TRANSIT, carrier: 'jifan' }, { budgetMs: 3000 }))
@@ -129,6 +129,10 @@ describe('Jifan HTTP adapter', () => {
     await expect(tracker.track({ number: IN_TRANSIT }, { budgetMs: 3000 }))
       .resolves.toMatchObject({ carrier: 'jifan', source: 'jifan' });
     expect(detectCarrierMatch(IN_TRANSIT)).toMatchObject({ carrier: 'jifan', confidence: 'high' });
+    expect(parseTrackingInput(`https://www.szjf56.cn/index/tracknumber/track?nos=${IN_TRANSIT}`))
+      .toMatchObject({ trackingNumber: IN_TRANSIT, carrier: 'jifan', source: 'link' });
+    // The page takes any number; the link names Jifan only for one it issues.
+    expect(parseTrackingInput('https://www.szjf56.cn/index/tracknumber/track?nos=AB0000000000').carrier).not.toBe('jifan');
   });
 });
 

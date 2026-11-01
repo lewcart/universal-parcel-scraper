@@ -18257,7 +18257,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/logistics/result/?$",
         "params": [
           "key"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -24713,7 +24714,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/index/tracknumber/track$",
         "params": [
           "nos"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [

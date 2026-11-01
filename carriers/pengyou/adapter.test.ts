@@ -6,7 +6,7 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, PengyouTracker } from './adapter.js';
-import { PENGYOU_ORIGIN, parsePengyouPage, parsePengyouTrack } from './parser.js';
+import { PENGYOU_ORIGIN, parsePengyouPage, parsePengyouTrack, splitPengyouRow } from './parser.js';
 import { ENTRIES, statusMap } from './status.js';
 
 const NUMBER = 'ZXA990000001PY';
@@ -81,6 +81,23 @@ describe('Pengyou tracking adapter', () => {
       status: 'in_transit', current_stage: 'accepted', current_stage_source: 'carrier_map', last_status_text: scan,
     });
     expect(statusMapAnswer({ carrier: 'pengyou', providerCode: null, description: scan })).toEqual({ kind: 'mapped', stage: 'accepted' });
+  });
+
+  it('reads a delivery’s town as its place, on Beijing’s clock, without the postal code', () => {
+    const payload = structuredClone(fixture('track')) as [{ data: [{ trackDetails: { track_content: string; track_location: string }[] }] }];
+    // The delivery leaves the row's place empty.
+    Object.assign(payload[0].data[0].trackDetails.find((row) => row.track_content === 'Shipment arrived at facility')!,
+      { track_content: 'Delivered Sample TownZ9Z 9Z9', track_location: '' });
+    const result = parsePengyouTrack(payload, NUMBER, READ_AT)!;
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map', last_status_text: 'Delivered' });
+    expect(result.events![0]).toMatchObject({ time: '2026-03-02T18:40:00+08:00', description: 'Delivered', location: 'Sample Town' });
+    expect(JSON.stringify(result)).not.toContain('Z9Z');
+    for (const [content, location] of [['Delivered Sample Town ST 00000', 'Sample Town ST'], ['Delivered Sample Town ZZ9 9ZZ', 'Sample Town'],
+      ['Delivered  Sample Town', 'Sample Town']]) expect(splitPengyouRow(content!, ''), content).toEqual({ content: 'Delivered', location });
+    for (const content of ['Delivered', 'Delivered to airline DC', 'Delivered 1 Sample Street', 'Delivered Sample 1 Street', 'Shipment arrived at facility']) {
+      expect(splitPengyouRow(content, ''), content).toEqual({ content, location: '' });
+    }
+    expect(splitPengyouRow('Delivered Sample Town', 'Sample City')).toEqual({ content: 'Delivered Sample Town', location: 'Sample City' });
   });
 
   it('maps every wording it lists by wording alone, and the app reads the map', () => {

@@ -35,7 +35,7 @@
   "portal": {
     "url": "https://eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={trackingNumber}",
     "searchUrl": "https://eurodis.com/",
-    "canaryUrl": "https://eurodis.com/",
+    "canaryUrl": "https://eurodis.com/track-trace",
     "shows": [
       "status",
       "history",

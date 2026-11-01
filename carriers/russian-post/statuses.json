@@ -72,6 +72,110 @@
       "confirmedBy": "live"
     },
     {
+      "code": "8.5",
+      "wording": "Arrived at the customs of Russia",
+      "stage": "customs",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "Arrived at the place of international exchange, where customs clears the item; the page names the country."
+    },
+    {
+      "code": "8.6",
+      "wording": "Покинуло место международного обмена",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Left the place of international exchange."
+    },
+    {
+      "code": "8.7",
+      "wording": "Прибыло в место транзита",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Arrived at a transit point."
+    },
+    {
+      "code": "8.8",
+      "wording": "Покинуло место транзита",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Left a transit point."
+    },
+    {
+      "code": "8.13",
+      "wording": "Прибыло на территорию РФ",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Arrived in Russia."
+    },
+    {
+      "code": "9.1",
+      "wording": "Поступило приписано",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Import of international mail, the item listed in the dispatch it came in."
+    },
+    {
+      "code": "9.2",
+      "wording": "Поступило не приписано",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Import of international mail, the item not listed in the dispatch it came in."
+    },
+    {
+      "code": "10.0",
+      "wording": "Prepared for shipment from Russia",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "Export of international mail; the page names the country it leaves."
+    },
+    {
+      "code": "11.0",
+      "wording": "Прием на таможню",
+      "stage": "customs",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Handed to customs."
+    },
+    {
+      "code": "14.1",
+      "wording": "Выпущено таможней",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Released by customs."
+    },
+    {
+      "code": "33.1",
+      "wording": "Released from Russia",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "International processing: handed to the carrier that takes it abroad; the page names the country it leaves."
+    },
+    {
+      "code": "33.2",
+      "wording": "Получено назначенным оператором",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Received by the destination country's designated postal operator."
+    },
+    {
+      "code": "33.3",
+      "wording": "Обработка назначенным оператором",
+      "stage": "in_transit",
+      "language": "ru",
+      "confirmedBy": "source",
+      "note": "Label the open-source lapaygroup/RussianPost client's operation list (src/StatusList.php) gives this operation; the tracking page's English wording was not seen. Processing by the destination country's designated postal operator."
+    },
+    {
       "code": "4.5",
       "wording": "Handed over for temporary storage",
       "stage": "exception",

@@ -5,6 +5,12 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
   ['28.0', 'registered'], ['1.1', 'accepted'], ['1.2', 'accepted'],
   ['8.0', 'in_transit'], ['8.1', 'in_transit'], ['8.2', 'ready_for_pickup'], ['8.3', 'in_transit'],
   ['8.4', 'in_transit'], ['8.18', 'out_for_delivery'], ['8.20', 'in_transit'], ['4.5', 'exception'],
+  // International exchange, by the operation list of the open-source lapaygroup/RussianPost client: the
+  // exchange office where customs clears the item, transit, arrival in Russia, import and export, customs,
+  // and the hand-over to the carrier abroad and the destination's post.
+  ['8.5', 'customs'], ['8.6', 'in_transit'], ['8.7', 'in_transit'], ['8.8', 'in_transit'], ['8.13', 'in_transit'],
+  ['9.1', 'in_transit'], ['9.2', 'in_transit'], ['10.0', 'in_transit'], ['11.0', 'customs'], ['14.1', 'in_transit'],
+  ['33.1', 'in_transit'], ['33.2', 'in_transit'], ['33.3', 'in_transit'],
 ]);
 const DELIVERY = new Set(['2.6', '2.25']);
 

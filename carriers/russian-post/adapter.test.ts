@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { CHECKSUMS } from '../../core/detection/checksums.js';
+import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, RUSSIAN_POST_ENDPOINT, RussianPostTracker } from './adapter.js';
 import { parseRussianPost, russianPostNumber } from './parser.js';
@@ -42,6 +43,17 @@ describe('Russian Post anonymous tracking', () => {
       expect(() => parseRussianPost([{ trackingItem: { ...fixture()[0]!.trackingItem, barcode } }], NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     }
     for (const data of [null, [], [fixture()[0], fixture()[0]], [{ trackingItem: null }]]) expect(() => parseRussianPost(data, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('reads an item leaving Russia through customs, export and the carrier abroad by its codes', () => {
+    const body = fixture(); Object.assign(body[0]!.trackingItem, { globalStatus: 'IN_PROGRESS', trackingHistoryItemList: [
+      row(33, 1, 'Released from Russia', '2026-03-10T12:00:08.000+03:00'), row(10, 0, 'Prepared for shipment from Russia', '2026-03-10T12:00:00.000+03:00'),
+      row(8, 5, 'Arrived at the customs of Russia', '2026-03-09T08:00:00.000+03:00')] });
+    const result = parseRussianPost(body, NUMBER);
+    expect(result.events!.map(event => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['33.1', 'in_transit', 'carrier_map'], ['10.0', 'in_transit', 'carrier_map'], ['8.5', 'customs', 'carrier_map']]);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'russian-post', providerCode: '11.0', description: 'Прием на таможню' })).toEqual({ kind: 'mapped', stage: 'customs' });
   });
 
   it('does not end a return while later sorting or transport continues', () => {

@@ -37,8 +37,10 @@ cross-border e-commerce parcels from China. Tracked through the lookup its track
   and state become the location and the ZIP code is dropped, as on LinHan's tracker; a processing
   center's town stays in its wording. [`identity.ts`](identity.ts) lets a row take over the one an
   app stored from its wall clock with its place in the wording.
-- The tracker has no codes. [`status.ts`](status.ts) stages the scans by their wording; others go
-  through the shared wording rules. The last-mile network's "Accepted at … Regional Destination
+- The tracker has no codes. [`status.ts`](status.ts) stages the scans by their wording, and a step
+  after the flight it does not list by LinHan's map; others go through the shared wording rules.
+  The destination network's "Internationaliy Package received at processing center" is in transit,
+  not an acceptance. The last-mile network's "Accepted at … Regional Destination
   Facility" is in transit: CTTYEX took the parcel in China. The newest staged scan decides the parcel's stage, and the
   summary's status only when no scan has one: a status such as "运输途中" (in transit) says less
   than the scans.

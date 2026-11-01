@@ -1,5 +1,6 @@
 import { classifyWording, type ClassifiedWording, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import { linhanMappedStage } from '../linhan/status.js';
 
 /**
  * CTTYEX's scans, in the English its tracker writes them. Each is one of
@@ -17,10 +18,10 @@ const SCANS: ReadonlyMap<string, Stage> = new Map<string, Stage>([
 
 /**
  * The steps after the flight, from the destination agent and the last-mile
- * network, worded as on LinHan's tracker, the same system. The parser moves
- * a port's town, or the recipient's town and state, out of the wording, which
- * keeps them when they are not read as a place; a processing center's town
- * sits inside it.
+ * network, worded as on LinHan's tracker, the same system: a step these do not
+ * list takes the stage LinHan's map gives it. The parser moves a port's town,
+ * or the recipient's town and state, out of the wording, which keeps them when
+ * they are not read as a place; a processing center's town sits inside it.
  */
 const ABROAD: readonly (readonly [RegExp, Stage])[] = [
   [/^arrive at the destination international airport$/, 'in_transit'],
@@ -47,7 +48,7 @@ export const CTTYEX_NOT_FOUND: readonly string[] = ['查询不到', 'Not Found']
 /** The stage CTTYEX's wording gives a scan or the summary. */
 export function cttyexMappedStage(wording: string): Stage | undefined {
   const key = normalizeStatusWording(wording);
-  return SCANS.get(key) ?? SUMMARIES.get(key) ?? ABROAD.find(([pattern]) => pattern.test(key))?.[1];
+  return SCANS.get(key) ?? SUMMARIES.get(key) ?? ABROAD.find(([pattern]) => pattern.test(key))?.[1] ?? linhanMappedStage(wording);
 }
 
 /** A scan's stage: the map, else the shared wording rules, else nothing. */

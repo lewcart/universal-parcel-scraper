@@ -26,6 +26,7 @@
   "portal": {
     "url": "https://www.jtexpress.com.cn/service.html?indexIpt={trackingNumber}",
     "searchUrl": "https://www.jtexpress.com.cn/",
+    "helpUrl": "https://www.jtexpress.com.cn/aboutUs.html?type=LX",
     "canaryUrl": "https://www.jtexpress.com.cn/",
     "shows": [],
     "scraped": [],

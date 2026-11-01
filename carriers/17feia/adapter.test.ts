@@ -74,6 +74,14 @@ describe('17FEIA HTTP adapter', () => {
     expect(JSON.stringify(result)).not.toMatch(/0000000000000000000000000000000|1\.2|上海/);
   });
 
+  it('dates the warehouse’s receipt on Beijing time without its country or offset', () => {
+    const result = parseSeventeenFeia(changed('dpd-at-warehouse', (order) => {
+      const receipt = order.currentOrderTrackInfos.find((row) => row.status === '仓库收货')!;
+      Object.assign(receipt, { country: '', timeZone: '' });
+    }), WAREHOUSE, LATER);
+    expect(result.events!.find((event) => event.provider_code === '仓库收货')).toMatchObject({ time: '2026-02-04T16:12:44+08:00' });
+  });
+
   it('dates DHL’s relayed scans on Germany’s clock, keeps the flight’s and customs’ milestones local and drops the estimate', () => {
     const result = parseSeventeenFeia(fixture('dhl-relayed'), RELAYED, LATER);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'wording:language',

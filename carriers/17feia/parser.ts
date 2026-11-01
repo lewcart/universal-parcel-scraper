@@ -20,11 +20,11 @@ const OFFSET = /^[+-]\d{2}:\d{2}$/;
 // 17FEIA's backend keeps the order data on Beijing time; a row kept as a wall clock is read in it only to hold back future ones.
 const HOME_ZONE = SEVENTEENFEIA_HOME_ZONE;
 /**
- * 17FEIA's steps at its warehouse in China before the flight. The backend
- * writes them on Beijing time, as it writes the warehouse's receipt; the
- * offset they carry is the destination line's, whatever the step's clock.
+ * 17FEIA's steps at its warehouse in China before the flight, from its
+ * receipt. The backend writes them on Beijing time; the offset they carry is
+ * the destination line's, whatever the step's clock.
  */
-const WAREHOUSE_STEPS: ReadonlySet<string> = new Set(['包裹在去设施路上', '订单待客户确认', '订单已确认', '订单已出库', '出口报关中']);
+const WAREHOUSE_STEPS: ReadonlySet<string> = new Set(['包裹在去设施路上', '仓库收货', '订单待客户确认', '订单已确认', '订单已出库', '出口报关中']);
 // States whose places keep different clocks, so a state does not settle a clock's zone.
 const SPLIT_STATES = new Set(['AK', 'AZ', 'FL', 'ID', 'IN', 'KS', 'KY', 'MI', 'ND', 'NE', 'NV', 'OR', 'SD', 'TN', 'TX']);
 const MAX_ROWS = 500;

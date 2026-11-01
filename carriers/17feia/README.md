@@ -39,7 +39,9 @@ Tracked through the lookup its tracking page makes.
   the flight, from the row written twelve hours after the order data to the export declaration,
   are read on Beijing time: the backend writes the warehouse's receipt on it, and DPD Germany
   records the order that receipt creates minutes later. The flight's and customs' milestones may
-  be on China's clock or the destination's, so they keep their wall clocks.
+  be on China's clock or the destination's, so they keep their wall clocks, and the parcel's
+  places date them: the take-off on the warehouse's clock, and from the landing on the delivering
+  partner's. Read so, an order's take-off and landing lie a long-haul flight apart.
 - The newest scan's instant, when it has one, is the last update, and a delivered scan's is the
   delivery time.
 - The estimated departure is written before the flight and is no scan: the adapter drops it.

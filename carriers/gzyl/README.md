@@ -79,6 +79,8 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
   ([identity.ts](identity.ts)).
 - GBK has no room for some spaces, so a space between two words can arrive as `?`; scan text reads
   it as the space it was.
+- A partner's row can come with its markup, escaped or not, such as DHL's help link; scan text
+  keeps the words without it.
 
 ## Limitations
 

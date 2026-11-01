@@ -17,9 +17,14 @@ const SIGNATORY = /(?:签收人|signed (?:for )?by|signatory)[\s\S]*$/i;
 // The interface replies in GBK, which has no room for some spaces: one between two words arrives as `?`.
 const LOST_SPACE = /(?<=\p{L})\?(?=\p{L})/gu;
 
-/** Scan text without a signatory or a postcode. */
+// A partner's row can come with its markup, escaped or not: DHL's "more information<a href=…> here.</a>".
+const MARKUP = /<\/?[a-z][^<>]*>|&lt;\/?[a-z][\s\S]*?&gt;/gi;
+const ENTITIES: Readonly<Record<string, string>> = { '&amp;': '&', '&quot;': '"', '&#39;': "'", '&apos;': "'", '&nbsp;': ' ' };
+const ENTITY = /&(?:amp|quot|#39|apos|nbsp);/g;
+
+/** Scan text without markup, a signatory or a postcode. */
 export function hualeiScanText(value: string, maxLength = 500): string {
-  return clean(value.replace(LOST_SPACE, ' ').replace(SIGNATORY, '').replace(POSTCODE_COUNTRY, '$1').replace(POSTCODE_FORM, '$1')
+  return clean(value.replace(MARKUP, ' ').replace(ENTITY, (entity) => ENTITIES[entity]!).replace(LOST_SPACE, ' ').replace(SIGNATORY, '').replace(POSTCODE_COUNTRY, '$1').replace(POSTCODE_FORM, '$1')
     .replace(POSTCODE_RUN, '$1').replace(EMPTY_BRACKETS, ''), maxLength)
     .replace(/^[\s,，:：;；/]+|[\s,，:：;；/]+$/g, '');
 }

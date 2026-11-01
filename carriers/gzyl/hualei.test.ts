@@ -220,6 +220,17 @@ describe('Hualei track interface', () => {
     }
   });
 
+  it('keeps no markup in scan text', () => {
+    // DHL's row as JRT copies it, its link escaped, and as a page shows it.
+    const failed = 'The shipment could not be delivered. Please find more information here.';
+    expect(hualeiScanText('The shipment could not be delivered. Please find more information&lt;a href=https://www.example.com/help.html#not-delivered&gt; here.&lt;/a&gt;'))
+      .toBe(failed);
+    expect(hualeiScanText('The shipment could not be delivered. Please find more information<a href="https://www.example.com/help.html"> here.</a>'))
+      .toBe(failed);
+    expect(hualeiScanText('Handed to A &amp; B Logistics')).toBe('Handed to A & B Logistics');
+    expect(hualeiScanText('Weight <2 kg, 3 > 2')).toBe('Weight <2 kg, 3 > 2');
+  });
+
   it('lets a delivery row stored with a postcode in its place take the place without it, or none', () => {
     const policy = sameInstantIdentityPolicy('gzyl', { supportsScanMatching: true });
     const stored = { stage: 'delivered', description: 'Delivered', location: 'EXAMPLETOWN 99-999', providerCode: '' };

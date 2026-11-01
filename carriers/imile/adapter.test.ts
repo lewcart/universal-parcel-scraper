@@ -216,6 +216,14 @@ describe('iMile HTTP adapter', () => {
     const placed = (country: string) => parseImile(changed('in-transit', (shipment) => { shipment.country = country; }), IN_TRANSIT);
     expect(placed('NZL')).toMatchObject({ last_update: '2026-06-04T02:15:00+12:00', destination_country: 'NZ' });
     expect(placed('PER')).toMatchObject({ last_update: '2026-06-04T02:15:00-05:00', destination_country: 'PE' });
+    // A delivery at an Auckland station on New Zealand's summer time, not China's clock.
+    const delivered = parseImile(changed('delivered', (shipment) => {
+      shipment.country = 'NZL';
+      shipment.trackInfos[0]!.time = '2026-11-01 15:08:15';
+      shipment.trackInfos[0]!.operateStationName = 'AucklandDS';
+    }), DELIVERED);
+    expect(delivered).toMatchObject({ current_stage: 'delivered', last_update: '2026-11-01T15:08:15+13:00' });
+    expect(delivered.events![0]).toMatchObject({ time: '2026-11-01T15:08:15+13:00', location: 'AucklandDS' });
   });
 
   it('keeps the wall clocks of a country with several zones or none named', () => {

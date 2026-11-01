@@ -4421,5 +4421,23 @@
     "pattern": "^\\d{10}$",
     "kind": "collision",
     "reason": "GO Logistics consignment numbers are ten digits, a shape DHL, Mondial Relay, TIPSA and other networks print, so the shape cannot name GO Logistics."
+  },
+  {
+    "carrier": "gle-colombia",
+    "pattern": "^\\d{11}$",
+    "kind": "collision",
+    "reason": "G.L.E. guide numbers are eleven digits, a shape Swiss Post, GLS and many other networks print, so the shape cannot name G.L.E."
+  },
+  {
+    "carrier": "greenway-vn",
+    "pattern": "^G\\d{16}(?:SB)?$",
+    "kind": "collision",
+    "reason": "Greenway's documented codes, G and sixteen digits, overlap Colis Privé's numbers, so the shape cannot name Greenway."
+  },
+  {
+    "carrier": "taqbin-sg",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Yamato Transport Singapore tracks Yamato's twelve-digit waybills, a shape Yamato Transport and many other networks print, so the shape cannot name the Singapore company."
   }
 ]

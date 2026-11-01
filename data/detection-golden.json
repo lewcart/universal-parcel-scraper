@@ -24771,6 +24771,29 @@
     ]
   },
   {
+    "input": "20130499800",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "coordinadora",
+      "gls-at",
+      "gls-pl",
+      "mainfreight",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "ppl"
+    ]
+  },
+  {
     "input": "2013770",
     "carrier": "unknown",
     "confidence": "low",
@@ -51654,6 +51677,39 @@
       "inpost",
       "austrian-post",
       "ciblex"
+    ]
+  },
+  {
+    "input": "621456282834",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "mondial-relay",
+      "gls-fr",
+      "colis-prive",
+      "gls-de",
+      "mrw",
+      "brt",
+      "japan-post",
+      "sf-express",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "gls-at",
+      "gls-pl",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "sagawa",
+      "sending"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "japan-post",
+      "brt"
     ]
   },
   {
@@ -80101,6 +80157,45 @@
     "candidates": []
   },
   {
+    "input": "G0000512000433544",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "G0000712001129543",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "G0000712001132106SB",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "G0004112000252252",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
     "input": "G10424204828",
     "carrier": "unknown",
     "confidence": "low",
@@ -98013,6 +98108,46 @@
     ],
     "asked": [
       "flash-express"
+    ]
+  },
+  {
+    "input": "THE0000512000433544",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "the-human-express"
+    ]
+  },
+  {
+    "input": "THE0000712001129543",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "the-human-express"
+    ]
+  },
+  {
+    "input": "THE0000712001132106SB",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "the-human-express"
+    ]
+  },
+  {
+    "input": "THE0004112000252252",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "the-human-express"
+    ]
+  },
+  {
+    "input": "THE0271712006376677SB",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "the-human-express"
     ]
   },
   {

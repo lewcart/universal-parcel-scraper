@@ -6666,6 +6666,34 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "ahamove": {
+    "displayName": "Ahamove",
+    "color": "#0d4073",
+    "aliases": [
+      "Công ty Cổ Phần Dịch Vụ Tức Thời"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://express.ahamove.com/",
+    "trackingUrlTemplate": "https://express.ahamove.com/s/{trackingNumber}",
+    "trackingSearchUrl": "https://express.ahamove.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "express.ahamove.com"
+        ],
+        "path": "^/(?:en/)?s/([0-9A-Z]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "ahl-courier": {
     "displayName": "AHL Courier",
     "color": "#1b75bc",
@@ -21351,6 +21379,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "gle-colombia": {
+    "displayName": "G.L.E.",
+    "color": "#d81730",
+    "aliases": [
+      "G.L.E. Colombia",
+      "Grupo Logístico Especializado",
+      "Grupo Logístico Especializado S.A.S."
+    ],
+    "countries": [
+      "CO"
+    ],
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.glecolombia.com/es/rastreo",
+    "trackingUrlTemplate": "https://agile.glecolombia.com/GLEWeb/Home/DetailsGuia?guia={trackingNumber}",
+    "trackingSearchUrl": "https://www.glecolombia.com/es/rastreo",
+    "linkRules": [
+      {
+        "domains": [
+          "agile.glecolombia.com"
+        ],
+        "pathPattern": "^/GLEWeb/Home/DetailsGuia/?$",
+        "params": [
+          "guia"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "global-business-tw": {
     "displayName": "Global Business",
     "color": "#de140e",
@@ -22323,6 +22384,38 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/Web/Track/?$",
         "params": [
           "AwbNo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "greenway-vn": {
+    "displayName": "Greenway",
+    "color": "#78be43",
+    "aliases": [
+      "Công ty TNHH Đức Thành GR"
+    ],
+    "countries": [
+      "VN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://greenwayvn.com/tracking",
+    "trackingUrlTemplate": "https://greenwayvn.com/tracking?code={trackingNumber}",
+    "trackingSearchUrl": "https://greenwayvn.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "greenwayvn.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "code"
         ]
       }
     ],
@@ -29709,6 +29802,35 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "mensajeros-urbanos": {
+    "displayName": "Mensajeros Urbanos",
+    "color": "#27adb8",
+    "aliases": [
+      "MU TEAM S.A.S."
+    ],
+    "countries": [
+      "CO",
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://mensajerosurbanos.com/",
+    "trackingUrlTemplate": "https://plataforma.mensajerosurbanos.com/ext/seguimiento-domicilios/{trackingNumber}",
+    "trackingSearchUrl": "https://mensajerosurbanos.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "plataforma.mensajerosurbanos.com"
+        ],
+        "path": "^/ext/seguimiento-domicilios/([^/]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "meso-global": {
     "displayName": "Meso-global",
     "color": "#3b73e3",
@@ -30133,6 +30255,65 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "moova": {
+    "displayName": "Moova",
+    "color": "#0a8bf8",
+    "aliases": [
+      "Moova SAS"
+    ],
+    "countries": [
+      "AR",
+      "CL",
+      "CO",
+      "GT",
+      "MX",
+      "PE",
+      "UY"
+    ],
+    "selectable": true,
+    "timezone": "America/Argentina/Buenos_Aires",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.moova.io/",
+    "trackingUrlTemplate": "https://dashboard.moova.io/external?id={trackingNumber}",
+    "trackingSearchUrl": "https://www.moova.io/",
+    "linkRules": [
+      {
+        "domains": [
+          "dashboard.moova.io"
+        ],
+        "pathPattern": "^/external/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "moovin": {
+    "displayName": "Moovin",
+    "color": "#0a3544",
+    "aliases": [
+      "Moovin Mensajería Express",
+      "Moovin Mensajería Express S.A."
+    ],
+    "countries": [
+      "CR",
+      "HN"
+    ],
+    "selectable": true,
+    "timezone": "America/Costa_Rica",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.moovin.me/rastreo",
+    "trackingSearchUrl": "https://www.moovin.me/rastreo",
+    "linkRules": [],
     "detectionRules": []
   },
   "morning-global": {
@@ -32107,6 +32288,23 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "ots-chile": {
+    "displayName": "OTS Chile",
+    "color": "#ffc100",
+    "countries": [
+      "CL"
+    ],
+    "selectable": true,
+    "timezone": "America/Santiago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.otschile.cl/tracking",
+    "trackingSearchUrl": "https://www.otschile.cl/tracking",
+    "linkRules": [],
+    "detectionRules": []
   },
   "overnite": {
     "displayName": "OVERNITE",
@@ -36646,6 +36844,28 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "rodonaves": {
+    "displayName": "Rodonaves",
+    "color": "#342eff",
+    "aliases": [
+      "RTE Rodonaves",
+      "Rodonaves Transportes e Encomendas",
+      "Rodonaves Transportes e Encomendas LTDA"
+    ],
+    "countries": [
+      "BR"
+    ],
+    "selectable": true,
+    "timezone": "America/Sao_Paulo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://rodonaves.com.br/rastreio-de-mercadoria",
+    "trackingSearchUrl": "https://rodonaves.com.br/rastreio-de-mercadoria",
+    "linkRules": [],
     "detectionRules": []
   },
   "ross-express": {
@@ -41494,6 +41714,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "taqbin-sg": {
+    "displayName": "Yamato Transport Singapore",
+    "color": "#fccf00",
+    "aliases": [
+      "Yamato Singapore",
+      "Yamato Transport (S) Pte. Ltd."
+    ],
+    "countries": [
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.yamatosingapore.com/tracking/",
+    "trackingUrlTemplate": "https://tracking.yamatosingapore.com/trackitem_custom_y.html?a={trackingNumber}",
+    "trackingSearchUrl": "https://www.yamatosingapore.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.yamatosingapore.com"
+        ],
+        "pathPattern": "^/trackitem_custom_y\\.html$",
+        "params": [
+          "a"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "tas-courier": {
     "displayName": "TAS Courier",
     "color": "#e9272b",
@@ -42229,6 +42481,44 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "the-human-express": {
+    "displayName": "The Human Express",
+    "color": "#051063",
+    "aliases": [
+      "TheHuman Express",
+      "The Human Company Limited"
+    ],
+    "countries": [
+      "VN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://thehuman.express/trackings",
+    "trackingUrlTemplate": "https://thehuman.express/trackings?trackings={trackingNumber}",
+    "trackingSearchUrl": "https://thehuman.express/trackings",
+    "linkRules": [
+      {
+        "domains": [
+          "thehuman.express"
+        ],
+        "pathPattern": "^/trackings/?$",
+        "params": [
+          "trackings"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^THE\\d{16}(?:SB)?$",
+        "confidence": "low"
+      }
+    ]
   },
   "thelorry": {
     "displayName": "TheLorry",
@@ -44252,6 +44542,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "uparcel": {
+    "displayName": "uParcel",
+    "color": "#faaa19",
+    "aliases": [
+      "MXHL Pte Limited"
+    ],
+    "countries": [
+      "SG",
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.uparcel.sg/track",
+    "trackingUrlTemplate": "https://www.uparcel.sg/track?tracking-code={trackingNumber}",
+    "trackingSearchUrl": "https://www.uparcel.sg/track",
+    "linkRules": [
+      {
+        "domains": [
+          "www.uparcel.sg"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "tracking-code"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "upaya": {
     "displayName": "Upaya",
     "color": "#003d87",
@@ -45738,6 +46060,41 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "welivery": {
+    "displayName": "Welivery",
+    "color": "#152a4f",
+    "aliases": [
+      "Welivery SAS",
+      "Welivery SpA"
+    ],
+    "countries": [
+      "AR",
+      "CL",
+      "CO"
+    ],
+    "selectable": true,
+    "timezone": "America/Argentina/Buenos_Aires",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://welivery.com.ar/seguimiento/",
+    "trackingUrlTemplate": "https://welivery.com.ar/seguimiento/?code={trackingNumber}",
+    "trackingSearchUrl": "https://welivery.com.ar/seguimiento/",
+    "linkRules": [
+      {
+        "domains": [
+          "welivery.com.ar"
+        ],
+        "pathPattern": "^/seguimiento/?$",
+        "params": [
+          "code",
+          "wid"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "wepost": {
     "displayName": "WePost",
@@ -47820,6 +48177,7 @@ export const CARRIER_IDS = [
   "aeropost",
   "aex-paraguay",
   "afghan-post",
+  "ahamove",
   "ahl-courier",
   "aics",
   "air-star-xpress",
@@ -48212,6 +48570,7 @@ export const CARRIER_IDS = [
   "gibraltar-post",
   "gig-logistics",
   "gio-express",
+  "gle-colombia",
   "global-business-tw",
   "global-delivery-network",
   "globalpost",
@@ -48237,6 +48596,7 @@ export const CARRIER_IDS = [
   "goodluck-courier",
   "goodmaji",
   "grand-slam-express",
+  "greenway-vn",
   "groupe-guilbault",
   "gs-postbox",
   "gsi-express",
@@ -48442,6 +48802,7 @@ export const CARRIER_IDS = [
   "meest",
   "megacity-courier",
   "meihoo-pegasus",
+  "mensajeros-urbanos",
   "meso-global",
   "messenger-cz",
   "method",
@@ -48457,6 +48818,8 @@ export const CARRIER_IDS = [
   "mobi-logistica",
   "mongol-infinity-post",
   "montenegro-post",
+  "moova",
+  "moovin",
   "morning-global",
   "movin",
   "mrl-global",
@@ -48508,6 +48871,7 @@ export const CARRIER_IDS = [
   "orian",
   "orlen-paczka",
   "osm-worldwide",
+  "ots-chile",
   "overnite",
   "overseas-express",
   "ozon-logistics",
@@ -48625,6 +48989,7 @@ export const CARRIER_IDS = [
   "rl-carriers",
   "roadie",
   "roadrunner",
+  "rodonaves",
   "ross-express",
   "royal-express-mm",
   "royale-international",
@@ -48754,6 +49119,7 @@ export const CARRIER_IDS = [
   "tanzania-posts",
   "tapuz-delivery",
   "taqbin-hk",
+  "taqbin-sg",
   "tas-courier",
   "tawssil",
   "taxydema",
@@ -48774,6 +49140,7 @@ export const CARRIER_IDS = [
   "tforce-integrated-solutions",
   "tforce-logistics",
   "thabit-logistics",
+  "the-human-express",
   "thelorry",
   "thhy",
   "tig-freight",
@@ -48831,6 +49198,7 @@ export const CARRIER_IDS = [
   "united-delivery-service",
   "united-worldwide-couriers",
   "uof-express",
+  "uparcel",
   "upaya",
   "ural-express",
   "urbano",
@@ -48873,6 +49241,7 @@ export const CARRIER_IDS = [
   "wassel",
   "we-world-express",
   "wedo",
+  "welivery",
   "wepost",
   "western-bid",
   "whistl",
@@ -49068,6 +49437,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aeropost": ["aeropost-1"],
   "aex-paraguay": [],
   "afghan-post": [],
+  "ahamove": [],
   "ahl-courier": [],
   "aics": [],
   "air-star-xpress": [],
@@ -49460,6 +49830,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gibraltar-post": [],
   "gig-logistics": [],
   "gio-express": [],
+  "gle-colombia": [],
   "global-business-tw": [],
   "global-delivery-network": [],
   "globalpost": ["globalpost-1"],
@@ -49485,6 +49856,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "goodluck-courier": [],
   "goodmaji": [],
   "grand-slam-express": [],
+  "greenway-vn": [],
   "groupe-guilbault": [],
   "gs-postbox": [],
   "gsi-express": [],
@@ -49690,6 +50062,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "meest": ["meest-1"],
   "megacity-courier": [],
   "meihoo-pegasus": ["meihoo-pegasus-1"],
+  "mensajeros-urbanos": [],
   "meso-global": ["meso-global-1"],
   "messenger-cz": [],
   "method": [],
@@ -49705,6 +50078,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "mobi-logistica": [],
   "mongol-infinity-post": [],
   "montenegro-post": [],
+  "moova": [],
+  "moovin": [],
   "morning-global": ["morning-global-1"],
   "movin": [],
   "mrl-global": [],
@@ -49756,6 +50131,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "orian": [],
   "orlen-paczka": ["orlen-paczka-1"],
   "osm-worldwide": ["osm-worldwide-1","osm-worldwide-2"],
+  "ots-chile": [],
   "overnite": [],
   "overseas-express": [],
   "ozon-logistics": ["ozon-logistics-1","ozon-logistics-2"],
@@ -49873,6 +50249,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "rl-carriers": ["rl-carriers-1","rl-carriers-2"],
   "roadie": ["roadie-1","roadie-2"],
   "roadrunner": [],
+  "rodonaves": [],
   "ross-express": [],
   "royal-express-mm": [],
   "royale-international": [],
@@ -50002,6 +50379,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tanzania-posts": [],
   "tapuz-delivery": [],
   "taqbin-hk": [],
+  "taqbin-sg": [],
   "tas-courier": [],
   "tawssil": [],
   "taxydema": [],
@@ -50022,6 +50400,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tforce-integrated-solutions": [],
   "tforce-logistics": ["tforce-logistics-1"],
   "thabit-logistics": [],
+  "the-human-express": ["the-human-express-1"],
   "thelorry": ["thelorry-1"],
   "thhy": ["thhy-1"],
   "tig-freight": [],
@@ -50079,6 +50458,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "united-delivery-service": ["united-delivery-service-1"],
   "united-worldwide-couriers": [],
   "uof-express": [],
+  "uparcel": [],
   "upaya": ["upaya-1"],
   "ural-express": [],
   "urbano": ["urbano-1"],
@@ -50121,6 +50501,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "wassel": [],
   "we-world-express": ["we-world-express-1"],
   "wedo": ["wedo-1"],
+  "welivery": [],
   "wepost": [],
   "western-bid": ["western-bid-1"],
   "whistl": ["whistl-1"],

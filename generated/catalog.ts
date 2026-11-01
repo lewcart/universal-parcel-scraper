@@ -8693,7 +8693,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Muscat",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "asyad-express",
+      "recognitionRank": 778,
+      "localClocks": true
     },
     "canaryUrl": "https://www.asyadexpress.om/track-trace",
     "trackingUrlTemplate": "https://www.asyadexpress.om/track-trace/{trackingNumber}",

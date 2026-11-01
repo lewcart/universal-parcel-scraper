@@ -42,6 +42,7 @@ import { adapter as aramexNz } from '../carriers/aramex-nz/adapter.js';
 import { adapter as arasKargo } from '../carriers/aras-kargo/adapter.js';
 import { adapter as arrowXl } from '../carriers/arrow-xl/adapter.js';
 import { adapter as asendia } from '../carriers/asendia/adapter.js';
+import { adapter as asyadExpress } from '../carriers/asyad-express/adapter.js';
 import { adapter as atlanticCourier } from '../carriers/atlantic-courier/adapter.js';
 import { adapter as atsHealthcare } from '../carriers/ats-healthcare/adapter.js';
 import { adapter as australiaPost } from '../carriers/australia-post/adapter.js';
@@ -724,6 +725,7 @@ export const REGISTRY: RegistryDefinition = {
     "aras-kargo": arasKargo,
     "arrow-xl": arrowXl,
     "asendia": asendia,
+    "asyad-express": asyadExpress,
     "atlantic-courier": atlanticCourier,
     "ats-healthcare": atsHealthcare,
     "australia-post": australiaPost,
@@ -1454,7 +1456,7 @@ export const REGISTRY: RegistryDefinition = {
     "asendia": "asendia",
     "asiafly": "universal",
     "asigna": "universal",
-    "asyad-express": "universal",
+    "asyad-express": "asyad-express",
     "atlantic-courier": "atlantic-courier",
     "ats-healthcare": "ats-healthcare",
     "auexpress": "universal",

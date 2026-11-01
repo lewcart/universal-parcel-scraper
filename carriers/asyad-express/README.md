@@ -1,6 +1,23 @@
 # Asyad Express
 
-Asyad Express parcels use enabled universal providers. There is no dedicated adapter.
+Tracks Asyad Express shipments and Oman Post items through the guest lookups in the
+[official Asyad Express app](https://play.google.com/store/apps/details?id=com.asyadexpress.asyadexpress).
+
+## Retrieval
+
+One `direct` step reads `apix.asyadexpress.com/v1/customer/order/{number}/ultimate-history`
+with the shared guest authorization shipped in the app. An explicit miss then asks
+`poboxes.omanpost.om/TrackOrders/api/MyUSWebApi/TrackingDetails?TrackingID={number}`, without
+authorization. Only explicit missing replies from both systems establish absence. Outages,
+block pages, failed authorization and malformed replies retain their failure kinds.
+
+The express request names the whole shipment in its path; the postal response also echoes the
+whole item identifier. Scan wording and codes are retained. Free-form remarks, recipient and
+contact fields are excluded. Enabled providers can supplement the postal network's history.
+
+Scan times keep their local wall clock. A postal office code or an explicitly identified Omani
+facility also supplies a deduced instant with its place basis; express scans abroad without a
+place keep no invented offset. The source's event sequence is preserved across different clocks.
 
 ## Numbers
 
@@ -14,17 +31,17 @@ postal detection.
 The tracker, `asyadexpress.om/track-trace`, takes the number as a path segment and accepts
 up to ten numbers. Older Oman Post links use `omanpost.om/Tracking/` with `trackingno`.
 
-## Why there is no adapter
+## Limitations
 
-The tracker renders a shipment's events on its server for a plain `GET` of the link above,
-without an account, token or captcha, as archived lookups show. Asyad Express's app reads the
-same history from `apix.asyadexpress.com/v1/customer/order/{number}/ultimate-history` with a key
-it ships to every install, and asks an Oman Post lookup on `poboxes.omanpost.om` for a number
-that API does not hold. None of these hosts, nor `omanpost.om`, answers connections from outside
-Oman: from Europe, the Americas, Asia and the other Gulf states the connection times out, while
-an Omani network gets the tracker. So Asyad Express stays on universal providers.
+The public website can refuse foreign networks. The mobile tracking hosts use a separate access
+path and can be reached directly; consumers can supply a scoped transport if their network
+cannot reach them. No proxy credential or account setup is required by the adapter.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Set `ASYAD_EXPRESS_TRACKING_NUMBER`, optionally `OMAN_POST_TRACKING_NUMBER` and
+`ASYAD_EXPRESS_UNKNOWN_NUMBER`, outside Git, then run:
+
+```sh
+npm run test:carriers:live -- carriers/asyad-express
+```

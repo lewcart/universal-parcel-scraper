@@ -30,15 +30,14 @@
         "dateKind": "capture",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "singapore-post",
         "confidence": "high"
       },
-      "note": "Looked up on Oman Post's tracker; the opened capture holds only a bot challenge. An inbound item issued by another post, so generic postal detection handles it."
+      "note": "An archived lookup on Oman Post's tracker; the app's postal fallback confirms the whole item with dated Singapore and Oman scans. Issued by another post, so postal detection names its issuer."
     }
   ]
 }

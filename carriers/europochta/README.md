@@ -1,26 +1,33 @@
 # Europochta
 
-Europochta parcels use enabled universal providers. There is no dedicated adapter.
+The native adapter reads Europochta's public parcel history in Belarus. The catalogue's
+number rule stays limited to its own labels; UPU labels ending in BY belong to postal detection.
 
-## Numbers
+## Retrieval
 
-Europochta numbers are `BY` and twelve digits; every one seen starts `BY08`. Lookups archived
-from Europochta's own site and a recorded reply of its tracking service show them.
-`europochta-1` claims `BY08` and ten digits. Lookups on its site also show UPU numbers ending
-`BY`, which name Belpost as their issuer and stay with postal detection.
+The public page's `globalRoutes.getTracking` names `GET /mvc/application/ops/tracking/?number=…`.
+It returns JSON despite its HTML content type and needs no account. The whole single-number
+request binds the response; any shipment number in a notification must agree with it.
 
-## Links
+The adapter tries HTTP first and retries a failed connection once. An identified browser check
+can recover through TRAWL at the exact lookup URL. That path reads the final response bytes,
+since browser HTML parsing can change JSON containing markup. HTTP recognition stays HTTP-only.
 
-Europochta's home page reads a number from `number`, so `evropochta.by/?number={number}` opens
-one parcel; the history loads by script after the page.
+The history keeps the carrier's local wall clocks. Internal employee fields and hidden
+administrative notices are ignored. Collection notifications keep their milestone without the
+office address or collection terms; identical scans are kept once. Arrival notifications sent
+after collection establish no new movement and are omitted.
 
 ## Limitations
 
-Europochta's whole site, its tracker's own lookup included, sits behind a bot check that runs a
-script in the browser before any page or lookup answers. Europochta has no app of its own, and
-its shipping API needs a business account, so Europochta stays on universal providers.
+The lookup's generic `Failed to fetch data` reply can also mean a failed upstream read. It stays
+inconclusive, as does an empty history. A missing route is a transport failure.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Use private inputs outside Git:
+
+```sh
+EUROPOCHTA_TRACKING_NUMBER=… npm run test:carriers:live -- carriers/europochta
+FLARESOLVERR_URL=… EUROPOCHTA_TRACKING_NUMBER=… npm run test:carriers:live -- carriers/europochta
+```

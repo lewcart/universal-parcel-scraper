@@ -1,4 +1,106 @@
 {
   "carrier": "russian-post",
-  "entries": []
+  "entries": [
+    {
+      "code": "28.0",
+      "wording": "Tracking number assigned",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "1.1",
+      "wording": "Arrived at the Post office",
+      "stage": "accepted",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "1.2",
+      "wording": "Arrived at the Post office",
+      "stage": "accepted",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "8.0",
+      "wording": "Sorting",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "8.1",
+      "wording": "Sorting complete",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "8.2",
+      "wording": "Available for pickup at the Post Office",
+      "stage": "ready_for_pickup",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "8.3",
+      "wording": "Arrived at the local distribution center",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "8.4",
+      "wording": "Departed from local distribution center",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "8.18",
+      "wording": "Forwarded to the postman",
+      "stage": "out_for_delivery",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "8.20",
+      "wording": "Departed from the place of return or redelivery",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "4.5",
+      "wording": "Handed over for temporary storage",
+      "stage": "exception",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "3.1",
+      "wording": "Returned to the sender",
+      "stage": "exception",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "Starts the return leg; later sorting and transport remain active."
+    },
+    {
+      "code": "2.6",
+      "wording": "Delivered to the addressee",
+      "stage": "delivered",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "Completes a return when the preceding operation or shipment flag identifies the return leg."
+    },
+    {
+      "code": "2.25",
+      "wording": "Delivered",
+      "stage": "delivered",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "Completes a return when the preceding operation or shipment flag identifies the return leg."
+    }
+  ]
 }

@@ -18,16 +18,31 @@
   "timezone": "Asia/Kathmandu",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "nepal-post",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 779
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient?ItemId={trackingNumber}",
     "searchUrl": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient",
     "canaryUrl": "https://www.nepalpost.gov.np/",
     "shows": [],
-    "scraped": [],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at"
+    ],
     "discarded": [],
     "unavailable": []
   },
@@ -43,5 +58,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "nepal-post-s10",
+      "pattern": "^[CELR][A-Z]\\d{9}NP$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

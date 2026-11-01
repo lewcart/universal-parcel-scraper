@@ -1,6 +1,29 @@
 # Sürat Kargo
 
-Sürat Kargo parcels use enabled universal providers. There is no dedicated adapter.
+Tracks Sürat Kargo through the merchant tracking link and its guest piece-history lookup.
+
+## Retrieval
+
+One `direct` step opens `www.suratkargo.com.tr/KargoTakip/?kargotakipno={number}` with a fresh
+cookie jar. This numbered link opens the parcel without submitting the search form's CAPTCHA.
+The page masks its visible identifier: its prefix and length are checked, and the response
+belongs to the GET for the whole number, with redirects refused.
+
+Each unique piece capability from that page opens `POST /KargoTakip/Default/KargoHareketi` as
+JSON in the same guest session. Desktop and mobile copies of one capability are queried once.
+The adapter retains operational scan labels and offices, with local clocks and deduced Istanbul
+instants. Recipient details, signatures and delivery addresses are excluded; guest capabilities
+are omitted from results and transport diagnostics. A shipment remains active while any piece
+is undelivered.
+
+An unknown number can return an empty search form rather than an explicit missing answer.
+That stays inconclusive. Block pages, failed verification, rate limits and changed replies keep
+their own failure kinds.
+
+## Network access
+
+The tracking site requires Turkish egress. Consumers supply a scoped `fetcher` through the
+adapter environment and keep proxy credentials private. No account or browser is required.
 
 ## Numbers
 
@@ -14,16 +37,11 @@ The tracker reads the number from `kargotakipno`, so
 `suratkargo.com.tr/KargoTakip/?kargotakipno={number}` opens one parcel, as archived lookups
 show.
 
-## Why there is no adapter
-
-The tracker and Sürat Kargo's other web hosts refuse requests from outside Türkiye: from
-Europe, the Americas and Asia, Cloudflare answers HTTP 403 with its block page, while Turkish
-networks get the tracker. Its search form asks for a security code, but archived lookups show
-the link above opening a parcel without one. The tracking app Sürat Kargo once published read
-an API host that no longer resolves, and no current app tracks parcels, so Sürat Kargo stays on
-universal providers.
-
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Set `SURAT_KARGO_TRACKING_NUMBER`, optionally `SURAT_KARGO_UNKNOWN_NUMBER`, and
+`SURAT_KARGO_PROXY_URL` outside Git, then run:
+
+```sh
+npm run test:carriers:live -- carriers/surat-kargo
+```

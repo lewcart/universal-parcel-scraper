@@ -1,11 +1,29 @@
 # Nepal Post
 
-Nepal Post items use enabled universal providers. There is no dedicated adapter.
+Tracks Nepal Post's internal postal history through its anonymous, server-rendered tracker.
+
+## Retrieval
+
+One `direct` GET opens `pits.gpo.gov.np/Inquiry/InquiryIndexClient?ItemId={number}`.
+Both the form's item and the event-table heading must match the whole requested identifier.
+Only the matching page's explicit "No Events Found" answer establishes absence. Block pages,
+unavailable endpoints and changed tables retain their failure kinds.
+
+The internal system records Nepal's local scan clocks. Each clock keeps its wall time and a
+deduced Kathmandu instant with its carrier basis. The adapter reads the operation and office;
+operator logins, monetary amounts and free-form condition fields are excluded. Enabled
+providers can supplement the international legs this internal history does not cover.
+
+## Network access
+
+The tracking host requires Nepali egress. Consumers outside Nepal supply an appropriately
+routed `fetcher` through the adapter environment; proxy credentials stay with the consumer.
+No account, token, browser or CAPTCHA is needed.
 
 ## Numbers
 
-International items carry UPU S10 numbers ending in `NP`, which generic postal detection
-handles. No domestic layout is claimed.
+The adapter accepts postal S10 items. An `NP` issuer proposes Nepal Post for HTTP recognition;
+only a matching history confirms that it knows the item. No separate domestic layout is claimed.
 
 ## Links
 
@@ -15,17 +33,11 @@ domestic tracking it links Nepal Post's internal tracking system, which opens on
 `pits.gpo.gov.np/Inquiry/InquiryIndexClient?ItemId={number}`, also served from the address
 `202.166.194.38`. The library reads the number from both.
 
-## Why there is no adapter
-
-The internal tracking system renders an item's scans on its server for a plain `GET` of that
-address, without an account, token or captcha. The page repeats the number above the scan table
-and says "No Events Found" for a number it holds nothing for. It does not answer connections
-from outside Nepal: from Europe, the Americas, Africa, Oceania, the Middle East and the rest of
-Asia, including India, Bangladesh and Pakistan, the connection times out, while a Nepali network
-gets the page. Nepal Post has no tracking app, and its international tracker is the UPU's, which
-the UPU provider already reads, so Nepal Post stays on universal providers.
-
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Set `NEPAL_POST_TRACKING_NUMBER`, optionally `NEPAL_POST_UNKNOWN_NUMBER`, and
+`NEPAL_POST_PROXY_URL` outside Git, then run:
+
+```sh
+npm run test:carriers:live -- carriers/nepal-post
+```

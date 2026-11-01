@@ -122,7 +122,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -145,7 +145,7 @@
           "dpd-uk"
         ]
       },
-      "note": "A user comment on gdeposylka's Russian Post page gives it as the parcel's tracking number."
+      "note": "Published on a parcel report page; Russian Post's anonymous detailed feed confirms the whole barcode with dated operations."
     },
     {
       "number": "40387973287255",

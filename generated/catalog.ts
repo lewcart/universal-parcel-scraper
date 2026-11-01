@@ -30745,7 +30745,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kathmandu",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nepal-post",
+      "recognitionRank": 779,
+      "localClocks": true
     },
     "canaryUrl": "https://www.nepalpost.gov.np/",
     "trackingUrlTemplate": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient?ItemId={trackingNumber}",
@@ -30762,7 +30764,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[CELR][A-Z]\\d{9}NP$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "netpost-vn": {
     "displayName": "Netpost",
@@ -37210,7 +37219,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "russian-post",
+      "recognitionRank": 782
     },
     "canaryUrl": "https://www.pochta.ru/",
     "helpUrl": "https://info.pochta.ru/support/popular-questions/tracking/products-location",
@@ -37220,6 +37230,12 @@ export const CARRIER_CATALOG = {
         "pattern": "^80\\d{12}$",
         "confidence": "low",
         "checksum": "gs1",
+        "preferred": true
+      },
+      {
+        "pattern": "^[CELR][A-Z]\\d{9}RU$",
+        "confidence": "low",
+        "checksum": "s10",
         "preferred": true
       }
     ]
@@ -41243,7 +41259,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "surat-kargo",
+      "recognitionRank": 784,
+      "localClocks": true
     },
     "canaryUrl": "https://www.suratkargo.com.tr/KargoTakip/",
     "trackingUrlTemplate": "https://www.suratkargo.com.tr/KargoTakip/?kargotakipno={trackingNumber}",
@@ -50092,7 +50110,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ncs-courier": [],
   "nege": [],
   "neighbour-express": [],
-  "nepal-post": [],
+  "nepal-post": ["nepal-post-s10"],
   "netpost-vn": [],
   "next-level-delivery": [],
   "nhat-tin": ["nhat-tin-1"],
@@ -50260,7 +50278,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "rrs-logistics": [],
   "rtt": [],
   "runner-express": [],
-  "russian-post": ["russian-post-1"],
+  "russian-post": ["russian-post-1","russian-post-s10"],
   "rxo": [],
   "ryder-last-mile": [],
   "saee": ["saee-1"],

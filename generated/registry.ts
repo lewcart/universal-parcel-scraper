@@ -413,6 +413,7 @@ import { adapter as mylerz } from '../carriers/mylerz/adapter.js';
 import { adapter as nacex } from '../carriers/nacex/adapter.js';
 import { adapter as naqel } from '../carriers/naqel/adapter.js';
 import { adapter as nationex } from '../carriers/nationex/adapter.js';
+import { adapter as nepalPost } from '../carriers/nepal-post/adapter.js';
 import { adapter as nextLevelDelivery } from '../carriers/next-level-delivery/adapter.js';
 import { adapter as nimExpress } from '../carriers/nim-express/adapter.js';
 import { adapter as ninjaVan } from '../carriers/ninja-van/adapter.js';
@@ -518,6 +519,7 @@ import { adapter as roadrunner } from '../carriers/roadrunner/adapter.js';
 import { adapter as royalExpressMm } from '../carriers/royal-express-mm/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
 import { adapter as rpxIndonesia } from '../carriers/rpx-indonesia/adapter.js';
+import { adapter as russianPost } from '../carriers/russian-post/adapter.js';
 import { adapter as safewayExpressCargo } from '../carriers/safeway-express-cargo/adapter.js';
 import { adapter as sagawa } from '../carriers/sagawa/adapter.js';
 import { adapter as sagawaGlobal } from '../carriers/sagawa-global/adapter.js';
@@ -585,6 +587,7 @@ import { adapter as stone3pl } from '../carriers/stone3pl/adapter.js';
 import { adapter as straightship } from '../carriers/straightship/adapter.js';
 import { adapter as sundarbanCourier } from '../carriers/sundarban-courier/adapter.js';
 import { adapter as sunyou } from '../carriers/sunyou/adapter.js';
+import { adapter as suratKargo } from '../carriers/surat-kargo/adapter.js';
 import { adapter as swiftx } from '../carriers/swiftx/adapter.js';
 import { adapter as swissPost } from '../carriers/swiss-post/adapter.js';
 import { adapter as swissPostCargo } from '../carriers/swiss-post-cargo/adapter.js';
@@ -1099,6 +1102,7 @@ export const REGISTRY: RegistryDefinition = {
     "nacex": nacex,
     "naqel": naqel,
     "nationex": nationex,
+    "nepal-post": nepalPost,
     "next-level-delivery": nextLevelDelivery,
     "nim-express": nimExpress,
     "ninja-van": ninjaVan,
@@ -1204,6 +1208,7 @@ export const REGISTRY: RegistryDefinition = {
     "royal-express-mm": royalExpressMm,
     "royal-mail": royalMail,
     "rpx-indonesia": rpxIndonesia,
+    "russian-post": russianPost,
     "safeway-express-cargo": safewayExpressCargo,
     "sagawa": sagawa,
     "sagawa-global": sagawaGlobal,
@@ -1271,6 +1276,7 @@ export const REGISTRY: RegistryDefinition = {
     "straightship": straightship,
     "sundarban-courier": sundarbanCourier,
     "sunyou": sunyou,
+    "surat-kargo": suratKargo,
     "swiftx": swiftx,
     "swiss-post": swissPost,
     "swiss-post-cargo": swissPostCargo,
@@ -2118,7 +2124,7 @@ export const REGISTRY: RegistryDefinition = {
     "ncs-courier": "universal",
     "nege": "universal",
     "neighbour-express": "universal",
-    "nepal-post": "universal",
+    "nepal-post": "nepal-post",
     "netpost-vn": "universal",
     "next-level-delivery": "next-level-delivery",
     "nhat-tin": "universal",
@@ -2304,7 +2310,7 @@ export const REGISTRY: RegistryDefinition = {
     "rrs-logistics": "universal",
     "rtt": "universal",
     "runner-express": "universal",
-    "russian-post": "universal",
+    "russian-post": "russian-post",
     "rxo": "universal",
     "ryder-last-mile": "universal",
     "saee": "universal",
@@ -2417,7 +2423,7 @@ export const REGISTRY: RegistryDefinition = {
     "sunyou": "sunyou",
     "super-parcel-track": "universal",
     "superb-express": "universal",
-    "surat-kargo": "universal",
+    "surat-kargo": "surat-kargo",
     "suto-logistics": "universal",
     "sway": "universal",
     "swftbox": "universal",

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { delayedFetcher } from '../../core/testing/hang.js';
 import { fakeBudgetClock } from '../../testing/budgetClock.js';
@@ -233,6 +234,14 @@ describe('Quantium Solutions HTTP adapter', () => {
     await expect(tracker.track({ number: IN_TRANSIT, carrier: 'quantium-solutions' }, { budgetMs: 3000 }))
       .resolves.toMatchObject({ carrier: 'quantium-solutions', source: 'quantium-solutions', result: { current_stage: 'customs' } });
     expect(fetcher.mock.calls.every(([url]) => String(url) === QUANTIUM_API)).toBe(true);
+  });
+
+  it('names Quantium for its tracker’s links, the result its page frames among them', () => {
+    for (const link of [`https://track.quantiumworldwide.com/?trackno=${IN_TRANSIT}`,
+      `https://itapps.quantiumworldwide.com/itcms_tracking/home/itcms?as_order_no=${IN_TRANSIT}`,
+      `https://itapps.quantiumworldwide.com/itcms_tracking/Widget/order_track?as_lang_code=0&as_order_no=${IN_TRANSIT}`]) {
+      expect(parseTrackingInput(link)).toMatchObject({ trackingNumber: IN_TRANSIT, carrier: 'quantium-solutions', source: 'link' });
+    }
   });
 });
 

@@ -90,7 +90,7 @@
       "domains": [
         "itapps.quantiumworldwide.com"
       ],
-      "pathPattern": "^/itcms_tracking/home/itcms/?$",
+      "pathPattern": "^/itcms_tracking/(?:home/itcms|widget/order_track)/?$",
       "params": [
         "as_order_no"
       ]

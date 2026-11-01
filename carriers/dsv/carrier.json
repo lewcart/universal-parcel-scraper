@@ -81,6 +81,16 @@
       "params": [
         "query"
       ]
+    },
+    {
+      "domains": [
+        "www.dsv.com",
+        "mydsv.dsv.com"
+      ],
+      "pathPattern": "^/(?:mydsv|app)/tracking-public/?$",
+      "params": [
+        "refNumber"
+      ]
     }
   ],
   "detection": [

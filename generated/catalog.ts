@@ -15533,6 +15533,16 @@ export const CARRIER_CATALOG = {
         "params": [
           "query"
         ]
+      },
+      {
+        "domains": [
+          "www.dsv.com",
+          "mydsv.dsv.com"
+        ],
+        "pathPattern": "^/(?:mydsv|app)/tracking-public/?$",
+        "params": [
+          "refNumber"
+        ]
       }
     ],
     "detectionRules": [
@@ -33375,7 +33385,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "itapps.quantiumworldwide.com"
         ],
-        "pathPattern": "^/itcms_tracking/home/itcms/?$",
+        "pathPattern": "^/itcms_tracking/(?:home/itcms|widget/order_track)/?$",
         "params": [
           "as_order_no"
         ]

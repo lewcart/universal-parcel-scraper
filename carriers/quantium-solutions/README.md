@@ -57,8 +57,9 @@ carriers, and S10 numbers are left to postal detection. The samples and their so
 ## Links
 
 `track.quantiumworldwide.com/?trackno={number}` opens one parcel: the tracker reads `trackno`
-and loads its result from `itapps.quantiumworldwide.com` with `as_order_no`. The former tracker
-`track.quantiumsolutions.com` used the same `trackno` parameter.
+and frames its result, `itapps.quantiumworldwide.com/itcms_tracking/Widget/order_track`, with
+`as_order_no`. Links to either name Quantium. The former tracker `track.quantiumsolutions.com`
+used the same `trackno` parameter.
 
 ## Testing
 

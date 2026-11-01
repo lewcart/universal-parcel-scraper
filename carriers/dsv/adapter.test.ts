@@ -314,8 +314,11 @@ describe('DSV tracking adapter', () => {
       expect(detectCarrierMatch(number)?.carrier).not.toBe('dsv');
       expect(recognitionAskedCarriers(number)).not.toContain('dsv');
     }
-    expect(parseTrackingInput(`https://mydsv.com/new/tracking/track-shipment?query=${HOUSE_BILL}`))
-      .toMatchObject({ trackingNumber: HOUSE_BILL, carrier: 'dsv', source: 'link' });
+    // DSV's own links: myDSV's search, and the former DB Schenker tracker its header form and Self-services open.
+    for (const link of [`https://mydsv.com/new/tracking/track-shipment?query=${HOUSE_BILL}`,
+      `https://www.dsv.com/mydsv/tracking-public?refNumber=${HOUSE_BILL}`, `https://mydsv.dsv.com/app/tracking-public?refNumber=${HOUSE_BILL}`]) {
+      expect(parseTrackingInput(link)).toMatchObject({ trackingNumber: HOUSE_BILL, carrier: 'dsv', source: 'link' });
+    }
   });
 });
 

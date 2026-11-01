@@ -104,7 +104,9 @@ Detection offers DSV, with low confidence, for a former DB Schenker STT of five 
 digits whose first two letters are a European country code, the layout DB Schenker's own tracking
 links name an STT. The shorter STTs share their layout with other carriers, and a package's SSCC
 carries the GS1 company prefix of whoever issued it, usually the shipper, so the user picks DSV
-for them.
+for them. A link names DSV whatever the number: myDSV's search with `query`, and the former DB
+Schenker tracker with `refNumber`, as DSV's header form and Self-services open it on
+`www.dsv.com/mydsv/tracking-public` and `mydsv.dsv.com/app/tracking-public`.
 
 A former DB Schenker lookup runs out of time when the tracker holds its replies longer than the
 lookup has left, and on its slower servers. A package SSCC that the tracker lists under several

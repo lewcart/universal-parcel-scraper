@@ -101,7 +101,7 @@ describe('Relais Colis tracking input', () => {
     expect(normalizeRelaisColisTrackingNumber(' cc 2000.0000-0401 ')).toBe(OFFICIAL_EXAMPLE);
     expect(normalizeRelaisColisTrackingNumber('1234567890')).toBe('1234567890');
     const url = new URL(relaisColisTrackingUrl());
-    expect(url.origin).toBe('https://www.relaiscolis.com');
+    expect(url.origin).toBe('https://relaiscolis.com');
     expect(url.pathname).toBe('/colis/suivre');
     expect(url.search).toBe('');
   });

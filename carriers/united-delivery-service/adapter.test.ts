@@ -138,6 +138,11 @@ describe('United Delivery Service tracking adapter', () => {
 
   it('reads only the tracker’s notice for the number as a missing parcel, and a block page as a challenge', () => {
     expect(() => parseUds(page('not-found'), UNKNOWN, JANUARY)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    // The plain page names the barcode in its notice, which binds it the same way.
+    expect(() => parseUds(page('not-found-plain'), ' 42uds-0000 0000 099 ', JANUARY)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    expect(() => parseUds(page('not-found-plain'), DELIVERED, JANUARY)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseUds(page('not-found-plain').replace(/Barcode <span[^>]*>[^<]*<\/span> Not Found/, 'Service unavailable'), UNKNOWN, JANUARY))
+      .toThrow(expect.objectContaining({ kind: 'schema' }));
     for (const html of [CHALLENGE, '<html><head><title>Attention Required! | Cloudflare</title></head><body></body></html>']) {
       expect(() => parseUds(html, UNKNOWN, JANUARY)).toThrow(expect.objectContaining({ kind: 'challenge' }));
     }

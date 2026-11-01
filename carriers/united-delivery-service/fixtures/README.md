@@ -10,5 +10,7 @@ rules are left out.
 - `received.html` is a parcel received at a terminal in Central Daylight Time, with a delivery
   estimate and the steps still to come.
 - `not-found.html` is the notice for a barcode the tracker does not hold.
+- `not-found-plain.html` is the same notice on the tracker's plain page, which carries only
+  the lookup form and the notice.
 
 Barcodes, places, clocks, weights, sizes and ids are invented.

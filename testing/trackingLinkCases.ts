@@ -354,7 +354,7 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/parcelsapp\.com\/en\/tracking\//,
     marker: /tracking number|track package|tracking information/i },
   { carrier: 'relais-colis', number: '0000000000',
-    route: /^https:\/\/www\.relaiscolis\.com\/colis\/suivre\?/,
+    route: /^https:\/\/relaiscolis\.com\/colis\/suivre\?/,
     marker: /Suivre mon colis/i },
   { carrier: 'gls-ch', number: '88888888888',
     route: /^https:\/\/gls-group\.eu\/GROUP\/en\/parcel-tracking\?/,
@@ -568,8 +568,8 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     marker: /Track your parcel \/ Parcel Tracking/ },
   // The server-rendered page names the reference and its not-found notice repeats it.
   { carrier: 'dpd-pt', number: '09999999999999',
-    route: /^https:\/\/tracking\.dpd\.pt\/track-and-trace\?reference=09999999999999$/,
-    marker: /Não encontrámos resultados para 09999999999999/ },
+    route: /^https:\/\/tracking\.dpd\.pt\/\?reference=09999999999999$/,
+    marker: /No results were found for 09999999999999|Não encontrámos resultados para 09999999999999/ },
   { carrier: 'fan-courier', number: '9999999999990',
     route: /^https:\/\/www\.fancourier\.ro\/awb-tracking\/\?tracking=/,
     marker: /AWB-ul nu a fost gasit|Detalii expediție/i },
@@ -1673,7 +1673,7 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   // The tracker renders the barcode in its address on the server; an unknown one gets a notice naming it.
   { carrier: 'united-delivery-service', number: '00UDS00000000000',
     route: /^https:\/\/www\.uniteddeliveryservice\.com\/track\/barcode\/00UDS00000000000$/,
-    marker: /Barcode Not Found|Delivery Status/ },
+    marker: /Barcode (?:00UDS00000000000 )?Not Found|Delivery Status/ },
   // The page looks up the number in its address and answers an unknown one with its own notice.
   { carrier: 'skyking', number: '999999999',
     route: /^https:\/\/skyking\.co\/track\?cno=999999999$/,

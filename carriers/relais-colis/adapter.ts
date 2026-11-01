@@ -12,7 +12,7 @@ import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { classifyRelaisColisStatus, comparableText } from './status.js';
 
-const TRACKING_PAGE = 'https://www.relaiscolis.com/colis/suivre';
+const TRACKING_PAGE = 'https://relaiscolis.com/colis/suivre';
 const DEFAULT_TIMEOUT_MS = 15_000;
 const MAX_RESPONSE_BYTES = 750_000;
 const USER_AGENT =
@@ -212,7 +212,7 @@ export class RelaisColisTracker {
           headers: {
             ...pageHeaders(),
             'Content-Type': 'application/x-www-form-urlencoded',
-            Origin: 'https://www.relaiscolis.com',
+            Origin: 'https://relaiscolis.com',
             Referer: TRACKING_PAGE,
           },
           body,

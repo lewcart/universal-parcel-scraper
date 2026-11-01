@@ -18,6 +18,8 @@ export const UDS_ZONE = 'America/Chicago';
 const NUMBER = /^(?=[A-Z]*\d)[A-Z0-9]{10,40}$/;
 const NOT_FOUND = 'Barcode Not Found';
 const ABSENT = /^This tracking number: (\S+) cannot be found$/i;
+// The plain page's notice: "Barcode 42UDS… Not Found", then its advice.
+const PLAIN_ABSENT = /^Barcode (\S+) Not Found/;
 // A firewall's or bot check's page in place of the tracker's.
 const BLOCKED = /<title>\s*(?:Just a moment|Attention Required|Access denied|Request Rejected)|_cf_chl_opt|cf-turnstile|g-recaptcha|h-captcha/i;
 const MAX_STEPS = 12;
@@ -133,12 +135,20 @@ function stageOf(...wordings: string[]): ClassifiedWording | null {
  * parcel's status, the barcode, a rail of four steps of which only the
  * current one has a place and a clock, a delivery estimate before delivery,
  * the parcel's weight and size, and proof-of-delivery details. A barcode it
- * does not hold gets "Barcode Not Found" and a notice naming the number.
+ * does not hold gets "Barcode Not Found" and a notice naming the number, or
+ * the tracker's plain page, whose notice names it the same way.
  */
 export function parseUds(html: string, raw: string, now = Date.now()): CarrierResult {
   const number = normalizeUdsNumber(raw);
   const $ = load(html);
   const heading = $('.uds-udsFormat-statusCenter > .value');
+  const plain = heading.length ? null : $('#errors');
+  if (plain?.length === 1) {
+    const absent = PLAIN_ABSENT.exec(clean(plain.text(), 300));
+    if (!absent) throw new SchemaError(PROVIDER, 'UDS returned its plain page without its notice');
+    if (normalizeTrackingNumber(absent[1]!) !== number) throw new IndeterminateError(PROVIDER, 'UDS answered for another number');
+    throw new NotFoundError(PROVIDER);
+  }
   if (heading.length !== 1) {
     if (BLOCKED.test(html.slice(0, 64_000))) throw new ChallengeError(PROVIDER, 'UDS answered with a CAPTCHA or block page');
     throw new SchemaError(PROVIDER, 'UDS did not return a tracking page');

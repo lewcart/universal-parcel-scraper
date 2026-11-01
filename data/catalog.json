@@ -1305,9 +1305,9 @@
       "recognitionPattern": "^[A-Z0-9]{12,16}$",
       "localClocks": true
     },
-    "canaryUrl": "https://www.relaiscolis.com/colis/suivre",
-    "trackingUrlTemplate": "https://www.relaiscolis.com/colis/suivre?tracking_number={trackingNumber}",
-    "trackingSearchUrl": "https://www.relaiscolis.com/colis/suivre",
+    "canaryUrl": "https://relaiscolis.com/colis/suivre",
+    "trackingUrlTemplate": "https://relaiscolis.com/colis/suivre?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://relaiscolis.com/colis/suivre",
     "linkRules": [
       {
         "domains": [

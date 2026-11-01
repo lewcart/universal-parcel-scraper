@@ -15,8 +15,9 @@ its tracker's page for a barcode.
    of the budget.
 
 - A barcode the tracker does not hold gets "Barcode Not Found" and a notice naming the number,
-  which is the only missing parcel. The tracker drops parcels after 30 to 90 days, by its own
-  pages, so an older parcel is not found either. A redirect, a 404, a page without the status
+  or a plain page with the lookup form and "Barcode {number} Not Found". That notice is the only
+  missing parcel. The tracker drops parcels after 30 to 90 days, by its own pages, so an older
+  parcel is not found either. A redirect, a 404, a page without the status
   and a page for another number are no answer. Block pages are challenges, and rate limits and
   other HTTP errors keep their own failure kinds.
 - The page must show the barcode asked.

@@ -68,6 +68,16 @@ describe('PIN AG HTTP adapter', () => {
     expect(result.events![0]).toMatchObject({ provider_code: 'NON_FURTHER_TRACKABLE', stage: 'in_transit' });
   });
 
+  it('reads an item waiting at the depot, whose address the page shows, as ready for pickup', () => {
+    const payload = fixture('delivered');
+    const waiting = { ...rows(payload)[1]!, statusCode: '990302', label: 'Synthetic: waiting at the depot for collection.' };
+    (payload as { statuses: unknown[] }).statuses = [rows(payload)[0]!, rows(payload)[1]!, waiting];
+    const result = parsePinAg(payload, PARCEL);
+    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'ready_for_pickup' });
+    expect(result.events![0]).toMatchObject({ provider_code: '990302', stage: 'ready_for_pickup' });
+    expect(JSON.stringify(result)).not.toMatch(/PRIVATE/);
+  });
+
   it('keeps a step the map does not know, and a clock it cannot read, visible without a stage', () => {
     const payload = fixture('delivered');
     Object.assign(rows(payload)[4]!, { stage: 'Abholbereit', timeStamp: '31.07.2026 10:55' });
@@ -164,9 +174,11 @@ describe('PIN AG HTTP adapter', () => {
 describe('PIN AG status vocabulary', () => {
   it('records every code the map knows with the stage of the step it came with', () => {
     for (const entry of statuses.entries) {
-      expect(statusMap.stage(entry.code, entry.wording.toLowerCase())).toBe(entry.stage);
-      expect(pinAgStatus(entry.note.match(/the (.+?) step/)![1]!, entry.code)?.stage).toBe(entry.stage);
+      expect(statusMap.stage(entry.code, (entry.wording ?? '').toLowerCase())).toBe(entry.stage);
+      expect(pinAgStatus(entry.note.match(/Filed under the (.+?) step/)?.[1] ?? 'Zustelldepot', entry.code)?.stage).toBe(entry.stage);
     }
+    // Waiting at the depot, whatever step the page files it under.
+    for (const step of ['Zustelldepot', 'In Zustellung']) expect(pinAgStatus(step, '990302')).toEqual({ status: 'out_for_delivery', stage: 'ready_for_pickup' });
     // Sorted, then delivered without further tracking: the step it is filed under says more than it knows.
     expect(pinAgStatus('In Zustellung', 'NON_FURTHER_TRACKABLE')).toEqual({ status: 'in_transit', stage: 'in_transit' });
     expect(pinAgStatus('In Zustellung', '990300')?.stage).toBe('out_for_delivery');

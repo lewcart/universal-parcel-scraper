@@ -14,9 +14,11 @@ const STAGES: Readonly<Record<string, ClassifiedStatus>> = {
 
 // A status the page files under a step it does not mean. An item PIN will deliver without
 // tracking it further shows under In Zustellung while its label says it was only recorded at the
-// sorting center and will be delivered in the coming days.
+// sorting center and will be delivered in the coming days. With 990302 alone the page shows the
+// depot's address, opening hours and map: the item waits there for the recipient to collect it.
 const CODES_OVER_STEPS: Readonly<Record<string, ClassifiedStatus>> = {
   NON_FURTHER_TRACKABLE: { status: 'in_transit', stage: 'in_transit' },
+  990302: { status: 'out_for_delivery', stage: 'ready_for_pickup' },
 };
 
 /** A status's reading from its code when the step misleads, else from the step it names. */

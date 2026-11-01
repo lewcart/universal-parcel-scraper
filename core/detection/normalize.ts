@@ -15,6 +15,8 @@ import { hasS10CheckDigit } from './s10CheckDigit.js';
  * Uppercase and strip spaces, dots and dashes (Swiss Post prints 99.34.…).
  * A label prints its SSCC behind the bracketed GS1 identifier, "(00) 3 7012345
  * 678901234 7", and carriers track it as the twenty digits without brackets.
+ * A label can also print a number's last digit in brackets, as PIN AG's FAQ
+ * shows its registered letters, "000000000000(0)": the number reads without them.
  * Other bracketed identifiers stay as typed: (420), for one, carries a ZIP.
  * An S10 serial holds only digits, so a letter O in it ("CIO…NL") is a zero
  * typed as a letter when the check digit then holds. No carrier issues "JDO1"
@@ -25,6 +27,8 @@ import { hasS10CheckDigit } from './s10CheckDigit.js';
 export function normalizeTrackingNumber(raw: string): string {
   const value = raw.toUpperCase().replace(/[\s.-]/g, '');
   if (/^\(00\)\d{18}$/.test(value)) return `00${value.slice(4)}`;
+  const lastDigit = /^(\d{12,})\((\d)\)$/.exec(value);
+  if (lastDigit) return `${lastDigit[1]}${lastDigit[2]}`;
   const shipment = value.includes('/') ? noLimitShipmentNumber(value) : undefined;
   if (shipment) return shipment;
   const piece = /^(J?JD)O(1\d{16}J?)$/.exec(value);

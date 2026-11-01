@@ -287,6 +287,15 @@ describe('normalization', () => {
     expect(parseTrackingInput('(00) 370123456789012347')).toMatchObject({ source: 'number', candidates: detectCarrierMatch('00370123456789012347').candidates });
   });
 
+  it('reads a number whose label prints its last digit in brackets, as PIN AG’s does', () => {
+    expect(normalizeTrackingNumber('100000000000(1)')).toBe('1000000000001');
+    expect(normalizeTrackingNumber('0100 1234 5678 901(2)')).toBe('0100123456789012');
+    expect(parseTrackingInput('010012345678901(2)')).toMatchObject({ source: 'number', preferred: ['pin-ag'],
+      candidates: detectCarrierMatch('0100123456789012').candidates });
+    // A digit run too short for a parcel number, or a bracketed group of more than one digit, stays as typed.
+    for (const raw of ['12345678901(2)', '123456789012(34)']) expect(validTrackingNumber(raw)).toBe(false);
+  });
+
   it('reads a letter O typed in an S10 serial as the zero its check digit asks for', () => {
     expect(normalizeTrackingNumber('cio 0000000 5nl')).toBe('CI000000005NL');
     expect(detectCarrierMatch('CIO00000005NL')).toEqual(detectCarrierMatch('CI000000005NL'));

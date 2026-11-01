@@ -17,7 +17,8 @@ tracking page calls.
   stage. Its wording is the page's label, HTML removed, else its short description. The page
   files `NON_FURTHER_TRACKABLE` under In Zustellung, but its label says the item was only
   recorded at the sorting center and will be delivered without further updates, so it reads
-  in transit.
+  in transit. The page shows the depot's address and opening hours for `990302` alone: the item
+  waits there for collection, so it reads ready for pickup.
 - An unknown number, or one whose statuses PIN deleted after six months, gets HTTP 404 with the
   message "kein Zustellstatus gefunden": `NotFoundError`. So does a status coded
   `NOT_FOUND_HINT`, which the page treats the same way. HTTP 405 is an item type PIN does not
@@ -41,8 +42,9 @@ PIN publishes no layout. Parcel numbers typed into its tracking page, as the Way
 archived them, are sixteen digits opening `0100` with no check digit. Registered letters and
 court deliveries carry thirteen digits, and a label can print part of a number in brackets,
 which PIN's FAQ asks to leave out. The adapter takes thirteen or sixteen digits once brackets
-and spaces are removed. Sixteen digits are low rules of several carriers, so `pin-ag-1` stays
-low and only lists PIN AG first.
+and spaces are removed, and a number pasted with its last digit in brackets reads without them.
+Sixteen digits are low rules of several carriers, so `pin-ag-1` stays low and only lists PIN AG
+first.
 
 ## Limitations
 

@@ -19,11 +19,11 @@ describe('GlobalPost live retrieval', () => {
   }, 30_000);
 
   it.skipIf(!process.env.GLOBALPOST_TRACKING_NUMBER)('answers first with providers disabled, then hands a named partner its number', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.GLOBALPOST_TRACKING_NUMBER!, carrier: 'globalpost' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.GLOBALPOST_TRACKING_NUMBER!, carrier: 'globalpost' });
     expect(answer).toMatchObject({ carrier: 'globalpost', source: 'globalpost' });
     expect(answer.attempts[0]).toMatchObject({ source: 'globalpost', kind: 'ok' });
     if (answer.result.delivery_carrier) expect(answer.attempts.map((attempt) => attempt.source)).toContain(answer.result.delivery_carrier);
-  }, 45_000);
+  }, 60_000);
 
   it.skipIf(!process.env.GLOBALPOST_UNKNOWN_NUMBER)('reads a number without a parcel as not found', async () => {
     await expect(direct().track({ number: process.env.GLOBALPOST_UNKNOWN_NUMBER! })).rejects.toMatchObject({ kind: 'not_found' });

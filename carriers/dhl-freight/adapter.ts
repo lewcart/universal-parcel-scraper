@@ -4,6 +4,8 @@ import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
+import { trawlPageStep } from '../../core/transport/trawlPage.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { DHL_FREIGHT_MAX_BYTES, dhlFreightQuery, parseDhlFreight, PROVIDER, type DhlFreightQuery } from './parser.js';
 
@@ -23,7 +25,7 @@ export function dhlFreightSearchUrl(query: DhlFreightQuery): string {
 }
 
 export class DhlFreightTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; trawl?: TrawlClient | null } = {}) {}
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const query = dhlFreightQuery(raw);
@@ -38,20 +40,23 @@ export class DhlFreightTracker {
     };
     // A read that fails to reach ActiveTracing, or hangs, gets one more try:
     // the first gets half of the budget, so the retry fits in the rest.
-    return runSteps({ carrier: 'dhl-freight', budgetMs: context.budgetMs ?? 15_000, signal: context.signal,
+    return runSteps({ carrier: 'dhl-freight', budgetMs: context.budgetMs ?? (this.options.trawl ? 60_000 : 15_000), signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
-      networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
+      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(this.options.trawl ? Math.min(15_000, remainingMs) : remainingMs)) },
+      networkRetryStep(({ signal, remainingMs }) => read(signal, this.options.trawl ? Math.min(7_500, remainingMs) : remainingMs)),
+      trawlPageStep({ ...this.options, provider: PROVIDER, url: dhlFreightSearchUrl(query), maxBytes: DHL_FREIGHT_MAX_BYTES,
+        parse: html => parseDhlFreight(html, query) }),
     ]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new DhlFreightTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  const tracker = new DhlFreightTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent, trawl: environment.trawl });
+  const http = new DhlFreightTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return {
-    id: 'dhl-freight', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'dhl-freight', recordsSteps: true, steps: ['direct', 'retry', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+    recognize: (number, context) => recognizeFromLookup(() => http.fetch(number, context),
       () => accepted(() => dhlFreightQuery(number))),
   };
 };

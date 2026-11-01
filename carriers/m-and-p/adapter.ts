@@ -4,6 +4,8 @@ import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
+import { trawlPageStep } from '../../core/transport/trawlPage.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { M_AND_P_MAX_BYTES, normalizeMAndPNumber, parseMAndP, PROVIDER } from './parser.js';
 
@@ -14,7 +16,7 @@ const GONE = [404, 410];
 const DEFAULT_BUDGET_MS = 20_000;
 
 export class MAndPTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; trawl?: TrawlClient | null } = {}) {}
 
   private async read(number: string, signal: AbortSignal, timeoutMs: number): Promise<CarrierResult> {
     const { response, bytes } = await fetchBounded(`${M_AND_P_TRACKING}${number}`, { method: 'GET', signal,
@@ -31,20 +33,23 @@ export class MAndPTracker {
     const number = normalizeMAndPNumber(raw);
     // A read that fails to reach M&P, or hangs, is sent once more: the first
     // try gets half of the budget.
-    return runSteps({ carrier: 'm-and-p', budgetMs: context.budgetMs ?? DEFAULT_BUDGET_MS, signal: context.signal,
+    return runSteps({ carrier: 'm-and-p', budgetMs: context.budgetMs ?? (this.options.trawl ? 60_000 : DEFAULT_BUDGET_MS), signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => this.read(number, signal, firstAttemptMs(remainingMs)) },
-      networkRetryStep(({ signal, remainingMs }) => this.read(number, signal, remainingMs)),
+      { id: 'direct', run: ({ signal, remainingMs }) => this.read(number, signal, firstAttemptMs(this.options.trawl ? Math.min(15_000, remainingMs) : remainingMs)) },
+      networkRetryStep(({ signal, remainingMs }) => this.read(number, signal, this.options.trawl ? Math.min(7_500, remainingMs) : remainingMs)),
+      trawlPageStep({ ...this.options, provider: PROVIDER, url: `${M_AND_P_TRACKING}${number}`, maxBytes: M_AND_P_MAX_BYTES,
+        parse: html => parseMAndP(html, number) }),
     ]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new MAndPTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  const tracker = new MAndPTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent, trawl: environment.trawl });
+  const http = new MAndPTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return {
-    id: 'm-and-p', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'm-and-p', recordsSteps: true, steps: ['direct', 'retry', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+    recognize: (number, context) => recognizeFromLookup(() => http.fetch(number, context),
       () => accepted(() => normalizeMAndPNumber(number))),
   };
 };

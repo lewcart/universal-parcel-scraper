@@ -57,6 +57,14 @@ know stays without a stage, or leaves the stage to the messages.
 The link opens the shipment page for the code; pasted links to it with or without the trailing
 slash are read too.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+Explicit absence redirects must name the whole requested number on the carrier’s tracking site.
+A bot check on the redirected page stays a challenge.
+
 ## Live test
 
 Set `ZELERIS_TRACKING_NUMBER` outside the repository and run

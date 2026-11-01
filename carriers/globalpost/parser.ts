@@ -61,8 +61,9 @@ export function normalizeGlobalpostNumber(raw: string): string {
  * details for the tracking number you entered". Any other redirect is a moved
  * page or a lookup that did not finish.
  */
-export function readGlobalpostRedirect(location: string | null, raw: string): never {
+export function readGlobalpostRedirect(location: string | null, raw: string, html?: string): never {
   const number = normalizeGlobalpostNumber(raw);
+  if (html && BLOCKED.test(html.slice(0, 64_000))) throw new ChallengeError(PROVIDER, 'GlobalPost answered with a block page');
   let target: URL | undefined;
   try {
     target = location ? new URL(location, 'https://www.goglobalpost.com/') : undefined;

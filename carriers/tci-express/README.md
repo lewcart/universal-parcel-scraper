@@ -54,6 +54,12 @@ The tracker opens a docket from its `trackshipment` parameter, on `track-your-sh
 older `trackingdocket.aspx`, which serves the same page. The parameter can list several dockets
 separated by commas; those addresses are recognized.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/tci-express`, with `TCI_EXPRESS_TRACKING_NUMBER` and

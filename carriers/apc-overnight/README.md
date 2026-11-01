@@ -53,6 +53,12 @@ date.
 
 The link opens APC Choice's tracking page for the waybill.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Live test
 
 Set `APC_OVERNIGHT_TRACKING_NUMBER` outside the repository and run

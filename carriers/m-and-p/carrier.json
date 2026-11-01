@@ -22,11 +22,13 @@
     "adapter": "m-and-p",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "trawl"
     ],
     "recognition": {
       "rank": 746
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

@@ -7861,7 +7861,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "apc-overnight",
       "recognitionRank": 220,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://apc.co.uk/",
     "trackingUrlTemplate": "https://apcchoice.apc-overnight.com/track-parcel?id={trackingNumber}",
@@ -14859,7 +14860,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "dhl-freight",
       "recognitionRank": 437,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://activetracing.dhl.com/",
     "trackingUrlTemplate": "https://activetracing.dhl.com/DatPublic/datSelection.do?autoSearch=true&search=consignmentId&l=DE&a={trackingNumber}",
@@ -20873,7 +20875,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "globalpost",
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.goglobalpost.com/tracking/",
     "trackingUrlTemplate": "https://www.goglobalpost.com/track-detail/?t={trackingNumber}",
@@ -22865,7 +22868,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "hrvatska-posta",
       "recognitionRank": 160,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://posiljka.posta.hr/",
     "trackingUrlTemplate": "https://posiljka.posta.hr/hr/tracking/trackingdata?barcode={trackingNumber}",
@@ -27862,7 +27866,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "loomis-express",
       "recognitionRank": 285,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://loomisexpress.com/loomship/Track",
     "trackingUrlTemplate": "https://loomisexpress.com/loomship/Track/TrackResults?t=WAYBILL&s={trackingNumber}",
@@ -28006,7 +28011,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "m-and-p",
-      "recognitionRank": 746
+      "recognitionRank": 746,
+      "browser": true
     },
     "canaryUrl": "https://www.mulphilog.com/",
     "trackingUrlTemplate": "https://www.mulphilog.com/tracking/{trackingNumber}",
@@ -40642,7 +40648,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tci-express",
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.tciexpress.in/trackingdocket.aspx",
     "trackingUrlTemplate": "https://www.tciexpress.in/track-your-shipment?trackshipment={trackingNumber}&dwb=dwb",
@@ -46129,7 +46136,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "zeleris",
       "recognitionRank": 230,
-      "localClocks": true
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.zeleris.com/seguimiento-de-envios/",
     "trackingUrlTemplate": "https://www.zeleris.com/detalle-de-envio/?tracking_number={trackingNumber}",

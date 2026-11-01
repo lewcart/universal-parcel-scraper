@@ -8,7 +8,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 describe('APC Overnight live retrieval', () => {
   it.skipIf(!process.env.APC_OVERNIGHT_TRACKING_NUMBER)('retrieves dated history for the requested waybill with providers disabled', async () => {
     const number = process.env.APC_OVERNIGHT_TRACKING_NUMBER!;
-    const answer = await createTracker({ providers: [] }).track({ number, carrier: 'apc-overnight' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number, carrier: 'apc-overnight' });
     expect(answer).toMatchObject({ carrier: 'apc-overnight', source: 'apc-overnight', attempts: [{ source: 'apc-overnight', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
     expect(answer.result.events.every(event => event.local_time && event.description && !event.location)).toBe(true);

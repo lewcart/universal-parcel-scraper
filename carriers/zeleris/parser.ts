@@ -74,8 +74,9 @@ function railStep(root: ReturnType<CheerioAPI>): string | null {
  * not know, and a lookup its system could not answer, back to the search page
  * with the number and a flag.
  */
-export function parseZelerisRedirect(location: string | null, raw: string): never {
+export function parseZelerisRedirect(location: string | null, raw: string, html?: string): never {
   const number = normalizeZelerisNumber(raw);
+  if (html && BLOCKED.test(html.slice(0, 64_000))) throw new ChallengeError(PROVIDER, 'Zeleris answered with a block page');
   let target: URL | null;
   try {
     target = location ? new URL(location, ZELERIS_ORIGIN) : null;

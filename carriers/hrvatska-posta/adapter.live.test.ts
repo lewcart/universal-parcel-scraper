@@ -8,7 +8,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 describe('Hrvatska pošta live retrieval', () => {
   it.skipIf(!process.env.HRVATSKA_POSTA_TRACKING_NUMBER)('retrieves dated history for the requested number with providers disabled', async () => {
     const number = process.env.HRVATSKA_POSTA_TRACKING_NUMBER!;
-    const answer = await createTracker({ providers: [] }).track({ number, carrier: 'hrvatska-posta' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number, carrier: 'hrvatska-posta' });
     expect(answer).toMatchObject({ carrier: 'hrvatska-posta', source: 'hrvatska-posta', attempts: [{ source: 'hrvatska-posta', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
     expect(answer.result.events.every(event => (event.time || event.local_time) && event.description && !/^\d{5}\s/.test(event.location ?? ''))).toBe(true);

@@ -8,7 +8,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 describe('Zeleris live retrieval', () => {
   it.skipIf(!process.env.ZELERIS_TRACKING_NUMBER)('retrieves dated history for the requested number with providers disabled', async () => {
     const number = process.env.ZELERIS_TRACKING_NUMBER!;
-    const answer = await createTracker({ providers: [] }).track({ number, carrier: 'zeleris' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number, carrier: 'zeleris' });
     expect(answer).toMatchObject({ carrier: 'zeleris', source: 'zeleris', attempts: [{ source: 'zeleris', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
     expect(answer.result.events.every(event => event.local_time && event.description && event.location === undefined)).toBe(true);

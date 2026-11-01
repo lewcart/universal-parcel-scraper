@@ -24,9 +24,11 @@
     "adapter": "globalpost",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "trawl"
     ],
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

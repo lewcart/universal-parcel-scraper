@@ -7,7 +7,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 
 describe('M&P live retrieval', () => {
   it.skipIf(!process.env.M_AND_P_TRACKING_NUMBER)('retrieves the history of the requested consignment with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.M_AND_P_TRACKING_NUMBER!, carrier: 'm-and-p' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.M_AND_P_TRACKING_NUMBER!, carrier: 'm-and-p' });
     expect(answer).toMatchObject({ carrier: 'm-and-p', source: 'm-and-p' });
     expect(answer.attempts[0]).toMatchObject({ source: 'm-and-p', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
@@ -15,7 +15,7 @@ describe('M&P live retrieval', () => {
     expect(answer.result.events.every((event) => event.description && event.provider_code
       && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00\+05:00$/.test(String(event.time)))).toBe(true);
     expect(answer.result.events.every((event) => event.stage_source === 'carrier_map')).toBe(true);
-  }, 45_000);
+  }, 60_000);
 
   it.skipIf(!process.env.M_AND_P_TRACKING_NUMBER)('recognizes the requested consignment', async () => {
     await expect(direct().recognize!(process.env.M_AND_P_TRACKING_NUMBER!)).resolves.toMatchObject({ known: true });

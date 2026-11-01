@@ -80,6 +80,14 @@ use `t` on `goglobalpost.com/track/`. The library reads the number from either a
   delivered; the page has no return wording.
 - Expired parcels get the unknown-number answer.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+Explicit absence redirects must name the whole requested number on the carrier’s tracking site.
+A bot check on the redirected page stays a challenge.
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/globalpost`, with `GLOBALPOST_TRACKING_NUMBER` and

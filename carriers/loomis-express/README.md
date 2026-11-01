@@ -60,6 +60,12 @@ notice.
 The link opens the results page for the waybill. Pasted links to that page, in English or
 French, and to `/loomship/Track/TrackStatus?wbs=<waybill>`, which redirects to it, are read too.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Live test
 
 Set `LOOMIS_EXPRESS_TRACKING_NUMBER` outside the repository and run

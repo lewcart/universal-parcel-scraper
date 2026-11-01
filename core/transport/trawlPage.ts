@@ -10,6 +10,8 @@ export function trawlPageStep<T>(options: {
   url: string;
   maxBytes: number;
   contentWaitForSelector?: string;
+  /** Read a carrier's explicit negative redirect; another URL can never supply a history. */
+  parseRedirect?: (url: string, html: string) => never;
   parse: (html: string) => T;
 }): StepSpec<T> {
   return {
@@ -28,9 +30,12 @@ export function trawlPageStep<T>(options: {
         maxBytes: options.maxBytes * 6 + 65_536,
       });
       signal.throwIfAborted();
-      if (page.url !== options.url) throw new TransportError(options.provider, 'The browser redirected the requested tracking page');
       if (new TextEncoder().encode(page.html).byteLength > options.maxBytes) {
         throw new SchemaError(options.provider, 'The browser returned an oversized tracking page');
+      }
+      if (page.url !== options.url) {
+        options.parseRedirect?.(page.url, page.html);
+        throw new TransportError(options.provider, 'The browser redirected the requested tracking page');
       }
       return options.parse(page.html);
     },

@@ -81,6 +81,12 @@ The link opens the Croatian tracking page for the number. Pasted links to the En
 `/tracking/trackingdata` without a language are read too, as are archived links to
 `/Tracking/Details` and the `broj` parameter of the tracking page on `www.posta.hr`.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Live test
 
 Set `HRVATSKA_POSTA_TRACKING_NUMBER` outside the repository and run

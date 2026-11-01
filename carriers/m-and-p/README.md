@@ -55,6 +55,12 @@ pastes a tracking page link. The samples and their sources are in [`numbers.json
 The search boxes on mulphilog.com open one consignment at `/tracking/` followed by the number.
 The library reads the number from that address.
 
+## Browser recovery
+
+When the direct lookup returns a bot check, configured TRAWL opens the same parcel page and
+uses the same parser. Rate limits, definite answers and changed pages do not start a browser.
+Recognition stays on direct HTTP. Set `FLARESOLVERR_URL` to enable recovery in the live tracking check.
+
 ## Testing
 
 `npm run test:carriers:live -- carriers/m-and-p`, with `M_AND_P_TRACKING_NUMBER` and optionally

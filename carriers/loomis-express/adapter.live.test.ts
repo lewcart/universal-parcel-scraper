@@ -8,7 +8,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 describe('Loomis Express live retrieval', () => {
   it.skipIf(!process.env.LOOMIS_EXPRESS_TRACKING_NUMBER)('retrieves dated history for the requested waybill with providers disabled', async () => {
     const number = process.env.LOOMIS_EXPRESS_TRACKING_NUMBER!;
-    const answer = await createTracker({ providers: [] }).track({ number, carrier: 'loomis-express' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number, carrier: 'loomis-express' });
     expect(answer).toMatchObject({ carrier: 'loomis-express', source: 'loomis-express', attempts: [{ source: 'loomis-express', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
     expect(answer.result.events.every(event => event.local_time && event.description)).toBe(true);

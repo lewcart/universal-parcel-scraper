@@ -7,7 +7,7 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 
 describe('DHL Freight live retrieval', () => {
   it.skipIf(!process.env.DHL_FREIGHT_TRACKING_NUMBER)('retrieves the history of the requested consignment with providers disabled', async () => {
-    const answer = await createTracker({ providers: [] }).track({ number: process.env.DHL_FREIGHT_TRACKING_NUMBER!, carrier: 'dhl-freight' });
+    const answer = await createTracker({ providers: [], trawlUrl: process.env.FLARESOLVERR_URL }).track({ number: process.env.DHL_FREIGHT_TRACKING_NUMBER!, carrier: 'dhl-freight' });
     expect(answer).toMatchObject({ carrier: 'dhl-freight', source: 'dhl-freight' });
     expect(answer.attempts[0]).toMatchObject({ source: 'dhl-freight', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);

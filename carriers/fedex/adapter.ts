@@ -1,3 +1,4 @@
+import { BrowserRouteTrial, retryShare } from '../../core/transport/browserRouteTrial.js';
 
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
@@ -549,10 +550,7 @@ export class FedExTracker {
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.#trawl = options.trawl ?? null;
     this.#ipv6Trawl = options.ipv6Trawl ?? null;
-    this.#ipv6RetryShare = options.ipv6RetryShare ?? 1;
-    if (!Number.isFinite(this.#ipv6RetryShare) || this.#ipv6RetryShare < 0 || this.#ipv6RetryShare > 1) {
-      throw new TypeError('FedEx IPv6 retry share must be between zero and one');
-    }
+    this.#ipv6RetryShare = retryShare(options.ipv6RetryShare ?? 1);
     this.#api = options.api ? new FedExApiClient(options.api, options.fetcher) : null;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
@@ -570,28 +568,18 @@ export class FedExTracker {
       );
     }
     const browserMs = (remainingMs: number) => Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs)));
-    let networkRoute: 'default' | 'ipv6' = 'default';
-    let networkFamily: 'IPv4' | 'IPv6' | 'unknown' = 'unknown';
-    let historyAvailable = false;
-    const browser = async (client: TrawlClient, remainingMs: number, signal: AbortSignal) => {
-      networkFamily = 'unknown'; historyAvailable = false;
-      const result = await this.#trawlResult(client, number, browserMs(remainingMs), signal, networkRoute === 'ipv6',
-        family => { networkFamily = family; });
-      historyAvailable = Boolean(result.events?.some(event => event.time || event.local_time));
-      return result;
-    };
-    const recorder: StepRecorder = {
-      step: record => this.#recorder.step(record.step === 'trawl'
-        ? { ...record, networkRoute, networkFamily, historyAvailable } : record),
-      lookup: record => this.#recorder.lookup(record),
-    };
+    const trial = new BrowserRouteTrial({ primary: trawl, alternative: this.#ipv6Trawl,
+      route: 'ipv6', share: this.#ipv6RetryShare, steps: ['trawl'], recorder: this.#recorder });
+    const browser = async (client: TrawlClient, remainingMs: number, signal: AbortSignal, requireIpv6 = false) =>
+      trial.result(await this.#trawlResult(client, number, browserMs(remainingMs), signal, requireIpv6,
+        family => trial.observeFamily(family)));
     return runSteps<CarrierResult>({
       // Without a caller's budget the lookup leaves the service its own time and
       // the request the allowance to bring the answer back.
       carrier: 'fedex',
       budgetMs: context.budgetMs ?? (api ? API_TIMEOUT_MS : 0) + (trawl ? this.timeoutMs + TRAWL_TRANSPORT_ALLOWANCE_MS : 0),
       signal: context.signal,
-      recorder,
+      recorder: trial.recorder,
     }, [
       // FedEx's own API answers in a second; it leaves the browser at least half the budget.
       ...(api ? [{ id: 'api', run: ({ remainingMs, signal }: StepContext) => this.#apiResult(api, number,
@@ -599,14 +587,13 @@ export class FedExTracker {
       ...(trawl ? [
         // The page answers what the API could not, except a shipment the recipient must verify.
         { id: 'trawl', recovers: (error: unknown) => !(error instanceof InputRequiredError),
-          run: ({ remainingMs, signal }: StepContext) => browser(trawl, remainingMs, signal) },
+          run: ({ remainingMs, signal }: StepContext) => browser(trial.primary()!, remainingMs, signal) },
         // The service discards a context whose tracking call was refused, so a
         // second read starts a fresh one: Akamai's 403 is intermittent.
         { id: 'trawl', recovers: (error: unknown) => error instanceof ChallengeError && error.reason === 'api_denied' && error.status === 403,
           run: ({ remainingMs, signal }: StepContext) => {
-            const useIpv6 = this.#ipv6Trawl && Math.random() < this.#ipv6RetryShare;
-            networkRoute = useIpv6 ? 'ipv6' : 'default';
-            return browser(useIpv6 ? this.#ipv6Trawl : trawl, remainingMs, signal);
+            const client = trial.retry()!;
+            return browser(client, remainingMs, signal, trial.isAlternate);
           } },
       ] : []),
     ]);

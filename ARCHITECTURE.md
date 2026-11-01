@@ -113,6 +113,13 @@ time left, so the retry fits in the budget. An HTTP status or a reply is never s
 
 ## A lookup
 
+Browser route trials are opt-in. The shared transport helper assigns one alternate route
+when a carrier's existing recovery starts and records route, attempt, verified connection
+family and dated-history availability. It adds no attempts and does not decide which errors
+are recoverable. The adapter keeps its identity checks, refusal rules and shared deadline;
+the host supplies isolated services or private proxy credentials. A selected route does not
+establish the connection family: IPv6 needs socket evidence, otherwise telemetry says unknown.
+
 `createTracker()` validates the input. A number is four to forty letters and digits and
 normally holds a digit. Without one it must be six to ten unbroken letters that a carrier's
 detection rule claims, as on a GLS notification card. Such a number is never read out of

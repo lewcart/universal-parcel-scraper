@@ -28,11 +28,15 @@ export interface StepRecord {
   /** The original error, for sinks that keep stacks. Never serialize it into metrics. */
   error?: unknown;
   /** Selected network path, independently of the observed connection family. */
-  networkRoute?: 'default' | 'ipv6';
+  networkRoute?: 'default' | 'ipv6' | 'residential';
+  /** Initial browser read or an existing eligible recovery, independent of earlier HTTP steps. */
+  networkAttempt?: 'initial' | 'retry';
   /** Actual tracking connection family, or unknown when no connection was verified. */
   networkFamily?: 'IPv4' | 'IPv6' | 'unknown';
   /** Whether a successful step returned dated tracking events. */
   historyAvailable?: boolean;
+  /** The adapter marks the returned history as incomplete, leaving richer recovery eligible. */
+  historyPartial?: boolean;
 }
 
 export interface LookupRecord {

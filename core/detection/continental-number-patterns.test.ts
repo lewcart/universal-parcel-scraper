@@ -439,6 +439,22 @@ describe('City Express shipment and parcel numbers', () => {
   });
 });
 
+describe('Nova Post international numbers', () => {
+  // Synthetic numbers in the SH, country and ten-digit layout novapost.com's tracker accepts; none is a real parcel.
+  // SHO with C, P or R and ten digits is Ekart's; none of those pairs is a country code.
+  it('offers Nova Poshta at low confidence for SH, two letters and ten digits', () => {
+    for (const number of ['SHUA0000000001', 'SHPL0000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({
+        confidence: 'low',
+        candidates: expect.arrayContaining(['nova-poshta']),
+      });
+    }
+    for (const number of ['SHUA000000001', 'SHUA00000000001', 'RSSHUA0000000001', 'TNUA0000000001', 'SH1A0000000001', 'SHOC0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('nova-poshta');
+    }
+  });
+});
+
 describe('Nova Global and ShipEntegra numbers', () => {
   // Synthetic numbers in the layouts Nova Global and ShipEntegra print; none is a real parcel.
   it('names Nova Global for two letters, nine to sixteen digits and NPG', () => {

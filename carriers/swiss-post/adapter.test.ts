@@ -114,6 +114,25 @@ describe('Swiss Post historical event codes', () => {
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup' });
   });
 
+  it('drops the copy without a place of a scan Swiss Post lists twice at one instant', () => {
+    const arrival = { eventCode: 'LETTER.*.106.818', timestamp: '2026-09-10T14:48:56+02:00', externalMetadata: { description: 'Arrival in destination country' } };
+    const result = parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED' }, [
+      { eventCode: 'LETTER.*.106.912', timestamp: '2026-09-08T11:56:57+01:00' },
+      arrival,
+      { ...arrival, city: 'Sampletown Letter Centre', zip: '000000' },
+      { eventCode: 'LETTER.*.106.820', timestamp: '2026-09-10T15:18:56+02:00' },
+    ]);
+    expect(result.events?.map((event) => [event.provider_code, event.location])).toEqual([
+      ['LETTER.*.106.820', ''], ['LETTER.*.106.818', 'Sampletown Letter Centre 000000'], ['LETTER.*.106.912', ''],
+    ]);
+    // Two places, or another scan at that instant, stay.
+    const two = parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED' }, [
+      { ...arrival, city: 'Sampletown', zip: '0001' }, { ...arrival, city: 'Otherville', zip: '0002' },
+      { ...arrival, eventCode: 'LETTER.*.106.820' },
+    ]);
+    expect(two.events).toHaveLength(3);
+  });
+
   it('keeps scans of one instant in the carrier\'s order when it lists them oldest first', () => {
     const result = parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED' }, [
       { eventCode: 'PARCEL.*.1.3700', timestamp: '2026-09-08T10:55:00+02:00' },

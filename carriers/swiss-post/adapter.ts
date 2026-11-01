@@ -321,6 +321,13 @@ export function parseSwissPostShipment(
     if (stage) event.stage = stage;
     events.push(event);
   }
+  // Swiss Post can list one scan twice at one instant, once with its place and once without;
+  // the copy without a place adds nothing.
+  const scan = (event: CarrierEvent) => [event.provider_code, event.time, event.description, event.stage].join('\u0000');
+  const placed = new Set(events.filter((event) => event.location).map(scan));
+  for (let index = events.length - 1; index >= 0; index -= 1) {
+    if (!events[index]!.location && placed.has(scan(events[index]!))) events.splice(index, 1);
+  }
   if (listsNewestFirst(events) === false) events.reverse();
   events.sort((left, right) => timestamp(right.time ?? '') - timestamp(left.time ?? ''));
   // The newest scan's own stage leads; the shipment summary fills in when that

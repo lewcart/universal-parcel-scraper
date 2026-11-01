@@ -126,7 +126,8 @@ row by provider code, instant and location, unless one of the two is revoked.
   the recipient's postcode (see [PRIVACY.md](https://github.com/plhery/delivery-tracker/blob/main/PRIVACY.md)). The map
   places known sites by it ([places](../../places/README.md)).
   A scan without a city keeps its explicit country; the carrier's home country is never substituted.
-  A scan with neither has no location, even when it carries a number.
+  A scan with neither has no location, even when it carries a number. The reply can list
+  one scan twice at one instant, with and without its place; the copy without a place is dropped.
   Recipient name, address, signature and delivery instructions are never read;
   a test asserts it.
 

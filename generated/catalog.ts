@@ -16601,7 +16601,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ecom-logistics",
+      "recognitionRank": 576
     },
     "canaryUrl": "https://shipecom.com/track",
     "trackingUrlTemplate": "https://shipecom.com/track/{trackingNumber}",

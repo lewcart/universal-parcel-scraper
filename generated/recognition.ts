@@ -145,6 +145,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "dsv": 436,
   "dynalogic": 120,
   "early-bird": 350,
+  "ecom-logistics": 576,
   "econt": 290,
   "ecoscooting": 655,
   "ecourier": 743,

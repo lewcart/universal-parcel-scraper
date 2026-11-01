@@ -182,6 +182,7 @@ import { adapter as eCommerceInternational } from '../carriers/e-commerce-intern
 import { adapter as earlyBird } from '../carriers/early-bird/adapter.js';
 import { adapter as easyMail } from '../carriers/easy-mail/adapter.js';
 import { adapter as ecmsExpress } from '../carriers/ecms-express/adapter.js';
+import { adapter as ecomLogistics } from '../carriers/ecom-logistics/adapter.js';
 import { adapter as econt } from '../carriers/econt/adapter.js';
 import { adapter as ecoscooting } from '../carriers/ecoscooting/adapter.js';
 import { adapter as ecourier } from '../carriers/ecourier/adapter.js';
@@ -860,6 +861,7 @@ export const REGISTRY: RegistryDefinition = {
     "early-bird": earlyBird,
     "easy-mail": easyMail,
     "ecms-express": ecmsExpress,
+    "ecom-logistics": ecomLogistics,
     "econt": econt,
     "ecoscooting": ecoscooting,
     "ecourier": ecourier,
@@ -1680,7 +1682,7 @@ export const REGISTRY: RegistryDefinition = {
     "ecms-express": "ecms-express",
     "eco-express-ae": "universal",
     "ecohai": "universal",
-    "ecom-logistics": "universal",
+    "ecom-logistics": "ecom-logistics",
     "econt": "econt",
     "ecoscooting": "ecoscooting",
     "ecourier": "ecourier",

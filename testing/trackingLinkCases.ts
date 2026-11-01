@@ -2021,6 +2021,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.fmx\.asia\/result_detail\.php\?p=1&conno=MYX0000000017$/,
     marker: /Consignment Data Generated, Awaiting for Handover|Tracking Number:/,
     forwarding: { notFound: /Consignment Data Generated, Awaiting for Handover/ } },
+  // The page renders the parcel for the number in its path, or says it could not find it, with HTTP 404.
+  { carrier: 'ecom-logistics', number: 'E00A0000099',
+    route: /^https:\/\/shipecom\.com\/track\/E00A0000099$/,
+    marker: /We could not find that number|Tracking history/,
+    shipmentNotFound: { status: 404, marker: /We could not find that number/ } },
   // The page loads the fragment for the number in its address, which fills its search box and renders the
   // parcel or says the number does not exist, with HTTP 200.
   { carrier: 'skybox', number: '009900000099',

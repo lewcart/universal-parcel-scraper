@@ -19,18 +19,50 @@
   "timezone": "America/Toronto",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ecom-logistics",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 576
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://shipecom.com/track/{trackingNumber}",
     "searchUrl": "https://shipecom.com/track",
     "canaryUrl": "https://shipecom.com/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivered_at",
+      "destination"
+    ],
+    "scraped": [
+      "history",
+      "location",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "status",
+      "progress_rail",
+      "delivered_at",
+      "destination"
+    ],
+    "unavailable": [
+      "provider_code",
+      "eta",
+      "service_name",
+      "weight",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

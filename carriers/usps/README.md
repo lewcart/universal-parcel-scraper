@@ -135,7 +135,13 @@ images and subscriber endpoints are outside this adapter's scope.
 The separate [official developer API](https://github.com/USPS/api-examples/blob/main/README.md)
 uses `client_credentials` at `https://apis.usps.com/oauth2/v3/token`, with a
 registered application's Consumer Key and Consumer Secret and tracking access.
-This is an option for consumers with those credentials; it cannot provide an
+[USPS's access rules](https://www.usps.com/business/api-access.htm) give tracking data
+free to a shipper for its own Mailer ID and to a platform a shipper authorizes. Anyone
+else, such as a tracker for parcels it did not ship, needs paid access: a monthly fee, a
+signed intellectual property agreement and authorization for the Mailer ID or the
+tracking number. The [API terms](https://developers.usps.com/node/3) limit use to
+facilitating USPS shipping or mailing transactions and set request limits USPS may
+change. This is an option for consumers with that access; it cannot provide an
 anonymous default. Developer authentication is not integrated into this adapter.
 
 ## Rejected approaches

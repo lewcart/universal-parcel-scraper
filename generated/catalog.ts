@@ -10588,6 +10588,42 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "cargo-expreso": {
+    "displayName": "Cargo Expreso",
+    "color": "#d32027",
+    "aliases": [
+      "CAEX"
+    ],
+    "countries": [
+      "GT",
+      "SV",
+      "HN",
+      "CR"
+    ],
+    "selectable": true,
+    "timezone": "America/Guatemala",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://cargoexpreso.com/",
+    "trackingUrlTemplate": "https://cargoexpreso.com/tracking/?guia={trackingNumber}",
+    "trackingSearchUrl": "https://cargoexpreso.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "cargoexpreso.com",
+          "www.cargoexpreso.com",
+          "www2.cargoexpreso.com"
+        ],
+        "pathPattern": "^/(?:(?:hn|sv|cr|pa)/)?tracking/?$",
+        "params": [
+          "guia"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "cargobus": {
     "displayName": "Cargobus",
     "color": "#006ade",
@@ -13400,6 +13436,43 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "cupost": {
+    "displayName": "CUpost",
+    "color": "#4cb756",
+    "aliases": [
+      "CU편의점택배",
+      "CU 편의점택배",
+      "CUpost (CU 편의점택배)",
+      "BGF Networks",
+      "BGF네트웍스",
+      "(주)비지에프네트웍스"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cupost.co.kr/",
+    "trackingUrlTemplate": "https://www.cupost.co.kr/postbox/delivery/allResult.cupost?invoice_no={trackingNumber}",
+    "trackingSearchUrl": "https://www.cupost.co.kr/postbox/delivery/all.cupost",
+    "linkRules": [
+      {
+        "domains": [
+          "www.cupost.co.kr",
+          "cupost.co.kr"
+        ],
+        "pathPattern": "^/postbox/delivery/(?:all|local)Result\\.cupost$",
+        "params": [
+          "invoice_no"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "custom-companies": {
     "displayName": "The Custom Companies",
@@ -35699,6 +35772,38 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "rtt": {
+    "displayName": "RTT",
+    "color": "#d72429",
+    "aliases": [
+      "RTT Group",
+      "RTT Logistics"
+    ],
+    "countries": [
+      "ZA"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Johannesburg",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.rtt.co.za/",
+    "trackingUrlTemplate": "https://intellitrack.rtt.co.za/?SearchString={trackingNumber}",
+    "trackingSearchUrl": "https://intellitrack.rtt.co.za/",
+    "linkRules": [
+      {
+        "domains": [
+          "intellitrack.rtt.co.za"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "SearchString"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "runner-express": {
     "displayName": "Runner Express",
     "color": "#e71c22",
@@ -46327,6 +46432,7 @@ export const CARRIER_IDS = [
   "cacesa",
   "campost",
   "canada-air-express",
+  "cargo-expreso",
   "cargobus",
   "cargoline",
   "cargus",
@@ -46403,6 +46509,7 @@ export const CARRIER_IDS = [
   "cst-italia",
   "ctc-express",
   "cttyex",
+  "cupost",
   "custom-companies",
   "cycloon",
   "cyprus-post",
@@ -46995,6 +47102,7 @@ export const CARRIER_IDS = [
   "rpx-indonesia",
   "rr-express-sg",
   "rrs-logistics",
+  "rtt",
   "runner-express",
   "russian-post",
   "rxo",
@@ -47523,6 +47631,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cacesa": [],
   "campost": [],
   "canada-air-express": [],
+  "cargo-expreso": [],
   "cargobus": [],
   "cargoline": [],
   "cargus": ["cargus-1","cargus-2"],
@@ -47599,6 +47708,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cst-italia": ["cst-italia-1","cst-italia-2"],
   "ctc-express": [],
   "cttyex": ["cttyex-1"],
+  "cupost": [],
   "custom-companies": [],
   "cycloon": ["cycloon-1"],
   "cyprus-post": ["cyprus-post-s10"],
@@ -48191,6 +48301,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "rpx-indonesia": [],
   "rr-express-sg": [],
   "rrs-logistics": [],
+  "rtt": [],
   "runner-express": [],
   "russian-post": ["russian-post-1"],
   "rxo": [],

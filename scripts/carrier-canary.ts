@@ -16,6 +16,8 @@ export const unreachableFrontDoors: Partial<Record<CarrierId, string>> = {
   'aaa-cooper': 'www.aaacooper.com drops connections from outside the Americas and from the runner\'s network; other networks in the United States get its home page',
   'asyad-express': 'www.asyadexpress.om answers only Omani networks',
   azerpost: 'www.azerpost.az does not answer connections from the United States; European networks get its tracking page',
+  'cargo-expreso': 'cargoexpreso.com does not answer connections from European and American networks; the Internet Archive reaches it',
+  cupost: 'www.cupost.co.kr does not answer connections from European and American networks; the Internet Archive reaches it',
   flyking: 'www.flyking.in resets every HTTPS connection and serves its tracker over plain HTTP to Indian networks only',
   'iran-post': 'tracking.post.ir answers only Iranian networks',
   'kerry-tj': 'www.kerrytj.com answers only Taiwanese networks',

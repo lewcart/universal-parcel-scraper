@@ -10586,6 +10586,42 @@
     ],
     "detectionRules": []
   },
+  "cargo-expreso": {
+    "displayName": "Cargo Expreso",
+    "color": "#d32027",
+    "aliases": [
+      "CAEX"
+    ],
+    "countries": [
+      "GT",
+      "SV",
+      "HN",
+      "CR"
+    ],
+    "selectable": true,
+    "timezone": "America/Guatemala",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://cargoexpreso.com/",
+    "trackingUrlTemplate": "https://cargoexpreso.com/tracking/?guia={trackingNumber}",
+    "trackingSearchUrl": "https://cargoexpreso.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "cargoexpreso.com",
+          "www.cargoexpreso.com",
+          "www2.cargoexpreso.com"
+        ],
+        "pathPattern": "^/(?:(?:hn|sv|cr|pa)/)?tracking/?$",
+        "params": [
+          "guia"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "cargobus": {
     "displayName": "Cargobus",
     "color": "#006ade",
@@ -13398,6 +13434,43 @@
         "confidence": "high"
       }
     ]
+  },
+  "cupost": {
+    "displayName": "CUpost",
+    "color": "#4cb756",
+    "aliases": [
+      "CU편의점택배",
+      "CU 편의점택배",
+      "CUpost (CU 편의점택배)",
+      "BGF Networks",
+      "BGF네트웍스",
+      "(주)비지에프네트웍스"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cupost.co.kr/",
+    "trackingUrlTemplate": "https://www.cupost.co.kr/postbox/delivery/allResult.cupost?invoice_no={trackingNumber}",
+    "trackingSearchUrl": "https://www.cupost.co.kr/postbox/delivery/all.cupost",
+    "linkRules": [
+      {
+        "domains": [
+          "www.cupost.co.kr",
+          "cupost.co.kr"
+        ],
+        "pathPattern": "^/postbox/delivery/(?:all|local)Result\\.cupost$",
+        "params": [
+          "invoice_no"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "custom-companies": {
     "displayName": "The Custom Companies",
@@ -35695,6 +35768,38 @@
     "canaryUrl": "https://www.rrswl.com/order/searchLishi",
     "trackingSearchUrl": "https://www.rrswl.com/order/searchLishi",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "rtt": {
+    "displayName": "RTT",
+    "color": "#d72429",
+    "aliases": [
+      "RTT Group",
+      "RTT Logistics"
+    ],
+    "countries": [
+      "ZA"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Johannesburg",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.rtt.co.za/",
+    "trackingUrlTemplate": "https://intellitrack.rtt.co.za/?SearchString={trackingNumber}",
+    "trackingSearchUrl": "https://intellitrack.rtt.co.za/",
+    "linkRules": [
+      {
+        "domains": [
+          "intellitrack.rtt.co.za"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "SearchString"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "runner-express": {

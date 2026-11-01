@@ -49,7 +49,7 @@ gives a key 250 calls a day, so they go to the lookups that would otherwise need
 and recognition never asks the API. Its reply is the global page's, with each event's offset,
 and it resolves a piece identifier without a browser. DHL allows a key one call every five
 seconds: calls through a key take turns, and a lookup whose turn would come more than ten
-seconds later, or too late for its budget, skips the API. A rate limit pauses the key for
+seconds later, or too late for its budget, skips the API with the reason `self_paced`. A rate limit pauses the key for
 DHL's retry window, or an hour without one, and a refused key (HTTP 401 or 403) for an hour.
 DHL's not-found ends the lookup there; any other failure leaves the number to `trawl`. DHL's
 terms for the key bind the consumer: they ask for the line "Delivered by Deutsche Post DHL

@@ -21,10 +21,16 @@ export interface DhlEcommercePlChallenge { algorithm: 'SHA-256'; challenge: stri
  */
 export function normalizeDhlEcommercePlNumber(raw: string): string {
   const number = raw.trim().toUpperCase().replace(/[\s.-]/g, '');
-  if (!/^(?!AD)(?=.*\d)[A-Z0-9]{11,34}$/.test(number)) {
+  if (!/^(?=.*\d)[A-Z0-9]{11,34}$/.test(number)) {
     throw new InvalidInputError(PROVIDER, 'DHL eCommerce Poland tracking requires a number of 11 to 34 letters and digits');
   }
+  if (number.startsWith('AD')) throw allegroDelivery();
   return number;
+}
+
+/** Another carrier's number, refused with the reason `other_carrier` rather than as a wrong number. */
+function allegroDelivery(): InvalidInputError {
+  return new InvalidInputError(PROVIDER, 'This number belongs to Allegro Delivery, which Allegro tracks', { reason: 'other_carrier' });
 }
 
 /** The proof of work the page receives before a lookup; only the published SHA-256 form is solved. */
@@ -60,7 +66,7 @@ export function parseDhlEcommercePl(payload: unknown, rawNumber: string): Carrie
     || !Array.isArray(entry.shipments)) {
     throw new SchemaError(PROVIDER, 'DHL eCommerce Poland did not return the requested number');
   }
-  if (entry.numberType === 'AllegroDelivery') throw new InvalidInputError(PROVIDER, 'This number belongs to Allegro Delivery, which Allegro tracks');
+  if (entry.numberType === 'AllegroDelivery') throw allegroDelivery();
   if (!entry.shipments.length) {
     // The portal leaves the number type out when it knows nothing under the number.
     if (entry.numberType === undefined) throw new NotFoundError(PROVIDER);

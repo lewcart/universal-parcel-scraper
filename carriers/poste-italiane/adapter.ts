@@ -360,7 +360,9 @@ export class PosteItalianeTracker {
     const budget = lookupBudget(context, 2 * this.timeoutMs + TRANSIENT_RETRY_DELAY_MS);
     const state = searchState(this.fetcher);
     const waitMs = pacedMs(state, Date.now());
-    if (waitMs > 0) throw new RateLimitedError('Poste Italiane', waitMs, 'Poste Italiane was searched as often as an hour allows');
+    if (waitMs > 0) {
+      throw new RateLimitedError('Poste Italiane', waitMs, 'Poste Italiane was searched as often as an hour allows', { reason: 'self_paced' });
+    }
     budget.signal.throwIfAborted();
     state.sentAt.push(Date.now());
     const { response, bytes } = await fetchBounded(TRACKING_ENDPOINT, {

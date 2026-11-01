@@ -40,7 +40,8 @@ Correos de Chile (`correos-chile`) are separate carriers.
   Correos Express's all-digit 23-character numbers don't match. The adapter itself accepts any code
   and lets the envelope decide.
 - The localizador serves the whole Correos group. An all-digit number whose coded scans are all
-  Correos Express situation codes (`X…`) is refused as invalid input: Correos's own codes carry
+  Correos Express situation codes (`X…`) is refused as invalid input with the reason
+  `other_carrier`: Correos's own codes carry
   letters, and the shipment is [Correos Express](../correos-express/README.md)'s, whose adapter
   reads the same localizador beside its form. A universal provider naming Correos for it does
   not make it Correos's.

@@ -189,7 +189,7 @@ function parseTracking(payload: unknown, trackingNumber: string, expeditionCode?
   // The localizador serves the whole Correos group. Correos's own codes carry letters: an
   // all-digit number whose every coded scan is a Correos Express situation is Correos Express's.
   if (/^\d+$/.test(requested) && codes.length > 0 && codes.every(isCorreosExpressCode)) {
-    throw new InvalidInputError('Correos', 'Correos Express tracks this shipment');
+    throw new InvalidInputError('Correos', 'Correos Express tracks this shipment', { reason: 'other_carrier' });
   }
   // The localizador lists oldest first; the parcel state is the latest entry.
   if (listsNewestFirst(parsed.map(({ event }) => event)) === false) parsed.reverse();

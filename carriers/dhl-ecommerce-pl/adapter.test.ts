@@ -79,7 +79,7 @@ describe('DHL eCommerce Poland parser', () => {
   it('reads absence only from an entry without a number type', () => {
     expect(() => parseDhlEcommercePl([{ number: WAYBILL, shipments: [] }], WAYBILL)).toThrowError(expect.objectContaining({ kind: 'not_found' }));
     expect(() => parseDhlEcommercePl([{ number: WAYBILL, numberType: 'AllegroDelivery', shipments: [] }], WAYBILL))
-      .toThrowError(expect.objectContaining({ kind: 'invalid_input' }));
+      .toThrowError(expect.objectContaining({ kind: 'invalid_input', reason: 'other_carrier' }));
     expect(() => parseDhlEcommercePl([{ number: WAYBILL, numberType: 'Order', shipments: [] }], WAYBILL))
       .toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
   });
@@ -109,7 +109,8 @@ describe('DHL eCommerce Poland parser', () => {
     expect(() => normalizeDhlEcommercePlNumber('1234567890')).toThrow(InvalidInputError);
     expect(() => normalizeDhlEcommercePlNumber('9'.repeat(35))).toThrow(InvalidInputError);
     expect(() => normalizeDhlEcommercePlNumber('ABCDEFGHIJKL')).toThrow(InvalidInputError);
-    expect(() => normalizeDhlEcommercePlNumber('AD000000000000000')).toThrow(InvalidInputError);
+    expect(() => normalizeDhlEcommercePlNumber('AD000000000000000')).toThrowError(expect.objectContaining({ reason: 'other_carrier' }));
+    expect(() => normalizeDhlEcommercePlNumber('AD00')).toThrowError(expect.objectContaining({ reason: undefined }));
   });
 
   it('gives every recorded code its wording and a known stage, and every recorded scan its stage', () => {

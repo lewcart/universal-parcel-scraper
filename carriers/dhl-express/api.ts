@@ -20,7 +20,7 @@ const MAX_PAUSE_MS = 24 * 60 * 60_000;
 /** The API not asked: the key is paused, or its next turn comes too late for the lookup. */
 export class ApiPacedError extends RateLimitedError {
   constructor(retryAfterMs: number) {
-    super(PROVIDER, retryAfterMs, 'DHL tracking API was asked as often as the key allows');
+    super(PROVIDER, retryAfterMs, 'DHL tracking API was asked as often as the key allows', { reason: 'self_paced' });
     this.name = 'ApiPacedError';
   }
 }

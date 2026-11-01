@@ -746,7 +746,7 @@ describe('DHL tracking API', () => {
       const recorder = recorded();
       const tracker = new DhlExpressTracker({ ...keyed(fetcher, browser().trawl), recorder });
       await tracker.fetch(number);
-      await expect(tracker.unified(number, { budgetMs: 5_000 })).rejects.toThrow(ApiPacedError);
+      await expect(tracker.unified(number, { budgetMs: 5_000 })).rejects.toMatchObject({ kind: 'rate_limited', reason: 'self_paced' });
       await expect(tracker.fetch(number, { budgetMs: 5_000 })).resolves.toMatchObject({ status: 'delivered' });
       expect(apiCalls(fetcher)).toHaveLength(1);
       later(SPACING_MS - 50);

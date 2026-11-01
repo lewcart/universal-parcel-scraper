@@ -705,7 +705,7 @@ describe('PosteItalianeTracker fetch', () => {
     }
     expect(await recognition.recognize!(TRACKING_NUMBER)).toMatchObject({ known: true });
     now += 60_000;
-    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 42 * 60_000 });
+    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 42 * 60_000, reason: 'self_paced' });
     await expect(recognition.recognize!(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited' });
     expect(fetcher).toHaveBeenCalledTimes(HOURLY_SEARCHES);
     now += 42 * 60_000;
@@ -716,7 +716,7 @@ describe('PosteItalianeTracker fetch', () => {
     const paused = new PosteItalianeTracker({ fetcher: refused, trawl: null });
     await expect(paused.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
     now += CAPTCHA_PAUSE_MS - 1;
-    await expect(paused.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 1 });
+    await expect(paused.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 1, reason: 'self_paced' });
     now += 1;
     await expect(paused.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
     expect(refused).toHaveBeenCalledTimes(2);
@@ -730,9 +730,10 @@ describe('PosteItalianeTracker fetch', () => {
       .mockResolvedValueOnce(new Response('{}', { status: 429, headers })).mockResolvedValue(response(parcel()));
     const named = limited({ 'Retry-After': '120' });
     const tracker = new PosteItalianeTracker({ fetcher: named, trawl: null });
-    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 120_000 });
+    // The service's own 429 carries no reason; the refusal the pause then makes without a request does.
+    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 120_000, reason: undefined });
     now += 119_000;
-    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 1000 });
+    await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 1000, reason: 'self_paced' });
     now += 1000;
     await expect(tracker.fetch(TRACKING_NUMBER)).resolves.toMatchObject({ status: 'delivered' });
     expect(named).toHaveBeenCalledTimes(2);

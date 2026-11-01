@@ -47,8 +47,9 @@ Detection suggests eleven-digit waybills whose last digit is the check digit of
 DHL Paket's Identcode: weights 4 and 9 alternate from the left over the first
 ten digits. DHL does not document it for Poland, but every waybill archived
 from its trackers passes it. Other accepted references, including
-JJD licence plates, require the carrier to be named. Allegro Delivery numbers
-are rejected because that service is tracked by Allegro.
+JJD licence plates, require the carrier to be named. Allegro Delivery numbers,
+`AD` ones before a request and any the portal names as Allegro Delivery's, are
+refused with the reason `other_carrier` because Allegro tracks that service.
 
 ## Testing
 

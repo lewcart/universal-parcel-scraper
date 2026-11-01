@@ -233,7 +233,11 @@ does not wrap its telemetry a second time. `CarrierError.reason` separates expec
 such as Amazon Shipping's expired history, from transport failures. An inconclusive error
 for the carrier's own answer that it holds no history under the number, an empty result or
 not-found notice, carries `portal_not_found`, so a consumer can tell that answer from an
-outage; it does not make the parcel absent. A challenge names the stage that stopped it when
+outage; it does not make the parcel absent. A rate limit an adapter's own pacing imposes,
+refused before any request, carries `self_paced`: the lookup sent nothing, so a consumer can
+treat it as a deferral rather than the carrier's throttling. Invalid input carries `other_carrier` when the carrier's answer
+names another carrier as the shipment's, so a consumer does not read it as a mistyped number.
+A challenge names the stage that stopped it when
 the adapter can tell: `api_denied` when the carrier refused the request outright,
 `puzzle_missing` when no puzzle appeared, `puzzle_unsolved` or `solver_unavailable` when the
 solver gave no answer, `verification_refused` when the answer was refused, and

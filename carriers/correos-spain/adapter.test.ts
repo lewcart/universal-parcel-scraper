@@ -255,7 +255,7 @@ describe('Correos Spain response parsing', () => {
       event('X020000V', '13/10/2026', '19:46:32', 'En route to the destination location'),
     ];
     expect(() => parseCorreosSpainTrackingResponse([envelope({ codEnvio: shipment, eventos: express })], shipment))
-      .toThrow(InvalidInputError);
+      .toThrowError(expect.objectContaining({ kind: 'invalid_input', reason: 'other_carrier' }));
     // A Correos scan among them, or a code of Correos's own with letters, keeps the history.
     expect(parseCorreosSpainTrackingResponse([envelope({ codEnvio: shipment, eventos: [
       ...express, event('C010000V', '14/10/2026', '09:00:00', 'In transit'),

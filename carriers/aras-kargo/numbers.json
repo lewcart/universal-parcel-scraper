@@ -255,7 +255,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "quarantine"
       },
       "expect": {
         "carrier": "unknown",
@@ -275,7 +275,8 @@
           "dpd-uk"
         ]
       },
-      "note": "A complaint on Şikayetvar's Aras Kargo page calls it a tracking number; one digit longer than the others."
+      "note": "A complaint on Şikayetvar's Aras Kargo page calls it a tracking number; one digit longer than Aras's thirteen-digit waybills, and Aras's tracker does not find it, so it is kept as quarantined evidence.",
+      "quarantine": true
     }
   ]
 }

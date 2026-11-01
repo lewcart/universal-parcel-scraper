@@ -91,6 +91,11 @@
       "id": "17feia-1",
       "pattern": "^FEI[A-Z]{2}\\d{10}YQ$",
       "confidence": "high"
+    },
+    {
+      "id": "17feia-2",
+      "pattern": "^FEI[A-Z]{2}\\d{10}[A-Z]{2}$",
+      "confidence": "low"
     }
   ]
 }

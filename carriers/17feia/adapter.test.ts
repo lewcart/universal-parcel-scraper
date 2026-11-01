@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, SEVENTEENFEIA_API, SeventeenFeiaTracker } from './adapter.js';
@@ -27,6 +29,18 @@ const changed = (name: string, change: (order: Envelope['obj'], envelope: Envelo
 const reply = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
   { ...init, headers: { 'Content-Type': 'application/json;charset=UTF-8', ...init.headers } });
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+
+describe('17FEIA numbers', () => {
+  it('claims FEI, two letters, ten digits and YQ, and only suggests 17FEIA for other final letters, which recognition asks it about', () => {
+    expect(detectCarrierMatch(WAREHOUSE)).toMatchObject({ carrier: '17feia', confidence: 'high' });
+    expect(detectCarrierMatch(UNKNOWN)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['17feia'] });
+    expect(recognitionAskedCarriers(UNKNOWN)).toContain('17feia');
+    expect(normalizeSeventeenFeiaNumber(UNKNOWN)).toBe(UNKNOWN);
+    for (const number of ['FEISH999999999ZZ', 'FEISH99999999999ZZ', 'FEISH9999999999Z', 'FESH9999999999ZZ']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('17feia');
+    }
+  });
+});
 
 describe('17FEIA HTTP adapter', () => {
   it('asks the tracking page’s lookup for the whole number once, through the supplied transport', async () => {

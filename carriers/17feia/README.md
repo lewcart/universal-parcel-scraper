@@ -66,8 +66,10 @@ Tracked through the lookup its tracking page makes.
 
 17FEIA's tracking page gives `FEI`, two letters, ten digits and `YQ` as its example layout.
 The parcels ParcelPanel's 17FEIA page offers follow it with `FEISZ` for Shenzhen departures,
-and 17FEIA's tracker answers them. `17feia-1` claims the layout. The tracker also names the
-delivering partner and that partner's own number, which stays with the partner's rules.
+and 17FEIA's tracker answers them. `17feia-1` claims the layout. No sample ends in other
+letters, so `17feia-2` only suggests 17FEIA for them, with low confidence, and recognition asks
+its tracker. The tracker also names the delivering partner and that partner's own number, which
+stays with the partner's rules.
 
 ## Testing
 

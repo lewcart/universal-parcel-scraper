@@ -13,6 +13,7 @@
     {"code": "ST15", "wording": "Čeka u paketomatu", "stage": "ready_for_pickup", "language": "sr", "confirmedBy": "live", "note": "Waiting in a parcel locker; sent with a trailing line break."},
     {"code": "ST33", "wording": "Zaduzena za paketomat", "stage": "out_for_delivery", "language": "sr", "confirmedBy": "live", "note": "Taken out by a courier for a parcel locker, minutes before it waits there."},
     {"code": "ST35", "wording": "Pokušaj uručenja (primaocu ostavljeno obaveštenje)", "stage": "failed_attempt", "language": "sr", "confirmedBy": "live", "note": "A delivery attempt; the recipient was left a notice."},
-    {"code": "ST48", "wording": "Primalac ce doci po paket", "stage": "ready_for_pickup", "language": "sr", "confirmedBy": "live", "note": "The recipient will come for the parcel, which waits at the depot; repeated on every round until they collect it."}
+    {"code": "ST48", "wording": "Primalac ce doci po paket", "stage": "ready_for_pickup", "language": "sr", "confirmedBy": "live", "note": "The recipient will come for the parcel, which waits at the depot; repeated on every round until they collect it."},
+    {"code": "ST52", "wording": "Preusmerena na zahtev primaoca", "stage": "in_transit", "language": "sr", "confirmedBy": "live", "note": "Redirected at the recipient's request, as ST11 is at the depot."}
   ]
 }

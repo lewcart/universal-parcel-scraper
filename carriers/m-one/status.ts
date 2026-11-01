@@ -19,6 +19,7 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
   ['ST35', 'failed_attempt'], // A delivery attempt; the recipient was left a notice.
   // The recipient will collect the parcel, which stays at the depot for them.
   ['ST48', 'ready_for_pickup'],
+  ['ST52', 'in_transit'], // Redirected at the recipient's request.
 ]);
 
 /** The stage M-ONE's codes give a scan code. */

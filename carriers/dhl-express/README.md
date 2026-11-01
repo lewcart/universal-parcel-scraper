@@ -106,8 +106,9 @@ A few tracking requests within minutes from one address draw that code for
 every waybill and device for a while; the settings read keeps answering. A
 server's address draws it like a home one and it lifts on its own: it is a rate
 limit, not a block of the address.
-Asked every two minutes, the code stayed on past a quarter of an hour; after
-half an hour without requests it was gone. So after one, no adapter instance in
+The host can pin `dhle.dhl.com` to a separate egress through its supplied fetcher,
+while keeping the browser endpoints on their own routes. That egress retains the
+same request budget and cooldowns. After a rejection, no adapter instance in
 the process that sends through the same fetcher asks the mobile API for half an
 hour, and for twice as long each time the first request after a pause draws it
 again, up to four hours; an answered request ends the doubling. A waybill

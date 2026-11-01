@@ -212,6 +212,12 @@ describe('iMile HTTP adapter', () => {
     expect(result.events!.at(-1)).toMatchObject({ provider_code: '1001' });
   });
 
+  it('places New Zealand’s scans on Auckland’s clock and Peru’s on Lima’s', () => {
+    const placed = (country: string) => parseImile(changed('in-transit', (shipment) => { shipment.country = country; }), IN_TRANSIT);
+    expect(placed('NZL')).toMatchObject({ last_update: '2026-06-04T02:15:00+12:00', destination_country: 'NZ' });
+    expect(placed('PER')).toMatchObject({ last_update: '2026-06-04T02:15:00-05:00', destination_country: 'PE' });
+  });
+
   it('keeps the wall clocks of a country with several zones or none named', () => {
     for (const country of ['MEX', 'BRA', 'USA', 'XXX', '']) {
       const result = parseImile(changed('in-transit', (shipment) => { shipment.country = country; }), IN_TRANSIT);

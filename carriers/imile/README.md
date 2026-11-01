@@ -55,9 +55,10 @@ makes, with the China leg Cainiao's global tracker holds under the same number.
   recipient country's time. In a Saudi history the take-off and landing scans read five hours
   behind the clocks of the flight's own schedule line, which are China's, so the scans are
   Saudi time, and a Colombian take-off reads just after its flight's departure on Colombia's
-  clock. A recipient country with one zone places every scan as an instant. Australia, Brazil,
-  Mexico and the United States span several zones and the reply does not say which, so their
-  clocks stay `local_time`.
+  clock. A recipient country with one zone places every scan as an instant, and so does New
+  Zealand, whose other zone is the Chatham Islands': its delivery stations keep Auckland's clock,
+  as Australia's keep their own. Australia, Brazil, Mexico and the United States span several
+  zones and the reply does not say which, so their clocks stay `local_time`.
 - A scan's description is its own sentence without the brackets the page shows. A name in 【】
   opening a scan is its centre, which the location shows, or else heads the sentence ("BOG:
   Clearance start."); the other names, and the reasons and dates in <>, keep their words.

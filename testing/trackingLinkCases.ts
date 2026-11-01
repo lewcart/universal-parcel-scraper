@@ -29,6 +29,9 @@ export interface TrackingLinkCase {
 // independently of the generated link templates, so a template that drifts
 // fails here instead of passing against itself.
 export const trackingLinkCases: TrackingLinkCase[] = [
+  { carrier: 'trendyol-express', number: '7330123456789000',
+    route: /^https:\/\/kargotakip\.trendyol\.com\//,
+    marker: /Sonuç Bulunamadı/, renderTimeoutMs: 20_000 },
   { carrier: 'anteraja', number: '10000000000001',
     route: /^https:\/\/anteraja\.id\/id\/tracking\/10000000000001$/,
     marker: /Cek Resi Paketmu|Lacak Pengirimanmu/i },

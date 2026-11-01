@@ -11857,6 +11857,29 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "cmt-express": {
+    "displayName": "CMT Express",
+    "color": "#ed010b",
+    "aliases": [
+      "CMT",
+      "诚贸通",
+      "诚贸通供应链",
+      "深圳诚贸通供应链有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cmtexpress.com.cn/track.aspx",
+    "trackingSearchUrl": "https://www.cmtexpress.com.cn/track.aspx",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "cne": {
     "displayName": "CNE Express",
     "color": "#e83828",
@@ -24986,6 +25009,28 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "kuayuan-express": {
+    "displayName": "Kuayuan Express",
+    "color": "#084b86",
+    "aliases": [
+      "跨源速递",
+      "深圳市跨源速递供应链有限公司",
+      "KuaYuan Express"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.kuayuanexpress.com.cn/",
+    "trackingSearchUrl": "https://www.kuayuanexpress.com.cn/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "kuayue-express": {
     "displayName": "Kuayue Express",
@@ -44383,6 +44428,7 @@ export const CARRIER_IDS = [
   "cj-logistics",
   "cj-packet",
   "closer-logistics",
+  "cmt-express",
   "cne",
   "codexpress",
   "collicare",
@@ -44729,6 +44775,7 @@ export const CARRIER_IDS = [
   "komon-express",
   "kronos-express",
   "ktd",
+  "kuayuan-express",
   "kuayue-express",
   "kuehne-nagel",
   "kun-express",
@@ -45509,6 +45556,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cj-logistics": [],
   "cj-packet": ["cj-packet-1"],
   "closer-logistics": [],
+  "cmt-express": [],
   "cne": ["cne-1"],
   "codexpress": [],
   "collicare": [],
@@ -45855,6 +45903,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "komon-express": ["komon-express-1"],
   "kronos-express": [],
   "ktd": ["ktd-1"],
+  "kuayuan-express": [],
   "kuayue-express": ["kuayue-express-1"],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "kun-express": ["kun-express-1"],

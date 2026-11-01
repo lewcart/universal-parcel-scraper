@@ -693,6 +693,17 @@ describe('SXJD, CPSZY, Valueway, Jiachen, LONGCPS, Bridge Intl, JiuFang and CEL 
   });
 });
 
+describe('Kuayuan Express and CMT Express', () => {
+  it('names the carriers from providers', () => {
+    for (const [name, id] of [['Kuayuan Express', 'kuayuan-express'], ['跨源速递', 'kuayuan-express'], ['CMT', 'cmt-express'],
+      ['诚贸通', 'cmt-express']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    // Kuayue, the express network, keeps its own name.
+    expect(carrierIdFromName('Kuayue Express')).not.toBe('kuayuan-express');
+  });
+});
+
 describe('Too Express, Go World, Shenghang, HZT, WLD, 3CQ, Banling, Jikuaida, HYE and Jet', () => {
   it('names the carriers from providers and reads their tracker links', () => {
     for (const [name, id] of [['TooExpress', 'too-express'], ['Too Express', 'too-express'], ['Go World Express', 'go-world-express'],

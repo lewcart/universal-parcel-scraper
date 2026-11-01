@@ -808,10 +808,6 @@
       {
         "pattern": "^1Z[A-Z0-9]{16}$",
         "confidence": "low"
-      },
-      {
-        "pattern": "^[HJKV]\\d{10}$",
-        "confidence": "low"
       }
     ]
   },

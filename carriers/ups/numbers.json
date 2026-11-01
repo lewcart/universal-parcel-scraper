@@ -104,11 +104,14 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ups",
           "gls-it"
         ]
       },
-      "note": "Open-source project example, not a real shipment. The source attributes it to UPS, which stays one candidate among several."
+      "note": "Open-source project example, not a real shipment. The source calls it a UPS waybill, but UPS's own list of its formats has no letter but T before ten digits, and the adapter takes 1Z numbers only.",
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      }
     },
     {
       "number": "K1506235620",
@@ -121,11 +124,14 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ups",
           "gls-it"
         ]
       },
-      "note": "Open-source project example, not a real shipment. The source attributes it to UPS, which stays one candidate among several."
+      "note": "Open-source project example, not a real shipment. The source calls it a UPS waybill, but UPS's own list of its formats has no letter but T before ten digits, and the adapter takes 1Z numbers only.",
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      }
     },
     {
       "number": "V0490119172",
@@ -138,12 +144,15 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ups",
           "dtdc",
           "gls-it"
         ]
       },
-      "note": "Open-source project example, not a real shipment. The source attributes it to UPS, which stays one candidate among several."
+      "note": "Open-source project example, not a real shipment. The source calls it a UPS waybill, but UPS's own list of its formats has no letter but T before ten digits, and the adapter takes 1Z numbers only.",
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      }
     },
     {
       "number": "1ZH32106DK48771633",
@@ -783,19 +792,19 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate",
+        "assessment": "scope_review",
         "reportedRole": "reported_waybill"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ups",
           "dtdc",
           "gls-it"
         ]
       },
-      "note": "Broker review of a UPS shipment from Poland to Spain. The H waybill passes the mod-10 check of the open-source UPS waybill definition."
+      "note": "Broker review of a UPS shipment from Poland to Spain. The H waybill passes the mod-10 check of the open-source UPS waybill definition, but UPS's own list of its formats has no letter but T before ten digits, and the adapter takes 1Z numbers only.",
+      "quarantine": true
     },
     {
       "number": "802269919937015457",

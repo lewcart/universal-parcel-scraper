@@ -10,7 +10,10 @@ still reported from the UPS record.
 The adapter accepts only `1Z` numbers and rejects anything else before any request.
 Detection selects UPS only when the last digit matches the check digit over the 15
 characters after `1Z` (a letter counts as its ASCII code minus 63, mod 10; weights 1, 2
-from the left); a mismatch stays a suggestion.
+from the left); a mismatch stays a suggestion. No other shape is offered for UPS. Its
+[list of formats](https://web.archive.org/web/20250204191042/https://www.ups.com/us/en/support/tracking-support.page)
+puts no letter but `T` before ten digits, so the `H`, `J`, `K` and `V` waybills of an
+open-source list stay with the carriers whose rules take them.
 
 1. `api` (only with `UPS_CLIENT_ID` and `UPS_CLIENT_SECRET`): the official Track API
    ([api.ts](api.ts)), with the credentials of an app that has the Tracking API product.

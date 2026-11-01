@@ -810,10 +810,6 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^1Z[A-Z0-9]{16}$",
         "confidence": "low"
-      },
-      {
-        "pattern": "^[HJKV]\\d{10}$",
-        "confidence": "low"
       }
     ]
   },
@@ -47299,7 +47295,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dachser": [],
   "dhl": ["dhl-1","dhl-14","dhl-16","dhl-15","dhl-9","dhl-8","dhl-10","dhl-3","dhl-13","dhl-12","dhl-7"],
   "dhl-ecommerce": ["dhl-ecommerce-1","dhl-ecommerce-8","dhl-ecommerce-2","dhl-ecommerce-4","dhl-ecommerce-5","dhl-ecommerce-6","dhl-ecommerce-7"],
-  "ups": ["ups-1","ups-3","ups-2"],
+  "ups": ["ups-1","ups-3"],
   "amazon-logistics": ["amazon-logistics-1"],
   "amazon-shipping": [],
   "fedex": ["fedex-1","fedex-2","fedex-3","fedex-label-barcode","fedex-4","fedex-ground-economy"],

@@ -90,11 +90,6 @@
       "id": "ups-3",
       "pattern": "^1Z[A-Z0-9]{16}$",
       "confidence": "low"
-    },
-    {
-      "id": "ups-2",
-      "pattern": "^[HJKV]\\d{10}$",
-      "confidence": "low"
     }
   ]
 }

@@ -286,9 +286,10 @@ describe('evidence-backed tracking formats', () => {
       .toMatchObject({ trackingNumber: 'AALZJR', carrier: 'gls-de', source: 'link' });
   });
 
-  it('offers UPS for an H waybill without selecting it', () => {
-    expect(detectCarrierMatch('H1234567890')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['ups', 'dtdc', 'gls-it'] });
-    expect(detectCarrierMatch('A1234567890').candidates).not.toContain('ups');
+  it('does not offer UPS for a letter and ten digits, which its adapter does not take', () => {
+    // UPS lists no letter but T before ten digits; the H, J, K and V waybills of an open-source list stay with others.
+    expect(detectCarrierMatch('H1234567890')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dtdc', 'gls-it'] });
+    for (const number of ['A1234567890', 'J1234567890', 'K1234567890', 'V1234567890']) expect(detectCarrierMatch(number).candidates, number).not.toContain('ups');
   });
 
   it('does not infer a GLS country or Aramex service from a short reference', () => {

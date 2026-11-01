@@ -194,7 +194,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ups",
           "dtdc",
           "gls-it"
         ]
@@ -218,7 +217,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ups",
           "dtdc",
           "gls-it"
         ]

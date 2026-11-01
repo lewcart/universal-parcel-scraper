@@ -146,6 +146,8 @@ function captured(value: unknown, window: 'first' | 'last' = 'first'): TrawlCapt
 /**
  * Decode the several shapes TRAWL releases use for a captured body: a string,
  * a byte array, a serialized Node Buffer, or an index-keyed object.
+ * This does not decompress wire bytes. Tier1's html is already decoded text;
+ * browser response bodies are separate from their rendered DOM snapshots.
  */
 export function trawlBody(value: JsonObject, maxBytes = DEFAULT_MAX_BYTES): string {
   if (typeof value.body === 'string') return value.body;

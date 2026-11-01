@@ -18,18 +18,44 @@
   "timezone": "America/Sao_Paulo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "fm-transportes",
+    "steps": [
+      "trawl"
+    ],
+    "browser": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "eta"
+  ],
   "portal": {
     "url": "https://rastreio.fmtransportes.com.br/#/{trackingNumber}",
     "searchUrl": "https://rastreio.fmtransportes.com.br/",
     "canaryUrl": "https://rastreio.fmtransportes.com.br/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "eta",
+      "recipient_name",
+      "recipient_address",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "eta"
+    ],
+    "discarded": [
+      "recipient_name",
+      "recipient_address",
+      "signatory"
+    ],
+    "unavailable": [
+      "location",
+      "weight",
+      "service_name",
+      "provider_code"
+    ]
   },
   "links": [
     {

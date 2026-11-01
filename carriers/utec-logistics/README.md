@@ -1,28 +1,22 @@
 # UTEC Logistics
 
-UTEC Logistics parcels use enabled universal providers. There is no dedicated adapter.
+UTEC Group is a Ukrainian freight forwarder. Its UTEC Express parcel line brought orders
+from China into Ukraine and handed them to Ukrposhta.
 
-UTEC Logistics (UTEC Group) is a Kyiv freight forwarder bringing goods into Ukraine from China, Hong Kong,
-Poland, the United States and elsewhere. Its parcel line, UTEC Express, carried AliExpress orders from China
-to Ukraine and handed them to Ukrposhta for delivery. Its site is utec.ua; utec.info, the address 17TRACK
-lists for it, now leads there.
+## Retrieval
 
-## Numbers
+The public form's inline handler redirects to `utec.ua/tracking/{number}`. It bypasses the
+form's declared POST action, so replaying that POST is not the tracking workflow.
 
-UTEC Express numbers are `UTECP`, ten digits and two letters, `YQ` on every public one. Reviews on its
-vidhuk.ua page quote four, one of them in the company's own reply. They all come from that one site, so
-`utec-logistics-1` is low, though no other carrier uses the prefix.
+TRAWL can open the tracking route through its browser protection. The route can return a generic
+tracking template without a dated shipment reply. Opening
+the page or echoing its address does not establish shipment existence or absence.
 
-## Why there is no adapter
+## Limitations
 
-Its tracking page, `utec.ua/tracking/{number}`, sits behind a Cloudflare challenge that plain requests and an
-automated browser did not pass, so the request behind it is unknown.
-
-## Links
-
-The tracking page reads the number from its path.
+There is no validated native history parser. Use enabled universal providers for retrieval;
+public reference provenance remains in `numbers.json`.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).

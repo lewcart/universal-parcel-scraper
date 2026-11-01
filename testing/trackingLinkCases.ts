@@ -2067,6 +2067,8 @@ export const trackingLinkCases: TrackingLinkCase[] = [
  * tracking comes from shared providers, not the page the link opens.
  */
 export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
+  'zoom-ve': 'the result is rendered after the application Turnstile callback, which the daily link check does not submit',
+  'fm-transportes': 'the parcel view needs a Turnstile guest session, and its initial empty view is not a number-bound missing-parcel notice',
   roadie: 'The tracker requires US egress; the rendered-link canary has no scoped US browser transport.',
   eushipments: 'euShipments\' tracking page takes the number only in its form, which posts it to a handler, so no address opens one order',
   'no-limit': 'No Limit\'s tracking page takes the number only in its form, which it posts back to itself with the page\'s state, so no address opens one shipment',

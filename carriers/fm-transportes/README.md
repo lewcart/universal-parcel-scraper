@@ -1,28 +1,29 @@
 # FM Transportes
 
-FM Transportes parcels use enabled universal providers. There is no dedicated adapter.
+The native adapter reads the Brazilian guest tracker's history through TRAWL.
 
-FM Transportes is a São Paulo carrier delivering online shops' parcels across Brazil. Its site is
-fmtransportes.com.br.
+## Retrieval
 
-## Numbers
+The browser opens the blank tracker so the page does not spend its Turnstile response on an
+automatic parcel lookup. The adapter exchanges that response at `/api/v1/c`, then posts the
+whole tracking code to `/api/v1/get` with the resulting guest session. Both requests use
+TRAWL's HTTP tier to share the browser's egress. No account credentials are required.
 
-Its tracking codes are eighteen characters: the day the order was created as day, month and year, then twelve
-letters and digits. `fm-transportes-1` claims that layout at high confidence: customers post the codes in
-complaints, and an archived reply of its own tracker shows one. The rule needs a letter after the date, as
-eighteen digits are other carriers' numbers, and leaves out Zeleris's layout of two hexadecimal characters,
-nine digits and a letter after the date.
+The returned tracking code must match the request. Scan timestamps keep the API's explicit
+UTC offsets and precision; the offsetless forecast contributes its calendar day. Recipient,
+address, invoice, order-reference and signatory fields are discarded. Verification values
+stay within the lookup and are removed from error diagnostics.
 
-## Why there is no adapter
+## Limitations
 
-Its tracker opens a session with a Cloudflare Turnstile token before any lookup; without one, its API refuses
-the request.
-
-## Links
-
-The tracker reads the code from the fragment of `/#/<code>`.
+TRAWL is required; HTTP recognition does not run a browser. The adapter accepts one volume,
+so a delivered piece cannot complete another unfinished piece. Empty success objects and
+no-content replies stay inconclusive rather than proving a missing parcel.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Use private inputs outside Git:
+
+```sh
+FLARESOLVERR_URL=… FM_TRANSPORTES_TRACKING_NUMBER=… npm run test:carriers:live -- carriers/fm-transportes
+```

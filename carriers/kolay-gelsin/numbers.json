@@ -69,7 +69,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -88,7 +88,7 @@
           "sending"
         ]
       },
-      "note": "Customer complaint on Şikayetvar's Kolay Gelsin page that calls it the Kolay Gelsin tracking number, next to a separate order number."
+      "note": "A public shipment report confirmed by the official guest tracker with the same whole tracking number and reached dated milestones."
     },
     {
       "number": "269693180678",

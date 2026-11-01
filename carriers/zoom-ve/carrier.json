@@ -18,18 +18,42 @@
   "timezone": "America/Caracas",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "zoom-ve",
+    "steps": [
+      "trawl"
+    ],
+    "browser": true,
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://zoom.red/tracking-de-envios-personas/?nro-guia={trackingNumber}&tipo-consulta=1",
     "searchUrl": "https://zoom.red/tracking-de-envios-personas/",
     "canaryUrl": "https://zoom.red/tracking-de-envios-personas/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "recipient_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "recipient_name"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "offset_timestamps",
+      "provider_code"
+    ]
   },
   "links": [
     {

@@ -20220,7 +20220,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Sao_Paulo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fm-transportes",
+      "browser": true
     },
     "canaryUrl": "https://rastreio.fmtransportes.com.br/",
     "trackingUrlTemplate": "https://rastreio.fmtransportes.com.br/#/{trackingNumber}",
@@ -26733,7 +26734,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kolay-gelsin",
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://www.kolaygelsin.com/tracking",
     "trackingSearchUrl": "https://www.kolaygelsin.com/tracking",
@@ -47547,7 +47550,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Caracas",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "zoom-ve",
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://zoom.red/tracking-de-envios-personas/",
     "trackingUrlTemplate": "https://zoom.red/tracking-de-envios-personas/?nro-guia={trackingNumber}&tipo-consulta=1",

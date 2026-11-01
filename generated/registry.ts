@@ -236,6 +236,7 @@ import { adapter as flashbirdCa } from '../carriers/flashbird-ca/adapter.js';
 import { adapter as fleetex } from '../carriers/fleetex/adapter.js';
 import { adapter as fleetoptics } from '../carriers/fleetoptics/adapter.js';
 import { adapter as flippost } from '../carriers/flippost/adapter.js';
+import { adapter as fmTransportes } from '../carriers/fm-transportes/adapter.js';
 import { adapter as fmx } from '../carriers/fmx/adapter.js';
 import { adapter as followmont } from '../carriers/followmont/adapter.js';
 import { adapter as forwardAir } from '../carriers/forward-air/adapter.js';
@@ -343,6 +344,7 @@ import { adapter as kazpost } from '../carriers/kazpost/adapter.js';
 import { adapter as kex } from '../carriers/kex/adapter.js';
 import { adapter as kexExpressHk } from '../carriers/kex-express-hk/adapter.js';
 import { adapter as kitTk } from '../carriers/kit-tk/adapter.js';
+import { adapter as kolayGelsin } from '../carriers/kolay-gelsin/adapter.js';
 import { adapter as komonExpress } from '../carriers/komon-express/adapter.js';
 import { adapter as koreaPost } from '../carriers/korea-post/adapter.js';
 import { adapter as kuehneNagel } from '../carriers/kuehne-nagel/adapter.js';
@@ -674,6 +676,7 @@ import { adapter as ywe } from '../carriers/ywe/adapter.js';
 import { adapter as yypost } from '../carriers/yypost/adapter.js';
 import { adapter as zajil } from '../carriers/zajil/adapter.js';
 import { adapter as zeleris } from '../carriers/zeleris/adapter.js';
+import { adapter as zoomVe } from '../carriers/zoom-ve/adapter.js';
 import { adapter as zrExpress } from '../carriers/zr-express/adapter.js';
 import { adapter as zto } from '../carriers/zto/adapter.js';
 import { adapter as ztoInternational } from '../carriers/zto-international/adapter.js';
@@ -915,6 +918,7 @@ export const REGISTRY: RegistryDefinition = {
     "fleetex": fleetex,
     "fleetoptics": fleetoptics,
     "flippost": flippost,
+    "fm-transportes": fmTransportes,
     "fmx": fmx,
     "followmont": followmont,
     "forward-air": forwardAir,
@@ -1022,6 +1026,7 @@ export const REGISTRY: RegistryDefinition = {
     "kex": kex,
     "kex-express-hk": kexExpressHk,
     "kit-tk": kitTk,
+    "kolay-gelsin": kolayGelsin,
     "komon-express": komonExpress,
     "korea-post": koreaPost,
     "kuehne-nagel": kuehneNagel,
@@ -1353,6 +1358,7 @@ export const REGISTRY: RegistryDefinition = {
     "yypost": yypost,
     "zajil": zajil,
     "zeleris": zeleris,
+    "zoom-ve": zoomVe,
     "zr-express": zrExpress,
     "zto": zto,
     "zto-international": ztoInternational,
@@ -1788,7 +1794,7 @@ export const REGISTRY: RegistryDefinition = {
     "fliway": "universal",
     "flyking": "universal",
     "flyt-express": "universal",
-    "fm-transportes": "universal",
+    "fm-transportes": "fm-transportes",
     "fmx": "fmx",
     "fofr": "universal",
     "followmont": "followmont",
@@ -1984,7 +1990,7 @@ export const REGISTRY: RegistryDefinition = {
     "king-kong-express": "universal",
     "kit-tk": "kit-tk",
     "kiwi-express": "universal",
-    "kolay-gelsin": "universal",
+    "kolay-gelsin": "kolay-gelsin",
     "komon-express": "komon-express",
     "korea-post": "korea-post",
     "kronos-express": "universal",
@@ -2597,7 +2603,7 @@ export const REGISTRY: RegistryDefinition = {
     "zheldor": "universal",
     "zimpost": "universal",
     "zippd": "universal",
-    "zoom-ve": "universal",
+    "zoom-ve": "zoom-ve",
     "zr-express": "zr-express",
     "zto": "zto",
     "zto-international": "zto-international",

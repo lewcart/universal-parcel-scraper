@@ -1,27 +1,33 @@
 # Zoom
 
-Zoom parcels use enabled universal providers. There is no dedicated adapter.
+The native adapter reads Zoom's Venezuelan guest tracker for a whole guía.
 
-## Numbers
+## Retrieval
 
-Zoom guías are ten digits. Archived lookups on its own trackers show them, and the former
-tracker labelled the field "Nro. Guía ZOOM". Ten digits are printed by many carriers, so no
-rule claims them.
+TRAWL opens the public tracking URL with `nro-guia` and `tipo-consulta=1`. A visible readiness
+selector waits for either the completed tracking result or a populated Turnstile response.
+The adapter reads a completed callback result first; verification may already have consumed
+the token. Otherwise, it uses that unused response for a same-egress HTTP-tier lookup.
 
-## Links
+An unfinished warm widget can retry once with actual Zoom cookies in a fresh browser context.
+Only Zoom-domain cookies are imported. Verification values and capability URLs are removed
+from error diagnostics and never returned as tracking links.
 
-`zoom.red/tracking-de-envios-personas/` reads the guía from `?nro-guia=` with
-`tipo-consulta=1`, then asks for a Turnstile check before it shows the history. The former
-tracker on `grupozoom.com` read it from `?txtcodguias=` on `/mia/consultar.php`.
+Both the title and summary must identify the requested guía. The table's local clocks keep
+their wall time; the creation date anchors two-digit years. Recipient text and the separate
+handover clock appended to delivery wording are discarded. Future rail milestones do not
+establish completed scans.
 
-## Why there is no adapter
+## Limitations
 
-The tracker's server verifies the Turnstile token before it renders a history, so a request
-without one gets no history. Zoom's integration API tracks a guía only for the merchant
-account that created it, and the Zoom apps that once tracked parcels are no longer
-published, so Zoom stays on universal providers.
+TRAWL is required. Ten-digit guías overlap other carriers, so tracking uses an explicit carrier
+or a recognized Zoom link; no number rule claims them. The exact bound missing-tracking
+notice establishes absence. Verification refusals and changed pages remain separate failures.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Use private inputs outside Git:
+
+```sh
+FLARESOLVERR_URL=… ZOOM_VE_TRACKING_NUMBER=… npm run test:carriers:live -- carriers/zoom-ve
+```

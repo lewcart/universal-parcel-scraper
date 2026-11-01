@@ -1,28 +1,24 @@
 # Peddler
 
-Peddler parcels use enabled universal providers. There is no dedicated adapter.
+Peddler's guest tracker covers its own urban-delivery labels and supported partner handoffs.
+PDN Express is a separate carrier.
 
-## Numbers
+## Retrieval
 
-Peddler is a Dutch urban delivery service that also delivers parcels for Chinese shippers
-such as Cainiao and YunExpress. Its label specification gives its own tracking number as `P`
-and eighteen digits, which `peddler-1` claims. Cainiao parcels keep the number Cainiao hands
-over, `NLEXP`, ten digits and `INTPED`, which Peddler's tracker follows and `peddler-2`
-claims.
+`track.pdlr.nl/trackntrace/{number}` opens a form prefilled with the whole number. Its
+Turnstile response and form fields belong to the same browser page. Submitting the native
+form verifies that number before the client requests its tracking loader,
+`/trackntrace/{number}?_data=routes/trackntrace.$inquiryNumber`.
 
-## Links
-
-Peddler's tracker links one parcel as `track.pdlr.nl/trackntrace/{number}`, as archived
-lookups show, and the library reads the number from that address. The address fills the
-tracking form with the number, which shows a history only after a Cloudflare Turnstile check.
+The loader can return an inquiry number without dated activity or render a generic error
+boundary. Neither an accepted verification nor an echoed number is a usable history.
 
 ## Limitations
 
-Peddler's server verifies the Turnstile token before it looks a number up, and the history page
-opens only for the number just verified. Peddler's apps are a shopping app and staff apps, and
-its shipping API needs a client account, so Peddler stays on universal providers.
+There is no validated native history parser. The loader's explicit `Consignment not found`
+reply differs from an identity-only record. Use enabled universal providers for retrieval;
+public reference provenance remains in `numbers.json`.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).

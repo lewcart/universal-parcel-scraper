@@ -67,6 +67,9 @@ const ENVIRONMENTS: Readonly<Record<string, Browsers>> = {
  * request. Every other lookup reaches its transport in every environment.
  */
 const BROWSER_ONLY: Readonly<Record<string, readonly (keyof Browsers)[]>> = {
+  'kolay-gelsin': ['service'],
+  'zoom-ve': ['service'],
+  'fm-transportes': ['service'],
   Track718: ['service'],
   fedex: ['service'], 'magyar-posta': ['service'], 'mondial-relay': ['service'], 'old-dominion': ['chromium'], 'royal-mail': ['chromium'],
   loggi: ['service'], 'sf-express': ['service'], swiftx: ['service'], usps: ['service'], 'emirates-post': ['service'], '17TRACK': ['service'],

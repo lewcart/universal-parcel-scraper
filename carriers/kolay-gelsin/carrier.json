@@ -20,17 +20,41 @@
   "timezone": "Europe/Istanbul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "kolay-gelsin",
+    "steps": [
+      "trawl"
+    ],
+    "browser": true,
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "searchUrl": "https://www.kolaygelsin.com/tracking",
     "canaryUrl": "https://www.kolaygelsin.com/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "recipient_name",
+      "recipient_address",
+      "sender_name",
+      "location"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
+    "discarded": [
+      "recipient_name",
+      "recipient_address",
+      "sender_name",
+      "location"
+    ],
+    "unavailable": [
+      "weight",
+      "provider_code"
+    ]
   },
   "links": [],
   "detection": []

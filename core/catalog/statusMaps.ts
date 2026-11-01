@@ -247,6 +247,7 @@ import { statusMap as fleetoptics } from '../../carriers/fleetoptics/status.js';
 import { statusMap as flippost } from '../../carriers/flippost/status.js';
 import { statusMap as fmx } from '../../carriers/fmx/status.js';
 import { statusMap as followmont } from '../../carriers/followmont/status.js';
+import { statusMap as fmTransportes } from '../../carriers/fm-transportes/status.js';
 import { statusMap as forwardAir } from '../../carriers/forward-air/status.js';
 import { statusMap as forzaDelivery } from '../../carriers/forza-delivery/status.js';
 import { statusMap as fourPx } from '../../carriers/four-px/status.js';
@@ -354,6 +355,7 @@ import { statusMap as kexExpressHk } from '../../carriers/kex-express-hk/status.
 import { statusMap as kitTk } from '../../carriers/kit-tk/status.js';
 import { statusMap as komonExpress } from '../../carriers/komon-express/status.js';
 import { statusMap as koreaPost } from '../../carriers/korea-post/status.js';
+import { statusMap as kolayGelsin } from '../../carriers/kolay-gelsin/status.js';
 import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js';
 import { statusMap as kunExpress } from '../../carriers/kun-express/status.js';
 import { statusMap as kunyoung } from '../../carriers/kunyoung/status.js';
@@ -684,6 +686,7 @@ import { statusMap as yurticiKargo } from '../../carriers/yurtici-kargo/status.j
 import { statusMap as yypost } from '../../carriers/yypost/status.js';
 import { statusMap as zajil } from '../../carriers/zajil/status.js';
 import { statusMap as zeleris } from '../../carriers/zeleris/status.js';
+import { statusMap as zoomVe } from '../../carriers/zoom-ve/status.js';
 import { statusMap as zrExpress } from '../../carriers/zr-express/status.js';
 import type { CarrierId, Stage } from '../../generated/catalog.js';
 import { statusMap as universal } from '../../providers/status.js';
@@ -722,7 +725,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
   'flashbird-ca': flashbirdCa,
-  fleetex, fleetoptics, flippost, fmx, followmont, 'forward-air': forwardAir, 'forza-delivery': forzaDelivery, 'four-px': fourPx, foxpost, 'franch-express': franchExpress, fukuyama, gaash, gati, gdex,
+  fleetex, fleetoptics, flippost, fmx, followmont, 'fm-transportes': fmTransportes, 'forward-air': forwardAir, 'forza-delivery': forzaDelivery, 'four-px': fourPx, foxpost, 'franch-express': franchExpress, fukuyama, gaash, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, geodis, 'geodis-pl': geodisPl, 'gig-logistics': gigLogistics, 'global-delivery-network': globalDeliveryNetwork, 'gls-ch': glsCh, 'gls-de': glsDe, 'gls-es': glsEs, 'gls-fr': glsFr, 'gls-it': glsIt,
   globalpost, 'gms-worldwide': gmsWorldwide, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-ca': gofoCa, 'gofo-es': gofoEs, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
   'grand-slam-express': grandSlamExpress, 'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, 'gtl-goto': gtlGoto, guatex, gzyl,
@@ -733,7 +736,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-au': jAndTAu, 'j-and-t-de': jAndTDe, 'j-and-t-uk': jAndTUk, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, 'japan-post': japanPost, jcex, 'jd-logistics': jdLogistics, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
   jhgj, jifan, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
-  'kit-tk': kitTk, 'komon-express': komonExpress, 'korea-post': koreaPost, 'kuehne-nagel': kuehneNagel, 'kun-express': kunExpress, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
+  'kit-tk': kitTk, 'komon-express': komonExpress, 'korea-post': koreaPost, 'kolay-gelsin': kolayGelsin, 'kuehne-nagel': kuehneNagel, 'kun-express': kunExpress, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih,
   'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'lbc-express': lbcExpress, 'leopards-courier': leopardsCourier, liccardi,
   'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
@@ -774,7 +777,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, viadireta, 'viettel-post': viettelPost,
   vimenpaq, 'vinted-go': vintedGo, vozovoz, 'vrl-logistics': vrlLogistics, wanbexpress, 'we-world-express': weWorldExpress, whistl, 'whiz-delivery': whizDelivery, wiio, winit, 'xde-logistics': xdeLogistics, xdp, xgs, 'xinghe-freight': xingheFreight, xlcourier, 'xpo-ltl': xpoLtl, xpressbees,
   yamato, yanwen, 'ycs-logistics': ycsLogistics, ydh, 'yilong-logistics': yilongLogistics, yto, yunexpress, yunda, ywe, yypost, zto, 'zto-international': ztoInternational,
-  'yurtici-kargo': yurticiKargo, zajil, zeleris, 'zr-express': zrExpress,
+  'yurtici-kargo': yurticiKargo, zajil, zeleris, 'zoom-ve': zoomVe, 'zr-express': zrExpress,
 };
 
 /** The carrier the app files the universal providers' scans under. */

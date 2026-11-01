@@ -76,6 +76,25 @@
         "confidence": "high"
       },
       "note": "A customer's Reclame Aqui complaint about an FM Transportes delivery gives this tracking code."
+    },
+    {
+      "number": "310826W8ZVPZEFQPJQ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclameaqui.com.br/fm-transportes/nao-recebi-meu-pedido-do-clube-do-tempero-e-o-rastreio-nao-atualiza_goBoy1-Oj2Z5AR1Y/",
+        "date": "2026-09-29",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fm-transportes",
+        "confidence": "high"
+      },
+      "note": "A public shipment report whose whole tracking code is confirmed by the official guest lookup and dated history."
     }
   ]
 }

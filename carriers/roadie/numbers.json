@@ -69,13 +69,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "roadie",
         "confidence": "high"
       },
-      "note": "An archived lookup on Roadie's own tracker; the capture was not opened and holds only the script shell, so no history is visible."
+      "note": "An archived lookup on Roadie’s own tracker. Its guest API confirms a delivery with the complete tracking number."
     },
     {
       "number": "1r3e56d43f61a363",
@@ -126,13 +126,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "roadie",
         "confidence": "high"
       },
-      "note": "An archived lookup on Roadie's own tracker; the capture was opened but holds only the tracker's script shell, so no history is visible."
+      "note": "An archived lookup on Roadie’s own tracker. Its guest API confirms a delivery with the complete tracking number."
     },
     {
       "number": "1r7cf2d9b711e365",

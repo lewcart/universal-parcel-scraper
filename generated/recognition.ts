@@ -377,6 +377,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "relais-colis": 690,
   "rivigo": 574,
   "rl-carriers": 5,
+  "roadie": 28,
   "roadrunner": 733,
   "royal-express-mm": 723,
   "rpx-indonesia": 947,

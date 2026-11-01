@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { TrawlClient } from '../../core/transport/trawl.js';
-import { universalPlan } from '../plan.js';
+import { priorityUniversalSource, universalPlan } from '../plan.js';
 import { adapter, juxiNumber, parseTrack718, TRACK718_API } from './adapter.js';
 
 const number = 'JXCZZ9000000001YQ';
@@ -54,9 +54,10 @@ describe('Track718 for Juxi only', () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
-  it('replaces 17TRACK only for Juxi and leaves other carrier plans alone', () => {
-    expect(universalPlan({ carriers: ['juxi-express'], trackingNumber: number }).sources).toEqual(['Track718', 'ParcelsApp', 'Ship24']);
-    expect(universalPlan({ trackingNumber: number }).sources).not.toContain('17TRACK');
+  it('prioritizes Track718 for Juxi while retaining 17TRACK and other carrier plans', () => {
+    expect(universalPlan({ carriers: ['juxi-express'], trackingNumber: number }).sources).toEqual(['Track718', 'ParcelsApp', 'Ship24', '17TRACK']);
+    expect(universalPlan({ trackingNumber: number }).sources).toContain('17TRACK');
+    expect(priorityUniversalSource(number)).toBe('Track718');
     expect(universalPlan({ carriers: ['ups'], trackingNumber: number }).sources).not.toContain('Track718');
     expect(universalPlan({ carriers: ['ups', 'juxi-express'], trackingNumber: number }).sources).not.toContain('Track718');
     expect(universalPlan({ trackingNumber: 'YT900000000001' }).sources).toContain('17TRACK');

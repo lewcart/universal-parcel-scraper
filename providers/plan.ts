@@ -14,6 +14,7 @@ export function universalSourceBudget(source: Source): number {
 
 /** Evidence-based exception to affinity/rotation, shared by discovery and routing. */
 export function priorityUniversalSource(trackingNumber?: string): Source | undefined {
+  if (trackingNumber && /^JXC[A-Z]{2}\d{10}YQ$/.test(normalizeTrackingNumber(trackingNumber))) return 'Track718';
   // The Express corpus has complete Ship24 histories where ParcelsApp can be empty or input-gated.
   if (trackingNumber && /^\d{10}$/.test(normalizeTrackingNumber(trackingNumber))) return 'Ship24';
   // E-series and untested formats keep ordinary discovery.
@@ -85,7 +86,7 @@ export function universalPlan(options: {
   const postalNinja = enablePostalNinja && (!named || ['full', 'partial'].includes(tiers?.['Postal Ninja'] ?? 'unknown'));
   const defaults: Source[] = postalNinja ? ['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU'] : [...UNIVERSAL_SOURCES];
   const juxi = carriers.find(candidate => candidate && CARRIERS.has(candidate)) === 'juxi-express' || !named && !!trackingNumber && /^JXC[A-Z]{2}\d{10}YQ$/.test(normalizeTrackingNumber(trackingNumber));
-  const eligible = defaults.filter(source => (source !== 'Track718' || juxi) && (source !== '17TRACK' || !juxi)
+  const eligible = defaults.filter(source => (source !== 'Track718' || juxi)
     && (source !== 'UPU' || trackingNumber === undefined || isValidS10TrackingNumber(trackingNumber)));
   if (juxi && !eligible.includes('Track718')) eligible.unshift('Track718');
   const ordered = orderUniversalSources(eligible, tiers);

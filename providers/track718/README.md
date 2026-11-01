@@ -16,8 +16,8 @@ report no available history. A challenge, rate limit, busy service or unfinished
 a failure. Explicit scan offsets are preserved; clocks without an offset stay local and do
 not acquire the carrier's default zone. An undated history can therefore need another provider.
 
-For Juxi, the provider plan tries Track718, ParcelsApp and Ship24, leaving 17TRACK out to avoid
-spending its quota. Track718 must still be explicitly enabled by the consumer. This order is
+For Juxi, the provider plan tries Track718 first and retains ParcelsApp, Ship24 and 17TRACK as
+fallbacks. Track718 must still be explicitly enabled by the consumer. This order is
 a routing policy, not a claim that Track718 always holds Juxi history.
 
 ## Testing

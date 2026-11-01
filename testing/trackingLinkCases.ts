@@ -2059,6 +2059,7 @@ export const trackingLinkCases: TrackingLinkCase[] = [
  * tracking comes from shared providers, not the page the link opens.
  */
 export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
+  roadie: 'The tracker requires US egress; the rendered-link canary has no scoped US browser transport.',
   eushipments: 'euShipments\' tracking page takes the number only in its form, which posts it to a handler, so no address opens one order',
   'no-limit': 'No Limit\'s tracking page takes the number only in its form, which it posts back to itself with the page\'s state, so no address opens one shipment',
   'ecms-express': 'Opening a numbered tracking link requires an arithmetic picture CAPTCHA; the adapter solves the separate guest API flow.',

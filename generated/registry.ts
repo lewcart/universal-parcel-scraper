@@ -508,6 +508,7 @@ import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
 import { adapter as relaytech } from '../carriers/relaytech/adapter.js';
 import { adapter as rivigo } from '../carriers/rivigo/adapter.js';
 import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
+import { adapter as roadie } from '../carriers/roadie/adapter.js';
 import { adapter as roadrunner } from '../carriers/roadrunner/adapter.js';
 import { adapter as royalExpressMm } from '../carriers/royal-express-mm/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
@@ -1184,6 +1185,7 @@ export const REGISTRY: RegistryDefinition = {
     "relaytech": relaytech,
     "rivigo": rivigo,
     "rl-carriers": rlCarriers,
+    "roadie": roadie,
     "roadrunner": roadrunner,
     "royal-express-mm": royalExpressMm,
     "royal-mail": royalMail,
@@ -2232,7 +2234,7 @@ export const REGISTRY: RegistryDefinition = {
     "rincos": "universal",
     "rivigo": "rivigo",
     "rl-carriers": "rl-carriers",
-    "roadie": "universal",
+    "roadie": "roadie",
     "roadrunner": "roadrunner",
     "ross-express": "universal",
     "royal-express-mm": "royal-express-mm",

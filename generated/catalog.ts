@@ -35642,7 +35642,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "roadie",
+      "recognitionRank": 28,
+      "recognitionPattern": "^1R(?:[0-9A-Z]{26}|[0-9A-F]{14})$"
     },
     "canaryUrl": "https://track.roadie.com/",
     "trackingUrlTemplate": "https://track.roadie.com/id/{trackingNumber}",

@@ -284,6 +284,6 @@ writing coverage.json, including partial history, stale references, wrong carrie
 formats. Extra references inform provider ordering but are not averaged into the README's
 comparison. Run `npm run generate` to update the tables and summary.
 
-Juxi Express has an explicit quota policy: Track718, ParcelsApp, then Ship24, with 17TRACK omitted.
+Juxi Express tries Track718 first, retaining ParcelsApp, Ship24 and 17TRACK as fallbacks.
 Track718 is enabled only for Juxi and remains opt-in; this policy does not grade its history
 as fuller than another provider's. Its [README](track718/README.md) describes the guest flow.

@@ -14,6 +14,11 @@ Its PRO numbers have no published layout, and no public one has been found, so t
 Its tracker reads an open JSON lookup without a key, but no public PRO number has been found to
 check a found reply with. The site itself refuses visitors outside North America.
 
+The public client uses `ptlprodapi.azurewebsites.net` and the anonymous
+`/track/public/{pro}` route. Its signed-in `/track/{pro}` route is separate and is not needed
+for guest tracking. US egress can open the site; a matching found response is still needed
+before adding a direct adapter.
+
 ## Links
 
 The tracking page opens a PRO number from its `pro_number` parameter.

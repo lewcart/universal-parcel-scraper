@@ -44,8 +44,8 @@ digits. `chronodiali-1` claims that layout, which no other carrier rule matches.
 
 The tracker also knows references of `CD` and ten digits, which a merchant publishes as
 Chronodiali's. Two letters and ten digits fit other carriers' numbers, and one example does not
-establish the family, so no rule claims them; the adapter tracks them when Chronodiali is
-chosen. The samples and their sources are in [`numbers.json`](numbers.json).
+establish the family, so `chronodiali-2` only suggests Chronodiali for them, with low
+confidence, and recognition asks its tracker. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

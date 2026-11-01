@@ -88,6 +88,11 @@
       "id": "chronodiali-1",
       "pattern": "^CHPU\\d{19}$",
       "confidence": "high"
+    },
+    {
+      "id": "chronodiali-2",
+      "pattern": "^CD\\d{10}$",
+      "confidence": "low"
     }
   ]
 }

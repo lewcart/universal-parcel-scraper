@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -195,11 +196,15 @@ describe('Chronodiali HTTP adapter', () => {
 });
 
 describe('Chronodiali numbers', () => {
-  it('claims CHPU and 19 digits, and leaves CD references to a choice of carrier', () => {
+  it('claims CHPU and 19 digits, and only suggests Chronodiali for CD references, which recognition asks it about', () => {
     expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'chronodiali', confidence: 'high' });
     expect(detectCarrierMatch(UNKNOWN)).toMatchObject({ carrier: 'chronodiali', confidence: 'high' });
-    expect(detectCarrierMatch(IN_TRANSIT).carrier).not.toBe('chronodiali');
-    expect(detectCarrierMatch('CHPU123456789012345678').carrier).not.toBe('chronodiali');
+    expect(detectCarrierMatch(IN_TRANSIT)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(IN_TRANSIT).candidates).toContain('chronodiali');
+    expect(recognitionAskedCarriers(IN_TRANSIT, { countryHint: 'MA' })).toContain('chronodiali');
+    for (const number of ['CHPU123456789012345678', 'CD123456789', 'CD12345678901', 'CE1234567890']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('chronodiali');
+    }
   });
 });
 

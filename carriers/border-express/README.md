@@ -28,8 +28,9 @@ Tracked through the lookup BEX Online's Quick Track makes.
 - The tracker hides the sender's own booking states, such as Unsaved before Shipment Data
   Received, and so does the adapter. The Picked Up step often has no date, so it is skipped.
 - The summary's `integrationCode` decides the stage. Partially Delivered (`PAR`) is in transit,
-  because some units are delivered and the rest are still on their way. A code the map does not
-  know falls to the shared wording rules.
+  because some units are delivered and the rest are still on their way. Partially Delivered -
+  Final (`FIN`) closes the consignment with the units that arrived, and Quick Track shows it as
+  delivered, as the adapter does. A code the map does not know falls to the shared wording rules.
 - The estimate is a calendar day. The delivery time is `deliveredDate`, with its offset.
 - Quick Track does not take a unit's barcode. The adapter reads one back into its consignment by
   the label specification's formula: the prefix, then the range without its zero padding, six

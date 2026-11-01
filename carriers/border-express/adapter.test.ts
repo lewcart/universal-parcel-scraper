@@ -131,6 +131,14 @@ describe('Border Express HTTP adapter', () => {
       entry.statusHistory[0]!.status = 'Partially Delivered';
     }), DELIVERED);
     expect(partial).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', delivered_at: null, expected_delivery: '2026-03-13' });
+    const final = parseBorderExpress(changed('delivered', (entry) => {
+      entry.currentStatus.integrationCode = 'FIN';
+      entry.statusHistory[0]!.integrationCode = 'FIN';
+      entry.statusHistory[0]!.status = 'Partially Delivered - Final';
+    }), DELIVERED);
+    expect(final).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map', expected_delivery: null });
+    expect(final.delivered_at).not.toBeNull();
+    expect(final.events![0]).toMatchObject({ provider_code: 'FIN', stage: 'delivered', stage_source: 'carrier_map' });
     // A code the map does not know falls to its wording.
     const unknown = parseBorderExpress(changed('in-transit', (entry) => {
       entry.statusHistory.unshift({ status: 'Awaiting Collection', integrationCode: 'AWC', dateOccurred: '2026-01-21T09:00:00+11:00', statusEvents: [] });

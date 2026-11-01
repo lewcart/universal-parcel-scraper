@@ -3,9 +3,9 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /**
  * Border Express's tracking status codes, which the tracker's rows carry as
- * `integrationCode`. Codes seen in replies are mapped, and one more from the
- * tracker's own script whose wording the shared rules would misread. Another
- * code falls to the wording rules.
+ * `integrationCode`. Codes seen in replies are mapped, and two more from the
+ * tracker's own script: one whose wording the shared rules would misread, and
+ * the final one beside it. Another code falls to the wording rules.
  */
 const CODES: ReadonlyMap<string, Stage> = new Map([
   ['SDR', 'registered'], // Shipment Data Received: the sender's details have arrived.
@@ -15,6 +15,9 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
   // Partially Delivered: some units are delivered and the rest are still on their way.
   ['PAR', 'in_transit'],
   ['DEL', 'delivered'],
+  // Partially Delivered - Final: the consignment closes with the units that arrived, and the
+  // tracker shows it as delivered.
+  ['FIN', 'delivered'],
 ]);
 
 /**

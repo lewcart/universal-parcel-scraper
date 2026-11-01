@@ -97,7 +97,7 @@ export function parseHongkongPostAnswer(text: string): CarrierResult {
   const line = textFromHtml(first, 1_000);
   if (/[<>]/.test(first) || !line) throw new SchemaError(PROVIDER, 'Hongkong Post chatbot returned an unexpected answer');
   if (line.startsWith('The system has no record of the mail item enquired')) throw new NotFoundError(PROVIDER);
-  if (line.startsWith('Invalid Mail Number!')) throw new InvalidInputError(PROVIDER, 'Hongkong Post rejected the tracking number');
+  if (line.startsWith('Invalid Mail Number!')) throw new InvalidInputError(PROVIDER, 'Hongkong Post rejected the tracking number', { reason: 'wrong_number' });
   if (line.startsWith('Sorry, the information entered is incorrect')) throw new SchemaError(PROVIDER, 'Hongkong Post chatbot menu changed');
   const match = FOUND.exec(line);
   if (!match) throw new SchemaError(PROVIDER, 'Hongkong Post chatbot returned an unexpected answer');

@@ -110,7 +110,7 @@ export function parseTrackon(payload: unknown, raw: string): CarrierResult {
   const message = clean(payload.ResponseStatus.Message, 300).toLowerCase();
   if (message !== FOUND) {
     if (message === MISSING) throw new NotFoundError(PROVIDER);
-    if (message === NOT_TRACKON) throw new InvalidInputError(PROVIDER, 'Trackon says the number is not one of its AWB numbers');
+    if (message === NOT_TRACKON) throw new InvalidInputError(PROVIDER, 'Trackon says the number is not one of its AWB numbers', { reason: 'wrong_number' });
     throw new IndeterminateError(PROVIDER, 'Trackon did not complete the lookup');
   }
   const summary = payload.summaryTrack;

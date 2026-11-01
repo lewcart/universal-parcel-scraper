@@ -64,7 +64,7 @@ function searchPage($: CheerioAPI, html: string, number: string): never {
   if (notice === NOT_FOUND || notice === INVALID) {
     if (echoed !== number) throw new SchemaError(PROVIDER, 'APC Overnight answered for a different number');
     if (notice === NOT_FOUND) throw new NotFoundError(PROVIDER);
-    throw new InvalidInputError(PROVIDER, 'APC Overnight does not accept the number');
+    throw new InvalidInputError(PROVIDER, 'APC Overnight does not accept the number', { reason: 'wrong_number' });
   }
   throw new IndeterminateError(PROVIDER, 'APC Overnight answered with another notice');
 }

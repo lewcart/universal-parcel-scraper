@@ -46,7 +46,7 @@ export class EvropatTracker {
         try { payload = JSON.parse(body); } catch { /* not the lookup's answer */ }
         const message = refusal(payload);
         if (response.status === 404 && message === MISSING) throw new NotFoundError(PROVIDER);
-        if (response.status === 400 && message === REFUSED) throw new InvalidInputError(PROVIDER, 'Evropat refused the waybill number');
+        if (response.status === 400 && message === REFUSED) throw new InvalidInputError(PROVIDER, 'Evropat refused the waybill number', { reason: 'wrong_number' });
         // A firewall's refusal is a block, whatever page it sends.
         if (response.status === 403 || CHALLENGE.test(body.slice(0, 64_000))) throw new ChallengeError(PROVIDER, 'Evropat answered with a browser check');
         throw new TransportError(PROVIDER, 'Evropat tracking lookup is unavailable', { status: response.status });

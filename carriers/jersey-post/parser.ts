@@ -128,7 +128,7 @@ export function parseJerseyPost(payload: unknown, raw: string): CarrierResult {
       throw new NotFoundError(PROVIDER);
     case 2:
     case 4:
-      throw new InvalidInputError(PROVIDER, 'Jersey Post does not take this number');
+      throw new InvalidInputError(PROVIDER, 'Jersey Post does not take this number', { reason: 'wrong_number' });
     case 5:
       throw new IndeterminateError(PROVIDER, 'Jersey Post sent the number to another carrier');
     case 6:

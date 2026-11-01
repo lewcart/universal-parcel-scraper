@@ -88,7 +88,7 @@ export function parsePackMan(html: string, raw: string): CarrierResult {
   if (alert.length) {
     const notice = clean(alert.first().text(), 200);
     if (ABSENT.test(notice)) throw new NotFoundError(PROVIDER);
-    if (MALFORMED.test(notice)) throw new InvalidInputError(PROVIDER, 'Pack-Man does not read the voucher as one of its codes');
+    if (MALFORMED.test(notice)) throw new InvalidInputError(PROVIDER, 'Pack-Man does not read the voucher as one of its codes', { reason: 'wrong_number' });
     throw new IndeterminateError(PROVIDER, 'Pack-Man did not complete the lookup');
   }
   const shipment = answer.find('.track-result');

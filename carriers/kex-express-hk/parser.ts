@@ -85,7 +85,7 @@ export function parseKexHk(html: string, rawNumber: string): CarrierResult {
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'KEX Express Hong Kong returned an oversized history');
   const lines = rows.map((row) => clean($(row).find('.cbp_tmlabel h4').text(), 400));
   const undated = rows.length === 1 && $(rows[0]).find('time span').length === 0;
-  if (undated && INVALID.test(lines[0]!)) throw new InvalidInputError(PROVIDER, 'KEX Express Hong Kong did not take the number');
+  if (undated && INVALID.test(lines[0]!)) throw new InvalidInputError(PROVIDER, 'KEX Express Hong Kong did not take the number', { reason: 'wrong_number' });
 
   // The block shows the number as typed; the tracker matches whole numbers in any case.
   const shown = clean(blocks.children('p').first().text(), 80);

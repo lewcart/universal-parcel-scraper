@@ -169,7 +169,7 @@ export function parseSeino(html: string, raw: string): CarrierResult {
   const refused = /^(.*?)\s*エラー$/.exec(clean(row.children('td.col3').text(), 80));
   if (refused) {
     if (normalizeTrackingNumber(refused[1] ?? '') !== number) throw new IndeterminateError(PROVIDER, 'Seino answered for another number');
-    throw new InvalidInputError(PROVIDER, 'Seino refused the number');
+    throw new InvalidInputError(PROVIDER, 'Seino refused the number', { reason: 'wrong_number' });
   }
   const echo = row.find('input[name="inputGNPNO1"]');
   if (echo.length !== 1) throw new SchemaError(PROVIDER, 'Seino returned a changed result list');

@@ -90,7 +90,7 @@ export function parsePtt(payload: unknown, rawNumber: string): CarrierResult {
     throw new IndeterminateError(PROVIDER, 'PTT returned a notice instead of the item history');
   }
   // "Geçersiz Barkod.": a barcode PTT does not issue.
-  if (code === INVALID) throw new InvalidInputError(PROVIDER, 'PTT does not recognize the barcode');
+  if (code === INVALID) throw new InvalidInputError(PROVIDER, 'PTT does not recognize the barcode', { reason: 'wrong_number' });
   if (code !== FOUND) throw new IndeterminateError(PROVIDER, `PTT answered with result ${code}`);
   if (named !== number) throw new SchemaError(PROVIDER, 'PTT returned a history without its barcode');
   const rows = payload.dongu;

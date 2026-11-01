@@ -200,6 +200,9 @@ describe('Mondial Relay tracking input', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('must not fetch'));
     await expect(new MondialRelayTracker({ trawl: new TrawlClient('http://trawl.internal:8191') }).fetch('1718596', OFFICIAL_PAGE_POSTCODE))
       .rejects.toMatchObject({ kind: 'invalid_input' });
+    // Before the lookup waits for its turn, so an ended signal does not hide it.
+    await expect(new MondialRelayTracker({ trawl: new TrawlClient('http://trawl.internal:8191') })
+      .fetch('1718596', OFFICIAL_PAGE_POSTCODE, { signal: AbortSignal.abort() })).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(fetcher).not.toHaveBeenCalled();
   });
 });

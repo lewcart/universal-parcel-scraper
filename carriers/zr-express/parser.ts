@@ -202,7 +202,7 @@ export function parseZrExpress(bytes: Uint8Array, contentType: string | null, ra
   if (boxes.length > 1) throw new SchemaError(PROVIDER, 'ZR Express returned several answers');
   const [chip, echo] = boxes[0]!.map((child) => textsOf(child, rows).join('').trim());
   const state = clean(chip, 80).replace(/^●\s*/, '');
-  if (state === 'INVALID') throw new InvalidInputError(PROVIDER, 'ZR Express does not take the number');
+  if (state === 'INVALID') throw new InvalidInputError(PROVIDER, 'ZR Express does not take the number', { reason: 'wrong_number' });
   if (!state || echo?.toUpperCase() !== number) throw new IndeterminateError(PROVIDER, 'ZR Express answered for another number');
   if (state === 'INTROUVABLE') {
     if (steps.size) throw new SchemaError(PROVIDER, 'ZR Express returned a history for a number it does not know');

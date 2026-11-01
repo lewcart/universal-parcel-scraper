@@ -130,7 +130,7 @@ export function parseHrvatskaPosta(html: string, rawNumber: string): CarrierResu
     const notice = notices.length === 1 ? clean(notices.text(), 200) : '';
     // Only the tracker's "no data" notice is a missing item.
     if (notice === NO_DATA) throw new NotFoundError(PROVIDER);
-    if (notice === BAD_FORMAT) throw new InvalidInputError(PROVIDER, 'Hrvatska pošta does not accept the number');
+    if (notice === BAD_FORMAT) throw new InvalidInputError(PROVIDER, 'Hrvatska pošta does not accept the number', { reason: 'wrong_number' });
     throw new IndeterminateError(PROVIDER, 'Hrvatska pošta returned no scans for the number');
   }
 

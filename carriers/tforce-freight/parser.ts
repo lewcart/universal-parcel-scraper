@@ -161,7 +161,7 @@ export function parseTforceFreight(html: string, raw: string): CarrierResult {
   const cards = results.find('.card.trackingResultCard').toArray().map((card) => $(card));
   if (cards.length === 0) {
     // The tracker's answer to a PRO its own check refuses, which the adapter's check refuses first.
-    if (/^Invalid Data\.?$/i.test(clean($('#errorText').text(), 80))) throw new InvalidInputError(PROVIDER, 'TForce Freight refused the PRO');
+    if (/^Invalid Data\.?$/i.test(clean($('#errorText').text(), 80))) throw new InvalidInputError(PROVIDER, 'TForce Freight refused the PRO', { reason: 'wrong_number' });
     // The page as it is before a search: the lookup was not made.
     if (results.find('.card').length === 0) throw new IndeterminateError(PROVIDER, 'TForce Freight did not answer the lookup');
     throw new SchemaError(PROVIDER, 'TForce Freight returned a changed result');

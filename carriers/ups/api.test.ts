@@ -354,7 +354,7 @@ describe('UPS API client', () => {
     expect(await answer(TRACKING_NUMBER, Response.json({ response: { errors: [{ code: '404', message: 'Resource not found' }] } }, { status: 404 })))
       .toMatchObject({ kind: 'transport', message: 'UPS API returned HTTP 404 (404)' });
     const invalid = Response.json({ response: { errors: [{ code: 'TV0001', message: 'Invalid tracking number' }] } }, { status: 400 });
-    expect(await answer(BAD_CHECK_DIGIT, invalid.clone())).toMatchObject({ name: 'InvalidInputError' });
+    expect(await answer(BAD_CHECK_DIGIT, invalid.clone())).toMatchObject({ name: 'InvalidInputError', reason: 'wrong_number' });
     expect(await answer(TRACKING_NUMBER, invalid)).toMatchObject({ kind: 'transport', message: 'UPS API returned HTTP 400 (TV0001)' });
     expect(await answer(TRACKING_NUMBER, new Response('{}', { status: 429, headers: { 'Retry-After': '30' } })))
       .toMatchObject({ kind: 'rate_limited', retryAfterMs: 30_000 });

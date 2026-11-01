@@ -132,7 +132,7 @@ function unfound(payload: Record<string, unknown>): never {
   if (reason === 'ambiguo' || reason === 'multiple') {
     throw new IndeterminateError(PROVIDER, 'PDQ matched the number as a shipper reference, not a guide');
   }
-  if (reason === 'input-invalido') throw new InvalidInputError(PROVIDER, 'PDQ does not take this guide number');
+  if (reason === 'input-invalido') throw new InvalidInputError(PROVIDER, 'PDQ does not take this guide number', { reason: 'wrong_number' });
   if (reason === 'no-autorizado') throw new ChallengeError(PROVIDER, 'PDQ refused the lookup');
   if (reason === 'error') throw new IndeterminateError(PROVIDER, 'PDQ did not complete the lookup');
   throw new SchemaError(PROVIDER, 'PDQ returned an unexpected answer');

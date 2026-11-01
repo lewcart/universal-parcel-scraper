@@ -210,6 +210,10 @@ export class YanwenTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new YanwenTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
-  return { id: 'yanwen', recordsSteps: true, steps: ['direct'], track: (input, context = {}) => runSteps({ carrier: 'yanwen', budgetMs: context.budgetMs ?? 15_000,
-    signal: context.signal, recorder: environment.recorder }, [{ id: 'direct', run: ({ signal, remainingMs }) => tracker.fetch(input.number, { signal, budgetMs: remainingMs }) }]) };
+  return { id: 'yanwen', recordsSteps: true, steps: ['direct'], track: async (input, context = {}) => {
+    // A number of another shape is refused before the lookup starts.
+    normalizeYanwenNumber(input.number);
+    return runSteps({ carrier: 'yanwen', budgetMs: context.budgetMs ?? 15_000, signal: context.signal, recorder: environment.recorder },
+      [{ id: 'direct', run: ({ signal, remainingMs }) => tracker.fetch(input.number, { signal, budgetMs: remainingMs }) }]);
+  } };
 };

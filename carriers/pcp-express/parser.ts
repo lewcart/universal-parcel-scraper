@@ -134,7 +134,7 @@ export function parsePcpExpress(payload: unknown, raw: string): CarrierResult {
   if (!payload.status) {
     const message = typeof payload.msg === 'string' ? clean(payload.msg, 300) : '';
     if (NOT_FOUND.test(message)) throw new NotFoundError(PROVIDER);
-    if (NOT_AN_AWB.test(message)) throw new InvalidInputError(PROVIDER, 'PCP Express does not take this number as an AWB');
+    if (NOT_AN_AWB.test(message)) throw new InvalidInputError(PROVIDER, 'PCP Express does not take this number as an AWB', { reason: 'wrong_number' });
     if (NO_NUMBER.test(message)) throw new SchemaError(PROVIDER, 'PCP Express did not read the number asked');
     // A database timeout, or another failure of the lookup itself.
     throw new IndeterminateError(PROVIDER, 'PCP Express could not complete the lookup');

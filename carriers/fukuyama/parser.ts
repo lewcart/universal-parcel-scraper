@@ -118,7 +118,7 @@ function weightOf(cell: Selection | undefined): number | null {
 function refusal($: CheerioAPI, main: Selection, number: string): never {
   const warned = main.find('.c-form_warning_text').toArray().some((line) => clean($(line).text(), 100) === REFUSED);
   const echoed = clean(main.find('form input[name="data[TrackingNo][tracking_no]"]').attr('value'), 64);
-  if (warned && echoed === number) throw new InvalidInputError(PROVIDER, 'Fukuyama Transporting does not take this number');
+  if (warned && echoed === number) throw new InvalidInputError(PROVIDER, 'Fukuyama Transporting does not take this number', { reason: 'wrong_number' });
   throw new SchemaError(PROVIDER, 'Fukuyama Transporting answered with its search form');
 }
 

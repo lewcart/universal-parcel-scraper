@@ -113,7 +113,7 @@ export function parseCbl(payload: unknown, raw: string): CarrierResult {
   if (!payload.success) {
     const server = errors(payload, 'ServerErrors');
     const client = errors(payload, 'ClientErrors');
-    if (client.includes(TOO_SHORT)) throw new InvalidInputError(PROVIDER, 'CBL refused the locator\'s length');
+    if (client.includes(TOO_SHORT)) throw new InvalidInputError(PROVIDER, 'CBL refused the locator\'s length', { reason: 'wrong_number' });
     if (server.length === 1 && server[0] === ABSENT && !client.length) throw new NotFoundError(PROVIDER);
     throw new IndeterminateError(PROVIDER, 'CBL did not complete the lookup');
   }

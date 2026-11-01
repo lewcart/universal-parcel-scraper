@@ -48,7 +48,7 @@ export function parseDhlEcommercePlChallenge(payload: unknown): DhlEcommercePlCh
 /** A 422 that names the submitted number is the portal refusing its format; any other says nothing about the parcel. */
 export function parseDhlEcommercePlRejection(payload: unknown): never {
   if (isRecord(payload) && payload.code === 422 && isRecord(payload.errors) && Array.isArray(payload.errors.number1)) {
-    throw new InvalidInputError(PROVIDER, 'DHL eCommerce Poland does not accept this tracking number');
+    throw new InvalidInputError(PROVIDER, 'DHL eCommerce Poland does not accept this tracking number', { reason: 'wrong_number' });
   }
   throw new IndeterminateError(PROVIDER, 'DHL eCommerce Poland returned an inconclusive tracking error');
 }

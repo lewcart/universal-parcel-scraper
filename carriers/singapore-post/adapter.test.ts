@@ -127,6 +127,9 @@ describe('Singapore Post retrieval', () => {
     const unused = vi.fn<typeof fetch>();
     await expect(new SingaporePostTracker({ fetcher: unused }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
     await expect(new SingaporePostTracker({ fetcher: unused }).fetch('tracking&number')).rejects.toThrow(InvalidInputError);
+    // The adapter refuses it before its lookup starts, so an ended signal does not hide it.
+    await expect(adapter({ fetcher: unused, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER })
+      .track({ number: 'tracking&number' }, { signal: AbortSignal.abort() })).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(unused).not.toHaveBeenCalled();
     const huge = vi.fn<typeof fetch>().mockResolvedValue(new Response('x'.repeat(1_000_001)));
     await expect(new SingaporePostTracker({ fetcher: huge }).fetch(NUMBER)).rejects.toThrow('unexpectedly large');

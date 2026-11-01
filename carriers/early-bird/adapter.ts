@@ -54,7 +54,7 @@ export class EarlyBirdTracker {
       if (code === 'rate_limited' || response.status === 429) throw new RateLimitedError(PROVIDER, retryAfterMs(response));
       if (response.status === 404 && code === 'tracking_not_found') throw new NotFoundError(PROVIDER);
       if (response.status === 400 && code === 'invalid_tracking_number') {
-        throw new InvalidInputError(PROVIDER, 'Early Bird does not take this tracking number');
+        throw new InvalidInputError(PROVIDER, 'Early Bird does not take this tracking number', { reason: 'wrong_number' });
       }
       throw new IndeterminateError(PROVIDER, 'Early Bird refused the tracking request');
     };

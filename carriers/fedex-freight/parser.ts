@@ -173,7 +173,7 @@ function shipmentFor(payload: unknown, number: string): Record<string, unknown> 
   const notFound = flag(shipment, 'notFound');
   const invalid = flag(shipment, 'invalid');
   if (!text(shipment, 'trackingQualifier', 64)) {
-    if (invalid) throw new InvalidInputError(PROVIDER, 'FedEx Freight does not take this PRO number');
+    if (invalid) throw new InvalidInputError(PROVIDER, 'FedEx Freight does not take this PRO number', { reason: 'wrong_number' });
     if (notFound) throw new NotFoundError(PROVIDER);
   }
   if (codes.length > 0) throw new IndeterminateError(PROVIDER, 'FedEx Freight returned an error for the PRO number');

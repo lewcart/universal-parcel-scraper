@@ -67,7 +67,7 @@ export class MailplusTracker {
       // The API checks the layout first: "This barcode is not valid." (HTTP 400), then
       // "There are no results for this tracking." (HTTP 409) for a number it does not hold.
       if (message !== undefined) {
-        if (/\bnot valid\b/i.test(message)) throw new InvalidInputError(PROVIDER, 'MailPlus does not take this number');
+        if (/\bnot valid\b/i.test(message)) throw new InvalidInputError(PROVIDER, 'MailPlus does not take this number', { reason: 'wrong_number' });
         if (/\bno results\b/i.test(message)) throw new NotFoundError(PROVIDER);
         throw new SchemaError(PROVIDER, 'MailPlus returned an unexpected error', { status: response.status });
       }

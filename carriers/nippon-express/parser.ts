@@ -116,7 +116,7 @@ export function parseNipponExpress(html: string, raw: string, now = Date.now()):
   if (!found) {
     const reason = clean(cells.eq(3).text(), 80);
     if (reason === NO_DATA) throw new NotFoundError(PROVIDER);
-    if (reason === WRONG_NUMBER) throw new InvalidInputError(PROVIDER, 'Nippon Express does not issue this slip number');
+    if (reason === WRONG_NUMBER) throw new InvalidInputError(PROVIDER, 'Nippon Express does not issue this slip number', { reason: 'wrong_number' });
     throw new IndeterminateError(PROVIDER, 'Nippon Express gave another reason for the number');
   }
   const href = cells.eq(1).find('a').attr('href') ?? '';

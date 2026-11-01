@@ -36,7 +36,7 @@ export class FermopointTracker {
         redirect: 'manual', allowHttpStatuses: [...REDIRECTS, ...GONE], fetcher: this.options.fetcher });
       if (REDIRECTS.includes(response.status)) {
         // The page sends a code that fails its own format check to its error page.
-        if (refusedCode(response.headers.get('location'))) throw new InvalidInputError(PROVIDER, 'Fermopoint calls the code invalid');
+        if (refusedCode(response.headers.get('location'))) throw new InvalidInputError(PROVIDER, 'Fermopoint calls the code invalid', { reason: 'wrong_number' });
         throw new TransportError(PROVIDER, 'Fermopoint sent the lookup to another page', { status: response.status });
       }
       if (GONE.includes(response.status)) throw new TransportError(PROVIDER, 'The Fermopoint booking page is unavailable', { status: response.status });

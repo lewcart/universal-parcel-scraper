@@ -348,6 +348,9 @@ describe('4PX retrieval', () => {
     const unused = vi.fn<typeof fetch>();
     await expect(new FourPxTracker({ fetcher: unused }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
     await expect(new FourPxTracker({ fetcher: unused }).fetch('bad&query=number')).rejects.toThrow(InvalidInputError);
+    // The adapter refuses it before its lookup starts, so an ended signal does not hide it.
+    await expect(adapter({ fetcher: unused, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER })
+      .track({ number: 'bad&query=number' }, { signal: AbortSignal.abort() })).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(unused).not.toHaveBeenCalled();
   });
 });

@@ -456,6 +456,7 @@ describe('UPS structured response', () => {
   it('reports a number UPS refuses for its check digit as invalid input', () => {
     const refused = { statusCode: '402', statusText: 'Invalid Request', trackDetails: null };
     expect(() => parseUPSTrackingResponse(refused, BAD_CHECK_DIGIT)).toThrow(InvalidInputError);
+    expect(() => parseUPSTrackingResponse(refused, BAD_CHECK_DIGIT)).toThrow(expect.objectContaining({ reason: 'wrong_number' }));
     // A number that passes the check proves nothing by a refusal.
     expect(() => parseUPSTrackingResponse(refused, TRACKING_NUMBER)).toThrow(IndeterminateError);
   });
@@ -754,6 +755,9 @@ describe('UPS lookup steps', () => {
     const lookup = new UPSTracker({ trawl: null }).fetch('1Z999');
     await expect(lookup).rejects.toThrow('UPS tracking numbers must start with 1Z');
     await expect(lookup).rejects.toMatchObject({ kind: 'invalid_input' });
+    // Before the lookup waits for its turn, so an ended signal does not hide it.
+    await expect(new UPSTracker({ trawl: null }).fetch('H9000000000', { signal: AbortSignal.abort() }))
+      .rejects.toMatchObject({ kind: 'invalid_input' });
     expect(fetcher).not.toHaveBeenCalled();
   });
 });

@@ -209,6 +209,10 @@ export const adapter: AdapterFactory = (environment) => {
   const tracker = new FourPxTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
   const lookup = (number: string, context: TrackingContext = {}) => runSteps({ carrier: 'four-px', budgetMs: context.budgetMs ?? 15_000,
     signal: context.signal, recorder: environment.recorder }, [{ id: 'direct', run: ({ signal, remainingMs }) => tracker.fetch(number, { signal, budgetMs: remainingMs }) }]);
-  return { id: 'four-px', recordsSteps: true, steps: ['direct'], track: (input, context) => lookup(input.number, context),
+  return { id: 'four-px', recordsSteps: true, steps: ['direct'], track: async (input, context) => {
+    // A number of another shape is refused before the lookup starts.
+    normalizeFourPxNumber(input.number);
+    return lookup(input.number, context);
+  },
     recognize: (number, context) => recognizeFromLookup(() => lookup(number, context), () => accepted(() => normalizeFourPxNumber(number))) };
 };

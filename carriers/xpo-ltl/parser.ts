@@ -84,7 +84,7 @@ export function parseXpoLtlSummary(html: string, raw: string): XpoLtlSummary {
     const invalid = /The PRO (\S{1,64}) format is invalid\./.exec(text);
     if (invalid) {
       if (invalid[1] !== number) throw new SchemaError(PROVIDER, 'XPO rejected another PRO than the one asked for');
-      throw new InvalidInputError(PROVIDER, 'XPO does not issue this PRO number');
+      throw new InvalidInputError(PROVIDER, 'XPO does not issue this PRO number', { reason: 'wrong_number' });
     }
     const absent = [...text.matchAll(/Shipment (\d{1,20}) is not currently available for tracking\./g)];
     if (absent.length === 1) {

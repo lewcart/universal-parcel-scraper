@@ -169,7 +169,7 @@ export function parseUpaya(payload: unknown, rawNumber: string): CarrierResult {
   if (!payload.ok) {
     if (typeof payload.error !== 'string') invalid('Upaya returned a failure without its reason');
     if (payload.error === 'uot_not_found') throw new NotFoundError(PROVIDER);
-    if (payload.error === 'invalid_code') throw new InvalidInputError(PROVIDER, 'Upaya does not read the code as a tracking code');
+    if (payload.error === 'invalid_code') throw new InvalidInputError(PROVIDER, 'Upaya does not read the code as a tracking code', { reason: 'wrong_number' });
     throw new IndeterminateError(PROVIDER, 'Upaya did not complete the lookup');
   }
   if (typeof payload.code !== 'string' || typeof payload.html !== 'string') invalid('Upaya returned a result without its code');

@@ -101,6 +101,10 @@ export class SingaporePostTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new SingaporePostTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
-  return { id: 'singapore-post', recordsSteps: true, steps: ['direct'], track: (input, context = {}) => runSteps({ carrier: 'singapore-post', budgetMs: context.budgetMs ?? 15_000,
-    signal: context.signal, recorder: environment.recorder }, [{ id: 'direct', run: ({ signal, remainingMs }) => tracker.fetch(input.number, { signal, budgetMs: remainingMs }) }]) };
+  return { id: 'singapore-post', recordsSteps: true, steps: ['direct'], track: async (input, context = {}) => {
+    // A number of another shape is refused before the lookup starts.
+    normalizeSingaporePostNumber(input.number);
+    return runSteps({ carrier: 'singapore-post', budgetMs: context.budgetMs ?? 15_000, signal: context.signal, recorder: environment.recorder },
+      [{ id: 'direct', run: ({ signal, remainingMs }) => tracker.fetch(input.number, { signal, budgetMs: remainingMs }) }]);
+  } };
 };

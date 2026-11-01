@@ -199,7 +199,8 @@ describe('R+L Carriers tracking adapter', () => {
 
   it('reads the check digit refusal from the session the refused search opens, and no other message', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(refused()).mockResolvedValueOnce(html(fixture('check-digit')));
-    await expect(carrier(fetcher).track({ number: REFUSED })).rejects.toMatchObject({ kind: 'invalid_input' });
+    // R+L says the number is wrong, so a consumer can ask for it to be checked.
+    await expect(carrier(fetcher).track({ number: REFUSED })).rejects.toMatchObject({ kind: 'invalid_input', reason: 'wrong_number' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     const [url, init] = fetcher.mock.calls[1]!;
     expect(String(url)).toBe(RL_TRACING_URL);

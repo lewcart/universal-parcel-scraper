@@ -138,7 +138,7 @@ function closure(data: Record<string, unknown>): string | null {
 export function starkenMissing(payload: unknown): never {
   const message = isRecord(payload) ? `${clean(payload.error, 200)} ${clean(payload.message, 200)}` : '';
   if (NOT_FOUND.test(message)) throw new NotFoundError(PROVIDER);
-  if (INVALID.test(message)) throw new InvalidInputError(PROVIDER, 'Starken does not take this order number');
+  if (INVALID.test(message)) throw new InvalidInputError(PROVIDER, 'Starken does not take this order number', { reason: 'wrong_number' });
   throw new SchemaError(PROVIDER, 'Starken returned an unexpected missing-order reply');
 }
 

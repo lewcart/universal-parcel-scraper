@@ -33,7 +33,7 @@ function checked(body: string): void {
   }
   if (!isRecord(reply) || typeof reply.code !== 'number') throw new SchemaError(PROVIDER, 'ST Courier returned an invalid lookup reply');
   if (reply.code === 200) return;
-  if (REFUSED.test(textFromHtml(reply.msg, 200))) throw new InvalidInputError(PROVIDER, 'ST Courier does not take this AWB number');
+  if (REFUSED.test(textFromHtml(reply.msg, 200))) throw new InvalidInputError(PROVIDER, 'ST Courier does not take this AWB number', { reason: 'wrong_number' });
   throw new IndeterminateError(PROVIDER, 'ST Courier did not complete the lookup');
 }
 

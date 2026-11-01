@@ -322,6 +322,9 @@ describe('Yanwen anonymous form retrieval', () => {
   it('rejects unsupported inputs before I/O, propagates cancellation and limits response size', async () => {
     const unused = vi.fn<typeof fetch>();
     await expect(new YanwenTracker({ fetcher: unused }).fetch('tracking&nums')).rejects.toThrow(InvalidInputError);
+    // The adapter refuses it before its lookup starts, so an ended signal does not hide it.
+    await expect(adapter({ fetcher: unused, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER })
+      .track({ number: 'tracking&nums' }, { signal: AbortSignal.abort() })).rejects.toMatchObject({ kind: 'invalid_input' });
     await expect(new YanwenTracker({ fetcher: unused }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
     expect(unused).not.toHaveBeenCalled();
     const huge = vi.fn<typeof fetch>().mockResolvedValue(new Response('x'.repeat(1_000_001)));

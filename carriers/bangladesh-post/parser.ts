@@ -264,7 +264,7 @@ function domesticRefusal(payload: Record<string, unknown>, number: string): neve
     if (!message.toUpperCase().includes(number)) throw new SchemaError(PROVIDER, 'Bangladesh Post answered for a different item');
     throw new NotFoundError(PROVIDER);
   }
-  if (/^Invalid Item ID format\b/i.test(message)) throw new InvalidInputError(PROVIDER, 'Bangladesh Post says the item ID is not in its format');
+  if (/^Invalid Item ID format\b/i.test(message)) throw new InvalidInputError(PROVIDER, 'Bangladesh Post says the item ID is not in its format', { reason: 'wrong_number' });
   if (/^Invalid access$/i.test(message)) throw new SchemaError(PROVIDER, 'Bangladesh Post refused the domestic lookup request');
   throw new SchemaError(PROVIDER, 'Bangladesh Post returned an unexpected domestic answer');
 }

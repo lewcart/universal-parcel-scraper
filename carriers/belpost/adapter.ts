@@ -52,7 +52,7 @@ export class BelpostTracker {
       if (response.status === 403) throw new ChallengeError(PROVIDER, 'Belpost refused the lookup', { status: 403 });
       const body = decodeText(bytes).replace(/^\uFEFF/, '').trim();
       if (response.status === 422) {
-        if (refusedNumber(body)) throw new InvalidInputError(PROVIDER, 'Belpost says the code is not in its format');
+        if (refusedNumber(body)) throw new InvalidInputError(PROVIDER, 'Belpost says the code is not in its format', { reason: 'wrong_number' });
         throw new SchemaError(PROVIDER, 'Belpost refused the lookup request', { status: 422 });
       }
       if (!body) throw new IndeterminateError(PROVIDER, 'Belpost returned an empty reply');

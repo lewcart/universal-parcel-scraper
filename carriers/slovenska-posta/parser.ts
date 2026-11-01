@@ -145,7 +145,7 @@ export function parseSlovenskaPosta(payload: unknown, rawNumber: string): Carrie
   if ('error' in parcel) {
     const error = clean(parcel.error, 40);
     if (error === 'not_found') throw new NotFoundError(PROVIDER);
-    if (error === 'invalid_barcode') throw new InvalidInputError(PROVIDER, 'Slovenská pošta does not accept this item number');
+    if (error === 'invalid_barcode') throw new InvalidInputError(PROVIDER, 'Slovenská pošta does not accept this item number', { reason: 'wrong_number' });
     if (error === 'not_found_used') {
       throw new IndeterminateError(PROVIDER, 'Slovenská pošta registers no data for the item', { reason: 'no_history' });
     }

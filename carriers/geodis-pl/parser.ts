@@ -67,7 +67,7 @@ export function parseGeodisPlSummary(html: string, raw: string): GeodisPlSummary
   if (!details.length) {
     if (echoed !== number) throw new SchemaError(PROVIDER, 'GEODIS Poland did not answer for the requested number');
     if (notices.length === 1 && notices[0] === NOT_FOUND) throw new NotFoundError(PROVIDER);
-    if (notices.length === 1 && notices[0] === REFUSED) throw new InvalidInputError(PROVIDER, 'GEODIS Poland refused the shipment number');
+    if (notices.length === 1 && notices[0] === REFUSED) throw new InvalidInputError(PROVIDER, 'GEODIS Poland refused the shipment number', { reason: 'wrong_number' });
     throw new SchemaError(PROVIDER, 'GEODIS Poland returned neither a shipment nor its not-found notice');
   }
   if (details.length !== 1 || notices.includes(NOT_FOUND)) throw new SchemaError(PROVIDER, 'GEODIS Poland returned an ambiguous search page');

@@ -130,7 +130,7 @@ function refusal(payload: Record<string, unknown>): never {
   if (isPathaoNotFound(payload)) throw new NotFoundError(PROVIDER);
   // Its form check, as "The consignment id must be 14 characters."
   if (payload.code === 422 && isRecord(payload.errors) && Object.hasOwn(payload.errors, 'consignment_id')) {
-    throw new InvalidInputError(PROVIDER, 'Pathao does not accept the consignment ID');
+    throw new InvalidInputError(PROVIDER, 'Pathao does not accept the consignment ID', { reason: 'wrong_number' });
   }
   throw new SchemaError(PROVIDER, 'Pathao returned an unexpected error');
 }

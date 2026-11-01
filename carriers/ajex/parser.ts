@@ -134,7 +134,7 @@ export function parseAjex(payload: unknown, raw: string): CarrierResult {
   if (payload.status === 429) throw new RateLimitedError(PROVIDER);
   if (payload.status !== 200) {
     if (NOT_FOUND.test(message)) throw new NotFoundError(PROVIDER);
-    if (INVALID_FORMAT.test(message)) throw new InvalidInputError(PROVIDER, 'AJEX\'s tracker does not take numbers of this format');
+    if (INVALID_FORMAT.test(message)) throw new InvalidInputError(PROVIDER, 'AJEX\'s tracker does not take numbers of this format', { reason: 'wrong_number' });
     // The newer system's unknown numbers come without a message, and so could its failures.
     throw new IndeterminateError(PROVIDER, 'AJEX did not complete the lookup');
   }

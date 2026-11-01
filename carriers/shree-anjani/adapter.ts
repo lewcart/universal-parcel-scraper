@@ -52,7 +52,7 @@ export class ShreeAnjaniTracker {
       if (response.status === 400) {
         // The lookup checks the number itself and names the field it refused.
         if (isRecord(body) && body.success === false && /validation/i.test(String(body.error))) {
-          throw new InvalidInputError(PROVIDER, 'Shree Anjani refused the number');
+          throw new InvalidInputError(PROVIDER, 'Shree Anjani refused the number', { reason: 'wrong_number' });
         }
         throw new SchemaError(PROVIDER, 'Shree Anjani refused the lookup', { status: 400 });
       }

@@ -509,7 +509,7 @@ export function parseUPSTrackingResponse(
     if (OUTAGE_CODES.has(code)) throw new UPSUnavailableError(code);
     // UPS answers 402 "Invalid Request" for a number whose check digit fails.
     if (cleanScalar(payload.statusCode) === '402' && !isValidUpsTrackingNumber(trackingNumber.toUpperCase())) {
-      throw new InvalidInputError('UPS', 'UPS rejected the number: its check digit does not match');
+      throw new InvalidInputError('UPS', 'UPS rejected the number: its check digit does not match', { reason: 'wrong_number' });
     }
     throw new IndeterminateError('UPS', clean(payload.statusText) || 'UPS tracking is unavailable');
   }
@@ -797,15 +797,14 @@ export class UPSTracker {
   }
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
+    // A number of another shape is refused before the lookup waits for its turn.
+    const number = trackingNumber.toUpperCase();
+    if (!/^1Z[A-Z0-9]{16}$/.test(number)) {
+      throw new InvalidInputError('UPS', 'UPS tracking numbers must start with 1Z and contain 18 characters');
+    }
     // One lookup at a time: the cached session's cookies and XSRF token are
     // shared state and must never be refreshed by two lookups at once.
-    return takeTurn(this.#serialize, 'UPS', context, async (left) => {
-      const number = trackingNumber.toUpperCase();
-      if (!/^1Z[A-Z0-9]{16}$/.test(number)) {
-        throw new InvalidInputError('UPS', 'UPS tracking numbers must start with 1Z and contain 18 characters');
-      }
-      return this.#lookup(number, left);
-    });
+    return takeTurn(this.#serialize, 'UPS', context, (left) => this.#lookup(number, left));
   }
 
   async #lookup(number: string, context: TrackingContext): Promise<CarrierResult> {

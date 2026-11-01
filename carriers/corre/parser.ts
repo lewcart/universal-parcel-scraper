@@ -80,7 +80,7 @@ export function parseCorre(html: string, rawNumber: string): CarrierResult {
   const $ = load(html);
   if (clean($('title').first().text(), 120) !== TITLE) throw new SchemaError(PROVIDER, 'CORRE returned an unexpected page');
   const page = clean($('body').text(), 4_000);
-  if (WRONG_LENGTH.test(page)) throw new InvalidInputError(PROVIDER, 'CORRE says an object code has thirteen characters');
+  if (WRONG_LENGTH.test(page)) throw new InvalidInputError(PROVIDER, 'CORRE says an object code has thirteen characters', { reason: 'wrong_number' });
   const tables = $('table').toArray();
   if (tables.length > MAX_RECORDS) throw new SchemaError(PROVIDER, 'CORRE returned an oversized history');
   if (!tables.length) {

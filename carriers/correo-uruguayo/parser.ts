@@ -123,7 +123,7 @@ export function parseCorreoUruguayo(payload: unknown, rawNumber: string): Carrie
   if (state === 'NOT_FOUND') throw new NotFoundError(PROVIDER);
   if (!national && !international) throw new SchemaError(PROVIDER, 'Correo Uruguayo returned an item without its code');
   // A code ending UY whose service letters the post does not use.
-  if (state === 'INVALID_PRODUCT') throw new InvalidInputError(PROVIDER, 'Correo Uruguayo does not issue this service code');
+  if (state === 'INVALID_PRODUCT') throw new InvalidInputError(PROVIDER, 'Correo Uruguayo does not issue this service code', { reason: 'wrong_number' });
   // The page shows only the day of the last scan of an item whose records went to the archive.
   if (state === 'FILED') throw new IndeterminateError(PROVIDER, 'Correo Uruguayo has archived the item’s history', { reason: 'history_expired' });
   if (state !== 'SUCCESS') throw new SchemaError(PROVIDER, 'Correo Uruguayo returned an unexpected item state');

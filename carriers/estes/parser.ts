@@ -155,7 +155,7 @@ export function parseEstes(payload: unknown, raw: string): CarrierResult {
   const code = error?.code ?? 0;
   if (typeof code !== 'number') throw new SchemaError(PROVIDER, 'Estes returned an invalid error code');
   if (code === NOT_FOUND_CODE) throw new NotFoundError(PROVIDER);
-  if (code === INVALID_CODE) throw new InvalidInputError(PROVIDER, 'Estes does not take this PRO number');
+  if (code === INVALID_CODE) throw new InvalidInputError(PROVIDER, 'Estes does not take this PRO number', { reason: 'wrong_number' });
   if (code !== 0) throw new IndeterminateError(PROVIDER, 'Estes returned an error for the PRO number');
   // The tracking page reads an answer without a shipment as "information
   // received, check back later": the PRO is known but has nothing to show yet.

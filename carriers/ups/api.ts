@@ -101,7 +101,7 @@ function httpFailure(response: Response, bytes: Uint8Array, number: string): Err
   }
   if (status === 404 && upsApiNotFound(notices)) return new NotFoundError(PROVIDER);
   if (status === 400 && !isValidUpsTrackingNumber(number)) {
-    return new InvalidInputError(PROVIDER, 'UPS rejected the number: its check digit does not match');
+    return new InvalidInputError(PROVIDER, 'UPS rejected the number: its check digit does not match', { reason: 'wrong_number' });
   }
   const codes = notices.map((notice) => notice.code).filter((code) => /^[A-Z0-9]+$/.test(code));
   return new TransportError(PROVIDER, `UPS API returned HTTP ${status}${codes.length ? ` (${codes.join(', ')})` : ''}`, { status });

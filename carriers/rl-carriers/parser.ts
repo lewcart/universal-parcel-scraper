@@ -226,7 +226,7 @@ export function parseRlRefusal(html: string, raw: string): never {
   const number = normalizeRlNumber(raw);
   const errors = rlSearchErrors(html);
   if (errors?.length === 1 && errors[0] === `${number}: Pro number failed check digit validation.`) {
-    throw new InvalidInputError(PROVIDER, 'R+L Carriers says the PRO number fails its check digit');
+    throw new InvalidInputError(PROVIDER, 'R+L Carriers says the PRO number fails its check digit', { reason: 'wrong_number' });
   }
   throw new IndeterminateError(PROVIDER, 'R+L Carriers refused the PRO search');
 }

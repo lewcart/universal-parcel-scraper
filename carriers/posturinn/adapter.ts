@@ -54,7 +54,7 @@ export class PosturinnTracker {
       if (response.status === 204) throw new NotFoundError(PROVIDER);
       const body = decodeText(bytes).replace(/^\uFEFF/, '').trim();
       if (response.status === 400) {
-        if (refusedNumber(body)) throw new InvalidInputError(PROVIDER, 'Pósturinn says the code is not valid');
+        if (refusedNumber(body)) throw new InvalidInputError(PROVIDER, 'Pósturinn says the code is not valid', { reason: 'wrong_number' });
         throw new SchemaError(PROVIDER, 'Pósturinn refused the lookup request', { status: 400 });
       }
       if (!body) throw new IndeterminateError(PROVIDER, 'Pósturinn returned an empty reply');

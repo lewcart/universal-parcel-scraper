@@ -429,8 +429,9 @@ export class MondialRelayTracker {
     if (inpost) return this.#inpostSpain(inpost, context);
     // One lookup at a time: the page token and the API call have to stay on the
     // same solved browser identity, and the app's access token is renewed once.
-    return takeTurn(this.#serialize, 'Mondial Relay', context,
-      (left) => this.#lookup(normalizeMondialRelayCredential(rawShipment, rawPostcode, postcodeCountry), left));
+    // A number or postcode it cannot take is refused before the lookup waits for its turn.
+    const credential = normalizeMondialRelayCredential(rawShipment, rawPostcode, postcodeCountry);
+    return takeTurn(this.#serialize, 'Mondial Relay', context, (left) => this.#lookup(credential, left));
   }
 
   /**

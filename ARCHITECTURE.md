@@ -237,6 +237,10 @@ outage; it does not make the parcel absent. A rate limit an adapter's own pacing
 refused before any request, carries `self_paced`: the lookup sent nothing, so a consumer can
 treat it as a deferral rather than the carrier's throttling. Invalid input carries `other_carrier` when the carrier's answer
 names another carrier as the shipment's, so a consumer does not read it as a mistyped number.
+Invalid input carries `wrong_number` when the carrier's answer says the number is wrong, such as
+R+L's failed check digit or a format its tracker refuses, so a consumer can ask for the number
+to be checked; a refusal of a postcode, a link or another detail carries none. An adapter
+refuses a number of a shape it does not take before its lookup starts, with no reason.
 A challenge names the stage that stopped it when
 the adapter can tell: `api_denied` when the carrier refused the request outright,
 `puzzle_missing` when no puzzle appeared, `puzzle_unsolved` or `solver_unavailable` when the

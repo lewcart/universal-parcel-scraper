@@ -48,7 +48,7 @@ export class CdekTracker {
         case CDEK_ERRORS.limit: throw new RateLimitedError(PROVIDER, retryAfterMs(response), 'CDEK limits how many numbers a client tracks');
         case CDEK_ERRORS.later: throw new IndeterminateError(PROVIDER, 'CDEK asked to try the number again later');
         case CDEK_ERRORS.short:
-        case CDEK_ERRORS.long: throw new InvalidInputError(PROVIDER, 'CDEK refused the number\'s length');
+        case CDEK_ERRORS.long: throw new InvalidInputError(PROVIDER, 'CDEK refused the number\'s length', { reason: 'wrong_number' });
       }
       if (response.status === 429) throw new RateLimitedError(PROVIDER, retryAfterMs(response));
       if (response.status === 403) throw new ChallengeError(PROVIDER, 'CDEK refused the guest lookup');

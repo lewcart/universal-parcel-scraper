@@ -97,7 +97,7 @@ export function parseEgyptPost(payload: unknown, raw: string): CarrierResult {
     throw new SchemaError(PROVIDER, 'Egypt Post answered for a different item');
   }
   if (data.case === 2) throw new NotFoundError(PROVIDER);
-  if (data.case === 3) throw new InvalidInputError(PROVIDER, 'Egypt Post says the number is incorrect');
+  if (data.case === 3) throw new InvalidInputError(PROVIDER, 'Egypt Post says the number is incorrect', { reason: 'wrong_number' });
   if (data.case !== 1 || !Array.isArray(data.data) || data.data.length !== STEPS) {
     throw new SchemaError(PROVIDER, 'Egypt Post returned invalid tracking steps');
   }

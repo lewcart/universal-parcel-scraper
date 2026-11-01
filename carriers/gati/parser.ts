@@ -99,7 +99,7 @@ export function parseGati(payload: unknown, raw: string): CarrierResult {
   if (!isRecord(payload)) throw new SchemaError(PROVIDER, 'AllcargoGATI returned an invalid envelope');
   if (payload.success !== true) {
     // The site checks the number before it asks the tracking service.
-    if (payload.success === false && isRecord(payload.errors)) throw new InvalidInputError(PROVIDER, 'AllcargoGATI refused the docket number');
+    if (payload.success === false && isRecord(payload.errors)) throw new InvalidInputError(PROVIDER, 'AllcargoGATI refused the docket number', { reason: 'wrong_number' });
     // The site relays a failure of the tracking service behind it, such as its timeout.
     if (payload.success === false && typeof payload.error === 'string') throw new IndeterminateError(PROVIDER, 'AllcargoGATI tracking service did not answer');
     throw new SchemaError(PROVIDER, 'AllcargoGATI returned an invalid envelope');

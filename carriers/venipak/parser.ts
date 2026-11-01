@@ -144,7 +144,7 @@ export function parseVenipak(reply: unknown, raw: string): CarrierResult {
     const notice = clean(notices.text(), 300);
     if (notices.length === 1 && !containers.length) {
       if (notice === `Shipment ${number.query} not found`) throw new NotFoundError(PROVIDER);
-      if (notice === 'Wrong shipment ID') throw new InvalidInputError(PROVIDER, 'Venipak refused the number');
+      if (notice === 'Wrong shipment ID') throw new InvalidInputError(PROVIDER, 'Venipak refused the number', { reason: 'wrong_number' });
     }
     throw new IndeterminateError(PROVIDER, 'Venipak returned a notice instead of the parcel');
   }

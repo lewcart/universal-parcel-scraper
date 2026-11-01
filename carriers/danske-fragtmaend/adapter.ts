@@ -65,7 +65,7 @@ export class DanskeFragtmaendTracker {
         throw new TransportError(PROVIDER, 'Danske Fragtmænd tracking lookup is unavailable', { status: 404 });
       }
       if (response.status === 400) {
-        if (/^Colli code is not valid/.test(message(body))) throw new InvalidInputError(PROVIDER, 'Danske Fragtmænd says the collicode is not valid');
+        if (/^Colli code is not valid/.test(message(body))) throw new InvalidInputError(PROVIDER, 'Danske Fragtmænd says the collicode is not valid', { reason: 'wrong_number' });
         throw new SchemaError(PROVIDER, 'Danske Fragtmænd refused the lookup request', { status: 400 });
       }
       return parseDanskeFragtmaend(json(body), input.number);

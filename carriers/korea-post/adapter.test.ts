@@ -172,6 +172,9 @@ describe('Korea Post retrieval', () => {
   it('rejects other inputs before I/O, preserves cancellation and caps response size', async () => {
     const unused = vi.fn<typeof fetch>();
     await expect(new KoreaPostTracker({ fetcher: unused }).fetch('600000000000')).rejects.toMatchObject({ kind: 'invalid_input' });
+    // The adapter refuses it before its lookup starts, so an ended signal does not hide it.
+    await expect(adapter({ fetcher: unused, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER })
+      .track({ number: '600000000000' }, { signal: AbortSignal.abort() })).rejects.toMatchObject({ kind: 'invalid_input' });
     await expect(new KoreaPostTracker({ fetcher: unused }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
     expect(unused).not.toHaveBeenCalled();
     const huge = vi.fn<typeof fetch>().mockResolvedValue(new Response('x'.repeat(1_000_001)));

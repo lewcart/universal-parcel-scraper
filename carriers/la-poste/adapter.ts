@@ -391,7 +391,7 @@ export class LaPosteTracker {
         allowHttpStatuses: [400],
       });
       if (response.status === 400) {
-        if (rejectionCode(bytes) === NOT_POSTAL_CODE) throw new InvalidInputError('La Poste', 'La Poste does not issue this tracking number');
+        if (rejectionCode(bytes) === NOT_POSTAL_CODE) throw new InvalidInputError('La Poste', 'La Poste does not issue this tracking number', { reason: 'wrong_number' });
         throw new UpstreamHttpError('La Poste tracking', 400);
       }
       const { result, point } = parseShipment(parseJsonBytes(bytes, 'La Poste'), normalized);

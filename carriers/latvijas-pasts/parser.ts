@@ -79,7 +79,7 @@ export function parseLatvijasPasts(payload: unknown, rawNumber: string): Carrier
     if (typeof payload.info !== 'string') throw new SchemaError(PROVIDER, 'Latvijas Pasts returned neither a history nor a notice');
     const notice = clean(payload.info, 300);
     if (notice === NOT_FOUND) throw new NotFoundError(PROVIDER);
-    if (notice === MALFORMED) throw new InvalidInputError(PROVIDER, 'Latvijas Pasts does not accept this item code');
+    if (notice === MALFORMED) throw new InvalidInputError(PROVIDER, 'Latvijas Pasts does not accept this item code', { reason: 'wrong_number' });
     throw new IndeterminateError(PROVIDER, 'Latvijas Pasts returned a notice instead of the item history');
   }
   const rows = payload.data;

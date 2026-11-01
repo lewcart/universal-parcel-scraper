@@ -124,7 +124,7 @@ export function parseBulgarianPosts(payload: unknown, rawNumber: string): Carrie
   const first: unknown = rows[0];
   if (isRecord(first) && first.event_name === WRONG_CODE && typeof first.date_reg === 'string' && first.date_reg.startsWith('0001-')) {
     if (rows.length !== 1) throw new SchemaError(PROVIDER, 'Bulgarian Posts returned scans beside its wrong-code answer');
-    throw new InvalidInputError(PROVIDER, 'Bulgarian Posts says the code is wrong');
+    throw new InvalidInputError(PROVIDER, 'Bulgarian Posts says the code is wrong', { reason: 'wrong_number' });
   }
 
   const seen = new Set<string>();

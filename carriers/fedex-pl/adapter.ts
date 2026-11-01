@@ -34,7 +34,7 @@ function refusal(body: string): never {
   } catch {
     payload = null;
   }
-  if (isRecord(payload) && payload.code === 'trck-1400') throw new InvalidInputError(PROVIDER, 'FedEx Poland rejected the number');
+  if (isRecord(payload) && payload.code === 'trck-1400') throw new InvalidInputError(PROVIDER, 'FedEx Poland rejected the number', { reason: 'wrong_number' });
   throw new TransportError(PROVIDER, 'FedEx Poland rejected the tracking request', { status: 400 });
 }
 

@@ -5557,6 +5557,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^FEI[A-Z]{2}\\d{10}YQ$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^FEI[A-Z]{2}\\d{10}[A-Z]{2}$",
+        "confidence": "low"
       }
     ]
   },
@@ -12050,6 +12054,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^CHPU\\d{19}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^CD\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -18562,7 +18570,7 @@ export const CARRIER_CATALOG = {
       "adapter": "eurodis",
       "localClocks": true
     },
-    "canaryUrl": "https://eurodis.com/",
+    "canaryUrl": "https://eurodis.com/track-trace",
     "trackingUrlTemplate": "https://eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={trackingNumber}",
     "trackingSearchUrl": "https://eurodis.com/",
     "linkRules": [
@@ -31707,7 +31715,7 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
-        "pattern": "^SH(?!O[CPR])[A-Z]{2}\\d{10}$",
+        "pattern": "^(?:RS)?(?:SH(?!O[CPR])|TN)[A-Z]{2}\\d{10}$",
         "confidence": "low"
       }
     ]
@@ -43065,6 +43073,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "tforce-freight",
       "recognitionRank": 946,
+      "recognitionPattern": "^(?:\\d{9}|2205\\d{9})$",
       "localClocks": true
     },
     "canaryUrl": "https://www.tforcefreight.com/ltl/apps/tracking",
@@ -43093,6 +43102,17 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^\\d{9}$",
+        "confidence": "low",
+        "checksum": "mod7"
+      },
+      {
+        "pattern": "^2205\\d{9}$",
+        "confidence": "low",
+        "checksum": "mod7",
+        "preferred": true
+      },
+      {
+        "pattern": "^\\d{8}$",
         "confidence": "low",
         "checksum": "mod7"
       }
@@ -44599,7 +44619,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/orderResult\\.html$",
         "params": [
           "nos"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -50212,7 +50233,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "j-and-t": ["j-and-t-1","j-and-t-2","j-and-t-3","j-and-t-4","j-and-t-5","j-and-t-6"],
   "ems": [],
   "139express": [],
-  "17feia": ["17feia-1"],
+  "17feia": ["17feia-1","17feia-2"],
   "247express": [],
   "2ebox": [],
   "2go": ["2go-1"],
@@ -50387,7 +50408,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "chinz-logistics": [],
   "chit-chats": ["chit-chats-1"],
   "choir-express": [],
-  "chronodiali": ["chronodiali-1"],
+  "chronodiali": ["chronodiali-1","chronodiali-2"],
   "chukou1": ["chukou1-1"],
   "chunghwa-post": ["chunghwa-post-1","chunghwa-post-2"],
   "chunil": [],
@@ -51228,7 +51249,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tej-couriers": [],
   "teleship": ["teleship-ts"],
   "tfm-express": [],
-  "tforce-freight": ["tforce-freight-1"],
+  "tforce-freight": ["tforce-freight-1","tforce-freight-2","tforce-freight-3"],
   "tforce-integrated-solutions": [],
   "tforce-logistics": ["tforce-logistics-1"],
   "thabit-logistics": [],

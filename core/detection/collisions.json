@@ -1297,6 +1297,16 @@
     "reason": "8-digit numbers are shared by Colisweb, Heppner and Mondial Relay; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{8}",
+    "carriers": [
+      "colisweb",
+      "heppner",
+      "mondial-relay",
+      "tforce-freight"
+    ],
+    "reason": "8-digit numbers are shared by Colisweb, Heppner and Mondial Relay, and by TForce Freight's PROs written without their leading zero when the check digit passes; the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "AA9{11}",
     "carriers": [
       "jd-logistics",
@@ -4655,6 +4665,16 @@
       "aramex-nz"
     ],
     "reason": "Aramex Australia and Aramex New Zealand print the same twelve-character labels on one platform, each with its own database, and Colis Privé's rule takes any twelve letters or digits. All three are low-confidence: the label names neither network, so direct tracking must find it on one of them."
+  },
+  {
+    "shape": "Two letters, or a digit and a letter, followed by ten digits",
+    "carriers": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz",
+      "chronodiali"
+    ],
+    "reason": "Aramex Australia and Aramex New Zealand print the same twelve-character labels on one platform, each with its own database, Colis Privé's rule takes any twelve letters or digits, and Chronodiali's tracker knows references of CD and ten digits. All four are low-confidence: the number names none of them, so direct tracking must find it on one of them."
   },
   {
     "shape": "Two letters, or a digit and a letter, followed by ten digits",

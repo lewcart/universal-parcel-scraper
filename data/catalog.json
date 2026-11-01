@@ -5555,6 +5555,10 @@
       {
         "pattern": "^FEI[A-Z]{2}\\d{10}YQ$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^FEI[A-Z]{2}\\d{10}[A-Z]{2}$",
+        "confidence": "low"
       }
     ]
   },
@@ -12048,6 +12052,10 @@
       {
         "pattern": "^CHPU\\d{19}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^CD\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -18560,7 +18568,7 @@
       "adapter": "eurodis",
       "localClocks": true
     },
-    "canaryUrl": "https://eurodis.com/",
+    "canaryUrl": "https://eurodis.com/track-trace",
     "trackingUrlTemplate": "https://eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={trackingNumber}",
     "trackingSearchUrl": "https://eurodis.com/",
     "linkRules": [
@@ -31705,7 +31713,7 @@
         "confidence": "low"
       },
       {
-        "pattern": "^SH(?!O[CPR])[A-Z]{2}\\d{10}$",
+        "pattern": "^(?:RS)?(?:SH(?!O[CPR])|TN)[A-Z]{2}\\d{10}$",
         "confidence": "low"
       }
     ]
@@ -43063,6 +43071,7 @@
       "mode": "automatic",
       "adapter": "tforce-freight",
       "recognitionRank": 946,
+      "recognitionPattern": "^(?:\\d{9}|2205\\d{9})$",
       "localClocks": true
     },
     "canaryUrl": "https://www.tforcefreight.com/ltl/apps/tracking",
@@ -43091,6 +43100,17 @@
     "detectionRules": [
       {
         "pattern": "^\\d{9}$",
+        "confidence": "low",
+        "checksum": "mod7"
+      },
+      {
+        "pattern": "^2205\\d{9}$",
+        "confidence": "low",
+        "checksum": "mod7",
+        "preferred": true
+      },
+      {
+        "pattern": "^\\d{8}$",
         "confidence": "low",
         "checksum": "mod7"
       }
@@ -44597,7 +44617,8 @@
         "pathPattern": "^/orderResult\\.html$",
         "params": [
           "nos"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [

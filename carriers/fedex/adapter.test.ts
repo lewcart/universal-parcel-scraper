@@ -107,6 +107,8 @@ describe('FedEx status vocabulary', () => {
     expect(fedexStage('At FedEx origin facility')).toBe('in_transit');
     expect(fedexStage('Left FedEx origin facility')).toBe('in_transit');
     expect(fedexStage('Delivery option requested')).toBe('in_transit');
+    expect(FEDEX_CODE_STAGE.AS).toBe('in_transit');
+    expect(fedexStage('Address corrected')).toBe('in_transit');
     // A delivery left at the door stays a delivery.
     expect(fedexStage('Delivered — Left at front door. Package delivered to recipient address')).toBe('delivered');
     expect(fedexStatus('DL', 'On FedEx vehicle for delivery')).toBe('delivered');

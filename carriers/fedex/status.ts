@@ -33,6 +33,8 @@ export const FEDEX_CODE_STAGE: Readonly<Record<string, Stage>> = {
   IT: 'in_transit',
   RR: 'in_transit',
   HA: 'in_transit',
+  // FedEx corrected the address at a facility, at the instant of an arrival there; the parcel goes on.
+  AS: 'in_transit',
   OD: 'out_for_delivery',
   HL: 'ready_for_pickup',
   HP: 'ready_for_pickup',
@@ -97,6 +99,8 @@ const IN_TRANSIT_TERMS = [
   'left fedex',
   // A delivery option the recipient asked for (code RR) while the parcel still travels.
   'delivery option requested',
+  // An address FedEx corrected (code AS) on the way.
+  'address corrected',
 ];
 
 /**

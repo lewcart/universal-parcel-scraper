@@ -561,11 +561,14 @@ const SCHEDULE = /^(?:estimated vessel (?:departure|arrival)|cfs\/cy cut-off dat
 // being arranged at the airport and the departure, and ParcelsApp one dated by month and day ("(10.20)")
 // between its departure and arrival: it says nothing happened, so it is no scan.
 const BARE_TIME = /^[(（]\s*\d{1,2}\s*[:：.．]\s*\d{1,2}\s*[)）]$/;
+// A language's label with nothing after it, as 17TRACK relayed a JCEX row beside the warehouse's receipt.
+const EMPTY_LABEL = /^[(（]\s*(?:中文|英文|chinese|english)\s*[:：]\s*[)）]$/i;
 
 function describe(description: unknown, stage?: unknown): { description: string; stage: Stage; stage_source: string } | null {
   // A copy of SunYou's departure drops the last-mile number, as SunYou's own result does.
   const label = sunYouWording(relayedNotice(text(description)).replace(CLEARANCE_STATUS, ''));
-  if (!label || isNotice(label) || flightToCome(label) || SCHEDULE.test(label) || BARE_TIME.test(label)) return null;
+  if (!label || isNotice(label) || flightToCome(label) || SCHEDULE.test(label) || BARE_TIME.test(label)
+    || EMPTY_LABEL.test(label)) return null;
   const declared = typeof stage === 'string' && Object.hasOwn(STAGES, stage) ? STAGES[stage] : undefined;
   // Established source semantics (e.g. handoff/negation) remain first. A real
   // provider stage outranks the new intuitive translation fallback.

@@ -66,7 +66,8 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   recipient's delivery preferences, DHL's detail line "Keine weiteren Details
   erforderlich" ("no further details required"), 17FEIA's estimated departure and the
   flight DHLink, Intel-Valley or Mayi Yinfu book, written before the flight, never become
-  events. Neither does a bracketed time or date with no words, nor an entry whose wording
+  events. Neither does a bracketed time or date with no words, a language's label with nothing
+  after it ("(中文:)"), nor an entry whose wording
   no rule reads and that is dated within five minutes of the lookup: providers stamp their
   notices with the moment they answer. A result made only of input prompts raises `input_required`.
   A generic "On the way" beside a specific scan at the same instant and place, as FedEx

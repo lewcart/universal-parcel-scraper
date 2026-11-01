@@ -162,6 +162,12 @@ describe('shared provider result', () => {
     expect(event('2026-01-07T10:52:13+08:00', 'Departed (10:23)', 'InTransit')).toMatchObject({ stage: 'in_transit' });
   });
 
+  it('leaves out a language label with no words after it', () => {
+    expect(event('2026-01-07T16:17:00+08:00', '(中文:)', 'InTransit')).toBeNull();
+    expect(event('2026-01-07T16:17:00+08:00', '（English：）', 'InTransit')).toBeNull();
+    expect(event('2026-01-07T16:17:00+08:00', '(中文:已出库)', 'InTransit')).not.toBeNull();
+  });
+
   it("reads Sameday's Bulgarian steps before it has the parcel, as ParcelsApp relays them", () => {
     expect(event('2026-01-07T12:45:00+02:00', 'Скоро ще вземем пратката Ви от подателя.'))
       .toMatchObject({ stage: 'registered', stage_source: 'wording:provider' });

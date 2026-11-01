@@ -5,6 +5,7 @@ import type { CarrierResult } from '../../core/result/index.js';
 import { withLocalBrowser, withRemoteBrowser } from '../../core/transport/localBrowser.js';
 import { isRecord } from '../../core/types.js';
 import { parseRoyalMailTrackingResponse, royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl, royalMailUnconfirmed } from './parser.js';
+import { royalMailVisionRecovery, type RoyalMailVisionContext } from './vision.js';
 
 const PROVIDER = 'Royal Mail';
 const ORIGIN = 'https://www.royalmail.com';
@@ -51,13 +52,17 @@ export function royalMailDestination(summary: unknown): { summary?: { destinatio
 
 /** Observe the application's request; its issued session stays in the browser. */
 export async function captureRoyalMailReply(page: Page, url: string, number: string, phase: 'summary' | 'events',
-  signal: AbortSignal, timeoutMs: number, trigger: () => Promise<void>): Promise<Record<string, unknown>> {
-  const deadline = AbortSignal.any([signal, AbortSignal.timeout(Math.max(1, Math.floor(timeoutMs)))]);
+  signal: AbortSignal, timeoutMs: number, trigger: () => Promise<void>,
+  recover?: (signal: AbortSignal, remainingMs: number) => Promise<boolean>): Promise<Record<string, unknown>> {
+  const expires = performance.now() + timeoutMs;
+  const finished = new AbortController();
+  const deadline = AbortSignal.any([signal, finished.signal, AbortSignal.timeout(Math.max(1, Math.floor(timeoutMs)))]);
   deadline.throwIfAborted();
   let active = true;
   let refresh = false;
   let bytes = 0;
   let count = 0;
+  let interactive = false;
   let resolve!: (piece: Record<string, unknown>) => void;
   let reject!: (error: unknown) => void;
   const reply = new Promise<Record<string, unknown>>((yes, no) => { resolve = yes; reject = no; });
@@ -72,7 +77,9 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
       ? new ChallengeError(PROVIDER, "Royal Mail's edge refused the tracking request")
       : new TransportError(PROVIDER, 'Royal Mail tracking request failed'));
   };
-  const aborted = () => reject(signal.aborted ? signal.reason : new TransportError(PROVIDER, 'Royal Mail tracking response timed out'));
+  const aborted = () => reject(signal.aborted ? signal.reason : interactive
+    ? new ChallengeError(PROVIDER, 'Royal Mail verification did not yield tracking history')
+    : new TransportError(PROVIDER, 'Royal Mail tracking response timed out'));
   const received = (response: BrowserResponse) => {
     if (!matches(response.request())) return;
     void (async () => {
@@ -123,10 +130,17 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
   // A visible CAPTCHA waits for a person, and the page sends no request until it is solved.
   // Nor does it send one while the consent manager withholds the CAPTCHA.
   const watchChallenge = async () => {
+    let recovered = false;
     while (active && !deadline.aborted) {
       if (await page.locator(CAPTCHA_CHALLENGE).count().catch(() => 0)) {
-        if (active) reject(new ChallengeError(PROVIDER, 'Royal Mail asked for an interactive CAPTCHA'));
-        return;
+        interactive = true;
+        if (!recovered) {
+          if (recover && await recover(deadline, Math.max(0, expires - performance.now()))) recovered = true;
+          else {
+            if (active) reject(new ChallengeError(PROVIDER, 'Royal Mail asked for an interactive CAPTCHA'));
+            return;
+          }
+        }
       }
       if (await page.locator(CAPTCHA_WITHHELD).count().catch(() => 0)) {
         if (active) reject(new SchemaError(PROVIDER, "Royal Mail's cookie consent withheld its CAPTCHA"));
@@ -140,7 +154,9 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
   deadline.addEventListener('abort', aborted, { once: true });
   try {
     deadline.throwIfAborted();
-    void watchChallenge().catch(() => {});
+    void watchChallenge().catch(error => {
+      if (active) reject(carrierErrorKind(error) ? error : new ChallengeError(PROVIDER, 'Royal Mail verification did not complete'));
+    });
     await Promise.race([trigger(), reply.then(() => {})]);
     return await reply;
   } finally {
@@ -148,20 +164,25 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
     page.off('response', received);
     page.off('requestfailed', failed);
     deadline.removeEventListener('abort', aborted);
+    finished.abort();
   }
 }
 
 export function fetchRoyalMailInBrowser(number: string, executablePath: string, signal: AbortSignal,
-  timeoutMs: number, fullHistory: boolean, proxy: string | null = null, endpoint: string | null = null): Promise<CarrierResult> {
+  timeoutMs: number, fullHistory: boolean, proxy: string | null = null, endpoint: string | null = null,
+  vision?: RoyalMailVisionContext): Promise<CarrierResult> {
   const withBrowser = endpoint ? withRemoteBrowser : withLocalBrowser;
   return withBrowser({ provider: PROVIDER, executablePath, signal, timeoutMs, proxy, endpoint: endpoint ?? '',
     args: ['--disable-blink-features=AutomationControlled'] }, async ({ browser, signal: session, remainingMs }) => {
+    let recovery: ReturnType<typeof royalMailVisionRecovery> | undefined;
+    let historyReturned = false;
     try {
       const userAgent = await royalMailBrowserUserAgent(browser, endpoint !== null);
       const context = await browser.newContext({ locale: 'en-GB', acceptDownloads: false, serviceWorkers: 'block',
         userAgent });
       session.throwIfAborted();
       const page = await context.newPage();
+      recovery = vision ? royalMailVisionRecovery(page, vision, session, remainingMs) : undefined;
       const timeout = () => Math.min(10_000, remainingMs());
       // The consent manager withholds hCaptcha's frame unless functional cookies
       // are allowed, and the tracking application sends nothing without its token.
@@ -224,21 +245,23 @@ export function fetchRoyalMailInBrowser(number: string, executablePath: string, 
         Math.min(15_000, remainingMs()), async () => {
           if (await input.inputValue() !== number) throw new TransportError(PROVIDER, 'Royal Mail tracking form was reset');
           await page.locator('#submit:not(:disabled)').click({ timeout: timeout() });
-        });
+        }, recovery?.solve);
       // The summary issues an API session. The application's details handler
       // uses it, or performs its own CAPTCHA refresh when the session expires.
       parseRoyalMailTrackingResponse({ mailPieces: summary }, number);
       const history = fullHistory ? await captureRoyalMailReply(page, royalMailEventsApiUrl(number), number, 'events', session,
-        Math.min(15_000, remainingMs()), () => page.locator('#btn-more-details').click({ timeout: timeout() })) : undefined;
+        Math.min(15_000, remainingMs()), () => page.locator('#btn-more-details').click({ timeout: timeout() }), recovery?.solve) : undefined;
       session.throwIfAborted();
-      return { ...parseRoyalMailTrackingResponse({ mailPieces: { ...summary, ...(history ?? {}),
+      const result = { ...parseRoyalMailTrackingResponse({ mailPieces: { ...summary, ...(history ?? {}),
         summary: { ...(summary.summary as Record<string, unknown>), ...(history?.summary as Record<string, unknown> | undefined) } } }, number),
         tracking_url: royalMailTrackingUrl(number), tracking_source: 'structured-web-response' };
+      historyReturned = fullHistory && Array.isArray(history?.events) && history.events.length > 0;
+      return result;
     } catch (error) {
       session.throwIfAborted();
       if (carrierErrorKind(error)) throw error;
       // Native browser diagnostics can contain request URLs or page contents.
       throw new TransportError(PROVIDER, 'Royal Mail browser tracking failed');
-    }
+    } finally { recovery?.finish(historyReturned); }
   });
 }

@@ -630,6 +630,46 @@ describe('Royal Mail lookup steps', () => {
     expect(timeoutMs).toBeGreaterThan(29_000);
   });
 
+  it('enables vision only with explicit carrier configuration and shares its attempt across retries', async () => {
+    vi.mocked(fetchRoyalMailInBrowser).mockRejectedValueOnce(new ChallengeError('Royal Mail'))
+      .mockResolvedValueOnce({ events: [] });
+    const instance = adapter({ trawl: null, browserExecutablePath: '/test/chromium', recorder: NOOP_RECORDER,
+      env: { ROYAL_MAIL_GEMINI_API_KEY: 'synthetic-key' } });
+    await instance.track({ number: DELIVERED_NUMBER });
+    const calls = vi.mocked(fetchRoyalMailInBrowser).mock.calls;
+    expect(calls).toHaveLength(2);
+    expect(calls[0]?.[7]?.options.apiKey).toBe('synthetic-key');
+    expect(calls[0]?.[7]?.attempt).toBe(calls[1]?.[7]?.attempt);
+    expect(calls[0]?.[7]?.retryReserveMs).toBe(15_000);
+    expect(calls[1]?.[7]?.retryReserveMs).toBe(0);
+  });
+
+  it.each(['captcha_refused', 'captcha_blocked'])('does not retry after a real visual refusal: %s', async reason => {
+    const error = new ChallengeError('Royal Mail', 'Verification refused', { reason });
+    vi.mocked(fetchRoyalMailInBrowser).mockRejectedValueOnce(error);
+    const tracker = new RoyalMailTracker({ executablePath: '/test/chromium', captchaVision: { apiKey: 'synthetic-key' } });
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toBe(error);
+    expect(fetchRoyalMailInBrowser).toHaveBeenCalledOnce();
+  });
+
+  it('logs only fixed verification fields when explicitly enabled', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.mocked(fetchRoyalMailInBrowser).mockImplementationOnce(async (...args) => {
+      args[7]?.options.onVerification?.({ outcome: 'accepted', phase: 'proof', modelCalls: 1, rounds: 1,
+        actions: 1, submissions: 1, checks: 1, accepted: true, history: true, modelMs: 100 });
+      return { events: [] };
+    });
+    const instance = adapter({ trawl: null, browserExecutablePath: '/test/chromium', recorder: NOOP_RECORDER,
+      env: { ROYAL_MAIL_GEMINI_API_KEY: 'synthetic-key', ROYAL_MAIL_GEMINI_LOG_VERIFICATION: '1' } });
+    await instance.track({ number: DELIVERED_NUMBER });
+    expect(warn).toHaveBeenCalledOnce();
+    expect(JSON.parse(String(warn.mock.calls[0]?.[0]))).toMatchObject({ event: 'royal_mail.verification', accepted: true, history: true });
+    expect(String(warn.mock.calls[0]?.[0])).not.toContain('synthetic-key');
+    expect(String(warn.mock.calls[0]?.[0])).not.toContain(DELIVERED_NUMBER);
+    expect(JSON.parse(String(warn.mock.calls[0]?.[0]))).toEqual({ event: 'royal_mail.verification', outcome: 'accepted', phase: 'proof', modelCalls: 1, rounds: 1,
+      actions: 1, submissions: 1, checks: 1, accepted: true, history: true, modelMs: 100 });
+  });
+
   it('uses the dedicated remote browser for tracking and browser recognition without requiring local Chromium', async () => {
     const endpoint = 'ws://browser.invalid/synthetic-capability';
     vi.mocked(fetchRoyalMailInBrowser).mockResolvedValue({ ...parseRoyalMailTrackingResponse(DELIVERED, DELIVERED_NUMBER) });

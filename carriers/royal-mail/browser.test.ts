@@ -3,6 +3,7 @@ import type { Page, Request } from 'playwright-core';
 import { describe, expect, it, vi } from 'vitest';
 import { captureRoyalMailReply, royalMailBrowserUserAgent, royalMailTrackingForm } from './browser.js';
 import { royalMailEventsApiUrl, royalMailSummaryApiUrl } from './parser.js';
+import { ChallengeError } from '../../core/errors/index.js';
 
 // Synthetic references and data; issued API sessions never enter fixtures.
 const NUMBER = 'SG999999999GB';
@@ -40,8 +41,8 @@ function harness(phase: 'summary' | 'events' = 'summary') {
     await tick();
   };
   const controller = new AbortController();
-  const capture = (trigger: () => Promise<void>, timeout = 1000) =>
-    captureRoyalMailReply(page, target, NUMBER, phase, controller.signal, timeout, trigger);
+  const capture = (trigger: () => Promise<void>, timeout = 1000, recover?: Parameters<typeof captureRoyalMailReply>[7]) =>
+    captureRoyalMailReply(page, target, NUMBER, phase, controller.signal, timeout, trigger, recover);
   return { emitter, respond, request, controller, capture, captcha };
 }
 
@@ -164,6 +165,53 @@ describe('Royal Mail browser response capture', () => {
     const result = h.capture(async () => { h.captcha.visible = true; }, 5000);
     await expect(result).rejects.toMatchObject({ kind: 'challenge', message: 'Royal Mail asked for an interactive CAPTCHA' });
     expect(h.emitter.eventNames()).toEqual([]);
+  });
+
+  it('recovers in the same capture and still binds the whole parcel history', async () => {
+    const h = harness();
+    h.captcha.visible = true;
+    const recover = vi.fn(async () => { h.captcha.visible = false; await h.respond(payload); return true; });
+    await expect(h.capture(async () => {}, 1000, recover)).resolves.toHaveProperty('mailPieceId', NUMBER);
+    expect(recover).toHaveBeenCalledOnce();
+    const [signal, remaining] = recover.mock.calls[0] as unknown as [AbortSignal, number];
+    expect(signal.aborted).toBe(true);
+    expect(remaining).toBeGreaterThan(0);
+    expect(remaining).toBeLessThanOrEqual(1000);
+    expect(h.emitter.eventNames()).toEqual([]);
+  });
+
+  it('never accepts another parcel after successful verification', async () => {
+    const h = harness();
+    h.captcha.visible = true;
+    await expect(h.capture(async () => {}, 1000, async () => {
+      h.captcha.visible = false;
+      await h.respond({ mailPieces: { mailPieceId: 'SG999999998GB', summary: {} } });
+      return true;
+    })).rejects.toMatchObject({ kind: 'schema' });
+    expect(h.emitter.eventNames()).toEqual([]);
+  });
+
+  it('does not confuse a disappearing challenge with matching tracking history', async () => {
+    const h = harness();
+    h.captcha.visible = true;
+    const recover = vi.fn(async () => { h.captcha.visible = false; return true; });
+    await expect(h.capture(async () => {}, 20, recover)).rejects.toMatchObject({ kind: 'challenge' });
+    expect(recover).toHaveBeenCalledOnce();
+  });
+
+  it('retains a real verification refusal and ends the capture', async () => {
+    const h = harness();
+    h.captcha.visible = true;
+    const refusal = new ChallengeError('Royal Mail', 'Verification refused', { reason: 'captcha_refused' });
+    await expect(h.capture(async () => {}, 1000, async () => { throw refusal; })).rejects.toBe(refusal);
+    expect(h.emitter.eventNames()).toEqual([]);
+  });
+
+  it('does not invoke visual recovery after an HTTP refusal', async () => {
+    const h = harness();
+    const recover = vi.fn(async () => true);
+    await expect(h.capture(() => h.respond({}, { status: 403 }), 1000, recover)).rejects.toMatchObject({ kind: 'challenge' });
+    expect(recover).not.toHaveBeenCalled();
   });
 
   it('ends at once when the consent manager withholds the CAPTCHA the page waits for', async () => {

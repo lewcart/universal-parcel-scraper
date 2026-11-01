@@ -19,7 +19,7 @@ the adapter follows its validated destination in the same context.
 The page obtains its own CAPTCHA token for the microsummary, then `Get more
 details` uses the issued API session for history. When hCaptcha shows its
 visible challenge instead, the page sends no request until a person solves
-it, so that context ends at once as a challenge. The application can refresh
+it. Without optional visual recovery, that context ends at once as a challenge. The application can refresh
 an expired session itself. Tokens and cookies stay inside the browser. Opt-in browser recognition uses
 the same lookup, requires dated activity and returns the history for reuse.
 The carrier's launch settings and installed-version User-Agent are scoped to
@@ -135,6 +135,20 @@ establish a working HTTP-only tracking session. Application configuration and
 tokens stay outside Git.
 
 ## Limitations
+
+`ROYAL_MAIL_GEMINI_API_KEY` opts into single-drag hCaptcha recovery through Google
+Gemini Flash-Lite. Only the cropped verification widget reaches Google. The adapter
+writes no keys, images, answers or issued proof to files or logs. Recovery keeps the original
+guest session and lookup deadline, after reserving the existing fresh-context retry,
+with at most two visual rounds and no new attempt after a verification refusal.
+Ambiguous plans, changed images, click tasks and unsupported layouts remain
+challenges for provider fallback.
+
+`ROYAL_MAIL_GEMINI_LOG_VERIFICATION=1` writes fixed verification labels, counts,
+timing and a bound-history flag to stderr. Accepted verification without history
+is not a recovered lookup. Explicit `RoyalMailTracker` instances can use
+`captchaVision.onVerification` instead of logging. Neither interface includes
+puzzle content, credentials or parcel identifiers.
 
 Akamai or an interactive CAPTCHA can block anonymous retrieval. Browser build
 and network affect access; enabled universal providers can handle a failed

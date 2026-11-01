@@ -17,6 +17,9 @@ import { classifyPosteItalianeStatus } from './status.js';
 import { sameInstantIdentityPolicy } from './identity.js';
 import { TrawlClient, type TrawlCapturedResponse } from '../../core/transport/trawl.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { fetchPosteItalianeInBrowser } from './browser.js';
+
+vi.mock('./browser.js', () => ({ fetchPosteItalianeInBrowser: vi.fn() }));
 
 // All identifiers and timestamps below are synthetic. Italian status wordings
 // reuse the vendor's fixed texts confirmed against a real parcel by the
@@ -565,6 +568,29 @@ describe('Poste Italiane scan identity', () => {
 });
 
 describe('PosteItalianeTracker fetch', () => {
+  it('tries the private guest browser only after the existing recovery is challenged', async () => {
+    const gate = { tipo: 'error', descrizione: 'CAPTCHA required' };
+    const service = browser([capture(gate, 400)]);
+    vi.mocked(fetchPosteItalianeInBrowser).mockResolvedValueOnce(parcel());
+    const step = vi.fn();
+    const tracker = new PosteItalianeTracker({ fetcher: async () => response(gate, 400), trawl: service.trawl,
+      browserWsEndpoint: 'ws://browser.test/private-path', recorder: { lookup() {}, step } });
+    await expect(tracker.fetch(TRACKING_NUMBER)).resolves.toMatchObject({ events: expect.any(Array) });
+    expect(fetchPosteItalianeInBrowser).toHaveBeenCalledOnce();
+    expect(step.mock.calls.map(([event]) => event.step)).toEqual(['direct', 'trawl', 'browser']);
+    expect(vi.mocked(fetchPosteItalianeInBrowser).mock.calls[0]?.[3]).toBeLessThanOrEqual(15000);
+  });
+
+  it('never spends the private browser on HTTP recognition or a paced search', async () => {
+    vi.mocked(fetchPosteItalianeInBrowser).mockClear();
+    const fetcher = async () => response({ tipo: 'error', descrizione: 'CAPTCHA required' }, 400);
+    const entry = adapter({ fetcher, trawl: null, recorder: NOOP_RECORDER, browserExecutablePath: null,
+      env: { POSTE_ITALIANE_BROWSER_WS_ENDPOINT: 'ws://browser.test/private-path' } });
+    await expect(entry.recognize!(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    await expect(entry.track({ number: TRACKING_NUMBER })).rejects.toMatchObject({ kind: 'rate_limited' });
+    expect(fetchPosteItalianeInBrowser).not.toHaveBeenCalled();
+  });
+
   const gate = { id: 2, tipo: 'error', descrizione: 'CAPTCHA required' };
   const endpoint = 'https://www.poste.it/online/dovequando/DQ-REST/ricercasemplice';
   const capture = (payload: unknown, status = 200, url = endpoint): TrawlCapturedResponse => ({ url, status, body: JSON.stringify(payload),

@@ -160,6 +160,12 @@ Italiane for a number issued abroad.
 - Browser recovery captures the tracking API, without rendered recipient details or verification
   tokens. It needs the Poste Italiane helper in the optional TRAWL image.
 
+`POSTE_ITALIANE_BROWSER_WS_ENDPOINT` optionally adds a fresh private Playwright browser
+session after the existing recovery path is challenged. It opens the current guest tracker
+and accepts only the whole-number-bound API reply, under the original lookup deadline.
+This path solves no interactive CAPTCHA and retains no browser state between lookups.
+HTTP recognition and the direct-search pacing remain unchanged. Keep the endpoint private.
+
 ## Limitations
 
 - No event location for a scan at a post office's street address without its office name.

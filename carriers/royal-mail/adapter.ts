@@ -6,6 +6,7 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { fetchRoyalMailInBrowser, royalMailDestination } from './browser.js';
+import type { RoyalMailCaptchaOptions, RoyalMailVerificationRecord } from './vision.js';
 import { normalizeRoyalMailNumber, parseRoyalMailTrackingHtml, parseRoyalMailTrackingResponse,
   royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl, royalMailUnconfirmed } from './parser.js';
 
@@ -36,6 +37,8 @@ export interface RoyalMailTrackerOptions {
   recorder?: StepRecorder;
   /** Request the page's separate events flow; summary-only calls remain the default. */
   fullHistory?: boolean;
+  /** Optional Google vision recovery. Sends only the visible verification widget to Google. */
+  captchaVision?: RoyalMailCaptchaOptions;
 }
 
 export class RoyalMailTracker {
@@ -47,6 +50,7 @@ export class RoyalMailTracker {
   readonly #executablePath: string | null;
   readonly #browserProxy: string | null;
   readonly #browserWsEndpoint: string | null;
+  readonly #captchaVision: RoyalMailCaptchaOptions | undefined;
 
   constructor(options: RoyalMailTrackerOptions = {}) {
     if (options.timeoutMs !== undefined && (!Number.isFinite(options.timeoutMs) || options.timeoutMs <= 0)) {
@@ -60,6 +64,7 @@ export class RoyalMailTracker {
     this.#executablePath = options.executablePath ?? null;
     this.#browserProxy = options.browserProxy?.trim() || null;
     this.#browserWsEndpoint = options.browserWsEndpoint?.trim() || null;
+    this.#captchaVision = options.captchaVision;
   }
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
@@ -67,15 +72,20 @@ export class RoyalMailTracker {
     if (this.#browserWsEndpoint || this.#executablePath) {
       const budgetMs = Math.min(BROWSER_TIMEOUT_MS, context.budgetMs ?? this.timeoutMs);
       const started = performance.now();
-      const run = ({ remainingMs, signal }: { remainingMs: number; signal: AbortSignal }) =>
-        fetchRoyalMailInBrowser(number, this.#executablePath ?? '', signal, remainingMs, this.#fullHistory,
-          this.#browserProxy, this.#browserWsEndpoint);
+      const vision = this.#captchaVision ? { options: this.#captchaVision, attempt: { used: false } } : undefined;
+      const run = ({ remainingMs, signal, attempt }: { remainingMs: number; signal: AbortSignal; attempt: number }) => {
+        const args = [number, this.#executablePath ?? '', signal, remainingMs, this.#fullHistory,
+          this.#browserProxy, this.#browserWsEndpoint] as const;
+        return vision ? fetchRoyalMailInBrowser(...args, { ...vision,
+          retryReserveMs: attempt === 1 ? BROWSER_RETRY_MIN_MS : 0 }) : fetchRoyalMailInBrowser(...args);
+      };
       return runSteps<CarrierResult>({ carrier: 'royal-mail', budgetMs,
         signal: context.signal, recorder: this.#recorder }, [
         { id: 'browser', run },
         // Each call disposes its context before returning. A fresh session can
         // recover an intermittent edge refusal without retaining issued tokens.
         { id: 'retry', run, recovers: error => error instanceof ChallengeError
+          && error.reason !== 'captcha_refused' && error.reason !== 'captcha_blocked'
           && budgetMs - (performance.now() - started) >= BROWSER_RETRY_MIN_MS },
       ]);
     }
@@ -197,8 +207,12 @@ export class RoyalMailTracker {
 
 export const adapter: AdapterFactory = environment => {
   const endpoint = environment.env.ROYAL_MAIL_BROWSER_WS_ENDPOINT?.trim() || null;
+  const apiKey = environment.env.ROYAL_MAIL_GEMINI_API_KEY?.trim();
+  const onVerification = environment.env.ROYAL_MAIL_GEMINI_LOG_VERIFICATION === '1'
+    ? (record: RoyalMailVerificationRecord) => { console.warn(JSON.stringify({ event: 'royal_mail.verification', ...record })); } : undefined;
   const tracker = new RoyalMailTracker({ executablePath: environment.browserExecutablePath,
-    browserWsEndpoint: endpoint, browserProxy: environment.env.ROYAL_MAIL_BROWSER_PROXY, recorder: environment.recorder, fullHistory: true });
+    browserWsEndpoint: endpoint, browserProxy: environment.env.ROYAL_MAIL_BROWSER_PROXY, recorder: environment.recorder, fullHistory: true,
+    ...(apiKey ? { captchaVision: { apiKey, fetcher: environment.fetcher, onVerification } } : {}) });
   return {
     id: 'royal-mail', recordsSteps: true, steps: ['browser', 'retry'],
     track: (input, context) => {

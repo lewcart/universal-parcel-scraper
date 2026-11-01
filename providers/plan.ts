@@ -5,7 +5,7 @@ import { coverageTiers, type CoverageTier } from './coverage.js';
 import type { UniversalSource as Source } from './types.js';
 export const UNIVERSAL_SOURCES: Source[] = ['ParcelsApp', 'Ship24', '17TRACK', 'Track718', 'UPU'];
 /** Providers reached only through the browser service: slower, and sharing one TRAWL. */
-export const BROWSER_SOURCES: ReadonlySet<Source> = new Set(['17TRACK', 'Postal Ninja', 'Track718']);
+export const BROWSER_SOURCES: ReadonlySet<Source> = new Set(['17TRACK', 'Postal Ninja', 'Track718', 'Track123']);
 
 /** Lookup time reserved by the chain and host router, before transport allowance. */
 export function universalSourceBudget(source: Source): number {
@@ -77,6 +77,8 @@ export function universalPlan(options: {
   carriers?: ReadonlyArray<string | null | undefined>;
   trackingNumber?: string;
   enablePostalNinja?: boolean;
+  /** Opt-in public-page recovery, only when the requested carrier is FedEx. */
+  enableTrack123?: boolean;
 } = {}): UniversalPlan {
   const { trackingNumber, enablePostalNinja = false } = options;
   const carriers = options.carriers ?? [];
@@ -90,6 +92,8 @@ export function universalPlan(options: {
     && (source !== 'UPU' || trackingNumber === undefined || isValidS10TrackingNumber(trackingNumber)));
   if (juxi && !eligible.includes('Track718')) eligible.unshift('Track718');
   const ordered = orderUniversalSources(eligible, tiers);
+  if (options.enableTrack123 && carriers[0] === 'fedex' && !!trackingNumber
+    && /^(?:\d{12}|\d{15}|\d{20})$/.test(normalizeTrackingNumber(trackingNumber))) ordered.unshift('Track123');
   // The number's priority provider goes first, unless the carrier's evidence left it out.
   const priority = ordered.find((source) => source === priorityUniversalSource(trackingNumber));
   return {

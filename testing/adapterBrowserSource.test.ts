@@ -21,7 +21,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const carriersDirectory = path.join(root, 'carriers');
 
 /** The environment's browsers, by the interface that declares them. */
-const ENVIRONMENT = { module: 'core/adapter/index.ts', name: 'AdapterEnvironment', properties: ['trawl', 'browserExecutablePath'] };
+const ENVIRONMENT = { module: 'core/adapter/index.ts', name: 'AdapterEnvironment', properties: ['trawl', 'trawlRoutes', 'browserExecutablePath'] };
 /** The remote browser, whose endpoint an adapter reads from its `env`. */
 const REMOTE = { module: 'core/transport/localBrowser.ts', name: 'withRemoteBrowser' };
 /** The browser service's client, which only the host builds. */

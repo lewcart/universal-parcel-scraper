@@ -17903,7 +17903,10 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Minsk",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "europochta",
+      "recognitionRank": 786,
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://evropochta.by/",
     "trackingUrlTemplate": "https://evropochta.by/?number={trackingNumber}",

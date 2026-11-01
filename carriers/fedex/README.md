@@ -188,3 +188,13 @@ application identifiers and issued tokens stay outside the repository.
 `FLARESOLVERR_URL` set tracks it through the browser; with `FEDEX_API_KEY` and
 `FEDEX_SECRET_KEY` instead, through the API alone. The missing-browser check runs without
 any of them.
+
+An optional `FEDEX_IPV6_TRAWL_URL` sends the qualifying second browser attempt to
+an independent worker. `FEDEX_IPV6_RETRY_PERCENT` selects its share (default 100);
+the rest retain the original retry route. The worker must attest actual IPv6
+connections to both the public page and tracking API. Missing proof is a transport
+failure, never a successful IPv6 answer. The attempt count, total deadline,
+whole-number checks and provider fallback remain unchanged. Step telemetry records
+the selected route, observed family and presence of dated history.
+
+Custom adapter hosts supply the isolated client as `environment.trawlRoutes["fedex-ipv6"]`. The facade constructs it from `FEDEX_IPV6_TRAWL_URL`; the carrier never constructs a browser service itself.

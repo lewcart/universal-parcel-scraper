@@ -289,6 +289,12 @@ export class FedExSessions {
         }
         const entry = { url: API, status: response.status(), body: null, truncated: false, base64Encoded: false,
           headers: retainedHeaders };
+        if (typeof response.serverAddr === 'function') {
+          try {
+            const peer = await bounded(response.serverAddr(), timeout(500), 'FedEx peer observation timed out');
+            if (peer?.ipAddress) retainedHeaders['x-trawl-network-family'] = peer.ipAddress.includes(':') ? 'IPv6' : 'IPv4';
+          } catch { /* Missing network diagnostics never change the original lookup. */ }
+        }
         if ([401, 403].includes(entry.status)) {
           entry.error = /akamai/i.test(retainedHeaders.server ?? '')
             && /text\/html/i.test(retainedHeaders['content-type'] ?? '')

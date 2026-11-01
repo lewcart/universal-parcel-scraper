@@ -29,6 +29,9 @@ export interface TrackingLinkCase {
 // independently of the generated link templates, so a template that drifts
 // fails here instead of passing against itself.
 export const trackingLinkCases: TrackingLinkCase[] = [
+  { carrier: 'europochta', number: 'BY080731593842',
+    route: /^https:\/\/evropochta\.by\/\?number=BY080731593842$/,
+    marker: /Отслеживание|Отследить/ },
   { carrier: 'ozon-logistics', number: '48271635-2048-9',
     route: /^https:\/\/tracking\.ozon\.ru\/(?:\?|$)/,
     marker: /Проверка статуса вашей доставки/, renderTimeoutMs: 20_000 },

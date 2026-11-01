@@ -27,6 +27,12 @@ export interface StepRecord {
   fallbackError?: unknown;
   /** The original error, for sinks that keep stacks. Never serialize it into metrics. */
   error?: unknown;
+  /** Selected network path, independently of the observed connection family. */
+  networkRoute?: 'default' | 'ipv6';
+  /** Actual tracking connection family, or unknown when no connection was verified. */
+  networkFamily?: 'IPv4' | 'IPv6' | 'unknown';
+  /** Whether a successful step returned dated tracking events. */
+  historyAvailable?: boolean;
 }
 
 export interface LookupRecord {

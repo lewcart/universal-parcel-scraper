@@ -523,6 +523,10 @@ export interface FedExTrackerOptions {
   timeoutMs?: number;
   /** The browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
+  /** Independent service which attests IPv6 connections to the page and tracking API. */
+  ipv6Trawl?: TrawlClient | null;
+  /** Share of qualifying retries sent to that service, from zero to one. */
+  ipv6RetryShare?: number;
   /** The deployment's FedEx API project, or null without one. */
   api?: FedExApiCredentials | null;
   fetcher?: typeof fetch;
@@ -532,6 +536,8 @@ export interface FedExTrackerOptions {
 export class FedExTracker {
   readonly timeoutMs: number;
   readonly #trawl: TrawlClient | null;
+  readonly #ipv6Trawl: TrawlClient | null;
+  readonly #ipv6RetryShare: number;
   readonly #api: FedExApiClient | null;
   readonly #fetcher: typeof fetch | undefined;
   readonly #recorder: StepRecorder;
@@ -542,6 +548,11 @@ export class FedExTracker {
     }
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.#trawl = options.trawl ?? null;
+    this.#ipv6Trawl = options.ipv6Trawl ?? null;
+    this.#ipv6RetryShare = options.ipv6RetryShare ?? 1;
+    if (!Number.isFinite(this.#ipv6RetryShare) || this.#ipv6RetryShare < 0 || this.#ipv6RetryShare > 1) {
+      throw new TypeError('FedEx IPv6 retry share must be between zero and one');
+    }
     this.#api = options.api ? new FedExApiClient(options.api, options.fetcher) : null;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
@@ -559,13 +570,28 @@ export class FedExTracker {
       );
     }
     const browserMs = (remainingMs: number) => Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs)));
+    let networkRoute: 'default' | 'ipv6' = 'default';
+    let networkFamily: 'IPv4' | 'IPv6' | 'unknown' = 'unknown';
+    let historyAvailable = false;
+    const browser = async (client: TrawlClient, remainingMs: number, signal: AbortSignal) => {
+      networkFamily = 'unknown'; historyAvailable = false;
+      const result = await this.#trawlResult(client, number, browserMs(remainingMs), signal, networkRoute === 'ipv6',
+        family => { networkFamily = family; });
+      historyAvailable = Boolean(result.events?.some(event => event.time || event.local_time));
+      return result;
+    };
+    const recorder: StepRecorder = {
+      step: record => this.#recorder.step(record.step === 'trawl'
+        ? { ...record, networkRoute, networkFamily, historyAvailable } : record),
+      lookup: record => this.#recorder.lookup(record),
+    };
     return runSteps<CarrierResult>({
       // Without a caller's budget the lookup leaves the service its own time and
       // the request the allowance to bring the answer back.
       carrier: 'fedex',
       budgetMs: context.budgetMs ?? (api ? API_TIMEOUT_MS : 0) + (trawl ? this.timeoutMs + TRAWL_TRANSPORT_ALLOWANCE_MS : 0),
       signal: context.signal,
-      recorder: this.#recorder,
+      recorder,
     }, [
       // FedEx's own API answers in a second; it leaves the browser at least half the budget.
       ...(api ? [{ id: 'api', run: ({ remainingMs, signal }: StepContext) => this.#apiResult(api, number,
@@ -573,11 +599,15 @@ export class FedExTracker {
       ...(trawl ? [
         // The page answers what the API could not, except a shipment the recipient must verify.
         { id: 'trawl', recovers: (error: unknown) => !(error instanceof InputRequiredError),
-          run: ({ remainingMs, signal }: StepContext) => this.#trawlResult(trawl, number, browserMs(remainingMs), signal) },
+          run: ({ remainingMs, signal }: StepContext) => browser(trawl, remainingMs, signal) },
         // The service discards a context whose tracking call was refused, so a
         // second read starts a fresh one: Akamai's 403 is intermittent.
         { id: 'trawl', recovers: (error: unknown) => error instanceof ChallengeError && error.reason === 'api_denied' && error.status === 403,
-          run: ({ remainingMs, signal }: StepContext) => this.#trawlResult(trawl, number, browserMs(remainingMs), signal) },
+          run: ({ remainingMs, signal }: StepContext) => {
+            const useIpv6 = this.#ipv6Trawl && Math.random() < this.#ipv6RetryShare;
+            networkRoute = useIpv6 ? 'ipv6' : 'default';
+            return browser(useIpv6 ? this.#ipv6Trawl : trawl, remainingMs, signal);
+          } },
       ] : []),
     ]);
   }
@@ -595,7 +625,8 @@ export class FedExTracker {
    * over plain HTTP: the edge accepts the call only from the session it
    * validated. The page the browser rendered only tells a challenge apart.
    */
-  async #trawlResult(trawl: TrawlClient, number: string, timeoutMs: number, signal: AbortSignal): Promise<CarrierResult> {
+  async #trawlResult(trawl: TrawlClient, number: string, timeoutMs: number, signal: AbortSignal,
+    requireIpv6 = false, observed: (family: 'IPv4' | 'IPv6' | 'unknown') => void = () => {}): Promise<CarrierResult> {
     const page = await trawl.scrape({
       url: fedexTrackingUrl(number),
       skipHttp: true,
@@ -610,11 +641,23 @@ export class FedExTracker {
       fetcher: this.#fetcher,
       signal,
     });
+    if (requireIpv6) {
+      const proof = page.raw.fedexEgress;
+      if (!isRecord(proof) || proof.family !== 'IPv6' || !Number.isSafeInteger(proof.pageConnections)
+        || Number(proof.pageConnections) < 1 || !Number.isSafeInteger(proof.apiConnections) || Number(proof.apiConnections) < 1) {
+        throw new TransportError('FedEx', 'The retry service did not verify IPv6 tracking connections', { reason: 'ipv6_unverified' });
+      }
+      observed('IPv6');
+    }
     let captureError: Error | undefined;
     // Newest first: a later reply is the page's final answer.
     const responses = page.capturedResponses.slice(-MAX_CAPTURED).reverse();
     for (const [index, entry] of responses.entries()) {
       if (entry.url !== TRACK_API) continue;
+      if (!requireIpv6) {
+        const family = entry.headers['x-trawl-network-family'];
+        observed(family === 'IPv4' || family === 'IPv6' ? family : 'unknown');
+      }
       if (entry.status === 0 && entry.error === 'fedex-tracking-request-failed') {
         throw new TransportError('FedEx', 'FedEx tracking request did not complete');
       }
@@ -687,9 +730,12 @@ export class FedExTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const api = fedexApiCredentials(environment.env);
+  const percent = environment.env.FEDEX_IPV6_RETRY_PERCENT;
   const tracker = new FedExTracker({
     fetcher: environment.fetcher,
     trawl: environment.trawl,
+    ipv6Trawl: environment.trawlRoutes?.['fedex-ipv6'] ?? null,
+    ipv6RetryShare: percent === undefined ? 1 : Number(percent) / 100,
     api,
     recorder: environment.recorder,
   });

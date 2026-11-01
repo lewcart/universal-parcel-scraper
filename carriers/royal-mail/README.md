@@ -140,8 +140,8 @@ tokens stay outside Git.
 Gemini Flash-Lite. Only the cropped verification widget reaches Google. The adapter
 writes no keys, images, answers or issued proof to files or logs. Recovery keeps the original
 guest session and lookup deadline, after reserving the existing fresh-context retry,
-with at most two visual rounds and no new attempt after a verification refusal.
-Ambiguous plans, changed images, click tasks and unsupported layouts remain
+with one visual round and no new attempt after a verification refusal.
+Ambiguous plans, changed images, multi-page tasks, click tasks and unsupported layouts remain
 challenges for provider fallback.
 
 `ROYAL_MAIL_GEMINI_LOG_VERIFICATION=1` writes fixed verification labels, counts,

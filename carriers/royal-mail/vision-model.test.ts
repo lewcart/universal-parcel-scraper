@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { parseRoyalMailVisionPlan, planRoyalMailVision } from './vision-model.js';
 
 const PNG = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
-const PLAN = { action: 'drag', confidence: 0.99, points: [{ x: 250, y: 650 }, { x: 750, y: 450 }] };
+const PLAN = { action: 'drag', confidence: 0.99, reason: 'none', points: [{ x: 250, y: 650 }, { x: 750, y: 450 }] };
 const reply = (data: unknown = PLAN, finishReason = 'STOP') => new Response(JSON.stringify({ candidates: [
   { finishReason, content: { parts: [{ text: JSON.stringify(data) }] } },
 ] }));
@@ -76,6 +76,8 @@ describe('Royal Mail vision plan refusal boundaries', () => {
   it.each([
     { ...PLAN, confidence: 0.949 }, { ...PLAN, confidence: 1.1 }, { ...PLAN, confidence: NaN },
     { ...PLAN, action: 'decline' }, { ...PLAN, action: 'execute' },
+    { ...PLAN, reason: 'uncertain' }, { ...PLAN, reason: 'unsupported' },
+    { ...PLAN, reason: 'cannot_assist' }, { ...PLAN, reason: undefined },
     { ...PLAN, points: [] }, { ...PLAN, points: [{ x: -1, y: 400 }] },
     { ...PLAN, points: [{ x: 400, y: 1000 }] }, { ...PLAN, points: [{ x: Infinity, y: 400 }] },
     { ...PLAN, points: [{ x: '400', y: 400 }] },
@@ -86,7 +88,7 @@ describe('Royal Mail vision plan refusal boundaries', () => {
   });
 
   it('accepts a bounded drag with two distinct points', () => {
-    expect(parseRoyalMailVisionPlan({ action: 'drag', confidence: 0.99, points: [{ x: 100, y: 700 }, { x: 800, y: 500 }] }))
+    expect(parseRoyalMailVisionPlan({ action: 'drag', confidence: 0.99, reason: 'none', points: [{ x: 100, y: 700 }, { x: 800, y: 500 }] }))
       .toEqual({ action: 'drag', points: [{ x: 100, y: 700 }, { x: 800, y: 500 }] });
   });
 });

@@ -69,7 +69,7 @@ export async function planRoyalMailVision(options: RoyalMailVisionOptions, png: 
 }
 
 export function parseRoyalMailVisionPlan(data: unknown): RoyalMailVisionPlan | null {
-  if (!isRecord(data) || data.action !== 'drag' || typeof data.confidence !== 'number'
+  if (!isRecord(data) || data.action !== 'drag' || data.reason !== 'none' || typeof data.confidence !== 'number'
     || !Number.isFinite(data.confidence) || data.confidence < 0.95 || data.confidence > 1 || !Array.isArray(data.points)
     || data.points.length !== 2) return null;
   const points: RoyalMailVisionPlan['points'] = [];

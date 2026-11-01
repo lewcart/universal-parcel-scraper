@@ -12,9 +12,9 @@ beforeEach(() => { vi.mocked(planRoyalMailVision).mockReset(); });
 async function harness() {
   const png = await sharp({ create: { width: 200, height: 260, channels: 4, background: '#aaccee' } }).png().toBuffer();
   const state = { proof: false, signature: 'Drag the synthetic object to its matching shape', frameUrl: 'https://newassets.hcaptcha.com/hcaptcha.html#frame=challenge&id=synthetic-widget',
-    image: png, ready: true, submitted: false, x: 0 };
+    image: png, ready: true, submitted: false, x: 0, submitLabel: 'Skip' };
   const emitter = new EventEmitter();
-  const submit = { getAttribute: async () => 'Verify', innerText: async () => 'Verify', click: vi.fn(async () => { state.submitted = true; state.proof = true; }) };
+  const submit = { getAttribute: async () => state.submitLabel, innerText: async () => state.submitLabel, click: vi.fn(async () => { state.submitted = true; state.proof = true; }) };
   const crop = { evaluate: async () => state.ready, screenshot: vi.fn(async () => state.image), boundingBox: async () => ({ x: state.x, y: 0, width: 200, height: 260 }) };
   const frame = { url: () => state.frameUrl, isDetached: () => false, locator: (selector: string) => {
     if (selector === '.challenge-view') return crop;
@@ -23,7 +23,7 @@ async function harness() {
     if (selector === '.button-submit') return submit;
     throw new Error('Unexpected fixture selector');
   } };
-  const mouse = { click: vi.fn(async () => {}), move: vi.fn(async () => {}), down: vi.fn(async () => {}), up: vi.fn(async () => {}) };
+  const mouse = { click: vi.fn(async () => {}), move: vi.fn(async () => {}), down: vi.fn(async () => {}), up: vi.fn(async () => { state.submitLabel = 'Verify'; }) };
   const install = vi.fn(async (...args: unknown[]) => args.length === 2);
   const page = Object.assign(emitter, { locator: () => ({ elementHandle: async () => ({ contentFrame: async () => frame, evaluate: install }) }),
     evaluate: async () => state.proof, mouse }) as unknown as Page;
@@ -43,6 +43,7 @@ async function harness() {
   vi.mocked(planRoyalMailVision).mockResolvedValue({ action: 'drag', points: [{ x: 300, y: 600 }, { x: 800, y: 750 }] });
   return { ...recovery, controller, state, mouse, submit, context, records, emitter, refusal, crop, install,
     autoAccept: () => { state.proof = true; emitter.emit('request', request()); },
+    autoCheck: () => { emitter.emit('request', request()); },
     spendBudget: () => { remaining = 2501; }, signal: controller.signal };
 }
 
@@ -74,6 +75,50 @@ describe('Royal Mail verification recovery', () => {
     expect(h.submit.click).not.toHaveBeenCalled();
     h.finish(true);
     expect(h.records[0]).toMatchObject({ accepted: true, history: true, actions: 1 });
+  });
+
+  it('does not duplicate a pending automatic verification', async () => {
+    const h = await harness();
+    h.mouse.up.mockImplementationOnce(async () => { h.autoCheck(); });
+    await expect(h.solve(h.signal)).resolves.toBe(false);
+    expect(h.mouse.down).toHaveBeenCalledOnce();
+    expect(h.submit.click).not.toHaveBeenCalled();
+    h.finish(false);
+    expect(h.records[0]).toMatchObject({ outcome: 'timeout', actions: 1, checks: 1, submissions: 0 });
+  });
+
+  it('declines a multi-page task before inference or gestures', async () => {
+    const h = await harness();
+    h.state.submitLabel = 'Next Challenge, page 1 of 2';
+    await expect(h.solve(h.signal)).resolves.toBe(false);
+    expect(planRoyalMailVision).not.toHaveBeenCalled();
+    expect(h.mouse.down).not.toHaveBeenCalled();
+    expect(h.submit.click).not.toHaveBeenCalled();
+    h.finish(false);
+    expect(h.records[0]).toMatchObject({ outcome: 'unsupported', actions: 0, modelCalls: 0 });
+  });
+
+  it('does not advance a multi-page task whose Next control appears after answering', async () => {
+    const h = await harness();
+    h.mouse.up.mockImplementationOnce(async () => { h.state.submitLabel = 'Next'; });
+    await expect(h.solve(h.signal)).resolves.toBe(false);
+    expect(h.mouse.down).toHaveBeenCalledOnce();
+    expect(h.submit.click).not.toHaveBeenCalled();
+    h.finish(false);
+    expect(h.records[0]).toMatchObject({ outcome: 'unsupported', actions: 1, submissions: 0 });
+  });
+
+  it('also preserves automatic verification that starts during the last control check', async () => {
+    const h = await harness();
+    let reads = 0;
+    h.submit.getAttribute = async () => {
+      if (++reads === 2) h.autoCheck();
+      return 'Verify';
+    };
+    await expect(h.solve(h.signal)).resolves.toBe(false);
+    expect(h.submit.click).not.toHaveBeenCalled();
+    h.finish(false);
+    expect(h.records[0]).toMatchObject({ actions: 1, checks: 1, submissions: 0 });
   });
 
   it('binds the SDK completion event to the exact frame, vendor origin and current widget without retaining its token', async () => {
@@ -161,6 +206,7 @@ describe('Royal Mail verification recovery', () => {
     const h = await harness();
     h.mouse.up.mockImplementationOnce(async () => {
       h.state.image = await sharp({ create: { width: 200, height: 260, channels: 4, background: '#55aa55' } }).png().toBuffer();
+      h.state.submitLabel = 'Verify';
     });
     await expect(h.solve(h.signal)).resolves.toBe(true);
     expect(h.mouse.move).toHaveBeenCalledTimes(2);

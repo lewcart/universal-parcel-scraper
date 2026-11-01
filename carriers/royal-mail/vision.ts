@@ -187,7 +187,7 @@ export function royalMailVisionRecovery(page: Page, config: RoyalMailVisionConte
         return await verdict();
       };
       const sharp = await loadSharp(PROVIDER);
-      for (let round = 0; round < 2; round++) {
+      {
         record.rounds++;
         const crop = frame.locator('.challenge-view');
         if (await frame.locator('canvas').count() !== 1) { outcome = 'unsupported'; return false; }
@@ -201,6 +201,16 @@ export function royalMailVisionRecovery(page: Page, config: RoyalMailVisionConte
         if (!ready) { outcome = 'stale'; return false; }
         const signature = await frame.locator('.prompt-text').innerText({ timeout: left() });
         if (!/\b(?:drag|move)\b/i.test(signature) || signature.length > 1000) { outcome = 'unsupported'; return false; }
+        const submit = frame.locator('.button-submit');
+        const canVerify = async (beforeAnswer = false) => {
+          const labels = [await submit.getAttribute('aria-label', { timeout: left() }), await submit.innerText({ timeout: left() })];
+          return labels.some(label => /^Verify(?: (?:Answers|Challenge))?$/i.test(label?.trim() ?? '')
+            || beforeAnswer && /^Skip(?: Challenge)?$/i.test(label?.trim() ?? ''));
+        };
+        // Multi-page drag tasks require a separate transition contract. Decline
+        // a visible Next control before inference and never advance it after input.
+        // An unanswered single-page task can still label this control Skip.
+        if (!await canVerify(true)) { outcome = 'unsupported'; return false; }
         let image = await crop.screenshot({ type: 'png', timeout: left() });
         let stable = false;
         // A visible canvas can still be fading or receiving its first assets.
@@ -264,19 +274,22 @@ export function royalMailVisionRecovery(page: Page, config: RoyalMailVisionConte
         finally { await page.mouse.up(); }
         record.actions++;
         if (await automaticVerdict()) return true;
+        // A widget that submitted on mouse-up already owns verification. Do
+        // not submit the same answer again while its response is still pending.
+        if (checking) { outcome = 'timeout'; return false; }
         if (await verdict()) return true;
         if (!await unchanged()) { outcome = 'stale'; return false; }
         // The drag has now been applied to the matching image.
         // The widget may repaint its selection/completion feedback afterwards;
         // its generation, prompt and frame still have to match before submission.
-        const submit = frame.locator('.button-submit');
         phase = 'verification';
-        const labels = [await submit.getAttribute('aria-label', { timeout: left() }), await submit.innerText({ timeout: left() })];
-        const next = labels.some(label => /^Next(?: Challenge)?(?:, page \d of \d)?$/i.test(label?.trim() ?? ''));
-        if (!next && !labels.some(label => /^Verify(?: (?:Answers|Challenge))?$/i.test(label?.trim() ?? ''))) {
+        if (!await canVerify()) {
           outcome = 'unsupported'; return false;
         }
-        if (next && round === 1) { outcome = 'declined'; return false; }
+        if (checking) {
+          if (await automaticVerdict()) return true;
+          outcome = 'timeout'; return false;
+        }
         phase = 'submit';
         await submit.click({ timeout: left() });
         record.submissions++;
@@ -285,18 +298,13 @@ export function royalMailVisionRecovery(page: Page, config: RoyalMailVisionConte
           left();
           if (await verdict()) return true;
           if (frame.isDetached()) { outcome = 'stale'; return false; }
-          if (next) {
-            const refreshed = await crop.screenshot({ type: 'png', timeout: left() });
-            if (createHash('sha256').update(refreshed).digest('hex') !== digest) break;
-          }
-          if (!next && generation !== currentGeneration) {
+          if (generation !== currentGeneration) {
             outcome = 'refused';
             throw new ChallengeError(PROVIDER, 'Royal Mail verification was refused', { reason: 'captcha_refused' });
           }
           await delay(100, undefined, { signal });
         }
       }
-      return false;
     } catch (error) {
       signal.throwIfAborted(); session.throwIfAborted();
       if (error instanceof ChallengeError) throw error;

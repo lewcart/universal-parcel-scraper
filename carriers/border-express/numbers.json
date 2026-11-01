@@ -44,7 +44,8 @@
         "candidates": [
           "mondial-relay",
           "colisweb",
-          "heppner"
+          "heppner",
+          "tforce-freight"
         ]
       },
       "note": "The opened capture of Border Express's tracker shows the consignment with the status Shipment Data Received."
@@ -116,7 +117,8 @@
         "candidates": [
           "mondial-relay",
           "colisweb",
-          "heppner"
+          "heppner",
+          "tforce-freight"
         ]
       },
       "note": "Looked up on Border Express's tracker, as an archived address shows; the capture was not opened. The tracker is a single-page app whose captures hold only a loading shell."

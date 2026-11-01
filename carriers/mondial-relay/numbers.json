@@ -136,7 +136,8 @@
         "candidates": [
           "mondial-relay",
           "colisweb",
-          "heppner"
+          "heppner",
+          "tforce-freight"
         ]
       },
       "note": "The customer also names 887996564309 for the same shipment; their technical relationship is unverified. Mondial Relay replies about the parcel investigation. Detection remains ambiguous."
@@ -983,7 +984,8 @@
         "candidates": [
           "mondial-relay",
           "colisweb",
-          "heppner"
+          "heppner",
+          "tforce-freight"
         ]
       },
       "note": "An archived tracking link with brand code IT. Mondial Relay's tracker finds no parcel under it with that brand any more."
@@ -1055,7 +1057,8 @@
         "candidates": [
           "mondial-relay",
           "colisweb",
-          "heppner"
+          "heppner",
+          "tforce-freight"
         ]
       },
       "note": "An archived tracking link with brand code F3. Mondial Relay's tracker finds no parcel under it with that brand any more."

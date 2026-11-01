@@ -57,8 +57,12 @@ eight digits, which it reads with a leading zero; the adapter applies the same c
 archived from its tracker and from the former UPS Freight tracker give samples. Nine digits are
 shared by many carriers, XPO's PRO numbers among them with the same check digit, so a
 low-confidence rule takes nine digits that pass the check: preflight asks TForce Freight beside
-XPO and TNT, and none of them is chosen from the number alone. The samples and their sources are
-in [`numbers.json`](numbers.json).
+XPO and TNT, and none of them is chosen from the number alone. Another low-confidence rule takes
+eight digits that pass the check; recognition does not ask about them, since eight digits are
+mostly other carriers' numbers, such as Mondial Relay's. A PARS number for the Canadian border is TForce Freight's carrier
+code 2205 and the PRO, as its [Canada page](https://www.tforcefreight.com/ltl/apps/Canada) states;
+a rule offers TForce Freight first for one whose PRO passes the check (2205 is a multiple of 7,
+so the check on the whole number is the PRO's), and the adapter searches the PRO. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

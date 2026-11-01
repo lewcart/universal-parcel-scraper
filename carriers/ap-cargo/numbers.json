@@ -20,7 +20,8 @@
         "candidates": [
           "mondial-relay",
           "colisweb",
-          "heppner"
+          "heppner",
+          "tforce-freight"
         ]
       },
       "note": "An archived reply of AP Cargo's own tracking API shows this waybill from acceptance in Manila to its claim at the destination branch."
@@ -44,7 +45,8 @@
         "candidates": [
           "mondial-relay",
           "colisweb",
-          "heppner"
+          "heppner",
+          "tforce-freight"
         ]
       },
       "note": "An archived reply of AP Cargo's own tracking API shows this waybill from acceptance in Manila to its claim at the destination branch."

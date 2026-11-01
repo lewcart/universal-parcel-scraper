@@ -138,7 +138,8 @@
         "candidates": [
           "mondial-relay",
           "colisweb",
-          "heppner"
+          "heppner",
+          "tforce-freight"
         ]
       },
       "note": "One of the tracking numbers Bosta's front-end assessment tells candidates to search on its tracking API, as copied into a candidate's README. Bosta's tracker knows it."

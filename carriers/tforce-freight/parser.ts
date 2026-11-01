@@ -29,14 +29,18 @@ const FINAL: ReadonlySet<Stage> = new Set(['delivered', 'returned']);
 
 type Selection = ReturnType<CheerioAPI>;
 
+// A PARS number for the Canadian border: TForce Freight's carrier code 2205 and the PRO.
+const PARS = /^2205(\d{9})$/;
+
 /**
  * A PRO number as TForce Freight's tracker takes it: nine digits whose last is
  * the first eight modulo 7, or eight digits, which the tracker reads with a
- * leading zero.
+ * leading zero. A PARS number gives its PRO.
  */
 export function normalizeTforceFreightNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  const pro = /^\d{8,9}$/.test(number) ? number.padStart(9, '0') : '';
+  const digits = PARS.exec(number)?.[1] ?? number;
+  const pro = /^\d{8,9}$/.test(digits) ? digits.padStart(9, '0') : '';
   if (!pro || !hasMod7CheckDigit(pro)) throw new InvalidInputError(PROVIDER, 'TForce Freight PRO numbers are nine digits ending in a check digit');
   return pro;
 }

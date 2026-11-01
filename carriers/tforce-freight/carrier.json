@@ -25,7 +25,8 @@
       "retry"
     ],
     "recognition": {
-      "rank": 946
+      "rank": 946,
+      "pattern": "^(?:\\d{9}|2205\\d{9})$"
     },
     "localClocks": true
   },
@@ -113,6 +114,19 @@
     {
       "id": "tforce-freight-1",
       "pattern": "^\\d{9}$",
+      "confidence": "low",
+      "checksum": "mod7"
+    },
+    {
+      "id": "tforce-freight-2",
+      "pattern": "^2205\\d{9}$",
+      "confidence": "low",
+      "checksum": "mod7",
+      "preferred": true
+    },
+    {
+      "id": "tforce-freight-3",
+      "pattern": "^\\d{8}$",
       "confidence": "low",
       "checksum": "mod7"
     }

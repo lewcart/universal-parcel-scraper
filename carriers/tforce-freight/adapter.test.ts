@@ -272,10 +272,21 @@ describe('TForce Freight tracking page', () => {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['tnt', 'tforce-freight', 'xpo-ltl'] });
       expect(recognitionAskedCarriers(number, { countryHint: 'US' }), number).toContain('tforce-freight');
     }
-    for (const number of ['222222222', '11111111', '1111111114']) {
+    for (const number of ['222222222', '11111112', '1111111114', '2205222222222', '2206222222221']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('tforce-freight');
       expect(recognitionAskedCarriers(number), number).not.toContain('tforce-freight');
     }
+  });
+
+  it('suggests itself for eight digits that pass its check, and is asked first about a PARS number, which gives its PRO', () => {
+    // Eight digits are suggested only: recognition does not ask about them.
+    expect(detectCarrierMatch('11111111').candidates).toContain('tforce-freight');
+    expect(recognitionAskedCarriers('11111111', { countryHint: 'US' })).not.toContain('tforce-freight');
+    const pars = `2205${IN_TRANSIT}`;
+    expect(detectCarrierMatch(pars)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['tforce-freight'] });
+    expect(detectCarrierMatch(pars).candidates[0]).toBe('tforce-freight');
+    expect(recognitionAskedCarriers(pars, { countryHint: 'CA' })[0]).toBe('tforce-freight');
+    expect(normalizeTforceFreightNumber(` 2205-${IN_TRANSIT} `)).toBe(IN_TRANSIT);
   });
 
   it('tries once more in a new session after a network failure', async () => {
@@ -287,8 +298,8 @@ describe('TForce Freight tracking page', () => {
 
   it('rejects other numbers before I/O and bounds cancellation, elapsed time and response size', async () => {
     const unused = vi.fn<typeof fetch>();
-    // A wrong check digit, other lengths, letters, two PROs and an oversized paste.
-    for (const number of ['222222222', '1234567', '1234567890', 'PRO222222221', `${IN_TRANSIT};${DELIVERED}`, '', '2'.repeat(65)]) {
+    // A wrong check digit, other lengths, a PARS number with a wrong PRO, letters, two PROs and an oversized paste.
+    for (const number of ['222222222', '1234567', '1234567890', '2205222222222', 'PRO222222221', `${IN_TRANSIT};${DELIVERED}`, '', '2'.repeat(65)]) {
       await expect(new TforceFreightTracker({ fetcher: unused }).fetch(number), number).rejects.toThrow(InvalidInputError);
     }
     await expect(new TforceFreightTracker({ fetcher: unused }).fetch(IN_TRANSIT, { signal: AbortSignal.abort(new Error('cancelled')) }))

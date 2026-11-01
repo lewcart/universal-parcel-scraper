@@ -39,8 +39,8 @@ layout with a placeholder example. No other carrier's rule takes the FAR code, s
 
 ## Links
 
-`www.far800.com/logistics/result?key=` followed by the number opens a parcel. The page takes any
-number, so the link names FAR only for one in its layout.
+`www.far800.com/logistics/result?key=` followed by the number opens a parcel, also under `/en/` in
+English. The page takes any number, so the link names FAR only for one in its layout.
 
 ## Testing
 

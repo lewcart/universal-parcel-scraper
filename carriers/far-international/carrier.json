@@ -70,7 +70,7 @@
       "domains": [
         "www.far800.com"
       ],
-      "pathPattern": "^/logistics/result/?$",
+      "pathPattern": "^/(?:en/)?logistics/result/?$",
       "params": [
         "key"
       ],

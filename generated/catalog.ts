@@ -16856,7 +16856,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "ekart"
+      "adapter": "ekart",
+      "recognitionRank": 598
     },
     "canaryUrl": "https://www.ekartlogistics.in/track-order",
     "trackingUrlTemplate": "https://ekartlogistics.com/ekartlogistics-web/shipmenttrack/{trackingNumber}",
@@ -18566,7 +18567,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "www.far800.com"
         ],
-        "pathPattern": "^/logistics/result/?$",
+        "pathPattern": "^/(?:en/)?logistics/result/?$",
         "params": [
           "key"
         ],

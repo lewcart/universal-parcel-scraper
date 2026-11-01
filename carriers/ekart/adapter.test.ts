@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { EkartTracker } from './adapter.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, EkartTracker } from './adapter.js';
 import { parseEkart } from './parser.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { ekartScan } from './status.js';
@@ -106,6 +107,16 @@ describe('Ekart retrieval', () => {
     expect(new Headers(init?.headers).get('csrf-token')).toBe('synthetic-csrf');
     expect(new Headers(init?.headers).get('x-user-agent')).toBe('Synthetic tracker EKCL/website/1');
     expect(init?.signal).toBeInstanceOf(AbortSignal);
+  });
+  it('recognizes a number with history, leaves its empty answer open, and asks nothing for another shape', async () => {
+    const replying = (body: unknown) => vi.fn<typeof fetch>().mockImplementation(async (url) => String(url).includes('/shipmenttrack/')
+      ? new Response('<meta name="csrf-token" content="synthetic-csrf">') : new Response(JSON.stringify(body)));
+    const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+    await expect(carrier(replying(fixture())).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    await expect(carrier(replying({})).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+    const unused = vi.fn<typeof fetch>();
+    await expect(carrier(unused).recognize!('FMPP123')).resolves.toEqual({ known: false });
+    expect(unused).not.toHaveBeenCalled();
   });
   it('keeps a session reset separate from unknown parcel history', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(null, { status: 205 }));

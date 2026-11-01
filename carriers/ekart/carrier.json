@@ -19,7 +19,10 @@
     "adapter": "ekart",
     "steps": [
       "direct"
-    ]
+    ],
+    "recognition": {
+      "rank": 598
+    }
   },
   "capabilities": [
     "history",

@@ -221,10 +221,12 @@ describe('FAR International HTTP adapter', () => {
 
   it('answers a number detection or a link to its results page names FAR International for', async () => {
     expect(detectCarrierMatch(PARCEL)).toMatchObject({ carrier: 'far-international', confidence: 'high', candidates: ['far-international'] });
-    expect(parseTrackingInput(`https://www.far800.com/logistics/result?key=${PARCEL}`))
-      .toMatchObject({ trackingNumber: PARCEL, carrier: 'far-international', source: 'link' });
+    for (const link of [`https://www.far800.com/logistics/result?key=${PARCEL}`, `https://www.far800.com/en/logistics/result?key=${PARCEL}`]) {
+      expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: PARCEL, carrier: 'far-international', source: 'link' });
+    }
     // The page takes any number; the link names FAR only for one it issues.
     expect(parseTrackingInput('https://www.far800.com/logistics/result?key=AB0000000000').carrier).not.toBe('far-international');
+    expect(parseTrackingInput('https://www.far800.com/en/logistics/result?key=AB0000000000').carrier).not.toBe('far-international');
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => (String(url).startsWith(FAR_RESULT)
       ? html(page('delivered')) : new Response('', { status: 503 })));
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: PARCEL }, { budgetMs: 3000 });

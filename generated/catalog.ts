@@ -20576,6 +20576,7 @@ export const CARRIER_CATALOG = {
         }
       ],
       "recognitionRank": 604,
+      "recognitionServedCountriesOnly": true,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -20602,6 +20603,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^\\d{11}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low",
+        "checksum": "gls"
       }
     ]
   },
@@ -20761,6 +20767,7 @@ export const CARRIER_CATALOG = {
         }
       ],
       "recognitionRank": 606,
+      "recognitionServedCountriesOnly": true,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -20787,6 +20794,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^\\d{11}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low",
+        "checksum": "gls"
       }
     ]
   },
@@ -46921,10 +46933,10 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "global-business-tw": [],
   "global-delivery-network": [],
   "globalpost": ["globalpost-1"],
-  "gls-at": ["gls-at-1"],
+  "gls-at": ["gls-at-1","gls-at-2"],
   "gls-es": ["gls-es-1"],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
-  "gls-pl": ["gls-pl-1"],
+  "gls-pl": ["gls-pl-1","gls-pl-2"],
   "gms-worldwide": [],
   "go-express": [],
   "go-world-express": [],

@@ -44,9 +44,12 @@ adapter of its own: `tracking.adapter` is [`gls-de`](../gls-de/README.md), whose
 
 Parcels carry the GLS group's eleven-digit parcel number, printed on labels with a twelfth
 check digit. Archived replies of GLS Poland's tracking service show both forms. Every GLS
-network issues the same layout. A low rule offers GLS Poland for eleven digits, beside the GLS
-Germany, Switzerland and France entries. The twelve-digit form has no rule here: a passing GLS
-check digit would rank this network ahead of other carriers' candidates for every caller.
+network issues the same layout, and its first digits name no network. Low rules offer GLS
+Poland for eleven digits and for the twelve-digit form whose GLS check digit passes, beside the
+GLS Germany, Switzerland and France entries. Recognition asks GLS Poland only for a caller in
+Poland (`servedCountriesOnly`), so callers elsewhere are asked the same carriers as before, and
+a Polish caller's parcel is filed here in either form rather than under GLS Germany, whose
+tracker requires the postcode.
 
 ## Links
 

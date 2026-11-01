@@ -39,13 +39,31 @@ describe('recognition candidates', () => {
     expect(recognitionAskedCarriers(number)).toEqual(['dhl-ecommerce-pl', 'gls-fr', 'gls-de', 'gls-ch', 'postlogistics']);
     expect(recognitionAskedCarriers(number, { countryHint: 'PL' })).toContain('gls-pl');
     expect(recognitionAskedCarriers(number, { countryHint: 'AT' })[0]).toBe('gls-at');
-    for (const country of ['DE', 'CH', 'FR', 'CZ', 'GB']) {
-      const asked = recognitionAskedCarriers(number, { countryHint: country });
+    for (const country of [undefined, 'DE', 'CH', 'FR', 'CZ', 'GB']) {
+      const asked = recognitionCandidates(number, { countryHint: country }).map(({ carrier }) => carrier);
       expect(asked, country).not.toContain('gls-pl');
       expect(asked, country).not.toContain('gls-at');
     }
-    // Twelve digits stay with the networks that already take them.
-    for (const network of ['gls-at', 'gls-pl']) expect(detectCarrierMatch('123456789011').candidates).not.toContain(network);
+  });
+
+  it('asks GLS Poland and GLS Austria about the 12-digit form only for a caller in their country', () => {
+    // Synthetic: the same parcel number printed with its GLS check digit. A Polish or Austrian
+    // caller's network is asked first and tracks without the postcode GLS Germany requires.
+    const number = '123456789011';
+    for (const network of ['gls-at', 'gls-pl']) expect(detectCarrierMatch(number).candidates).toContain(network);
+    expect(recognitionAskedCarriers(number, { countryHint: 'PL' })[0]).toBe('gls-pl');
+    expect(recognitionAskedCarriers(number, { countryHint: 'AT' })[0]).toBe('gls-at');
+    expect(settleRecognition([outcome('gls-pl', 'known', { countryMatch: 'home' }), outcome('gls-de', 'known', { needsInput: 'postcode' }),
+      outcome('gls-ch', 'known', { needsInput: 'postcode' })], now)).toEqual({ carrier: 'gls-pl', choices: [] });
+    const elsewhere = recognitionAskedCarriers(number);
+    expect(elsewhere.slice(0, 3)).toEqual(['gls-fr', 'gls-de', 'gls-ch']);
+    for (const country of ['DE', 'CH', 'FR', 'CZ', 'GB']) {
+      const asked = recognitionCandidates(number, { countryHint: country }).map(({ carrier }) => carrier);
+      expect(asked, country).not.toContain('gls-pl');
+      expect(asked, country).not.toContain('gls-at');
+    }
+    // A twelfth digit that fails the GLS check is no GLS number.
+    for (const network of ['gls-at', 'gls-pl']) expect(detectCarrierMatch('123456789012').candidates).not.toContain(network);
   });
 
   it('asks 4PX before Emile about Emile\'s sixteen-digit barcodes and settles on 4PX when both know one', () => {
@@ -137,8 +155,6 @@ describe('recognition candidates', () => {
       { carrier: 'gls-fr', needsInput: null, preferred: false },
       { carrier: 'gls-ch', needsInput: 'postcode', preferred: false },
       { carrier: 'postlogistics', needsInput: null, preferred: false },
-      { carrier: 'gls-pl', needsInput: null, preferred: false },
-      { carrier: 'gls-at', needsInput: null, preferred: false },
     ]);
     expect(recognitionCandidates('06080000000002', { skip: (carrier) => carrier === 'dpd' }).map((candidate) => candidate.carrier))
       .toEqual(['dpd-be', 'dpd-nl', 'dpd-de', 'chronopost', 'seur', 'brt', 'dpd-uk', 'dpd-pt', 'dpd-hu', 'ciblex']);

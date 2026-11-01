@@ -2779,7 +2779,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "Passing check digits add GLS, and the mod 7 check that Japan Post, Sagawa and Yamato share adds all three, to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -2803,7 +2805,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "Passing check digits add GLS, and the mod 7 check that Japan Post, Sagawa and Yamato share adds all three, to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion. Poste Italiane's registered-mail check digit adds Poste Italiane as well."
   },
@@ -3071,7 +3075,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "A passing check digit adds FedEx and GLS to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -3093,7 +3099,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "Passing check digits add FedEx, GLS and Purolator to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -3201,7 +3209,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "A passing check digit adds GLS to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -3222,7 +3232,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "A passing check digit adds GLS to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion. Poste Italiane's registered-mail check digit adds Poste Italiane as well."
   },
@@ -3243,7 +3255,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "A passing check digit adds GLS to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -3265,7 +3279,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "A passing check digit adds GLS to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion. Poste Italiane's registered-mail check digit adds Poste Italiane as well."
   },
@@ -3288,7 +3304,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "Passing check digits add GLS, DHL and Purolator to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -3425,7 +3443,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "A passing check digit adds GLS and Purolator to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -4073,7 +4093,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "Passing check digits add GLS and DHL, and the mod 7 check that Japan Post, Sagawa and Yamato share adds all three, to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -4672,7 +4694,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "courier-center numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
@@ -4730,7 +4754,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "shree-maruti numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
@@ -4754,7 +4780,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "skynet-worldwide numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
@@ -4776,7 +4804,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "trackon numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
@@ -4799,7 +4829,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "Passing check digits add GLS, Purolator and Saia to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -5096,7 +5128,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "gs-postbox numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
@@ -5122,7 +5156,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "tcs-pakistan numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
@@ -5754,7 +5790,9 @@
       "sf-express",
       "sto",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "Passing check digits add GLS, DHL's Identcode and Poste Italiane's registered mail, and the 20 prefix adds J&T Cargo, to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
@@ -6384,7 +6422,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "dpex numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
@@ -6795,7 +6835,9 @@
       "sto",
       "yamato",
       "zto",
-      "sending"
+      "sending",
+      "gls-at",
+      "gls-pl"
     ],
     "reason": "Passing check digits add GLS and Poste Italiane's registered mail, the mod 7 check that Japan Post, Sagawa and Yamato share adds all three, and the 20 prefix adds J&T Cargo, to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },

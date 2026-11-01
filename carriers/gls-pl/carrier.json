@@ -37,7 +37,8 @@
       "direct"
     ],
     "recognition": {
-      "rank": 606
+      "rank": 606,
+      "servedCountriesOnly": true
     },
     "refresh": {
       "minMinutes": 60,
@@ -108,6 +109,12 @@
       "id": "gls-pl-1",
       "pattern": "^\\d{11}$",
       "confidence": "low"
+    },
+    {
+      "id": "gls-pl-2",
+      "pattern": "^\\d{12}$",
+      "confidence": "low",
+      "checksum": "gls"
     }
   ]
 }

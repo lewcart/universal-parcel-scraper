@@ -20574,6 +20574,7 @@
         }
       ],
       "recognitionRank": 604,
+      "recognitionServedCountriesOnly": true,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -20600,6 +20601,11 @@
       {
         "pattern": "^\\d{11}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low",
+        "checksum": "gls"
       }
     ]
   },
@@ -20759,6 +20765,7 @@
         }
       ],
       "recognitionRank": 606,
+      "recognitionServedCountriesOnly": true,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -20785,6 +20792,11 @@
       {
         "pattern": "^\\d{11}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low",
+        "checksum": "gls"
       }
     ]
   },

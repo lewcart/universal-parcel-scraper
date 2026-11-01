@@ -52,10 +52,11 @@ and [gls-ch](../gls-ch/README.md)'s explain the requests, identity checks and st
 ## Numbers
 
 Parcels carry the GLS group's eleven-digit parcel number, printed on labels with a twelfth
-check digit, and an eight-character Track ID. Every GLS network issues the same layouts. A low
-rule offers GLS Austria for eleven digits, beside the GLS Germany, Switzerland and France
-entries. The twelve-digit form and the Track ID have no rule here: a passing GLS check digit
-would rank this network ahead of other carriers' candidates for every caller.
+check digit, and an eight-character Track ID. Every GLS network issues the same layouts, and
+their first digits name no network. Low rules offer GLS Austria for eleven digits and for the
+twelve-digit form whose GLS check digit passes, beside the GLS Germany, Switzerland and France
+entries. Recognition asks GLS Austria only for a caller in Austria (`servedCountriesOnly`), so
+callers elsewhere are asked the same carriers as before. The Track ID has no rule here.
 
 ## Links
 

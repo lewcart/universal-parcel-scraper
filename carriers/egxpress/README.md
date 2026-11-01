@@ -1,30 +1,23 @@
 # EGXPRESS
 
-EGXPRESS parcels use enabled universal providers. There is no dedicated adapter.
+EGXPRESS is Egypt Express's domestic courier network. International FedEx air waybills belong to the FedEx adapter.
 
-EGXPRESS (Egypt Express) is an Egyptian courier, FedEx's licensee and national network partner in Egypt, delivering
-domestic parcels with cash on delivery. International FedEx air waybills stay with FedEx. Its site is
-egyptexpress.com.eg.
+The adapter makes the single-shipment guest request built by the [official tracking page](https://www.egyptexpress.com.eg/en-us/tracking-shipment/):
+`GET /umbraco/surface/home/GetDomesticTrack` with the whole waybill in `_trackingID`. It needs no session,
+account or CAPTCHA. The returned waybill must match before its history is read.
 
-## Numbers
+The scan list supplies the current state; empty summary fields do not create events. Clocks keep the
+carrier's local date and time without an asserted offset. Delivery descriptions omit the recipient and
+identity document, and shipment-level personal, account, cash and package-content fields are discarded.
+An empty history is inconclusive. Only the carrier's explicit missing-waybill reply counts as not found;
+browser checks, malformed JSON and HTTP failures keep their own error kinds.
 
-Its domestic waybills are `FED`, the date as year, month and day, and eight digits, as the bulk-tracking example
-file on its site shows. `egxpress-1` suggests them at low confidence, since that file is the only source. An
-older label carries nine digits, a shape other carriers share, so no rule takes it.
+The supported waybill shape and public evidence are in [numbers.json](numbers.json). Older bare numeric
+labels are outside this adapter's scope. The endpoint leads for reference and bulk searches are separate
+from the single-waybill flow and are not used.
 
-## Why there is no adapter
+Run the live checks with private environment inputs:
 
-Its tracking page reads an open JSON endpoint, `GET /umbraco/surface/home/GetDomesticTrack` on
-www.egyptexpress.com.eg with the number in `_trackingID`, without a session or CAPTCHA. It finds a waybill from
-the example file with its scans, on local clocks without an offset, and answers an unknown number with code `-1`
-and HTTP 200. Its replies name the recipient and carry cash-on-delivery amounts, which an adapter must drop. No
-adapter has been written for it yet.
-
-## Links
-
-The tracking page opens numbers from its `trackingID` parameter, in English and Arabic.
-
-## Testing
-
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+```sh
+EGXPRESS_TRACKING_NUMBER=... EGXPRESS_UNKNOWN_NUMBER=... npm run test:carriers:live -- carriers/egxpress/adapter.live.test.ts
+```

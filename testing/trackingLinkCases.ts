@@ -29,6 +29,12 @@ export interface TrackingLinkCase {
 // independently of the generated link templates, so a template that drifts
 // fails here instead of passing against itself.
 export const trackingLinkCases: TrackingLinkCase[] = [
+  { carrier: 'pflogistics', number: 'NEXAU1000000025YQ',
+    route: /^https:\/\/pflogistics\.com\.au\/tracking-result\?tracking=NEXAU1000000025YQ$/,
+    marker: /We couldn't find your tracking number|Tracking Number/ },
+  { carrier: 'taqbin-hk', number: '179100000003',
+    route: /^https:\/\/delivery\.message\.sg\/YTHKtracking\/\?a=179100000003$/,
+    marker: /Track Items|Tracking number/i },
   { carrier: 'europochta', number: 'BY080731593842',
     route: /^https:\/\/evropochta\.by\/\?number=BY080731593842$/,
     marker: /Отслеживание|Отследить/ },
@@ -2071,6 +2077,7 @@ export const trackingLinkCases: TrackingLinkCase[] = [
  * tracking comes from shared providers, not the page the link opens.
  */
 export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
+  egxpress: 'Unknown waybills redirect to a system-error page; the rendered-link check has no verified missing-parcel view for that route.',
   'tcc-co': 'the public tracking page submits a reCAPTCHA token; native history comes from its separate guest endpoint',
   'toyou': 'the page can remain on its loading view; native tracking reads server-rendered guest state and a separate parcel API',
   'zoom-ve': 'the result is rendered after the application Turnstile callback, which the daily link check does not submit',

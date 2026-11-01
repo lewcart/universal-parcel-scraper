@@ -1,28 +1,25 @@
 # Parcel Freight Logistics
 
-Parcel Freight Logistics parcels use enabled universal providers. There is no dedicated adapter
-yet.
+PFL's Australian parcel service is read from its [public tracker](https://pflogistics.com.au/tracking).
+Air cargo and PFL Logistics of Indiana are separate services.
 
-Parcel Freight Logistics (PFL) clears and delivers cross-border e-commerce parcels in
-Australia from its depots. Its site is pflogistics.com.au. It is not PFL Logistics of
-Indiana.
+`direct` requests `/tracking-result` with the whole reference in `tracking` and
+`timezone=UTC`. The server renders the latest scan and expanded history without a cookie,
+CSRF token or CAPTCHA; the form's POST has an equivalent guest GET. `retry` repeats only a
+network failure within the lookup budget. HTTP recognition uses the same dated history and
+the carrier's exact missing-number notice.
+Rejected HTTP pages stay out of error diagnostics because they can contain parcel details.
 
-## Numbers
+The timezone parameter converts every scan, including those from depots in different
+Australian zones. UTC is requested explicitly; an offset printed on a scan is preserved.
+The detailed wording distinguishes pickup from depot processing under their shared heading.
+The progress rail is not used as history.
 
-Numbers customers give in public reviews read `NEXAU`, ten digits and `YQ`, and its tracker
-answers them. That layout comes from a forwarding platform where the first letters name the
-sender, so `pflogistics-1` stays low confidence and no rule takes other prefixes.
+Only the reference family in `carrier.json` is accepted. Its forwarding prefix does not
+establish ownership: the result must name the whole reference and contain dated PFL scans.
+Other forwarding prefixes and air waybills are unsupported. The page exposes milestone
+scans without an estimate or delivery-partner reference.
 
-## Tracker
-
-The tracking page renders the history on the server from a plain GET, without a cookie, key or
-CAPTCHA, and can show the clocks in UTC.
-
-## Links
-
-The results page opens a number from its `tracking` parameter.
-
-## Testing
-
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Run `npm run test:carriers:live -- carriers/pflogistics` with
+`PFLOGISTICS_TRACKING_NUMBER`, optionally `PFLOGISTICS_SECOND_TRACKING_NUMBER` and
+`PFLOGISTICS_UNKNOWN_NUMBER`.

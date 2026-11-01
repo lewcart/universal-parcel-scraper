@@ -1,25 +1,23 @@
 # Citilogistics
 
-Citilogistics parcels use enabled universal providers. There is no dedicated adapter.
+The native adapter reads Citilogistics consignment histories from its
+[guest tracker](https://tracking.citilogistics.ca/). Canada Post delivers the last
+mile under a separate number; partner-number lookup needs a verified relationship
+and remains with enabled universal providers.
 
-Citilogistics is a Mississauga firm that imports and clears customs for foreign online shops selling into
-Canada; [Canada Post](../canada-post/README.md) delivers the last mile, under its own 16-digit number.
+The adapter opens the search form, keeps its guest cookie and submits the current
+hidden form value with one complete code. The response must echo that code and
+contain one history table. The form value stays within the lookup; it is not a
+shareable shipment link. Ambiguous numeric formats have no HTTP ownership probe.
 
-## Numbers
+Each row states its own time zone. The adapter preserves its local clock and
+uses that stated zone to derive an instant. The heading's lookup time is not a
+scan. The combined invalid-number-or-unavailable notice leaves the result
+inconclusive because expired records receive the same message.
 
-Its consignment codes are eleven digits, and older ones were `CAM` and nine digits. Its tracker also takes
-the Canada Post number. The public codes are archived lookups on its own tracker, and eleven digits match
-many other carriers' layouts, so there is no rule. The older `CAM` codes match Purolator's three-letter
-layout.
+Live checks use `CITILOGISTICS_TRACKING_NUMBER` and
+`CITILOGISTICS_UNKNOWN_NUMBER`:
 
-## Why there is no adapter
-
-Its tracker needs no login or CAPTCHA, but a lookup takes two steps: the search page sets a session cookie
-and a one-time form value `n`, and `GET tracking.citilogistics.ca/?n={value}&trackid={number}` with both
-returns the history as HTML, each row with its own time zone. Without `n` the number is ignored, so there is
-no shareable per-shipment address.
-
-## Testing
-
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+```sh
+npm run test:carriers:live -- carriers/citilogistics/adapter.live.test.ts
+```

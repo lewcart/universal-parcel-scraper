@@ -99,6 +99,7 @@ import { adapter as chukou1 } from '../carriers/chukou1/adapter.js';
 import { adapter as chunghwaPost } from '../carriers/chunghwa-post/adapter.js';
 import { adapter as chunil } from '../carriers/chunil/adapter.js';
 import { adapter as ciblex } from '../carriers/ciblex/adapter.js';
+import { adapter as citilogistics } from '../carriers/citilogistics/adapter.js';
 import { adapter as cityExpressRs } from '../carriers/city-express-rs/adapter.js';
 import { adapter as citylinkExpress } from '../carriers/citylink-express/adapter.js';
 import { adapter as citymail } from '../carriers/citymail/adapter.js';
@@ -187,6 +188,7 @@ import { adapter as ecomLogistics } from '../carriers/ecom-logistics/adapter.js'
 import { adapter as econt } from '../carriers/econt/adapter.js';
 import { adapter as ecoscooting } from '../carriers/ecoscooting/adapter.js';
 import { adapter as ecourier } from '../carriers/ecourier/adapter.js';
+import { adapter as egxpress } from '../carriers/egxpress/adapter.js';
 import { adapter as egyptPost } from '../carriers/egypt-post/adapter.js';
 import { adapter as ekart } from '../carriers/ekart/adapter.js';
 import { adapter as elta } from '../carriers/elta/adapter.js';
@@ -467,6 +469,7 @@ import { adapter as pdqChile } from '../carriers/pdq-chile/adapter.js';
 import { adapter as pecom } from '../carriers/pecom/adapter.js';
 import { adapter as pengyou } from '../carriers/pengyou/adapter.js';
 import { adapter as pfcExpress } from '../carriers/pfc-express/adapter.js';
+import { adapter as pflogistics } from '../carriers/pflogistics/adapter.js';
 import { adapter as phlpost } from '../carriers/phlpost/adapter.js';
 import { adapter as pilotFreight } from '../carriers/pilot-freight/adapter.js';
 import { adapter as pinAg } from '../carriers/pin-ag/adapter.js';
@@ -595,6 +598,7 @@ import { adapter as swissPostCargo } from '../carriers/swiss-post-cargo/adapter.
 import { adapter as tCat } from '../carriers/t-cat/adapter.js';
 import { adapter as tGroup } from '../carriers/t-group/adapter.js';
 import { adapter as tanzaniaPosts } from '../carriers/tanzania-posts/adapter.js';
+import { adapter as taqbinHk } from '../carriers/taqbin-hk/adapter.js';
 import { adapter as taxydema } from '../carriers/taxydema/adapter.js';
 import { adapter as tccCo } from '../carriers/tcc-co/adapter.js';
 import { adapter as tciExpress } from '../carriers/tci-express/adapter.js';
@@ -789,6 +793,7 @@ export const REGISTRY: RegistryDefinition = {
     "chunghwa-post": chunghwaPost,
     "chunil": chunil,
     "ciblex": ciblex,
+    "citilogistics": citilogistics,
     "city-express-rs": cityExpressRs,
     "citylink-express": citylinkExpress,
     "citymail": citymail,
@@ -877,6 +882,7 @@ export const REGISTRY: RegistryDefinition = {
     "econt": econt,
     "ecoscooting": ecoscooting,
     "ecourier": ecourier,
+    "egxpress": egxpress,
     "egypt-post": egyptPost,
     "ekart": ekart,
     "elta": elta,
@@ -1157,6 +1163,7 @@ export const REGISTRY: RegistryDefinition = {
     "pecom": pecom,
     "pengyou": pengyou,
     "pfc-express": pfcExpress,
+    "pflogistics": pflogistics,
     "phlpost": phlpost,
     "pilot-freight": pilotFreight,
     "pin-ag": pinAg,
@@ -1285,6 +1292,7 @@ export const REGISTRY: RegistryDefinition = {
     "t-cat": tCat,
     "t-group": tGroup,
     "tanzania-posts": tanzaniaPosts,
+    "taqbin-hk": taqbinHk,
     "taxydema": taxydema,
     "tcc-co": tccCo,
     "tci-express": tciExpress,
@@ -1579,7 +1587,7 @@ export const REGISTRY: RegistryDefinition = {
     "chunil": "chunil",
     "ciblex": "ciblex",
     "citi-sprint": "universal",
-    "citilogistics": "universal",
+    "citilogistics": "citilogistics",
     "cititrans": "universal",
     "city-air-express": "universal",
     "city-express-rs": "city-express-rs",
@@ -1734,7 +1742,7 @@ export const REGISTRY: RegistryDefinition = {
     "ecparcel": "universal",
     "ees-logistics": "universal",
     "efs-asia": "universal",
-    "egxpress": "universal",
+    "egxpress": "egxpress",
     "egypt-post": "egypt-post",
     "ekart": "ekart",
     "eli-express": "universal",
@@ -2237,7 +2245,7 @@ export const REGISTRY: RegistryDefinition = {
     "performance-freight": "universal",
     "peru-box-air": "universal",
     "pfc-express": "pfc-express",
-    "pflogistics": "universal",
+    "pflogistics": "pflogistics",
     "phlpost": "phlpost",
     "pickupp": "universal",
     "pickupp-sg": "universal",
@@ -2469,7 +2477,7 @@ export const REGISTRY: RegistryDefinition = {
     "tamex": "universal",
     "tanzania-posts": "tanzania-posts",
     "tapuz-delivery": "universal",
-    "taqbin-hk": "universal",
+    "taqbin-hk": "taqbin-hk",
     "taqbin-sg": "universal",
     "tas-courier": "universal",
     "tawssil": "universal",

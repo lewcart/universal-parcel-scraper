@@ -31,7 +31,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -50,7 +50,7 @@
           "mainfreight"
         ]
       },
-      "note": "An archived request to Citilogistics's own tracker carries this 11-digit consignment code; the capture itself shows the empty form."
+      "note": "The archived request carries Citilogistics's eleven-digit consignment code; the live guest tracker returns its dated history."
     }
   ]
 }

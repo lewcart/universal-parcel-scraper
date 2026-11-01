@@ -12248,7 +12248,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "citilogistics",
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.citilogistics.ca/",
     "trackingSearchUrl": "https://tracking.citilogistics.ca/",
@@ -17471,7 +17472,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "egxpress",
+      "recognitionRank": 774,
+      "localClocks": true
     },
     "canaryUrl": "https://www.egyptexpress.com.eg/en-us/",
     "trackingUrlTemplate": "https://www.egyptexpress.com.eg/en-us/tracking-shipment/?trackingID={trackingNumber}",
@@ -34552,7 +34555,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pflogistics",
+      "recognitionRank": 775
     },
     "canaryUrl": "https://pflogistics.com.au/",
     "trackingUrlTemplate": "https://pflogistics.com.au/tracking-result?tracking={trackingNumber}",
@@ -42397,7 +42401,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Hong_Kong",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "taqbin-hk",
+      "localClocks": true
     },
     "canaryUrl": "https://www.yamatohk.com.hk/",
     "trackingUrlTemplate": "https://app01.yamatohk.com.hk/spds-track-and-trace/TrackAndTrace?trackingNo={trackingNumber}",

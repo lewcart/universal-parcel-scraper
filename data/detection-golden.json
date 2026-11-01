@@ -79861,6 +79861,9 @@
     "confidence": "low",
     "candidates": [
       "egxpress"
+    ],
+    "asked": [
+      "egxpress"
     ]
   },
   {
@@ -79868,6 +79871,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "egxpress"
+    ],
+    "asked": [
       "egxpress"
     ]
   },
@@ -79877,6 +79883,9 @@
     "confidence": "low",
     "candidates": [
       "egxpress"
+    ],
+    "asked": [
+      "egxpress"
     ]
   },
   {
@@ -79884,6 +79893,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "egxpress"
+    ],
+    "asked": [
       "egxpress"
     ]
   },
@@ -89006,6 +89018,9 @@
     "confidence": "low",
     "candidates": [
       "pflogistics"
+    ],
+    "asked": [
+      "pflogistics"
     ]
   },
   {
@@ -89013,6 +89028,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "pflogistics"
+    ],
+    "asked": [
       "pflogistics"
     ]
   },
@@ -89022,6 +89040,9 @@
     "confidence": "low",
     "candidates": [
       "pflogistics"
+    ],
+    "asked": [
+      "pflogistics"
     ]
   },
   {
@@ -89029,6 +89050,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "pflogistics"
+    ],
+    "asked": [
       "pflogistics"
     ]
   },

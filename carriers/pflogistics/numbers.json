@@ -13,7 +13,7 @@
       },
       "context": {
         "reportedRole": "shipment_tracking",
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -22,7 +22,7 @@
           "pflogistics"
         ]
       },
-      "note": "A number a customer gave in a public review of Parcel Freight Logistics. It was not looked up."
+      "note": "A number a customer gave in a public review of Parcel Freight Logistics. Its tracker returns the parcel's dated history."
     },
     {
       "number": "NEXAU1023032257YQ",
@@ -36,7 +36,7 @@
       },
       "context": {
         "reportedRole": "shipment_tracking",
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -45,7 +45,7 @@
           "pflogistics"
         ]
       },
-      "note": "A number a customer gave in a public review of Parcel Freight Logistics. It was not looked up."
+      "note": "A number a customer gave in a public review of Parcel Freight Logistics. Its tracker returns the parcel's dated history."
     },
     {
       "number": "NEXAU1025311823YQ",

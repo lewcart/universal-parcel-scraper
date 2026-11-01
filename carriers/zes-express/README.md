@@ -1,26 +1,24 @@
 # ZES Express
 
-ZES Express parcels use enabled universal providers. There is no dedicated adapter.
-
 ZES Express is the brand of Eshun International Logistics (俄顺国际物流), a Yiwu forwarder carrying
 e-commerce parcels from China to Russia, where CDEK delivers them. Its site is zes-express.com.
 
-## Numbers
+## Retrieval
 
-Its numbers are `ZESZE`, ten digits and `YQ`, which `zes-express-1` suggests at low confidence;
-two public pages quote one each. The CDEK waybill it hands a parcel on with stays with
-[CDEK](../cdek/README.md).
+The official site's tracking link opens `track_query.aspx` on the plain-HTTP tenant
+`120.26.82.200:8080`. Its guest `/webservice/Service.ashx` uses the
+[RTB56 protocol](../yypost/rtb56.ts) without a session. The available public records return
+shipment summaries with empty scan lists, so they establish no dated native history. ZES Express
+parcels use enabled universal providers; there is no dedicated adapter.
 
-## Why there is no adapter
-
-Its tracker runs on the platform [YYpost's adapter](../yypost/rtb56.ts) reads, whose lookup
-answers without a session; it answered public numbers. The tracker is served over plain HTTP from
-a bare IP address and its page adds a slider CAPTCHA, so no portal link is published. An adapter
-is possible and not yet written.
+The tenant can resolve a merchant reference to another shipment number. A reply must match the
+whole `server_hawbcode`, not just echo the input in `shipper_hawbcode`. The page names another
+logistics company, so shared-platform branding does not confirm ZES ownership.
 
 ## Links
 
-The tracker's page sits on a bare IP address, so no link is read.
+The tracking page uses a slider CAPTCHA and a plain-HTTP bare IP address, so no portal link is
+published. A CDEK waybill belongs with [CDEK](../cdek/README.md).
 
 ## Testing
 

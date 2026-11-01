@@ -1,0 +1,49 @@
+{
+  "id": "anc-delivers",
+  "displayName": "ANC Australian National Couriers",
+  "aliases": [
+    "Australian National Couriers",
+    "Fleets Flyers Pty. Limited"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#ffe100"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://ancdelivers.com.au/track/{trackingNumber}",
+    "searchUrl": "https://ancdelivers.com.au/receiving/track-your-item",
+    "canaryUrl": "https://ancdelivers.com.au/receiving/track-your-item",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "ancdelivers.com.au",
+        "www.ancdelivers.com.au"
+      ],
+      "path": "^/track/([A-Za-z0-9]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "anc-delivers-1",
+      "pattern": "^A\\d{8}[A-Z]{2}$",
+      "confidence": "low"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "bestfulfill",
+  "displayName": "BestFulfill Packet",
+  "aliases": [
+    "BestFulfill",
+    "Guangzhou Haoqianyi Trading Co., Ltd."
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#ac1f24"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.bestfulfillpacket.com/track?number={trackingNumber}",
+    "searchUrl": "https://www.bestfulfillpacket.com/track",
+    "canaryUrl": "https://www.bestfulfillpacket.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.bestfulfillpacket.com"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "number"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "bestfulfill-1",
+      "pattern": "^BEST\\d{14}$",
+      "confidence": "low"
+    }
+  ]
+}

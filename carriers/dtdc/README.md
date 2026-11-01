@@ -29,6 +29,15 @@ other letters DTDC's former tracker is known to have answered are only
 suggested. `A` waybills are left out: one DTDC reply shows one, and a Day & Ross
 sample shares the shape.
 
+DTDC's international consignments, `N` and eight digits, get the feed's generic
+failure. DTDC Australia's open tracker, `GET www.dtdcaustralia.com.au/track_order/{number}`,
+answers them from DTDC's international system. It matches the whole number in either case
+and returns rows with a status, a free-text note and a place. When FedEx or DHL takes the
+parcel abroad, a note names that carrier's label number and the partner's scans follow.
+The adapter does not ask it: the reply does not repeat the number, the notes carry contact
+addresses and staff names, and the clocks name no zone. Deliveries abroad fall in working
+hours only when read as UTC.
+
 ## Testing
 
 Set `DTDC_TRACKING_NUMBER` outside the repository and run

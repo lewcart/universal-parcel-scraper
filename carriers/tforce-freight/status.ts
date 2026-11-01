@@ -25,16 +25,13 @@ const NOT_DELIVERED = 'shipment not delivered.';
 
 /**
  * The shipment's status, which the tracker shows beside the PRO and above the
- * progress bar. "On Vehicle For Delivery" is the former UPS Freight tracker's;
- * the other three are the statuses its notifications offer.
+ * progress bar. "On Vehicle For Delivery" is the former UPS Freight tracker's.
+ * The events its update emails offer are no statuses it shows.
  */
 const SHIPMENT: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   ['in transit', 'in_transit'],
-  ['delivery appointment scheduled', 'in_transit'],
   ['on vehicle for delivery', 'out_for_delivery'],
   ['delivered', 'delivered'],
-  ['shipment delivered', 'delivered'],
-  ['delivery exceptions', 'exception'],
 ]);
 
 /** The tracker's status for a PRO it has no shipment for. */

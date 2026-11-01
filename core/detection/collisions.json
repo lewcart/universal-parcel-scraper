@@ -6558,6 +6558,19 @@
     "reason": "FAN Courier's AWBs are thirteen digits starting with 2, 4 or 7000, inside the space these carriers match broadly; its low rule joins theirs, and recognition asks FAN Courier first from Romania."
   },
   {
+    "shape": "2205 and nine digits",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "yunda",
+      "fan-courier",
+      "tforce-freight"
+    ],
+    "reason": "TForce Freight's PARS numbers for the Canadian border are its carrier code 2205 and a PRO, inside the thirteen-digit space these carriers match broadly; its preferred low rule puts it first when the PRO's check passes, and recognition asks it first from Canada."
+  },
+  {
     "shape": "13 digits starting with 2 or 4, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",

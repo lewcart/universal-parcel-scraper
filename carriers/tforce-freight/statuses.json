@@ -14,9 +14,6 @@
     {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The shipment's status beside its PRO."},
     {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "The shipment's status beside its PRO."},
     {"wording": "Not Available", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "The status beside a PRO the tracker has no shipment for, with \"Please check ProNumber\" below it. The adapter reads it as not found."},
-    {"wording": "On Vehicle For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "The shipment's summary status. Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."},
-    {"wording": "Delivery Appointment Scheduled", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "A current-status option on TForce Freight's tracking page."},
-    {"wording": "Shipment Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "A current-status option on TForce Freight's tracking page."},
-    {"wording": "Delivery Exceptions", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "A current-status option on TForce Freight's tracking page."}
+    {"wording": "On Vehicle For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "The shipment's summary status. Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."}
   ]
 }

@@ -4439,5 +4439,41 @@
     "pattern": "^\\d{12}$",
     "kind": "collision",
     "reason": "Yamato Transport Singapore tracks Yamato's twelve-digit waybills, a shape Yamato Transport and many other networks print, so the shape cannot name the Singapore company."
+  },
+  {
+    "carrier": "cathedis",
+    "pattern": "^LD\\d{9}$",
+    "kind": "collision",
+    "reason": "Cathedis numbers, LD and nine digits, share their shape with GLS Italy and TNT Italy numbers, so the shape cannot name Cathedis."
+  },
+  {
+    "carrier": "daiichi",
+    "pattern": "^\\d{11}$",
+    "kind": "collision",
+    "reason": "Daiichi Freight numbers are eleven digits with a mod-7 check digit, the layout Japan Post's numbers share and a shape many other networks print, so the shape cannot name Daiichi Freight."
+  },
+  {
+    "carrier": "jamef",
+    "pattern": "^\\d{9}$",
+    "kind": "open",
+    "reason": "The one public Jamef number is a nine-digit CTRC from its former tracker, which today's tracker cannot take; one number does not establish a layout."
+  },
+  {
+    "carrier": "om-logistics",
+    "pattern": "^(?:\\d{8,9}|\\d{12,13})$",
+    "kind": "collision",
+    "reason": "Om Logistics dockets are eight, nine, twelve or thirteen digits, shapes many networks print, so the shape cannot name Om Logistics."
+  },
+  {
+    "carrier": "route1-fulfilment",
+    "pattern": "^RO\\d{11}$",
+    "kind": "collision",
+    "reason": "Route 1 codes, RO and eleven digits, share their shape with La Poste's numbers, and two examples do not establish them."
+  },
+  {
+    "carrier": "seabourne-logistics",
+    "pattern": "^20\\d{7}$",
+    "kind": "collision",
+    "reason": "Seabourne airway bills are nine digits starting with 20, a shape TNT, XPO and other networks print, so the shape cannot name Seabourne."
   }
 ]

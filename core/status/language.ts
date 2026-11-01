@@ -458,6 +458,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // China Post's arrival at the office it names in brackets, a processing centre or the delivery office, abroad too,
   // as providers relay it with no carrier: in transit, as YunExpress's, PFC Express's and DHLink's maps read it.
   if (/^邮件到达(?:处理中心|投递点)? ?【[^【】]{1,80}】$/.test(text)) return 'in_transit';
+  // A forwarder relabelling a parcel under its next carrier's number, as ParcelsApp relays it with the carrier's
+  // note: the parcel is in hand on its way. Without the note, a changed number may be data alone.
+  if (/^tracking number changed, carrier note: (?:the )?package (?:was |has been )?relabell?ed$/.test(text)) return 'in_transit';
   // A Chinese courier's (业务员) collection from the sender, as providers translate it.
   if (/^(?:the )?salesperson (?:has )?(?:collects|collected|picks up|picked up) (?:the )?(?:package|parcel|shipment)$/.test(text)) return 'accepted';
   // Nova Poshta's English as providers relay it: the shipment registered, then its departure from the branch,

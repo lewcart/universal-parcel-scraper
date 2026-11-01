@@ -8786,6 +8786,29 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "banling": {
+    "displayName": "Banling International Logistics",
+    "color": "#e82d2c",
+    "aliases": [
+      "Banling",
+      "斑羚国际",
+      "斑羚国际物流",
+      "深圳斑羚国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://banlingwuliu.com/detail/track/transLogistic.html",
+    "trackingSearchUrl": "https://banlingwuliu.com/detail/track/transLogistic.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "barid-al-maghrib": {
     "displayName": "Barid Al-Maghrib",
     "color": "#164c93",
@@ -20270,6 +20293,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "go-world-express": {
+    "displayName": "Go World Express",
+    "color": "#f7931e",
+    "aliases": [
+      "行界物流",
+      "Go World",
+      "GoWorld Express"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.goworldexpress.cn/track.html",
+    "trackingSearchUrl": "https://www.goworldexpress.cn/track.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "go4": {
     "displayName": "GO4",
     "color": "#ef1f23",
@@ -21947,6 +21992,32 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "hye": {
+    "displayName": "HYE International Logistics",
+    "color": "#d60010",
+    "aliases": [
+      "HYE",
+      "HYExpress",
+      "HYEXP",
+      "环洋国际",
+      "环洋国际物流",
+      "嘉兴环洋电商物流服务有限公司"
+    ],
+    "countries": [
+      "CN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tms.hyexp.net/outtrack",
+    "trackingSearchUrl": "https://tms.hyexp.net/outtrack?companyId=34&companyNo=HYE",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "hywl": {
     "displayName": "Huiyi Logistics",
     "color": "#0b8f91",
@@ -21995,6 +22066,29 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "hzt": {
+    "displayName": "HZT International Logistics",
+    "color": "#1cb2ce",
+    "aliases": [
+      "HZT",
+      "豪泽通",
+      "豪泽通国际物流",
+      "深圳市豪泽通国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://hztgjwl.com/query/",
+    "trackingSearchUrl": "https://hztgjwl.com/query/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "icc-worldwide": {
     "displayName": "ICC Worldwide",
@@ -23719,6 +23813,42 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "jet-global": {
+    "displayName": "Jet Global Logistics",
+    "color": "#1160ae",
+    "aliases": [
+      "Jet Global Express",
+      "Jet Global Logistics Limited",
+      "捷通物流",
+      "捷通物流有限公司"
+    ],
+    "countries": [
+      "MO",
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Macau",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jetft.com/tracking.html",
+    "trackingUrlTemplate": "https://www.jetft.com/tracking.html?order={trackingNumber}",
+    "trackingSearchUrl": "https://www.jetft.com/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "jetft.com",
+          "www.jetft.com"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "order"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "jet-logistic": {
     "displayName": "Jet Logistic",
     "color": "#00a8e8",
@@ -23912,6 +24042,41 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "jikuaida": {
+    "displayName": "Jikuaida Logistics",
+    "color": "#0a3281",
+    "aliases": [
+      "吉快达物流",
+      "吉快达",
+      "湖南省吉快达物流有限公司",
+      "JIKUAIDA LOGISTICS"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jikuaida.com/track.html",
+    "trackingUrlTemplate": "https://www.jikuaida.com/track.html?nums={trackingNumber}",
+    "trackingSearchUrl": "https://www.jikuaida.com/track.html",
+    "linkRules": [
+      {
+        "domains": [
+          "jikuaida.com",
+          "www.jikuaida.com"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "nums"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "jitsu": {
     "displayName": "Jitsu",
@@ -35327,6 +35492,42 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "shenghang": {
+    "displayName": "Shenghang International Logistics",
+    "color": "#212184",
+    "aliases": [
+      "盛航国际物流",
+      "盛航国际",
+      "Shenghang",
+      "广州盛航货运代理有限公司",
+      "Guangzhou Shenghang Freight Agent"
+    ],
+    "countries": [
+      "CN",
+      "MY",
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.shenghanggj.com/checkexpress",
+    "trackingUrlTemplate": "https://www.shenghanggj.com/checkexpress?act=cx&order_tracking_search={trackingNumber}",
+    "trackingSearchUrl": "https://www.shenghanggj.com/checkexpress",
+    "linkRules": [
+      {
+        "domains": [
+          "shenghanggj.com",
+          "www.shenghanggj.com"
+        ],
+        "pathPattern": "^/checkexpress$",
+        "query": "^(?=(?:.*&)?act=cx(?:&|$))(?:.*&)?order_tracking_search=([^&]+)(?=&|$)"
+      }
+    ],
+    "detectionRules": []
+  },
   "shipa": {
     "displayName": "Shipa",
     "color": "#0000ff",
@@ -39453,6 +39654,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "too-express": {
+    "displayName": "Too Express",
+    "color": "#e4564d",
+    "aliases": [
+      "TooExpress",
+      "TOOEXPRESS",
+      "TOO EXPRESS"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://oms.tooexp.com/tracking.html",
+    "trackingSearchUrl": "https://oms.tooexp.com/tracking.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "top-logistics-au": {
     "displayName": "Top Logistics Australia",
     "color": "#193064",
@@ -41976,6 +42199,42 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "wangjing-3cq": {
+    "displayName": "Wangjing 3CQ",
+    "color": "#f97317",
+    "aliases": [
+      "3CQ",
+      "旺鲸",
+      "旺鲸3CQ",
+      "旺鲸3CQ跨境物流平台",
+      "深圳旺鲸科技有限公司"
+    ],
+    "countries": [
+      "CN",
+      "BR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.wjdrop.com/tracking/index",
+    "trackingUrlTemplate": "https://track.wjdrop.com/tracking/index?nums={trackingNumber}",
+    "trackingSearchUrl": "https://track.wjdrop.com/tracking/index",
+    "linkRules": [
+      {
+        "domains": [
+          "track.wjdrop.com"
+        ],
+        "pathPattern": "^/tracking/index$",
+        "params": [
+          "nums"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ward-trucking": {
     "displayName": "Ward Transport & Logistics",
     "color": "#185640",
@@ -42436,6 +42695,30 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "wld-express": {
+    "displayName": "WLD Express",
+    "color": "#3b43c9",
+    "aliases": [
+      "Wld Express",
+      "万立德",
+      "万立德国际物流",
+      "深圳市万立德国际物流有限公司",
+      "广州市万立德供应链有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://wld-exp.com/",
+    "trackingSearchUrl": "https://wld-exp.com/#/baseData/TrackQuery",
+    "linkRules": [],
+    "detectionRules": []
   },
   "world-package": {
     "displayName": "World Package",
@@ -44016,6 +44299,7 @@ export const CARRIER_IDS = [
   "azerpost",
   "azul-cargo",
   "bangladesh-post",
+  "banling",
   "barid-al-maghrib",
   "bel",
   "belpost",
@@ -44310,6 +44594,7 @@ export const CARRIER_IDS = [
   "gls-pl",
   "gms-worldwide",
   "go-express",
+  "go-world-express",
   "go4",
   "gobolt",
   "gofo-ca",
@@ -44358,7 +44643,9 @@ export const CARRIER_IDS = [
   "huahan",
   "huaya-express",
   "hunter-express",
+  "hye",
   "hywl",
+  "hzt",
   "icc-worldwide",
   "icl-express",
   "ics-courier",
@@ -44404,12 +44691,14 @@ export const CARRIER_IDS = [
   "jdiex",
   "jeebly",
   "jersey-post",
+  "jet-global",
   "jet-logistic",
   "jetline-couriers",
   "jetpak",
   "jhgj",
   "jiachen-express",
   "jifan",
+  "jikuaida",
   "jitsu",
   "jiufang",
   "jne",
@@ -44709,6 +44998,7 @@ export const CARRIER_IDS = [
   "sfc",
   "sfyd-express",
   "shadowfax",
+  "shenghang",
   "shipa",
   "shipblu",
   "shipentegra",
@@ -44816,6 +45106,7 @@ export const CARRIER_IDS = [
   "togo-post",
   "tonami",
   "tonda-global",
+  "too-express",
   "top-logistics-au",
   "topex-logistics",
   "toptrans",
@@ -44886,6 +45177,7 @@ export const CARRIER_IDS = [
   "w-express-ph",
   "wahana",
   "wanbexpress",
+  "wangjing-3cq",
   "ward-trucking",
   "we-world-express",
   "wedo",
@@ -44897,6 +45189,7 @@ export const CARRIER_IDS = [
   "winit",
   "wise-express",
   "wizmo",
+  "wld-express",
   "world-package",
   "x-express-ba",
   "x-trac",
@@ -45132,6 +45425,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "azerpost": [],
   "azul-cargo": [],
   "bangladesh-post": ["bangladesh-post-s10"],
+  "banling": [],
   "barid-al-maghrib": ["barid-al-maghrib-s10"],
   "bel": [],
   "belpost": ["belpost-s10"],
@@ -45426,6 +45720,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gls-pl": ["gls-pl-1"],
   "gms-worldwide": [],
   "go-express": [],
+  "go-world-express": [],
   "go4": [],
   "gobolt": [],
   "gofo-ca": ["gofo-ca-1"],
@@ -45474,7 +45769,9 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "huahan": ["huahan-1"],
   "huaya-express": ["huaya-express-1"],
   "hunter-express": [],
+  "hye": [],
   "hywl": ["hywl-1","hywl-2"],
+  "hzt": [],
   "icc-worldwide": [],
   "icl-express": [],
   "ics-courier": ["ics-courier-1"],
@@ -45520,12 +45817,14 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jdiex": [],
   "jeebly": ["jeebly-1"],
   "jersey-post": ["jersey-post-s10"],
+  "jet-global": [],
   "jet-logistic": [],
   "jetline-couriers": [],
   "jetpak": [],
   "jhgj": ["jhgj-1"],
   "jiachen-express": [],
   "jifan": ["jifan-1"],
+  "jikuaida": [],
   "jitsu": [],
   "jiufang": [],
   "jne": ["jne-1"],
@@ -45825,6 +46124,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sfc": ["sfc-1","sfc-ae"],
   "sfyd-express": [],
   "shadowfax": ["shadowfax-1","shadowfax-2"],
+  "shenghang": [],
   "shipa": ["shipa-1"],
   "shipblu": [],
   "shipentegra": ["shipentegra-1"],
@@ -45932,6 +46232,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "togo-post": [],
   "tonami": [],
   "tonda-global": [],
+  "too-express": [],
   "top-logistics-au": [],
   "topex-logistics": [],
   "toptrans": [],
@@ -46002,6 +46303,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "w-express-ph": [],
   "wahana": [],
   "wanbexpress": ["wanbexpress-1"],
+  "wangjing-3cq": [],
   "ward-trucking": [],
   "we-world-express": ["we-world-express-1"],
   "wedo": ["wedo-1"],
@@ -46013,6 +46315,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "winit": ["winit-1","winit-2","winit-3"],
   "wise-express": [],
   "wizmo": ["wizmo-1"],
+  "wld-express": [],
   "world-package": [],
   "x-express-ba": [],
   "x-trac": ["x-trac-1"],

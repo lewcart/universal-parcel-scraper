@@ -693,6 +693,28 @@ describe('SXJD, CPSZY, Valueway, Jiachen, LONGCPS, Bridge Intl, JiuFang and CEL 
   });
 });
 
+describe('Too Express, Go World, Shenghang, HZT, WLD, 3CQ, Banling, Jikuaida, HYE and Jet', () => {
+  it('names the carriers from providers and reads their tracker links', () => {
+    for (const [name, id] of [['TooExpress', 'too-express'], ['Too Express', 'too-express'], ['Go World Express', 'go-world-express'],
+      ['行界物流', 'go-world-express'], ['Shenghang', 'shenghang'], ['盛航国际物流', 'shenghang'], ['HZT', 'hzt'], ['豪泽通', 'hzt'],
+      ['Wld Express', 'wld-express'], ['万立德', 'wld-express'], ['3CQ', 'wangjing-3cq'], ['旺鲸', 'wangjing-3cq'],
+      ['Banling', 'banling'], ['斑羚国际', 'banling'], ['ji Kuaida logistics', 'jikuaida'], ['吉快达物流', 'jikuaida'],
+      ['HYE', 'hye'], ['环洋国际', 'hye'], ['Jet Global Express', 'jet-global'], ['捷通物流', 'jet-global']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    for (const [url, carrier] of [
+      ['https://www.shenghanggj.com/checkexpress?act=cx&order_tracking_search=AB1000000017', 'shenghang'],
+      ['https://track.wjdrop.com/tracking/index?nums=AB1000000017', 'wangjing-3cq'],
+      ['https://www.jikuaida.com/track.html?nums=AB1000000017', 'jikuaida'],
+      ['https://www.jetft.com/tracking.html?order=AB1000000017', 'jet-global'],
+    ] as const) {
+      expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber: 'AB1000000017', carrier, source: 'link' });
+    }
+    expect(parseTrackingInput('https://www.shenghanggj.com/checkexpress?order_tracking_search=AB1000000017').carrier ?? 'none')
+      .not.toBe('shenghang');
+  });
+});
+
 describe('Performance Freight, STG LTL, TSB and Senyu International', () => {
   it('names the carriers from providers and reads their tracker links', () => {
     for (const [name, id] of [['Performance Freight Systems, Inc.', 'performance-freight'], ['STG LTL', 'stg-ltl'],

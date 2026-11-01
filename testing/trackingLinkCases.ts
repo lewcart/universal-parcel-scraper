@@ -2026,6 +2026,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/shipecom\.com\/track\/E00A0000099$/,
     marker: /We could not find that number|Tracking history/,
     shipmentNotFound: { status: 404, marker: /We could not find that number/ } },
+  // The tracker's frame repeats the number in its item parameter as its heading, with no scan for one it does not hold.
+  { carrier: 'go-logistics-au', number: '9999999999',
+    route: /^https:\/\/services\.gologistics\.com\.au\/track\/iframe2\.php\?item=9999999999$/,
+    marker: /Coupon\/Consignment Tracking/ },
   // The page loads the fragment for the number in its address, which fills its search box and renders the
   // parcel or says the number does not exist, with HTTP 200.
   { carrier: 'skybox', number: '009900000099',

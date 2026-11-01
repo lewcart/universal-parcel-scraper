@@ -22108,7 +22108,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "go-logistics-au"
     },
     "canaryUrl": "https://gologistics.com.au/track-your-parcel/",
     "trackingUrlTemplate": "https://services.gologistics.com.au/track/iframe2.php?item={trackingNumber}",

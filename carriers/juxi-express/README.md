@@ -24,7 +24,13 @@ others. The site has commented the last two out, none of the three answers, Hual
 does not hold Juxi Express waybills, and the service terms send customers to 17TRACK. So Juxi
 Express stays on universal providers.
 
-ParcelsApp and 17TRACK answer its parcels, so its demand needs no adapter until Juxi Express publishes a tracker of its own.
+[Dianxiaomi's Hualei integration list](https://help.dianxiaomi.com/article/customerService/98)
+and [Sumool's carrier directory](https://shipping.sumool.com/?pageIndex=17&pagesize=20)
+still name Shanghai Juxi. Sumool exposes its shipping-channel catalogue, but neither listing
+publishes a replacement guest tracking endpoint. Track718's Juxi listing points to the same
+carrier website. No official guest tracking app was found. A working merchant portal address
+could establish the current Hualei service; a new waybill alone cannot restore the retired hosts.
+Enabled universal providers remain the usable route.
 
 ## Testing
 

@@ -18,9 +18,17 @@ The tracker opens one delivery at `track.roadie.com/id/{number}`. It redirects
 
 The tracker reads a delivery from `GET api.roadie.com/gigs/{number}/track`, with no key or
 sign-in. The delivery's ZIP code only unlocks the address, photos and driver. That API refuses
-most networks outside the United States and Canada: Cloudflare answers HTTP 403 with its block
-page, even to the tracker in a browser, which then reports the delivery as not found. Roadie's Android app is its drivers' app and
-needs a driver's account, so Roadie stays on universal providers.
+requests outside the United States, as the [official API FAQ](https://docs.roadie.com/)
+explains. The block also reaches the browser tracker, whose error screen calls any lookup
+failure a missing delivery. A browser or CAPTCHA solver alone cannot fix this network gate.
+
+The [Roadie Driver Android app](https://play.google.com/store/apps/details?id=com.roadie.drive.android.app)
+is signed by the certificate published in [Roadie's app links](https://drive.roadie.com/.well-known/assetlinks.json).
+Its REST client uses the same `api.roadie.com` host; its `drive-server.roadie.com/graphql`
+client serves signed-in driver work. No separate guest tracking route was found there.
+A direct adapter needs a successful guest lookup from US egress and a same-shape missing-number
+control before its response parser can be verified. The ZIP-gated recipient details are not
+needed for parcel status.
 
 ## Testing
 

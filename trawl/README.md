@@ -2,7 +2,7 @@
 
 Some carriers and universal providers only answer a full browser session. This image extends
 [TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, USPS, Royal Mail,
-Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, Correios Brazil, DHL Poland, Magyar Posta, Poste Italiane, SwiftX, China Post, JD Logistics and ZTO. The adapter checks the captured response against
+Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, Correios Brazil, DHL Poland, Magyar Posta, Poste Italiane, SwiftX, China Post, JD Logistics, Ozon and ZTO. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
 
 Pro Carrier, Delnext, MRL Global, AIT Worldwide, Hitch, PBT and Celeritas also use the
@@ -10,6 +10,10 @@ ordinary browser tiers after a challenged HTTP lookup. Their adapters read the r
 page through the same identity checks as HTTP; no carrier helper or image rebuild is needed.
 Trendyol Express uses those tiers for its public shipment page and reads the complete
 collapsed timeline without recipient details or delivery controls.
+
+Ozon's helper waits for its guest form after browser verification, then reads the matching
+posting API through a bounded decoded stream. It returns the full timeline without retaining
+cookies or the rendered page. Ozon Rocket references are outside that helper's scope.
 
 USPS also captures its tracking request's redirect to the official outage page.
 That redirect can leave the verification wrapper blank; retaining it lets the

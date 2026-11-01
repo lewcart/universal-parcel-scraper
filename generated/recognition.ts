@@ -321,6 +321,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "optima-overnight": 53,
   "orlen-paczka": 495,
   "osm-worldwide": 75,
+  "ozon-logistics": 37,
   "pack-man": 862,
   "packeta": 665,
   "packlink": 981,

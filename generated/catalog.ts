@@ -31339,7 +31339,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ozon-logistics",
+      "recognitionRank": 37,
+      "recognitionPattern": "^(?:\\d{13}|\\d{15})$",
+      "browserRecognitionRank": 37,
+      "localClocks": true,
+      "browser": true
     },
     "canaryUrl": "https://tracking.ozon.ru/",
     "trackingUrlTemplate": "https://tracking.ozon.ru/?track={trackingNumber}",

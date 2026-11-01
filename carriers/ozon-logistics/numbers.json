@@ -232,6 +232,40 @@
         "confidence": "high"
       },
       "note": "Looked up on Ozon Rocket's tracker, as an archived address shows; the capture is a redirect to the bot check and was not opened, so no history is visible."
+    },
+    {
+      "number": "0143399352-0060-1",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://1track.ru/tracking/ozon",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "ozon-logistics",
+        "confidence": "high"
+      },
+      "note": "A public tracking discussion gives the complete posting; the official guest tracking API returns its dated history through collection."
+    },
+    {
+      "number": "0138484693-0209-1",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://1track.ru/tracking/Ozon",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "ozon-logistics",
+        "confidence": "high"
+      },
+      "note": "A public tracking discussion gives the complete posting; the official guest tracking API returns its dated history through cancellation."
     }
   ]
 }

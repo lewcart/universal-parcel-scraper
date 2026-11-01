@@ -1,12 +1,30 @@
 # Ozon
 
-Ozon parcels use enabled universal providers. There is no dedicated adapter.
+The adapter reads Ozon posting histories from its public guest tracker through TRAWL.
+Ozon Rocket shop references still use enabled universal providers.
 
 ## Limitations
 
-Ozon's trackers and the lookups behind them sit behind Ozon's own bot check, which runs a script
-in the browser before any lookup answers. The Ozon app passes the same check with a device
-fingerprint and tracks only a signed-in customer's orders.
+The [public tracker](https://tracking.ozon.ru/) runs Ozon's browser verification before
+`GET /p-api/ozon-track-bff/tracking/{posting}` answers. The scoped TRAWL helper opens a fresh
+guest context, waits for the form and makes that same-origin GET with `x-o3-app-name:
+tpl-ui-ozon-track`. It reads the decoded response through a bounded stream because the service's
+generic capture does not retain compressed bodies. Deploy the matching [TRAWL image](../../trawl/README.md).
+
+The reply does not repeat the posting, so the capture binds its whole request path and submitted
+identifier. Only the carrier's exact missing-posting reply means not found. Blocked, incomplete
+and malformed replies remain failures. HTTP recognition makes only the direct request; browser
+recognition is a separate opt-in phase and retains the confirmed history.
+
+The API includes the timeline hidden behind the page's expansion control. Scan timestamps keep
+their stated offsets and equal-time events retain their order. Phantom progress rows are display
+placeholders, not scans. Delivery estimates are calendar dates. Pickup and courier deliveries
+share the `Received` event; the adapter follows the page's delivery-type wording.
+
+The [Ozon Android app](https://play.google.com/store/apps/details?id=ru.ozon.app.android)
+uses authenticated customer-order widgets behind its native bot check; it supplies no guest
+alternative to this tracker. Rocket's separate API has no verified positive response, and old
+or unsupported postings can be absent from the public tracker.
 
 ## Numbers
 
@@ -26,5 +44,5 @@ The tracker at `tracking.ozon.ru` reads the number from its `track` parameter, s
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Set `FLARESOLVERR_URL` and a private `OZON_TRACKING_NUMBER`, then run
+`npm run test:carriers:live -- carriers/ozon-logistics/adapter.live.test.ts`.

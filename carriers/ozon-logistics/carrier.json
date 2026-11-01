@@ -21,18 +21,46 @@
   "timezone": "Europe/Moscow",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ozon-logistics",
+    "steps": [
+      "direct",
+      "trawl"
+    ],
+    "browser": true,
+    "recognition": {
+      "rank": 37,
+      "pattern": "^(?:\\d{13}|\\d{15})$"
+    },
+    "browserRecognition": {
+      "rank": 37
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "expected_delivery"
+  ],
   "portal": {
     "url": "https://tracking.ozon.ru/?track={trackingNumber}",
     "searchUrl": "https://tracking.ozon.ru/",
     "canaryUrl": "https://tracking.ozon.ru/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "eta"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "eta"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "weight",
+      "service_name"
+    ]
   },
   "links": [
     {

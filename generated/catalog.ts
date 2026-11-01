@@ -17089,6 +17089,39 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "ecparcel": {
+    "displayName": "ecParcel",
+    "color": "#00a0e9",
+    "aliases": [
+      "ec-Parcel",
+      "EC Parcel",
+      "eCommax International Pty Ltd"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Melbourne",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.ec-parcel.com/",
+    "trackingUrlTemplate": "https://track.ec-parcel.com/track?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://track.ec-parcel.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.ec-parcel.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ees-logistics": {
     "displayName": "EES Logistics",
     "color": "#b62126",
@@ -21750,6 +21783,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "go-logistics-au": {
+    "displayName": "GO Logistics",
+    "color": "#22653a",
+    "aliases": [
+      "Go Logistics Pty Ltd",
+      "GO Logistics & Storage",
+      "Go Logistics Couriers"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gologistics.com.au/track-your-parcel/",
+    "trackingUrlTemplate": "https://services.gologistics.com.au/track/iframe2.php?item={trackingNumber}",
+    "trackingSearchUrl": "https://gologistics.com.au/track-your-parcel/",
+    "linkRules": [
+      {
+        "domains": [
+          "services.gologistics.com.au"
+        ],
+        "pathPattern": "^/track/iframe2\\.php$",
+        "params": [
+          "item"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "go-rush": {
     "displayName": "Go Rush",
     "color": "#1b75bc",
@@ -22907,6 +22973,40 @@ export const CARRIER_CATALOG = {
           "myhermes.at"
         ],
         "path": "^/(?:sendungsverfolgung|en/tracking)/trackingnummer/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "hey-couriers": {
+    "displayName": "Hey Couriers",
+    "color": "#f5551e",
+    "aliases": [
+      "Heycouriers",
+      "HeyCouriers",
+      "The Big Box Group Pty Ltd"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://heycouriers.com.au/tracking.html",
+    "trackingUrlTemplate": "https://heycouriers.com.au/tracking.html?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://heycouriers.com.au/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "heycouriers.com.au",
+          "www.heycouriers.com.au"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "trackingNumber"
+        ]
       }
     ],
     "detectionRules": []
@@ -47979,6 +48079,7 @@ export const CARRIER_IDS = [
   "ecom-logistics",
   "econt",
   "ecourier",
+  "ecparcel",
   "ees-logistics",
   "efs-asia",
   "egxpress",
@@ -48103,6 +48204,7 @@ export const CARRIER_IDS = [
   "gls-pl",
   "gms-worldwide",
   "go-express",
+  "go-logistics-au",
   "go-rush",
   "go-world-express",
   "go4",
@@ -48136,6 +48238,7 @@ export const CARRIER_IDS = [
   "hepsijet",
   "hercules-freight",
   "hermes-at",
+  "hey-couriers",
   "hfd",
   "hi-trans",
   "hispapost",
@@ -49224,6 +49327,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ecom-logistics": ["ecom-logistics-1"],
   "econt": [],
   "ecourier": ["ecourier-1"],
+  "ecparcel": [],
   "ees-logistics": [],
   "efs-asia": [],
   "egxpress": ["egxpress-1"],
@@ -49348,6 +49452,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gls-pl": ["gls-pl-1","gls-pl-2"],
   "gms-worldwide": [],
   "go-express": [],
+  "go-logistics-au": [],
   "go-rush": [],
   "go-world-express": [],
   "go4": [],
@@ -49381,6 +49486,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hepsijet": [],
   "hercules-freight": [],
   "hermes-at": [],
+  "hey-couriers": [],
   "hfd": [],
   "hi-trans": [],
   "hispapost": [],

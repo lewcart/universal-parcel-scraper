@@ -4415,5 +4415,11 @@
     "pattern": "^[13]\\d{13}$",
     "kind": "collision",
     "reason": "Tamex numbers are fourteen digits starting with 1 or 3, a shape DPD, Chronopost, SEUR and other networks print, so the shape cannot name Tamex."
+  },
+  {
+    "carrier": "go-logistics-au",
+    "pattern": "^\\d{10}$",
+    "kind": "collision",
+    "reason": "GO Logistics consignment numbers are ten digits, a shape DHL, Mondial Relay, TIPSA and other networks print, so the shape cannot name GO Logistics."
   }
 ]

@@ -17087,6 +17087,39 @@
       }
     ]
   },
+  "ecparcel": {
+    "displayName": "ecParcel",
+    "color": "#00a0e9",
+    "aliases": [
+      "ec-Parcel",
+      "EC Parcel",
+      "eCommax International Pty Ltd"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Melbourne",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.ec-parcel.com/",
+    "trackingUrlTemplate": "https://track.ec-parcel.com/track?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://track.ec-parcel.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.ec-parcel.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ees-logistics": {
     "displayName": "EES Logistics",
     "color": "#b62126",
@@ -21748,6 +21781,39 @@
     ],
     "detectionRules": []
   },
+  "go-logistics-au": {
+    "displayName": "GO Logistics",
+    "color": "#22653a",
+    "aliases": [
+      "Go Logistics Pty Ltd",
+      "GO Logistics & Storage",
+      "Go Logistics Couriers"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gologistics.com.au/track-your-parcel/",
+    "trackingUrlTemplate": "https://services.gologistics.com.au/track/iframe2.php?item={trackingNumber}",
+    "trackingSearchUrl": "https://gologistics.com.au/track-your-parcel/",
+    "linkRules": [
+      {
+        "domains": [
+          "services.gologistics.com.au"
+        ],
+        "pathPattern": "^/track/iframe2\\.php$",
+        "params": [
+          "item"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "go-rush": {
     "displayName": "Go Rush",
     "color": "#1b75bc",
@@ -22905,6 +22971,40 @@
           "myhermes.at"
         ],
         "path": "^/(?:sendungsverfolgung|en/tracking)/trackingnummer/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "hey-couriers": {
+    "displayName": "Hey Couriers",
+    "color": "#f5551e",
+    "aliases": [
+      "Heycouriers",
+      "HeyCouriers",
+      "The Big Box Group Pty Ltd"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://heycouriers.com.au/tracking.html",
+    "trackingUrlTemplate": "https://heycouriers.com.au/tracking.html?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://heycouriers.com.au/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "heycouriers.com.au",
+          "www.heycouriers.com.au"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "trackingNumber"
+        ]
       }
     ],
     "detectionRules": []

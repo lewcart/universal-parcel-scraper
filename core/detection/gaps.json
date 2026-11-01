@@ -4397,5 +4397,23 @@
     "pattern": "^\\d{12}$",
     "kind": "collision",
     "reason": "Royale International waybills are twelve digits, a shape FedEx, BRT, SF Express and other networks print, so the shape cannot name Royale International."
+  },
+  {
+    "carrier": "mgl-express",
+    "pattern": "^[A-Z]{4}\\d{5}$",
+    "kind": "open",
+    "reason": "MGL Express's user guide shows four letters and five digits in one screenshot; one source does not establish how its numbers are built."
+  },
+  {
+    "carrier": "mgl-express",
+    "pattern": "^02\\d{11}$",
+    "kind": "collision",
+    "reason": "MGL Express waybills of thirteen digits starting with 02 share their shape with La Poste, DPD France and Yunda numbers, so the shape cannot name MGL Express."
+  },
+  {
+    "carrier": "tamex",
+    "pattern": "^[13]\\d{13}$",
+    "kind": "collision",
+    "reason": "Tamex numbers are fourteen digits starting with 1 or 3, a shape DPD, Chronopost, SEUR and other networks print, so the shape cannot name Tamex."
   }
 ]

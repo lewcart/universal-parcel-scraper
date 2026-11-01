@@ -5883,6 +5883,39 @@
     ],
     "detectionRules": []
   },
+  "66post": {
+    "displayName": "66Post",
+    "color": "#bc272c",
+    "aliases": [
+      "66Post INC",
+      "66Post Technology Inc"
+    ],
+    "countries": [
+      "CN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.66post.com/",
+    "trackingUrlTemplate": "https://www.66post.com/tracking.html?numbers={trackingNumber}",
+    "trackingSearchUrl": "https://www.66post.com/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "www.66post.com"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "numbers"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "99minutos": {
     "displayName": "99minutos",
     "color": "#85c440",
@@ -6528,6 +6561,28 @@
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "ahl-courier": {
+    "displayName": "AHL Courier",
+    "color": "#1b75bc",
+    "aliases": [
+      "AHL Logistic",
+      "AHLogistic",
+      "AHL Courier (Pvt) Ltd"
+    ],
+    "countries": [
+      "PK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Karachi",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.ahlogistic.pk/",
+    "trackingSearchUrl": "https://tracking.ahlogistic.pk/",
+    "linkRules": [],
     "detectionRules": []
   },
   "air-star-xpress": {
@@ -9548,6 +9603,27 @@
     ],
     "detectionRules": []
   },
+  "bluestreak-couriers": {
+    "displayName": "Blue Streak Couriers",
+    "color": "#002f73",
+    "aliases": [
+      "Bluestreak",
+      "Blue Streak"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.bluestreakcouriers.com/",
+    "trackingSearchUrl": "https://www.bluestreakcouriersonline.net/clientportal",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "bombax": {
     "displayName": "Bombax",
     "color": "#ed1849",
@@ -9983,6 +10059,43 @@
     "canaryUrl": "https://www.1001000.com/newwl/unLogin/track",
     "trackingSearchUrl": "https://www.1001000.com/newwl/unLogin/track",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "branding-worldwide": {
+    "displayName": "Branding Worldwide",
+    "color": "#ba0611",
+    "aliases": [
+      "Branding Worldwide Pty Ltd",
+      "Branding World Wide",
+      "Basl Express",
+      "BaslExpress"
+    ],
+    "countries": [
+      "AU",
+      "CN",
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://brandingworldwide.com.au/",
+    "trackingUrlTemplate": "https://brandingworldwide.com.au/track.html?key={trackingNumber}",
+    "trackingSearchUrl": "https://brandingworldwide.com.au/track.html",
+    "linkRules": [
+      {
+        "domains": [
+          "brandingworldwide.com.au",
+          "www.brandingworldwide.com.au"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "key"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "bridge-intl": {
@@ -13400,6 +13513,39 @@
       }
     ]
   },
+  "czl-express": {
+    "displayName": "CZL Express",
+    "color": "#1e5ba2",
+    "aliases": [
+      "苍正国际物流",
+      "苍正国际物流(上海)有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://exp.czl.net/",
+    "trackingUrlTemplate": "https://exp.czl.net/track?query={trackingNumber}",
+    "trackingSearchUrl": "https://exp.czl.net/track",
+    "linkRules": [
+      {
+        "domains": [
+          "exp.czl.net",
+          "tms-go.czl.net"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "query"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "d-express": {
     "displayName": "D Express",
     "color": "#ff0000",
@@ -14746,6 +14892,29 @@
     },
     "canaryUrl": "https://pod.diakinisis.gr/tnt.php",
     "trackingSearchUrl": "https://pod.diakinisis.gr/tnt.php",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "dida-international": {
+    "displayName": "DIDA International Logistics",
+    "color": "#213071",
+    "aliases": [
+      "嘀嗒国际物流",
+      "嘀嗒国际",
+      "深圳市嘀嗒国际物流有限公司"
+    ],
+    "countries": [
+      "CN",
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dida-exp.com/",
+    "trackingSearchUrl": "https://www.dida-exp.com/track.asp",
     "linkRules": [],
     "detectionRules": []
   },
@@ -16635,6 +16804,38 @@
       }
     ]
   },
+  "eli-express": {
+    "displayName": "Eli Express",
+    "color": "#eb7828",
+    "aliases": [
+      "Eli Express Logistics",
+      "Eli Uluslararası Taşımacılık ve Turizm Ticaret Ltd. Şti."
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://eliexpress.com.tr/",
+    "trackingUrlTemplate": "https://eliexpress.com.tr/tracking?id={trackingNumber}",
+    "trackingSearchUrl": "https://eliexpress.com.tr/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "eliexpress.com.tr"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "elianpost": {
     "displayName": "Elianpost",
     "color": "#00217f",
@@ -18010,6 +18211,39 @@
     ],
     "detectionRules": []
   },
+  "explus-logistics": {
+    "displayName": "ExPlus Logistics",
+    "color": "#2676ba",
+    "aliases": [
+      "ExPlus",
+      "ExPlus Logistics Pvt. Ltd."
+    ],
+    "countries": [
+      "IN",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://expluslogistics.com/",
+    "trackingUrlTemplate": "https://track.expluslogistics.com/tracking-result.html?trackings={trackingNumber}",
+    "trackingSearchUrl": "https://track.expluslogistics.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.expluslogistics.com"
+        ],
+        "pathPattern": "^/tracking-result\\.html$",
+        "params": [
+          "trackings"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "express-one": {
     "displayName": "Express One",
     "color": "#ec6500",
@@ -19236,6 +19470,37 @@
         "confidence": "high"
       }
     ]
+  },
+  "flickpost": {
+    "displayName": "Flickpost",
+    "color": "#19c2e8",
+    "aliases": [
+      "Cargo Miles Sdn Bhd"
+    ],
+    "countries": [
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kuala_Lumpur",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://flickpost.com/tracking/",
+    "trackingUrlTemplate": "https://flickpost.com/tracking/?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://flickpost.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "flickpost.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "flippost": {
     "displayName": "Flip Post",
@@ -20879,6 +21144,26 @@
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "go-rush": {
+    "displayName": "Go Rush",
+    "color": "#1b75bc",
+    "aliases": [
+      "Go Rush Express"
+    ],
+    "countries": [
+      "BN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Brunei",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gorushbn.com/",
+    "trackingSearchUrl": "https://gorushbn.com/",
+    "linkRules": [],
     "detectionRules": []
   },
   "go-world-express": {
@@ -24698,6 +24983,28 @@
     ],
     "detectionRules": []
   },
+  "jiehang": {
+    "displayName": "Jiehang International Logistics",
+    "color": "#3593f0",
+    "aliases": [
+      "杰航国际物流",
+      "杰航物流",
+      "深圳市杰航国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jiehang.net/",
+    "trackingSearchUrl": "https://xt.jiehang.net/WebTrack",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "jifan": {
     "displayName": "Jifan",
     "color": "#c81011",
@@ -25129,6 +25436,45 @@
         "confidence": "high"
       }
     ]
+  },
+  "junfeng-international": {
+    "displayName": "JunFeng International",
+    "color": "#f3c93a",
+    "aliases": [
+      "君丰国际",
+      "君丰集运",
+      "BEESPAL",
+      "Guangzhou JunFeng Supply Chain Services Co., Ltd.",
+      "广州市君丰供应链服务有限公司"
+    ],
+    "countries": [
+      "CN",
+      "GB",
+      "US",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.junfengfast.com/tracking.html",
+    "trackingUrlTemplate": "https://www.junfengfast.com/tracking.html?no={trackingNumber}",
+    "trackingSearchUrl": "https://www.junfengfast.com/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "www.junfengfast.com",
+          "junfengfast.com"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "no"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "juxi-express": {
     "displayName": "Juxi Express",
@@ -27053,6 +27399,30 @@
     ],
     "detectionRules": []
   },
+  "ljx-express": {
+    "displayName": "LJX Express",
+    "color": "#d2001f",
+    "aliases": [
+      "零界限",
+      "零界限国际物流",
+      "义乌市零界限云仓科技有限公司",
+      "Lingjiexian"
+    ],
+    "countries": [
+      "CN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ljxex.com/",
+    "trackingSearchUrl": "https://www.ljxex.com/#/track",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "lm-parcel": {
     "displayName": "LM Parcel",
     "color": "#955b99",
@@ -28258,6 +28628,29 @@
     },
     "canaryUrl": "https://emens.mendrix.cloud/TrackAndTrace",
     "trackingSearchUrl": "https://emens.mendrix.cloud/TrackAndTrace",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "maxzeego": {
+    "displayName": "MaxzeeGo",
+    "color": "#006f79",
+    "aliases": [
+      "MaxZeeGo",
+      "Maxzee Go",
+      "Maxzee Go Pty Ltd"
+    ],
+    "countries": [
+      "AU",
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://maxzeego.com/",
+    "trackingSearchUrl": "https://maxzeego.com/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -30252,6 +30645,39 @@
       }
     ]
   },
+  "ondot-courier": {
+    "displayName": "Ondot",
+    "color": "#ce252a",
+    "aliases": [
+      "Ondot Courier",
+      "Ondot Courier & Cargo",
+      "The Ondot Courier & Cargo (Global) Private Limited"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ondotcourier.in/tracking",
+    "trackingUrlTemplate": "https://www.ondotcourier.in/tracking?awb={trackingNumber}",
+    "trackingSearchUrl": "https://www.ondotcourier.in/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.ondotcourier.in"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "one-world-express": {
     "displayName": "One World Express",
     "color": "#161c5e",
@@ -32049,6 +32475,40 @@
     ],
     "detectionRules": []
   },
+  "penguin-box": {
+    "displayName": "Penguin Box",
+    "color": "#ffda1a",
+    "aliases": [
+      "Penguin",
+      "PenguinBox",
+      "Penguin Box s.r.o.",
+      "Penguin Logistic"
+    ],
+    "countries": [
+      "CZ"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Prague",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.penguinbox.cz/",
+    "trackingUrlTemplate": "https://www.penguinbox.cz/sledovani-zasilky?track={trackingNumber}",
+    "trackingSearchUrl": "https://www.penguinbox.cz/sledovani-zasilky",
+    "linkRules": [
+      {
+        "domains": [
+          "www.penguinbox.cz"
+        ],
+        "pathPattern": "^/sledovani-zasilky/?$",
+        "params": [
+          "track"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "pengyou": {
     "displayName": "Pengyou",
     "color": "#043a82",
@@ -33099,6 +33559,28 @@
         "confidence": "low"
       }
     ]
+  },
+  "posta-e-kosoves": {
+    "displayName": "Posta e Kosovës",
+    "color": "#ffde00",
+    "aliases": [
+      "Kosovo Post",
+      "Posta e Kosoves",
+      "Posta e Kosovës Sh.A."
+    ],
+    "countries": [
+      "XK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Belgrade",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://postakosoves.com/",
+    "trackingSearchUrl": "https://postakosoves.com/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "posta-faroe": {
     "displayName": "Posta (Faroe Islands)",
@@ -34452,6 +34934,27 @@
       }
     ]
   },
+  "rayspeed": {
+    "displayName": "RaySpeed Asia",
+    "color": "#25266a",
+    "aliases": [
+      "RaySpeed",
+      "PT Rayspid Indonesia"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://rayspeed.com/en/track",
+    "trackingSearchUrl": "https://rayspeed.com/en/track",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "redbox-mv": {
     "displayName": "Redbox",
     "color": "#eb1d25",
@@ -34625,6 +35128,45 @@
       {
         "pattern": "^RELR[A-Z0-9]{8}$",
         "confidence": "high"
+      }
+    ]
+  },
+  "rex-indonesia": {
+    "displayName": "REX Indonesia",
+    "color": "#ee4336",
+    "aliases": [
+      "REX Kiriman Express",
+      "Royal Express Indonesia",
+      "PT Royal Express Indonesia"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.rex.co.id/id",
+    "trackingUrlTemplate": "https://www.rex.co.id/id/tracking/?airwaybill={trackingNumber}",
+    "trackingSearchUrl": "https://www.rex.co.id/id",
+    "linkRules": [
+      {
+        "domains": [
+          "www.rex.co.id",
+          "rex.co.id"
+        ],
+        "pathPattern": "^/(?:id|en)/tracking/?$",
+        "params": [
+          "airwaybill"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^22201\\d{9}$",
+        "confidence": "low"
       }
     ]
   },
@@ -35252,6 +35794,27 @@
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "ryder-last-mile": {
+    "displayName": "Ryder Last Mile",
+    "color": "#e41937",
+    "aliases": [
+      "Ryder",
+      "Ryder System, Inc."
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ryder.com/en-us/logistics/last-mile-delivery/tracking",
+    "trackingSearchUrl": "https://www.ryder.com/en-us/logistics/last-mile-delivery/tracking",
+    "linkRules": [],
     "detectionRules": []
   },
   "saee": {
@@ -36637,6 +37200,45 @@
       }
     ]
   },
+  "shipglobal-us": {
+    "displayName": "ShipGlobal US",
+    "color": "#fb5c00",
+    "aliases": [
+      "ShipGlobal US Inc.",
+      "ShipGlobal.us",
+      "First Flight USA"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://shipglobal.us/",
+    "trackingUrlTemplate": "https://shipglobal.us/track.html?waybill={trackingNumber}",
+    "trackingSearchUrl": "https://shipglobal.us/track.html",
+    "linkRules": [
+      {
+        "domains": [
+          "shipglobal.us"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "waybill"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^FFUSA\\d{6,7}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
+  },
   "shippify": {
     "displayName": "Shippify",
     "color": "#ef414c",
@@ -37115,6 +37717,32 @@
     },
     "canaryUrl": "https://www.sicepat.com/",
     "trackingSearchUrl": "https://www.sicepat.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "sjl-express": {
+    "displayName": "SJL Express",
+    "color": "#1d236d",
+    "aliases": [
+      "捷利",
+      "SJL捷利",
+      "SJL Global",
+      "上海捷利货运有限公司"
+    ],
+    "countries": [
+      "CN",
+      "TW",
+      "KR",
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://sjlexpress.com/",
+    "trackingSearchUrl": "https://sjlexpress.com/tracking",
     "linkRules": [],
     "detectionRules": []
   },
@@ -37610,6 +38238,38 @@
         "params": [
           "tracknumbers"
         ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "sol-express": {
+    "displayName": "Sol Express",
+    "color": "#0b446b",
+    "aliases": [
+      "SolExpress",
+      "赛洛快运",
+      "SOLTRACK"
+    ],
+    "countries": [
+      "CN",
+      "IL"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.sol-track.com/",
+    "trackingUrlTemplate": "https://www.sol-track.com/{trackingNumber}",
+    "trackingSearchUrl": "https://www.sol-track.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.sol-track.com",
+          "sol-track.com"
+        ],
+        "path": "^/((?=[A-Za-z]*\\d)[A-Za-z0-9]{8,40})/?$"
       }
     ],
     "detectionRules": []
@@ -40442,6 +41102,36 @@
     ],
     "detectionRules": []
   },
+  "tiui": {
+    "displayName": "Tiui",
+    "color": "#3fa7a9",
+    "aliases": [
+      "tiui",
+      "Tiui Soluciones",
+      "Tiui Soluciones, S.A.P.I. de C.V."
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tiui.mx/",
+    "trackingUrlTemplate": "https://tiuiamigo.tiui.mx/rastreo/{trackingNumber}",
+    "trackingSearchUrl": "https://tiuiamigo.tiui.mx/rastreo",
+    "linkRules": [
+      {
+        "domains": [
+          "tiuiamigo.tiui.mx"
+        ],
+        "path": "^/rastreo/(\\d{1,4}-\\d{1,3}-\\d{1,6})/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "tmm-express": {
     "displayName": "TMM Express",
     "color": "#650360",
@@ -40995,6 +41685,35 @@
         "confidence": "low"
       }
     ]
+  },
+  "tpl-rider": {
+    "displayName": "Rider",
+    "color": "#0189ff",
+    "aliases": [
+      "TPL Rider"
+    ],
+    "countries": [
+      "PK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Karachi",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.withrider.com/",
+    "trackingUrlTemplate": "https://track.withrider.com/#/track/{trackingNumber}",
+    "trackingSearchUrl": "https://track.withrider.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.withrider.com"
+        ],
+        "pathPattern": "^/?$",
+        "fragment": "^/track/([A-Za-z0-9]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "trackon": {
     "displayName": "Trackon Couriers",
@@ -41983,6 +42702,31 @@
       }
     ]
   },
+  "union-express": {
+    "displayName": "Union Express",
+    "color": "#f82626",
+    "aliases": [
+      "联合运通",
+      "CTG联合运通",
+      "深圳市联合运通国际货运代理有限公司"
+    ],
+    "countries": [
+      "CN",
+      "US",
+      "GB",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.szlhyt.com/",
+    "trackingSearchUrl": "https://www.szlhyt.com/package-inquiry",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "united-delivery-service": {
     "displayName": "United Delivery Service",
     "color": "#1e4691",
@@ -42046,6 +42790,44 @@
         "pathPattern": "^/TrackDetails\\.asp$",
         "params": [
           "afno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "uof-express": {
+    "displayName": "UOF International",
+    "color": "#e66814",
+    "aliases": [
+      "UOF EXPRESS",
+      "骏佳国际",
+      "Shanghai Junjia International Logistics",
+      "上海骏佳翊供应链管理有限公司",
+      "上海骏佳国际物流有限公司",
+      "上海駿佳国際物流"
+    ],
+    "countries": [
+      "CN",
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.uofexp.com/",
+    "trackingUrlTemplate": "https://www.uofexp.com/search_order.aspx?trackNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.uofexp.com/search_order.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "www.uofexp.com",
+          "uofexp.com"
+        ],
+        "pathPattern": "^/search_order\\.aspx$",
+        "params": [
+          "trackNumber"
         ]
       }
     ],
@@ -44716,6 +45498,41 @@
         "pathPattern": "^/usercenter/goods/?$",
         "params": [
           "params"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "yingtu": {
+    "displayName": "Yingtu Supply Chain",
+    "color": "#122a88",
+    "aliases": [
+      "WINTU",
+      "盈途",
+      "盈途供应链",
+      "盈途供应链（广州）有限公司"
+    ],
+    "countries": [
+      "CN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.yingtu56.com/",
+    "trackingUrlTemplate": "https://tms.yingtu56.com/trackIndex.htm?documentCode={trackingNumber}",
+    "trackingSearchUrl": "https://tms.yingtu56.com/trackIndex.htm",
+    "linkRules": [
+      {
+        "domains": [
+          "tms.yingtu56.com"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
         ]
       }
     ],

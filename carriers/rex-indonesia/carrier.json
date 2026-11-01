@@ -1,0 +1,53 @@
+{
+  "id": "rex-indonesia",
+  "displayName": "REX Indonesia",
+  "aliases": [
+    "REX Kiriman Express",
+    "Royal Express Indonesia",
+    "PT Royal Express Indonesia"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#ee4336"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.rex.co.id/id/tracking/?airwaybill={trackingNumber}",
+    "searchUrl": "https://www.rex.co.id/id",
+    "canaryUrl": "https://www.rex.co.id/id",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.rex.co.id",
+        "rex.co.id"
+      ],
+      "pathPattern": "^/(?:id|en)/tracking/?$",
+      "params": [
+        "airwaybill"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "rex-indonesia-1",
+      "pattern": "^22201\\d{9}$",
+      "confidence": "low"
+    }
+  ]
+}

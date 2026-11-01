@@ -1357,6 +1357,12 @@
     "reason": "Retailers' own package IDs that FleetOptics tracks as given; their prefixes name the shipper, not the carrier."
   },
   {
+    "carrier": "flickpost",
+    "pattern": "^X\\d{6}$",
+    "kind": "by_design",
+    "reason": "X and six digits is Flickpost's internal shipment id, a short reference shape no rule should claim."
+  },
+  {
     "carrier": "flippost",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
@@ -3065,6 +3071,12 @@
     "reason": "An old customer report is the only public fourteen-digit Relais Colis reference, and fourteen digits are DPD's parcel number and several other carriers' waybills, so detection does not offer Relais Colis for the shape."
   },
   {
+    "carrier": "rex-indonesia",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "REX Indonesia's older twelve-digit waybills share their shape with many carriers' numeric waybills."
+  },
+  {
     "carrier": "rivigo",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -3685,6 +3697,12 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "Twelve digits are printed by many carriers and nothing in the number points to Shree Tirupati Courier."
+  },
+  {
+    "carrier": "tiui",
+    "pattern": "^\\d{3,13}$",
+    "kind": "collision",
+    "reason": "Tiui's hyphenated folios become a run of digits once entered, a shape many carriers' rules read."
   },
   {
     "carrier": "tmm-express",

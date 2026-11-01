@@ -5885,6 +5885,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "66post": {
+    "displayName": "66Post",
+    "color": "#bc272c",
+    "aliases": [
+      "66Post INC",
+      "66Post Technology Inc"
+    ],
+    "countries": [
+      "CN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.66post.com/",
+    "trackingUrlTemplate": "https://www.66post.com/tracking.html?numbers={trackingNumber}",
+    "trackingSearchUrl": "https://www.66post.com/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "www.66post.com"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "numbers"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "99minutos": {
     "displayName": "99minutos",
     "color": "#85c440",
@@ -6530,6 +6563,28 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "ahl-courier": {
+    "displayName": "AHL Courier",
+    "color": "#1b75bc",
+    "aliases": [
+      "AHL Logistic",
+      "AHLogistic",
+      "AHL Courier (Pvt) Ltd"
+    ],
+    "countries": [
+      "PK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Karachi",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.ahlogistic.pk/",
+    "trackingSearchUrl": "https://tracking.ahlogistic.pk/",
+    "linkRules": [],
     "detectionRules": []
   },
   "air-star-xpress": {
@@ -9550,6 +9605,27 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "bluestreak-couriers": {
+    "displayName": "Blue Streak Couriers",
+    "color": "#002f73",
+    "aliases": [
+      "Bluestreak",
+      "Blue Streak"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.bluestreakcouriers.com/",
+    "trackingSearchUrl": "https://www.bluestreakcouriersonline.net/clientportal",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "bombax": {
     "displayName": "Bombax",
     "color": "#ed1849",
@@ -9985,6 +10061,43 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.1001000.com/newwl/unLogin/track",
     "trackingSearchUrl": "https://www.1001000.com/newwl/unLogin/track",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "branding-worldwide": {
+    "displayName": "Branding Worldwide",
+    "color": "#ba0611",
+    "aliases": [
+      "Branding Worldwide Pty Ltd",
+      "Branding World Wide",
+      "Basl Express",
+      "BaslExpress"
+    ],
+    "countries": [
+      "AU",
+      "CN",
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://brandingworldwide.com.au/",
+    "trackingUrlTemplate": "https://brandingworldwide.com.au/track.html?key={trackingNumber}",
+    "trackingSearchUrl": "https://brandingworldwide.com.au/track.html",
+    "linkRules": [
+      {
+        "domains": [
+          "brandingworldwide.com.au",
+          "www.brandingworldwide.com.au"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "key"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "bridge-intl": {
@@ -13402,6 +13515,39 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "czl-express": {
+    "displayName": "CZL Express",
+    "color": "#1e5ba2",
+    "aliases": [
+      "苍正国际物流",
+      "苍正国际物流(上海)有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://exp.czl.net/",
+    "trackingUrlTemplate": "https://exp.czl.net/track?query={trackingNumber}",
+    "trackingSearchUrl": "https://exp.czl.net/track",
+    "linkRules": [
+      {
+        "domains": [
+          "exp.czl.net",
+          "tms-go.czl.net"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "query"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "d-express": {
     "displayName": "D Express",
     "color": "#ff0000",
@@ -14748,6 +14894,29 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://pod.diakinisis.gr/tnt.php",
     "trackingSearchUrl": "https://pod.diakinisis.gr/tnt.php",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "dida-international": {
+    "displayName": "DIDA International Logistics",
+    "color": "#213071",
+    "aliases": [
+      "嘀嗒国际物流",
+      "嘀嗒国际",
+      "深圳市嘀嗒国际物流有限公司"
+    ],
+    "countries": [
+      "CN",
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dida-exp.com/",
+    "trackingSearchUrl": "https://www.dida-exp.com/track.asp",
     "linkRules": [],
     "detectionRules": []
   },
@@ -16637,6 +16806,38 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "eli-express": {
+    "displayName": "Eli Express",
+    "color": "#eb7828",
+    "aliases": [
+      "Eli Express Logistics",
+      "Eli Uluslararası Taşımacılık ve Turizm Ticaret Ltd. Şti."
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://eliexpress.com.tr/",
+    "trackingUrlTemplate": "https://eliexpress.com.tr/tracking?id={trackingNumber}",
+    "trackingSearchUrl": "https://eliexpress.com.tr/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "eliexpress.com.tr"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "elianpost": {
     "displayName": "Elianpost",
     "color": "#00217f",
@@ -18012,6 +18213,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "explus-logistics": {
+    "displayName": "ExPlus Logistics",
+    "color": "#2676ba",
+    "aliases": [
+      "ExPlus",
+      "ExPlus Logistics Pvt. Ltd."
+    ],
+    "countries": [
+      "IN",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://expluslogistics.com/",
+    "trackingUrlTemplate": "https://track.expluslogistics.com/tracking-result.html?trackings={trackingNumber}",
+    "trackingSearchUrl": "https://track.expluslogistics.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.expluslogistics.com"
+        ],
+        "pathPattern": "^/tracking-result\\.html$",
+        "params": [
+          "trackings"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "express-one": {
     "displayName": "Express One",
     "color": "#ec6500",
@@ -19238,6 +19472,37 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "flickpost": {
+    "displayName": "Flickpost",
+    "color": "#19c2e8",
+    "aliases": [
+      "Cargo Miles Sdn Bhd"
+    ],
+    "countries": [
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kuala_Lumpur",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://flickpost.com/tracking/",
+    "trackingUrlTemplate": "https://flickpost.com/tracking/?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://flickpost.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "flickpost.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "flippost": {
     "displayName": "Flip Post",
@@ -20881,6 +21146,26 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "go-rush": {
+    "displayName": "Go Rush",
+    "color": "#1b75bc",
+    "aliases": [
+      "Go Rush Express"
+    ],
+    "countries": [
+      "BN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Brunei",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gorushbn.com/",
+    "trackingSearchUrl": "https://gorushbn.com/",
+    "linkRules": [],
     "detectionRules": []
   },
   "go-world-express": {
@@ -24700,6 +24985,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "jiehang": {
+    "displayName": "Jiehang International Logistics",
+    "color": "#3593f0",
+    "aliases": [
+      "杰航国际物流",
+      "杰航物流",
+      "深圳市杰航国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jiehang.net/",
+    "trackingSearchUrl": "https://xt.jiehang.net/WebTrack",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "jifan": {
     "displayName": "Jifan",
     "color": "#c81011",
@@ -25131,6 +25438,45 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "junfeng-international": {
+    "displayName": "JunFeng International",
+    "color": "#f3c93a",
+    "aliases": [
+      "君丰国际",
+      "君丰集运",
+      "BEESPAL",
+      "Guangzhou JunFeng Supply Chain Services Co., Ltd.",
+      "广州市君丰供应链服务有限公司"
+    ],
+    "countries": [
+      "CN",
+      "GB",
+      "US",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.junfengfast.com/tracking.html",
+    "trackingUrlTemplate": "https://www.junfengfast.com/tracking.html?no={trackingNumber}",
+    "trackingSearchUrl": "https://www.junfengfast.com/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "www.junfengfast.com",
+          "junfengfast.com"
+        ],
+        "pathPattern": "^/tracking\\.html$",
+        "params": [
+          "no"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "juxi-express": {
     "displayName": "Juxi Express",
@@ -27055,6 +27401,30 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "ljx-express": {
+    "displayName": "LJX Express",
+    "color": "#d2001f",
+    "aliases": [
+      "零界限",
+      "零界限国际物流",
+      "义乌市零界限云仓科技有限公司",
+      "Lingjiexian"
+    ],
+    "countries": [
+      "CN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ljxex.com/",
+    "trackingSearchUrl": "https://www.ljxex.com/#/track",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "lm-parcel": {
     "displayName": "LM Parcel",
     "color": "#955b99",
@@ -28260,6 +28630,29 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://emens.mendrix.cloud/TrackAndTrace",
     "trackingSearchUrl": "https://emens.mendrix.cloud/TrackAndTrace",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "maxzeego": {
+    "displayName": "MaxzeeGo",
+    "color": "#006f79",
+    "aliases": [
+      "MaxZeeGo",
+      "Maxzee Go",
+      "Maxzee Go Pty Ltd"
+    ],
+    "countries": [
+      "AU",
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://maxzeego.com/",
+    "trackingSearchUrl": "https://maxzeego.com/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -30254,6 +30647,39 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "ondot-courier": {
+    "displayName": "Ondot",
+    "color": "#ce252a",
+    "aliases": [
+      "Ondot Courier",
+      "Ondot Courier & Cargo",
+      "The Ondot Courier & Cargo (Global) Private Limited"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ondotcourier.in/tracking",
+    "trackingUrlTemplate": "https://www.ondotcourier.in/tracking?awb={trackingNumber}",
+    "trackingSearchUrl": "https://www.ondotcourier.in/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.ondotcourier.in"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "one-world-express": {
     "displayName": "One World Express",
     "color": "#161c5e",
@@ -32051,6 +32477,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "penguin-box": {
+    "displayName": "Penguin Box",
+    "color": "#ffda1a",
+    "aliases": [
+      "Penguin",
+      "PenguinBox",
+      "Penguin Box s.r.o.",
+      "Penguin Logistic"
+    ],
+    "countries": [
+      "CZ"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Prague",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.penguinbox.cz/",
+    "trackingUrlTemplate": "https://www.penguinbox.cz/sledovani-zasilky?track={trackingNumber}",
+    "trackingSearchUrl": "https://www.penguinbox.cz/sledovani-zasilky",
+    "linkRules": [
+      {
+        "domains": [
+          "www.penguinbox.cz"
+        ],
+        "pathPattern": "^/sledovani-zasilky/?$",
+        "params": [
+          "track"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "pengyou": {
     "displayName": "Pengyou",
     "color": "#043a82",
@@ -33101,6 +33561,28 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "posta-e-kosoves": {
+    "displayName": "Posta e Kosovës",
+    "color": "#ffde00",
+    "aliases": [
+      "Kosovo Post",
+      "Posta e Kosoves",
+      "Posta e Kosovës Sh.A."
+    ],
+    "countries": [
+      "XK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Belgrade",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://postakosoves.com/",
+    "trackingSearchUrl": "https://postakosoves.com/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "posta-faroe": {
     "displayName": "Posta (Faroe Islands)",
@@ -34454,6 +34936,27 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "rayspeed": {
+    "displayName": "RaySpeed Asia",
+    "color": "#25266a",
+    "aliases": [
+      "RaySpeed",
+      "PT Rayspid Indonesia"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://rayspeed.com/en/track",
+    "trackingSearchUrl": "https://rayspeed.com/en/track",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "redbox-mv": {
     "displayName": "Redbox",
     "color": "#eb1d25",
@@ -34627,6 +35130,45 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^RELR[A-Z0-9]{8}$",
         "confidence": "high"
+      }
+    ]
+  },
+  "rex-indonesia": {
+    "displayName": "REX Indonesia",
+    "color": "#ee4336",
+    "aliases": [
+      "REX Kiriman Express",
+      "Royal Express Indonesia",
+      "PT Royal Express Indonesia"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.rex.co.id/id",
+    "trackingUrlTemplate": "https://www.rex.co.id/id/tracking/?airwaybill={trackingNumber}",
+    "trackingSearchUrl": "https://www.rex.co.id/id",
+    "linkRules": [
+      {
+        "domains": [
+          "www.rex.co.id",
+          "rex.co.id"
+        ],
+        "pathPattern": "^/(?:id|en)/tracking/?$",
+        "params": [
+          "airwaybill"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^22201\\d{9}$",
+        "confidence": "low"
       }
     ]
   },
@@ -35254,6 +35796,27 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "ryder-last-mile": {
+    "displayName": "Ryder Last Mile",
+    "color": "#e41937",
+    "aliases": [
+      "Ryder",
+      "Ryder System, Inc."
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ryder.com/en-us/logistics/last-mile-delivery/tracking",
+    "trackingSearchUrl": "https://www.ryder.com/en-us/logistics/last-mile-delivery/tracking",
+    "linkRules": [],
     "detectionRules": []
   },
   "saee": {
@@ -36639,6 +37202,45 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "shipglobal-us": {
+    "displayName": "ShipGlobal US",
+    "color": "#fb5c00",
+    "aliases": [
+      "ShipGlobal US Inc.",
+      "ShipGlobal.us",
+      "First Flight USA"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://shipglobal.us/",
+    "trackingUrlTemplate": "https://shipglobal.us/track.html?waybill={trackingNumber}",
+    "trackingSearchUrl": "https://shipglobal.us/track.html",
+    "linkRules": [
+      {
+        "domains": [
+          "shipglobal.us"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "waybill"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^FFUSA\\d{6,7}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
+  },
   "shippify": {
     "displayName": "Shippify",
     "color": "#ef414c",
@@ -37117,6 +37719,32 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://www.sicepat.com/",
     "trackingSearchUrl": "https://www.sicepat.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "sjl-express": {
+    "displayName": "SJL Express",
+    "color": "#1d236d",
+    "aliases": [
+      "捷利",
+      "SJL捷利",
+      "SJL Global",
+      "上海捷利货运有限公司"
+    ],
+    "countries": [
+      "CN",
+      "TW",
+      "KR",
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://sjlexpress.com/",
+    "trackingSearchUrl": "https://sjlexpress.com/tracking",
     "linkRules": [],
     "detectionRules": []
   },
@@ -37612,6 +38240,38 @@ export const CARRIER_CATALOG = {
         "params": [
           "tracknumbers"
         ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "sol-express": {
+    "displayName": "Sol Express",
+    "color": "#0b446b",
+    "aliases": [
+      "SolExpress",
+      "赛洛快运",
+      "SOLTRACK"
+    ],
+    "countries": [
+      "CN",
+      "IL"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.sol-track.com/",
+    "trackingUrlTemplate": "https://www.sol-track.com/{trackingNumber}",
+    "trackingSearchUrl": "https://www.sol-track.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.sol-track.com",
+          "sol-track.com"
+        ],
+        "path": "^/((?=[A-Za-z]*\\d)[A-Za-z0-9]{8,40})/?$"
       }
     ],
     "detectionRules": []
@@ -40444,6 +41104,36 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "tiui": {
+    "displayName": "Tiui",
+    "color": "#3fa7a9",
+    "aliases": [
+      "tiui",
+      "Tiui Soluciones",
+      "Tiui Soluciones, S.A.P.I. de C.V."
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tiui.mx/",
+    "trackingUrlTemplate": "https://tiuiamigo.tiui.mx/rastreo/{trackingNumber}",
+    "trackingSearchUrl": "https://tiuiamigo.tiui.mx/rastreo",
+    "linkRules": [
+      {
+        "domains": [
+          "tiuiamigo.tiui.mx"
+        ],
+        "path": "^/rastreo/(\\d{1,4}-\\d{1,3}-\\d{1,6})/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "tmm-express": {
     "displayName": "TMM Express",
     "color": "#650360",
@@ -40997,6 +41687,35 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "tpl-rider": {
+    "displayName": "Rider",
+    "color": "#0189ff",
+    "aliases": [
+      "TPL Rider"
+    ],
+    "countries": [
+      "PK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Karachi",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.withrider.com/",
+    "trackingUrlTemplate": "https://track.withrider.com/#/track/{trackingNumber}",
+    "trackingSearchUrl": "https://track.withrider.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.withrider.com"
+        ],
+        "pathPattern": "^/?$",
+        "fragment": "^/track/([A-Za-z0-9]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "trackon": {
     "displayName": "Trackon Couriers",
@@ -41985,6 +42704,31 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "union-express": {
+    "displayName": "Union Express",
+    "color": "#f82626",
+    "aliases": [
+      "联合运通",
+      "CTG联合运通",
+      "深圳市联合运通国际货运代理有限公司"
+    ],
+    "countries": [
+      "CN",
+      "US",
+      "GB",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.szlhyt.com/",
+    "trackingSearchUrl": "https://www.szlhyt.com/package-inquiry",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "united-delivery-service": {
     "displayName": "United Delivery Service",
     "color": "#1e4691",
@@ -42048,6 +42792,44 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/TrackDetails\\.asp$",
         "params": [
           "afno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "uof-express": {
+    "displayName": "UOF International",
+    "color": "#e66814",
+    "aliases": [
+      "UOF EXPRESS",
+      "骏佳国际",
+      "Shanghai Junjia International Logistics",
+      "上海骏佳翊供应链管理有限公司",
+      "上海骏佳国际物流有限公司",
+      "上海駿佳国際物流"
+    ],
+    "countries": [
+      "CN",
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.uofexp.com/",
+    "trackingUrlTemplate": "https://www.uofexp.com/search_order.aspx?trackNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.uofexp.com/search_order.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "www.uofexp.com",
+          "uofexp.com"
+        ],
+        "pathPattern": "^/search_order\\.aspx$",
+        "params": [
+          "trackNumber"
         ]
       }
     ],
@@ -44723,6 +45505,41 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "yingtu": {
+    "displayName": "Yingtu Supply Chain",
+    "color": "#122a88",
+    "aliases": [
+      "WINTU",
+      "盈途",
+      "盈途供应链",
+      "盈途供应链（广州）有限公司"
+    ],
+    "countries": [
+      "CN",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.yingtu56.com/",
+    "trackingUrlTemplate": "https://tms.yingtu56.com/trackIndex.htm?documentCode={trackingNumber}",
+    "trackingSearchUrl": "https://tms.yingtu56.com/trackIndex.htm",
+    "linkRules": [
+      {
+        "domains": [
+          "tms.yingtu56.com"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "yoseus": {
     "displayName": "Yousheng International Express",
     "color": "#00af8c",
@@ -45385,6 +46202,7 @@ export const CARRIER_IDS = [
   "4-72",
   "4sides",
   "5post",
+  "66post",
   "99minutos",
   "a-duie-pyle",
   "a-tu-hora-express",
@@ -45400,6 +46218,7 @@ export const CARRIER_IDS = [
   "aeropost",
   "aex-paraguay",
   "afghan-post",
+  "ahl-courier",
   "air-star-xpress",
   "airmee",
   "airpak-express",
@@ -45479,6 +46298,7 @@ export const CARRIER_IDS = [
   "bjs-home-delivery",
   "blue-express",
   "blueex",
+  "bluestreak-couriers",
   "bombax",
   "bombino",
   "bonds-couriers",
@@ -45490,6 +46310,7 @@ export const CARRIER_IDS = [
   "boxtal",
   "boyuan",
   "bqc-logistics",
+  "branding-worldwide",
   "bridge-intl",
   "bringer-parcel",
   "btd",
@@ -45584,6 +46405,7 @@ export const CARRIER_IDS = [
   "custom-companies",
   "cycloon",
   "cyprus-post",
+  "czl-express",
   "d-express",
   "daewoo-fastex",
   "dai-post",
@@ -45618,6 +46440,7 @@ export const CARRIER_IDS = [
   "dhl-freight",
   "dhlink",
   "diakinisis",
+  "dida-international",
   "direct-couriers",
   "direct-freight-express",
   "direx",
@@ -45664,6 +46487,7 @@ export const CARRIER_IDS = [
   "egxpress",
   "egypt-post",
   "ekart",
+  "eli-express",
   "elianpost",
   "elog-luxembourg",
   "elta",
@@ -45700,6 +46524,7 @@ export const CARRIER_IDS = [
   "exline-kz",
   "exmate",
   "expedico",
+  "explus-logistics",
   "express-one",
   "express-one-bg",
   "ezship",
@@ -45733,6 +46558,7 @@ export const CARRIER_IDS = [
   "flashbird-ca",
   "fleetex",
   "fleetoptics",
+  "flickpost",
   "flippost",
   "fliway",
   "flyking",
@@ -45775,6 +46601,7 @@ export const CARRIER_IDS = [
   "gls-pl",
   "gms-worldwide",
   "go-express",
+  "go-rush",
   "go-world-express",
   "go4",
   "gobolt",
@@ -45882,6 +46709,7 @@ export const CARRIER_IDS = [
   "jetpak",
   "jhgj",
   "jiachen-express",
+  "jiehang",
   "jifan",
   "jikuaida",
   "jitsu",
@@ -45894,6 +46722,7 @@ export const CARRIER_IDS = [
   "jrt",
   "js-express",
   "jumppoint",
+  "junfeng-international",
   "juxi-express",
   "jy-express",
   "kargoist",
@@ -45947,6 +46776,7 @@ export const CARRIER_IDS = [
   "linhan",
   "lion-parcel",
   "liuchen",
+  "ljx-express",
   "lm-parcel",
   "logen",
   "loggi",
@@ -45978,6 +46808,7 @@ export const CARRIER_IDS = [
   "matkahuolto",
   "mauritius-post",
   "max-pakket",
+  "maxzeego",
   "mayiyinfu",
   "mds-collivery",
   "meest",
@@ -46032,6 +46863,7 @@ export const CARRIER_IDS = [
   "olva-courier",
   "omgo",
   "omniva",
+  "ondot-courier",
   "one-world-express",
   "onex",
   "opt-nc",
@@ -46079,6 +46911,7 @@ export const CARRIER_IDS = [
   "pecom",
   "peddler",
   "pelican-express",
+  "penguin-box",
   "pengyou",
   "peninsula-truck-lines",
   "peqasus-az",
@@ -46103,6 +46936,7 @@ export const CARRIER_IDS = [
   "post-haste",
   "post-luxembourg",
   "post-one",
+  "posta-e-kosoves",
   "posta-faroe",
   "posta-kenya",
   "posta-moldovei",
@@ -46138,11 +46972,13 @@ export const CARRIER_IDS = [
   "qwintry",
   "raben",
   "ram-hand-to-hand",
+  "rayspeed",
   "redbox-mv",
   "redpack",
   "redur",
   "redx",
   "relaytech",
+  "rex-indonesia",
   "rhenus-de",
   "rhenus-it",
   "rincos",
@@ -46161,6 +46997,7 @@ export const CARRIER_IDS = [
   "runner-express",
   "russian-post",
   "rxo",
+  "ryder-last-mile",
   "saee",
   "safeway-express-cargo",
   "safexpress",
@@ -46198,6 +47035,7 @@ export const CARRIER_IDS = [
   "shipentegra",
   "shipgce",
   "shipglobal-in",
+  "shipglobal-us",
   "shippify",
   "shiprocket",
   "shipter",
@@ -46211,6 +47049,7 @@ export const CARRIER_IDS = [
   "shree-nandan",
   "shunbang-express",
   "sicepat",
+  "sjl-express",
   "skroutz-last-mile",
   "skybox",
   "skyex-ae",
@@ -46223,6 +47062,7 @@ export const CARRIER_IDS = [
   "slovenska-posta",
   "sm-express",
   "smsa-express",
+  "sol-express",
   "south-african-post-office",
   "southeastern-freight-lines",
   "sp-express",
@@ -46297,6 +47137,7 @@ export const CARRIER_IDS = [
   "tiki",
   "timely-titan",
   "tirupati-courier",
+  "tiui",
   "tmm-express",
   "tnt-it",
   "today-kr",
@@ -46313,6 +47154,7 @@ export const CARRIER_IDS = [
   "total-express",
   "toyou",
   "tp-logistics-th",
+  "tpl-rider",
   "trackon",
   "tracx-logis",
   "trans-o-flex",
@@ -46340,8 +47182,10 @@ export const CARRIER_IDS = [
   "ubx-uk",
   "ues-uy",
   "ukp-worldwide",
+  "union-express",
   "united-delivery-service",
   "united-worldwide-couriers",
+  "uof-express",
   "upaya",
   "ural-express",
   "urbano",
@@ -46416,6 +47260,7 @@ export const CARRIER_IDS = [
   "yha",
   "yilong-logistics",
   "yimidida",
+  "yingtu",
   "yoseus",
   "youbang-express",
   "yuema-express",
@@ -46553,6 +47398,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "4-72": ["4-72-s10"],
   "4sides": [],
   "5post": [],
+  "66post": [],
   "99minutos": [],
   "a-duie-pyle": [],
   "a-tu-hora-express": ["a-tu-hora-express-1","a-tu-hora-express-2"],
@@ -46568,6 +47414,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aeropost": ["aeropost-1"],
   "aex-paraguay": [],
   "afghan-post": [],
+  "ahl-courier": [],
   "air-star-xpress": [],
   "airmee": [],
   "airpak-express": [],
@@ -46647,6 +47494,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "bjs-home-delivery": ["bjs-home-delivery-1"],
   "blue-express": [],
   "blueex": [],
+  "bluestreak-couriers": [],
   "bombax": [],
   "bombino": [],
   "bonds-couriers": [],
@@ -46658,6 +47506,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "boxtal": ["boxtal-1"],
   "boyuan": ["boyuan-1"],
   "bqc-logistics": [],
+  "branding-worldwide": [],
   "bridge-intl": [],
   "bringer-parcel": ["bringer-parcel-1"],
   "btd": [],
@@ -46752,6 +47601,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "custom-companies": [],
   "cycloon": ["cycloon-1"],
   "cyprus-post": ["cyprus-post-s10"],
+  "czl-express": [],
   "d-express": [],
   "daewoo-fastex": [],
   "dai-post": ["dai-post-1","dai-post-2"],
@@ -46786,6 +47636,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhl-freight": ["dhl-freight-2"],
   "dhlink": ["dhlink-1","dhlink-xzg","dhlink-ylus","dhlink-eyt","dhlink-qh","dhlink-yf","dhlink-ktdwe","dhlink-yhkj","dhlink-by","dhlink-tdt","dhlink-yle"],
   "diakinisis": [],
+  "dida-international": [],
   "direct-couriers": [],
   "direct-freight-express": [],
   "direx": [],
@@ -46832,6 +47683,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "egxpress": ["egxpress-1"],
   "egypt-post": ["egypt-post-1","egypt-post-s10"],
   "ekart": ["ekart-ecommerce","ekart-merchant"],
+  "eli-express": [],
   "elianpost": [],
   "elog-luxembourg": [],
   "elta": ["elta-s10"],
@@ -46868,6 +47720,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "exline-kz": [],
   "exmate": ["exmate-1"],
   "expedico": [],
+  "explus-logistics": [],
   "express-one": [],
   "express-one-bg": [],
   "ezship": [],
@@ -46901,6 +47754,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "flashbird-ca": [],
   "fleetex": [],
   "fleetoptics": ["fleetoptics-1"],
+  "flickpost": [],
   "flippost": [],
   "fliway": [],
   "flyking": [],
@@ -46943,6 +47797,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gls-pl": ["gls-pl-1","gls-pl-2"],
   "gms-worldwide": [],
   "go-express": [],
+  "go-rush": [],
   "go-world-express": [],
   "go4": [],
   "gobolt": [],
@@ -47050,6 +47905,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jetpak": [],
   "jhgj": ["jhgj-1"],
   "jiachen-express": [],
+  "jiehang": [],
   "jifan": ["jifan-1"],
   "jikuaida": [],
   "jitsu": [],
@@ -47062,6 +47918,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jrt": ["jrt-1","jrt-2"],
   "js-express": ["js-express-1"],
   "jumppoint": ["jumppoint-1"],
+  "junfeng-international": [],
   "juxi-express": ["juxi-express-1"],
   "jy-express": [],
   "kargoist": ["kargoist-1"],
@@ -47115,6 +47972,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "linhan": ["linhan-1"],
   "lion-parcel": ["lion-parcel-1"],
   "liuchen": [],
+  "ljx-express": [],
   "lm-parcel": ["lm-parcel-1"],
   "logen": [],
   "loggi": ["loggi-1"],
@@ -47146,6 +48004,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "matkahuolto": ["matkahuolto-1","matkahuolto-2","matkahuolto-3","matkahuolto-4"],
   "mauritius-post": [],
   "max-pakket": [],
+  "maxzeego": [],
   "mayiyinfu": ["mayiyinfu-1"],
   "mds-collivery": [],
   "meest": ["meest-1"],
@@ -47200,6 +48059,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "olva-courier": ["olva-courier-3"],
   "omgo": ["omgo-1"],
   "omniva": ["omniva-1","omniva-2","omniva-own","omniva-s10"],
+  "ondot-courier": [],
   "one-world-express": ["one-world-express-1"],
   "onex": [],
   "opt-nc": [],
@@ -47247,6 +48107,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pecom": [],
   "peddler": ["peddler-1","peddler-2"],
   "pelican-express": [],
+  "penguin-box": [],
   "pengyou": ["pengyou-1"],
   "peninsula-truck-lines": [],
   "peqasus-az": [],
@@ -47271,6 +48132,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "post-haste": [],
   "post-luxembourg": ["post-luxembourg-s10"],
   "post-one": ["post-one-1"],
+  "posta-e-kosoves": [],
   "posta-faroe": [],
   "posta-kenya": [],
   "posta-moldovei": ["posta-moldovei-1"],
@@ -47306,11 +48168,13 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "qwintry": ["qwintry-1"],
   "raben": ["raben-1"],
   "ram-hand-to-hand": ["ram-hand-to-hand-1"],
+  "rayspeed": [],
   "redbox-mv": [],
   "redpack": [],
   "redur": [],
   "redx": ["redx-1"],
   "relaytech": ["relaytech-1"],
+  "rex-indonesia": ["rex-indonesia-1"],
   "rhenus-de": [],
   "rhenus-it": [],
   "rincos": [],
@@ -47329,6 +48193,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "runner-express": [],
   "russian-post": ["russian-post-1"],
   "rxo": [],
+  "ryder-last-mile": [],
   "saee": ["saee-1"],
   "safeway-express-cargo": ["safeway-express-cargo-1"],
   "safexpress": [],
@@ -47366,6 +48231,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shipentegra": ["shipentegra-1"],
   "shipgce": [],
   "shipglobal-in": ["shipglobal-in-1"],
+  "shipglobal-us": ["shipglobal-us-1"],
   "shippify": [],
   "shiprocket": ["shiprocket-1"],
   "shipter": ["shipter-1"],
@@ -47379,6 +48245,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shree-nandan": [],
   "shunbang-express": [],
   "sicepat": [],
+  "sjl-express": [],
   "skroutz-last-mile": [],
   "skybox": [],
   "skyex-ae": [],
@@ -47391,6 +48258,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "slovenska-posta": ["slovenska-posta-own","slovenska-posta-s10"],
   "sm-express": [],
   "smsa-express": [],
+  "sol-express": [],
   "south-african-post-office": ["south-african-post-office-s10"],
   "southeastern-freight-lines": [],
   "sp-express": ["sp-express-1"],
@@ -47465,6 +48333,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tiki": [],
   "timely-titan": ["timely-titan-1"],
   "tirupati-courier": [],
+  "tiui": [],
   "tmm-express": [],
   "tnt-it": ["tnt-it-1","tnt-it-check"],
   "today-kr": [],
@@ -47481,6 +48350,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "total-express": ["total-express-awb"],
   "toyou": [],
   "tp-logistics-th": ["tp-logistics-th-1"],
+  "tpl-rider": [],
   "trackon": [],
   "tracx-logis": ["tracx-logis-1"],
   "trans-o-flex": [],
@@ -47508,8 +48378,10 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ubx-uk": [],
   "ues-uy": ["ues-uy-1"],
   "ukp-worldwide": ["ukp-worldwide-1"],
+  "union-express": [],
   "united-delivery-service": ["united-delivery-service-1"],
   "united-worldwide-couriers": [],
+  "uof-express": [],
   "upaya": ["upaya-1"],
   "ural-express": [],
   "urbano": ["urbano-1"],
@@ -47584,6 +48456,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "yha": [],
   "yilong-logistics": ["yilong-logistics-1"],
   "yimidida": [],
+  "yingtu": [],
   "yoseus": [],
   "youbang-express": ["youbang-express-1"],
   "yuema-express": [],

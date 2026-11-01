@@ -1965,6 +1965,26 @@
       "dhl-ecommerce-uk",
       "dpd-pt",
       "dpd-hu",
+      "chronopost",
+      "rex-indonesia"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule and by Chronopost's, which delivers DPD parcels entering France, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. REX Indonesia's low rule takes its fourteen-digit waybills that start 22201. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
+    "shape": "14 digits",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "seur",
+      "dhl-ecommerce-uk",
+      "dpd-pt",
+      "dpd-hu",
       "best-express-th",
       "chronopost"
     ],
@@ -2195,6 +2215,27 @@
       "chronopost"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule and by Chronopost's, which delivers DPD parcels entering France, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
+    "shape": "14 digits",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "hermes-de",
+      "seur",
+      "dhl-ecommerce-uk",
+      "dpd-pt",
+      "dpd-hu",
+      "chronopost",
+      "rex-indonesia"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule and by Chronopost's, which delivers DPD parcels entering France, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too, and REX Indonesia's takes its waybills that start 22201. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",

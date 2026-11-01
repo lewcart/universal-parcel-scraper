@@ -111,8 +111,7 @@ describe('Qwintry HTTP adapter', () => {
       ['прием', 'Партионный', 'Russian Post Berlin Cp', 'in_transit'],
       ['arrival_scan', 'Arrival scan: TXL airport, Berlin', 'TXL airport, Berlin', 'in_transit'],
     ]);
-    // Russian Post has no adapter of its own to confirm the hand-off; the fallbacks follow the number.
-    expect(deliveryHandoff('qwintry', POSTAL, result)).toBeNull();
+    expect(deliveryHandoff('qwintry', POSTAL, result)).toEqual({ carrier: 'russian-post', number: POSTAL, basis: 'partner' });
   });
 
   it('hands a parcel off only for a tracker it knows that carries the number the page shows', () => {

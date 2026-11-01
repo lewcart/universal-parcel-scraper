@@ -353,6 +353,12 @@ describe('classifyWording', () => {
     }
   });
 
+  it('reads a release from a country, not from a place or a hold, as the journey', () => {
+    for (const wording of ['Released from Russia', 'Released from United Kingdom']) expect(trackingLanguageStage(wording), wording).toBe('in_transit');
+    for (const wording of ['Released from hold', 'Released from the warehouse', 'Released from storage', 'Released from post office',
+      'Released from sender']) expect(trackingLanguageStage(wording), wording).toBeUndefined();
+  });
+
   it('reads a customs hold as customs and a customs problem as an exception', () => {
     for (const wording of [
       'Held by customs', 'Held by Custom', 'Shipment held at customs', 'Parcel on hold at customs', 'Customs hold',
@@ -876,6 +882,9 @@ describe('classifyWording', () => {
       ['The collection has been carried out', 'accepted'], ['Order placed', 'registered'], ['Sent abroad', 'in_transit'],
       // Poczta Polska's departure from Poland, as ParcelsApp words it.
       ['Sending the package from Poland', 'in_transit'],
+      // Russian Post's operations, as ParcelsApp words them.
+      ['Processing: Left pickup location', 'in_transit'], ['Export of international mail', 'in_transit'],
+      ['Import of international mail', 'in_transit'], ['Released from Russia', 'in_transit'],
       ['Example Forwarding has received the goods, Example Town, CN.', 'accepted'],
       // DPD Poland's scans as ParcelsApp words them.
       ['Sending the package at the pickup point', 'accepted'], ['Handing over the package to the courier', 'accepted'],

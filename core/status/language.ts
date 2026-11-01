@@ -510,6 +510,11 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // A post's departure from its country, as ParcelsApp words Poczta Polska's:
   // "Sending the package from Poland". Not a sender's drop-off at a point or shop.
   if (/^sending (?:the )?(?:package|parcel|item|shipment) from (?!.*\b(?:point|locker|shop|sender|branch)\b)[a-z][a-z .'-]{1,40}$/.test(text)) return 'in_transit';
+  // Russian Post's operations as ParcelsApp words them: the item leaving the office that took it in, its
+  // export or import as international mail, and its release from the country it leaves. A release names the
+  // country alone, not a place or a hold.
+  if (/^processing: left (?:the )?pickup location$|^(?:export|import) of international mail$/.test(text)) return 'in_transit';
+  if (/^released from (?!(?:the|a|an|our|your)\b)(?!.*\b(?:customs|hold|storage|warehouse|office|branch|depot|hub|facility|cent(?:er|re)|point|locker|quarantine|inspection|sender|shipper)\b)[a-z][a-z .'-]{1,40}$/.test(text)) return 'in_transit';
   if (/^(?:posting\/collection|posted|origin scan)$|received at (?:our |the )?(?:[a-z]+ )?origin (?:office|facility|hub)|dropped off (?:after|before) (?:the )?latest drop ?off time/.test(text)) return 'accepted';
   // Turned away rather than taken in: "Package not accepted by sorting center".
   if (/(?:\b(?:not|never)|n't)(?: (?:be|been|being))? accepted\b/.test(text)) return 'exception';

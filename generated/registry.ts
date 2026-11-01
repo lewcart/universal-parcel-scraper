@@ -540,6 +540,7 @@ import { adapter as shreeAnjani } from '../carriers/shree-anjani/adapter.js';
 import { adapter as shreeMaruti } from '../carriers/shree-maruti/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
 import { adapter as skroutzLastMile } from '../carriers/skroutz-last-mile/adapter.js';
+import { adapter as skybox } from '../carriers/skybox/adapter.js';
 import { adapter as skyking } from '../carriers/skyking/adapter.js';
 import { adapter as skynetSa } from '../carriers/skynet-sa/adapter.js';
 import { adapter as skynetWorldwide } from '../carriers/skynet-worldwide/adapter.js';
@@ -1213,6 +1214,7 @@ export const REGISTRY: RegistryDefinition = {
     "shree-maruti": shreeMaruti,
     "singapore-post": singaporePost,
     "skroutz-last-mile": skroutzLastMile,
+    "skybox": skybox,
     "skyking": skyking,
     "skynet-sa": skynetSa,
     "skynet-worldwide": skynetWorldwide,
@@ -2299,7 +2301,7 @@ export const REGISTRY: RegistryDefinition = {
     "singapore-post": "singapore-post",
     "sjl-express": "universal",
     "skroutz-last-mile": "skroutz-last-mile",
-    "skybox": "universal",
+    "skybox": "skybox",
     "skyex-ae": "universal",
     "skyking": "skyking",
     "skynet-sa": "skynet-sa",

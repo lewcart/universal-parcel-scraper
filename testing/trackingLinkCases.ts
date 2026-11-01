@@ -2012,6 +2012,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.fmx\.asia\/result_detail\.php\?p=1&conno=MYX0000000017$/,
     marker: /Consignment Data Generated, Awaiting for Handover|Tracking Number:/,
     forwarding: { notFound: /Consignment Data Generated, Awaiting for Handover/ } },
+  // The page loads the fragment for the number in its address, which fills its search box and renders the
+  // parcel or says the number does not exist, with HTTP 200.
+  { carrier: 'skybox', number: '009900000099',
+    route: /^https:\/\/www\.skybox\.net\/TrackingInformation\/IndexPublic\?tracking=009900000099$/,
+    marker: /The tracking number does not exists|Tracking Information:/ },
   // The page renders the shipment, or says no shipment matches the number, with HTTP 200.
   { carrier: 'whiz-delivery', number: 'SW0000000000',
     route: /^https:\/\/track\.whizdelivery\.ca\/track\/SW0000000000$/,

@@ -38096,7 +38096,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skybox",
+      "localClocks": true
     },
     "canaryUrl": "https://www.skybox.net/",
     "trackingUrlTemplate": "https://www.skybox.net/TrackingInformation/IndexPublic?tracking={trackingNumber}",

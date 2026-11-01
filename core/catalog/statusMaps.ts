@@ -549,6 +549,7 @@ import { statusMap as shreeAnjani } from '../../carriers/shree-anjani/status.js'
 import { statusMap as shreeMaruti } from '../../carriers/shree-maruti/status.js';
 import { statusMap as singaporePost } from '../../carriers/singapore-post/status.js';
 import { statusMap as skroutzLastMile } from '../../carriers/skroutz-last-mile/status.js';
+import { statusMap as skybox } from '../../carriers/skybox/status.js';
 import { statusMap as skyking } from '../../carriers/skyking/status.js';
 import { statusMap as skynetSa } from '../../carriers/skynet-sa/status.js';
 import { statusMap as skynetWorldwide } from '../../carriers/skynet-worldwide/status.js';
@@ -755,7 +756,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'rpx-indonesia': rpxIndonesia, 'safeway-express-cargo': safewayExpressCargo, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
   'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sendle, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket, shouwu,
   'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'singapore-post': singaporePost, 'skroutz-last-mile': skroutzLastMile,
-  skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
+  skybox, skyking, 'skynet-sa': skynetSa, 'skynet-worldwide': skynetWorldwide, skypostal, slgtrax,
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
   'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, 'spee-dee': speeDee, 'speed-and-safe': speedAndSafe, speedaf, speedex, speedpak, speedx, speedy, 'spring-gds': springGds, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-sg': spxSg,

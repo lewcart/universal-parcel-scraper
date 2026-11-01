@@ -21,18 +21,56 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "skybox",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://www.skybox.net/TrackingInformation/IndexPublic?tracking={trackingNumber}",
     "searchUrl": "https://www.skybox.net/TrackingInformation/IndexPublic",
     "canaryUrl": "https://www.skybox.net/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "progress_rail",
+      "history",
+      "location",
+      "origin",
+      "destination",
+      "awb_date",
+      "recipient_id",
+      "recipient_name",
+      "weight",
+      "order_contents",
+      "tracking_alias"
+    ],
+    "scraped": [
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin",
+      "destination",
+      "awb_date",
+      "recipient_id",
+      "recipient_name",
+      "weight",
+      "order_contents",
+      "tracking_alias"
+    ],
+    "unavailable": [
+      "provider_code",
+      "eta",
+      "offset_timestamps",
+      "service_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

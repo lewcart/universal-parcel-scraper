@@ -440,16 +440,18 @@ describe('City Express shipment and parcel numbers', () => {
 });
 
 describe('Nova Post international numbers', () => {
-  // Synthetic numbers in the SH, country and ten-digit layout novapost.com's tracker accepts; none is a real parcel.
+  // Synthetic numbers in the SH or TN, country and ten-digit layout novapost.com's tracker accepts,
+  // at times after RS; none is a real parcel.
   // SHO with C, P or R and ten digits is Ekart's; none of those pairs is a country code.
-  it('offers Nova Poshta at low confidence for SH, two letters and ten digits', () => {
-    for (const number of ['SHUA0000000001', 'SHPL0000000001']) {
+  it('offers Nova Poshta at low confidence for SH or TN, two letters and ten digits, at times after RS', () => {
+    for (const number of ['SHUA0000000001', 'SHPL0000000001', 'TNUA0000000001', 'RSSHUA0000000001', 'RSTNPL0000000001']) {
       expect(detectCarrierMatch(number), number).toMatchObject({
         confidence: 'low',
         candidates: expect.arrayContaining(['nova-poshta']),
       });
     }
-    for (const number of ['SHUA000000001', 'SHUA00000000001', 'RSSHUA0000000001', 'TNUA0000000001', 'SH1A0000000001', 'SHOC0000000001']) {
+    for (const number of ['SHUA000000001', 'SHUA00000000001', 'TNUA00000000001', 'RSUA0000000001', 'RSRSSHUA0000000001', 'XTNUA0000000001',
+      'SH1A0000000001', 'SHOC0000000001', 'RSSHOC0000000001']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('nova-poshta');
     }
   });

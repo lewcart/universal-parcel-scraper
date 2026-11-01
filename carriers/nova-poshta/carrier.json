@@ -109,7 +109,7 @@
     },
     {
       "id": "nova-poshta-international",
-      "pattern": "^SH(?!O[CPR])[A-Z]{2}\\d{10}$",
+      "pattern": "^(?:RS)?(?:SH(?!O[CPR])|TN)[A-Z]{2}\\d{10}$",
       "confidence": "low"
     }
   ]

@@ -17,18 +17,52 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "bestfulfill",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "destination_country",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://www.bestfulfillpacket.com/track?number={trackingNumber}",
     "searchUrl": "https://www.bestfulfillpacket.com/track",
     "canaryUrl": "https://www.bestfulfillpacket.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin",
+      "destination_country",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "destination_country",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "origin"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

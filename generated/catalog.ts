@@ -9610,7 +9610,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bestfulfill"
     },
     "canaryUrl": "https://www.bestfulfillpacket.com/",
     "trackingUrlTemplate": "https://www.bestfulfillpacket.com/track?number={trackingNumber}",

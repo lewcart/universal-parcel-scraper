@@ -83348,21 +83348,6 @@
     ]
   },
   {
-    "input": "JFJ100014809",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "colis-prive",
-      "purolator",
-      "tnt-au"
-    ],
-    "asked": [
-      "colis-prive",
-      "tnt-au",
-      "purolator"
-    ]
-  },
-  {
     "input": "JFV247545960",
     "carrier": "unknown",
     "confidence": "low",
@@ -101380,6 +101365,21 @@
     "confidence": "high",
     "candidates": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "XYZ000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt-au"
+    ],
+    "asked": [
+      "colis-prive",
+      "tnt-au",
+      "purolator"
     ]
   },
   {

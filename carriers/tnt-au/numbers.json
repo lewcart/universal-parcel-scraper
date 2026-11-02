@@ -2,19 +2,11 @@
   "carrier": "tnt-au",
   "records": [
     {
-      "number": "JFJ100014809",
+      "number": "XYZ000000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.tntexpress.com.au/interaction/ASPs/trackref_detail.asp?con=JFJ100014809",
-        "date": "2026-11-02",
-        "dateKind": "reply",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed",
-        "service": "TNT Australia domestic"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-11-02",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
@@ -24,7 +16,7 @@
           "tnt-au"
         ]
       },
-      "note": "TNT Australia's own tracker page for it, indexed by a search engine, lists the consignment from its lodgement to its delivery."
+      "note": "Made-up number in the shape of the domestic consignments the app tracked: three letters and nine digits, which TNT Australia's own tracker answered."
     }
   ]
 }

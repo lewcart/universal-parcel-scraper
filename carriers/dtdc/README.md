@@ -38,6 +38,10 @@ The adapter does not ask it: the reply does not repeat the number, the notes car
 addresses and staff names, and the clocks name no zone. Deliveries abroad fall in working
 hours only when read as UTC.
 
+The tracking page on www.dtdc.com asks `POST /wp-json/custom/v1/domestic/track` and related routes
+with an `X-DTDC-Track-Token` header its CAPTCHA check issues; without one they answer HTTP 403
+"Security verification failed", so the adapter does not use them.
+
 ## Testing
 
 Set `DTDC_TRACKING_NUMBER` outside the repository and run

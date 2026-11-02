@@ -26,7 +26,11 @@
       "direct",
       "retry"
     ],
-    "localClocks": true
+    "localClocks": true,
+    "recognition": {
+      "rank": 751,
+      "pattern": "^MYYF\\d{8}CN$"
+    }
   },
   "capabilities": [
     "history",
@@ -108,6 +112,11 @@
       "id": "mayiyinfu-1",
       "pattern": "^MY\\d{10}US$",
       "confidence": "high"
+    },
+    {
+      "id": "mayiyinfu-2",
+      "pattern": "^MYYF\\d{8}CN$",
+      "confidence": "low"
     }
   ]
 }

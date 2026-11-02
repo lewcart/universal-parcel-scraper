@@ -11931,7 +11931,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://chitadelivery.co.il/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -27185,7 +27185,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://juxiex.com/",
     "linkRules": [],
     "detectionRules": [
       {
@@ -30694,6 +30694,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "mayiyinfu",
+      "recognitionRank": 751,
+      "recognitionPattern": "^MYYF\\d{8}CN$",
       "localClocks": true
     },
     "canaryUrl": "https://t.17track.net/",
@@ -30713,6 +30715,10 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       {
         "pattern": "^MY\\d{10}US$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^MYYF\\d{8}CN$",
+        "confidence": "low"
       }
     ]
   },
@@ -30854,7 +30860,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "meihoo-pegasus"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://jecship.com/",
     "linkRules": [],
     "detectionRules": [
       {
@@ -31548,8 +31554,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "mtscn",
-      "recognitionRank": 986
+      "adapter": "mtscn"
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [
@@ -45890,7 +45895,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://shipmenttracking.tusklogistics.com/",
     "trackingUrlTemplate": "https://shipmenttracking.tusklogistics.com/?trackingNumber={trackingNumber}",
     "trackingSearchUrl": "https://www.tusklogistics.com/track-your-shipment",
     "linkRules": [
@@ -49528,7 +49533,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://www.z-leading.com/",
     "linkRules": [],
     "detectionRules": [
       {
@@ -52054,7 +52059,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "mauritius-post": [],
   "max-pakket": [],
   "maxzeego": [],
-  "mayiyinfu": ["mayiyinfu-1"],
+  "mayiyinfu": ["mayiyinfu-1","mayiyinfu-2"],
   "mds-collivery": [],
   "meest": ["meest-1","meest-2"],
   "megacity-courier": [],

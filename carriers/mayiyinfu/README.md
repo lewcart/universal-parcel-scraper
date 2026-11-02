@@ -14,6 +14,8 @@ platform; this carrier keeps its host and status map.
    ([hualei.ts](../gzyl/hualei.ts)).
 2. `retry`: the same read once more after a request fails to reach the tracker or hangs.
 
+Recognition makes the same reads and answers whether the tracker knows the number.
+
 The tracker answers plain HTTP only. No account, key, cookie, CAPTCHA or browser is needed.
 
 ## Notes
@@ -58,8 +60,10 @@ with high confidence hands nothing over.
 
 Its tracking numbers are MY, ten digits and US, MY standing for 蚂蚁 (Mayi). The suffix does
 not name the destination. The shape is fixed and no other carrier's rule takes it, so the rule
-has high confidence. The tracker also accepts the shipper's reference, which no rule claims. No
-public number has been found, so the corpus holds a synthetic one.
+has high confidence. Some parcels carry MYYF, the forwarder's own short name, eight digits and
+CN instead: one parcel only, so that rule has low confidence, and recognition asks the tracker
+about those numbers alone. The tracker also accepts the shipper's reference, which no rule
+claims. No public number has been found, so the corpus holds synthetic ones.
 
 ## Links
 

@@ -11927,7 +11927,7 @@
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://chitadelivery.co.il/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -27181,7 +27181,7 @@
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://juxiex.com/",
     "linkRules": [],
     "detectionRules": [
       {
@@ -30690,6 +30690,8 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "mayiyinfu",
+      "recognitionRank": 751,
+      "recognitionPattern": "^MYYF\\d{8}CN$",
       "localClocks": true
     },
     "canaryUrl": "https://t.17track.net/",
@@ -30709,6 +30711,10 @@
       {
         "pattern": "^MY\\d{10}US$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^MYYF\\d{8}CN$",
+        "confidence": "low"
       }
     ]
   },
@@ -30850,7 +30856,7 @@
       "mode": "automatic",
       "adapter": "meihoo-pegasus"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://jecship.com/",
     "linkRules": [],
     "detectionRules": [
       {
@@ -31544,8 +31550,7 @@
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "mtscn",
-      "recognitionRank": 986
+      "adapter": "mtscn"
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [
@@ -45886,7 +45891,7 @@
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://shipmenttracking.tusklogistics.com/",
     "trackingUrlTemplate": "https://shipmenttracking.tusklogistics.com/?trackingNumber={trackingNumber}",
     "trackingSearchUrl": "https://www.tusklogistics.com/track-your-shipment",
     "linkRules": [
@@ -49524,7 +49529,7 @@
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://t.17track.net/",
+    "canaryUrl": "https://www.z-leading.com/",
     "linkRules": [],
     "detectionRules": [
       {

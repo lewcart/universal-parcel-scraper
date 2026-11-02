@@ -162,6 +162,18 @@ describe('Mayi Yinfu tracking adapter', () => {
     expect(() => parseMayiyinfuPage(page('page-unknown'), NUMBER, READ_AT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
+  it('recognizes a number its tracker knows, and offers Mayi Yinfu for its MYYF numbers', async () => {
+    await expect(adapter(environment(vi.fn<typeof fetch>().mockResolvedValue(json(fixture('track'))))).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    const unknown = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('no-track'))).mockResolvedValueOnce(html(page('page-unknown')));
+    await expect(adapter(environment(unknown)).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
+    expect(detectCarrierMatch('MYYF99000017CN')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['mayiyinfu'] });
+    expect(new RegExp(carrier.tracking.recognition.pattern).test('MYYF99000017CN')).toBe(true);
+    for (const other of ['MYYF9900001CN', 'MYYF990000170CN', 'MYYF99000017US', 'MYYX99000017CN', 'MYY99000017CN']) {
+      expect(detectCarrierMatch(other).candidates ?? [], other).not.toContain('mayiyinfu');
+      expect(detectCarrierMatch(other).carrier, other).not.toBe('mayiyinfu');
+    }
+  });
+
   it('keeps blocks, rate limits, changed replies, other shipments and foreign numbers apart from not-found', async () => {
     await expect(track(vi.fn<typeof fetch>().mockResolvedValue(html('<html><head><title>Just a moment...</title></head></html>')))).rejects.toMatchObject({ kind: 'challenge' });
     await expect(track(vi.fn<typeof fetch>().mockResolvedValue(json({}, 429)))).rejects.toMatchObject({ kind: 'rate_limited' });

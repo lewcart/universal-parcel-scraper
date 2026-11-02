@@ -40,7 +40,7 @@ carrier's rule takes it, so `meihoo-pegasus-1` has high confidence.
 ## Links
 
 Since the tracker is plain HTTP on a bare address, no portal link is published, and the canary
-checks 17TRACK instead.
+checks the site, jecship.com, instead.
 
 ## Testing
 

@@ -13,5 +13,9 @@ export class MayiyinfuTracker extends HualeiTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new MayiyinfuTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
-  return { id: 'mayiyinfu', recordsSteps: true, steps: ['direct', 'retry'], track: (input, context) => tracker.fetch(input.number, context) };
+  return {
+    id: 'mayiyinfu', recordsSteps: true, steps: ['direct', 'retry'],
+    track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => tracker.recognize(number, context),
+  };
 };

@@ -5,7 +5,9 @@
     {"wording": "We've collected your shipment", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "TNT picking the parcel up from the sender, after the consignment data and before the first depot."},
     {"wording": "We're processing your shipment", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Written at each depot the parcel passes, the delivering one included."},
     {"wording": "Your shipment's with a driver", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "Minutes before the delivery on the same day."},
+    {"wording": "New delivery address required", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Written after a delivery round that could not use the address. The parcel stays at the depot until the recipient gives another address or collects it."},
     {"wording": "We've delivered your shipment", "stage": "delivered", "language": "en", "confirmedBy": "live"},
+    {"wording": "Your shipment was collected", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The recipient collected the parcel from the depot that held it. TNT's pickup from the sender is \"We've collected your shipment\"."},
     {"wording": "Book-In Delivery Requested", "language": "en", "confirmedBy": "live", "note": "The recipient asks for a booked delivery. A notice, not a scan: it keeps the stage the parcel had."},
     {"wording": "Book-In Delivery Arranged", "language": "en", "confirmedBy": "live", "note": "TNT confirms the booked delivery, also after the delivery itself. A notice, not a scan: it keeps the stage the parcel had."}
   ]

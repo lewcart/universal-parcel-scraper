@@ -23,7 +23,8 @@ Recognition asks the same page.
   address encrypts it, and its not-found page does not repeat the number, so the adapter reads the
   older page instead.
 - Scans are on the depot's wall clock without an offset. Depots span Australia's time zones, so each
-  scan keeps its depot as its location and is dated on that place's clock.
+  scan keeps its depot as its location and is dated on that place's clock. A scan without a time
+  keeps its day.
 - The scans carry no code; their wordings are mapped in [statuses.json](statuses.json), and another
   wording falls to the shared wording rules. A delivery booked in by the recipient adds
   "Book-In Delivery Requested" and "Book-In Delivery Arranged", the latter also after the delivery;

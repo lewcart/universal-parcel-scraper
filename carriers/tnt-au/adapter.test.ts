@@ -96,6 +96,27 @@ describe('TNT Australia tracking', () => {
     expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', last_status_text: 'Synthetic note', expected_delivery: '2026-03-03' });
   });
 
+  it('reads a parcel held for a new address and then collected from the depot by its recipient as delivered', () => {
+    const result = parseTntAu(withRows(
+      ['We\'ve collected your shipment', '02/03/2026', '08:11', 'Perth - Kewdale'],
+      ['Your shipment\'s with a driver', '04/03/2026', '10:23', 'Bunbury'],
+      ['New delivery address required', '04/03/2026', '16:08', 'Bunbury'],
+      ['We\'re processing your shipment', '05/03/2026', '08:45', 'Bunbury'],
+      ['Your shipment was collected', '05/03/2026', '12:20', 'Bunbury'],
+    ), NUMBER);
+    expect(result.events?.map((event) => event.stage)).toEqual(['delivered', 'in_transit', 'exception', 'out_for_delivery', 'accepted']);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map', expected_delivery: null });
+  });
+
+  it('keeps the day of a scan the page gives without a time', () => {
+    const result = parseTntAu(withRows(
+      ['Your shipment data is lodged', '02/03/2026', '14:19', 'Perth - Kewdale'],
+      ['We\'re processing your shipment', '03/03/2026', '', 'Bunbury'],
+    ), NUMBER);
+    expect(result.events?.map((event) => [event.local_time, event.stage])).toEqual([['2026-03-03', 'in_transit'], ['2026-03-02T14:19:00', 'registered']]);
+    expect(result).toMatchObject({ current_stage: 'in_transit', last_update_local: '2026-03-03' });
+  });
+
   it('reads the tracker’s answer for a number it does not know as not found', async () => {
     const fetcher = replying(() => html(missing()));
     await expect(carrier(fetcher).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'not_found' });

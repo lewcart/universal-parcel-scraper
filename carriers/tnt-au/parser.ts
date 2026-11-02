@@ -66,9 +66,10 @@ export function parseTntAu(html: string, raw: string): CarrierResult {
   const events = rows.map((row): CarrierEvent => {
     const [wording = '', date = '', clock = '', depot = ''] = $(row).children('td').toArray().map((cell) => clean($(cell).text(), 160));
     const day = isoDay(date);
-    const time = CLOCK.exec(clock);
-    if (!wording || !day || !time) throw new SchemaError(PROVIDER, 'TNT Australia returned an invalid scan');
-    const scan = { local_time: `${day}T${time[1]}:${time[2]}:00`, description: wording, ...(depot ? { location: depot } : {}) };
+    // A scan the page gives without a time keeps its day.
+    const time = clock ? CLOCK.exec(clock) : null;
+    if (!wording || !day || (clock && !time)) throw new SchemaError(PROVIDER, 'TNT Australia returned an invalid scan');
+    const scan = { local_time: time ? `${day}T${time[1]}:${time[2]}:00` : day, description: wording, ...(depot ? { location: depot } : {}) };
     if (isTntAuNotice(wording)) return { ...scan, ...(previous ? { stage: previous, stage_source: 'none' } : {}) };
     const stage = tntAuStage(wording);
     if (stage) previous = stage.stage;

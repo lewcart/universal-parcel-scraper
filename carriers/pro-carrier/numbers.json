@@ -88,8 +88,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "An archived lookup on Pro Carrier's own tracker shows it as the tracking number of a parcel handed to Colis Privé, with a pre-advice event."

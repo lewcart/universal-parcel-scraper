@@ -5244,10 +5244,6 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^\\d{16}$",
         "confidence": "low"
-      },
-      {
-        "pattern": "^(?!(?:BNI|BYS|CLC|CUB|GWD|LTN|MPX|NZC|QSP|QSS|RMP|RWM|XLT))[A-Z]{3}\\d{9}$",
-        "confidence": "low"
       }
     ]
   },
@@ -50863,7 +50859,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "poczta-polska": ["poczta-polska-1","poczta-polska-barcode","poczta-polska-sscc","poczta-polska-2","poczta-polska-own","poczta-polska-s10"],
   "bring-posten": ["bring-posten-1","bring-posten-2","bring-posten-3","bring-posten-4"],
   "aramex": ["aramex-1"],
-  "tnt": ["tnt-upu","tnt-1","tnt-2","tnt-au-domestic"],
+  "tnt": ["tnt-upu","tnt-1","tnt-2"],
   "correos-spain": ["correos-spain-1","correos-spain-2","correos-spain-3","correos-spain-4"],
   "yanwen": ["yanwen-1","yanwen-2","yanwen-3"],
   "the-courier-guy": ["the-courier-guy-1","the-courier-guy-2"],

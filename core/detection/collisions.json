@@ -1107,10 +1107,9 @@
     "shape": "A{3}9{9}",
     "carriers": [
       "colis-prive",
-      "purolator",
-      "tnt"
+      "purolator"
     ],
-    "reason": "Purolator's lettered PINs and TNT Australia's domestic consignments both print three letters and nine digits, and Colis Privé accepts any 12-character alphanumeric, so no rule decides; recognition asks them in turn."
+    "reason": "Purolator's lettered PINs and TNT Australia's domestic consignments both print three letters and nine digits, and Colis Privé accepts any 12-character alphanumeric, so no rule decides; recognition asks Purolator and Colis Privé in turn. TNT is not offered, because tnt.com refuses TNT Australia's domestic consignments."
   },
   {
     "shape": "LTN9{9}",

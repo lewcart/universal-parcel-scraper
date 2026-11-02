@@ -246,8 +246,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "Sent as the guia parameter to Urbano's own e-tracking page, as an archived address shows; the capture was not opened. The letter prefix looks like a merchant's order reference that Urbano's tracker accepts, not an Urbano guía."

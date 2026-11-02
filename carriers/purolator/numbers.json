@@ -96,8 +96,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "Open-source project example, not a real shipment."
@@ -115,14 +114,13 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
-      "note": "Public review of a Purolator parcel held at a counter for pickup. Purolator's tracker returns its history.",
       "context": {
         "assessment": "confirmed"
-      }
+      },
+      "note": "Public review of a Purolator parcel held at a counter for pickup. Purolator's tracker returns its history."
     },
     {
       "number": "JFV247545960",
@@ -136,8 +134,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "Open-source project example, not a real shipment."
@@ -154,8 +151,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "Open-source project example, not a real shipment."
@@ -172,8 +168,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "Open-source project example, not a real shipment."
@@ -205,10 +200,10 @@
           "sending"
         ]
       },
-      "note": "The reviewer labels it as the tracking number. Purolator's tracker returns its history as a twelve-digit PIN.",
       "context": {
         "assessment": "confirmed"
-      }
+      },
+      "note": "The reviewer labels it as the tracking number. Purolator's tracker returns its history as a twelve-digit PIN."
     },
     {
       "number": "335681489381",
@@ -327,8 +322,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns a parcel from the United States that cleared customs and was collected from a counter."
@@ -351,8 +345,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "A lettered Purolator PIN without the usual zeroes after its letters, whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
@@ -375,8 +368,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
@@ -399,8 +391,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
@@ -423,8 +414,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
@@ -551,9 +541,6 @@
         "confidence": "low",
         "candidates": [
           "colis-prive"
-        ],
-        "not": [
-          "purolator"
         ]
       },
       "note": "A Cubyn number whose tracking page the Wayback Machine archived with its history. Cubyn's numbers are CUB and nine digits; the service has closed, and the carrier it handed a parcel to tracks it under its own number."

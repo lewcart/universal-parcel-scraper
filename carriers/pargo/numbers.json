@@ -184,8 +184,7 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator",
-          "tnt"
+          "purolator"
         ]
       },
       "note": "An archived lookup on Pargo's tracking page asked for it, but the capture shows only the search page; the ODO prefix belongs to the shop OneDayOnly, whose waybills also pass through Courier IT, so its issuer is unsettled."

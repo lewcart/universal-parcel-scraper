@@ -4483,6 +4483,12 @@
     "reason": "DIMEX waybills are eight digits, a shape several other networks print, so the shape cannot name DIMEX."
   },
   {
+    "carrier": "tnt",
+    "pattern": "^[A-Z]{3}\\d{9}$",
+    "kind": "by_design",
+    "reason": "TNT Australia's domestic consignments print three letters and nine digits, but tnt.com refuses them and sends the lookup to TNT Australia's own tracker, which the TNT adapter does not read, so detection does not offer TNT for them."
+  },
+  {
     "carrier": "topdelivery",
     "pattern": "^\\d{6,8}$",
     "kind": "collision",

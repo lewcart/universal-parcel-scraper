@@ -144,6 +144,33 @@ const SPLIT_REGIONS: Readonly<Record<string, Readonly<Record<string, readonly st
   BR: { AM: ['America/Rio_Branco'] },
 };
 
+// Florida's line between Eastern and Central time (49 CFR 71.5(f)): down the Apalachicola River from
+// Jim Woodruff Dam, then west along the Intracoastal Waterway to Gulf County's west line, whose
+// south keeps Eastern. The river by latitude and the waterway by longitude, north to south and east to west.
+const APALACHICOLA_RIVER = [[30.71, -84.87], [30.44, -85.02], [30.1, -85.07], [29.95, -85.02], [29.78, -85]] as const;
+const GULF_WATERWAY = [[-85, 29.78], [-85.22, 29.88], [-85.39, 30.03]] as const;
+const GULF_COUNTY_WEST = -85.39;
+
+/** The second value of a line at the first, between its points; beyond its ends, the nearest end's. */
+function along(line: readonly (readonly [number, number])[], at: number): number {
+  const descending = line[0]![0] > line[line.length - 1]![0];
+  const index = line.findIndex(([key]) => (descending ? key <= at : key >= at));
+  if (index <= 0) return index === 0 ? line[0]![1] : line[line.length - 1]![1];
+  const [[fromKey, fromValue], [toKey, toValue]] = [line[index - 1]!, line[index]!];
+  return fromValue + (toValue - fromValue) * (at - fromKey) / (toKey - fromKey);
+}
+
+/**
+ * The zone of a point in a state split between zones, where its place decides: Florida's
+ * Panhandle keeps Central time. Null where the state's main zone holds.
+ */
+export function splitRegionZone(country: string, region: string, latitude: number, longitude: number): string | null {
+  if (country !== 'US' || region !== 'FL') return null;
+  const central = longitude < GULF_COUNTY_WEST
+    || (longitude < along(APALACHICOLA_RIVER, latitude) && latitude > along(GULF_WATERWAY, longitude));
+  return central ? 'America/Chicago' : null;
+}
+
 /** The clocks of a state or province besides its main one, where part of it keeps another. */
 export function otherRegionZones(country: string, region: string): readonly string[] {
   return SPLIT_REGIONS[country]?.[region] ?? [];

@@ -9,7 +9,7 @@ import { ambiguousAddressCodes, militaryPostOffice, trackingPlace } from './trac
 import facilityList from './facilities.json' with { type: 'json' };
 import hubList from './hubs.json' with { type: 'json' };
 import { nameKey, nameKeys } from './names.mjs';
-import { mainZone, otherRegionZones, pointZone, regionZone } from './zones.js';
+import { mainZone, otherRegionZones, pointZone, regionZone, splitRegionZone } from './zones.js';
 
 export { carrierHomeZone, dateLocalClocks, type ZoneBasis } from './clocks.js';
 
@@ -361,7 +361,8 @@ function townRegion(place: EventPlace): string | null {
 /**
  * The zone a scan at this place keeps its clock on: its country's, or where a
  * country keeps several, its state's or province's (the US, Canada, Australia,
- * Brazil) or the zone whose principal place lies nearest. A place that names
+ * Brazil), the part's where a state is split by place (Florida's Panhandle),
+ * or the zone whose principal place lies nearest. A place that names
  * only a country with several zones takes the one most of its people live on.
  * Null for a country the tz database does not know.
  */
@@ -370,7 +371,8 @@ export function placeTimeZone(place: EventPlace): string | null {
   const key = `${place.country}|${place.latitude.toFixed(2)}|${place.longitude.toFixed(2)}`;
   if (zoneCache.has(key)) return zoneCache.get(key)!;
   const region = ZONED_REGIONS.has(place.country) ? regionNear(place.country, place.latitude, place.longitude) : null;
-  const zone = (region ? regionZone(place.country, region) : null) ?? pointZone(place.country, place.latitude, place.longitude);
+  const zone = (region ? splitRegionZone(place.country, region, place.latitude, place.longitude) ?? regionZone(place.country, region) : null)
+    ?? pointZone(place.country, place.latitude, place.longitude);
   if (zoneCache.size >= CACHE_SIZE) zoneCache.clear();
   zoneCache.set(key, zone);
   return zone;
@@ -1536,7 +1538,7 @@ export function placesForEvents(
   const clocks = times.map(statedClock);
   const keepsClock = (place: EventPlace, clock: { at: number; offset: number }) => {
     const region = townRegion(place);
-    return [placeTimeZone(place), ...region ? otherRegionZones(place.country, region) : []]
+    return [placeTimeZone(place), ...region ? [regionZone(place.country, region), ...otherRegionZones(place.country, region)] : []]
       .some((zone) => zoneOffset(zone, clock.at) === clock.offset);
   };
   const keeps = (found: Located | null, at: number) => found !== null && found.place.precision === 'city'

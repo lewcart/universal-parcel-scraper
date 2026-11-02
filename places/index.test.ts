@@ -750,7 +750,7 @@ describe('placesForEvents', () => {
       .toEqual(['America/Chicago', -97]);
     // Part of Florida keeps Central time, so a town there keeps either offset.
     for (const offset of ['-05:00', '-04:00']) {
-      expect(towns(['Boston, USA', 'Mobile, USA', 'Marianna, USA'], ['-04:00', '-05:00', offset])?.[2]).toEqual(['America/New_York', -85]);
+      expect(towns(['Boston, USA', 'Mobile, USA', 'Marianna, USA'], ['-04:00', '-05:00', offset])?.[2]).toEqual(['America/Chicago', -85]);
     }
   });
 

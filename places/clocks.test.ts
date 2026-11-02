@@ -8,6 +8,15 @@ const zoneOf = (location: string) => placeTimeZone(locatePlace(location)!);
 const dated = (event: CarrierEvent | undefined) => event && [event.time, event.time_zone, event.time_zone_basis];
 
 describe('placeTimeZone', () => {
+  it('keeps Central time in Florida west of the Apalachicola River, but Eastern in Gulf County south of the waterway', () => {
+    for (const town of ['Pensacola, FL', 'Panama City, FL', 'Mexico Beach, FL', 'Marianna, FL', 'Blountstown, FL', 'Wewahitchka, FL']) {
+      expect(zoneOf(town), town).toBe('America/Chicago');
+    }
+    for (const town of ['Port St. Joe, FL', 'Apalachicola, FL', 'Bristol, FL', 'Chattahoochee, FL', 'Tallahassee, FL', 'Orlando, FL']) {
+      expect(zoneOf(town), town).toBe('America/New_York');
+    }
+  });
+
   it('reads a country of one clock, a state or province, or the nearest zone of a large country', () => {
     expect(zoneOf('Leipzig/Halle Hub')).toBe('Europe/Berlin');
     expect(zoneOf('Changsha')).toBe('Asia/Shanghai');

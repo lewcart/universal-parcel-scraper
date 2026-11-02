@@ -28,3 +28,12 @@ export function hualeiScanText(value: string, maxLength = 500): string {
     .replace(POSTCODE_RUN, '$1').replace(EMPTY_BRACKETS, ''), maxLength)
     .replace(/^[\s,，:：;；/]+|[\s,，:：;；/]+$/g, '');
 }
+
+// What some trackers print in a row's place when it has none: the platform's "SYSTEM", a form's "Delivery Location".
+const NO_PLACE = /^(?:system|delivery location)$/i;
+
+/** A row's place as scan text, or nothing where the tracker prints a word for no place. */
+export function hualeiPlace(value: string): string {
+  const place = hualeiScanText(value, 200);
+  return NO_PLACE.test(place) ? '' : place;
+}

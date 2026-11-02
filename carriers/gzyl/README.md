@@ -88,6 +88,8 @@ instead.
   are cut from scan text, including a delivery row's place, which can carry the recipient's
   postcode. Wording can name it too, so the cut covers the whole row; a date's year stays. A row stored with one takes the place without it
   ([identity.ts](identity.ts)).
+- Some tenants print "SYSTEM" or "Delivery Location" in a row's place when it has none; those words
+  are not read as a place, and a row stored with one is taken over by the same row without it.
 - GBK has no room for some spaces, so a space between two words can arrive as `?`; scan text reads
   it as the space it was.
 - A partner's row can come with its markup, escaped or not, such as DHL's help link; scan text

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { sameInstantIdentityPolicy } from '../../core/catalog/eventIdentity.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
@@ -58,6 +59,23 @@ describe('Yilong Logistics tracking adapter', () => {
     expect(result.canonical_tracking_number ?? result.delivery_tracking_number).toBeUndefined();
     const text = JSON.stringify(result);
     for (const value of ['Synthetic Recipient', 'Synthetic Shop', 'YL-TEST-001', 'YLTEST0000000000001']) expect(text, value).not.toContain(value);
+  });
+
+  it('drops the words the tracker prints for no place, and those rows stored with them are taken over', () => {
+    const reply = structuredClone(fixture('track')) as [{ data: [{ trackDetails: Record<string, string>[] }] }];
+    const [handed, customs] = reply[0].data[0].trackDetails;
+    handed!.track_location = 'Delivery Location';
+    customs!.track_location = 'SYSTEM';
+    const events = parseYilongTrack(reply, NUMBER, READ_AT)!.events!;
+    expect(events.slice(0, 2).map((event) => [event.description, event.location])).toEqual([
+      ['Package handed over to airline', undefined], ['Customs export clearance completed', undefined],
+    ]);
+    const policy = sameInstantIdentityPolicy('yilong-logistics', { supportsScanMatching: true });
+    const scan = { stage: 'registered', description: 'Shipping Label Created', location: '', providerCode: '' };
+    expect(policy?.matches?.(scan, { ...scan, location: 'SYSTEM', stage: 'in_transit' })).toBe(true);
+    expect(policy?.matches?.(scan, { ...scan, location: 'Delivery Location' })).toBe(true);
+    expect(policy?.matches?.(scan, { ...scan, location: 'Shenzhen' })).toBe(false);
+    expect(policy?.matches?.(scan, { ...scan, location: 'SYSTEM', description: 'Out for Delivery' })).toBe(false);
   });
 
   it('reads the page’s unknown-number answer as not found', async () => {

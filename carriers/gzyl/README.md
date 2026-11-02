@@ -22,7 +22,8 @@ client in [hualei.ts](hualei.ts) and keep their own hosts and status maps.
 
 No account, key, cookie, CAPTCHA or browser is needed. The trackers answer plain HTTP only, on a
 bare address; the shared transport allows it. No portal link is published, since a plain-HTTP
-link would leave the number in the clear, and the canary checks 17TRACK instead.
+link would leave the number in the clear, and the canary, which takes HTTPS only, checks 17TRACK
+instead.
 
 ## Notes
 

@@ -36,7 +36,8 @@ Freight with high confidence.
 
 ## Links
 
-No portal link is published, since a plain-HTTP link would leave the number in the clear.
+No portal link is published, since a plain-HTTP link would leave the number in the clear. The
+canary takes HTTPS only, so it checks 17TRACK, not the tracker.
 
 ## Testing
 

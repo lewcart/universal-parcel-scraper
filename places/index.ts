@@ -188,6 +188,11 @@ interface Hub {
   longitude?: number;
   /** The carriers whose hub this is; any carrier's when absent. */
   carriers?: string[];
+  /**
+   * Named so only alone, by a country's name: the carriers' whole place, on a parcel nothing puts
+   * in that country. The town's own name is still the town.
+   */
+  alone?: true;
 }
 // Names carriers give a hub instead of its town ("ROISSY" is Paris-Charles de Gaulle, not
 // Roissy-en-Brie), and hubs the gazetteer cannot place by name ("SEKOCIN STARY", "Fenggang Town", "TERRASSON").
@@ -628,7 +633,7 @@ interface Candidate {
  * Buchs ZH on a DPD parcel, and still the town of St. Gallen or Aargau that says so).
  */
 function candidates(data: Gazetteer, key: string, carriers: readonly string[]): Candidate[] {
-  const hub = HUBS.get(key)?.find((entry) => !entry.carriers || entry.carriers.some((carrier) => carriers.includes(carrier)));
+  const hub = HUBS.get(key)?.find((entry) => !entry.alone && (!entry.carriers || entry.carriers.some((carrier) => carriers.includes(carrier))));
   // At its airport, or at its own point when its village is too small for the gazetteer.
   const airport = hub?.airport ? data.airports.get(hub.airport) : undefined;
   const point = airport ?? (hub?.latitude !== undefined && hub.longitude !== undefined ? { latitude: hub.latitude, longitude: hub.longitude } : undefined);
@@ -749,6 +754,16 @@ function locate(location: string | null | undefined, hints: PlaceHints, split = 
   // A carrier's site named after the country it serves ("MR Pays Bas", Mondial Relay's Dutch network): that country.
   const site = HUBS.get(nameKey(text))?.find((hub) => !hub.town && hub.carriers?.some((carrier) => carriers.includes(carrier)));
   if (site) return countryPlace(data, site.country, true);
+  // A carrier's hub it names alone by a country's name, on a parcel nothing puts in that country:
+  // USPS's "JAMAICA" is its international service centre at JFK, in Jamaica, New York.
+  const alone = split && country && !explicit.place && !context.includes(country)
+    ? HUBS.get(nameKey(text))?.find((hub) => hub.alone && hub.carriers?.some((carrier) => carriers.includes(carrier))) : undefined;
+  const hubAirport = alone?.airport ? data.airports.get(alone.airport) : undefined;
+  const hubPoint = hubAirport ?? (alone?.latitude !== undefined && alone.longitude !== undefined ? { latitude: alone.latitude, longitude: alone.longitude } : undefined);
+  if (alone?.town && hubPoint) {
+    return { text: true, place: { latitude: round(hubPoint.latitude), longitude: round(hubPoint.longitude), precision: 'city',
+      country: alone.country, name: alone.town, ...(hubAirport ? { site: hubAirport.name } : alone.site ? { site: alone.site } : {}) } };
+  }
   const station = stationPlace(data, text, context, carriers);
   if (station) return station;
   // "CAN" on a parcel to Canada: a country's three-letter code, where the parcel is, is that country.

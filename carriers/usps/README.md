@@ -83,7 +83,9 @@ Parsing, in order:
   `EXAMPLE CITY NY DISTRIBUTION CENTER` or `EXAMPLE CITY PA PACKAGE SORTING CENTER`. A place
   that gives only a ZIP code is in that ZIP code's state, by its three-digit prefix. With no
   resolvable state the event keeps an offset-free `local_time`, and the page's newest-first
-  order is kept rather than re-sorted. A step USPS dates by its day alone, as it does
+  order is kept rather than re-sorted. USPS writes its international service centre at JFK as
+  "JAMAICA" alone; the [place reader](../../places/README.md) puts it in Jamaica, New York,
+  unless the parcel goes to Jamaica. A step USPS dates by its day alone, as it does
   pre-shipment info, keeps that day as `local_time`.
 - USPS enters some departures at their scheduled time, before they happen. A scan dated more
   than five minutes after the lookup is held back until it is due (`plannedScans`).

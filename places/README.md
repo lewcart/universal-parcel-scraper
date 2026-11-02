@@ -280,6 +280,9 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   parcel "Buchs, CH" is the depot in Buchs ZH, and "Buchs SG" the town in St. Gallen. SPX
   Brazil's "ShiYan", whose wording names Shenzhen, is in Shenzhen's Shiyan, not the city in Hubei.
   MRW's "Meres (Plataforma)" is its platform in Meres, Asturias, not the town in Turkey.
+  A hub marked `alone` is named only by a country's name written alone, on its carriers'
+  parcels that nothing puts in that country: USPS's "JAMAICA" is its international service
+  centre at JFK, in Jamaica, New York, unless the parcel goes to Jamaica.
   Royal Mail's mail centres named after an area ("Thames Valley MC", in Swindon, not Valley
   on Anglesey) count on Royal Mail and Parcelforce parcels, and on any parcel with MC after
   the name. China Post's exchange offices go by the initials of their Chinese names

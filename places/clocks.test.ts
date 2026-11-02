@@ -83,6 +83,25 @@ describe('dateLocalClocks', () => {
     expect(zones(scans.slice(1))).toEqual(['America/Los_Angeles', 'America/Los_Angeles', 'America/Los_Angeles']);
   });
 
+  it('dates USPS\'s bare "JAMAICA", its international centre at JFK, and the place-less scan after it on New York\'s clock', () => {
+    // A parcel sent back from Spain: USPS's rows abroad name the country, its own the centre in Jamaica, New York.
+    const events = (destination_country: string): CarrierEvent[] => dateLocalClocks('usps', { status: 'in_transit', destination_country, events: [
+      { time: '2026-10-26T18:51:00-04:00', description: 'Arrived at USPS Facility', location: 'JAMAICA NY INTERNATIONAL DISTRIBUTION CENTER' },
+      { local_time: '2026-10-26T18:51:00', description: 'Inbound Out of Customs' },
+      { local_time: '2026-10-25T10:55:00', description: 'Processed Through USPS Facility', location: 'JAMAICA' },
+      { local_time: '2026-10-08T03:21:00', description: 'Customs Clearance', location: 'SPAIN' },
+      { local_time: '2026-10-07T13:39:00', description: 'Departed', location: 'Madrid, SPAIN' },
+    ] }).events!;
+    expect(events('ES').slice(1, 3).map((event) => [event.time, event.time_zone_basis])).toEqual([
+      ['2026-10-26T18:51:00-04:00', 'neighbour'], ['2026-10-25T10:55:00-04:00', 'place'],
+    ]);
+    // On a parcel to Jamaica, the country; and on another carrier's parcel too.
+    expect(events('JM')[2]).toMatchObject({ time: '2026-10-25T10:55:00-05:00', time_zone: 'America/Jamaica' });
+    expect(dateLocalClocks('dhl', { status: 'in_transit', destination_country: 'ES', events: [
+      { local_time: '2026-10-25T10:55:00', description: 'Processed', location: 'JAMAICA' },
+    ] }).events![0]).toMatchObject({ time_zone: 'America/Jamaica' });
+  });
+
   it('takes the next place once a scan on the leg says the parcel landed', () => {
     const result = dateLocalClocks('yunexpress', { status: 'in_transit', destination_country: 'ES', events: [
       { local_time: '2026-10-15T10:00:00', description: 'Accepted', location: 'Hanoi' },

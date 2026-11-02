@@ -13,7 +13,12 @@ no rule.
 ## Why there is no adapter
 
 services.dpd.gr serves a Cloudflare challenge before its tracker. DPD Romania's adapter reads
-the anonymous endpoint behind MyDPD instead; no such endpoint is known for DPD Greece.
+the anonymous endpoint behind MyDPD instead. DPD Greece runs the same MyDPD at mydpd.dpd.gr, whose
+tracker script asks the same `/rest/public/track?id=<waybill>&language=en` path without a key or
+cookie. It answers a made-up waybill with HTTP 404 and MyDPD's "the requested resource does not
+exist" page, the page it also gives a path that does not exist, as DPD Romania's MyDPD gives its
+own not-found page for both. No DPD Greece waybill has been seen, so no answer for a shipment
+has been, and the adapter waits for one to confirm the path and its reply.
 
 ## Links
 

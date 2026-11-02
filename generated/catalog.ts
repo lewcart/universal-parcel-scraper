@@ -29447,7 +29447,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "logistics-solution"
     },
     "canaryUrl": "https://logistics-solution.eu/de/",
     "trackingSearchUrl": "https://logistics-solution.eu/de/",

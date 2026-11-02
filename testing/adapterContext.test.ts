@@ -89,6 +89,7 @@ const UNSAMPLED: Readonly<Record<string, readonly string[]>> = {
   'mongol-infinity-post': ['1000000'],
   'speed-and-safe': ['00000000'],
   'wp-ground': ['WPG0000000001'],
+  'logistics-solution': ['LSX000000001'],
 };
 
 function credential(validator: string, number: string, carrier: string): string {

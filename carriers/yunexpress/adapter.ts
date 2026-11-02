@@ -8,12 +8,13 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, S
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
-import { explicitOffsetTime, EXPLICIT_OFFSET_PATTERN, firstOccurrence } from '../../core/time/index.js';
+import { countryCode, explicitOffsetTime, EXPLICIT_OFFSET_PATTERN, firstOccurrence } from '../../core/time/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { clean, type TrawlClient, type TrawlScrapeResponse } from '../../core/transport/index.js';
 import { withLocalBrowser } from '../../core/transport/localBrowser.js';
 import { isRecord } from '../../core/types.js';
-import { hasSeveralClocks, mainZone } from '../../places/zones.js';
+import { airportTimeZone } from '../../places/index.js';
+import { hasSeveralClocks, keepsZone, mainZone } from '../../places/zones.js';
 import { chinaPostAirline, chinaPostDestinationScan } from '../china-post/status.js';
 import { chinaPostOffice, chinaPostRelayEnglish, isYunExpressNotice, withoutMarkup, withoutRepeatedParts, yunExpressCodeStatus, yunExpressStatus } from './status.js';
 
@@ -49,6 +50,8 @@ const ORIGIN_ZONE = 'Asia/Shanghai';
 /** The offset the latest-scan record states for China Post's scans. */
 const CHINA_OFFSET = '+08:00';
 const ARRIVAL = 'international flight has arrived';
+// The destination's import customs, which clears the parcel where its flight lands.
+const IMPORT_CUSTOMS = /\s-\s?import$/;
 // A hand-over to the last-mile carrier, which relays what follows.
 const HANDOVER = /^shipment (?:is )?in transit to (?:carrier|dhl)$/;
 // GOFO names its own facilities on its scans after the flight in.
@@ -84,6 +87,27 @@ function dateOriginLeg(events: CarrierEvent[]): CarrierEvent[] {
     if (!IN_CHINA.test(place)) return event;
     const time = firstOccurrence(DateTime.fromISO(event.local_time, { zone: ORIGIN_ZONE })).toISO({ suppressMilliseconds: true })!;
     return { ...event, time, time_zone: ORIGIN_ZONE, time_zone_basis: 'neighbour' };
+  });
+}
+
+/**
+ * Dates the flight's arrival and the destination's import customs rows that
+ * name no place, or only the destination country, on the clock of the airport
+ * the record says the flight lands at. The feed gives them that airport's wall
+ * clock: it lists the import clearance after the flight out, which China's
+ * clock would put before it, and a customs row that names its town keeps the
+ * town's clock.
+ */
+function dateArrivalAirport(events: CarrierEvent[], airport: unknown, country: string): CarrierEvent[] {
+  const code = clean(airport, 8).toUpperCase();
+  const zone = /^[A-Z]{3}$/.test(code) && /^[A-Z]{2}$/.test(country) ? airportTimeZone(code) : null;
+  if (!zone || !keepsZone(country, zone)) return events;
+  return events.map((event) => {
+    const words = wording(event);
+    if (event.time || !event.local_time || (words !== ARRIVAL && !IMPORT_CUSTOMS.test(words))) return event;
+    if (event.location && countryCode(event.location) !== country) return event;
+    const time = firstOccurrence(DateTime.fromISO(event.local_time, { zone })).toISO({ suppressMilliseconds: true });
+    return time ? { ...event, time, time_zone: zone, time_zone_basis: 'destination' } : event;
   });
 }
 
@@ -268,7 +292,8 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     throw new IndeterminateError('YunExpress', 'YunExpress returned incomplete parcel history');
   }
   const domestic = /^[A-Z]{2}$/.test(country) && clean(info.OriginCountryCode, 8).toUpperCase() === country;
-  const dated = officesAsPlaces(dateDestinationLeg(dateChinaPostScans(dateOriginLeg(events), country), lastOffset, domestic));
+  const landed = dateArrivalAirport(events, info.DestAirport, country);
+  const dated = officesAsPlaces(dateDestinationLeg(dateChinaPostScans(dateOriginLeg(landed), country), lastOffset, domestic));
   const latest = dated[0]!;
   const classified = current;
   // A partner's relayed row can link its contact page with its own reference,

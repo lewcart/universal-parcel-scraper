@@ -248,6 +248,27 @@ describe('YunExpress captured response projection', () => {
     expect(parse(placing({ 5: '', 6: '', 13: '' }), NUMBER).events?.filter((event) => event.time)).toHaveLength(1);
   });
 
+  it("dates the flight's arrival and import customs without a place on the clock of the airport the flight lands at", () => {
+    const payload = placing({ 0: '', 1: '', 4: 'US', 5: '' });
+    const info = payload.ResultList[0].TrackInfo;
+    Object.assign(info, { DestAirport: 'ORD' });
+    Object.assign(info.LastTrackEvent, { ProcessLocation: '' });
+    const result = parse(payload, NUMBER);
+    // The latest scan keeps the offset its record states.
+    expect(result.events?.[0]).toMatchObject({ time: '2026-03-20T13:39:00-04:00' });
+    for (const [at, time] of [[1, '2026-03-19T13:39:00-05:00'], [4, '2026-03-16T13:39:00-05:00']] as const) {
+      expect(result.events?.[at]).toMatchObject({ time, local_time: time.slice(0, 19), time_zone: 'America/Chicago', time_zone_basis: 'destination' });
+    }
+    // The departure is not the destination's, and a customs row that names its town keeps the town's clock.
+    expect(result.events?.[5]!.time).toBeUndefined();
+    const placed = placing({ 1: 'Sample Town, US' });
+    Object.assign(placed.ResultList[0].TrackInfo, { DestAirport: 'ORD' });
+    expect(parse(placed, NUMBER).events?.[1]!.time).toBeUndefined();
+    // An airport outside the destination country says nothing of its clocks.
+    Object.assign(info, { DestAirport: 'AMS' });
+    expect(parse(payload, NUMBER).events?.[1]!.time).toBeUndefined();
+  });
+
   it("dates the destination leg on the latest scan's stated offset when none of its rows names a place", () => {
     const payload = placing({ 0: '', 1: '', 2: '', 3: '' });
     const info = payload.ResultList[0].TrackInfo;

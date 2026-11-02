@@ -28,7 +28,12 @@ rows name only the country, so a row without a place on China's leg, up to the
 flight out, is dated on China's clock when the nearest row with a place, the
 older one first, is in China: a departure given as the latest scan carries
 +08:00, and read on the destination's clock the flight would land hours too
-soon. The destination's leg, after the flight in or the whole history of a
+soon. The flight's arrival and the destination's import customs rows ("… - Import")
+that name no place, or only the destination country, are on the clock of the
+airport the record says the flight lands at: the feed lists the import clearance
+after the flight out, which China's clock would put before it. Customs rows that
+name a town keep the town's clock, such as an import clearance started in
+Chicago while the parcel is still in China. The destination's leg, after the flight in or the whole history of a
 parcel sent within its destination country, is dated on the latest scan's
 stated offset when none of its rows names a place: one partner relays it,
 and the carrier's home clock would be China's. With no flight in listed, the

@@ -20,7 +20,8 @@
     "adapter": "ctt",
     "steps": [
       "direct"
-    ]
+    ],
+    "localClocks": true
   },
   "capabilities": [
     "history",

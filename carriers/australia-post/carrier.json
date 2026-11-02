@@ -25,7 +25,8 @@
     "recognition": {
       "rank": 500
     },
-    "browser": true
+    "browser": true,
+    "localClocks": true
   },
   "capabilities": [
     "history",

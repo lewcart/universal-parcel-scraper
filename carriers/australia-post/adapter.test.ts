@@ -246,7 +246,7 @@ describe('Australia Post status codes and places', () => {
       .toBe('2026-06-12T01:22:00Z');
     // Scans stored under the UTC label give way to the same scan on its own clock.
     expect(sameInstantIdentityPolicy('australia-post')).toEqual({
-      sourceCarrierId: 'australia-post', storedSources: ['australia-post'], requireProviderCode: true, relabelledFrom: 'UTC',
+      sourceCarrierId: 'australia-post', storedSources: ['australia-post'], requireProviderCode: true, relabelledFrom: 'UTC', matchWallClock: true,
     });
   });
 

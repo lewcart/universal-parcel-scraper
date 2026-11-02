@@ -22,7 +22,8 @@
     "adapter": "correos-spain",
     "steps": [
       "direct"
-    ]
+    ],
+    "localClocks": true
   },
   "capabilities": [
     "history",

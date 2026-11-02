@@ -52,4 +52,15 @@ describe('carrier.json', () => {
     expect(dayOnly).toContain('brt');
     expect(dayOnly.filter((folder) => !tracking(folder).localClocks)).toEqual([]);
   });
+
+  it('flags local clocks wherever an adapter writes a scan without an instant', () => {
+    // These give a bare day only now and then, so the flag would hold their answers back for a
+    // provider's dated copy, as it did the Hualei trackers in gzyl.
+    const unflagged = ['dpd', 'fedex', 'guatex', 'gzyl', 'la-poste', 'ups', 'usps'];
+    const writes = (folder: string) => readdirSync(path.join(carriersDirectory, folder))
+      .filter((file) => file.endsWith('.ts') && !file.endsWith('.test.ts'))
+      .some((file) => /[{ ,]local_time:/.test(readFileSync(path.join(carriersDirectory, folder, file), 'utf8')));
+    const tracking = (folder: string) => readCarrier(folder).tracking as { localClocks?: boolean };
+    expect(folders.filter((folder) => writes(folder) && !tracking(folder).localClocks)).toEqual(unflagged);
+  });
 });

@@ -24,7 +24,8 @@
     ],
     "recognition": {
       "rank": 601
-    }
+    },
+    "localClocks": true
   },
   "capabilities": [
     "history",

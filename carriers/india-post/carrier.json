@@ -21,7 +21,8 @@
     "adapter": "india-post",
     "steps": [
       "direct"
-    ]
+    ],
+    "localClocks": true
   },
   "capabilities": [
     "history",

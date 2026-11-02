@@ -446,7 +446,9 @@ newest scan of its day at an earlier stage, else below the day's timed scans, an
 dating it by its neighbours follows that order. A carrier that gives such scans no clock by design,
 as BRT does a delivery round or a portal that lists its history under day headings, sets
 `tracking.dateOnlyScans`: a consumer need not ask fallback providers for a clock no copy has. A
-carrier whose scans usually carry a clock and only sometimes lack one leaves it unset. A
+carrier whose scans usually carry a clock and only sometimes lack one leaves it unset, and leaves
+`tracking.localClocks` unset too when its other scans are instants, so a consumer does not hold
+its answer back for a dated copy. A
 zone the carrier states, or one learned for it from copies that carry an instant, belongs in
 its adapter. More rows alone do not prove a fresher or more complete history.
 

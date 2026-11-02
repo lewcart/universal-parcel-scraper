@@ -204,7 +204,9 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "aliexpress",
       "upstreamName": "AliExpress",
-      "recognitionRank": 580
+      "recognitionRank": 580,
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://global.cainiao.com/",
     "trackingUrlTemplate": "https://global.cainiao.com/detail.htm?mailNoList={trackingNumber}",
@@ -712,6 +714,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "adapter": "dhl-ecommerce",
       "recognitionRank": 670,
       "browserRecognitionRank": 900,
+      "localClocks": true,
       "browser": true
     },
     "canaryUrl": "https://www.dhl.com/ch-en/home/tracking.html",
@@ -1977,7 +1980,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "india-post"
+      "adapter": "india-post",
+      "localClocks": true
     },
     "canaryUrl": "https://myspeedpost.com/track",
     "trackingUrlTemplate": "https://myspeedpost.com/track?n={trackingNumber}&sync=true",
@@ -2604,7 +2608,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "postnord",
-      "recognitionRank": 510
+      "recognitionRank": 510,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.postnord.com/en/",
     "trackingUrlTemplate": "https://tracking.postnord.com/en/?id={trackingNumber}",
@@ -2920,7 +2925,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "ctt"
+      "adapter": "ctt",
+      "localClocks": true
     },
     "canaryUrl": "https://www.ctt.pt/",
     "trackingUrlTemplate": "https://www.ctt.pt/feapl_2/app/open/objectSearch/objectSearch.jspx?objects={trackingNumber}",
@@ -4718,6 +4724,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "australia-post",
       "recognitionRank": 500,
+      "localClocks": true,
       "browser": true
     },
     "canaryUrl": "https://auspost.com.au/mypost/track/",
@@ -5270,7 +5277,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "correos-spain"
+      "adapter": "correos-spain",
+      "localClocks": true
     },
     "canaryUrl": "https://www.correos.es/",
     "trackingUrlTemplate": "https://www.correos.es/es/es/herramientas/localizador/envios/detalle?tracking-number={trackingNumber}",
@@ -7746,7 +7754,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "anc-delivers",
-      "recognitionRank": 152
+      "recognitionRank": 152,
+      "localClocks": true
     },
     "canaryUrl": "https://ancdelivers.com.au/receiving/track-your-item",
     "trackingUrlTemplate": "https://ancdelivers.com.au/track/{trackingNumber}",
@@ -8355,7 +8364,9 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "aquiline",
-      "recognitionRank": 74
+      "recognitionRank": 74,
+      "localClocks": true,
+      "dateOnlyScans": true
     },
     "canaryUrl": "https://aq-track.com/",
     "trackingUrlTemplate": "https://aq-track.com/app/track/{trackingNumber}",
@@ -16216,7 +16227,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
           "validator": "germanyPostcode"
         }
       ],
-      "recognitionRank": 970
+      "recognitionRank": 970,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.dpd.de/status/en_US/parcel/",
     "trackingUrlTemplate": "https://tracking.dpd.de/status/en_US/parcel/{trackingNumber}",
@@ -16435,7 +16447,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-pl",
-      "recognitionRank": 520
+      "recognitionRank": 520,
+      "localClocks": true
     },
     "canaryUrl": "https://tracktrace.dpd.com.pl/EN/findParcel",
     "trackingUrlTemplate": "https://tracktrace.dpd.com.pl/EN/parcelDetails?typ=1&p1={trackingNumber}",
@@ -19802,7 +19815,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "fastdrop",
-      "recognitionRank": 826
+      "recognitionRank": 826,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.fastdrop.mt/",
     "trackingUrlTemplate": "https://booking.fastdrop.mt/package-tracking/{trackingNumber}",
@@ -21375,7 +21389,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gaash",
-      "recognitionRank": 769
+      "recognitionRank": 769,
+      "localClocks": true
     },
     "canaryUrl": "https://gaashwd.com/track-parcel/",
     "trackingUrlTemplate": "https://gaashwd.com/track-parcel/?TrackingNumber={trackingNumber}",
@@ -33385,7 +33400,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "orlen-paczka",
-      "recognitionRank": 495
+      "recognitionRank": 495,
+      "localClocks": true
     },
     "canaryUrl": "https://www.orlenpaczka.pl/sledz-paczke/",
     "trackingUrlTemplate": "https://www.orlenpaczka.pl/sledz-paczke/?numer={trackingNumber}",
@@ -34441,7 +34457,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "passport",
-      "recognitionRank": 55
+      "recognitionRank": 55,
+      "localClocks": true
     },
     "canaryUrl": "https://passportglobal.com/track/",
     "trackingUrlTemplate": "https://track.passportglobal.com/{trackingNumber}",
@@ -40561,7 +40578,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "shree-maruti",
-      "recognitionRank": 822
+      "recognitionRank": 822,
+      "localClocks": true
     },
     "canaryUrl": "https://shreemaruti.com/track-shipment/",
     "trackingUrlTemplate": "https://shreemaruti.com/track-shipment/?awb={trackingNumber}",
@@ -44488,7 +44506,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tnt-au",
-      "recognitionRank": 601
+      "recognitionRank": 601,
+      "localClocks": true
     },
     "canaryUrl": "https://www.tntexpress.com.au/interaction/Trackntrace.aspx",
     "trackingUrlTemplate": "https://www.tntexpress.com.au/interaction/ASPs/trackref_detail.asp?con={trackingNumber}",

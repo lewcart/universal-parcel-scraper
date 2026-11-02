@@ -40,7 +40,8 @@
         "help": "Optional. DPD uses it to unlock verified scans and the delivery window.",
         "validator": "germanyPostcode"
       }
-    ]
+    ],
+    "localClocks": true
   },
   "capabilities": [
     "history",

@@ -48,7 +48,8 @@ shape, so `j-and-t-uk-1` has high confidence.
 ## Links
 
 The [tracker](https://www.jtexpress.uk/tracking) looks a parcel up when the number is in its `q`
-parameter.
+parameter. Such a link names J&T Express UK only for one of its own numbers, `JTUK…`;
+another number in it is left to detection.
 
 ## Testing
 

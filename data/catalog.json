@@ -25274,7 +25274,8 @@
         "pathPattern": "^/tracking/?$",
         "params": [
           "q"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -25433,7 +25434,8 @@
         "pathPattern": "^/tracking/?$",
         "params": [
           "q"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -25599,7 +25601,8 @@
         "pathPattern": "^/tracking/?$",
         "params": [
           "q"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -29202,7 +29205,7 @@
           "www.m-one.rs"
         ],
         "pathPattern": "^/(?:en)?/?$",
-        "query": "^([A-Za-z0-9]+)$"
+        "query": "^([A-Z]{2}\\d{9}RS|RS\\d{12})$"
       }
     ],
     "detectionRules": [

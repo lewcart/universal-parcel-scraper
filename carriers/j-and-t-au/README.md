@@ -53,7 +53,8 @@ confidence. No public number has been found, so the corpus holds a synthetic one
 ## Links
 
 The [tracker](https://www.jtexpress.au/tracking) looks a parcel up when the number is in its `q`
-parameter.
+parameter. Such a link names J&T Express Australia only for one of its own numbers, `JTAU…`;
+another number in it is left to detection.
 
 ## Testing
 

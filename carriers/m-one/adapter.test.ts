@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { recognitionCandidates } from '../../core/catalog/recognition.js';
-import { detectCarrierMatch } from '../../core/detection/index.js';
+import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, M_ONE_API, MOneTracker } from './adapter.js';
@@ -211,5 +211,14 @@ describe('M-ONE status vocabulary', () => {
     expect(statusMapAnswer({ carrier: 'm-one', providerCode: 'ST99', description: 'Synthetic note' })).toEqual({ kind: 'unknown' });
     expect(mOneStage('st07', 'Uručena pošiljka')).toEqual({ stage: 'delivered', source: 'carrier_map' });
     expect(mOneStage('ST99', 'Synthetic note')).toBeNull();
+  });
+});
+
+describe('M-ONE links', () => {
+  it('name M-ONE for its two shapes only', () => {
+    for (const number of ['PL000000028RS', 'RS000000000001']) {
+      expect(parseTrackingInput(`https://m-one.rs/en?${number}`), number).toMatchObject({ trackingNumber: number, carrier: 'm-one', source: 'link' });
+    }
+    for (const number of ['SAMPLE1', 'PL00000002RS']) expect(parseTrackingInput(`https://m-one.rs/en?${number}`).carrier, number).not.toBe('m-one');
   });
 });

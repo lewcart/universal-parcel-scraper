@@ -45,7 +45,8 @@ so `j-and-t-de-1` has high confidence.
 ## Links
 
 The [tracker](https://www.jtexpress.de/tracking) looks a parcel up when the number is in its `q`
-parameter.
+parameter. Such a link names J&T Express Germany only for one of its own numbers, `JTDE…`;
+another number in it is left to detection.
 
 ## Testing
 

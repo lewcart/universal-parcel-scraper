@@ -52,7 +52,7 @@ sources are in [`numbers.json`](numbers.json).
 ## Links
 
 The home page reads a number from its bare query string, `m-one.rs/en?{number}`, and opens that
-parcel's status.
+parcel's status. Such a link names M-ONE only for a number of one of its two shapes.
 
 ## Testing
 

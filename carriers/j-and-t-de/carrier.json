@@ -65,7 +65,8 @@
       "pathPattern": "^/tracking/?$",
       "params": [
         "q"
-      ]
+      ],
+      "ownNumbersOnly": true
     }
   ],
   "detection": [

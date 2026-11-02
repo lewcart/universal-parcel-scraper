@@ -25276,7 +25276,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/tracking/?$",
         "params": [
           "q"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -25435,7 +25436,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/tracking/?$",
         "params": [
           "q"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -25601,7 +25603,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/tracking/?$",
         "params": [
           "q"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -29204,7 +29207,7 @@ export const CARRIER_CATALOG = {
           "www.m-one.rs"
         ],
         "pathPattern": "^/(?:en)?/?$",
-        "query": "^([A-Za-z0-9]+)$"
+        "query": "^([A-Z]{2}\\d{9}RS|RS\\d{12})$"
       }
     ],
     "detectionRules": [

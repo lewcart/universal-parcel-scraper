@@ -19,6 +19,7 @@ import { ozonPosting } from '../../carriers/ozon-logistics/number.js';
 import { normalizePackManNumber } from '../../carriers/pack-man/number.js';
 import { PAPERFLY_LAYOUT, paperflyRequestNumber } from '../../carriers/paperfly/number.js';
 import { normalizeCourierGuyNumber } from '../../carriers/the-courier-guy/number.js';
+import { tforceParsPro } from '../../carriers/tforce-freight/number.js';
 import { normalizeTntItalyNumber } from '../../carriers/tnt-it/number.js';
 import { ZR_EXPRESS_LAYOUT, zrExpressRequestNumber } from '../../carriers/zr-express/number.js';
 import { postlogisticsIdentifier } from '../../carriers/postlogistics/number.js';
@@ -68,6 +69,8 @@ export function trackingNumberForLink(carrierId: CarrierId, raw: string): string
   if (carrierId === 'gofo-fr') return regionalGofoRequestNumber(normalized);
   // Border Express's tracker takes a consignment, not the barcode of one of its units.
   if (carrierId === 'border-express') return borderExpressBarcodeConsignment(normalized) ?? raw;
+  // TForce Freight's page takes a PRO, which a PARS number for the Canadian border carries after 2205.
+  if (carrierId === 'tforce-freight') return tforceParsPro(normalized) ?? raw;
   // tnt.com's page takes a consignment's nine digits, without the GE and WW a label can print around them.
   if (carrierId === 'tnt' && /^GE\d{9}WW$/.test(normalized)) return normalized.slice(2, 11);
   // tnt.it's tracker finds a waybill only without the check digit its label prints after a dash.

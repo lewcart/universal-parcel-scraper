@@ -69,6 +69,8 @@ so the check on the whole number is the PRO's), and the adapter searches the PRO
 The tracker reads one PRO number or several from `?proNumbers=` on
 `tforcefreight.com/ltl/apps/Tracking` and searches them on load. The former UPS Freight tracker
 read `?TrackProNumber=` on `ltl.upsfreight.com/shipping/tracking/TrackingDetail.aspx`.
+A PARS number opens the tracker with the PRO it carries after `2205`, which is all the tracker
+searches.
 
 ## Testing
 

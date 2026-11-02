@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
-import { detectCarrierMatch } from '../../core/detection/index.js';
+import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { J_AND_T_APP_ID, J_AND_T_SIGNING_KEY } from '../j-and-t-au/official.js';
@@ -141,5 +141,17 @@ describe('J&T Express UK status vocabulary', () => {
       .toEqual({ kind: 'mapped', stage: 'out_for_delivery' });
     expect(statusMapAnswer({ carrier: 'j-and-t-uk', description: 'Synthetic note' })).toEqual({ kind: 'unknown' });
     expect(jAndTUkStage('Synthetic note')).toBeNull();
+  });
+});
+
+describe('J&T Express links in Europe and Australia', () => {
+  it('name each network for its own numbers only, and leave another network\'s number to detection', () => {
+    for (const [host, carrier, own] of [['www.jtexpress.uk', 'j-and-t-uk', 'JTUK000000000001'], ['www.jtexpress.de', 'j-and-t-de', 'JTDE000000000001'],
+      ['www.jtexpress.au', 'j-and-t-au', 'JTAU000000000001']] as const) {
+      expect(parseTrackingInput(`https://${host}/tracking?q=${own}`), host).toMatchObject({ trackingNumber: own, carrier, source: 'link' });
+      for (const other of ['JTDE000000000002', 'JTUK000000000002', 'JT0000000000001', 'JTUK0001'].filter((number) => !number.startsWith(own.slice(0, 4)))) {
+        expect(parseTrackingInput(`https://${host}/tracking?q=${other}`).carrier, `${host} ${other}`).not.toBe(carrier);
+      }
+    }
   });
 });

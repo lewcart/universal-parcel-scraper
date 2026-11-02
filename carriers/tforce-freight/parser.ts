@@ -6,6 +6,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { calendarDay, countryCode } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
+import { TFORCE_PARS } from './number.js';
 import { NOT_AVAILABLE, tforceFreightShipmentStage, tforceFreightStage } from './status.js';
 
 export const PROVIDER = 'TForce Freight';
@@ -29,8 +30,6 @@ const FINAL: ReadonlySet<Stage> = new Set(['delivered', 'returned']);
 
 type Selection = ReturnType<CheerioAPI>;
 
-// A PARS number for the Canadian border: TForce Freight's carrier code 2205 and the PRO.
-const PARS = /^2205(\d{9})$/;
 
 /**
  * A PRO number as TForce Freight's tracker takes it: nine digits whose last is
@@ -39,7 +38,7 @@ const PARS = /^2205(\d{9})$/;
  */
 export function normalizeTforceFreightNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  const digits = PARS.exec(number)?.[1] ?? number;
+  const digits = TFORCE_PARS.exec(number)?.[1] ?? number;
   const pro = /^\d{8,9}$/.test(digits) ? digits.padStart(9, '0') : '';
   if (!pro || !hasMod7CheckDigit(pro)) throw new InvalidInputError(PROVIDER, 'TForce Freight PRO numbers are nine digits ending in a check digit');
   return pro;

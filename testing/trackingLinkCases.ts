@@ -29,6 +29,16 @@ export interface TrackingLinkCase {
 // independently of the generated link templates, so a template that drifts
 // fails here instead of passing against itself.
 export const trackingLinkCases: TrackingLinkCase[] = [
+  { carrier: 'dex-pk', number: 'PK-DEX748316205',
+    route: /^https:\/\/www\.dex\.com\.pk\/tracking\?references=PK-DEX748316205$/,
+    marker: /YOUR RESULTS/i },
+  { carrier: 'rozetka-delivery', number: 'RMP-123456789',
+    route: /^https:\/\/rozetka\.delivery\/tracking\/parcel\/?(?:\?.*)?$/,
+    marker: /Трекінг посилки/,
+    forwarding: { notFound: /посилку не знайдено|Експрес-накладна не знайдена/ } },
+  { carrier: 'pargo', number: 'PAR7846130952',
+    route: /^https:\/\/track\.pargo\.co\.za\/\?code=PAR7846130952$/,
+    marker: /Track and Trace Details Unavailable/i },
   { carrier: 'qatar-post', number: 'EE000000005QA',
     route: /^https:\/\/www\.qatarpost\.qa\/TrackAndTrace\?trackingNumber=EE000000005QA$/,
     marker: /Track and Trace for Qatar Post|Use Tracking ID for item tracking/ },

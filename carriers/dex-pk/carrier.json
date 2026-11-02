@@ -17,17 +17,46 @@
   "timezone": "Asia/Karachi",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dex-pk",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "destination_country",
+    "delivered_at"
+  ],
   "portal": {
     "searchUrl": "https://www.dex.com.pk/tracking",
     "canaryUrl": "https://www.dex.com.pk/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "recipient_type",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "recipient_type",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "recipient_address"
+    ],
+    "url": "https://www.dex.com.pk/tracking?references={trackingNumber}"
   },
   "links": [
     {

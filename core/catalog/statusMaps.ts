@@ -162,6 +162,7 @@ import { statusMap as delhivery } from '../../carriers/delhivery/status.js';
 import { statusMap as dellin } from '../../carriers/dellin/status.js';
 import { statusMap as delnext } from '../../carriers/delnext/status.js';
 import { statusMap as deppon } from '../../carriers/deppon/status.js';
+import { statusMap as dexPk } from '../../carriers/dex-pk/status.js';
 import { statusMap as dhlEcommerce } from '../../carriers/dhl-ecommerce/status.js';
 import { statusMap as dhlEcommerceEs } from '../../carriers/dhl-ecommerce-es/status.js';
 import { statusMap as dhlEcommerceNl } from '../../carriers/dhl-ecommerce-nl/status.js';
@@ -539,6 +540,7 @@ import { statusMap as relaytech } from '../../carriers/relaytech/status.js';
 import { statusMap as rivigo } from '../../carriers/rivigo/status.js';
 import { statusMap as rlCarriers } from '../../carriers/rl-carriers/status.js';
 import { statusMap as roadrunner } from '../../carriers/roadrunner/status.js';
+import { statusMap as rozetkaDelivery } from '../../carriers/rozetka-delivery/status.js';
 import { statusMap as royalExpressMm } from '../../carriers/royal-express-mm/status.js';
 import { statusMap as royalMail } from '../../carriers/royal-mail/status.js';
 import { statusMap as rpxIndonesia } from '../../carriers/rpx-indonesia/status.js';
@@ -738,7 +740,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'correios-br': correiosBr, 'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-chile': correosChile, 'correos-cuba': correosCuba, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, ctt, 'ctt-express': cttExpress, cttyex,
   'cyprus-post': cyprusPost, 'd-express': dExpress, dachser, 'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss,
-  dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, dealersend, delhivery, dellin, delnext, deppon, dhl, 'dhl-ecommerce': dhlEcommerce, 'dhl-ecommerce-es': dhlEcommerceEs, 'dhl-ecommerce-nl': dhlEcommerceNl, 'dhl-ecommerce-pl': dhlEcommercePl, 'dhl-ecommerce-uk': dhlEcommerceUk, 'dhl-express': dhlExpress,
+  dayone, 'daylight-transport': daylightTransport, 'dayton-freight': daytonFreight, dealersend, delhivery, dellin, delnext, deppon, 'dex-pk': dexPk, dhl, 'dhl-ecommerce': dhlEcommerce, 'dhl-ecommerce-es': dhlEcommerceEs, 'dhl-ecommerce-nl': dhlEcommerceNl, 'dhl-ecommerce-pl': dhlEcommercePl, 'dhl-ecommerce-uk': dhlEcommerceUk, 'dhl-express': dhlExpress,
   'dhl-freight': dhlFreight, dhlink, direx, dobropost, 'dohrn-transfer': dohrnTransfer, 'domain-logistics': domainLogistics, domex, dpd,
   'dpd-at': dpdAt, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-hu': dpdHu, 'dpd-ie': dpdIe,
   'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-ro': dpdRo, 'dpd-uk': dpdUk, 'dpd-za': dpdZa, dpex, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dtdc, dx, dynalogic,
@@ -785,7 +787,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   postnord, posturinn, ppl, 'precision-deliveries': precisionDeliveries,
   'pro-carrier': proCarrier, 'prompt-xpress': promptXpress, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'pullman-cargo': pullmanCargo, purolator, 'quantium-solutions': quantiumSolutions,
   'quick-rabbit': quickRabbit, 'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, 'rex-indonesia': rexIndonesia, redx, 'relais-colis': relaisColis, relaytech,
-  rivigo, 'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,
+  rivigo, 'rl-carriers': rlCarriers, roadrunner, 'rozetka-delivery': rozetkaDelivery, 'royal-express-mm': royalExpressMm, 'royal-mail': royalMail,
   'rpx-indonesia': rpxIndonesia, 'safeway-express-cargo': safewayExpressCargo, sagawa, safexpress, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
   'sat-ukraine': satUkraine, 'saudi-post': saudiPost, seino, seko, sendex, sendle, sending, serpost, servientrega, seur, 'sf-express': sfExpress, sfc, shadowfax, shipa, shipblu, shipentegra, shiprocket, 'shipglobal-in': shipglobalIn, shouwu,
   'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'singapore-post': singaporePost, 'skroutz-last-mile': skroutzLastMile,

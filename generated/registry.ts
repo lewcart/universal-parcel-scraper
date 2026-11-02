@@ -147,6 +147,7 @@ import { adapter as delhivery } from '../carriers/delhivery/adapter.js';
 import { adapter as dellin } from '../carriers/dellin/adapter.js';
 import { adapter as delnext } from '../carriers/delnext/adapter.js';
 import { adapter as deppon } from '../carriers/deppon/adapter.js';
+import { adapter as dexPk } from '../carriers/dex-pk/adapter.js';
 import { adapter as dhl } from '../carriers/dhl/adapter.js';
 import { adapter as dhlEcommerce } from '../carriers/dhl-ecommerce/adapter.js';
 import { adapter as dhlEcommerceEs } from '../carriers/dhl-ecommerce-es/adapter.js';
@@ -530,6 +531,7 @@ import { adapter as roadie } from '../carriers/roadie/adapter.js';
 import { adapter as roadrunner } from '../carriers/roadrunner/adapter.js';
 import { adapter as royalExpressMm } from '../carriers/royal-express-mm/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
+import { adapter as rozetkaDelivery } from '../carriers/rozetka-delivery/adapter.js';
 import { adapter as rpxIndonesia } from '../carriers/rpx-indonesia/adapter.js';
 import { adapter as russianPost } from '../carriers/russian-post/adapter.js';
 import { adapter as safewayExpressCargo } from '../carriers/safeway-express-cargo/adapter.js';
@@ -854,6 +856,7 @@ export const REGISTRY: RegistryDefinition = {
     "dellin": dellin,
     "delnext": delnext,
     "deppon": deppon,
+    "dex-pk": dexPk,
     "dhl": dhl,
     "dhl-ecommerce": dhlEcommerce,
     "dhl-ecommerce-es": dhlEcommerceEs,
@@ -1237,6 +1240,7 @@ export const REGISTRY: RegistryDefinition = {
     "roadrunner": roadrunner,
     "royal-express-mm": royalExpressMm,
     "royal-mail": royalMail,
+    "rozetka-delivery": rozetkaDelivery,
     "rpx-indonesia": rpxIndonesia,
     "russian-post": russianPost,
     "safeway-express-cargo": safewayExpressCargo,
@@ -1709,7 +1713,7 @@ export const REGISTRY: RegistryDefinition = {
     "der-kurier-sk": "universal",
     "designer-transport": "universal",
     "dex-i": "universal",
-    "dex-pk": "universal",
+    "dex-pk": "dex-pk",
     "dg-transporte": "universal",
     "dhl": "dhl",
     "dhl-ecommerce": "dhl-ecommerce",
@@ -2388,7 +2392,7 @@ export const REGISTRY: RegistryDefinition = {
     "royal-express-mm": "royal-express-mm",
     "royal-mail": "royal-mail",
     "royale-international": "universal",
-    "rozetka-delivery": "universal",
+    "rozetka-delivery": "rozetka-delivery",
     "rpx-hk": "universal",
     "rpx-indonesia": "rpx-indonesia",
     "rr-express-sg": "universal",

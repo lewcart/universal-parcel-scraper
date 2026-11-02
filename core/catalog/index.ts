@@ -9,6 +9,7 @@
  */
 import { borderExpressBarcodeConsignment } from '../../carriers/border-express/number.js';
 import { cdlRequestNumber } from '../../carriers/cdl/number.js';
+import { normalizeDexPkNumber } from '../../carriers/dex-pk/number.js';
 import { ecoscootingReference } from '../../carriers/ecoscooting/number.js';
 import { FLIPPOST_ONE_LAYOUT, flippostWaybills } from '../../carriers/flippost/number.js';
 import { normalizeGogoXpressNumber } from '../../carriers/gogo-xpress/number.js';
@@ -41,6 +42,8 @@ export * from './amazon.js';
 /** Carrier-specific printed identifiers expected by the official portal. */
 export function trackingNumberForLink(carrierId: CarrierId, raw: string): string {
   const normalized = normalizeTrackingNumber(raw);
+  // DEX Pakistan finds its reference only with the official hyphen after PK.
+  if (carrierId === 'dex-pk' && /^PKDEX\d{9}$/.test(normalized)) return normalizeDexPkNumber(normalized);
   if (carrierId === 'mondial-relay' && isValidMondialRelayBarcode(normalized)) return normalized.slice(0, 12);
   if (carrierId === 'c-chez-vous') {
     const composite = /^([A-Z0-9]{11})(\d{5})$/.exec(normalized);

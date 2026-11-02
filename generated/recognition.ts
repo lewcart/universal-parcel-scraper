@@ -390,6 +390,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "roadie": 28,
   "roadrunner": 733,
   "royal-express-mm": 723,
+  "rozetka-delivery": 744,
   "rpx-indonesia": 947,
   "russian-post": 782,
   "safeway-express-cargo": 77,

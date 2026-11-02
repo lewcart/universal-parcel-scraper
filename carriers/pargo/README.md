@@ -1,22 +1,25 @@
 # Pargo
 
-Pargo parcels use enabled universal providers. There is no dedicated adapter.
+Pargo is a pickup-point network in South Africa; couriers carry its parcels to
+those points. Enabled universal providers retrieve its histories.
 
-## Numbers
+## Retrieval
 
-Pargo is a pickup-point network in South Africa; couriers carry its parcels to the points. Its
-API documentation gives waybill numbers as `PAR` and ten digits, which `pargo-1` claims.
-Magyar Posta's broad domestic rule also matches them with low confidence. Shops that send
-through Pargo get tracking codes that start with their own prefix, and Pargo's earlier tracker
-took eleven-digit waybills. Those shapes name the shop or are shared with other carriers, so no
-rule claims them.
+The marketing page embeds the [public tracker](https://track.pargo.co.za/). Its
+client sends `GET /events/orders/{code}` on that same host without a session or
+credential. The widget expects `orderData.trackingCode`, current status, reached steps and
+event history, separate from address and pickup details.
+
+The lookup can return HTTP 422 with a `validation_error` naming the complete
+reference. Archived references receive the same unavailable-order response as an
+unknown code. Native retrieval remains disabled until a retained positive proves
+identity, history and clocks.
 
 ## Links
 
-The tracking page, `pargo.co.za/track-trace/`, embeds Pargo's tracker. Archived lookups pass
-the number as `code`, and earlier as `track-trace`. Earlier trackers read it from
-`trackingCode` on `pargo.co.za/scripts/track_and_trace.php` and from `waybill` on
-`api.pargo.co.za/track-trace.php`.
+The standalone tracker reads `code` from its query. Older marketing and PHP
+tracking routes remain ingestion leads; the current marketing iframe does not
+inherit their query parameters.
 
 ## Testing
 

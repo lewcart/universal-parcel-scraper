@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "data": [
+    {
+      "trackingNumber": "PK-DEX900123456",
+      "originalTrackingNumber": "PK-DEX900123456",
+      "packageCode": "SYNTHETIC_PACKAGE",
+      "packageStatus": "domestic_delivered",
+      "firstMileShippingProvider": "PK-DEX",
+      "lastMileShippingProvider": "PK-DEX"
+    }
+  ]
+}

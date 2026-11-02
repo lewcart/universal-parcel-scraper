@@ -18,18 +18,57 @@
   "timezone": "Europe/Kyiv",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "rozetka-delivery",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 744,
+      "pattern": "^RMP\\d{9}$"
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "pickup_point"
+  ],
   "portal": {
-    "url": "https://rozetka.delivery/tracking?parcel_id={trackingNumber}",
-    "searchUrl": "https://rozetka.delivery/tracking",
-    "canaryUrl": "https://rozetka.delivery/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "url": "https://rozetka.delivery/tracking/parcel?parcel_id={trackingNumber}",
+    "searchUrl": "https://rozetka.delivery/tracking/parcel",
+    "canaryUrl": "https://rozetka.delivery/tracking/parcel",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "pickup_point",
+      "provider_code",
+      "progress_rail",
+      "planned_route"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "pickup_point",
+      "provider_code"
+    ],
+    "discarded": [
+      "progress_rail",
+      "planned_route"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions",
+      "sender_name",
+      "recipient_name",
+      "service_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {
@@ -37,7 +76,7 @@
         "rozetka.delivery",
         "www.rozetka.delivery"
       ],
-      "pathPattern": "^/tracking/?$",
+      "pathPattern": "^/tracking(?:/parcel)?/?$",
       "params": [
         "parcel_id"
       ]

@@ -15264,9 +15264,10 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dex-pk"
     },
     "canaryUrl": "https://www.dex.com.pk/",
+    "trackingUrlTemplate": "https://www.dex.com.pk/tracking?references={trackingNumber}",
     "trackingSearchUrl": "https://www.dex.com.pk/tracking",
     "linkRules": [
       {
@@ -34345,8 +34346,19 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://pargo.co.za/track-trace/",
+    "canaryUrl": "https://track.pargo.co.za/",
+    "trackingUrlTemplate": "https://track.pargo.co.za/?code={trackingNumber}",
+    "trackingSearchUrl": "https://track.pargo.co.za/",
     "linkRules": [
+      {
+        "domains": [
+          "track.pargo.co.za"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "code"
+        ]
+      },
       {
         "domains": [
           "pargo.co.za"
@@ -38418,18 +38430,21 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "rozetka-delivery",
+      "recognitionRank": 744,
+      "recognitionPattern": "^RMP\\d{9}$",
+      "localClocks": true
     },
-    "canaryUrl": "https://rozetka.delivery/tracking",
-    "trackingUrlTemplate": "https://rozetka.delivery/tracking?parcel_id={trackingNumber}",
-    "trackingSearchUrl": "https://rozetka.delivery/tracking",
+    "canaryUrl": "https://rozetka.delivery/tracking/parcel",
+    "trackingUrlTemplate": "https://rozetka.delivery/tracking/parcel?parcel_id={trackingNumber}",
+    "trackingSearchUrl": "https://rozetka.delivery/tracking/parcel",
     "linkRules": [
       {
         "domains": [
           "rozetka.delivery",
           "www.rozetka.delivery"
         ],
-        "pathPattern": "^/tracking/?$",
+        "pathPattern": "^/tracking(?:/parcel)?/?$",
         "params": [
           "parcel_id"
         ]

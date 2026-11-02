@@ -1,30 +1,32 @@
 # ROZETKA Delivery
 
-ROZETKA Delivery parcels use enabled universal providers. There is no dedicated adapter.
+Tracks domestic ROZETKA Delivery waybills through the anonymous JSON service used by
+the [official tracker](https://rozetka.delivery/tracking/parcel). No account,
+session or recipient input is needed.
 
-ROZETKA Delivery is the Ukrainian parcel service of the ROZETKA marketplace: senders hand parcels
-in and recipients collect them at ROZETKA shops and pickup points. Its site is rozetka.delivery.
+## Retrieval
 
-## Numbers
+`direct` reads `track/public/{number}` on `https://rz-delivery.rozetka.ua/api/`,
+checks the whole returned identifier, then reads `track/status-group` with that
+identifier and `sort=asc`. `retry` repeats these reads after a network failure
+within the same lookup budget. HTTP rejections and malformed replies are not retried.
 
-Its tracker takes twelve digits, or three letters, a dash and nine digits; it inserts the dash
-only after `RMP`. Parcels the marketplace creates carry `RMP` numbers, and `rozetka-delivery-rmp`
-suggests ROZETKA Delivery for them at low confidence, from two archived lookups on its own API.
-Purolator's three-letters-and-nine-digits rule leaves `RMP` to it. The twelve-digit waybills
-public pages show all start with `101`, but twelve digits is a length many carriers share, so
-they have no rule.
+The adapter restores the dash the API requires for marketplace waybills.
+HTTP recognition stays within the existing detection candidates.
 
-## Why there is no adapter
+The public `track-status` dictionary supplies the code meanings. Actual dated
+statuses form the history; the planned route and the page's future progress rail
+do not. Cancellation, partial receipt and return movements retain their own
+meaning. The newest reached state wins when the overview and history differ.
 
-Its tracker reads an open JSON API on rz-delivery.rozetka.ua without a session, for the last
-status and for the whole history, and answered public numbers; an adapter is possible and not yet
-written. The API wants `RMP` numbers with their dash.
-
-## Links
-
-The tracking page opens a number from its `parcel_id` parameter.
+Clocks without offsets remain local wall times. Explicit upstream offsets are
+preserved. A status without scans is marked as a summary. A history that omits
+the current state or exceeds the event bound is marked as truncated so enabled
+providers can supply missing scans. An empty or expired response is inconclusive; only the
+overview's explicit missing-waybill reply means not found.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`ROZETKA_DELIVERY_TRACKING_NUMBER=... npm run test:carriers:live -- carriers/rozetka-delivery/adapter.live.test.ts`
+
+Set `ROZETKA_DELIVERY_UNKNOWN_NUMBER` to check the explicit negative reply.

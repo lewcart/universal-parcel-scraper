@@ -1,4 +1,276 @@
 {
   "carrier": "rozetka-delivery",
-  "entries": []
+  "entries": [
+    {
+      "code": "10010",
+      "wording": "Заплановано",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "registered"
+    },
+    {
+      "code": "10020",
+      "wording": "Очікується до відправки",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "registered"
+    },
+    {
+      "code": "10028",
+      "wording": "Прийнято за реєстром",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "accepted"
+    },
+    {
+      "code": "10029",
+      "wording": "Не прийнято за реєстром",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "exception"
+    },
+    {
+      "code": "10030",
+      "wording": "Прийнято на доставку",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "accepted"
+    },
+    {
+      "code": "10040",
+      "wording": "Підготовка до транспортування",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "10050",
+      "wording": "Готове до транспортування",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "10070",
+      "wording": "Прийнято перевізником",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "20010",
+      "wording": "В дорозі до РЦ",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "20020",
+      "wording": "Посилка отримана на РЦ",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "20030",
+      "wording": "Оформлено переадресацію",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "30010",
+      "wording": "У дорозі з РЦ",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "40041",
+      "wording": "На проміжному РЦ",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "10060",
+      "wording": "Скасовано",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "exception"
+    },
+    {
+      "code": "60010",
+      "wording": "Скасовано",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "exception"
+    },
+    {
+      "code": "40030",
+      "wording": "Відправлення у відділенні",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "in_transit"
+    },
+    {
+      "code": "40040",
+      "wording": "Готово до видачі",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "ready_for_pickup"
+    },
+    {
+      "code": "40080",
+      "wording": "Термін зберігання продовжено",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "ready_for_pickup"
+    },
+    {
+      "code": "40050",
+      "wording": "Одержувач відмовився",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "exception"
+    },
+    {
+      "code": "40060",
+      "wording": "Отримано запит на повернення (Відмова відправника)",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "40070",
+      "wording": "Вийшов термін зберігання",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "exception"
+    },
+    {
+      "code": "50010",
+      "wording": "Оформлене повернення",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "40045",
+      "wording": "Неуспішна доставка",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "failed_attempt"
+    },
+    {
+      "code": "50011",
+      "wording": "Повернення помістили в контейнер",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "50012",
+      "wording": "Повернення передано кур'єру",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "50013",
+      "wording": "Повернення отримано на РЦ",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "50015",
+      "wording": "Повернення прямує до відправника",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "50021",
+      "wording": "На проміжному РЦ",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "50030",
+      "wording": "Прийом повернень",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "50020",
+      "wording": "Очікує відправника",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "60025",
+      "wording": "Частково отримано",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status. Partial receipt does not establish delivery of the whole parcel."
+    },
+    {
+      "code": "60030",
+      "wording": "Видано",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "delivered"
+    },
+    {
+      "code": "60040",
+      "wording": "Повернено",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "returned"
+    },
+    {
+      "code": "10080",
+      "wording": "Посилку втрачено",
+      "language": "uk",
+      "confirmedBy": "portal",
+      "note": "The public tracker dictionary at https://rz-delivery.rozetka.ua/api/track-status.",
+      "stage": "exception"
+    }
+  ]
 }

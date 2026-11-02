@@ -54,6 +54,11 @@ describe('the derived CARRIERS record', () => {
   });
 
   it('shortens the numbers whose portal expects a different form', () => {
+    expect(trackingNumberForLink('dex-pk', 'pkdex748316205')).toBe('PK-DEX748316205');
+    expect(trackingNumberForLink('dex-pk', 'PK-DEX748316205')).toBe('PK-DEX748316205');
+    expect(trackingNumberForLink('dex-pk', 'PKDEX7483162057')).toBe('PKDEX7483162057');
+    expect(CARRIERS['dex-pk'].trackingUrl?.('pkdex748316205')).toBe('https://www.dex.com.pk/tracking?references=PK-DEX748316205');
+    expect(CARRIERS.pargo.trackingUrl?.('PAR7846130952')).toBe('https://track.pargo.co.za/?code=PAR7846130952');
     expect(trackingNumberForLink('mondial-relay', '12123999999999999999999987')).toBe('121239999999');
     // Border Express's tracker takes the consignment a unit's barcode is read into.
     expect(trackingNumberForLink('border-express', 'ZZZZBX00000010000001')).toBe('ZZZZ010000');

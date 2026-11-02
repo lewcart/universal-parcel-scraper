@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "data": {
+    "trackingNumber": "PK-DEX900123456",
+    "packageCode": "SYNTHETIC_PACKAGE",
+    "status": "domestic_delivered",
+    "firstMileShippingProvider": "PK-DEX",
+    "lastMileShippingProvider": "PK-DEX",
+    "destinationCountry": "PK",
+    "timeline": [
+      {
+        "status": "domestic_delivered",
+        "processTime": 1767258000123,
+        "shippingProvider": "PK-DEX",
+        "recipientType": "customer",
+        "location": "Example Delivery Hub",
+        "photos": ["SYNTHETIC_PRIVATE_IMAGE"],
+        "epod": { "recipientName": "SYNTHETIC_RECIPIENT" }
+      },
+      {
+        "status": "domestic_out_for_delivery",
+        "processTime": 1767250800456,
+        "shippingProvider": "PK-DEX",
+        "location": "Example Delivery Hub"
+      },
+      {
+        "status": "domestic_1st_attempt_failed",
+        "processTime": 1767182400789,
+        "shippingProvider": "PK-DEX",
+        "reasonCode": "customer_unavailable",
+        "location": "Example Delivery Hub"
+      },
+      {
+        "status": "domestic_ib_success_in_sort_center",
+        "processTime": 1767096000000,
+        "shippingProvider": "PK-DEX",
+        "location": "Example Sorting Hub"
+      }
+    ]
+  }
+}

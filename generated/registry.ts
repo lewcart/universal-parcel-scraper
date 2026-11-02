@@ -581,6 +581,7 @@ import { adapter as speedpak } from '../carriers/speedpak/adapter.js';
 import { adapter as speedx } from '../carriers/speedx/adapter.js';
 import { adapter as speedy } from '../carriers/speedy/adapter.js';
 import { adapter as springGds } from '../carriers/spring-gds/adapter.js';
+import { adapter as sptexp } from '../carriers/sptexp/adapter.js';
 import { adapter as spxBr } from '../carriers/spx-br/adapter.js';
 import { adapter as spxId } from '../carriers/spx-id/adapter.js';
 import { adapter as spxMy } from '../carriers/spx-my/adapter.js';
@@ -1284,6 +1285,7 @@ export const REGISTRY: RegistryDefinition = {
     "speedx": speedx,
     "speedy": speedy,
     "spring-gds": springGds,
+    "sptexp": sptexp,
     "spx-br": spxBr,
     "spx-id": spxId,
     "spx-my": spxMy,
@@ -2475,7 +2477,7 @@ export const REGISTRY: RegistryDefinition = {
     "spfly": "universal",
     "spring-gds": "spring-gds",
     "spt-logistics": "universal",
-    "sptexp": "universal",
+    "sptexp": "sptexp",
     "spx-br": "spx-br",
     "spx-id": "spx-id",
     "spx-my": "spx-my",

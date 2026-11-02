@@ -1316,7 +1316,7 @@ describe('SPT Express, Hitch, Consegnia, FMX, JANCO Express, ARK Express, Fastgo
   it('names Consegnia from its CLC numbers and suggests the others for their own layouts', () => {
     expect(detectCarrierMatch('CLC000000001')).toMatchObject({ carrier: 'consegnia', confidence: 'high', candidates: ['consegnia'] });
     for (const [number, carrier] of [
-      ['SPT000000000001YQ', 'sptexp'], ['ZIP000000000001', 'hitch'], ['ZIPA0000000000B', 'hitch'],
+      ['SPT999999999901YQ', 'sptexp'], ['ZIP000000000001', 'hitch'], ['ZIPA0000000000B', 'hitch'],
       ['MYX0000000001', 'fmx'], ['JEAA00000001', 'janco-express'], ['JEZY00000001', 'janco-express'],
       ['AP0000001AU', 'ark-express'], ['AU000000001SG', 'fastgo'],
     ] as const) {

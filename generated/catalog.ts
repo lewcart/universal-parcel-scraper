@@ -41651,7 +41651,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sptexp",
+      "recognitionRank": 154
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],

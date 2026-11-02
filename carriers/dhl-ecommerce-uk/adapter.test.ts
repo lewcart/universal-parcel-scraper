@@ -68,6 +68,12 @@ describe('DHL eCommerce UK parser', () => {
     expect(result.events?.slice(0, 2).map((event) => event.stage)).toEqual(['in_transit', 'exception']);
   });
 
+  it('reads an address the sender gave that cannot be found as a problem, with no attempt', () => {
+    const row = `<tr><td>03rd April 2026</td><td>15:02</td><td>We’re sorry but we haven’t been able to locate the delivery address from the information provided by the sender.</td></tr>`;
+    const page = fixture('in-transit').replace('<tr><td nowrap="nowrap">03rd April 2026', `${row}<tr><td nowrap="nowrap">03rd April 2026`);
+    expect(parseDhlEcommerceUk(page, NUMBER)).toMatchObject({ status: 'exception', current_stage: 'exception' });
+  });
+
   it('reads a winter clock in British time', () => {
     const page = fixture('delivered').replaceAll('April', 'January');
     expect(normalizeCarrierResult(parseDhlEcommerceUk(page, NUMBER)).last_update).toBe('2026-01-03T18:19:00+00:00');

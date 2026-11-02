@@ -8,6 +8,7 @@
     {"wording": "Collected", "language": "en", "stage": "delivered", "confirmedBy": "live", "firstSeen": "2026-10-08", "note": "Names no shipment. Its time is the signature's, under a delivered headline: the recipient collected the parcel."},
     {"wording": "Delivery Attempted", "language": "en", "stage": "failed_attempt", "confirmedBy": "live", "firstSeen": "2026-10-08", "note": "Names no shipment."},
     {"wording": "We're sorry but your shipment was refused on delivery. Please contact your sender for further information", "language": "en", "stage": "exception", "confirmedBy": "live", "firstSeen": "2026-10-08", "note": "The headline then says the shipment has been returned to the sender."},
+    {"wording": "We're sorry but we haven't been able to locate the delivery address from the information provided by the sender.", "language": "en", "stage": "exception", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "Names no attempt: the address the sender gave cannot be found, so delivery waits on a better one."},
     {"wording": "We're sorry but the delivery of your shipment has been delayed. We expect to deliver on the next working day", "language": "en", "stage": "in_transit", "confirmedBy": "live"}
   ]
 }

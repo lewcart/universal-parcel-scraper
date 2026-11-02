@@ -9,7 +9,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { DhlEcommerceUkTracker, adapter } from './adapter.js';
 import { normalizeDhlEcommerceUkNumber, parseDhlEcommerceUk } from './parser.js';
-import { dhlEcommerceUkStage } from './status.js';
+import { dhlEcommerceUkStage, statusMap } from './status.js';
 
 const NUMBER = '99999999999981';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
@@ -90,6 +90,15 @@ describe('DHL eCommerce UK parser', () => {
     const result = parseDhlEcommerceUk(page, NUMBER);
     expect(result.status).toBe('unknown');
     expect(result.events?.[0]).toEqual({ description: 'Your shipment is held for inspection', time: '2026-04-03T01:32:00+01:00' });
+  });
+
+  it('reads the row with the planned delivery day in transit, as a provider relays it too', () => {
+    const page = fixture('in-transit').replace(`Your shipment ${NUMBER} is at the delivery depot</td>`, `Your shipment ${NUMBER} is due to be delivered on Saturday 04th April 2026</td>`);
+    const result = parseDhlEcommerceUk(page, NUMBER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map' });
+    expect(result.events?.[0]).toMatchObject({ description: 'Your shipment is due to be delivered on Saturday 04th April 2026', stage: 'in_transit' });
+    expect(statusMap.stage(null, `Your shipment ${NUMBER} is due to be delivered on Saturday 04th April 2026`)).toBe('in_transit');
+    expect(dhlEcommerceUkStage('Your shipment is due to be delivered on Saturday')).toBeUndefined();
   });
 
   it('reads the page notice as a missing shipment', () => {

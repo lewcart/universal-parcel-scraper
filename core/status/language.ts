@@ -255,6 +255,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // Royal Mail's delivery-round scans (EVGPD, EVKPD), as universal providers relay them: the
   // delivery today is its out-for-delivery scan, not a forecast.
   if (/^due to be delivered today(?: by\b.*)?$/.test(text)) return 'out_for_delivery';
+  // DHL eCommerce UK's row for the day it plans to deliver on, which follows the collection, as
+  // universal providers relay it with the shipment's number: the carrier's map reads it in transit.
+  if (/^your shipment (?:\d{7,} )?is due to be delivered on (?:mon|tues|wednes|thurs|fri|satur|sun)day \d{2}(?:st|nd|rd|th) [a-z]+ \d{4}$/.test(text)) return 'in_transit';
   // Posta Slovenije's delivery round (N) and GLS's (INDELIVERY), as universal providers relay
   // them without the code: each carrier's map reads the sentence as out for delivery.
   if (/^the item is expected to be delivered today\.?$|^(?:the )?parcel is expected to be delivered during the day\.?$/.test(text)) return 'out_for_delivery';

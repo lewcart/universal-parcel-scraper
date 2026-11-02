@@ -563,7 +563,8 @@ describe('classifyWording', () => {
     // Estimates are forecasts too, so "to be delivered" does not read them as transit.
     'Your parcel is estimated to be delivered on: Friday, July 17, 2026', 'Expected to be delivered on Monday',
     'Your package has been scheduled to be delivered by 08:00 PM on Mar 11.', 'Due to be delivered tomorrow',
-    'The parcel is now expected to be delivered on 17.07.2026'])('gives the notice "%s" no stage', wording => {
+    'The parcel is now expected to be delivered on 17.07.2026', 'Your parcel is due to be delivered on Monday 02nd November 2026',
+    'Your shipment is due to be delivered on Monday'])('gives the notice "%s" no stage', wording => {
     expect(trackingLanguageStage(wording)).toBeUndefined();
     expect(classifyWording(wording, 'pending')).toEqual({ stage: 'pending', source: 'none' });
     expect(classifyWording(wording, 'in_transit')).toEqual({ stage: 'in_transit', source: 'none' });
@@ -909,6 +910,9 @@ describe('classifyWording', () => {
       ['Item received by Royal Mail', 'accepted'],
       // Royal Mail's delivery round, relayed by universal providers.
       ['Due to be delivered today', 'out_for_delivery'], ['Due to be delivered today by', 'out_for_delivery'],
+      // DHL eCommerce UK's planned delivery day after the collection, relayed with and without the number.
+      ['Your shipment 99999999999999 is due to be delivered on Tuesday 03rd November 2026', 'in_transit'],
+      ['Your shipment is due to be delivered on Monday 02nd November 2026', 'in_transit'],
       // Posta Slovenije's and GLS's delivery rounds, relayed without their codes.
       ['The item is expected to be delivered today', 'out_for_delivery'],
       ['The parcel is expected to be delivered during the day.', 'out_for_delivery'],

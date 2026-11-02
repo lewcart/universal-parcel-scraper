@@ -7742,7 +7742,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "anc-delivers"
+      "adapter": "anc-delivers",
+      "recognitionRank": 152
     },
     "canaryUrl": "https://ancdelivers.com.au/receiving/track-your-item",
     "trackingUrlTemplate": "https://ancdelivers.com.au/track/{trackingNumber}",
@@ -9690,7 +9691,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "bestfulfill"
+      "adapter": "bestfulfill",
+      "recognitionRank": 151
     },
     "canaryUrl": "https://www.bestfulfillpacket.com/",
     "trackingUrlTemplate": "https://www.bestfulfillpacket.com/track?number={trackingNumber}",
@@ -42231,6 +42233,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "starlinks-global",
+      "recognitionRank": 153,
       "localClocks": true
     },
     "canaryUrl": "https://starlinks.app/track",

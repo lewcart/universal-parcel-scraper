@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { delayedFetcher } from '../../core/testing/hang.js';
@@ -223,6 +224,8 @@ describe('Starlinks Global HTTP adapter', () => {
     const fetcher = vi.fn<typeof fetch>();
     await expect(carrier(fetcher).recognize!('12345')).resolves.toEqual({ known: false });
     expect(fetcher).not.toHaveBeenCalled();
+    // FedEx International Connect prints the same shape and stays first, but cannot be asked.
+    expect(recognitionCandidates(PARCEL).map((candidate) => candidate.carrier)).toEqual(['starlinks-global']);
   });
 
   it('routes a number filed under Starlinks Global to the adapter', async () => {

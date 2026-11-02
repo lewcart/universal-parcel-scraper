@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
@@ -106,6 +107,10 @@ describe('BestFulfill Packet tracking', () => {
   it('recognizes a number the service holds, and not one it does not', async () => {
     await expect(carrier(replying(() => json(fixture()))).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
     await expect(carrier(replying(() => json(MISSING, { status: 404 }))).recognize!(NUMBER)).resolves.toEqual({ known: false });
+  });
+
+  it('is asked about its numbers, which no other carrier offers', () => {
+    expect(recognitionCandidates(NUMBER).map((candidate) => candidate.carrier)).toEqual(['bestfulfill']);
   });
 });
 

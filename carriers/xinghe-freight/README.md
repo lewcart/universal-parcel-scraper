@@ -19,6 +19,7 @@ adapter is GZYL's with this carrier's id: the same requests, steps and not-found
 
 - The rows universal providers relay for a GZXH parcel are GZYL's own wordings, so GZYL's status
   map reads them, and its splitting of a town written after a wording gives the place.
+- GZYL's rows written ahead, and the delivery row its script ends in, are held back here too.
 - A not-found leaves the enabled universal providers to answer.
 
 ## Limitations

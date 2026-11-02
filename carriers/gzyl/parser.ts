@@ -23,7 +23,14 @@ export function splitGzylRow(content: string, location: string): { content: stri
   return { content, location };
 }
 
-export const GZYL: HualeiTenant = { carrier: 'gzyl', provider: PROVIDER, origin: GZYL_ORIGIN, stage: gzylStage, split: splitGzylRow };
+/**
+ * GZYL's scripts end in a delivery row the platform writes in an evening batch, the day after the
+ * script's last row and at Beijing's office hours whatever the destination: readers who got no
+ * parcel marked it wrong, so it is held back with the rows written ahead.
+ */
+export const GZYL: HualeiTenant = {
+  carrier: 'gzyl', provider: PROVIDER, origin: GZYL_ORIGIN, stage: gzylStage, split: splitGzylRow, scriptedDelivery: true,
+};
 
 export const normalizeGzylNumber = (raw: string): string => normalizeHualeiNumber(raw, PROVIDER);
 /** The track interface's reply, or null when it holds no row for the number. */

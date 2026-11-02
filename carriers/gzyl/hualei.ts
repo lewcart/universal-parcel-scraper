@@ -84,6 +84,12 @@ export interface HualeiTenant {
    * tenant's own. A tracking number of another shape is the delivery carrier's.
    */
   readonly ownNumber?: RegExp;
+  /**
+   * The tenant's scripts end in a delivery row the platform writes on its own day, in an evening
+   * batch, rather than ahead: on a record with rows written ahead, a delivery row is the script's
+   * too, and is held back and named with them.
+   */
+  readonly scriptedDelivery?: true;
 }
 
 /**
@@ -229,18 +235,22 @@ function stageOf(tenant: HualeiTenant, code: string, description: string): { sta
  * The rows as scans, newest first. Tenants write whole timelines ahead, from
  * the collection to the delivery: a row written well before its own clock is
  * a forecast, not a scan, and so are a row of the custom track product and a
- * row dated after the lookup on the trackers' clock. Identical rows count
+ * row dated after the lookup on the trackers' clock. So is the delivery row of
+ * a tenant whose scripts end in one written on its day, on a record with rows
+ * written ahead. Identical rows count
  * once, and so do rows the tenant says repeat another. A row the tenant has
  * English for is staged and deduplicated by its own wording, then shown in
- * English. `ahead` lists the clocks of the rows written ahead and of the
- * custom track's, as the tenant reads them.
+ * English. `ahead` lists the clocks of the rows held back as written ahead
+ * and of the custom track's, as the tenant reads them.
  */
 function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number): { events: CarrierEvent[]; truncated: boolean; ahead: string[] } {
   const seen = new Set<string>();
   const ahead = new Set<string>();
   const kept: { clock: string; index: number; event: CarrierEvent; english?: string }[] = [];
+  const clocks = rows.map((row) => wallClock(row.clock, tenant.provider));
+  const scripted = tenant.scriptedDelivery === true && rows.some((row, index) => writtenAhead(row, clocks[index]!));
   rows.forEach((row, index) => {
-    const local = wallClock(row.clock, tenant.provider);
+    const local = clocks[index]!;
     const placed = isoTime(local, HUALEI_ZONE)!;
     const reading = tenant.clock?.(row) ?? (tenant.wallClocks ? 'wall' : 'platform');
     if (row.code === CUSTOM_TRACK || writtenAhead(row, local)) {
@@ -258,6 +268,10 @@ function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number)
     if (seen.has(key)) return;
     seen.add(key);
     const staged = stageOf(tenant, row.code, description);
+    if (scripted && staged?.stage === 'delivered') {
+      ahead.add(reading === 'platform' ? placed.iso : local);
+      return;
+    }
     const english = wording ? tenant.english?.(row.code || null, normalizeStatusWording(wording)) : undefined;
     const written = writtenAt(row);
     kept.push({ clock: local, index, ...(english ? { english } : {}), event: {

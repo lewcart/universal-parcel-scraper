@@ -44,10 +44,14 @@ instead.
   whose rows are all held back has no history yet. Either way the clocks of the rows written
   ahead are named, in `written_ahead` or the error, so that a universal provider's copies of
   them are set aside too: GZYL's order row alone is kept while the script fills a provider's
-  history. The record's
-  own summary status is not read; the stage comes from the rows kept. After a row a tenant's
-  map reads as returned, a move or a delivery is the parcel going, or delivered, back to the
-  sender, and is returned too.
+  history. The record's own summary status is not read; the stage comes from the rows kept.
+  After a row a tenant's map reads as returned, a move or a delivery is the parcel going, or
+  delivered, back to the sender, and is returned too.
+- GZYL's script ends in a delivery row the platform writes in an evening batch, at a clock the day
+  after the script's last row and in Beijing's office hours whatever the destination, Mexico's and
+  Canada's included. Readers who got no parcel marked it wrong. On a record with rows written
+  ahead, a delivery row is held back and named with them; on one written as it happened, it is a
+  scan. Xinghe Freight's records, on the same tenant, are read the same way.
 - Rows coded `CO_C_CR` come from the platform's custom track product (轨迹定制), which writes
   them to a script: on Tianhui Hengyuan they read like China Post's scans, all on one second of
   the minute, and on Mayi Yinfu they have the parcel abroad before it reaches the airport. They
@@ -85,8 +89,8 @@ instead.
 
 ## Limitations
 
-No proof of delivery: GZYL writes its delivery row in an evening batch, in the order's town as its
-rows written ahead are, and the record names no delivering carrier or number.
+GZYL's records on a scripted line show no scan after the order, and name no delivering carrier or
+number.
 
 A reference stored without its dashes is not found. A record with the delivery carrier's number
 but no channel label hands nothing over, except on a tenant that names the carriers it hands

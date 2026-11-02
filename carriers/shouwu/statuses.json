@@ -284,6 +284,90 @@
       "language": "en",
       "confirmedBy": "live",
       "note": "A hub on the way to the delivering carrier, after customs released the parcel at the gateway airport."
+    },
+    {
+      "wording": "货物电子信息已经收到",
+      "stage": "registered",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "The goods' electronic data received, beside the order's own data row."
+    },
+    {
+      "wording": "Shipment information has been received",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "A partner's data row; one dated after the parcel moved reads as in transit."
+    },
+    {
+      "wording": "1013C，申报过港中",
+      "stage": "in_transit",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "A batch, named by its code, declared for the road to Hong Kong. Its pattern covers any batch code."
+    },
+    {
+      "wording": "已到港，安排航班中",
+      "stage": "in_transit",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "Arrived at the port of departure, waiting for a flight."
+    },
+    {
+      "wording": "预计23号的航班",
+      "stage": "in_transit",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "The flight booked for a day of the month, here the 23rd. Its pattern covers any day and the second leg's (二程) row."
+    },
+    {
+      "wording": "航班已飞",
+      "stage": "in_transit",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "The flight left."
+    },
+    {
+      "wording": "已落地",
+      "stage": "in_transit",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "The flight landed."
+    },
+    {
+      "wording": "二程航班已飞",
+      "stage": "in_transit",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "The second leg's flight left."
+    },
+    {
+      "wording": "已落地，清关提货中",
+      "stage": "customs",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "Landed; the parcel is being cleared and collected from the airline."
+    },
+    {
+      "wording": "清关完成",
+      "stage": "in_transit",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "Import clearance done."
+    },
+    {
+      "wording": "已交仓扫描",
+      "stage": "in_transit",
+      "language": "zh",
+      "confirmedBy": "live",
+      "note": "Handed to the delivering partner's depot and scanned there."
+    },
+    {
+      "wording": "Your consignment has been picked up",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "The delivering partner collecting the parcel from Shouwu's depot abroad, after the clearance. Shouwu had the parcel long before, so it is no handover from the sender."
     }
   ]
 }

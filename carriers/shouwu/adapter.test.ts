@@ -133,6 +133,14 @@ describe('Shouwu International HTTP adapter', () => {
       .toMatchObject({ status: 'exception', current_stage: 'returned', current_stage_source: 'wording:language' });
     expect(staged('TRACE_STATUS_FAILED', [trace(1776327314, 'Out for Delivery')]))
       .toMatchObject({ status: 'exception', current_stage: 'failed_attempt', current_stage_source: 'carrier_map' });
+    // Shouwu's own rows take the parcel through the flight and the clearance abroad, and the
+    // delivering partner's pickup from its depot there is no step back to a handover.
+    expect(staged('TRACE_STATUS_ON_THE_WAY', [trace(1777710000, 'Your consignment has been picked up'), trace(1777540000, '已交仓扫描'),
+      trace(1777450000, '清关完成'), trace(1777370000, '已落地，清关提货中'), trace(1777200000, '二程预计27号的航班'), trace(1777100000, '航班已飞'),
+      trace(1776800000, '1013C，申报过港中'), trace(1776500000, 'Package processing completed')]))
+      .toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
+        events: [{ stage: 'in_transit' }, { stage: 'in_transit' }, { stage: 'in_transit' }, { stage: 'customs' }, { stage: 'in_transit' },
+          { stage: 'in_transit' }, { stage: 'in_transit' }, { stage: 'accepted' }] });
     // Delivered is the end: no scan refines it, and no instant dates it.
     const signed = staged('TRACE_STATUS_SIGNED', [trace(1776361152, 'Sample Status Note'), trace(1776327314, 'Out for Delivery')]);
     expect(signed).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map', last_status_text: 'Sample Status Note' });
@@ -360,6 +368,12 @@ describe('Shouwu International status vocabulary', () => {
       expect(statusMapAnswer({ carrier: 'shouwu', providerCode: entry.code, description: entry.wording }), entry.code)
         .toEqual({ kind: 'mapped', stage: entry.stage });
     }
+    // Shouwu's rows on a batch or a flight's day read alike whatever the batch or the day.
+    for (const wording of ['0927A，申报过港中', '1101B,申报过港中', '预计3号的航班', '二程预计27号的航班']) {
+      expect(shouwuStage(wording), wording).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+      expect(statusMapAnswer({ carrier: 'shouwu', providerCode: null, description: wording }), wording).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    }
+    expect(shouwuStage('预计航班')).toBeNull();
     expect(statusMapAnswer({ carrier: 'shouwu', providerCode: null, description: 'Preparing' })).toEqual({ kind: 'unknown' });
     expect(statusMapAnswer({ carrier: 'shouwu', providerCode: 'TRACE_STATUS_SAMPLE', description: 'Sample Status Note' })).toEqual({ kind: 'unknown' });
     for (const wording of ['constructor', 'toString', 'Sample Status Note', 'Preparing']) expect(shouwuStage(wording), wording).toBeNull();

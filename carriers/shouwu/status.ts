@@ -19,6 +19,21 @@ const LABELS: ReadonlyMap<string, string> = new Map(ENTRIES.filter((entry) => en
 const WORDINGS: ReadonlyMap<string, Stage> = new Map(ENTRIES.filter((entry) => !entry.code && entry.wording && entry.stage)
   .map((entry) => [normalizeStatusWording(entry.wording!), entry.stage as Stage]));
 
+/**
+ * Shouwu's own rows that name a batch or a flight's day: "1013C，申报过港中" for a batch declared
+ * for the road to Hong Kong, and "预计23号的航班", or "二程预计27号的航班" for the second leg, for
+ * the flight booked.
+ */
+const PATTERNS: readonly [RegExp, Stage][] = [
+  [/^[a-z0-9]{1,12}[，,] ?申报过港中$/, 'in_transit'],
+  [/^(?:二程)?预计\d{1,2}号的航班$/, 'in_transit'],
+];
+
+/** A wording's stage in Shouwu's map, the wording in `normalizeStatusWording` form. */
+function mappedStage(wording: string): Stage | undefined {
+  return WORDINGS.get(wording) ?? PATTERNS.find(([pattern]) => pattern.test(wording))?.[1];
+}
+
 /** The stage of a parcel's status code. */
 export function shouwuStatusStage(code: string): Stage | undefined {
   return CODES.get(code);
@@ -31,7 +46,7 @@ export function shouwuStatusLabel(code: string): string | undefined {
 
 /** A scan's stage: the map, else the shared wording rules, else nothing. */
 export function shouwuStage(wording: string): ClassifiedWording | null {
-  const mapped = WORDINGS.get(normalizeStatusWording(wording));
+  const mapped = mappedStage(normalizeStatusWording(wording));
   if (mapped) return { stage: mapped, source: 'carrier_map' };
   const worded = classifyWording(wording, 'in_transit');
   return worded.source === 'none' ? null : worded;
@@ -39,6 +54,6 @@ export function shouwuStage(wording: string): ClassifiedWording | null {
 
 /** What the map says about a parcel's status, by its code, or about a scan, by its wording. */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => (code ? CODES.get(code) : WORDINGS.get(wording)),
+  stage: (code, wording) => (code ? CODES.get(code) : mappedStage(wording)),
   gaps: [],
 };

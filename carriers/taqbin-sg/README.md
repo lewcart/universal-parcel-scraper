@@ -16,7 +16,9 @@ keeps its number when it reaches Yamato in Japan.
 ## Why there is no adapter
 
 The tracker posts the number, without dashes, as `keyTrackingNumber` to an open JSON endpoint on
-dev.message.sg; message.sg also runs [TA-Q-BIN Hong Kong](../taqbin-hk/README.md)'s tracker. It
+dev.message.sg, `external_waybill_fetchStatusLog_yts`; message.sg also runs
+[TA-Q-BIN Hong Kong](../taqbin-hk/README.md)'s tracker. Its page reads the Hong Kong rows' fields,
+and also the waybill and origin numbers and whether the parcel is local. It
 answers without a session or CAPTCHA with scans on the scanning site's clock, and with an empty list
 both for an unknown number and for one it no longer keeps. No public number it still knows has been
 found.

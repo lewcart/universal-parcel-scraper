@@ -14,6 +14,7 @@ export class BrowserRouteTrial<T> {
   private route: StepRecord['networkRoute'] = 'default';
   private attempt: StepRecord['networkAttempt'] = 'initial';
   private family: StepRecord['networkFamily'] = 'unknown';
+  private bytes: number | undefined;
   private history = false;
   private partial = false;
 
@@ -26,7 +27,7 @@ export class BrowserRouteTrial<T> {
         const observed = this.pending && options.steps.includes(record.step);
         this.pending = false;
         sink.step(observed ? { ...record, networkRoute: this.route, networkAttempt: this.attempt,
-          networkFamily: this.family, historyAvailable: this.history, historyPartial: this.partial } : record);
+          networkFamily: this.family, ...(this.bytes === undefined ? {} : { networkBytes: this.bytes }), historyAvailable: this.history, historyPartial: this.partial } : record);
       },
       lookup: record => sink.lookup(record),
     };
@@ -43,12 +44,16 @@ export class BrowserRouteTrial<T> {
   }
 
   private begin(alternate: boolean, attempt: 'initial' | 'retry'): T {
-    this.pending = true; this.attempt = attempt; this.family = 'unknown'; this.history = false; this.partial = false;
+    this.pending = true; this.attempt = attempt; this.family = 'unknown'; this.bytes = undefined; this.history = false; this.partial = false;
     this.route = alternate ? this.options.route : 'default';
     return alternate ? this.options.alternative! : this.options.primary;
   }
 
   observeFamily(family: 'IPv4' | 'IPv6' | 'unknown'): void { this.family = family; }
+
+  observeBytes(bytes: unknown): void {
+    if (typeof bytes === 'number' && Number.isSafeInteger(bytes) && bytes >= 0) this.bytes = bytes;
+  }
 
   result(result: CarrierResult): CarrierResult {
     this.history = Boolean(result.events?.some(event => event.time || event.local_time));

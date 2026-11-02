@@ -507,3 +507,5 @@ address unless `trustedProxies` says how many proxies append to `X-Forwarded-For
 
 Its logs carry route names, status codes and durations only. Library consumers connect their
 own observability through `StepRecorder`. The routes are in [openapi.json](server/openapi.json).
+
+FedEx's opt-in residential retry worker uses the same browser flow and bounded second attempt as the primary service. Its host-owned route takes precedence over the IPv6 trial. A configured gateway is never treated as evidence of the exit's IP family; page and API proxy tunnels are required. Byte telemetry measures encrypted proxy payload, including page dependencies, rather than billing totals.

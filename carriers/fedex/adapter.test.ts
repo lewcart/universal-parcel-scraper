@@ -775,6 +775,30 @@ describe('FedEx lookup steps', () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
+  it('uses a residential service only for the eligible retry, preserving proof and byte telemetry', async () => {
+    const records: Parameters<StepRecorder['step']>[0][] = [];
+    const fetcher = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '', capturedResponses: [{ url: TRACK_API, status: 403, body: null }] }))
+      .mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '',
+        fedexEgress: { route: 'residential', family: 'unknown', pageConnections: 1, apiConnections: 1, bytes: 1234 },
+        capturedResponses: [{ url: TRACK_API, status: 200, body: JSON.stringify(deliveredFixture()) }] }));
+    const tracker = adapter({ trawl: new TrawlClient(TRAWL_URL), browserExecutablePath: null,
+      trawlRoutes: { 'fedex-residential': new TrawlClient('http://residential.test') },
+      env: { FEDEX_RESIDENTIAL_RETRY_PERCENT: '100' }, recorder: { step: r => records.push(r), lookup() {} } });
+    await expect(tracker.track({ number: DELIVERED_NUMBER })).resolves.toMatchObject({ status: 'delivered' });
+    expect(fetcher.mock.calls.map(c => String(c[0]))).toEqual([`${TRAWL_URL}/scrape`, 'http://residential.test/scrape']);
+    expect(records[1]).toMatchObject({ networkRoute: 'residential', networkAttempt: 'retry', networkFamily: 'unknown', networkBytes: 1234, historyAvailable: true });
+  });
+
+  it('rejects a residential result without proxy proof and does not add an attempt', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '', capturedResponses: [{ url: TRACK_API, status: 403, body: null }] }))
+      .mockResolvedValueOnce(Response.json({ tier: 3, statusCode: 200, html: '', capturedResponses: [{ url: TRACK_API, status: 200, body: JSON.stringify(deliveredFixture()) }] }));
+    await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL), residentialTrawl: new TrawlClient('http://residential.test'), residentialRetryShare: 1 })
+      .fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ reason: 'residential_unverified' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
   it('keeps the control cohort on the original retry service', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json({ tier: 3, statusCode: 200, html: '<body>Tracking</body>',
       capturedResponses: [{ url: TRACK_API, status: 403, body: null }] }));

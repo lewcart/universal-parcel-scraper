@@ -29,6 +29,8 @@ export interface StepRecord {
   error?: unknown;
   /** Selected network path, independently of the observed connection family. */
   networkRoute?: 'default' | 'ipv6' | 'residential';
+  /** Encrypted proxy tunnel bytes observed during this attempt, when available. */
+  networkBytes?: number;
   /** Initial browser read or an existing eligible recovery, independent of earlier HTTP steps. */
   networkAttempt?: 'initial' | 'retry';
   /** Actual tracking connection family, or unknown when no connection was verified. */

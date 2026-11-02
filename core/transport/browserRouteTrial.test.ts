@@ -41,3 +41,11 @@ it('keeps proxy credentials out of the server address and validates without echo
     catch (error) { expect(error).toBeInstanceOf(TypeError); expect(String(error)).not.toContain('secret'); }
   }
 });
+
+it('records bounded byte observations and clears them between attempts', () => {
+  const step = vi.fn(), trial = new BrowserRouteTrial({ primary: 'normal', alternative: 'alternate', route: 'residential', share: 1,
+    steps: ['browser'], recorder: { step, lookup() {} } });
+  trial.primary(); trial.observeBytes(123); trial.observeBytes(-1); trial.observeBytes(Infinity); trial.recorder.step(record);
+  expect(step.mock.calls[0]?.[0]).toHaveProperty('networkBytes', 123);
+  trial.retry(); trial.recorder.step(record); expect(step.mock.calls[1]?.[0]).not.toHaveProperty('networkBytes');
+});

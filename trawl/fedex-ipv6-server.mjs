@@ -4,8 +4,13 @@ import { BrowserPool } from '../../../browser/src/pool.ts';
 import { FedExSessions, fedexSessionNumber } from './fedex-session.mjs';
 import { createFedExIpv6Proxy } from './fedex-ipv6-proxy.mjs';
 
+const residential = process.env.FEDEX_RETRY_PROXY_URL?.trim();
+const createFedExResidentialProxy = residential ? (await import('./fedex-residential-proxy.mjs')).createFedExResidentialProxy : null;
+const mode = residential ? 'fedex-residential' : 'fedex-ipv6';
+let proxyBytes = 0;
+
 const pool = new BrowserPool({ poolSize: 1, recycleAfterTemporaryContexts: 0, contentProcesses: 2,
-  label: 'fedex-ipv6', blockAds: true });
+  label: mode, blockAds: true });
 const sessions = new FedExSessions();
 const proxies = new Set();
 const bindings = new WeakMap();
@@ -17,7 +22,7 @@ async function bind(browser) {
   const original = browser.newContext.bind(browser);
   const binding = { current: null };
   browser.newContext = async options => {
-    const proxy = await createFedExIpv6Proxy(); proxies.add(proxy);
+    const proxy = residential ? await createFedExResidentialProxy(residential, { onBytes: n => { proxyBytes += n; } }) : await createFedExIpv6Proxy(); proxies.add(proxy);
     try {
       const context = await original({ ...options, proxy: { server: proxy.url } });
       binding.current = proxy;
@@ -34,7 +39,8 @@ const server = Bun.serve({
   maxRequestBodySize: 16_384, idleTimeout: 60,
   async fetch(request) {
     const path = new URL(request.url).pathname;
-    if (path === '/health' && request.method === 'GET') return Response.json({ status: stopping ? 'stopping' : 'ok', mode: 'fedex-ipv6' }, { status: stopping ? 503 : 200 });
+    if (path === '/health' && request.method === 'GET') return Response.json({ status: stopping ? 'stopping' : 'ok', mode }, { status: stopping ? 503 : 200 });
+    if (path === '/metrics' && request.method === 'GET') return new Response('# TYPE fedex_retry_proxy_bytes_total counter\nfedex_retry_proxy_bytes_total ' + proxyBytes + '\n', { headers: { 'content-type': 'text/plain; version=0.0.4' } });
     if (path !== '/scrape' || request.method !== 'POST') return new Response(null, { status: 404 });
     let body;
     try { body = await request.json(); } catch { return new Response(null, { status: 400 }); }
@@ -51,6 +57,8 @@ const server = Bun.serve({
       if (remaining <= 0 || request.signal.aborted) return new Response(null, { status: 504 });
       const cancel = () => { handle.requestBrowserReplacement?.('FedEx IPv6 request cancelled'); };
       request.signal.addEventListener('abort', cancel, { once: true });
+      const previousProxy = binding.current;
+      const bytesBefore = previousProxy?.proof().bytes ?? 0;
       let result;
       try {
         result = await sessions.run({ url: body.url, handle, tier: 3, maxTimeout: remaining,
@@ -58,6 +66,7 @@ const server = Bun.serve({
       } finally { request.signal.removeEventListener('abort', cancel); }
       context = binding.current;
       const proof = context?.proof() ?? { family: 'unknown', pageConnections: 0, apiConnections: 0 };
+      if (residential) proof.bytes = Math.max(0, proof.bytes - (context === previousProxy ? bytesBefore : 0));
       // No rendered page, cookies, proxy address or destination addresses leave this endpoint.
       return Response.json({ ...result, html: '', body: '', cookies: [], fedexEgress: proof });
     } catch { return new Response(null, { status: 502 }); }

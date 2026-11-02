@@ -524,6 +524,9 @@ export interface FedExTrackerOptions {
   timeoutMs?: number;
   /** The browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
+  /** Independent service which attests authenticated proxy tunnels for the page and API. */
+  residentialTrawl?: TrawlClient | null;
+  residentialRetryShare?: number;
   /** Independent service which attests IPv6 connections to the page and tracking API. */
   ipv6Trawl?: TrawlClient | null;
   /** Share of qualifying retries sent to that service, from zero to one. */
@@ -537,6 +540,8 @@ export interface FedExTrackerOptions {
 export class FedExTracker {
   readonly timeoutMs: number;
   readonly #trawl: TrawlClient | null;
+  readonly #residentialTrawl: TrawlClient | null;
+  readonly #residentialRetryShare: number;
   readonly #ipv6Trawl: TrawlClient | null;
   readonly #ipv6RetryShare: number;
   readonly #api: FedExApiClient | null;
@@ -549,6 +554,8 @@ export class FedExTracker {
     }
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.#trawl = options.trawl ?? null;
+    this.#residentialTrawl = options.residentialTrawl ?? null;
+    this.#residentialRetryShare = retryShare(options.residentialRetryShare ?? 0.5);
     this.#ipv6Trawl = options.ipv6Trawl ?? null;
     this.#ipv6RetryShare = retryShare(options.ipv6RetryShare ?? 1);
     this.#api = options.api ? new FedExApiClient(options.api, options.fetcher) : null;
@@ -568,11 +575,12 @@ export class FedExTracker {
       );
     }
     const browserMs = (remainingMs: number) => Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs)));
-    const trial = new BrowserRouteTrial({ primary: trawl, alternative: this.#ipv6Trawl,
-      route: 'ipv6', share: this.#ipv6RetryShare, steps: ['trawl'], recorder: this.#recorder });
-    const browser = async (client: TrawlClient, remainingMs: number, signal: AbortSignal, requireIpv6 = false) =>
-      trial.result(await this.#trawlResult(client, number, browserMs(remainingMs), signal, requireIpv6,
-        family => trial.observeFamily(family)));
+    const residential = this.#residentialTrawl !== null;
+    const trial = new BrowserRouteTrial({ primary: trawl, alternative: this.#residentialTrawl ?? this.#ipv6Trawl,
+      route: residential ? 'residential' : 'ipv6', share: residential ? this.#residentialRetryShare : this.#ipv6RetryShare, steps: ['trawl'], recorder: this.#recorder });
+    const browser = async (client: TrawlClient, remainingMs: number, signal: AbortSignal, route: 'default' | 'ipv6' | 'residential' = 'default') =>
+      trial.result(await this.#trawlResult(client, number, browserMs(remainingMs), signal, route,
+        family => trial.observeFamily(family), bytes => trial.observeBytes(bytes)));
     return runSteps<CarrierResult>({
       // Without a caller's budget the lookup leaves the service its own time and
       // the request the allowance to bring the answer back.
@@ -593,7 +601,7 @@ export class FedExTracker {
         { id: 'trawl', recovers: (error: unknown) => error instanceof ChallengeError && error.reason === 'api_denied' && error.status === 403,
           run: ({ remainingMs, signal }: StepContext) => {
             const client = trial.retry()!;
-            return browser(client, remainingMs, signal, trial.isAlternate);
+            return browser(client, remainingMs, signal, trial.isAlternate ? residential ? 'residential' : 'ipv6' : 'default');
           } },
       ] : []),
     ]);
@@ -613,7 +621,7 @@ export class FedExTracker {
    * validated. The page the browser rendered only tells a challenge apart.
    */
   async #trawlResult(trawl: TrawlClient, number: string, timeoutMs: number, signal: AbortSignal,
-    requireIpv6 = false, observed: (family: 'IPv4' | 'IPv6' | 'unknown') => void = () => {}): Promise<CarrierResult> {
+    route: 'default' | 'ipv6' | 'residential' = 'default', observed: (family: 'IPv4' | 'IPv6' | 'unknown') => void = () => {}, observeBytes: (bytes: unknown) => void = () => {}): Promise<CarrierResult> {
     const page = await trawl.scrape({
       url: fedexTrackingUrl(number),
       skipHttp: true,
@@ -628,6 +636,15 @@ export class FedExTracker {
       fetcher: this.#fetcher,
       signal,
     });
+    const requireIpv6 = route === 'ipv6';
+    if (route === 'residential') {
+      const proof = page.raw.fedexEgress;
+      if (isRecord(proof)) observeBytes(proof.bytes);
+      if (!isRecord(proof) || proof.route !== 'residential' || !Number.isSafeInteger(proof.pageConnections)
+        || Number(proof.pageConnections) < 1 || !Number.isSafeInteger(proof.apiConnections) || Number(proof.apiConnections) < 1) {
+        throw new TransportError('FedEx', 'The retry service did not verify residential tracking connections', { reason: 'residential_unverified' });
+      }
+    }
     if (requireIpv6) {
       const proof = page.raw.fedexEgress;
       if (!isRecord(proof) || proof.family !== 'IPv6' || !Number.isSafeInteger(proof.pageConnections)
@@ -641,7 +658,7 @@ export class FedExTracker {
     const responses = page.capturedResponses.slice(-MAX_CAPTURED).reverse();
     for (const [index, entry] of responses.entries()) {
       if (entry.url !== TRACK_API) continue;
-      if (!requireIpv6) {
+      if (route === 'default') {
         const family = entry.headers['x-trawl-network-family'];
         observed(family === 'IPv4' || family === 'IPv6' ? family : 'unknown');
       }
@@ -721,6 +738,8 @@ export const adapter: AdapterFactory = (environment) => {
   const tracker = new FedExTracker({
     fetcher: environment.fetcher,
     trawl: environment.trawl,
+    residentialTrawl: environment.trawlRoutes?.['fedex-residential'] ?? null,
+    residentialRetryShare: environment.env.FEDEX_RESIDENTIAL_RETRY_PERCENT === undefined ? 0.5 : Number(environment.env.FEDEX_RESIDENTIAL_RETRY_PERCENT) / 100,
     ipv6Trawl: environment.trawlRoutes?.['fedex-ipv6'] ?? null,
     ipv6RetryShare: percent === undefined ? 1 : Number(percent) / 100,
     api,

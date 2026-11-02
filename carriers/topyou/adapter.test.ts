@@ -90,6 +90,15 @@ describe('TopYou HTTP adapter', () => {
     ]);
   });
 
+  it('keeps a relayed scan’s place that is only a country, and leaves it out of TopYou’s own', () => {
+    const relayed = changed('relayed-europe', (track) => {
+      for (const row of track.trackInfo!) row.location = 'FR';
+    });
+    const places = new Map(parseTopyou(relayed, 'TYZRZ0000000003YQ').events!.map((event) => [event.time ?? event.local_time, event.location ?? null]));
+    expect(places.get('2026-10-30T05:23:17Z')).toBe('FR');
+    expect(places.get('2026-10-26T21:26:40+08:00')).toBeNull();
+  });
+
   it('reads iMile’s scans it relays stated +08:00 on UTC wall clocks, and TopYou’s own on China’s', () => {
     // iMile dates its delivery round 07:19:36+01:00; TopYou relays it as 06:19:36 "+08:00".
     const relayed = changed('in-transit', (track) => {

@@ -77,8 +77,10 @@ function projectRow(row: Record<string, unknown>): { key: string; clock: string;
   const description = text(row, 'record').replace(DANGLING, '');
   if (!description) throw new SchemaError(PROVIDER, 'TopYou returned a scan without wording');
   const code = cleanScalar(row.status, 8);
-  const clock = scanClock(row, isImileRelay(description));
-  const location = place(row, 'time' in clock);
+  const imile = isImileRelay(description);
+  const clock = scanClock(row, imile);
+  // TopYou's own scans state China's offset; the delivery carriers' relayed scans state another, or iMile's the same.
+  const location = place(row, text(row, 'timeZone', 8) === OWN_OFFSET && !imile);
   const staged = topyouStage(code, description);
   const event: CarrierEvent = {
     ...clock,

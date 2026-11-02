@@ -19,6 +19,25 @@
         "confidence": "none"
       },
       "note": "The 'Find your tracking number' image of JRS Express's former tracking page, an official receipt with the airbill number marked; the receipt prints branch code 161 beside it, and the tracker needs both. The capture was opened by rendering it in a browser."
+    },
+    {
+      "number": "123456-123",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://jrs-express.com/track",
+        "date": "2026-11-02",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The example the current tracking page's field prints, airbill first and the branch code after the hyphen. The tracker holds a shipment under it, so it is also a real reference."
     }
   ]
 }

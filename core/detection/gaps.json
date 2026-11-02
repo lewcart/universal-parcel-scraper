@@ -1994,9 +1994,9 @@
   },
   {
     "carrier": "jrs-express",
-    "pattern": "^\\d{6}$",
+    "pattern": "^\\d{6}(?:\\d{3,4})?$",
     "kind": "by_design",
-    "reason": "A JRS airbill is a short receipt number that only identifies a parcel together with the branch code, so its digits cannot point to JRS."
+    "reason": "A JRS airbill is a short receipt number that only identifies a parcel together with the branch code, alone or followed by it, so its digits cannot point to JRS."
   },
   {
     "carrier": "kargoist",

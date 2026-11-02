@@ -1,6 +1,7 @@
 import { classifyWording, type ClassifiedWording, type Stage } from '../../core/status/index.js';
 import { statusWordings } from '../../core/status/english.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import { imileSentenceStage } from '../imile/status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const WORDINGS = statusWordings(statuses.entries);
@@ -26,11 +27,37 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
 const DECISIVE = new Set(['30', '40']);
 
 /**
+ * iMile's step labels, with the codes iMile's own tracker gives them. TopYou
+ * relays iMile's scans, in Germany for instance, as the label, a comma and
+ * iMile's sentence: "Delivery, Our delivery associate is out for delivery."
+ */
+const IMILE_STEPS: ReadonlyMap<string, string> = new Map([
+  ['order creation', '1001'], ['pick up', '2005'], ['received', '2004'],
+  ['in transit', '1002'], ['delivery', '1003'], ['delivered', '2060'],
+]);
+const IMILE_RELAY = /^([a-z ]{5,14}), (?=\S)/i;
+
+/**
+ * The stage iMile's sentences give a scan TopYou relays from iMile, null for one that moves
+ * nothing, undefined for any other scan, such as USPS's under a label of its own.
+ */
+function imileRelayStage(wording: string): Stage | null | undefined {
+  const step = IMILE_RELAY.exec(wording);
+  const code = step && IMILE_STEPS.get(step[1]!.toLocaleLowerCase('en-US'));
+  return code ? imileSentenceStage(code, wording.slice(step[0].length)) : undefined;
+}
+
+/**
  * A scan's stage: its wording in TopYou's map, then a delivered or returned
- * code, then the shared wording rules, then its code.
+ * code, then iMile's map for a scan relayed from iMile, then the shared
+ * wording rules, then its code. Null for a scan without a stage, or one of
+ * iMile's that moves nothing.
  */
 export function topyouStage(code: string, wording: string): ClassifiedWording | null {
-  const mapped = WORDINGS.stage(normalizeStatusWording(wording)) ?? (DECISIVE.has(code) ? CODES.get(code) : undefined);
+  const decided = WORDINGS.stage(normalizeStatusWording(wording)) ?? (DECISIVE.has(code) ? CODES.get(code) : undefined);
+  const relayed = decided ? undefined : imileRelayStage(wording);
+  if (relayed === null) return null;
+  const mapped = decided ?? relayed;
   if (mapped) return { stage: mapped, source: 'carrier_map' };
   const worded = classifyWording(wording, 'in_transit');
   if (worded.source !== 'none') return worded;
@@ -38,4 +65,9 @@ export function topyouStage(code: string, wording: string): ClassifiedWording | 
   return coded ? { stage: coded, source: 'carrier_map' } : null;
 }
 
-export const statusMap: CarrierStatusMap = { stage: (code, wording) => topyouStage(code ?? '', wording)?.stage, gaps: [] };
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => topyouStage(code ?? '', wording)?.stage,
+  gaps: [],
+  gapNote: (_code, wording) => (imileRelayStage(wording) === null
+    ? 'A line iMile relays that moves nothing, such as a stock count: the parcel keeps the stage it had.' : undefined),
+};

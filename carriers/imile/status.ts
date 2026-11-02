@@ -131,6 +131,12 @@ function phraseStage(code: string, wording: string): Stage | null | undefined {
 }
 
 /**
+ * The stage one of iMile's sentences gives its scan under iMile's code for it, null for a scan
+ * that moves nothing, undefined for a sentence iMile's map does not know.
+ */
+export const imileSentenceStage = (code: string, wording: string): Stage | null | undefined => phraseStage(code, wording);
+
+/**
  * The stage one of iMile's sentences gives its scan as another tracker relays it, without a code:
  * opening with the centre's name in 【】, as iMile writes it. Undefined for any other wording and for
  * a scan that moves nothing.

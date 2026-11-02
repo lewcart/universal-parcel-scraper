@@ -39,8 +39,9 @@ returned (40) code settles it next, then the shared wording rules, then the code
 the delivery carrier's scans up to the delivery, out for delivery included, so it says only that
 the parcel moves, and USPS's acceptance after the flight is no first acceptance. "Shipment is out
 for delivery" is the hand-over to GOFO, at GOFO's first sorting-centre scan days before its
-delivery round, so it is transit. The tracker's
-summary code settles a delivered or returned parcel.
+delivery round, so it is transit. iMile's scans, in Germany, come as iMile's label for the step,
+a comma and iMile's sentence ("Delivery, Our delivery associate is out for delivery."), and iMile's
+own map stages the sentence. The tracker's summary code settles a delivered or returned parcel.
 
 TopYou's own scans name the destination country even at the origin airport, so a place that is
 only countries is left out of them. A wording loses a closing "of" whose country the tracker left

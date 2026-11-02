@@ -212,6 +212,22 @@ describe('TopYou status vocabulary', () => {
     }
   });
 
+  it('stages iMile’s sentences it relays after iMile’s step label by iMile’s map, and leaves other labels to the shared rules', () => {
+    const relayed = (wording: string) => topyouStage('20', wording);
+    expect(relayed('Delivery, Your order has arrived at 【Sample DS】')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    expect(relayed('In Transit, Your order has been shipped from 【Sample DC】.')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    // A driver's reason is a failed attempt on the delivery run and a delay before it, as on iMile's own tracker.
+    expect(relayed('Delivery, Traffic, strike, bad weather')).toEqual({ stage: 'failed_attempt', source: 'carrier_map' });
+    expect(relayed('In Transit, Traffic, strike, bad weather')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    // A stock count moves nothing: no stage, and the app hears why.
+    expect(relayed('Delivery, Inventory count scan')).toBeNull();
+    expect(statusMap.gapNote?.('20', 'delivery, inventory count scan')).toMatch(/moves nothing/);
+    // A sentence iMile's map does not know, or another carrier's label, goes on to the shared rules.
+    expect(relayed('In Transit, Synthetic note')?.source).not.toBe('carrier_map');
+    expect(topyouStage('15', 'In Transit, Arriving On Time')?.source).not.toBe('carrier_map');
+    expect(relayed('Shipment, Your order has arrived at 【Sample DS】')?.source).not.toBe('carrier_map');
+  });
+
   it('lets a delivered or returned code settle a scan, then the shared rules, then the code', () => {
     expect(topyouStage('30', 'Synthetic note')).toEqual({ stage: 'delivered', source: 'carrier_map' });
     expect(topyouStage('40', 'Out for delivery')).toEqual({ stage: 'returned', source: 'carrier_map' });

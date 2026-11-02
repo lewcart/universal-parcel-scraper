@@ -53,7 +53,8 @@ describe('JRT tracking adapter', () => {
     const result = parseJrtTrack(fixture('track-dhl'), UP_REFERENCE, Date.parse('2026-03-15T00:00:00Z'))!;
     expect(result).toMatchObject({
       status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
-      last_status_text: 'loaded to movement / tour vehicle', last_update: '2026-03-14T16:11:00+08:00',
+      // DHL's row beside the destination's code is on the destination's clock.
+      last_status_text: 'loaded to movement / tour vehicle', last_update: '2026-03-14T16:11:00+01:00',
       destination_country: 'SE', service_name: '欧洲合成专线-A', canonical_tracking_number: 'JRT0000000002ZZ',
     });
     // Before the hand-off the record names neither a channel nor DHL's number, so nothing is handed over.
@@ -230,6 +231,29 @@ describe('JRT tracking adapter', () => {
     ]);
   });
 
+  it('reads DHL’s rows with a town on that town’s clock, and those beside a country’s code as without a place', () => {
+    const payload = fixture('track-dhl') as { data: { consigneeCountry: string, trackDetails: Record<string, string>[] }[] }[];
+    const record = payload[0]!.data[0]!;
+    const rows = record.trackDetails;
+    const at = (content: string) => rows.find(({ track_content }) => track_content === content)!;
+    record.consigneeCountry = 'PL';
+    at('the shipment has been processed in the parcel center of origin').track_location = 'hagen';
+    at('loaded to movement / tour vehicle').track_location = 'poznan';
+    at('unloaded from movement / tour vehicle').track_location = 'pl';
+    const result = parseJrtTrack(payload, UP_REFERENCE, Date.parse('2026-03-15T00:00:00Z'))!;
+    const dated = (content: string) => result.events?.filter(({ description }) => description === content)
+      .map(({ time, time_zone, time_zone_basis }) => [time, time_zone, time_zone_basis]);
+    // A parcel centre's scan in Germany, on Germany's clock, not on the platform's.
+    expect(dated('the shipment has been processed in the parcel center of origin')).toEqual([['2026-03-12T16:05:27+01:00', 'Europe/Berlin', 'place']]);
+    expect(dated('loaded to movement / tour vehicle')).toEqual([['2026-03-14T16:11:00+01:00', 'Europe/Warsaw', 'place']]);
+    expect(dated('unloaded from movement / tour vehicle')).toEqual([['2026-03-14T16:10:00+01:00', 'Europe/Warsaw', 'destination']]);
+    // The label's data, beside the destination's code, comes from Germany.
+    expect(dated('the instruction data for this shipment have been provided by the sender to dhl electronically'))
+      .toEqual([['2026-03-04T10:01:11+01:00', 'Europe/Berlin', 'carrier']]);
+    // JRT's own rows at a town stay on the platform's clock.
+    expect(dated('Goods leave the operation center')).toEqual([['2026-03-04T09:40:08+08:00', undefined, undefined]]);
+  });
+
   it('reads DHL’s return as returned, the delivery back to the sender included', () => {
     const payload = fixture('track-dhl') as { data: { trackDetails: Record<string, string>[] }[] }[];
     const rows = payload[0]!.data[0]!.trackDetails;
@@ -281,6 +305,11 @@ describe('JRT tracking adapter', () => {
     expect(answer('10/22号航班')).toEqual({ kind: 'mapped', stage: 'in_transit' });
     // A hand-over to the delivering carrier, not a delivery.
     expect(answer('已交服务商 Delivered to service provider')).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    // So is the hand-over to FedEx after the clearance, and the warehouse's receipt before it: neither is an acceptance.
+    for (const description of ['It has been handed over to the service provider.',
+      'The cargo has been picked up and arrived at the warehouse，awaiting outbound shipment', 'Arrived at FedEx hub', 'Departed FedEx hub', 'On the way']) {
+      expect(answer(description), description).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    }
     for (const description of [
       '已交服务商',
       '货物已交机场,预计18号的航班',

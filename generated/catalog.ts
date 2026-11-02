@@ -26940,7 +26940,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "jrt",
-      "recognitionRank": 984
+      "recognitionRank": 984,
+      "localClocks": true
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [

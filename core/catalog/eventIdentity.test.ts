@@ -747,8 +747,8 @@ describe('same-instant identity policies', () => {
     const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
     expect(policy).toEqual({
       sourceCarrierId: source, storedSources: [source], requireProviderCode: false, matchEachScan: true, matches: expect.any(Function),
-      // YTO, China Post, JS Express and Mayi Yinfu date local clocks, which adds the wall-clock pass.
-      ...(['yto', 'china-post', 'js-express', 'mayiyinfu'].includes(source) ? { matchWallClock: true } : {}),
+      // YTO, China Post, JRT, JS Express and Mayi Yinfu date local clocks, which adds the wall-clock pass.
+      ...(['yto', 'china-post', 'jrt', 'js-express', 'mayiyinfu'].includes(source) ? { matchWallClock: true } : {}),
     });
     const stored = { stage, description: chinese, location: 'Sample Town', providerCode: code };
     const incoming = { ...stored, description: ` ${english.toUpperCase()} `, location: 'Sample Town ' };

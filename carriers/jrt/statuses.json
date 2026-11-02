@@ -25,6 +25,46 @@
       "note": "The label's data passed to FedEx, which delivers the last leg, before JRT's first scan."
     },
     {
+      "wording": "The cargo has been picked up and arrived at the warehouse，awaiting outbound shipment",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "Collected after the destination's clearance and at JRT's warehouse there, before the hand-over to the delivering carrier. It is not the first acceptance."
+    },
+    {
+      "wording": "It has been handed over to the service provider.",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "Handed to the delivering carrier, such as FedEx, after the clearance. It is not the first acceptance."
+    },
+    {
+      "wording": "On the way",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "Copied from FedEx, which delivers the last leg: moving between its facilities."
+    },
+    {
+      "wording": "Departed FedEx hub",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "Copied from FedEx, which delivers the last leg."
+    },
+    {
+      "wording": "Arrived at FedEx hub",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "Copied from FedEx, which delivers the last leg."
+    },
+    {
       "wording": "到达收货点",
       "language": "zh",
       "english": "Arrived at the receiving point",

@@ -58,11 +58,14 @@ const DHL_SENTENCE = /^the (?:international )?shipment\b|^the instruction data f
 // centre of origin, the export parcel centre and the transport abroad.
 const DHL_GERMAN_ROW = /^the instruction data\b|\b(?:of origin|export parcel center|transported to the destination country)\b/i;
 
+// DHL's own event texts, in lower case, as the tracker copies them: "loaded to movement / tour vehicle".
+const DHL_EVENT = /^(?:(?:un)?loaded (?:to|from) movement \/ tour vehicle|movement \/ tour vehicle arrived|pick-up was successful|not delivered-consignee\b|held for consignee collection|shipment will be returned to origin\b)/i;
+
 /**
- * Whether a row is one DHL wrote that the tracker copies without a place, on DHL's wall clock where it scanned
- * the parcel, to the minute. With a place the row is on the platform's clock, as JRT's own rows are.
+ * Whether a row is one DHL wrote that the tracker copies, on DHL's wall clock where it scanned the parcel: its
+ * sentences, to the minute and without a place, and its event texts and sentences with a town or a country's code.
  */
-export const isJrtDhlRow = (wording: string, place: string): boolean => !place.trim() && DHL_SENTENCE.test(wording.trim());
+export const isJrtDhlRow = (wording: string): boolean => DHL_SENTENCE.test(wording.trim()) || DHL_EVENT.test(wording.trim());
 
 /** Whether a DHL row is one from Germany, before the parcel leaves for the destination country. */
 export const isJrtDhlGermanRow = (wording: string): boolean => DHL_GERMAN_ROW.test(wording);

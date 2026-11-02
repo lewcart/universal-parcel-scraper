@@ -48,19 +48,23 @@ browser is needed, and no portal link is published.
   Beijing time would fall before dawn there. Rows in UPS's words or at a place in the United
   States keep their wall clocks, which the scan's state dates, or a neighbouring scan's for a
   row without a place. The flight row names its month and day, read as an ellipsis.
-- On the line into Europe the tracker also copies DHL's rows in DHL's own English sentences
-  without a place. Those come to the minute on DHL's wall clock where it scanned the parcel, the
-  wall clocks DHL's own reply gives: DHL's rows from Germany (the sender's data, the parcel centre
-  of origin, the export centre, the transport abroad) are read on DHL's German clock, and the others
-  on the destination's. Read on Beijing time, each would sit six or seven hours before DHL's own
-  row and show twice. A help link DHL adds to a row is left out of its text.
+- On the line into Europe the tracker also copies DHL's rows, in DHL's own English sentences or
+  its lower case event texts ("loaded to movement / tour vehicle"). They come on DHL's wall clock
+  where it scanned the parcel, the wall clocks DHL's own reply gives. A row at a town, as "hagen",
+  is read on that town's clock. Without one, or beside a country's code, which names no town,
+  DHL's rows from Germany (the sender's data, the parcel centre of origin, the export centre, the
+  transport abroad) are read on DHL's German clock, and the others on the destination's. Read on
+  Beijing time, each would sit six to eight hours before DHL's own row and show twice; a row stored
+  that way is taken over by the same row on its wall clock. A help link DHL adds to a row is left
+  out of its text.
 - Other scan times are wall clocks without an offset on the platform's Beijing clock, as
   [GZYL's](../gzyl/README.md) are, and are read on it; a row dated after the lookup is held back.
 
 ## Limitations
 
 A reference stored without its dashes is not found. A wording the map does not hold falls back to
-the shared wording rules. Before the hand-off the record has no DHL number, so DHL's own tracker
+the shared wording rules. The rows the tracker copies from FedEx, at a place such as "DUIVEN, GL, NL", are
+read on the platform's clock: no FedEx reply has shown which clock they are on. Before the hand-off the record has no DHL number, so DHL's own tracker
 cannot follow the parcel yet.
 
 ## Numbers

@@ -19,17 +19,20 @@ view state, so the adapter reads the Hualei interface behind it instead.
 
 ## Notes
 
-- The forwarder writes its scans in English: warehouse receipt and departure, export clearance
-  and the hand-over to the airline. Only the warehouse rows carry a kind code (`ARRIVAL`,
-  `SHIPMENT`) and a place; the stage comes from the wording in [status.ts](status.ts).
+- The forwarder writes its scans in English: warehouse receipt and departure, export clearance,
+  the hand-over to the airline, the arrival, import clearance and the last-mile carrier's pickup.
+  It then relays that carrier's scans in the carrier's words, as SwiftX's hub, warehouse and
+  delivery rows, which take the stages [SwiftX's](../swiftx/README.md) own map gives them. Only
+  the warehouse rows carry a kind code (`ARRIVAL`, `SHIPMENT`) and a place; the stage comes from
+  the wording in [status.ts](status.ts).
 - Scan times are wall clocks without an offset on the platform's Beijing clock, as
   [GZYL's](../gzyl/README.md) are, and are read on it; a row dated after the lookup is held
   back.
 
 ## Limitations
 
-The record names no delivery carrier or last-mile number, so tracking stops at the airline
-hand-over until the forwarder adds rows.
+The record names no last-mile number, so the last-mile carrier is not asked: its scans show
+only as the forwarder relays them, often hours after their clocks.
 
 ## Numbers
 

@@ -72,6 +72,11 @@ describe('Yilong Logistics tracking adapter', () => {
     expect(statusMapAnswer({ carrier: 'yilong-logistics', providerCode: 'ARRIVAL', description: 'Package received and scanned at warehouse' }))
       .toEqual({ kind: 'mapped', stage: 'accepted' });
     expect(statusMapAnswer({ carrier: 'yilong-logistics', providerCode: null, description: '合成的记录' })).toEqual({ kind: 'unknown' });
+    // The last-mile carrier's failed attempt goes on with the driver's note.
+    expect(statusMapAnswer({ carrier: 'yilong-logistics', providerCode: null,
+      description: 'Delivery failed Note: We were unable to access the delivery location. We will arrange another delivery attempt soon.' }))
+      .toEqual({ kind: 'mapped', stage: 'failed_attempt' });
+    expect(statusMap.stage(null, normalizeStatusWording('Delivery failedness'))).toBeUndefined();
     expect(carrier.portal).not.toHaveProperty('url');
   });
 });

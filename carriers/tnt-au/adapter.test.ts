@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { InvalidInputError, NotFoundError } from '../../core/errors/index.js';
@@ -137,6 +138,11 @@ describe('TNT Australia tracking', () => {
     const fetcher = replying(() => html(delivered()));
     await expect(carrier(fetcher).recognize!('123456789')).resolves.toEqual({ known: false });
     expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('is asked about the shape it shares with Purolator and Colis Privé, first for an Australian parcel', () => {
+    expect(recognitionCandidates(NUMBER).map((candidate) => candidate.carrier)).toContain('tnt-au');
+    expect(recognitionCandidates(NUMBER, { countryHint: 'AU' })[0]).toMatchObject({ carrier: 'tnt-au', countryMatch: 'home' });
   });
 });
 

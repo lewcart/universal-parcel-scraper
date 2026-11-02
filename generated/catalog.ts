@@ -44284,7 +44284,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "tnt-au"
+      "adapter": "tnt-au",
+      "recognitionRank": 601
     },
     "canaryUrl": "https://www.tntexpress.com.au/interaction/Trackntrace.aspx",
     "trackingUrlTemplate": "https://www.tntexpress.com.au/interaction/ASPs/trackref_detail.asp?con={trackingNumber}",

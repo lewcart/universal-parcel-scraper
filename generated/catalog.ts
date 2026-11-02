@@ -37422,7 +37422,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Asia/Hong_Kong",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "quick-fort"
     },
     "canaryUrl": "https://www.quick-fort.com/cms/c/orders",
     "trackingUrlTemplate": "https://www.quick-fort.com/search_kuai_di/search/orderid/{trackingNumber}",

@@ -2192,4 +2192,5 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   speedex: 'www.speedex.gr passes the number only to its tracker frame, which loads it as a document the rendered-page check does not read, so number forwarding cannot be verified',
   usps: 'tools.usps.com answers automated Chrome with an anti-bot script instead of the page',
   'xpo-ltl': 'the shipment page asks for a reCAPTCHA checkbox before it shows a result, so number forwarding cannot be verified',
+  'quick-fort': 'An unknown number gets a notice that sends the browser back to the home page after three seconds, and no public number opens an order page.',
 };

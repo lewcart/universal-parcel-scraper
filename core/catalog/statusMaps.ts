@@ -56,6 +56,7 @@ import { statusMap as asyadExpress } from '../../carriers/asyad-express/status.j
 import { statusMap as nepalPost } from '../../carriers/nepal-post/status.js';
 import { statusMap as wpGround } from '../../carriers/wp-ground/status.js';
 import { statusMap as logisticsSolution } from '../../carriers/logistics-solution/status.js';
+import { statusMap as quickFort } from '../../carriers/quick-fort/status.js';
 import { statusMap as russianPost } from '../../carriers/russian-post/status.js';
 import { statusMap as suratKargo } from '../../carriers/surat-kargo/status.js';
 import { statusMap as atlanticCourier } from '../../carriers/atlantic-courier/status.js';
@@ -719,7 +720,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
-  'nepal-post': nepalPost, 'wp-ground': wpGround, 'logistics-solution': logisticsSolution, 'russian-post': russianPost, 'surat-kargo': suratKargo,
+  'nepal-post': nepalPost, 'wp-ground': wpGround, 'logistics-solution': logisticsSolution, 'quick-fort': quickFort, 'russian-post': russianPost, 'surat-kargo': suratKargo,
   '17feia': seventeenFeia, '2go': twoGo, '4-72': fourSeventyTwo, '4sides': fourSides, '5post': fivePost, '99minutos': ninetynineMinutos,
   'a-duie-pyle': aDuiePyle, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'ab-courier': abCourier, 'abf-freight': abfFreight, 'aci-express-kr': aciExpressKr,
   'acs-courier': acsCourier, 'aex-paraguay': aexParaguay, 'airpak-express': airpakExpress, 'ait-worldwide': aitWorldwide, ajex,

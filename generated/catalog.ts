@@ -8621,7 +8621,8 @@ export const CARRIER_CATALOG = {
     "aliases": [
       "Arrow XL",
       "AskAxl",
-      "ArrowXL by JP Home"
+      "ArrowXL by JP Home",
+      "Ask Axl"
     ],
     "countries": [
       "GB"
@@ -18440,7 +18441,10 @@ export const CARRIER_CATALOG = {
       "ePostGlobal",
       "EPG",
       "PPX Track",
-      "PPXTrack"
+      "PPXTrack",
+      "RR Donnelley",
+      "RRD Donnelley",
+      "RRD International Logistics"
     ],
     "countries": [
       "US"
@@ -26534,6 +26538,31 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "jiaying-express": {
+    "displayName": "Jiaying Express",
+    "color": "#10346a",
+    "aliases": [
+      "佳赢物流",
+      "佳赢国际物流",
+      "广州佳赢国际物流有限公司",
+      "Guangzhou Jiaying International Logistics"
+    ],
+    "countries": [
+      "CN",
+      "RU",
+      "KZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jiayingex.com/",
+    "trackingSearchUrl": "https://www.jiayingex.com/track-help/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "jiehang": {
     "displayName": "Jiehang International Logistics",
     "color": "#3593f0",
@@ -29528,6 +29557,29 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "ltl-kr": {
+    "displayName": "LTL KR",
+    "color": "#1b97d5",
+    "aliases": [
+      "LTL중국배대지",
+      "LTL 중국배대지",
+      "엘티엘"
+    ],
+    "countries": [
+      "KR",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://ltl.kr/",
+    "trackingSearchUrl": "https://ltl.kr/order",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "lucky-fast-express": {
     "displayName": "Lucky Fast Express",
     "color": "#f0d311",
@@ -29751,7 +29803,8 @@ export const CARRIER_CATALOG = {
     "color": "#42b0d5",
     "aliases": [
       "Maersk Logistics And Services USA Inc",
-      "Maersk Parcel"
+      "Maersk Parcel",
+      "B2C Europe"
     ],
     "countries": [
       "US"
@@ -32664,6 +32717,38 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.okaken.co.jp/refer/",
     "trackingSearchUrl": "https://www.okaken.co.jp/refer/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "okay-parcel": {
+    "displayName": "Okay Parcel",
+    "color": "#f2711c",
+    "aliases": [
+      "OkayParcel",
+      "EAE Global",
+      "EAE Global Limited"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.okayparcel.com/en",
+    "trackingSearchUrl": "https://www.okayparcel.com/en",
+    "linkRules": [
+      {
+        "domains": [
+          "sys.okayparcel.com"
+        ],
+        "pathPattern": "^/okp/webapps/showtracking\\.php$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "olva-courier": {
@@ -44531,7 +44616,9 @@ export const CARRIER_CATALOG = {
     "aliases": [
       "通邮",
       "通邮集团",
-      "深圳市通邮物流科技（集团）股份有限公司"
+      "深圳市通邮物流科技（集团）股份有限公司",
+      "SZTY56",
+      "Tongyou"
     ],
     "countries": [
       "CN"
@@ -49348,6 +49435,46 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "znlogic": {
+    "displayName": "Zinc",
+    "color": "#ac7138",
+    "aliases": [
+      "ZNlogic",
+      "ZNLOGIC",
+      "ZN Logic",
+      "Zinc Tracking",
+      "Zinc Technologies Inc."
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.link/tracking",
+    "trackingUrlTemplate": "https://tracking.link/tracking?tracking_id={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.link/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.link"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking_id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^ZPY[A-Z]{2}\\d{10}YQ$",
+        "confidence": "low"
+      }
+    ]
+  },
   "zoom-ve": {
     "displayName": "Zoom",
     "color": "#006ab0",
@@ -50162,6 +50289,7 @@ export const CARRIER_IDS = [
   "jetpak",
   "jhgj",
   "jiachen-express",
+  "jiaying-express",
   "jiehang",
   "jifan",
   "jikuaida",
@@ -50246,6 +50374,7 @@ export const CARRIER_IDS = [
   "loomis-express",
   "lotte-global",
   "lso",
+  "ltl-kr",
   "lucky-fast-express",
   "m-and-p",
   "m-one",
@@ -50334,6 +50463,7 @@ export const CARRIER_IDS = [
   "ocs-ana",
   "odm-express",
   "okaken",
+  "okay-parcel",
   "olva-courier",
   "om-logistics",
   "omgo",
@@ -50790,6 +50920,7 @@ export const CARRIER_IDS = [
   "zheldor",
   "zimpost",
   "zippd",
+  "znlogic",
   "zoom-ve",
   "zr-express",
   "zto-international"
@@ -51474,6 +51605,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jetpak": [],
   "jhgj": ["jhgj-1"],
   "jiachen-express": [],
+  "jiaying-express": [],
   "jiehang": [],
   "jifan": ["jifan-1"],
   "jikuaida": [],
@@ -51558,6 +51690,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "loomis-express": ["loomis-express-1","loomis-express-2"],
   "lotte-global": [],
   "lso": ["lso-1"],
+  "ltl-kr": [],
   "lucky-fast-express": [],
   "m-and-p": [],
   "m-one": ["m-one-s10"],
@@ -51646,6 +51779,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ocs-ana": [],
   "odm-express": [],
   "okaken": [],
+  "okay-parcel": [],
   "olva-courier": ["olva-courier-3"],
   "om-logistics": [],
   "omgo": ["omgo-1"],
@@ -52102,6 +52236,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "zheldor": [],
   "zimpost": [],
   "zippd": [],
+  "znlogic": ["znlogic-1"],
   "zoom-ve": [],
   "zr-express": ["zr-express-1"],
   "zto-international": ["zto-international-1"],

@@ -708,3 +708,24 @@ describe('SkyBox, Délivro, TForce Integrated Solutions, UBX UK and TTK Europe',
     expect(detectCarrierMatch('100000001').candidates ?? []).not.toContain('tforce-integrated-solutions');
   });
 });
+
+describe('Zinc, LTL KR, Jiaying Express and Okay Parcel', () => {
+  it('suggests Zinc for ZPY, two letters, ten digits and YQ, and nothing near it', () => {
+    expect(detectCarrierMatch('ZPYAB1234567890YQ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['znlogic'] });
+    for (const number of ['ZPYA11234567890YQ', 'ZPYAB123456789YQ', 'ZPYAB12345678901YQ', 'ZPYAB1234567890YZ', 'ZPXAB1234567890YQ']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('znlogic');
+    }
+  });
+
+  it('reads their names and tracking links', () => {
+    for (const [name, carrier] of [
+      ['ZNLOGIC', 'znlogic'], ['Zinc Tracking', 'znlogic'], ['LTL중국배대지', 'ltl-kr'], ['佳赢物流', 'jiaying-express'],
+      ['EAE Global', 'okay-parcel'], ['RRD International Logistics', 'epost-global'], ['B2C Europe', 'maersk-ecommerce'],
+      ['Ask Axl', 'arrow-xl'], ['SZTY56', 'topyou'],
+    ] as const) expect(carrierIdFromName(name), name).toBe(carrier);
+    expect(parseTrackingInput('https://tracking.link/tracking?tracking_id=ZPYAB1234567890YQ'))
+      .toMatchObject({ trackingNumber: 'ZPYAB1234567890YQ', carrier: 'znlogic', source: 'link' });
+    expect(parseTrackingInput('http://sys.okayparcel.com/okp/webapps/showtracking.php?q=OK1000000017'))
+      .toMatchObject({ trackingNumber: 'OK1000000017', carrier: 'okay-parcel', source: 'link' });
+  });
+});

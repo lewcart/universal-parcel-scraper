@@ -8619,7 +8619,8 @@
     "aliases": [
       "Arrow XL",
       "AskAxl",
-      "ArrowXL by JP Home"
+      "ArrowXL by JP Home",
+      "Ask Axl"
     ],
     "countries": [
       "GB"
@@ -18438,7 +18439,10 @@
       "ePostGlobal",
       "EPG",
       "PPX Track",
-      "PPXTrack"
+      "PPXTrack",
+      "RR Donnelley",
+      "RRD Donnelley",
+      "RRD International Logistics"
     ],
     "countries": [
       "US"
@@ -26532,6 +26536,31 @@
     ],
     "detectionRules": []
   },
+  "jiaying-express": {
+    "displayName": "Jiaying Express",
+    "color": "#10346a",
+    "aliases": [
+      "佳赢物流",
+      "佳赢国际物流",
+      "广州佳赢国际物流有限公司",
+      "Guangzhou Jiaying International Logistics"
+    ],
+    "countries": [
+      "CN",
+      "RU",
+      "KZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jiayingex.com/",
+    "trackingSearchUrl": "https://www.jiayingex.com/track-help/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "jiehang": {
     "displayName": "Jiehang International Logistics",
     "color": "#3593f0",
@@ -29526,6 +29555,29 @@
       }
     ]
   },
+  "ltl-kr": {
+    "displayName": "LTL KR",
+    "color": "#1b97d5",
+    "aliases": [
+      "LTL중국배대지",
+      "LTL 중국배대지",
+      "엘티엘"
+    ],
+    "countries": [
+      "KR",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://ltl.kr/",
+    "trackingSearchUrl": "https://ltl.kr/order",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "lucky-fast-express": {
     "displayName": "Lucky Fast Express",
     "color": "#f0d311",
@@ -29749,7 +29801,8 @@
     "color": "#42b0d5",
     "aliases": [
       "Maersk Logistics And Services USA Inc",
-      "Maersk Parcel"
+      "Maersk Parcel",
+      "B2C Europe"
     ],
     "countries": [
       "US"
@@ -32662,6 +32715,38 @@
     "canaryUrl": "https://www.okaken.co.jp/refer/",
     "trackingSearchUrl": "https://www.okaken.co.jp/refer/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "okay-parcel": {
+    "displayName": "Okay Parcel",
+    "color": "#f2711c",
+    "aliases": [
+      "OkayParcel",
+      "EAE Global",
+      "EAE Global Limited"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.okayparcel.com/en",
+    "trackingSearchUrl": "https://www.okayparcel.com/en",
+    "linkRules": [
+      {
+        "domains": [
+          "sys.okayparcel.com"
+        ],
+        "pathPattern": "^/okp/webapps/showtracking\\.php$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "olva-courier": {
@@ -44529,7 +44614,9 @@
     "aliases": [
       "通邮",
       "通邮集团",
-      "深圳市通邮物流科技（集团）股份有限公司"
+      "深圳市通邮物流科技（集团）股份有限公司",
+      "SZTY56",
+      "Tongyou"
     ],
     "countries": [
       "CN"
@@ -49345,6 +49432,46 @@
       }
     ],
     "detectionRules": []
+  },
+  "znlogic": {
+    "displayName": "Zinc",
+    "color": "#ac7138",
+    "aliases": [
+      "ZNlogic",
+      "ZNLOGIC",
+      "ZN Logic",
+      "Zinc Tracking",
+      "Zinc Technologies Inc."
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.link/tracking",
+    "trackingUrlTemplate": "https://tracking.link/tracking?tracking_id={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.link/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.link"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking_id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^ZPY[A-Z]{2}\\d{10}YQ$",
+        "confidence": "low"
+      }
+    ]
   },
   "zoom-ve": {
     "displayName": "Zoom",

@@ -103098,6 +103098,22 @@
     ]
   },
   {
+    "input": "ZPYAA0041578401YQ",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "znlogic"
+    ]
+  },
+  {
+    "input": "ZPYAA0049859007YQ",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "znlogic"
+    ]
+  },
+  {
     "input": "ZS10000000001",
     "carrier": "china-post",
     "confidence": "high",

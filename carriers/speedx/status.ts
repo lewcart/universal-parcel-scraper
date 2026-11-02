@@ -2,6 +2,7 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const REGISTERED: ClassifiedStatus = { status: 'pending', stage: 'registered' };
+const ACCEPTED: ClassifiedStatus = { status: 'in_transit', stage: 'accepted' };
 const IN_TRANSIT: ClassifiedStatus = { status: 'in_transit', stage: 'in_transit' };
 const OUT_FOR_DELIVERY: ClassifiedStatus = { status: 'out_for_delivery', stage: 'out_for_delivery' };
 const FAILED_ATTEMPT: ClassifiedStatus = { status: 'exception', stage: 'failed_attempt' };
@@ -14,6 +15,8 @@ const RETURNED: ClassifiedStatus = { status: 'exception', stage: 'returned' };
 const CODES = new Map<string, ClassifiedStatus>([
   ['50001', REGISTERED],
   ['51001', REGISTERED],
+  // The driver collected the booked pickup from the shipper.
+  ['51005', ACCEPTED],
   ['52002', IN_TRANSIT],
   ['57112', IN_TRANSIT],
   ['57101', IN_TRANSIT],

@@ -402,6 +402,24 @@ describe('JS Express tracking adapter', () => {
       .toEqual({ destination_country_name: 'Sample Land', delivery_tracking_number: 'STRCA0000000000001' });
     // No number yet, the waybill's own, or one that is no tracking number.
     for (const trackNo of ['', null, DELIVERED, 'SAMPLE NUMBER?']) expect(read({ trackNo, country: 'Canada' }), String(trackNo)).toEqual({ destination_country: 'CA' });
+    // A shape DHL Paket shares with other couriers names DHL in Germany when the history holds DHL Paket's own rows.
+    const dhl = [row('2026-05-04 09:00:00', '', 'The shipment has been processed in the parcel center of origin'), ...scans];
+    const viaDhl = (fields: Record<string, unknown>, rows = dhl) => {
+      const { delivery_carrier, delivery_tracking_number } = parseJsExpress(waybill(rows, fields), DELIVERED);
+      return { delivery_carrier, delivery_tracking_number };
+    };
+    for (const trackNo of ['000000000016', 'JJD0000000000000001']) {
+      expect(detectCarrierMatch(trackNo), trackNo).toMatchObject({ confidence: 'low', candidates: expect.arrayContaining(['dhl']) });
+      expect(viaDhl({ trackNo, country: 'Germany' }), trackNo).toEqual({ delivery_carrier: 'dhl', delivery_tracking_number: trackNo });
+      expect(viaDhl({ trackNo, country: 'Germany' }, scans), trackNo).toEqual({ delivery_tracking_number: trackNo });
+      expect(viaDhl({ trackNo, country: 'Austria' }), trackNo).toEqual({ delivery_tracking_number: trackNo });
+    }
+    expect(viaDhl({ trackNo: '000000000016', country: 'Germany' }, [row('2026-05-04 09:00:00', '', 'The shipment is in transit to DHL.'), ...scans]))
+      .toEqual({ delivery_carrier: 'dhl', delivery_tracking_number: '000000000016' });
+    // A shape DHL does not issue names no courier, whatever the rows.
+    expect(viaDhl({ trackNo: '19999999999980', country: 'Germany' })).toEqual({ delivery_tracking_number: '19999999999980' });
+    expect(deliveryHandoff('js-express', DELIVERED, parseJsExpress(waybill(dhl, { trackNo: 'JJD0000000000000001', country: 'Germany' }), DELIVERED)))
+      .toEqual({ carrier: 'dhl', number: 'JJD0000000000000001', basis: 'partner' });
     // The tracker hands the parcel to the courier's adapter.
     expect(deliveryHandoff('js-express', DELIVERED, parseJsExpress(parsed('delivered'), DELIVERED)))
       .toEqual({ carrier: 'straightship', number: 'STRCA0000000000001', basis: 'partner' });

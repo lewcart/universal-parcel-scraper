@@ -33,7 +33,10 @@ delivers them. Tracked through the lookup its English tracking page makes.
 - `trackNo` is the destination courier's number and becomes the delivery tracking number; a USPS
   routing barcode gives its package identifier. The reply does not name the courier. It is the
   carrier the catalog settles the number for at high confidence, when that carrier works in the
-  country the parcel goes to, and the tracker then asks that carrier's adapter.
+  country the parcel goes to, and the tracker then asks that carrier's adapter. DHL Paket's
+  twelve digits and JJD with sixteen are shapes other couriers use too, GLS Germany's and
+  InPost's among them, so such a number names DHL only on a German parcel whose history holds
+  DHL Paket's own rows.
 - A row is a clock, a place and a wording. Clocks are wall clocks to the second, with
   no zone, and one history mixes China's with the airports' and the destination courier's, so
   the reply's order stands.

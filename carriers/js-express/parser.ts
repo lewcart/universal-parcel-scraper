@@ -26,6 +26,10 @@ const REFUSED = '非法请求';
 const REFUSAL = /^\s*\{\s*"code"\s*:\s*1\s*,\s*"message"\s*:\s*"非法请求"\s*\}(?=\s*\{)/;
 // The image captcha the Chinese page's lookup asks for, should this one ask it too.
 const CAPTCHA = /验证码/;
+// DHL Paket's rows in its English, as a German parcel's history relays them: its advice of the
+// parcel's data, its record of the parcel on its way to it, its first scan in Germany and its
+// transport to the delivery base.
+const DHL_PAKET_ROW = /^The (?:instruction data for this shipment have been provided by the sender to DHL electronically|shipment is in transit to DHL|shipment has been processed in the parcel center of origin|shipment arrived in the region of recipient and will be transported to the delivery base in the next step)\.?$/;
 // A firewall or bot check's page, which can come back with HTTP 200.
 const BLOCKED = /_cf_chl_opt|cf-turnstile|<title>\s*(?:Just a moment|Attention Required|Access denied)|g-recaptcha|geetest/i;
 // A run of nine or more digits, with the separators phone numbers are written with; a date stays.
@@ -132,18 +136,20 @@ export function jsExpressReply(body: string): unknown {
 }
 
 /**
- * The destination courier's number, `trackNo`, and that courier when the
- * catalog settles the number for one carrier at high confidence and that
- * carrier works in the country the parcel goes to. The reply names no
- * courier. A USPS routing barcode gives its package identifier.
+ * The destination courier's number, `trackNo`, and that courier when it works
+ * in the country the parcel goes to and the catalog settles the number for it
+ * at high confidence, or the number has a shape DHL Paket shares, its twelve
+ * digits or JJD and sixteen, and the history holds DHL Paket's own rows. The
+ * reply names no courier. A USPS routing barcode gives its package identifier.
  */
-function handoff(waybill: Record<string, unknown>, number: string, country: string | null): Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'> {
+function handoff(waybill: Record<string, unknown>, number: string, country: string | null, descriptions: readonly string[]): Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'> {
   const compact = normalizeTrackingNumber(text(waybill, 'trackNo', 64)).toUpperCase();
   const reference = USPS_ROUTING_BARCODE.test(compact) ? uspsPackageIdentifier(compact) ?? '' : compact;
   if (!/^[A-Z0-9]{4,40}$/.test(reference) || reference === number) return {};
   const detected = detectCarrierMatch(reference);
-  const partner = detected.confidence === 'high' && detected.carrier !== 'js-express' && country
-    && CARRIER_DEFINITIONS[detected.carrier]?.countries?.includes(country) ? detected.carrier : undefined;
+  const named = detected.confidence === 'high' ? detected.carrier
+    : detected.candidates.includes('dhl') && descriptions.some((description) => DHL_PAKET_ROW.test(description)) ? 'dhl' : undefined;
+  const partner = named && named !== 'js-express' && country && CARRIER_DEFINITIONS[named]?.countries?.includes(country) ? named : undefined;
   return { ...(partner ? { delivery_carrier: partner } : {}), delivery_tracking_number: reference };
 }
 
@@ -222,7 +228,7 @@ export function parseJsExpress(payload: unknown, rawNumber: string): CarrierResu
     ...(stage === 'delivered' && current!.time ? { delivered_at: current!.time } : {}),
     expected_delivery: null,
     ...(country ? { destination_country: country } : destination ? { destination_country_name: destination } : {}),
-    ...handoff(waybill, number, country),
+    ...handoff(waybill, number, country, scans.map((scan) => scan.description)),
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };

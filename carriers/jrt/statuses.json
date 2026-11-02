@@ -210,6 +210,14 @@
       "note": "Copied from DHL, which delivers the last leg: the label's data has reached it. JRT copies DHL's rows in lower case."
     },
     {
+      "wording": "shipment in transit to dhl",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-24",
+      "note": "Copied from DHL: the parcel, accepted by JRT, is on its way to DHL, before its flight."
+    },
+    {
       "wording": "the shipment has been processed in the parcel center of origin",
       "language": "en",
       "stage": "in_transit",

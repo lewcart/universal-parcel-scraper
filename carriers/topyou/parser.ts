@@ -59,6 +59,9 @@ function scanClock(row: Record<string, unknown>, imile: boolean): { time: string
   return { time: instant.iso };
 }
 
+// A country's three-letter code, which TopYou writes after its name: "France,FRA".
+const ALPHA3 = /^[A-Z]{3}$/;
+
 /**
  * A scan's place. TopYou's own scans name the destination country, the
  * origin airport's included, so a place that is only countries is left out
@@ -66,7 +69,8 @@ function scanClock(row: Record<string, unknown>, imile: boolean): { time: string
  */
 function place(row: Record<string, unknown>, own: boolean): string {
   const location = text(row, 'location', 120);
-  if (own && location.split(',').every((part) => countryCode(part))) return '';
+  const parts = location.split(',').map((part) => part.trim());
+  if (own && parts.some((part) => countryCode(part)) && parts.every((part) => countryCode(part) || ALPHA3.test(part))) return '';
   return location;
 }
 

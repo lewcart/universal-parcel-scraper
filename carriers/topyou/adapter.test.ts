@@ -112,6 +112,13 @@ describe('TopYou HTTP adapter', () => {
     const places = new Map(parseTopyou(relayed, 'TYZRZ0000000003YQ').events!.map((event) => [event.time ?? event.local_time, event.location ?? null]));
     expect(places.get('2026-10-30T05:23:17Z')).toBe('FR');
     expect(places.get('2026-10-26T21:26:40+08:00')).toBeNull();
+    // Nor does a country's name with its three-letter code, which only a relayed scan keeps.
+    const named = changed('relayed-europe', (track) => {
+      for (const row of track.trackInfo!) row.location = 'France,FRA';
+    });
+    const namedPlaces = new Map(parseTopyou(named, 'TYZRZ0000000003YQ').events!.map((event) => [event.time ?? event.local_time, event.location ?? null]));
+    expect(namedPlaces.get('2026-10-30T05:23:17Z')).toBe('France,FRA');
+    expect(namedPlaces.get('2026-10-26T21:26:40+08:00')).toBeNull();
   });
 
   it('reads iMile’s scans it relays stated +08:00 on UTC wall clocks, and TopYou’s own on China’s', () => {

@@ -49,7 +49,7 @@ ends with ", Lastmile Number:" and the post's number, which the map leaves aside
 summary code settles a delivered or returned parcel.
 
 TopYou's own scans name the destination country even at the origin airport, so a place that is
-only countries is left out of them. A wording loses a closing "of" whose country the tracker left
+only countries, by name, code or both ("France,FRA"), is left out of them. A wording loses a closing "of" whose country the tracker left
 empty. `transferNo` is the delivery carrier's number, reported as `delivery_tracking_number`.
 `carrierCode` names TopYou's own line rather than that carrier (a parcel USPS delivered came under
 "DHL Paket"), so the adapter names no delivery carrier. The tracker also finds a parcel by its

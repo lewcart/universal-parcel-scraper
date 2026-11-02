@@ -7696,7 +7696,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anc-delivers"
     },
     "canaryUrl": "https://ancdelivers.com.au/receiving/track-your-item",
     "trackingUrlTemplate": "https://ancdelivers.com.au/track/{trackingNumber}",

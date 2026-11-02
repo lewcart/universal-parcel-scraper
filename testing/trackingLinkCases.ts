@@ -2041,6 +2041,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/shipecom\.com\/track\/E00A0000099$/,
     marker: /We could not find that number|Tracking history/,
     shipmentNotFound: { status: 404, marker: /We could not find that number/ } },
+  // The page asks the open delivery service for the number in its path and names it when the service does not hold it.
+  { carrier: 'anc-delivers', number: 'A00000000AA',
+    route: /^https:\/\/ancdelivers\.com\.au\/track\/A00000000AA$/,
+    marker: /We couldn’t find your tracking number/ },
   // The page lists the number in its number parameter and asks the open service, which holds no scan for this one.
   { carrier: 'bestfulfill', number: 'BEST00000000000000',
     route: /^https:\/\/www\.bestfulfillpacket\.com\/track\?number=BEST00000000000000$/,

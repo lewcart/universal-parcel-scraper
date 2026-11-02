@@ -27,6 +27,7 @@ import { adapter as americanWestExpress } from '../carriers/american-west-expres
 import { adapter as amerijet } from '../carriers/amerijet/adapter.js';
 import { adapter as ampm } from '../carriers/ampm/adapter.js';
 import { adapter as anPost } from '../carriers/an-post/adapter.js';
+import { adapter as ancDelivers } from '../carriers/anc-delivers/adapter.js';
 import { adapter as andreani } from '../carriers/andreani/adapter.js';
 import { adapter as anjun } from '../carriers/anjun/adapter.js';
 import { adapter as anousith } from '../carriers/anousith/adapter.js';
@@ -728,6 +729,7 @@ export const REGISTRY: RegistryDefinition = {
     "amerijet": amerijet,
     "ampm": ampm,
     "an-post": anPost,
+    "anc-delivers": ancDelivers,
     "andreani": andreani,
     "anjun": anjun,
     "anousith": anousith,
@@ -1465,7 +1467,7 @@ export const REGISTRY: RegistryDefinition = {
     "ampm": "ampm",
     "ams-egroup": "universal",
     "an-post": "an-post",
-    "anc-delivers": "universal",
+    "anc-delivers": "anc-delivers",
     "andreani": "andreani",
     "ane-logistics": "universal",
     "anjun": "anjun",

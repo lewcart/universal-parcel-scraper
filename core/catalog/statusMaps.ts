@@ -35,6 +35,7 @@ import { statusMap as amazonShipping } from '../../carriers/amazon-shipping/stat
 import { statusMap as americanWestExpress } from '../../carriers/american-west-express/status.js';
 import { statusMap as amerijet } from '../../carriers/amerijet/status.js';
 import { statusMap as ampm } from '../../carriers/ampm/status.js';
+import { statusMap as ancDelivers } from '../../carriers/anc-delivers/status.js';
 import { statusMap as anPost } from '../../carriers/an-post/status.js';
 import { statusMap as andreani } from '../../carriers/andreani/status.js';
 import { statusMap as anjun } from '../../carriers/anjun/status.js';
@@ -718,7 +719,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '2go': twoGo, '4-72': fourSeventyTwo, '4sides': fourSides, '5post': fivePost, '99minutos': ninetynineMinutos,
   'a-duie-pyle': aDuiePyle, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'ab-courier': abCourier, 'abf-freight': abfFreight, 'aci-express-kr': aciExpressKr,
   'acs-courier': acsCourier, 'aex-paraguay': aexParaguay, 'airpak-express': airpakExpress, 'ait-worldwide': aitWorldwide, ajex,
-  'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne, 'am-home-delivery': amHomeDelivery, 'amazon-shipping': amazonShipping, 'american-west-express': americanWestExpress, amerijet, ampm, 'an-post': anPost,
+  'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne, 'am-home-delivery': amHomeDelivery, 'amazon-shipping': amazonShipping, 'american-west-express': americanWestExpress, amerijet, ampm, 'an-post': anPost, 'anc-delivers': ancDelivers,
   andreani, anjun, anousith, anserx, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics,
   'apple-express': appleExpress, aquiline, aramex, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, asendia, 'asyad-express': asyadExpress, 'atlantic-courier': atlanticCourier, 'ats-healthcare': atsHealthcare, 'australia-post': australiaPost, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,

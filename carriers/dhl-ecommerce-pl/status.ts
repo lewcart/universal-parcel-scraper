@@ -69,6 +69,8 @@ const SCAN_STAGES: readonly [RegExp, Stage][] = [
   [/^The shipment has arrived at gateway in destination country\.$/i, 'in_transit'],
   [/^The shipment has arrived at delivery depot\.$/i, 'in_transit'],
   [/^The shipment (?:has been|was) delivered to the recipient\.$/i, 'delivered'],
+  // On the way from the delivery depot to the DHL BOX locker or DHL POP point that will hold the parcel.
+  [/^Delivery in the way to the DHL Point\.?$/i, 'in_transit'],
   // The DHL BOX locker or DHL POP point holding the parcel for its recipient, with its address and hours.
   [/^Shipment is waiting in .{1,300}$/i, 'ready_for_pickup'],
 ];

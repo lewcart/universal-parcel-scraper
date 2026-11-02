@@ -221,6 +221,81 @@
         "confidence": "none"
       },
       "note": "tnt.it's example of an international consignment with its letters, not a real shipment. Its digits fail the modulus 11 check, so no rule claims it."
+    },
+    {
+      "number": "GPO002066019",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240808052543/https://www.tnt.com/api/v3/shipment?con=GPO002066019&locale=en_AU&searchType=CON&channel=OPENTRACK",
+        "date": "2024-08-08",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "TNT Australia domestic"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
+      },
+      "note": "Looked up on TNT's tracking API from its Australian site, as an archived reply shows; TNT answers that it is a TNT Australia domestic consignment and sends the lookup to TNT Australia's own tracker."
+    },
+    {
+      "number": "IHN000001852",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240802030239/https://www.tnt.com/api/v3/shipment?con=IHN000001852&locale=en_AU&searchType=CON&channel=OPENTRACK",
+        "date": "2024-08-02",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "TNT Australia domestic"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
+      },
+      "note": "Looked up on TNT's tracking API from its Australian site, as an archived reply shows; TNT answers that it is a TNT Australia domestic consignment and sends the lookup to TNT Australia's own tracker."
+    },
+    {
+      "number": "UNY000004143",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220715035326/https://www.tnt.com/api/v3/shipment?con=UNY000004143&locale=en_AU&searchType=CON&channel=OPENTRACK",
+        "date": "2022-07-15",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "TNT Australia domestic"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
+      },
+      "note": "Looked up on TNT's tracking API from its Australian site, as an archived reply shows; TNT answers that it is a TNT Australia domestic consignment and sends the lookup to TNT Australia's own tracker."
     }
   ]
 }

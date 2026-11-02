@@ -15,8 +15,13 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A Voxya complaint against The Professional Couriers gives it as a shipment marked delivered but not received."
     },
@@ -53,8 +58,13 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A Voxya complaint against The Professional Couriers gives it as the courier tracking number of a delayed parcel."
     },
@@ -91,8 +101,13 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A Voxya complaint against The Professional Couriers gives it as the tracking number of a parcel booked for Goa."
     },

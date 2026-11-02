@@ -59,8 +59,13 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "SEKO's sample OmniParcel tracking file lists it as the barcode of the consignment's first package."
     },

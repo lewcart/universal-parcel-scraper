@@ -92,8 +92,13 @@
         "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/purolator.json"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "Open-source project example, not a real shipment."
     },
@@ -106,8 +111,13 @@
         "date": "2026-09-12"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "Public review of a Purolator parcel held at a counter for pickup. Purolator's tracker returns its history.",
       "context": {
@@ -122,8 +132,13 @@
         "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/purolator.json"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "Open-source project example, not a real shipment."
     },
@@ -135,8 +150,13 @@
         "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/purolator.json"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "Open-source project example, not a real shipment."
     },
@@ -148,8 +168,13 @@
         "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/purolator.json"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "Open-source project example, not a real shipment."
     },
@@ -298,8 +323,13 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns a parcel from the United States that cleared customs and was collected from a counter."
     },
@@ -317,8 +347,13 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A lettered Purolator PIN without the usual zeroes after its letters, whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
     },
@@ -336,8 +371,13 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
     },
@@ -355,8 +395,13 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
     },
@@ -374,8 +419,13 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
     },

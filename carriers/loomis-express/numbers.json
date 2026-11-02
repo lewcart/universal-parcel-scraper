@@ -117,8 +117,13 @@
         "assessment": "auxiliary"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "Ship24's Loomis Express page gives it as a door-knocker number, the card left after a missed delivery, not the waybill."
     }

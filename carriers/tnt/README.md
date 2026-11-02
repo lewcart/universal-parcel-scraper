@@ -4,6 +4,11 @@ Direct tracking covers 9-digit international consignments through the JSON read
 behind tnt.com's public tracking page, and TNT France's 16-digit national
 consignments through its public HTML tracking page.
 
+TNT Australia's domestic consignments, three letters and nine digits, are detected at low
+confidence next to Purolator's PINs of the same shape. The adapter does not take them: tnt.com's
+API answers them as TNT Australia domestic and sends the lookup to TNT Australia's own tracker, so
+they are tracked through enabled providers.
+
 ## How it works
 
 `direct` makes one GET, chosen by the number's shape. No session, browser,

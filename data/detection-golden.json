@@ -71095,9 +71095,16 @@
   },
   {
     "input": "AVO145588001",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -72972,9 +72979,16 @@
   },
   {
     "input": "CAM000011312",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -73734,9 +73748,16 @@
   },
   {
     "input": "CGK002986959",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -76822,9 +76843,16 @@
   },
   {
     "input": "DNK914817619",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -79493,9 +79521,16 @@
   },
   {
     "input": "EWN001815469",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -81227,6 +81262,21 @@
     ]
   },
   {
+    "input": "GPO002066019",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
+      "purolator"
+    ]
+  },
+  {
     "input": "GPPISP0000103523GB",
     "carrier": "globalpost",
     "confidence": "high",
@@ -82454,9 +82504,16 @@
   },
   {
     "input": "HEZ000654921",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -82975,9 +83032,16 @@
   },
   {
     "input": "IHB465913510",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -82986,6 +83050,21 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "IHN000001852",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
+      "purolator"
+    ]
   },
   {
     "input": "IM06010000714050",
@@ -83618,9 +83697,16 @@
   },
   {
     "input": "JFV247545960",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -85040,9 +85126,16 @@
   },
   {
     "input": "KGZ000453699",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -85110,9 +85203,16 @@
   },
   {
     "input": "KNP507956665",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -85311,9 +85411,16 @@
   },
   {
     "input": "KYV009956937",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -87254,9 +87361,16 @@
   },
   {
     "input": "LWI000282061",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -87867,9 +87981,16 @@
   },
   {
     "input": "MAA574899288",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -89755,9 +89876,16 @@
   },
   {
     "input": "ODO000466768",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -91178,9 +91306,16 @@
   },
   {
     "input": "PHU001209901",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -97317,9 +97452,16 @@
   },
   {
     "input": "STR059449783",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -98588,9 +98730,16 @@
   },
   {
     "input": "TLR000083964",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -99060,9 +99209,16 @@
   },
   {
     "input": "UBG000623916",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -99531,6 +99687,21 @@
     "confidence": "high",
     "candidates": [
       "china-post"
+    ]
+  },
+  {
+    "input": "UNY000004143",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
+      "purolator"
     ]
   },
   {
@@ -100408,9 +100579,16 @@
   },
   {
     "input": "VPL517210037",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -100480,9 +100658,16 @@
   },
   {
     "input": "VVD002126656",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -101170,9 +101355,16 @@
   },
   {
     "input": "XAO050055268",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },
@@ -102931,9 +103123,16 @@
   },
   {
     "input": "dft207954743",
-    "carrier": "purolator",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "colis-prive",
+      "purolator",
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "colis-prive",
       "purolator"
     ]
   },

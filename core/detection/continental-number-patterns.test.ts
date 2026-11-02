@@ -439,6 +439,22 @@ describe('City Express shipment and parcel numbers', () => {
   });
 });
 
+describe('Purolator PINs and TNT Australia consignments', () => {
+  // Synthetic numbers in the three letters and nine digits both networks print; none is a real parcel.
+  it('offers both at low confidence, since TNT files the shape as TNT Australia domestic', () => {
+    for (const number of ['APK000000001', 'KYV000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({
+        carrier: 'unknown',
+        confidence: 'low',
+        candidates: expect.arrayContaining(['purolator', 'tnt']),
+      });
+    }
+    for (const number of ['APK00000001', 'APK0000000001', 'AP0000000001', 'CUB000000001', 'XLT000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('tnt');
+    }
+  });
+});
+
 describe('Nova Post international numbers', () => {
   // Synthetic numbers in the SH or TN, country and ten-digit layout novapost.com's tracker accepts,
   // at times after RS; none is a real parcel.
@@ -617,9 +633,9 @@ describe('wave seven courier rules', () => {
     }
   });
 
-  it('names Exelot for XLT and nine digits and leaves other prefixes to Purolator', () => {
+  it('names Exelot for XLT and nine digits and leaves other prefixes to Purolator and TNT', () => {
     expect(detectCarrierMatch('XLT000000001')).toMatchObject({ carrier: 'exelot', confidence: 'high' });
-    expect(detectCarrierMatch('XLU000000001')).toMatchObject({ carrier: 'purolator', confidence: 'high' });
+    expect(detectCarrierMatch('XLU000000001')).toMatchObject({ confidence: 'low', candidates: expect.arrayContaining(['purolator', 'tnt']) });
     for (const number of ['XLT00000001', 'XLT0000000001']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('exelot');
     }
@@ -766,7 +782,7 @@ describe('wave eight courier rules', () => {
   it("leaves GAASH WorldWide's GWD and nine digits out of Purolator's rule", () => {
     expect(detectCarrierMatch('GWD000000001').carrier).not.toBe('purolator');
     expect(detectCarrierMatch('GWD000000001').candidates ?? []).not.toContain('purolator');
-    expect(detectCarrierMatch('GWE000000001')).toMatchObject({ carrier: 'purolator', confidence: 'high' });
+    expect(detectCarrierMatch('GWE000000001')).toMatchObject({ confidence: 'low', candidates: expect.arrayContaining(['purolator', 'tnt']) });
   });
 
   it('names Qwintry for QR and eight digits', () => {
@@ -1087,7 +1103,7 @@ describe('ROZETKA Delivery, HRX, Cargobus and Jetpak numbers and links', () => {
     for (const number of ['RMP10000017', 'RMP1000000017', 'RMQ100000017', '101000000017']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('rozetka-delivery');
     }
-    expect(detectCarrierMatch('RMQ100000017')).toMatchObject({ carrier: 'purolator', confidence: 'high' });
+    expect(detectCarrierMatch('RMQ100000017')).toMatchObject({ confidence: 'low', candidates: expect.arrayContaining(['purolator', 'tnt']) });
   });
 
   it('reads their trackers and names them', () => {

@@ -183,7 +183,7 @@ describe('evidence-backed tracking formats', () => {
     for (const number of ['QSS00000001', 'QSS0000000001', 'QS000000001']) {
       expect(detectCarrierMatch(number).candidates, number).not.toContain('sendle');
     }
-    expect(detectCarrierMatch('QSA000000001')).toMatchObject({ carrier: 'purolator', confidence: 'high' });
+    expect(detectCarrierMatch('QSA000000001').candidates).toContain('purolator');
   });
 
   it('suggests FERCAM for the letter O, the year and eight digits', () => {

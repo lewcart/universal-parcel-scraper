@@ -46,8 +46,13 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "A Tu Queja Suma complaint filed against Chazki in Argentina gives this trackcode in its title, and a Chazki representative answers about the parcel."
     },

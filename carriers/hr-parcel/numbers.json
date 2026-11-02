@@ -418,8 +418,13 @@
         "assessment": "scope_review"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "An archived lookup on HR Parcel's tracker address with a shorter iHerb number; the history was not visible."
     },

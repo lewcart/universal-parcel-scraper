@@ -169,8 +169,13 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "purolator",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "purolator",
+          "tnt"
+        ]
       },
       "note": "An archived lookup on Starex's own parcel page; the capture was opened and shows only the page shell, since the history loads by script."
     }

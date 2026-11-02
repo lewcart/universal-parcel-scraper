@@ -90,6 +90,11 @@
       "id": "tnt-2",
       "pattern": "^\\d{16}$",
       "confidence": "low"
+    },
+    {
+      "id": "tnt-au-domestic",
+      "pattern": "^(?!(?:BNI|BYS|CLC|CUB|GWD|LTN|MPX|NZC|QSP|QSS|RMP|RWM|XLT))[A-Z]{3}\\d{9}$",
+      "confidence": "low"
     }
   ]
 }

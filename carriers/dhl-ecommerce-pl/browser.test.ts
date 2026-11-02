@@ -64,6 +64,11 @@ describe('DHL Poland browser history', () => {
     payload.events[0]!.description = 'The shipment was delivered to the Recipient. The shipment received by PRIVATE';
     expect(parseDhlPolandHistory(payload, WAYBILL).events?.[0]).toMatchObject({ description: 'The shipment was delivered to the Recipient.', stage: 'delivered' });
   });
+  it('reads the locker or point holding the parcel as ready for pickup', () => {
+    const payload = history();
+    payload.events[0]!.description = 'Shipment is waiting in Automat DHL BOX 24/7:Przykładowa 1 00-001 Miasto Opening hours: Mon.00:00 - 23:59 Sun.00:00 - 23:59';
+    expect(parseDhlPolandHistory(payload, WAYBILL).events?.[0]).toMatchObject({ stage: 'ready_for_pickup' });
+  });
   it('keeps unknown and informational wording without guessing a stage', () => {
     const payload = history(); payload.events[0]!.description = 'The recipient was informed about the date of delivery.';
     expect(parseDhlPolandHistory(payload, WAYBILL).events?.[0]).not.toHaveProperty('stage');

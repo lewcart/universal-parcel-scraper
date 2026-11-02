@@ -28753,7 +28753,8 @@
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "liccardi"
+      "adapter": "liccardi",
+      "recognitionRank": 704
     },
     "canaryUrl": "https://www.liccarditrasporti.com/",
     "trackingUrlTemplate": "https://my.liccarditrasporti.com/segui?ldv={trackingNumber}",
@@ -28768,7 +28769,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^660\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "lietuvos-pastas": {
     "displayName": "Lietuvos paštas",

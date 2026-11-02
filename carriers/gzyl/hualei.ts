@@ -8,7 +8,7 @@
  */
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
-import type { TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type Recognition, type TrackingContext } from '../../core/adapter/index.js';
 import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import {
@@ -562,6 +562,15 @@ function trackText(response: Response, bytes: Uint8Array): string {
   return decodeText(bytes, charset === 'utf-8' || charset === 'utf8' ? 'utf-8' : 'gbk').replace(/^\uFEFF/, '');
 }
 
+/** Whether the failure is the tenant's answer for an order it holds with no scan due yet. */
+function heldWithoutScans(error: unknown): boolean {
+  let current = error;
+  for (let depth = 0; depth < 8 && current instanceof Error; depth += 1, current = current.cause) {
+    if (current instanceof NoHistoryError) return true;
+  }
+  return false;
+}
+
 /** One lookup on a tenant's tracker, sent once more after a network failure. */
 export class HualeiTracker {
   constructor(private readonly tenant: HualeiTenant,
@@ -607,6 +616,19 @@ export class HualeiTracker {
       throw new SchemaError(provider, `${provider} returned a page without its results`);
     }
     return parseHualeiPage(html, number, this.tenant, Date.now());
+  }
+
+  /**
+   * Whether the tenant holds the number. An order without a scan due yet is held: the page
+   * echoes an unknown number bare, which is not-found, and shows an order it holds.
+   */
+  async recognize(raw: string, context: TrackingContext = {}): Promise<Recognition> {
+    try {
+      return await recognizeFromLookup(() => this.fetch(raw, context), () => accepted(() => normalizeHualeiNumber(raw, this.tenant.provider)));
+    } catch (error) {
+      if (heldWithoutScans(error)) return { known: true, lastActivityAt: null };
+      throw error;
+    }
   }
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {

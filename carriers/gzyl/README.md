@@ -101,9 +101,10 @@ records to, as [Mayi Yinfu](../mayiyinfu/README.md) does, or the carrier a produ
 
 GZYL's waybills are YL, ten digits and YQ, made by a Hualei number rule. Many forwarders end
 their numbers with YQ and Yili International's are YL, nine digits and YQ, so the rule has low
-confidence and recognition asks the tracker. No public GZYL number has been found, so the
-corpus holds a synthetic one. The tracker accepts both the waybill's tracking number and its
-reference number.
+confidence and recognition asks the tracker. Since the page tells an unknown number from an
+order, recognition knows an order before any of its rows is due, on every tenant of the platform
+that recognition asks. No public GZYL number has been found, so the corpus holds a synthetic
+one. The tracker accepts both the waybill's tracking number and its reference number.
 
 ## Testing
 

@@ -28755,7 +28755,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "liccardi"
+      "adapter": "liccardi",
+      "recognitionRank": 704
     },
     "canaryUrl": "https://www.liccarditrasporti.com/",
     "trackingUrlTemplate": "https://my.liccarditrasporti.com/segui?ldv={trackingNumber}",
@@ -28770,7 +28771,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^660\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "lietuvos-pastas": {
     "displayName": "Lietuvos paštas",
@@ -51736,7 +51742,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "libang-logistics": [],
   "libanpost": [],
   "libya-post": [],
-  "liccardi": [],
+  "liccardi": ["liccardi-1"],
   "lietuvos-pastas": ["lietuvos-pastas-own","lietuvos-pastas-1","lietuvos-pastas-s10"],
   "lightning-express": [],
   "line-clear": [],

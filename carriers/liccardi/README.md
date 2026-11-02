@@ -21,7 +21,8 @@ lookup its tracking page makes.
 - The service finds a shipment by its own seven or eight digits (`ldv`) or by its label's
   thirteen (`courierLdv`). The reply must give back the whole number asked; one for a number
   that only starts the same is inconclusive.
-- No recognition: no detection rule offers Liccardi's numbers, so preflight never asks it.
+- Recognition asks the same lookup. The service answers an unknown number with its own 404, so
+  a shipment it returns is known even before its parcels' first scan.
 
 ## Notes
 
@@ -57,8 +58,9 @@ lookup its tracking page makes.
 Liccardi's help page says its tracking number is seven digits or starts with `66`. Shipment
 numbers have since reached eight digits. A label's thirteen digits are `660`, the shipment number
 on eight digits and two more. Complaints and reviews quote both. Five carriers already match
-thirteen digits, and seven and eight digits are shared by many more, so detection leaves
-Liccardi's numbers unclaimed. The adapter asks only for those three shapes. The samples and their
+thirteen digits, so a low rule offers Liccardi for a label's thirteen digits starting `660`
+among them, and recognition asks it first. Seven and eight digits are shared by many more, so
+detection leaves the shipment numbers unclaimed. The adapter asks only for those three shapes. The samples and their
 sources are in [`numbers.json`](numbers.json).
 
 ## Links

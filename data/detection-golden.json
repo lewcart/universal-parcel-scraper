@@ -53208,10 +53208,12 @@
       "ukrposhta",
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "liccardi"
     ],
     "asked": [
-      "ukrposhta"
+      "ukrposhta",
+      "liccardi"
     ]
   },
   {
@@ -53252,9 +53254,11 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "liccardi"
     ],
     "asked": [
+      "liccardi",
       "delhivery"
     ]
   },
@@ -53266,9 +53270,11 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "liccardi"
     ],
     "asked": [
+      "liccardi",
       "delhivery"
     ]
   },
@@ -53280,9 +53286,11 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "liccardi"
     ],
     "asked": [
+      "liccardi",
       "delhivery"
     ]
   },
@@ -53293,7 +53301,11 @@
     "candidates": [
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "liccardi"
+    ],
+    "asked": [
+      "liccardi"
     ]
   },
   {
@@ -53303,7 +53315,11 @@
     "candidates": [
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "liccardi"
+    ],
+    "asked": [
+      "liccardi"
     ]
   },
   {
@@ -53315,10 +53331,12 @@
       "delhivery",
       "yunda",
       "korea-post",
-      "fedex-pl"
+      "fedex-pl",
+      "liccardi"
     ],
     "asked": [
       "fedex-pl",
+      "liccardi",
       "delhivery"
     ]
   },
@@ -53330,9 +53348,11 @@
       "correos-chile",
       "delhivery",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "liccardi"
     ],
     "asked": [
+      "liccardi",
       "delhivery"
     ]
   },
@@ -53343,7 +53363,11 @@
     "candidates": [
       "correos-chile",
       "yunda",
-      "korea-post"
+      "korea-post",
+      "liccardi"
+    ],
+    "asked": [
+      "liccardi"
     ]
   },
   {

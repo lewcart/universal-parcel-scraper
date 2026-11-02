@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { NoHistoryError } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, GzylTracker } from './adapter.js';
 import { GZYL_ORIGIN, normalizeGzylNumber, parseGzylPage, parseGzylTrack, splitGzylRow } from './parser.js';
@@ -58,6 +59,19 @@ describe('GZYL tracking adapter', () => {
     await expect(adapter(environment(fetcher)).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
     await expect(adapter(environment(fetcher)).recognize!('NOTFOUND000001')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(3);
+  });
+
+  it('recognizes an order the tracker holds before any of its scans is due', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(Date.parse('2026-03-01T12:00:00Z'));
+    try {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => json(fixture('track')));
+      await expect(adapter(environment(fetcher)).track({ number: NUMBER })).rejects.toThrow(NoHistoryError);
+      await expect(adapter(environment(fetcher)).recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null });
+      expect(fetcher).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('settles the interface’s no-row answer with the page', async () => {

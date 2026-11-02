@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
@@ -248,7 +249,34 @@ describe('Liccardi HTTP adapter', () => {
     expect(normalizeLiccardiNumber('9000000')).toBe('9000000');
   });
 
-  it('is asked when the number is filed under Liccardi or comes in its tracker’s link, which no rule claims', async () => {
+  it('offers Liccardi for its labels’ thirteen digits starting with 660, and asks it first', () => {
+    for (const number of [DELIVERED_LABEL, IN_TRANSIT_LABEL, '6600000000017']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', candidates: expect.arrayContaining(['liccardi']) });
+      expect(recognitionCandidates(number)[0]?.carrier, number).toBe('liccardi');
+    }
+    for (const number of ['6610000000017', '6700000000017', '660000000001', '66000000000017', 'A660000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('liccardi');
+    }
+  });
+
+  it('recognizes a shipment the service returns, even before its parcels’ first scan, and its own 404 as unknown', async () => {
+    const recognize = (body: unknown, status = 200, type?: string) =>
+      carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(body, status, type))).recognize!(IN_TRANSIT);
+    await expect(recognize(text('in-transit'))).resolves.toMatchObject({ known: true, lastActivityAt: expect.any(String) });
+    await expect(recognize(changed('in-transit', (tracking) => {
+      tracking.colli[0]!.esiti = [];
+      Object.assign(tracking, { codEvento: 50, descEvento: 'DATI SPEDIZIONE TRASMESSI A LICCARDI', dateTimeEv: '2026-05-18T07:39:51Z' });
+    }))).resolves.toEqual({ known: true, lastActivityAt: '2026-05-18T07:39:51.000Z' });
+    await expect(recognize(changed('in-transit', (tracking) => {
+      tracking.colli = [];
+      Object.assign(tracking, { codEvento: null, descEvento: null, dateTimeEv: null });
+    }))).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(recognize(text('not-found'), 404)).resolves.toEqual({ known: false });
+    await expect(recognize(SAFELINE, 468, 'text/html')).rejects.toMatchObject({ kind: 'challenge' });
+    await expect(carrier(vi.fn<typeof fetch>()).recognize!('SAMPLETRACKING')).resolves.toEqual({ known: false });
+  });
+
+  it('is asked when the number is filed under Liccardi or comes in its tracker’s link', async () => {
     for (const number of [DELIVERED, DELIVERED_LABEL]) expect(detectCarrierMatch(number).carrier, number).not.toBe('liccardi');
     expect(parseTrackingInput(`https://my.liccarditrasporti.com/segui?ldv=${DELIVERED_LABEL}`))
       .toMatchObject({ trackingNumber: DELIVERED_LABEL, carrier: 'liccardi' });

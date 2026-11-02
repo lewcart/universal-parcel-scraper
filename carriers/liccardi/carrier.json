@@ -22,7 +22,10 @@
     "steps": [
       "direct",
       "retry"
-    ]
+    ],
+    "recognition": {
+      "rank": 704
+    }
   },
   "capabilities": [
     "history",
@@ -88,5 +91,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "liccardi-1",
+      "pattern": "^660\\d{10}$",
+      "confidence": "low"
+    }
+  ]
 }

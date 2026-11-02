@@ -1,5 +1,5 @@
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
-import { ChallengeError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type Recognition, type TrackingContext } from '../../core/adapter/index.js';
+import { ChallengeError, NoHistoryError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
@@ -66,10 +66,38 @@ export class LiccardiTracker {
   }
 }
 
+/** Whether the failure is the service's answer for a shipment it returned without a scan or a summary event. */
+function heldWithoutHistory(error: unknown): boolean {
+  let current = error;
+  for (let depth = 0; depth < 8 && current instanceof Error; depth += 1, current = current.cause) {
+    if (current instanceof NoHistoryError) return true;
+  }
+  return false;
+}
+
+/**
+ * Whether Liccardi holds the number. The service answers an unknown one with its own 404, so a
+ * shipment it returns is held even before its parcels' first scan, with a summary event or none.
+ */
+export async function recognizeLiccardi(tracker: LiccardiTracker, number: string, context?: TrackingContext): Promise<Recognition> {
+  let result: CarrierResult | undefined;
+  try {
+    const answer = await recognizeFromLookup(async () => (result = await tracker.fetch(number, context)),
+      () => accepted(() => normalizeLiccardiNumber(number)));
+    if (answer.known || !result) return answer;
+    const updated = Date.parse(result.last_update ?? '');
+    return { known: true, lastActivityAt: Number.isFinite(updated) ? new Date(updated).toISOString() : null };
+  } catch (error) {
+    if (heldWithoutHistory(error)) return { known: true, lastActivityAt: null };
+    throw error;
+  }
+}
+
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new LiccardiTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return {
     id: 'liccardi', recordsSteps: true, steps: ['direct', 'retry'],
     track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeLiccardi(tracker, number, context),
   };
 };

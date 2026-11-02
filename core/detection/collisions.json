@@ -1738,6 +1738,17 @@
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by five carriers; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{13} starting with 2 to 6, outside 250, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "korea-post",
+      "ukrposhta",
+      "yunda",
+      "liccardi"
+    ],
+    "reason": "Liccardi's label numbers start 660, inside thirteen digits other carriers share; the number stays a low-confidence suggestion that recognition settles."
+  },
+  {
     "shape": "9{13} starting with 60 or 65, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
@@ -3185,6 +3196,17 @@
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by five carriers; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{13} starting with 2 to 6, outside 250, that fails the Ukrposhta check",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "yunda",
+      "liccardi"
+    ],
+    "reason": "Liccardi's label numbers start 660, inside thirteen digits other carriers share; the number stays a low-confidence suggestion that recognition settles."
+  },
+  {
     "shape": "9{13} starting with 60 or 65 that fails the Ukrposhta check",
     "carriers": [
       "correos-chile",
@@ -3203,6 +3225,16 @@
       "yunda"
     ],
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by four carriers; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "9{13} starting with 2 to 6, outside 250, that fails the Ukrposhta check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "korea-post",
+      "yunda",
+      "liccardi"
+    ],
+    "reason": "Liccardi's label numbers start 660, inside thirteen digits other carriers share; the number stays a low-confidence suggestion that recognition settles."
   },
   {
     "shape": "9{13} starting with 60 or 65 that fails the Ukrposhta check, ending 7, 8 or 9",
@@ -6157,6 +6189,18 @@
       "yunda"
     ],
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
+  },
+  {
+    "shape": "^\\d{13}$",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "fedex-pl",
+      "korea-post",
+      "yunda",
+      "liccardi"
+    ],
+    "reason": "Liccardi's label numbers start 660, inside thirteen digits other carriers share; the number stays a low-confidence suggestion that recognition settles."
   },
   {
     "shape": "^6[05]\\d{11}$ passing FedEx Poland's GS1 check",

@@ -2173,12 +2173,6 @@
     "reason": "Liccardi's counter numbers reach eight digits, a length several carriers share, so no rule claims them."
   },
   {
-    "carrier": "liccardi",
-    "pattern": "^\\d{13}$",
-    "kind": "by_design",
-    "reason": "Liccardi's thirteen-digit numbers start 66, a prefix too short to claim among the five carriers that already match thirteen digits."
-  },
-  {
     "carrier": "lightning-express",
     "pattern": "^[A-Z]{3}\\d{14,15}$",
     "kind": "by_design",

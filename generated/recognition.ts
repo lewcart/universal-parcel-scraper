@@ -274,6 +274,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "last-one-mile-coop": 585,
   "latvijas-pasts": 100,
   "leopards-courier": 965,
+  "liccardi": 704,
   "lietuvos-pastas": 895,
   "line-clear": 741,
   "lion-parcel": 952,

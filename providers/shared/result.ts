@@ -242,6 +242,9 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   // the way, after the courier's collection and again on each round trip, and its hand-over to the courier for delivery.
   if (/^accepted at the logistics cent(?:er|re)[.!]?$/i.test(description)) return 'in_transit';
   if (/^handed over for delivery[.!]?$/i.test(description)) return 'out_for_delivery';
+  // DHL eCommerce Poland's sending terminal taking the parcel in, in 17TRACK's words, filed under its generic transit
+  // code. DHL's own history reads reaching that terminal as the acceptance.
+  if (/^shipment accepted at (?:the )?dhl shipping terminal[.!]?$/i.test(description)) return 'accepted';
   // Česká pošta's English, as aggregators relay it and its own map reads it: the sender's data, the posting, the
   // way to the delivery office, an item left for collection at a post office or Balíkovna, and one sent back unclaimed.
   if (/^receipt of data about consignment[.!]?$/i.test(description)) return 'registered';

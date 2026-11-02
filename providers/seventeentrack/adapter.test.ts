@@ -161,6 +161,14 @@ describe('17TRACK result parsing', () => {
     expect(result.events?.[0]).toMatchObject({ stage: 'accepted', stage_source: 'carrier_map' });
   });
 
+  it("reads DHL eCommerce Poland's sending terminal as the acceptance, whatever transit code it is filed under", () => {
+    const result = parse17TrackResponse(postalHistory([
+      { ...postalScan('InTransit_TransportArrived', 'Shipment under processing in sorting depot'), stage: 'InTransit' },
+      { ...postalScan('InTransit_Other', 'Shipment accepted at DHL shipping terminal'), stage: 'InTransit' },
+    ]), number);
+    expect(result.events?.map((scan) => scan.stage)).toEqual(['in_transit', 'accepted']);
+  });
+
   it("reads the place China Post's feed gives after a status, and no place for a status alone", () => {
     const located = (location: string) => parse17TrackResponse(
       postalHistory([{ ...postalScan('InTransit_Other', 'In transit'), location }]), number).events?.[0]?.location;

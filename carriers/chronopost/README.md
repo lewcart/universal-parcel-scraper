@@ -71,7 +71,10 @@ sender's drop-off there, which the point hands to the courier next: it accepts t
 parcel, which does not wait for the recipient. The point's hand-over to the courier
 (TT) is part of that acceptance too, a minute before the courier's take-over (PC). Observed
 codes are used only when their wording agrees, because partner scans can reuse
-codes; a code can carry several wordings, each read on its own. Chronopost can write
+codes; a code can carry several wordings, each read on its own. A delivery partner's
+missed round (N, "Colis non livré", with or without a reason after the colon) is a failed
+attempt for each reason the map holds; a reason not seen yet waits for review, since a
+refusal or a damaged parcel would be no attempt. Chronopost can write
 a scan twice, such as the arrival at a pickup point under two of its codes or a depot's
 sort under one: in the same words at the same place, less than two minutes apart, it is
 shown once.

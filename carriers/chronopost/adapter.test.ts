@@ -56,6 +56,23 @@ describe('Chronopost direct tracking', () => {
     expect(JSON.stringify(result)).not.toMatch(/SYNTHETIC SHOP|EXAMPLE STREET|00000|Point de livraison|Média utilisé|Rang/);
   });
 
+  it("reads a delivery partner's missed rounds as attempts by their reason, and its postponement as a delay", () => {
+    const missed = readFileSync(new URL('./fixtures/partner-missed-rounds.xml', import.meta.url), 'utf8');
+    const result = parseChronopostTrackingXml(missed, number);
+    expect(result).toMatchObject({ current_stage: 'failed_attempt', last_update: '2026-01-08T10:33:12+01:00' });
+    const rows = (result.events ?? []).filter(event => event.provider_code === 'N')
+      .map(event => [event.description, event.stage, event.stage_source]);
+    expect(rows).toEqual([
+      ['Colis non livré : entreprise fermée', 'failed_attempt', 'carrier_map'],
+      ['Colis non livré : client absent', 'failed_attempt', 'carrier_map'],
+      ['Livraison reportée', 'in_transit', 'carrier_map'],
+      ["Colis non livré : changement d'adresse nécessaire", 'failed_attempt', 'carrier_map'],
+      ['Colis non livré', 'failed_attempt', 'carrier_map'],
+    ]);
+    // A reason not seen yet, which may be no attempt (a refusal, a damaged parcel), is left to review.
+    expect(statusMap.stage('N', normalizeStatusWording('Colis non livré : colis refusé'))).toBeUndefined();
+  });
+
   it("dates a partner depot's scan on its town's clock when Chronopost gives it Paris's offset", () => {
     const depot = (date: string, place: string) => scan('TS', date, "Colis en cours d'acheminement", { Lieu: place });
     const result = parseChronopostTrackingXml(history(

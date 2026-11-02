@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <ns2:trackSkybillV2Response xmlns:ns2="http://cxf.tracking.soap.chronopost.fr/">
+      <return>
+        <errorCode>0</errorCode>
+        <listEventInfoComp>
+          <events>
+            <code>TP </code><eventDate>2026-01-05T06:54:42+01:00</eventDate>
+            <eventLabel>Colis en cours d'acheminement</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>N  </code><eventDate>2026-01-05T17:32:35+01:00</eventDate>
+            <eventLabel>Colis non livré</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>CL </code><eventDate>2026-01-05T17:32:40+01:00</eventDate>
+            <eventLabel>Instruction de livraison reçue</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>N  </code><eventDate>2026-01-05T17:34:34+01:00</eventDate>
+            <eventLabel>Colis non livré : changement d'adresse nécessaire</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>N  </code><eventDate>2026-01-05T18:07:19+01:00</eventDate>
+            <eventLabel>Livraison reportée</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>TP </code><eventDate>2026-01-06T06:51:02+01:00</eventDate>
+            <eventLabel>Colis en cours d'acheminement</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>N  </code><eventDate>2026-01-06T11:12:40+01:00</eventDate>
+            <eventLabel>Colis non livré : client absent</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>TP </code><eventDate>2026-01-08T06:54:42+01:00</eventDate>
+            <eventLabel>Colis en cours d'acheminement</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>N  </code><eventDate>2026-01-08T10:23:18+01:00</eventDate>
+            <eventLabel>Colis non livré : entreprise fermée</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+          </events>
+          <events>
+            <code>SM </code><eventDate>2026-01-08T10:33:12+01:00</eventDate>
+            <eventLabel>Destinataire informé par SMS ou mail</eventLabel><officeLabel>CHRONOPOST NETWORKS</officeLabel>
+            <infoCompList><name>Lieu</name><value>Example Town - LU (depot 0002)</value></infoCompList>
+            <infoCompList><name>Type du message</name><value>Colis non livré</value></infoCompList>
+            <infoCompList><name>Média utilisé</name><value>SMS</value></infoCompList>
+          </events>
+          <skybillNumber>XT123456799TS</skybillNumber>
+        </listEventInfoComp>
+      </return>
+    </ns2:trackSkybillV2Response>
+  </soap:Body>
+</soap:Envelope>

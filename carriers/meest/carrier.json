@@ -125,6 +125,11 @@
       "pattern": "^[A-Z]{2}\\d{7}[A-Z]{2}\\d{5}G$",
       "confidence": "low",
       "preferred": true
+    },
+    {
+      "id": "meest-2",
+      "pattern": "^IHB\\d{10}$",
+      "confidence": "low"
     }
   ]
 }

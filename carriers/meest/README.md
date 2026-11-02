@@ -26,6 +26,10 @@ replies keep their own failure kinds. Recognition uses the same lookup.
 
 Meest's consolidation numbers are two letters, seven digits, two letters, five digits and a
 final `G`. No other carrier's rule claims that shape, so a low-confidence rule routes it here.
+iHerb numbers its parcels `IHB` and ten digits, and Meest's tracker answers those it carries
+with their registration and collection. A low-confidence rule offers Meest for them beside
+[HR Parcel](../hr-parcel/README.md), which delivers iHerb's parcels in Italy; recognition
+settles which one has the parcel.
 The tracker also knows the S10 numbers other posts and senders give the parcels Meest carries,
 which stay with the postal routing, and partners' references of many shapes. The adapter takes
 six to forty letters and digits with at least one digit; anything else is invalid without a

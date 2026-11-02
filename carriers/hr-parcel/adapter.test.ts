@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, HR_PARCEL_API, HrParcelTracker, hrParcelLookupUrl } from './adapter.js';
@@ -122,6 +124,15 @@ describe('HR Parcel HTTP adapter', () => {
     // A sender's label number HR Parcel tracks under is matched in capitals.
     const partner = changed('in-transit', (body) => { body.response.BarcodeList = [{ Barcode: 'IHB000000001', CustomerBarcode: '' }]; });
     expect(parseHrParcel(partner, 'ihb000000001').events).toHaveLength(3);
+  });
+
+  it("offers HR Parcel beside Meest for iHerb's numbers and asks it first for Italy", () => {
+    expect(detectCarrierMatch('IHB0000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['hr-parcel', 'meest']) });
+    expect(recognitionCandidates('IHB0000000001', { countryHint: 'IT' })[0]?.carrier).toBe('hr-parcel');
+    expect(recognitionCandidates('IHB0000000001', { countryHint: 'UA' })[0]?.carrier).toBe('meest');
+    for (const number of ['IHB00000000012', 'IHC0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('hr-parcel');
+    }
   });
 
   it('rejects a changed reply', () => {

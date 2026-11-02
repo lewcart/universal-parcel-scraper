@@ -462,6 +462,22 @@
         ]
       },
       "note": "Looked up on Meest's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "IHB0000000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-11-02",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "hr-parcel",
+          "meest"
+        ]
+      },
+      "note": "Made-up number in the shape of a parcel the app tracked: IHB and ten digits, which Meest's own tracker answered with its registration and collection."
     }
   ]
 }

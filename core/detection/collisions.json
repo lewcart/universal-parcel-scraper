@@ -6941,5 +6941,13 @@
       "lm-parcel"
     ],
     "reason": "LM Parcel's LM numbers fall in the Aramex rules for two letters and ten digits and in Colis Privé's generic rule; all are low confidence, so recognition asks them in turn."
+  },
+  {
+    "shape": "IHB and ten digits",
+    "carriers": [
+      "hr-parcel",
+      "meest"
+    ],
+    "reason": "iHerb numbers its parcels IHB and ten digits, and the partners that deliver them, HR Parcel in Italy and Meest, both track that number; both rules are low confidence, so recognition asks them in turn, with the reader's country first."
   }
 ]

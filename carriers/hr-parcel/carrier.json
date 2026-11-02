@@ -76,5 +76,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "hr-parcel-1",
+      "pattern": "^IHB\\d{10}$",
+      "confidence": "low"
+    }
+  ]
 }

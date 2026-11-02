@@ -51,8 +51,11 @@ shared by many carriers, so no rule claims them.
 The tracker also files some senders' parcels under the sender's own label number: iHerb's
 `IHB` numbers, Hermes Germany's numbers for parcels Hermes hands over in Italy, and the
 twenty-digit SSCCs of senders such as Mango. The adapter tracks them when HR Parcel is the
-chosen carrier, but no HR Parcel rule claims them: they stay with the carriers that issue
-them. YunExpress numbers are only references.
+chosen carrier. Hermes's and the SSCCs stay with the carriers that issue them. iHerb is not a
+carrier, and its partners abroad track the same numbers: Meest's tracker answers them too. So a
+low-confidence rule offers HR Parcel for `IHB` and ten digits beside Meest, and recognition,
+with the reader's country first, settles which one delivers the parcel. YunExpress numbers are
+only references.
 
 ## Links
 

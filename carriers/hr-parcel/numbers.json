@@ -399,7 +399,11 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "hr-parcel",
+          "meest"
+        ]
       },
       "note": "An archived lookup on HR Parcel's English tracker address; IHB numbers are iHerb's own numbers (a reviewer calls one an iHerb order number), which HR Parcel's tracker takes for the parcels it delivers."
     },

@@ -24156,7 +24156,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^IHB\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "hrvatska-posta": {
     "displayName": "Hrvatska pošta",
@@ -30679,6 +30684,10 @@ export const CARRIER_CATALOG = {
         "pattern": "^[A-Z]{2}\\d{7}[A-Z]{2}\\d{5}G$",
         "confidence": "low",
         "preferred": true
+      },
+      {
+        "pattern": "^IHB\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -51649,7 +51658,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "houng-ah-loun": [],
   "hovership": [],
   "hp-mostar": [],
-  "hr-parcel": [],
+  "hr-parcel": ["hr-parcel-1"],
   "hrvatska-posta": ["hrvatska-posta-own","hrvatska-posta-s10"],
   "hrx": [],
   "htt-logistics": [],
@@ -51830,7 +51839,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "maxzeego": [],
   "mayiyinfu": ["mayiyinfu-1"],
   "mds-collivery": [],
-  "meest": ["meest-1"],
+  "meest": ["meest-1","meest-2"],
   "megacity-courier": [],
   "meihoo-pegasus": ["meihoo-pegasus-1"],
   "mensajeros-urbanos": [],

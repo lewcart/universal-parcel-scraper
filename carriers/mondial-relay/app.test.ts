@@ -263,23 +263,20 @@ describe('Mondial Relay app step', () => {
     expect(Object.fromEntries(search.url.searchParams)).toEqual({ shipmentUid: uid });
   });
 
-  it('builds its app client on the host\'s fetcher under the tracker\'s wrapper, else on its HTTP/1.1 transport', async () => {
-    const wrapper = vi.fn<typeof fetch>(() => Promise.reject(new Error('wrapper used')));
-    const host = service();
-    await expect(new MondialRelayTracker({ appRefreshToken: REFRESH, fetcher: sendsThrough(wrapper, host.fetcher), trawl: null })
-      .fetch(SHIPMENT, POSTCODE)).resolves.toMatchObject({ status: 'out_for_delivery', tracking_source: 'mobile-app-response' });
-    expect(host.calls.map(call => call.url.pathname)).toEqual(['/oauth2/token', '/api/parcels-search', '/api/parcels-detail']);
-    expect(request).not.toHaveBeenCalled();
-
-    // A wrapper over the global fetch would meet the bot screen's refusal of HTTP/2.
+  it('keeps its app client on its HTTP/1.1 transport under a host fetcher', async () => {
+    // A host fetcher, such as a proxy-routing one, may offer HTTP/2, which the bot screen refuses.
+    const host = vi.fn<typeof fetch>(() => Promise.reject(new Error('host fetcher used')));
     vi.mocked(request).mockImplementation((() => {
       const outgoing = new EventEmitter();
       return Object.assign(outgoing, { end: () => outgoing.emit('error', new Error('offline')) });
     }) as unknown as typeof request);
-    await expect(new MondialRelayTracker({ appRefreshToken: REFRESH, fetcher: sendsThrough(wrapper, undefined), trawl: null })
-      .fetch(SHIPMENT, POSTCODE)).rejects.toMatchObject({ kind: 'transport' });
-    expect(vi.mocked(request).mock.calls[0]?.[0]).toBe(TOKEN_URL);
-    expect(wrapper).not.toHaveBeenCalled();
+    for (const fetcher of [host, sendsThrough(host, host)]) {
+      vi.mocked(request).mockClear();
+      await expect(new MondialRelayTracker({ appRefreshToken: REFRESH, fetcher, trawl: null })
+        .fetch(SHIPMENT, POSTCODE)).rejects.toMatchObject({ kind: 'transport' });
+      expect(vi.mocked(request).mock.calls[0]?.[0]).toBe(TOKEN_URL);
+    }
+    expect(host).not.toHaveBeenCalled();
   });
 
   it('hands every app failure to the website', async () => {

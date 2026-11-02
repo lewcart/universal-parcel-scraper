@@ -13,7 +13,6 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { firstOccurrence, isoTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
 import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, trawlBody, type TrawlClient, type TrawlScrapeRequest, type TrawlScrapeResponse } from '../../core/transport/index.js';
-import { transportOf } from '../../core/transport/transportOf.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { MondialRelayAppClient } from './app.js';
 import { inpostSpainTrackingUrl, isInpostSpainNumber, readInpostSpain } from './inpostSpain.js';
@@ -411,9 +410,9 @@ export class MondialRelayTracker {
     ));
     this.#trawl = options.trawl ?? null;
     this.#app = options.app !== undefined ? options.app : options.appRefreshToken?.trim()
-      // A tracker's wrapper only adds the lookup's signal, which the client passes itself; without
-      // a host fetcher under it, the client keeps its HTTP/1.1 transport.
-      ? new MondialRelayAppClient({ refreshToken: options.appRefreshToken, fetcher: transportOf(options.fetcher), userAgent: options.userAgent })
+      // The client keeps its HTTP/1.1 transport under any fetcher: the backend's bot screen
+      // refuses a fetch that offers HTTP/2, as a host's proxy-routing fetcher does.
+      ? new MondialRelayAppClient({ refreshToken: options.appRefreshToken, userAgent: options.userAgent })
       : null;
     this.#fetcher = options.fetcher;
     this.#userAgent = options.userAgent;

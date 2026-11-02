@@ -90,6 +90,21 @@ describe('TopYou HTTP adapter', () => {
     ]);
   });
 
+  it('maps the wording of a line a post delivers, the warehouse’s outbound scan with the post’s number included', () => {
+    const result = parseTopyou(fixture('post-line'), 'TYZRZ0000000004YQ');
+    expect(result).toMatchObject({ current_stage: 'in_transit', current_stage_source: 'carrier_map',
+      destination_country: 'AT', delivery_tracking_number: 'LM000000005CN' });
+    expect(result.events!.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['20', 'in_transit', 'carrier_map'],
+      ...Array.from({ length: 7 }, () => ['15', 'in_transit', 'carrier_map']),
+      ['10', 'in_transit', 'carrier_map'],
+      ['5', 'accepted', 'carrier_map'],
+      ['5', 'accepted', 'carrier_map'],
+    ]);
+    expect(result.events!.at(-3)!.description).toBe('Outbound in sorting center , Lastmile Number:LM000000005CN');
+    expect(topyouStage('10', 'Outbound in sorting center, Lastmile Number:LM000000006CN')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+  });
+
   it('keeps a relayed scan’s place that is only a country, and leaves it out of TopYou’s own', () => {
     const relayed = changed('relayed-europe', (track) => {
       for (const row of track.trackInfo!) row.location = 'FR';

@@ -44,7 +44,9 @@ the parcel moves, and USPS's acceptance after the flight is no first acceptance.
 for delivery" is the hand-over to GOFO, at GOFO's first sorting-centre scan days before its
 delivery round, so it is transit. iMile's scans, in Germany, come as iMile's label for the step,
 a comma and iMile's sentence ("Delivery, Our delivery associate is out for delivery."), and iMile's
-own map stages the sentence. The tracker's summary code settles a delivered or returned parcel.
+own map stages the sentence. On a line a post delivers, the first-mile warehouse's outbound scan
+ends with ", Lastmile Number:" and the post's number, which the map leaves aside. The tracker's
+summary code settles a delivered or returned parcel.
 
 TopYou's own scans name the destination country even at the origin airport, so a place that is
 only countries is left out of them. A wording loses a closing "of" whose country the tracker left

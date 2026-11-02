@@ -56,6 +56,14 @@ const WORDINGS: Readonly<Record<string, ClassifiedStatus | undefined>> = {
   eingeworfen: SUMMARY.ZU,
 };
 const byWording = (text: string) => WORDINGS[text.trim().toLowerCase()];
+// Customs scans of an item from abroad: the declaration under way (CUS), the item
+// stored while an obstacle to the declaration stands (LAG), a delay in customs
+// with its reason after "Grund:" (CUD), and the recipient's reply to the
+// obstacle (SN). The tracking page meanwhile asks the recipient for the
+// missing documents.
+const CUSTOMS = /^(?:sendung im zollanmeldungsprozess\. weitere info folgt\.|lagereingang - zollanmeldungshindernis|sendung ist im zollprozess verzögert\. grund: .+|zollanmeldungshindernis - rückmeldung vom empfänger eingelangt)$/iu;
+const customsScan = (text: string) => CUSTOMS.test(text.trim().split(/\s+/).join(' '));
+const HELD_IN_CUSTOMS: ClassifiedStatus = { status: 'in_transit', stage: 'customs' };
 const RETURNING = /\b(?:rücksendung|zurückgesandt|return to sender)\b/i;
 const OUT_FOR_DELIVERY = /\b(?:in zustellung|out for delivery)\b/i;
 
@@ -67,6 +75,7 @@ export function austrianPostEventStatus(code: string, reason: string, text: stri
   if (code === 'AZT' || OUT_FOR_DELIVERY.test(text)) return SUMMARY.IZ;
   // IMP is the arrival in the destination country, which the page files under distribution.
   if (code === 'BEI' || code === 'PUG' || code === 'IMP' || transitScan(code, text)) return SUMMARY.IV;
+  if (customsScan(text)) return HELD_IN_CUSTOMS;
   // Unmapped scan codes retain their wording for the host's classifier.
   return byWording(text) ?? SUMMARY[code];
 }
@@ -82,13 +91,15 @@ function transitScan(code: string, text: string): boolean {
  * delivery), so the map answers only scans the reason cannot change: a
  * delivery's wording, the transit scans, the arrival in the destination
  * country (IMP), with or without wording unless it names a return or a
- * delivery round, which outrank the code, and the wordings above.
+ * delivery round, which outrank the code, the customs scans and the wordings
+ * above.
  */
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => {
     if (DELIVERED.test(wording)) return 'delivered';
     if (code === 'IMP' && !RETURNING.test(wording) && !OUT_FOR_DELIVERY.test(wording)) return 'in_transit';
     if (code && transitScan(code, wording)) return 'in_transit';
+    if (customsScan(wording)) return 'customs';
     return byWording(wording)?.stage;
   },
   gaps: [],

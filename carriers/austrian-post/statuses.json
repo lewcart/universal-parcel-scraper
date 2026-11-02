@@ -193,6 +193,42 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-22",
       "note": "A letter put through the letterbox, after the delivery round; the page then sums the item up as delivered."
+    },
+    {
+      "code": "CUS",
+      "wording": "Sendung im Zollanmeldungsprozess. Weitere Info folgt.",
+      "language": "de",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "The customs declaration of an item from abroad is under way, after its arrival in Austria."
+    },
+    {
+      "code": "LAG",
+      "wording": "Lagereingang - Zollanmeldungshindernis",
+      "language": "de",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "The item is stored while an obstacle to its customs declaration stands; the tracking page asks the recipient for the missing documents."
+    },
+    {
+      "code": "CUD",
+      "wording": "Sendung ist im Zollprozess verzögert. Grund: unplausibler Warenwert.",
+      "language": "de",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "A delay in customs, here over an implausible declared value; the reason after \"Grund:\" varies and the map reads any."
+    },
+    {
+      "code": "SN",
+      "wording": "Zollanmeldungshindernis - Rückmeldung vom Empfänger eingelangt",
+      "language": "de",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "The recipient answered the obstacle to the customs declaration; the item stays in customs until it is cleared."
     }
   ]
 }

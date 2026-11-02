@@ -47,6 +47,10 @@ function imileRelayStage(wording: string): Stage | null | undefined {
   return code ? imileSentenceStage(code, wording.slice(step[0].length)) : undefined;
 }
 
+// The delivery carrier's number, which the tracker appends to the first-mile
+// warehouse's outbound scan on a line a post delivers: "…, Lastmile Number:LM…CN".
+const LASTMILE = /\s*,\s*lastmile number\s*:\s*[a-z0-9]+$/i;
+
 /** Whether TopYou relays the scan from iMile: iMile's step label and a sentence iMile's map knows. */
 export const isImileRelay = (wording: string): boolean => imileRelayStage(wording) !== undefined;
 
@@ -57,7 +61,8 @@ export const isImileRelay = (wording: string): boolean => imileRelayStage(wordin
  * iMile's that moves nothing.
  */
 export function topyouStage(code: string, wording: string): ClassifiedWording | null {
-  const decided = WORDINGS.stage(normalizeStatusWording(wording)) ?? (DECISIVE.has(code) ? CODES.get(code) : undefined);
+  const decided = WORDINGS.stage(normalizeStatusWording(wording.replace(LASTMILE, '')))
+    ?? (DECISIVE.has(code) ? CODES.get(code) : undefined);
   const relayed = decided ? undefined : imileRelayStage(wording);
   if (relayed === null) return null;
   const mapped = decided ?? relayed;

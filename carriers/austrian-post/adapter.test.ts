@@ -7,6 +7,7 @@ import { adapter, AustrianPostTracker, normalizeAustrianPostNumber, parseAustria
 import { austrianPostPlace } from './identity.js';
 import { austrianPostEventStatus, austrianPostSummaryStatus, statusMap } from './status.js';
 import { InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
+import { resultStage } from '../../core/result/resolve.js';
 
 const NUMBER = '1000000000000000000001';
 const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
@@ -23,6 +24,9 @@ const eurodis = () => JSON.parse(readFileSync(new URL('./fixtures/eurodis.json',
 // A letter Deutsche Post sends to Austria, put through the letterbox.
 const INBOUND = 'LY000000005DE';
 const inbound = () => JSON.parse(readFileSync(new URL('./fixtures/inbound.json', import.meta.url), 'utf8'));
+// An item China Post sends to Austria, held in customs over its declaration.
+const HELD = 'LM000000005CN';
+const customs = () => JSON.parse(readFileSync(new URL('./fixtures/customs.json', import.meta.url), 'utf8'));
 
 describe('Austrian Post public tracking', () => {
   it('binds history to the item and classifies scans independently of the summary', () => {
@@ -138,6 +142,23 @@ describe('Austrian Post public tracking', () => {
     expect(statusMap.stage('BNT', 'eingeworfen')).toBe('delivered');
     // Only the bare wording: a notice put through the letterbox is no delivery.
     expect(austrianPostEventStatus('BNT', '', 'Benachrichtigung eingeworfen')).toBeUndefined();
+  });
+
+  it('reads the customs scans of an item from abroad as customs, which give the parcel its stage', () => {
+    const result = parseAustrianPostResponse(customs(), HELD);
+    expect(result).toMatchObject({ status: 'unknown', expected_delivery: null,
+      last_status_text: 'Zollanmeldungshindernis - Rückmeldung vom Empfänger eingelangt' });
+    expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual([
+      ['SN', 'customs'], ['CUD', 'customs'], ['LAG', 'customs'], ['CUS', 'customs'], ['IMP', 'in_transit'], ['IMP', 'in_transit'],
+    ]);
+    expect(resultStage(result)).toBe('customs');
+    expect(statusMap.stage('CUS', 'sendung im zollanmeldungsprozess. weitere info folgt.')).toBe('customs');
+    expect(statusMap.stage('LAG', 'lagereingang - zollanmeldungshindernis')).toBe('customs');
+    expect(statusMap.stage('SN', 'zollanmeldungshindernis - rückmeldung vom empfänger eingelangt')).toBe('customs');
+    // The delay names its reason, whichever it is.
+    expect(statusMap.stage('CUD', 'sendung ist im zollprozess verzögert. grund: unplausibler warenwert.')).toBe('customs');
+    expect(austrianPostEventStatus('CUD', '', 'Sendung ist im Zollprozess verzögert. Grund: Synthetic reason.')?.stage).toBe('customs');
+    expect(austrianPostEventStatus('CUD', '', 'Sendung ist im Zollprozess verzögert.')).toBeUndefined();
   });
 
   it('rejects a different returned item', () => {

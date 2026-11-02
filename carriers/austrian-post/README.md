@@ -37,7 +37,10 @@ Mail from abroad reaches Austrian Post when a caller names it, a provider names
 it, or a result gives Austria as the destination of an S10 item. Its history
 opens with the sending post's posting and dispatch as Austrian Post relays
 them, staged by their wording, and a letter put through the letterbox is
-delivered.
+delivered. Its customs scans, the declaration under way, a delay with its
+reason, the item stored while an obstacle to the declaration stands and the
+recipient's reply to it, are customs by their wording; for an obstacle the
+page asks the recipient for the missing documents.
 
 A scan can come without wording. The tracking page lists it under its date
 and time alone, with no label from its codes, so it keeps its code but gets

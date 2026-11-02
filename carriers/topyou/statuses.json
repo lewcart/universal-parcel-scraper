@@ -20,6 +20,20 @@
     {"code": "20", "wording": "In Transit, Your order has been shipped from 【iMile Köln DC Center】.", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "iMile's scan in Germany, relayed after iMile's label for its step; iMile's map stages the sentence."},
     {"code": "20", "wording": "Delivery, Your order has arrived at 【Dortmund01】", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "iMile's arrival at its delivery station."},
     {"code": "20", "wording": "Delivery, Your order has assigned delivery drvier.", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "iMile names the driver before the parcel leaves the station; the misspelling is iMile's."},
-    {"code": "20", "wording": "Delivery, Our delivery associate is out for delivery.", "language": "en", "stage": "out_for_delivery", "confirmedBy": "live", "note": "iMile's delivery round."}
+    {"code": "20", "wording": "Delivery, Our delivery associate is out for delivery.", "language": "en", "stage": "out_for_delivery", "confirmedBy": "live", "note": "iMile's delivery round."},
+    {"code": "20", "wording": "The package left sorting center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "GOFO's sorting scan after the hand-over, relayed like GOFO's other scans."},
+    {"code": "20", "wording": "Arrived at sorting center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "GOFO's sorting scan after the hand-over."},
+    {"code": "20", "wording": "Package departed from sorting center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "GOFO's sorting scan after the hand-over."},
+    {"code": "5", "wording": "Accepted by carrier", "language": "en", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The first scan in TopYou's hands on a line a post delivers, worded in that line's vocabulary."},
+    {"code": "5", "wording": "Inbound in sorting center", "language": "en", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "Booked in at the first-mile warehouse, as code 5 says, minutes after the acceptance: not yet movement."},
+    {"code": "10", "wording": "Outbound in sorting center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "Out of the first-mile warehouse. The tracker appends \", Lastmile Number:\" and the delivery carrier's number, which the map leaves aside."},
+    {"code": "15", "wording": "Received by line-haul", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"code": "15", "wording": "Hand over to airline", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"code": "15", "wording": "Airline arrived at transit country or district.", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"code": "15", "wording": "Airline departed from transit or district country.", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"code": "15", "wording": "Airline arrived at destination country", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"code": "15", "wording": "Export clearance success", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "Cleared for export, not held."},
+    {"code": "15", "wording": "Arrive at destination country", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"code": "20", "wording": "Import clearance success", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "Cleared by the destination's customs for the delivery carrier, a post here; the post's own customs scans can follow."}
   ]
 }

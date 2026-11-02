@@ -15419,6 +15419,10 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-pl",
       "recognitionRank": 620,
+      "refresh": {
+        "minMinutes": 60,
+        "afterFailureMinutes": 120
+      },
       "localClocks": true,
       "browser": true
     },

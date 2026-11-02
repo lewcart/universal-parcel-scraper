@@ -107,6 +107,28 @@ describe('dateLocalClocks', () => {
     ]);
   });
 
+  it('dates a landing with no place after it on the destination’s clock, not the clock of the country the parcel left', () => {
+    const scans = (destination_country?: string, events: CarrierEvent[] = []) => dateLocalClocks('yunexpress', { status: 'in_transit', destination_country, events: [
+      { local_time: '2026-10-28T16:33:00', description: 'Export customs clearance completed', location: 'Shenzhen' },
+      { local_time: '2026-10-29T23:10:00', description: 'Flight departed' },
+      ...events,
+      { local_time: '2026-10-30T14:20:00', description: 'Flight arrived' },
+      { local_time: '2026-10-30T21:05:00', description: 'Clearance processing completed - Import' },
+    ] }).events!.map(dated).slice(1);
+    expect(scans('DE')).toEqual([
+      ['2026-10-29T23:10:00+08:00', 'Asia/Shanghai', 'neighbour'],
+      ['2026-10-30T14:20:00+01:00', 'Europe/Berlin', 'destination'],
+      ['2026-10-30T21:05:00+01:00', 'Europe/Berlin', 'destination'],
+    ]);
+    // A country of several zones, named alone, gives the one most of its people live on.
+    expect(scans('US').map((event) => event![1])).toEqual(['Asia/Shanghai', 'America/New_York', 'America/New_York']);
+    // A scan since on a clock the destination keeps tells the leg.
+    expect(scans('US', [{ local_time: '2026-10-30T09:00:00', description: 'Customs clearance started', location: 'Chicago, IL' }]).slice(2))
+      .toEqual([['2026-10-30T14:20:00-05:00', 'America/Chicago', 'neighbour'], ['2026-10-30T21:05:00-05:00', 'America/Chicago', 'neighbour']]);
+    // Without a destination, nothing tells where the parcel landed.
+    expect(scans().map((event) => event![1])).toEqual(['Asia/Shanghai', 'Asia/Shanghai', 'Asia/Shanghai']);
+  });
+
   it('dates a scan filed where the parcel was not on the clock of the office that filed it, and lends that clock to no other', () => {
     // The label registered in the United States before the parcel leaves China, newest first.
     const result = dateLocalClocks('jcex', { status: 'in_transit', destination_country: 'US', events: [

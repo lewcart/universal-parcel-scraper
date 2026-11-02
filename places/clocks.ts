@@ -8,14 +8,15 @@ import { CARRIER_DEFINITIONS } from '../core/catalog/definitions.js';
 import type { CarrierEvent, CarrierResult } from '../core/result/index.js';
 import { EXPLICIT_OFFSET_PATTERN, firstOccurrence } from '../core/time/index.js';
 import { airportTimeZone, placesForEvents, placeTimeZone, type EventPlace } from './index.js';
-import { hasSeveralClocks, mainZone } from './zones.js';
+import { hasSeveralClocks, keepsZone, mainZone } from './zones.js';
 
 /**
  * How a deduced zone was chosen: the scan's own place; the place of a scan
  * on the leg the parcel was on; the parcel's destination, where the carrier
- * delivers; the carrier's home clock.
+ * delivers or the parcel has landed; the carrier's home clock.
  */
 export type ZoneBasis = 'place' | 'neighbour' | 'destination' | 'carrier';
+type Zoned = { zone: string; basis: ZoneBasis };
 
 const WALL_CLOCK = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/;
 
@@ -67,7 +68,8 @@ function destinationZone(carrier: string, country: string): string | null {
  * code alone names; a scan filed away from the parcel takes the clock of the
  * office that filed it and lends it to no other; else from the leg the parcel was on: the last scan before
  * it with a zone of its own, or, once a scan since says the parcel landed or
- * reached its destination, the next one after, or with none before, the next
+ * reached its destination, the next one after, else the destination's clock unless
+ * the last one is on a clock the destination keeps; or with none before, the next
  * one unless the parcel lands on the way there; else from the destination, if the carrier
  * delivers there; else from the carrier's home clock. A place that names only
  * a country with several zones, and none of its states, borrows the zone of a
@@ -104,21 +106,31 @@ export function dateLocalClocks(carrier: string, result: CarrierResult): Carrier
     ? placeTimeZone(place) : null;
   // A scan's own zone: its place's, or an airport's its code alone names.
   const own = places.map((place, at) => place ? zoneOf(place) : airportTimeZone(text(scans[at]!.location)));
+  const neighbour = (zone: string | null | undefined): Zoned | null => zone ? { zone, basis: 'neighbour' } : null;
+  const country = reading.destinationCountry;
+  // Landed with no zoned scan since: the last zoned scan's clock if the destination keeps it,
+  // else the destination's own, not the clock of the country the parcel left.
+  const arrival = (before: number): Zoned | null => {
+    const zone = own[before];
+    const landing = country && !(zone && keepsZone(country, zone)) ? mainZone(country) : null;
+    return landing ? { zone: landing, basis: 'destination' } : neighbour(zone);
+  };
   // The zone of the leg the parcel was on: the last scan before with a zone of its own,
-  // or once a scan since says the parcel landed, the next one after. With none before,
-  // the next one, unless the parcel lands on the way there.
-  const leg = (at: number, fits: (place: EventPlace | null) => boolean): string | null => {
+  // or once a scan since says the parcel landed, the next one after, else what `landing`
+  // makes of the last one. With none before, the next one, unless the parcel lands on the way there.
+  const leg = (at: number, fits: (place: EventPlace | null) => boolean,
+    landing: (before: number) => Zoned | null = (before) => neighbour(own[before])): Zoned | null => {
     const zoned = (other: number) => own[other] && fits(places[other] ?? null);
     let before = at - 1;
     while (before >= 0 && !zoned(before)) before -= 1;
     let after = at + 1;
     while (after < scans.length && !zoned(after)) after += 1;
-    if (scans.slice(before + 1, at + 1).some(landed)) return own[after] ?? own[before] ?? null;
-    return own[before] ?? (scans.slice(at + 1, after).some(landed) ? null : own[after] ?? null);
+    if (scans.slice(before + 1, at + 1).some(landed)) return neighbour(own[after]) ?? landing(before);
+    return neighbour(own[before]) ?? (scans.slice(at + 1, after).some(landed) ? null : neighbour(own[after]));
   };
-  const destination = destinationZone(carrier, text(result.destination_country).toUpperCase());
+  const destination = destinationZone(carrier, country ?? '');
   const home = carrierHomeZone(carrier, result);
-  const zoneAt = (at: number): { zone: string; basis: ZoneBasis } | null => {
+  const zoneAt = (at: number): Zoned | null => {
     const place = places[at];
     if (own[at]) return { zone: own[at], basis: 'place' };
     // It lends that clock to no other scan.
@@ -126,15 +138,15 @@ export function dateLocalClocks(carrier: string, result: CarrierResult): Carrier
     if (office) return { zone: office, basis: 'place' };
     if (place) {
       const town = leg(at, (other) => other?.country === place.country);
-      const zone = town ?? placeTimeZone(place);
+      const zone = town?.zone ?? placeTimeZone(place);
       if (zone) return { zone, basis: town ? 'neighbour' : 'place' };
     }
-    const borrowed = leg(at, () => true);
-    if (borrowed) return { zone: borrowed, basis: 'neighbour' };
+    const borrowed = leg(at, () => true, arrival);
+    if (borrowed) return borrowed;
     if (destination) return { zone: destination, basis: 'destination' };
     return home ? { zone: home, basis: 'carrier' } : null;
   };
-  const zones = new Map<CarrierEvent, { zone: string; basis: ZoneBasis }>();
+  const zones = new Map<CarrierEvent, Zoned>();
   scans.forEach((event, at) => {
     if (!walled(event)) return;
     const zone = zoneAt(at);

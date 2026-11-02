@@ -207,9 +207,9 @@
           "provider_code": "FPX_S_OK",
           "stage": "delivered",
           "stage_source": "carrier_map",
-          "time": "2026-03-28T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-28T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-27T14:30:03",
@@ -218,9 +218,9 @@
           "provider_code": "FPX_D_SD",
           "stage": "out_for_delivery",
           "stage_source": "carrier_map",
-          "time": "2026-03-27T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-27T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-26T14:30:03",
@@ -229,9 +229,9 @@
           "provider_code": "FPX_D_HQ",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-26T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-26T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-25T14:30:03",
@@ -240,9 +240,9 @@
           "provider_code": "FPX_O_RR",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-25T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-25T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-24T14:30:03",
@@ -251,9 +251,9 @@
           "provider_code": "FPX_O_RR",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-24T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-24T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-23T14:30:03",
@@ -262,9 +262,9 @@
           "provider_code": "FPX_M_IT",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-23T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-23T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-22T14:30:03",
@@ -273,9 +273,9 @@
           "provider_code": "FPX_O_RR",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-22T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-22T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-21T14:30:03",
@@ -284,9 +284,9 @@
           "provider_code": "FPX_O_RR",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-21T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-21T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-20T14:30:03",
@@ -295,9 +295,9 @@
           "provider_code": "FPX_M_IT",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-20T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-20T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-19T14:30:03",
@@ -306,9 +306,9 @@
           "provider_code": "FPX_M_IT",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-19T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-19T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-18T14:30:03",
@@ -317,9 +317,9 @@
           "provider_code": "FPX_O_RR",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-18T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-18T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-17T14:30:03",
@@ -328,9 +328,9 @@
           "provider_code": "FPX_O_RR",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-17T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-17T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-16T14:30:03",
@@ -339,9 +339,9 @@
           "provider_code": "FPX_O_RR",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-16T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-16T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-15T14:30:03",
@@ -350,9 +350,9 @@
           "provider_code": "FPX_D_STPP",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-15T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-15T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-14T14:30:03",
@@ -361,9 +361,9 @@
           "provider_code": "FPX_M_CRSD",
           "stage": "customs",
           "stage_source": "carrier_map",
-          "time": "2026-03-14T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-14T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-13T14:30:03",
@@ -372,9 +372,9 @@
           "provider_code": "FPX_M_ATA",
           "stage": "in_transit",
           "stage_source": "carrier_map",
-          "time": "2026-03-13T14:30:03+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-13T14:30:03-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-12T14:30:03",
@@ -757,45 +757,45 @@
           "description": "Customs inspection - Import",
           "location": "Example facility",
           "stage": "customs",
-          "time": "2026-03-20T13:39:00+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-20T13:39:00-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-19T13:39:00",
           "description": "Clearance processing completed - Import",
           "location": "Example facility",
           "stage": "in_transit",
-          "time": "2026-03-19T13:39:00+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-19T13:39:00-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-18T13:39:00",
           "description": "Collected at Cargo Terminal",
           "location": "Example facility",
           "stage": "in_transit",
-          "time": "2026-03-18T13:39:00+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-18T13:39:00-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-17T13:39:00",
           "description": "Start Customs Clearence",
           "location": "Example facility",
           "stage": "customs",
-          "time": "2026-03-17T13:39:00+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-17T13:39:00-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-16T13:39:00",
           "description": "International flight has arrived",
           "location": "Example facility",
           "stage": "in_transit",
-          "time": "2026-03-16T13:39:00+08:00",
-          "time_zone": "Asia/Shanghai",
-          "time_zone_basis": "carrier"
+          "time": "2026-03-16T13:39:00-04:00",
+          "time_zone": "America/New_York",
+          "time_zone_basis": "destination"
         },
         {
           "local_time": "2026-03-15T13:39:00",

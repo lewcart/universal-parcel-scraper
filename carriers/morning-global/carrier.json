@@ -26,6 +26,10 @@
     "recognition": {
       "rank": 682
     },
+    "refresh": {
+      "minMinutes": 60,
+      "afterFailureMinutes": 120
+    },
     "localClocks": true
   },
   "capabilities": [

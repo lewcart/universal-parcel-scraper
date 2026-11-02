@@ -31390,6 +31390,10 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "morning-global",
       "recognitionRank": 682,
+      "refresh": {
+        "minMinutes": 60,
+        "afterFailureMinutes": 120
+      },
       "localClocks": true
     },
     "canaryUrl": "https://www.morninglobal.com/trace-track/",

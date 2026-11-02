@@ -47,7 +47,8 @@ through the lookup its tracker page makes.
 - No delivery partner, and no estimate or weight.
 - The lookup itself, not the page, refuses a client that asks too often with HTTP 429 and no
   `Retry-After`, read as a rate limit. A parcel checked every ten minutes is refused for hours,
-  twice a day; reading the page less would not avoid it.
+  twice a day; reading the page less would not avoid it. The catalog's `tracking.refresh` asks
+  consumers to check a parcel at most hourly, and two hours after a failed check.
 
 ## Numbers
 

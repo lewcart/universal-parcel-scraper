@@ -130,6 +130,18 @@ describe('JRT tracking adapter', () => {
     ]);
   });
 
+  it('reads the Shenzhen hub’s receipt after the operation center as transit, in English', () => {
+    const payload = fixture('track-dhl') as { data: { trackDetails: Record<string, string>[] }[] }[];
+    const record = payload[0]!.data[0]!;
+    const row = (track_date: string, track_content: string) => ({ ...record.trackDetails.at(-1)!, track_date, track_createdate: track_date, track_content, track_location: '' });
+    record.trackDetails = [row('2026-03-02 16:05:45', '深圳集散中心 已收货'), row('2026-03-01 15:21:17', '货物离开操作中心')];
+    const result = parseJrtTrack(payload, UP_REFERENCE, Date.parse('2026-03-03T00:00:00Z'))!;
+    expect(result.events?.map(({ description, stage }) => [description, stage])).toEqual([
+      ['Received at the Shenzhen distribution center', 'in_transit'],
+      ['Goods leave the operation center', 'in_transit'],
+    ]);
+  });
+
   it('reads UPS’s rows on the line into the United States on UPS’s wall clock, in UPS’s English', () => {
     const result = dateLocalClocks('jrt', parseJrtTrack(fixture('track-ups'), 'UP0000000000000003', Date.parse('2026-03-22T00:00:00Z'))!);
     expect(result).toMatchObject({

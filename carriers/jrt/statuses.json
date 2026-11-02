@@ -43,6 +43,15 @@
       "note": "GZYL's tenant of the same platform words it \"Goods leave the operation center\"."
     },
     {
+      "wording": "深圳集散中心 已收货",
+      "language": "zh",
+      "english": "Received at the Shenzhen distribution center",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "JRT's hub in Shenzhen received the parcel after it left the operation center elsewhere, before its flight."
+    },
+    {
       "wording": "货物打包完成，已发往航司",
       "language": "zh",
       "english": "Goods packed and sent to the airline",

@@ -15,6 +15,9 @@ const SOAP = 'http://schemas.xmlsoap.org/soap/envelope/';
 export const CHRONOPOST_NAMESPACE = 'http://cxf.tracking.soap.chronopost.fr/';
 const MAX_EVENTS = 500;
 const UNMOVED: ReadonlySet<Stage> = new Set(['pending', 'registered', 'accepted']);
+// The courier's drop-off at the pickup point (RB) is part of the round that carries the parcel
+// there, and comes before the point's arrival scan or just after it: it keeps either stage.
+const DROP_OFF_KEEPS: ReadonlySet<Stage> = new Set(['out_for_delivery', 'ready_for_pickup']);
 // The DPD networks that look a Geopost reference up for a parcel Chronopost
 // sends to their country.
 const GEOPOST_PARTNERS: ReadonlyMap<string, string> = new Map([['DE', 'dpd-de'], ['PT', 'dpd-pt']]);
@@ -227,8 +230,9 @@ export function parseChronopostTrackingXml(xml: string, rawNumber: string): Carr
   let returning = false;
   for (const scan of projected) {
     // An alert or an instruction records activity, but does not regress delivery or prove
-    // movement. Nor does a drop-off scan that follows the pickup point's arrival scan.
-    const kept = scan.notification || (scan.dropOff && stage === 'ready_for_pickup');
+    // movement. Nor does a drop-off scan that follows the round carrying the parcel to its
+    // pickup point, or the point's arrival scan.
+    const kept = scan.notification || (scan.dropOff && DROP_OFF_KEEPS.has(stage));
     // Once the parcel starts back to the sender, the scans that follow are the return's,
     // and a delivery reaches the sender.
     returning ||= scan.returnStart;

@@ -65,7 +65,8 @@ clock under Paris's offset, the wall clock the partner's own feed shows. It keep
 that wall clock alone, and its town dates it. Offset-less clocks stay
 local. Notifications and the recipient's delivery instructions retain activity
 without changing the last established shipment stage, and neither does a
-courier's drop-off scan that follows the pickup point's arrival scan. Before the parcel
+courier's drop-off at the pickup point (RB) after the round that carries the parcel there,
+which can come hours before the point's arrival scan, or after that scan. Before the parcel
 has moved, a pickup point's scan of it at another point than the one planned is the
 sender's drop-off there, which the point hands to the courier next: it accepts the
 parcel, which does not wait for the recipient. The point's hand-over to the courier

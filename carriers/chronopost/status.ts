@@ -50,7 +50,8 @@ const OBSERVED: ReadonlyArray<readonly [code: string, label: string, stage: Chro
   ['N', 'Colis non livré : entreprise fermée', 'failed_attempt'],
   // The round, the courier on the way to a pickup point and its arrival there. They come
   // within two minutes of the delivering partner's own scans, and La Poste's feed stages the
-  // same scans alike as MD1, ET1 and AG1.
+  // same scans alike as MD1, ET1 and AG1. After the round, the drop-off keeps its stage (see
+  // the parser).
   ['TA', 'Colis en cours de livraison', 'out_for_delivery'],
   ['TA', 'Colis en cours de livraison par le livreur', 'out_for_delivery'],
   ['RB', 'Colis en cours de livraison au point de retrait', 'in_transit'],

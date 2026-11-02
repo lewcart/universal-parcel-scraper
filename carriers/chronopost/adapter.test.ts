@@ -387,8 +387,20 @@ describe('Chronopost direct tracking', () => {
       pickup_point: 'EXAMPLE RELAY\n1 EXAMPLE STREET\n00000 EXAMPLE CITY' });
     expect(result.events?.slice(0, 3)).toMatchObject([
       { provider_code: 'AB', stage: 'ready_for_pickup', stage_source: 'carrier_map' },
-      { provider_code: 'RB', stage: 'in_transit', stage_source: 'carrier_map' },
+      { provider_code: 'RB', stage: 'out_for_delivery', stage_source: 'none' },
       { provider_code: 'TA', stage: 'out_for_delivery', stage_source: 'carrier_map' }]);
+    // The drop-off can come hours after the round and its notices, before the point's arrival
+    // scan: the parcel is still on the round, not back in transit.
+    const notice = (at: string) => scan('SM', at, 'Destinataire informé par SMS ou mail');
+    const sorted = scan('TP', '2026-06-27T02:44:33+02:00', "Colis en cours d'acheminement");
+    const dropped = parseChronopostTrackingXml(history(prepared, sorted, round,
+      notice('2026-06-27T07:05:43+02:00'), notice('2026-06-27T11:16:06+02:00'),
+      scan('RB', '2026-06-27T13:38:37+02:00', 'Colis en cours de livraison au point de retrait')), number);
+    expect(dropped).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', current_stage_source: 'carrier_map' });
+    expect(dropped.events?.[0]).toMatchObject({ provider_code: 'RB', stage: 'out_for_delivery', stage_source: 'none' });
+    // Without a round before it, the courier on the way to the point is in transit.
+    expect(parseChronopostTrackingXml(history(prepared, sorted, onTheWay), number)).toMatchObject({
+      current_stage: 'in_transit', current_stage_source: 'carrier_map' });
   });
 
   it("reads a pickup point's scan at another point than planned, before the parcel moves, as the sender's drop-off", () => {

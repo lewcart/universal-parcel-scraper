@@ -344,7 +344,7 @@
       "code": "RB",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "note": "Chronopost trackSkybillV2; code mapping requires matching wording. The courier on the way to the pickup point, ahead of its arrival scan (AB); when it follows that scan, it keeps ready_for_pickup.",
+      "note": "Chronopost trackSkybillV2; code mapping requires matching wording. The courier on the way to the pickup point, ahead of its arrival scan (AB). It keeps the stage of the round (TA) that carries the parcel there, and ready_for_pickup when it follows the arrival scan.",
       "wording": "Colis en cours de livraison au point de retrait",
       "language": "fr"
     },

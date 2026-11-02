@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>TNT Express -
+        Track a Package
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Robots" content="index, follow" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/applications.css" media="all" />
+
+</head>
+<body marginheight="0" topmargin="0" marginwidth="0" leftmargin="0" class="body" style="background: none;">
+    <div style="min-height: 333px; width: 506px" id="appPanel">
+        <h4>Consignment Status History</h4>
+
+        <table cellpadding="1"  id="appTable" class="appTable" style="width:506px">
+<tr>
+	<td colspan="4">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		<tr>
+			<td class=strong style='width:210px'>Consignment No: ZZZ000000002</td>
+			<td class=strong></td>
+<td class='strong'>Estimated Delivery by: 3/02/2026 17:00</td>
+		</tr><tr><td>&nbsp;</td></tr>	 
+	</table>
+	</td>
+</tr>
+<tr>
+	<td class=heading width="180">Status</td>
+	<td class=heading width="60">Date</td>
+	<td class=heading width="60">Time</td>
+	<td class=heading width="130">
+Depot</td></tr>	<tr>		<td>Your shipment data is lodged</td>		<td>30/01/2026</td>		<td>11:14</td>		<td>Sampleton - Westpark</td></tr>	<tr class="altBackground">		<td>We've collected your shipment</td>		<td>30/01/2026</td>		<td>11:34</td>		<td>Sampleton - Westpark</td></tr>	<tr>		<td>We're processing your shipment</td>		<td>30/01/2026</td>		<td></td>		<td>Sampleton - Westpark</td></tr>	<tr class="altBackground">		<td>Sample wording</td>		<td>31/01/2026</td>		<td>7:29</td>		<td>Sample &amp; Example Airport</td></tr>	<tr>		<td>We're processing your shipment</td>		<td>02/02/2026</td>		<td>06:20</td>		<td></td></tr>	</table><br>
+        <div style="text-align: right;">
+            <div class="richText" style="text-align: left;">
+                
+            </div>
+        </div>
+
+        <div style="text-align: right;">
+
+            <input type="hidden" id="hdConn" value="ZZZ000000002" />
+
+            <input type="image" src="../../_img/img_inc/button_view_milestones.gif" value="Back"
+                onclick="viewmilestonetracker()"
+                name="btnBack" title="View Mile Stone Tracker" id="btnMileStoneTracker" alt="View Milestone Tracker button" />
+            <input type="image" src="../../_img/img_inc/button_back.gif" value="Back"
+                onclick="window.document.location.href = '/interaction/trackref.aspx?con=ZZZ000000002&ref=';"
+                name="btnBack" title="Back" id="btnBack" alt="Back button" />
+        </div>
+
+        <script type="text/javascript">
+            function viewmilestonetracker() {
+
+                var consignmentNumber = document.getElementById('hdConn').value;
+                window.location.replace("../trackref.aspx?con=" + consignmentNumber);
+            }
+
+        </script>
+    </div>
+</body>
+</html>

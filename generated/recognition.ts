@@ -453,6 +453,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "tirupati-courier": 711,
   "tmm-express": 837,
   "tnt": 880,
+  "tnt-au": 563,
   "tnt-it": 645,
   "today-kr": 712,
   "tonami": 791,

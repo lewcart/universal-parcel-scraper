@@ -629,6 +629,7 @@ import { adapter as tipsa } from '../carriers/tipsa/adapter.js';
 import { adapter as tirupatiCourier } from '../carriers/tirupati-courier/adapter.js';
 import { adapter as tmmExpress } from '../carriers/tmm-express/adapter.js';
 import { adapter as tnt } from '../carriers/tnt/adapter.js';
+import { adapter as tntAu } from '../carriers/tnt-au/adapter.js';
 import { adapter as tntIt } from '../carriers/tnt-it/adapter.js';
 import { adapter as todayKr } from '../carriers/today-kr/adapter.js';
 import { adapter as tonami } from '../carriers/tonami/adapter.js';
@@ -1331,6 +1332,7 @@ export const REGISTRY: RegistryDefinition = {
     "tirupati-courier": tirupatiCourier,
     "tmm-express": tmmExpress,
     "tnt": tnt,
+    "tnt-au": tntAu,
     "tnt-it": tntIt,
     "today-kr": todayKr,
     "tonami": tonami,
@@ -2528,6 +2530,7 @@ export const REGISTRY: RegistryDefinition = {
     "tiui": "universal",
     "tmm-express": "tmm-express",
     "tnt": "tnt",
+    "tnt-au": "tnt-au",
     "tnt-it": "tnt-it",
     "today-kr": "today-kr",
     "togo-post": "universal",

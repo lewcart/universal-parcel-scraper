@@ -1,0 +1,18 @@
+{
+  "carrier": "tnt-au",
+  "entries": [
+    {"wording": "Your shipment data is lodged", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "The sender's system sent the consignment's details; the parcel has not reached TNT."},
+    {"wording": "We've collected your shipment", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "Picked up from the sender."},
+    {"wording": "We're processing your shipment", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "A depot's scan, at origin, on the way or at the delivering depot."},
+    {"wording": "Your shipment is in transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Your shipment's with a driver", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live"},
+    {"wording": "Delivery attempted - card left", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Delivery returned to depot", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Back at the delivering depot at the end of a round that did not deliver it, after a carded attempt."},
+    {"wording": "New delivery address required", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Followed by depot scans until the receiver collected the parcel: it does not go out until someone gives another address."},
+    {"wording": "We've delivered your shipment", "stage": "delivered", "language": "en", "confirmedBy": "live"},
+    {"wording": "Your shipment was collected", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The receiver collected the parcel from the depot that held it, after its address was found wanting. The sender's pickup is \"We've collected your shipment\"."},
+    {"wording": "Book-In Delivery Requested", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "A delivery booking asked for at the delivering depot, after a carded attempt; it moves nothing."},
+    {"wording": "Book-In Delivery Arranged", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "Seen hours after the delivery it was for; it moves nothing."},
+    {"wording": "Delivery booked in", "language": "en", "confirmedBy": "portal", "unmapped": true, "note": "Dated at the booked day's close, days ahead of the page's other scans; it moves nothing."}
+  ]
+}

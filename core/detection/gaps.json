@@ -3705,6 +3705,12 @@
     "reason": "Ten digits are shared by DHL Express and several other carriers, and nothing in the number points to TMM Express."
   },
   {
+    "carrier": "tnt-au",
+    "pattern": "^[A-Z]{3}\\d{9}$",
+    "kind": "collision",
+    "reason": "TNT Australia consignments start with the sender account's three letters, a shape Purolator's lettered PINs share, so only an account's own letters, such as APK, name TNT Australia."
+  },
+  {
     "carrier": "today-kr",
     "pattern": "^\\d{12}$",
     "kind": "collision",

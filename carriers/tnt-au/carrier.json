@@ -1,0 +1,96 @@
+{
+  "id": "tnt-au",
+  "displayName": "TNT Australia",
+  "aliases": [
+    "TNT Express Australia"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#ff6600"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "tnt-au",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 563
+    },
+    "localClocks": true
+  },
+  "capabilities": [
+    "history",
+    "location",
+    "eta"
+  ],
+  "portal": {
+    "url": "https://www.tntexpress.com.au/interaction/Trackntrace.aspx?con={trackingNumber}",
+    "searchUrl": "https://www.tntexpress.com.au/interaction/trackntrace.aspx",
+    "helpUrl": "https://www.tnt.com/express/en_au/site/support.html",
+    "canaryUrl": "https://www.tntexpress.com.au/interaction/trackntrace.aspx",
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "eta",
+      "customer_reference",
+      "delivered_at",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta"
+    ],
+    "discarded": [
+      "progress_rail",
+      "customer_reference",
+      "delivered_at",
+      "signatory"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "provider_code",
+      "service_name",
+      "weight",
+      "proof_of_delivery"
+    ]
+  },
+  "links": [
+    {
+      "domains": [
+        "tntexpress.com.au"
+      ],
+      "pathPattern": "^/interaction/(?:trackntrace\\.aspx|asps/trackref_detail\\.asp)$",
+      "params": [
+        "con"
+      ],
+      "ownNumbersOnly": true
+    },
+    {
+      "domains": [
+        "tntexpress.com.au"
+      ],
+      "pathPattern": "^/interaction/asps/cnmhxas\\.asp$",
+      "query": "^([A-Z]{3}\\d{7}(?:\\d{2})?)$",
+      "ownNumbersOnly": true
+    }
+  ],
+  "detection": [
+    {
+      "id": "tnt-au-apk",
+      "pattern": "^APK(?:\\d{7}|\\d{9})$",
+      "confidence": "high"
+    }
+  ]
+}

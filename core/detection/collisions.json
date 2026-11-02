@@ -1112,6 +1112,22 @@
     "reason": "Colis Privé accepts any 12-character alphanumeric, so it overlaps Purolator three-letter numbers; the specific high-confidence rule decides."
   },
   {
+    "shape": "APK then 9{9}",
+    "carriers": [
+      "colis-prive",
+      "tnt-au"
+    ],
+    "reason": "Colis Privé accepts any 12-character alphanumeric, so it overlaps TNT Australia's APK consignments; the specific high-confidence rule decides."
+  },
+  {
+    "shape": "APK then 9{7}",
+    "carriers": [
+      "australia-post",
+      "tnt-au"
+    ],
+    "reason": "Australia Post's ten-character consignment rule takes three letters and seven digits, the shape of TNT Australia's older APK consignments; the specific high-confidence rule decides."
+  },
+  {
     "shape": "LTN9{9}",
     "carriers": [
       "colis-prive",

@@ -70726,6 +70726,38 @@
     ]
   },
   {
+    "input": "APK000000000",
+    "carrier": "tnt-au",
+    "confidence": "high",
+    "candidates": [
+      "tnt-au"
+    ]
+  },
+  {
+    "input": "APK0392179",
+    "carrier": "tnt-au",
+    "confidence": "high",
+    "candidates": [
+      "tnt-au"
+    ]
+  },
+  {
+    "input": "APK1159402",
+    "carrier": "tnt-au",
+    "confidence": "high",
+    "candidates": [
+      "tnt-au"
+    ]
+  },
+  {
+    "input": "APK5972159",
+    "carrier": "tnt-au",
+    "confidence": "high",
+    "candidates": [
+      "tnt-au"
+    ]
+  },
+  {
     "input": "APPL9640004279332",
     "carrier": "apple-express",
     "confidence": "high",
@@ -80704,6 +80736,14 @@
     ]
   },
   {
+    "input": "GDQ000004773",
+    "carrier": "purolator",
+    "confidence": "high",
+    "candidates": [
+      "purolator"
+    ]
+  },
+  {
     "input": "GE100312111WW",
     "carrier": "tnt",
     "confidence": "high",
@@ -89471,6 +89511,14 @@
     ]
   },
   {
+    "input": "NMY100014996",
+    "carrier": "purolator",
+    "confidence": "high",
+    "candidates": [
+      "purolator"
+    ]
+  },
+  {
     "input": "NN0100211201",
     "carrier": "unknown",
     "confidence": "low",
@@ -93302,6 +93350,14 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "RCS000000468",
+    "carrier": "purolator",
+    "confidence": "high",
+    "candidates": [
+      "purolator"
+    ]
   },
   {
     "input": "RD000080260BO",

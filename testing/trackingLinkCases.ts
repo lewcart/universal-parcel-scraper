@@ -245,6 +245,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tnt', number: '123456784',
     route: /^https:\/\/www\.tnt\.com\/express\/en_gb\/site\/shipping-tools\/tracking\.html\?/,
     marker: /Track your shipment|Consignment note/i },
+  // The tracker redirects the number to an encrypted results address, whose notice for an unknown one leaves the number out.
+  { carrier: 'tnt-au', number: 'ZZZ000000000',
+    route: /^https:\/\/www\.tntexpress\.com\.au\/interaction\/trackntraceResult\.aspx\?con=[^&]+&type=/,
+    marker: /TRACK AND TRACE RESULTS|No consignment found/,
+    forwarding: { notFound: /No consignment found\. Please enter valid consignment no\./ } },
   { carrier: 'tnt-it', number: 'ZZ00000000',
     route: /^https:\/\/www\.tnt\.it\/tracking\/index\.html\?pp=/,
     marker: /Spedizione non trovata|Lettera di vettura/i },

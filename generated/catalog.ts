@@ -3482,7 +3482,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BNI|BYS|CLC|CUB|GWD|LTN|MPX|NZC|QSP|QSS|RMP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:APK|BNI|BYS|CLC|CUB|GWD|LTN|MPX|NZC|QSP|QSS|RMP|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -43555,6 +43555,54 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "tnt-au": {
+    "displayName": "TNT Australia",
+    "color": "#ff6600",
+    "aliases": [
+      "TNT Express Australia"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "tnt-au",
+      "recognitionRank": 563,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.tntexpress.com.au/interaction/trackntrace.aspx",
+    "trackingUrlTemplate": "https://www.tntexpress.com.au/interaction/Trackntrace.aspx?con={trackingNumber}",
+    "trackingSearchUrl": "https://www.tntexpress.com.au/interaction/trackntrace.aspx",
+    "helpUrl": "https://www.tnt.com/express/en_au/site/support.html",
+    "linkRules": [
+      {
+        "domains": [
+          "tntexpress.com.au"
+        ],
+        "pathPattern": "^/interaction/(?:trackntrace\\.aspx|asps/trackref_detail\\.asp)$",
+        "params": [
+          "con"
+        ],
+        "ownNumbersOnly": true
+      },
+      {
+        "domains": [
+          "tntexpress.com.au"
+        ],
+        "pathPattern": "^/interaction/asps/cnmhxas\\.asp$",
+        "query": "^([A-Z]{3}\\d{7}(?:\\d{2})?)$",
+        "ownNumbersOnly": true
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^APK(?:\\d{7}|\\d{9})$",
+        "confidence": "high"
+      }
+    ]
+  },
   "tnt-it": {
     "displayName": "TNT Italy",
     "color": "#ff6600",
@@ -49978,6 +50026,7 @@ export const CARRIER_IDS = [
   "tirupati-courier",
   "tiui",
   "tmm-express",
+  "tnt-au",
   "tnt-it",
   "today-kr",
   "togo-post",
@@ -51268,6 +51317,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tirupati-courier": [],
   "tiui": [],
   "tmm-express": [],
+  "tnt-au": ["tnt-au-apk"],
   "tnt-it": ["tnt-it-1","tnt-it-check"],
   "today-kr": [],
   "togo-post": [],

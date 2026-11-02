@@ -1,0 +1,131 @@
+{
+  "carrier": "tnt-au",
+  "records": [
+    {
+      "number": "APK0392179",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20090907162602/http://www.tntexpress.com.au:80/InterAction/ASPs/CnmHxAS.asp?APK0392179",
+        "date": "2009-09-07",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tnt-au",
+        "confidence": "high"
+      },
+      "note": "An APK consignment of seven digits whose history on TNT Australia's own tracker the Wayback Machine archived: collected and delivered in Sydney."
+    },
+    {
+      "number": "APK1159402",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20110925163225/http://www.tntexpress.com.au:80/InterAction/ASPs/CnmHxAS.asp?APK1159402",
+        "date": "2011-09-25",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tnt-au",
+        "confidence": "high"
+      },
+      "note": "An APK consignment of seven digits whose history on TNT Australia's own tracker the Wayback Machine archived: lodged in Sydney and carded in Melbourne."
+    },
+    {
+      "number": "APK5972159",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20180113224339/http://www.tntexpress.com.au:80/InterAction/ASPs/CnmHxAS.asp?APK5972159",
+        "date": "2018-01-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tnt-au",
+        "confidence": "high"
+      },
+      "note": "An APK consignment of seven digits whose history on TNT Australia's own tracker the Wayback Machine archived: lodged at Sydney - Erskine Park and collected by the receiver in Ballarat."
+    },
+    {
+      "number": "APK000000000",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-11-02",
+      "expect": {
+        "carrier": "tnt-au",
+        "confidence": "high"
+      },
+      "note": "Synthetic APK consignment of nine digits, the shape tnt.com's tracker sends to TNT Australia and current APK consignments take."
+    },
+    {
+      "number": "GDQ000004773",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260128092506/https://www.tntexpress.com.au/InterAction/ASPs/CnmHxAS.asp?GDQ000004773",
+        "date": "2026-01-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "purolator",
+        "confidence": "high"
+      },
+      "note": "A consignment whose history on TNT Australia's own tracker the Wayback Machine archived: lodged and collected in Melbourne, then processed in Sydney. Purolator's lettered PINs share the shape."
+    },
+    {
+      "number": "NMY100014996",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251021135416/https://www.tntexpress.com.au/InterAction/ASPs/CnmHxAS.asp?NMY100014996",
+        "date": "2025-10-21",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "purolator",
+        "confidence": "high"
+      },
+      "note": "A consignment whose history on TNT Australia's own tracker the Wayback Machine archived: lodged and processed in Melbourne. Purolator's lettered PINs share the shape."
+    },
+    {
+      "number": "RCS000000468",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240428220449/https://www.tntexpress.com.au/Interaction/Asps/CnmHxAS.asp?RCS000000468",
+        "date": "2024-04-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "purolator",
+        "confidence": "high"
+      },
+      "note": "A consignment whose history on TNT Australia's own tracker the Wayback Machine archived: lodged, collected, processed and in transit from Adelaide. Purolator's lettered PINs share the shape."
+    }
+  ]
+}

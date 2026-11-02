@@ -55,7 +55,8 @@ delivers them. Tracked through the lookup its English tracking page makes.
 - JS Express's own rows and its partners' share the history in their partners' words. A
   destination courier's wording repeats the place with its province, as "Delivered (Sample Town,
   ON)": the adapter moves it into the location, so the wording stays the same from town to town.
-  A place without a letter, such as "1", names no place and is left out.
+  A place without a letter, such as "1", names no place and is left out, as is the tracker's
+  "Array" for a partner's place it holds as a list.
   JS Express's own status in Chinese shows the English its entry in
   [statuses.json](statuses.json) gives, and takes over the row stored in Chinese.
 - iMile's scans as the destination courier open with the centre's name in 【】, so each pair of
@@ -66,8 +67,9 @@ delivers them. Tracked through the lookup its English tracking page makes.
   map reads it.
 - A courier's announced return, such as Colissimo's "Il va être retourné à l'expéditeur", is an
   exception: the parcel is returned only once a scan has it back with its sender.
-- A delivery loses a clause naming who took the parcel, and every row loses phone numbers and
-  the label left before them, as JS Express's "当地电话：" (local phone) or "Local phone number:/".
+- A delivery loses a clause naming who took the parcel, as iMile's receiver type, and every row
+  loses phone numbers and the label left before them, as JS Express's "当地电话：" (local phone)
+  or "Local phone number:/".
 
 ## Limitations
 

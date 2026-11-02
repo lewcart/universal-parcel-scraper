@@ -219,6 +219,9 @@ describe('JS Express tracking adapter', () => {
     expect(jsExpressScan('Delivery failed. Phone: +1 555 000 0000', 'Sample Town').description).toBe('Delivery failed.');
     // A label without a letter names no place, and the row reads as it would without one.
     expect(jsExpressScan(notice, '1')).toEqual({ description: 'The delivery address is incorrect. Please ask the recipient to contact their local area?', location: '' });
+    // Nor does the tracker's "Array" for a partner's place it holds as a list.
+    expect(jsExpressScan('Arrival from abroad', 'Array')).toEqual({ description: 'Arrival from abroad', location: '' });
+    expect(jsExpressScan('Arrival from abroad', 'Arrayville')).toEqual({ description: 'Arrival from abroad', location: 'Arrayville' });
     const history = (label: string) => parseJsExpress(withList([
       row('2026-05-03 10:20:00', label, notice),
       row('2026-05-02 09:00:00', 'Sample Town, NY', 'Departed USPS Facility'),
@@ -230,6 +233,15 @@ describe('JS Express tracking adapter', () => {
     const scan = { stage: 'failed_attempt', description: history('')!.description!, location: '', providerCode: '' };
     expect(policy?.matches?.(scan, { ...scan, location: '1' })).toBe(true);
     expect(policy?.matches?.(scan, { ...scan, location: 'Sample Town, NY' })).toBe(false);
+    // So is a row stored at the tracker's "Array", whatever stage it had, and an iMile delivery stored with its receiver type.
+    const collection = { stage: 'ready_for_pickup', description: 'Item arrival at collection point for pick-up', location: '', providerCode: '' };
+    expect(policy?.matches?.(collection, { ...collection, location: 'Array', stage: 'in_transit' })).toBe(true);
+    expect(policy?.matches?.(collection, { ...collection, location: 'Array', description: 'Arrival from abroad' })).toBe(false);
+    expect(policy?.matches?.({ ...collection, location: 'Sample Town' }, { ...collection, location: 'Array' })).toBe(false);
+    const delivered = { stage: 'delivered', description: '【Sample DS】Delivered.', location: 'Sample DS', providerCode: '' };
+    expect(policy?.matches?.(delivered, { ...delivered, description: '【Sample DS】Delivered, Receiver Type:【Self or family】.' })).toBe(true);
+    expect(policy?.matches?.(delivered, { ...delivered, description: '【Other DS】Delivered, Receiver Type:【Self or family】.' })).toBe(false);
+    expect(policy?.matches?.(delivered, { ...delivered, description: '【Sample DS】Delivered.', location: 'Other DS' })).toBe(false);
     // Only a delivery's wording loses a "by" clause.
     expect(jsExpressScan('Picked up by the airline', 'HKG').description).toBe('Picked up by the airline');
   });
@@ -276,13 +288,35 @@ describe('JS Express tracking adapter', () => {
       ['【iMile Sample DC Center】Parcel shipped to【Sample01】.', 'in_transit'],
       ['【Other Hub】Parcel shipped to【Other02】.', 'in_transit'],
       ['【Sample DS】Shipment out for delivery.', 'out_for_delivery'],
+      ['【Sample DS】Delivered.', 'delivered'],
     ] as const) {
       expect(jsExpressMappedStage(wording), wording).toBe(stage);
       expect(statusMapAnswer({ carrier: 'js-express', description: wording }), wording).toEqual({ kind: 'mapped', stage });
     }
+    // iMile's delivery loses who took the parcel.
+    expect(jsExpressScan('【Sample DS】Delivered, Receiver Type:【Self or family】.', 'Sample DS').description).toBe('【Sample DS】Delivered.');
     // Only a wording that opens with a centre's name in 【】 is iMile's; a scan that moves nothing has no stage.
     expect(jsExpressMappedStage('Parcel shipped to【Sample01】.')).toBeUndefined();
     expect(jsExpressMappedStage('【Sample Hub】Inventory count scan.')).toBeUndefined();
+  });
+
+  it("reads a destination post's rows as JS Express relays them, its collection point as waiting for pickup", () => {
+    const waiting = parseJsExpress(withList([
+      row('2026-05-06 08:00:00', 'Array', 'Item arrival at collection point for pick-up'),
+      row('2026-05-05 13:00:00', 'Sample Town', 'Not Delivered - Addressee not present- Message left'),
+      row('2026-05-05 12:00:00', 'Array', 'Arrival distribution office'),
+      row('2026-05-03 11:00:00', 'Array', 'Arrival from abroad'),
+      row('2026-05-01 22:00:00', 'Array', 'Departure to country of destination'),
+      row('2026-05-01 20:00:00', 'Sample Hub', 'Package scanned at carrier facility'),
+    ]), DELIVERED);
+    expect(waiting).toMatchObject({ current_stage: 'ready_for_pickup', current_stage_source: 'carrier_map' });
+    expect(waiting.events?.map((event) => [event.stage, event.stage_source, event.location])).toEqual([
+      ['ready_for_pickup', 'carrier_map', undefined], ['failed_attempt', 'carrier_map', 'Sample Town'], ['in_transit', 'carrier_map', undefined],
+      ['in_transit', 'carrier_map', undefined], ['in_transit', 'carrier_map', undefined], ['in_transit', 'carrier_map', 'Sample Hub']]);
+    // A partner's record of the data, filed with JS Express's order notice, moves nothing.
+    const recorded = parseJsExpress(withList([row('2026-05-01 16:38:20', 'Sample Hub', 'Processed'),
+      row('2026-05-01 16:38:19', 'Sample Hub', 'Shipment Data Uploaded'), row('2026-05-01 09:00:00', 'Sample Center', 'Item has been collected')]), DELIVERED);
+    expect(recorded).toMatchObject({ current_stage: 'accepted', last_status_text: 'Processed' });
   });
 
   it("keeps a Colissimo leg's announced return open until the parcel is back with its sender", () => {

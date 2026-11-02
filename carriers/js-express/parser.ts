@@ -9,6 +9,7 @@ import { canadaProvinceTimeZone, countryCode, isoTime } from '../../core/time/in
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { jsExpressChinaClock } from './clock.js';
+import { IMILE_RECEIVER, LIST_PLACE } from './identity.js';
 import { jsExpressEnglish, jsExpressStage } from './status.js';
 
 export const PROVIDER = 'JS Express';
@@ -55,11 +56,12 @@ export function normalizeJsExpressNumber(raw: string): string {
  * A row's wording and place. The place is the page's 【…】 label, which a
  * destination courier's wording repeats with its province, "(Sample Town,
  * ON)": the wording then loses it and the place takes it. A label without a
- * letter, such as "1", names no place. A delivery loses a clause naming who
- * took it, and every row loses phone numbers and the label left before them.
+ * letter, such as "1", or the tracker's "Array", names no place. A delivery
+ * loses a clause naming who took it, as iMile's receiver type does, and every
+ * row loses phone numbers and the label left before them.
  */
 export function jsExpressScan(status: string, address: string): { description: string; location: string } {
-  let description = clean(status, 300);
+  let description = clean(clean(status, 300).replace(IMILE_RECEIVER, ''));
   let location = clean(address, 120);
   const place = PLACE.exec(description);
   if (place && location && clean(place[1]).toLowerCase().startsWith(location.toLowerCase())) {
@@ -69,7 +71,7 @@ export function jsExpressScan(status: string, address: string): { description: s
   if (/^delivered\b/i.test(description)) description = description.replace(RECEIVER, '');
   const site = clean(location.replace(PHONE, ''));
   return { description: clean(description.replace(PHONE, '')).replace(PHONE_LABEL, '').replace(/[\s,，;；:：-]+$/, ''),
-    location: /\p{L}/u.test(site) ? site : '' };
+    location: /\p{L}/u.test(site) && site !== LIST_PLACE ? site : '' };
 }
 
 /** A row's clock: the scanning site's wall clock to the second, with no zone. */

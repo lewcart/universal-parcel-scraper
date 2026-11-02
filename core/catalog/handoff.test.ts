@@ -75,6 +75,9 @@ describe('general delivery handoff candidates', () => {
     // Morning Global's BR…MG waybill passing the check digit, and Madagascar's own item.
     expect(deliveryHandoff('morning-global', 'BR123456785MG', { destination_country: 'CA' })).toBeNull();
     expect(deliveryHandoff('morning-global', 'BR123456785MG', {}, 'FR')).toBeNull();
+    // M-ONE's parcel in Pošta Srbije's layout, which M-ONE delivers.
+    expect(deliveryHandoff('m-one', 'PL123456785RS', { destination_country: 'RS' })).toBeNull();
+    expect(deliveryHandoff('m-one', 'PL123456785RS', {}, 'DE')).toBeNull();
     expect(deliveryHandoff('aliexpress', 'RR123456785MG', { destination_country: 'CA' }))
       .toEqual({ carrier: 'canada-post', number: 'RR123456785MG', basis: 'destination' });
   });

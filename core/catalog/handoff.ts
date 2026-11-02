@@ -43,8 +43,9 @@ const DHL_PARCEL_PARTNERS: Readonly<Record<string, CarrierId | null>> = {
 };
 
 // Waybills that take the S10 layout without being postal items: Morning Global's carry
-// Madagascar's code, and one in ten passes the check digit.
-const OWN_S10_LAYOUTS: Readonly<Record<string, RegExp>> = { 'morning-global': /^BR\d{9}MG$/ };
+// Madagascar's code, and one in ten passes the check digit. M-ONE's carry Serbia's
+// code, and M-ONE delivers them itself.
+const OWN_S10_LAYOUTS: Readonly<Record<string, RegExp>> = { 'morning-global': /^BR\d{9}MG$/, 'm-one': /^[A-Z]{2}\d{9}RS$/ };
 
 export function hasDirectHandoffAdapter(carrier: string, number: string): boolean {
   if (!AUTOMATIC_CARRIER_IDS.has(carrier) || carrierAdapter(carrier) === 'universal') return false;

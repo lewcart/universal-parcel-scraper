@@ -16,7 +16,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -41,7 +40,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -66,7 +64,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "yunda",
           "korea-post",
@@ -90,7 +87,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -117,7 +113,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "delhivery",
@@ -145,7 +140,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -172,7 +166,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "yunda",
           "korea-post",
@@ -199,7 +192,6 @@
         "confidence": "low",
         "candidates": [
           "fan-courier",
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda"
@@ -225,7 +217,6 @@
         "confidence": "low",
         "candidates": [
           "fan-courier",
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda"

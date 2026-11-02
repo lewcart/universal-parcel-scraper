@@ -435,3 +435,14 @@ describe('Åland, Aruba, Gibraltar, Samoa, Burundi and Paraguay posts', () => {
     }
   });
 });
+
+describe('La Poste thirteen-character numbers', () => {
+  it('keeps a letter in the first two characters, as its tracker refuses all-digit ones as non-postal', () => {
+    for (const number of ['6A00000000017', '8R00000000017', '1K00000000017', 'LA00000000017']) {
+      expect(detectCarrierMatch(number).candidates, number).toContain('la-poste');
+    }
+    for (const number of ['1000000000017', '6000000000017', '0000000000017']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('la-poste');
+    }
+  });
+});

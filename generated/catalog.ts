@@ -1390,7 +1390,7 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
-        "pattern": "^(?!Z[ACS])[A-Z0-9]{2}\\d{11}$",
+        "pattern": "^(?!Z[ACS])(?:[A-Z][A-Z0-9]|\\d[A-Z])\\d{11}$",
         "confidence": "low"
       },
       {
@@ -4445,6 +4445,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^YT\\d{13}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^G\\d{11}$",
+        "confidence": "low"
       }
     ]
   },
@@ -51075,7 +51079,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sf-express": ["sf-express-3","sf-express-1","sf-express-2","sf-express-4"],
   "sto": ["sto-1","sto-2"],
   "yunda": ["yunda-1"],
-  "yto": ["yto-1","yto-2"],
+  "yto": ["yto-1","yto-2","yto-3"],
   "zto": ["zto-1","zto-2"],
   "jd-logistics": ["jd-logistics-1","jd-logistics-2"],
   "yamato": ["yamato-1"],

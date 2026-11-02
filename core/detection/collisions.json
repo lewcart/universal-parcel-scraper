@@ -1657,7 +1657,6 @@
     "carriers": [
       "correos-chile",
       "delhivery",
-      "la-poste",
       "ukrposhta",
       "yunda"
     ],
@@ -1667,7 +1666,6 @@
     "shape": "9{13} starting with 7, 8 or 9, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
-      "la-poste",
       "ukrposhta",
       "yunda"
     ],
@@ -1678,7 +1676,6 @@
     "carriers": [
       "correos-chile",
       "dpd-fr",
-      "la-poste",
       "ukrposhta",
       "yunda"
     ],
@@ -1691,7 +1688,6 @@
       "delhivery",
       "dpd-fr",
       "korea-post",
-      "la-poste",
       "ukrposhta",
       "yunda"
     ],
@@ -1703,7 +1699,6 @@
       "correos-chile",
       "dpd-fr",
       "korea-post",
-      "la-poste",
       "ukrposhta",
       "yunda"
     ],
@@ -1715,7 +1710,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "ukrposhta",
       "yunda"
     ],
@@ -1727,7 +1721,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "ukrposhta",
       "yunda",
       "aras-kargo"
@@ -1739,7 +1732,6 @@
     "carriers": [
       "correos-chile",
       "korea-post",
-      "la-poste",
       "ukrposhta",
       "yunda"
     ],
@@ -1750,7 +1742,6 @@
     "carriers": [
       "correos-chile",
       "korea-post",
-      "la-poste",
       "ukrposhta",
       "yunda",
       "aras-kargo"
@@ -2922,7 +2913,6 @@
     "carriers": [
       "correos-chile",
       "delhivery",
-      "la-poste",
       "yunda"
     ],
     "reason": "Without Ukrposhta's check digit, 13-digit numbers are shared by four carriers; the number stays a low-confidence suggestion."
@@ -2931,7 +2921,6 @@
     "shape": "9{13} starting with 7, 8 or 9 that fails the Ukrposhta check, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
-      "la-poste",
       "yunda"
     ],
     "reason": "Without Ukrposhta's check digit, 13-digit numbers are shared by three carriers; the number stays a low-confidence suggestion."
@@ -3068,7 +3057,6 @@
       "delhivery",
       "dpd-fr",
       "korea-post",
-      "la-poste",
       "yunda"
     ],
     "reason": "13-digit numbers starting with 1 or 250 add DPD France and Korea Post's registered letters to the four carriers sharing that length; the number stays a suggestion."
@@ -3079,7 +3067,6 @@
       "correos-chile",
       "dpd-fr",
       "korea-post",
-      "la-poste",
       "yunda"
     ],
     "reason": "13-digit numbers starting with 1 or 250 add DPD France and Korea Post's registered letters to the three carriers sharing that length; the number stays a suggestion."
@@ -3193,7 +3180,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "yunda"
     ],
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by five carriers; the number stays a low-confidence suggestion."
@@ -3204,7 +3190,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "yunda",
       "aras-kargo"
     ],
@@ -3215,7 +3200,6 @@
     "carriers": [
       "correos-chile",
       "korea-post",
-      "la-poste",
       "yunda"
     ],
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by four carriers; the number stays a low-confidence suggestion."
@@ -3225,7 +3209,6 @@
     "carriers": [
       "correos-chile",
       "korea-post",
-      "la-poste",
       "yunda",
       "aras-kargo"
     ],
@@ -3238,7 +3221,6 @@
       "delhivery",
       "imile",
       "korea-post",
-      "la-poste",
       "yunda",
       "aras-kargo"
     ],
@@ -3250,7 +3232,6 @@
       "correos-chile",
       "imile",
       "korea-post",
-      "la-poste",
       "yunda",
       "aras-kargo"
     ],
@@ -3679,7 +3660,6 @@
     "shape": "9{13} in the Planzer 99990 range, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
-      "la-poste",
       "planzer",
       "yunda"
     ],
@@ -4431,24 +4411,22 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "orlen-paczka",
       "yunda",
       "fan-courier"
     ],
-    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Delhivery, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion. FAN Courier's rule for AWBs starting with 2 joins them; recognition asks it first from Romania."
+    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Delhivery, Korea Post and Yunda match broadly; the number stays a low-confidence suggestion. FAN Courier's rule for AWBs starting with 2 joins them; recognition asks it first from Romania."
   },
   {
     "shape": "210 and ten digits that pass the GS1 check and fail the Ukrposhta check, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
       "korea-post",
-      "la-poste",
       "orlen-paczka",
       "yunda",
       "fan-courier"
     ],
-    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion. FAN Courier's rule for AWBs starting with 2 joins them; recognition asks it first from Romania."
+    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Korea Post and Yunda match broadly; the number stays a low-confidence suggestion. FAN Courier's rule for AWBs starting with 2 joins them; recognition asks it first from Romania."
   },
   {
     "shape": "210 and ten digits that pass both the GS1 and the Ukrposhta checks",
@@ -4456,7 +4434,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "orlen-paczka",
       "ukrposhta",
       "yunda",
@@ -4469,7 +4446,6 @@
     "carriers": [
       "correos-chile",
       "korea-post",
-      "la-poste",
       "orlen-paczka",
       "ukrposhta",
       "yunda",
@@ -4482,27 +4458,24 @@
     "carriers": [
       "correos-chile",
       "delhivery",
-      "la-poste",
       "shiprocket",
       "yunda"
     ],
-    "reason": "ShiprocketX's AWBs sit inside the thirteen-digit space that Correos de Chile, Delhivery, La Poste and Yunda match broadly. Its preferred rule lists Shiprocket first, and recognition asks Shiprocket's tracker; the number stays a low-confidence suggestion."
+    "reason": "ShiprocketX's AWBs sit inside the thirteen-digit space that Correos de Chile, Delhivery and Yunda match broadly. Its preferred rule lists Shiprocket first, and recognition asks Shiprocket's tracker; the number stays a low-confidence suggestion."
   },
   {
     "shape": "832 and ten digits, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
-      "la-poste",
       "shiprocket",
       "yunda"
     ],
-    "reason": "ShiprocketX's AWBs sit inside the thirteen-digit space that Correos de Chile, La Poste and Yunda match broadly. Its preferred rule lists Shiprocket first, and recognition asks Shiprocket's tracker; the number stays a low-confidence suggestion."
+    "reason": "ShiprocketX's AWBs sit inside the thirteen-digit space that Correos de Chile and Yunda match broadly. Its preferred rule lists Shiprocket first, and recognition asks Shiprocket's tracker; the number stays a low-confidence suggestion."
   },
   {
     "shape": "832 and ten digits that pass the Ukrposhta check, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
-      "la-poste",
       "shiprocket",
       "ukrposhta",
       "yunda"
@@ -4912,7 +4885,6 @@
     "carriers": [
       "correos-chile",
       "dpd-fr",
-      "la-poste",
       "yunda"
     ],
     "reason": "vasp-expresso numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
@@ -5435,7 +5407,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "ozon-logistics",
       "yunda"
     ],
@@ -5447,7 +5418,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "ozon-logistics",
       "yunda",
       "aras-kargo"
@@ -5459,7 +5429,6 @@
     "carriers": [
       "correos-chile",
       "dpd-fr",
-      "la-poste",
       "ozon-logistics",
       "yunda"
     ],
@@ -6185,7 +6154,6 @@
       "delhivery",
       "fedex-pl",
       "korea-post",
-      "la-poste",
       "yunda"
     ],
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
@@ -6197,7 +6165,6 @@
       "delhivery",
       "fedex-pl",
       "korea-post",
-      "la-poste",
       "yunda",
       "aras-kargo"
     ],
@@ -6209,7 +6176,6 @@
       "correos-chile",
       "fedex-pl",
       "korea-post",
-      "la-poste",
       "yunda"
     ],
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
@@ -6220,7 +6186,6 @@
       "correos-chile",
       "fedex-pl",
       "korea-post",
-      "la-poste",
       "yunda",
       "aras-kargo"
     ],
@@ -6234,7 +6199,6 @@
       "fedex-pl",
       "imile",
       "korea-post",
-      "la-poste",
       "yunda"
     ],
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
@@ -6247,7 +6211,6 @@
       "fedex-pl",
       "imile",
       "korea-post",
-      "la-poste",
       "yunda",
       "aras-kargo"
     ],
@@ -6260,7 +6223,6 @@
       "fedex-pl",
       "imile",
       "korea-post",
-      "la-poste",
       "yunda",
       "aras-kargo"
     ],
@@ -6273,7 +6235,6 @@
       "delhivery",
       "fedex-pl",
       "korea-post",
-      "la-poste",
       "ukrposhta",
       "yunda"
     ],
@@ -6563,7 +6524,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "yunda",
       "fan-courier"
     ],
@@ -6575,7 +6535,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "yunda",
       "fan-courier",
       "tforce-freight"
@@ -6587,7 +6546,6 @@
     "carriers": [
       "correos-chile",
       "korea-post",
-      "la-poste",
       "yunda",
       "fan-courier"
     ],
@@ -6600,7 +6558,6 @@
       "delhivery",
       "dpd-fr",
       "korea-post",
-      "la-poste",
       "yunda",
       "fan-courier"
     ],
@@ -6612,7 +6569,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "ukrposhta",
       "yunda",
       "fan-courier"
@@ -6624,7 +6580,6 @@
     "carriers": [
       "correos-chile",
       "delhivery",
-      "la-poste",
       "yunda",
       "fan-courier"
     ],
@@ -6636,7 +6591,6 @@
       "correos-chile",
       "delhivery",
       "korea-post",
-      "la-poste",
       "ozon-logistics",
       "yunda",
       "fan-courier"
@@ -6755,7 +6709,6 @@
       "delhivery",
       "foxpost",
       "korea-post",
-      "la-poste",
       "yunda"
     ],
     "reason": "Foxpost gives its home deliveries numbers starting 66639 without saying how long they are; the other carriers take thirteen digits of any kind. Foxpost leads, and direct tracking must confirm the carrier."

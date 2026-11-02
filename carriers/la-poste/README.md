@@ -12,7 +12,9 @@ generic numeric lengths alone do not identify La Poste. A thirteen-character
 Colissimo, tracked or registered letter number ends in a GS1 key over the ten
 digits after its two-character product code, and a Smart Data number's optional
 15th character is DPD's ISO 7064 MOD 37,36 key. La Poste is
-selected only when that key matches; otherwise it stays a suggestion. China Post's `ZS`,
+selected only when that key matches; otherwise it stays a suggestion. The product code
+holds a letter: the feed refuses an all-digit thirteen-character number as non-postal, so
+detection does not suggest La Poste for one. China Post's `ZS`,
 `ZC` and `ZA` numbers share the length but carry no key, and no La Poste number is known
 with those prefixes, so its rules leave them to China Post.
 

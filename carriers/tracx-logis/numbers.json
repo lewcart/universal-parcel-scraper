@@ -396,7 +396,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -424,7 +423,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "yunda",
           "korea-post",

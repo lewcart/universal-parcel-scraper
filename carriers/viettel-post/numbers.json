@@ -164,7 +164,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "delhivery",
@@ -192,7 +191,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -219,7 +217,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "correos-chile",
           "yunda",
           "korea-post"
@@ -245,7 +242,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",

@@ -108,7 +108,7 @@
     },
     {
       "id": "la-poste-2",
-      "pattern": "^(?!Z[ACS])[A-Z0-9]{2}\\d{11}$",
+      "pattern": "^(?!Z[ACS])(?:[A-Z][A-Z0-9]|\\d[A-Z])\\d{11}$",
       "confidence": "low"
     },
     {

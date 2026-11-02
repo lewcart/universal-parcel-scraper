@@ -17,7 +17,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "yunda"
@@ -73,7 +72,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "yunda"
@@ -99,7 +97,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "yunda"
@@ -124,7 +121,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "yunda"
@@ -150,7 +146,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "yunda"
@@ -176,7 +171,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "yunda"
@@ -202,7 +196,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "yunda"
@@ -227,7 +220,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "delhivery",
@@ -255,7 +247,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "yunda"
@@ -280,7 +271,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "ukrposhta",
           "correos-chile",
           "delhivery",

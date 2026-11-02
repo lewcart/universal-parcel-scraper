@@ -12,7 +12,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -53,7 +52,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "correos-chile",
           "yunda",
           "korea-post"
@@ -79,7 +77,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -106,7 +103,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -133,7 +129,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",
@@ -160,7 +155,6 @@
         "confidence": "low",
         "candidates": [
           "dpd-fr",
-          "la-poste",
           "correos-chile",
           "delhivery",
           "yunda",

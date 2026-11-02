@@ -409,13 +409,13 @@ describe('iMile HTTP adapter', () => {
 
   it('lists iMile first for a dated waybill, beside the other thirteen-digit carriers, whatever the country hint', () => {
     expect(detectCarrierMatch(DATED)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['imile'],
-      candidates: expect.arrayContaining(['la-poste', 'correos-chile', 'delhivery', 'yunda', 'korea-post', 'imile']) });
+      candidates: expect.arrayContaining(['correos-chile', 'delhivery', 'yunda', 'korea-post', 'imile']) });
     expect(detectCarrierMatch(DATED).candidates?.[0]).toBe('imile');
     // A parcel bought abroad keeps its buyer's country hint, so iMile is asked first without its own countries too.
     for (const countryHint of [undefined, 'CO', 'DE', 'ES', 'HU', 'KR', 'IN']) {
       const asked = recognitionAskedCarriers(DATED, { countryHint });
       expect(asked[0], countryHint ?? 'no hint').toBe('imile');
-      expect(asked, countryHint ?? 'no hint').toContain('la-poste');
+      expect(asked, countryHint ?? 'no hint').not.toContain('la-poste');
     }
     // A waybill dated before 2024 or a bare counter is not preferred.
     for (const number of ['6010123000001', '3010124000001']) expect(detectCarrierMatch(number).preferred ?? [], number).not.toContain('imile');

@@ -72,7 +72,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "yto"
         ]
       },
       "note": "A YTO tracking page archived by the Wayback Machine, for a G and eleven digits number that YTO detection does not know. YTO's site did not answer from here."

@@ -226,7 +226,8 @@ describe('evidence-backed tracking formats', () => {
   it('suggests Ukrposhta for a thirteen-digit domestic barcode among the carriers sharing that length', () => {
     const match = detectCarrierMatch('0500000000003');
     expect(match).toMatchObject({ carrier: 'unknown', confidence: 'low' });
-    expect(match.candidates).toEqual(expect.arrayContaining(['ukrposhta', 'la-poste']));
+    expect(match.candidates).toEqual(expect.arrayContaining(['ukrposhta', 'correos-chile']));
+    expect(match.candidates).not.toContain('la-poste');
     expect(detectCarrierMatch('050000000001').candidates).not.toContain('ukrposhta');
   });
 

@@ -1431,3 +1431,12 @@ describe('Etomars, HY Express, ten national posts and the other Ship24-listed ca
     expect(parseTrackingInput('https://cbt.shipnergy.com/Track/Result?mode=1&ids=AB1000000017').carrier ?? 'none').not.toBe('etomars');
   });
 });
+
+describe('YTO waybills led by G', () => {
+  it('suggests YTO for G and eleven digits, and nothing near it', () => {
+    expect(detectCarrierMatch('G00000000017').candidates).toContain('yto');
+    for (const number of ['G0000000001', 'G000000000017', 'H00000000017', 'GA0000000017']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('yto');
+    }
+  });
+});

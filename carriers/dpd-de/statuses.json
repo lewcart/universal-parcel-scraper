@@ -206,6 +206,14 @@
       "note": "Seen in the German app's scan list, which carries wording only. A booked collection found no parcel to take; the parcel is still not with DPD."
     },
     {
+      "wording": "Goods issue at sender.",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "Seen in the German app's scan list, which carries wording only, without a place. The sender's warehouse booked the parcel out (Warenausgang beim Versender); the guest API still read the parcel's status as ORDER_CREATED hours later, since DPD had not scanned it yet."
+    },
+    {
       "wording": "Parcel handed to DPD",
       "language": "en",
       "stage": "accepted",

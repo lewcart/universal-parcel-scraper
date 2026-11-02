@@ -13,6 +13,9 @@ export const DPD_DE_APP_SCANS: Readonly<Record<string, Stage>> = {
   // The sender booked a collection, which has not happened yet.
   'Pickup ordered for: …': 'registered',
   'Pickup not possible No goods acceptance / goods pickup.': 'registered',
+  // The sender's warehouse books the parcel out ("Warenausgang beim Versender"); DPD's own status
+  // stays "Order created" until its first scan of the parcel.
+  'Goods issue at sender.': 'registered',
   'Parcel handed to DPD': 'accepted',
   'Parcel handed to Pickup parcelshop by consignor.': 'accepted',
   'In transit.': 'in_transit',

@@ -355,6 +355,18 @@ describe('DPD Germany app projection', () => {
     expect(result.events?.every(event => event.stage_source === 'carrier_map')).toBe(true);
   });
 
+  it('reads the sender booking the parcel out as before DPD has it', async () => {
+    const result = await track('ACCEPTED', [
+      ['01.11.2026', '22:46', 'Order information has been transmitted to DPD.', ''],
+      ['02.11.2026', '04:00', 'Goods issue at sender.', ''],
+    ]);
+    expect(result).toMatchObject({ status: 'pending', current_stage: 'registered', last_status_text: 'Goods issue at sender.' });
+    expect(stages(result)).toEqual([
+      ['Goods issue at sender.', 'registered'],
+      ['Order information has been transmitted to DPD.', 'registered'],
+    ]);
+  });
+
   it('skips a size with an unmeasured side', async () => {
     const result = await track('AT_DELIVERY_DEPOT', [['05.01.2026', '10:00', 'At parcel delivery centre.', 'Musterstadt (DE)']],
       '<Length>0</Length><Width>0</Width><Height>0</Height><LengthByCustomer>350</LengthByCustomer><WidthByCustomer>250</WidthByCustomer><HeightByCustomer>100</HeightByCustomer>');

@@ -1,0 +1,43 @@
+{
+  "id": "logistics-solution",
+  "displayName": "Logistics Solution",
+  "aliases": [
+    "LOGISTICS Solution",
+    "Logistics-Solution",
+    "LS Logistics-Solution GmbH"
+  ],
+  "region": {
+    "countries": [
+      "DE",
+      "AM",
+      "BY",
+      "KZ",
+      "GE",
+      "TM",
+      "UZ",
+      "KG",
+      "RU"
+    ]
+  },
+  "brand": {
+    "color": "#6366f1"
+  },
+  "selectable": true,
+  "timezone": "Europe/Berlin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://logistics-solution.eu/de/",
+    "canaryUrl": "https://logistics-solution.eu/de/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

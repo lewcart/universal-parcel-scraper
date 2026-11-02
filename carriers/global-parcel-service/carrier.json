@@ -1,0 +1,46 @@
+{
+  "id": "global-parcel-service",
+  "displayName": "Global Parcel Service",
+  "aliases": [
+    "GPS",
+    "Global Parcel Service Inc."
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#556aa1"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.goforgps.com/tracking?search={trackingNumber}",
+    "searchUrl": "https://www.goforgps.com/tracking",
+    "canaryUrl": "https://www.goforgps.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "goforgps.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "search"
+      ]
+    }
+  ],
+  "detection": []
+}

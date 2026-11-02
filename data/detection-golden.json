@@ -41074,6 +41074,14 @@
     ]
   },
   {
+    "input": "420331419200190300900200035641",
+    "carrier": "usps",
+    "confidence": "high",
+    "candidates": [
+      "usps"
+    ]
+  },
+  {
     "input": "4203717220229214490374015200485460",
     "carrier": "usps",
     "confidence": "high",

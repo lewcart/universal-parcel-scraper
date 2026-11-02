@@ -16270,6 +16270,48 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "dpd-gr": {
+    "displayName": "DPD Greece",
+    "color": "#dc0032",
+    "aliases": [
+      "DPD Greece",
+      "DPD (GR)",
+      "DPD GR"
+    ],
+    "countries": [
+      "GR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Athens",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dpd.gr/en/",
+    "trackingUrlTemplate": "https://services.dpd.gr/tracking/?shipmentNumber={trackingNumber}&language=en",
+    "trackingSearchUrl": "https://www.dpd.gr/en/",
+    "linkRules": [
+      {
+        "domains": [
+          "services.dpd.gr"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      },
+      {
+        "domains": [
+          "dpd.gr"
+        ],
+        "pathPattern": "^/(?:en/)?track-shipment/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dpd-hu": {
     "displayName": "DPD Hungary",
     "color": "#dc0032",
@@ -22022,6 +22064,39 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/pds_tracking\\.asp$",
         "params": [
           "track"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "global-parcel-service": {
+    "displayName": "Global Parcel Service",
+    "color": "#556aa1",
+    "aliases": [
+      "GPS",
+      "Global Parcel Service Inc."
+    ],
+    "countries": [
+      "US",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.goforgps.com/tracking",
+    "trackingUrlTemplate": "https://www.goforgps.com/tracking?search={trackingNumber}",
+    "trackingSearchUrl": "https://www.goforgps.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "goforgps.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "search"
         ]
       }
     ],
@@ -29329,6 +29404,36 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://www.logistaparcel.com/en/home/seguimiento-envios.html",
     "trackingSearchUrl": "https://www.logistaparcel.com/en/home/seguimiento-envios.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "logistics-solution": {
+    "displayName": "Logistics Solution",
+    "color": "#6366f1",
+    "aliases": [
+      "LOGISTICS Solution",
+      "Logistics-Solution",
+      "LS Logistics-Solution GmbH"
+    ],
+    "countries": [
+      "DE",
+      "AM",
+      "BY",
+      "KZ",
+      "GE",
+      "TM",
+      "UZ",
+      "KG",
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://logistics-solution.eu/de/",
+    "trackingSearchUrl": "https://logistics-solution.eu/de/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -48184,6 +48289,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "wp-ground": {
+    "displayName": "WP Ground",
+    "color": "#f7c24e",
+    "aliases": [
+      "WPG",
+      "WP Ground"
+    ],
+    "countries": [
+      "US",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.wpglogis.com/tracking/",
+    "trackingUrlTemplate": "https://www.wpglogis.com/tracking/?ext_trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.wpglogis.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "wpglogis.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "ext_trackingNumber",
+          "trackingId"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "x-express-ba": {
     "displayName": "X Express",
     "color": "#f15921",
@@ -50129,6 +50268,7 @@ export const CARRIER_IDS = [
   "dpd-at",
   "dpd-be",
   "dpd-de",
+  "dpd-gr",
   "dpd-hu",
   "dpd-ie",
   "dpd-nl",
@@ -50283,6 +50423,7 @@ export const CARRIER_IDS = [
   "gle-colombia",
   "global-business-tw",
   "global-delivery-network",
+  "global-parcel-service",
   "globalpost",
   "gls-at",
   "gls-es",
@@ -50488,6 +50629,7 @@ export const CARRIER_IDS = [
   "loggi",
   "logisimple",
   "logista-parcel",
+  "logistics-solution",
   "logistiq",
   "logoix",
   "longcps",
@@ -51002,6 +51144,7 @@ export const CARRIER_IDS = [
   "wizmo",
   "wld-express",
   "world-package",
+  "wp-ground",
   "x-express-ba",
   "x-trac",
   "xcargo",
@@ -51448,6 +51591,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-at": ["dpd-at-1"],
   "dpd-be": ["dpd-be-1"],
   "dpd-de": ["dpd-de-3","dpd-de-4","dpd-de-1","dpd-de-2"],
+  "dpd-gr": [],
   "dpd-hu": ["dpd-hu-1"],
   "dpd-ie": [],
   "dpd-nl": ["dpd-nl-1"],
@@ -51602,6 +51746,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gle-colombia": [],
   "global-business-tw": [],
   "global-delivery-network": [],
+  "global-parcel-service": [],
   "globalpost": ["globalpost-1"],
   "gls-at": ["gls-at-1","gls-at-2"],
   "gls-es": ["gls-es-1"],
@@ -51807,6 +51952,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "loggi": ["loggi-1"],
   "logisimple": [],
   "logista-parcel": [],
+  "logistics-solution": [],
   "logistiq": [],
   "logoix": ["logoix-1"],
   "longcps": [],
@@ -52321,6 +52467,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "wizmo": ["wizmo-1"],
   "wld-express": [],
   "world-package": [],
+  "wp-ground": [],
   "x-express-ba": [],
   "x-trac": ["x-trac-1"],
   "xcargo": [],

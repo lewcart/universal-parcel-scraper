@@ -729,3 +729,21 @@ describe('Zinc, LTL KR, Jiaying Express and Okay Parcel', () => {
       .toMatchObject({ trackingNumber: 'OK1000000017', carrier: 'okay-parcel', source: 'link' });
   });
 });
+
+describe('WP Ground and Global Parcel Service', () => {
+  it('reads their names and tracking links', () => {
+    for (const [name, id] of [['WPG', 'wp-ground'], ['WP Ground', 'wp-ground'], ['GPS', 'global-parcel-service'], ['Global Parcel Service Inc.', 'global-parcel-service']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    expect(parseTrackingInput('https://www.wpglogis.com/tracking/?ext_trackingNumber=WPG0000100017'))
+      .toMatchObject({ trackingNumber: 'WPG0000100017', carrier: 'wp-ground', source: 'link' });
+    expect(parseTrackingInput('https://www.wpglogis.com/tracking/?trackingId=WPG0000100017'))
+      .toMatchObject({ trackingNumber: 'WPG0000100017', carrier: 'wp-ground', source: 'link' });
+    expect(parseTrackingInput('https://www.goforgps.com/tracking?search=GPS0000100017'))
+      .toMatchObject({ trackingNumber: 'GPS0000100017', carrier: 'global-parcel-service', source: 'link' });
+  });
+
+  it('leaves the USPS barcodes Global Parcel Service gives to USPS', () => {
+    expect(detectCarrierMatch(`42000000${PIC}`)).toMatchObject({ carrier: 'usps', confidence: 'high', candidates: ['usps'] });
+  });
+});

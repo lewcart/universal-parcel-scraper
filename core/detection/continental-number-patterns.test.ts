@@ -1180,3 +1180,19 @@ describe('Magic Trans and Red Express', () => {
     for (const number of ['000100017', 'TR000100017MT']) expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('magic-trans');
   });
 });
+
+describe('DPD Greece and Logistics Solution', () => {
+  it('reads their names and DPD Greece tracking links', () => {
+    for (const [name, id] of [['DPD Greece', 'dpd-gr'], ['DPD (GR)', 'dpd-gr'], ['LOGISTICS Solution', 'logistics-solution'], ['LS Logistics-Solution GmbH', 'logistics-solution']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+    expect(parseTrackingInput('https://services.dpd.gr/tracking/?shipmentNumber=60000100017&language=en'))
+      .toMatchObject({ trackingNumber: '60000100017', carrier: 'dpd-gr', source: 'link' });
+    expect(parseTrackingInput('https://www.dpd.gr/en/track-shipment?shipmentNumber=60000100017'))
+      .toMatchObject({ trackingNumber: '60000100017', carrier: 'dpd-gr', source: 'link' });
+  });
+
+  it('offers DPD Greece for no number shape', () => {
+    expect(detectCarrierMatch('60000100017').candidates ?? []).not.toContain('dpd-gr');
+  });
+});

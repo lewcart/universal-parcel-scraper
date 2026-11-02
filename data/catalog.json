@@ -16268,6 +16268,48 @@
       }
     ]
   },
+  "dpd-gr": {
+    "displayName": "DPD Greece",
+    "color": "#dc0032",
+    "aliases": [
+      "DPD Greece",
+      "DPD (GR)",
+      "DPD GR"
+    ],
+    "countries": [
+      "GR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Athens",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dpd.gr/en/",
+    "trackingUrlTemplate": "https://services.dpd.gr/tracking/?shipmentNumber={trackingNumber}&language=en",
+    "trackingSearchUrl": "https://www.dpd.gr/en/",
+    "linkRules": [
+      {
+        "domains": [
+          "services.dpd.gr"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      },
+      {
+        "domains": [
+          "dpd.gr"
+        ],
+        "pathPattern": "^/(?:en/)?track-shipment/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dpd-hu": {
     "displayName": "DPD Hungary",
     "color": "#dc0032",
@@ -22020,6 +22062,39 @@
         "pathPattern": "^/pds_tracking\\.asp$",
         "params": [
           "track"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "global-parcel-service": {
+    "displayName": "Global Parcel Service",
+    "color": "#556aa1",
+    "aliases": [
+      "GPS",
+      "Global Parcel Service Inc."
+    ],
+    "countries": [
+      "US",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.goforgps.com/tracking",
+    "trackingUrlTemplate": "https://www.goforgps.com/tracking?search={trackingNumber}",
+    "trackingSearchUrl": "https://www.goforgps.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "goforgps.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "search"
         ]
       }
     ],
@@ -29327,6 +29402,36 @@
     },
     "canaryUrl": "https://www.logistaparcel.com/en/home/seguimiento-envios.html",
     "trackingSearchUrl": "https://www.logistaparcel.com/en/home/seguimiento-envios.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "logistics-solution": {
+    "displayName": "Logistics Solution",
+    "color": "#6366f1",
+    "aliases": [
+      "LOGISTICS Solution",
+      "Logistics-Solution",
+      "LS Logistics-Solution GmbH"
+    ],
+    "countries": [
+      "DE",
+      "AM",
+      "BY",
+      "KZ",
+      "GE",
+      "TM",
+      "UZ",
+      "KG",
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://logistics-solution.eu/de/",
+    "trackingSearchUrl": "https://logistics-solution.eu/de/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -48177,6 +48282,40 @@
         "pathPattern": "^/tracking/?$",
         "params": [
           "consign_note"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "wp-ground": {
+    "displayName": "WP Ground",
+    "color": "#f7c24e",
+    "aliases": [
+      "WPG",
+      "WP Ground"
+    ],
+    "countries": [
+      "US",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.wpglogis.com/tracking/",
+    "trackingUrlTemplate": "https://www.wpglogis.com/tracking/?ext_trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.wpglogis.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "wpglogis.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "ext_trackingNumber",
+          "trackingId"
         ]
       }
     ],

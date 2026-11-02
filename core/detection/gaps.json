@@ -4487,5 +4487,11 @@
     "pattern": "^(?:\\d{9}|TR\\d{9}MT)$",
     "kind": "by_design",
     "reason": "Magic Trans' tracker gives a nine-digit act number as its example, a shape other carriers' rules take, and leaves TR…MT cargo codes only in its HTML comments, with no shipment known behind them, so detection does not offer Magic Trans."
+  },
+  {
+    "carrier": "global-parcel-service",
+    "pattern": "^420\\d{5}(?:\\d{4})?\\d{22}$",
+    "kind": "by_design",
+    "reason": "Global Parcel Service hands its parcels to USPS, and its tracker's example is USPS's 420 routing barcode, so detection names USPS."
   }
 ]

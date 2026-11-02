@@ -1,0 +1,55 @@
+{
+  "id": "dpd-gr",
+  "displayName": "DPD Greece",
+  "aliases": [
+    "DPD Greece",
+    "DPD (GR)",
+    "DPD GR"
+  ],
+  "region": {
+    "countries": [
+      "GR"
+    ]
+  },
+  "brand": {
+    "color": "#dc0032"
+  },
+  "selectable": true,
+  "timezone": "Europe/Athens",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://services.dpd.gr/tracking/?shipmentNumber={trackingNumber}&language=en",
+    "searchUrl": "https://www.dpd.gr/en/",
+    "canaryUrl": "https://www.dpd.gr/en/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "services.dpd.gr"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "shipmentNumber"
+      ]
+    },
+    {
+      "domains": [
+        "dpd.gr"
+      ],
+      "pathPattern": "^/(?:en/)?track-shipment/?$",
+      "params": [
+        "shipmentNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

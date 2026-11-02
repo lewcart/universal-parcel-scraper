@@ -1,0 +1,22 @@
+{
+  "carrier": "global-parcel-service",
+  "records": [
+    {
+      "number": "420331419200190300900200035641",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.goforgps.com/tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "usps",
+        "confidence": "high"
+      },
+      "note": "Global Parcel Service's tracker prints it as its example: a USPS barcode, the 420 routing code and a ZIP code before the USPS number; not a known shipment."
+    }
+  ]
+}

@@ -14504,6 +14504,23 @@
     ]
   },
   {
+    "input": "1130000048942",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda",
+      "korea-post"
+    ],
+    "asked": [
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
     "input": "11300275491",
     "carrier": "unknown",
     "confidence": "low",
@@ -31198,6 +31215,30 @@
     ],
     "asked": [
       "purolator",
+      "brt",
+      "colis-prive",
+      "j-and-t",
+      "metropolitan-warehouse"
+    ]
+  },
+  {
+    "input": "265000571784",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "sending"
+    ],
+    "asked": [
       "brt",
       "colis-prive",
       "j-and-t",
@@ -55274,6 +55315,30 @@
     ]
   },
   {
+    "input": "700000883570",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "sending"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "j-and-t",
+      "metropolitan-warehouse"
+    ]
+  },
+  {
     "input": "700000947978",
     "carrier": "unknown",
     "confidence": "low",
@@ -67943,6 +68008,36 @@
     ]
   },
   {
+    "input": "984931500084",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "mondial-relay",
+      "gls-fr",
+      "colis-prive",
+      "gls-de",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "gls-at",
+      "gls-pl",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "sending"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "brt",
+      "colis-prive"
+    ]
+  },
+  {
     "input": "986578788855",
     "carrier": "unknown",
     "confidence": "low",
@@ -72689,6 +72784,42 @@
     ]
   },
   {
+    "input": "C1503475",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dx",
+      "flecha-amarilla",
+      "loggi"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch"
+    ]
+  },
+  {
+    "input": "C1503571",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dx",
+      "flecha-amarilla",
+      "loggi"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch"
+    ]
+  },
+  {
     "input": "C1867094M",
     "carrier": "unknown",
     "confidence": "low",
@@ -72767,6 +72898,7 @@
       "gls-fr",
       "gls-de",
       "dx",
+      "flecha-amarilla",
       "loggi"
     ],
     "asked": [
@@ -72787,6 +72919,14 @@
     "confidence": "low",
     "candidates": [
       "dtdc"
+    ]
+  },
+  {
+    "input": "C619269",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "flecha-amarilla"
     ]
   },
   {
@@ -73014,6 +73154,23 @@
     "confidence": "high",
     "candidates": [
       "la-poste"
+    ]
+  },
+  {
+    "input": "CB699509",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "flecha-amarilla",
+      "loggi"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch"
     ]
   },
   {
@@ -90259,6 +90416,25 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
+      "flecha-amarilla",
+      "loggi",
+      "polaris-transport"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch"
+    ]
+  },
+  {
+    "input": "P1001545",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "flecha-amarilla",
       "loggi",
       "polaris-transport"
     ],
@@ -90327,6 +90503,7 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
+      "flecha-amarilla",
       "loggi",
       "polaris-transport"
     ],
@@ -90367,6 +90544,22 @@
     ],
     "asked": [
       "pos-indonesia"
+    ]
+  },
+  {
+    "input": "P286153",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "flecha-amarilla"
+    ]
+  },
+  {
+    "input": "P286186",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "flecha-amarilla"
     ]
   },
   {

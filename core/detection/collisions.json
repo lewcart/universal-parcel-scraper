@@ -1409,6 +1409,17 @@
     "reason": "The three GLS countries share one 8-character format; the number stays a low-confidence suggestion. Loggi also suggests this shape at low confidence."
   },
   {
+    "shape": "eight characters mixing letters and digits",
+    "carriers": [
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "loggi",
+      "flecha-amarilla"
+    ],
+    "reason": "The three GLS countries share one 8-character format; the number stays a low-confidence suggestion. Loggi also suggests this shape at low confidence. Paquetería Flecha Amarilla's lettered guías share the shape and are suggested at low confidence too."
+  },
+  {
     "shape": "Eleven digits starting 2 to 9 that pass the mod 7 check, passing DHL eCommerce Poland's check",
     "carriers": [
       "aramex",
@@ -4253,6 +4264,18 @@
     "reason": "DX's letter and seven digits share the eight-character format of the three GLS networks; the number stays a low-confidence suggestion. Loggi also suggests this shape at low confidence."
   },
   {
+    "shape": "C, L or W followed by seven digits",
+    "carriers": [
+      "dx",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "loggi",
+      "flecha-amarilla"
+    ],
+    "reason": "DX's letter and seven digits share the eight-character format of the three GLS networks; the number stays a low-confidence suggestion. Loggi also suggests this shape at low confidence. Paquetería Flecha Amarilla's lettered guías share the shape and are suggested at low confidence too."
+  },
+  {
     "shape": "Two digits, A and nine digits",
     "carriers": [
       "australia-post",
@@ -5548,9 +5571,10 @@
       "gls-de",
       "gls-fr",
       "loggi",
-      "polaris-transport"
+      "polaris-transport",
+      "flecha-amarilla"
     ],
-    "reason": "Polaris PRO numbers are P and seven digits, which GLS's and Loggi's low-confidence rules for eight letters and digits also take; no rule decides, so recognition asks each carrier."
+    "reason": "Polaris PRO numbers are P and seven digits, which GLS's and Loggi's low-confidence rules for eight letters and digits also take; no rule decides, so recognition asks each carrier. Paquetería Flecha Amarilla's lettered guías share the shape and are suggested at low confidence too."
   },
   {
     "shape": "Twelve digits starting 1100",

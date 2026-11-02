@@ -7277,6 +7277,26 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "alil-post": {
+    "displayName": "Alil Post",
+    "color": "#f68c1e",
+    "aliases": [
+      "AlilPost"
+    ],
+    "countries": [
+      "IL"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://alilpost.com/en/tracking/",
+    "trackingSearchUrl": "https://alilpost.com/en/tracking/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "allegro-one": {
     "displayName": "Allegro One",
     "color": "#006d57",
@@ -18018,6 +18038,41 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "emu-express": {
+    "displayName": "EMU Express",
+    "color": "#8e2b84",
+    "aliases": [
+      "Express Mail Universal",
+      "Express Mail Universal LLC",
+      "EMU Post"
+    ],
+    "countries": [
+      "UZ",
+      "KZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tashkent",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://emu.uz/en/tracking",
+    "trackingUrlTemplate": "https://emu.uz/en/tracking?id={trackingNumber}",
+    "trackingSearchUrl": "https://emu.uz/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "emu.uz",
+          "www.emu.uz"
+        ],
+        "pathPattern": "^/(?:uz|ru|en)/tracking$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "endeavour-delivery": {
     "displayName": "Endeavour Delivery",
     "color": "#410156",
@@ -20235,6 +20290,34 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "flecha-amarilla": {
+    "displayName": "Paquetería Flecha Amarilla",
+    "color": "#fcca30",
+    "aliases": [
+      "Flecha Amarilla",
+      "Paquetería GFA",
+      "Paquetería y Mensajería Flecha Amarilla",
+      "Servicios de Paquetería y Envíos Flecha Amarilla"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.paqueteria-flechaamarilla.com.mx/",
+    "trackingSearchUrl": "https://www.paqueteria-flechaamarilla.com.mx/inicio",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^(?:CB|[CP])\\d{6,7}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "fleetex": {
     "displayName": "FleetExpress",
     "color": "#572aee",
@@ -21075,6 +21158,30 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "garantpost": {
+    "displayName": "Garantpost",
+    "color": "#094fa3",
+    "aliases": [
+      "Гарантпост",
+      "EMS Garantpost",
+      "ЕМС Гарантпост",
+      "ООО «ЕМС Гарантпост»",
+      "Garant Post"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://garantpost.ru/",
+    "trackingSearchUrl": "https://garantpost.ru/tracking/",
+    "linkRules": [],
     "detectionRules": []
   },
   "gati": {
@@ -26758,6 +26865,40 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "kargoturk": {
+    "displayName": "KargoTurk",
+    "color": "#4d148c",
+    "aliases": [
+      "Kargo Türk",
+      "Kargo Turk",
+      "KargoTürk",
+      "KargoTurk Teslimat Hizmetleri Limited Şirketi"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.kargoturk.com.tr/kargo-takip",
+    "trackingUrlTemplate": "https://online.kargoturk.com.tr/tracking?har_kod={trackingNumber}",
+    "trackingSearchUrl": "https://www.kargoturk.com.tr/kargo-takip",
+    "linkRules": [
+      {
+        "domains": [
+          "online.kargoturk.com.tr"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "har_kod"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "kart2door": {
     "displayName": "Kart2Door",
     "color": "#f36c09",
@@ -27175,6 +27316,29 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "korexgarant": {
+    "displayName": "Korexgarant",
+    "color": "#013550",
+    "aliases": [
+      "Корэксгарант",
+      "КОРЭКСГАРАНТ",
+      "ООО «КОРЭКСГАРАНТ»",
+      "Корэкс"
+    ],
+    "countries": [
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Minsk",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://korex.by/",
+    "trackingSearchUrl": "https://korex.by/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "kronos-express": {
     "displayName": "Kronos Express",
@@ -30748,6 +30912,37 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "motorex": {
+    "displayName": "Motorex",
+    "color": "#fc0203",
+    "aliases": [
+      "MOTOREX",
+      "Motor Express Delivery Sdn Bhd",
+      "Motorex Same Day Delivery"
+    ],
+    "countries": [
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kuala_Lumpur",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.motorex.com.my/en/tracking-motorex",
+    "trackingUrlTemplate": "https://www.motorex.com.my/en/getTrackingList/{trackingNumber}",
+    "trackingSearchUrl": "https://www.motorex.com.my/en/tracking-motorex",
+    "linkRules": [
+      {
+        "domains": [
+          "www.motorex.com.my",
+          "motorex.com.my"
+        ],
+        "path": "^/en/getTrackingList/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "movin": {
     "displayName": "MOVIN",
@@ -35166,6 +35361,42 @@ export const CARRIER_CATALOG = {
           "ponyexpress.ru"
         ],
         "path": "^/support/servisy-samoobsluzhivaniya/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "porlor": {
+    "displayName": "PorLor Express",
+    "color": "#e09920",
+    "aliases": [
+      "Por Lor Express",
+      "PORLOR",
+      "PORLOR EXPRESS COMPANY LIMITED",
+      "บริษัท ปอลอ เอ็กซ์เพรส จำกัด",
+      "ปอลอ เอ็กซ์เพรส"
+    ],
+    "countries": [
+      "TH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Bangkok",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.porlor.co.th/",
+    "trackingUrlTemplate": "https://www.porlor.co.th/Tracking?search={trackingNumber}",
+    "trackingSearchUrl": "https://www.porlor.co.th/Tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "porlor.co.th",
+          "www.porlor.co.th"
+        ],
+        "pathPattern": "^/Tracking$",
+        "params": [
+          "search"
+        ]
       }
     ],
     "detectionRules": []
@@ -40605,6 +40836,28 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "spark-kz": {
+    "displayName": "Spark",
+    "color": "#a3dd2c",
+    "aliases": [
+      "Spark Logistics",
+      "Spark Логистика",
+      "ТОО Spark Логистика"
+    ],
+    "countries": [
+      "KZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Almaty",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://spark.kz/",
+    "trackingSearchUrl": "https://spark.kz/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "speed-and-safe": {
     "displayName": "Gokulam Speed & Safe",
     "color": "#2e3192",
@@ -43460,6 +43713,38 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "tinypack": {
+    "displayName": "TinyPack",
+    "color": "#3dae2b",
+    "aliases": [
+      "Tiny Pack",
+      "Distribuidora y Transportadora del Pacífico"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tinypack.mx/rastreo/",
+    "trackingUrlTemplate": "https://tinypack.mx/rastreo?codigo={trackingNumber}",
+    "trackingSearchUrl": "https://tinypack.mx/rastreo/",
+    "linkRules": [
+      {
+        "domains": [
+          "tinypack.mx"
+        ],
+        "pathPattern": "^/rastreo/?$",
+        "params": [
+          "codigo"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "tirupati-courier": {
     "displayName": "Shree Tirupati Courier",
@@ -49003,6 +49288,7 @@ export const CARRIER_IDS = [
   "aland-post",
   "alem-tat",
   "algerie-poste",
+  "alil-post",
   "allegro-one",
   "alljoy",
   "am-home-delivery",
@@ -49288,6 +49574,7 @@ export const CARRIER_IDS = [
   "emiro",
   "emons",
   "ems-vietnam",
+  "emu-express",
   "endeavour-delivery",
   "energia-tk",
   "energo",
@@ -49348,6 +49635,7 @@ export const CARRIER_IDS = [
   "flash-express",
   "flash-express-ph",
   "flashbird-ca",
+  "flecha-amarilla",
   "fleetex",
   "fleetoptics",
   "flickpost",
@@ -49372,6 +49660,7 @@ export const CARRIER_IDS = [
   "furniture-logis",
   "fxdc-post",
   "gaash",
+  "garantpost",
   "gati",
   "gcx",
   "gdex",
@@ -49530,6 +49819,7 @@ export const CARRIER_IDS = [
   "juxi-express",
   "jy-express",
   "kargoist",
+  "kargoturk",
   "kart2door",
   "kazpost",
   "kec-ecommerce",
@@ -49542,6 +49832,7 @@ export const CARRIER_IDS = [
   "kiwi-express",
   "kolay-gelsin",
   "komon-express",
+  "korexgarant",
   "kronos-express",
   "ktd",
   "kuayuan-express",
@@ -49643,6 +49934,7 @@ export const CARRIER_IDS = [
   "moova",
   "moovin",
   "morning-global",
+  "motorex",
   "movin",
   "mrl-global",
   "mtscn",
@@ -49759,6 +50051,7 @@ export const CARRIER_IDS = [
   "polaris-transport",
   "polonez",
   "pony-express",
+  "porlor",
   "pos-indonesia",
   "post-haste",
   "post-luxembourg",
@@ -49906,6 +50199,7 @@ export const CARRIER_IDS = [
   "south-african-post-office",
   "southeastern-freight-lines",
   "sp-express",
+  "spark-kz",
   "speed-and-safe",
   "speedaf",
   "speedex",
@@ -49982,6 +50276,7 @@ export const CARRIER_IDS = [
   "tig-freight",
   "tiki",
   "timely-titan",
+  "tinypack",
   "tirupati-courier",
   "tiui",
   "tmm-express",
@@ -50293,6 +50588,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aland-post": [],
   "alem-tat": [],
   "algerie-poste": ["algerie-poste-1","algerie-poste-s10","algerie-poste-ey"],
+  "alil-post": [],
   "allegro-one": ["allegro-one-1","allegro-one-2"],
   "alljoy": ["alljoy-1","alljoy-2"],
   "am-home-delivery": [],
@@ -50578,6 +50874,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "emiro": [],
   "emons": [],
   "ems-vietnam": ["ems-vietnam-s10"],
+  "emu-express": [],
   "endeavour-delivery": [],
   "energia-tk": [],
   "energo": ["energo-1"],
@@ -50638,6 +50935,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "flash-express": ["flash-express-1"],
   "flash-express-ph": ["flash-express-ph-1"],
   "flashbird-ca": [],
+  "flecha-amarilla": ["flecha-amarilla-1"],
   "fleetex": [],
   "fleetoptics": ["fleetoptics-1"],
   "flickpost": [],
@@ -50662,6 +50960,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "furniture-logis": [],
   "fxdc-post": [],
   "gaash": [],
+  "garantpost": [],
   "gati": [],
   "gcx": [],
   "gdex": ["gdex-1"],
@@ -50820,6 +51119,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "juxi-express": ["juxi-express-1"],
   "jy-express": [],
   "kargoist": ["kargoist-1"],
+  "kargoturk": [],
   "kart2door": [],
   "kazpost": ["kazpost-s10"],
   "kec-ecommerce": [],
@@ -50832,6 +51132,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "kiwi-express": [],
   "kolay-gelsin": [],
   "komon-express": ["komon-express-1"],
+  "korexgarant": [],
   "kronos-express": [],
   "ktd": ["ktd-1"],
   "kuayuan-express": [],
@@ -50933,6 +51234,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "moova": [],
   "moovin": [],
   "morning-global": ["morning-global-1"],
+  "motorex": [],
   "movin": [],
   "mrl-global": [],
   "mtscn": ["mtscn-1"],
@@ -51049,6 +51351,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "polaris-transport": ["polaris-transport-1"],
   "polonez": ["polonez-1"],
   "pony-express": [],
+  "porlor": [],
   "pos-indonesia": ["pos-indonesia-1","pos-indonesia-s10"],
   "post-haste": [],
   "post-luxembourg": ["post-luxembourg-s10"],
@@ -51196,6 +51499,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "south-african-post-office": ["south-african-post-office-s10"],
   "southeastern-freight-lines": [],
   "sp-express": ["sp-express-1"],
+  "spark-kz": [],
   "speed-and-safe": [],
   "speedaf": ["speedaf-12","speedaf-r"],
   "speedex": [],
@@ -51272,6 +51576,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tig-freight": [],
   "tiki": [],
   "timely-titan": ["timely-titan-1"],
+  "tinypack": [],
   "tirupati-courier": [],
   "tiui": [],
   "tmm-express": [],

@@ -4469,5 +4469,11 @@
     "pattern": "^20\\d{7}$",
     "kind": "collision",
     "reason": "Seabourne airway bills are nine digits starting with 20, a shape TNT, XPO and other networks print, so the shape cannot name Seabourne."
+  },
+  {
+    "carrier": "kargoturk",
+    "pattern": "^\\d{12,13}$",
+    "kind": "collision",
+    "reason": "KargoTurk tracks the sending shop's own barcode, twelve or thirteen digits whose leading digits differ from shop to shop, shapes many other networks print, so the shape cannot name KargoTurk."
   }
 ]

@@ -7275,6 +7275,26 @@
       }
     ]
   },
+  "alil-post": {
+    "displayName": "Alil Post",
+    "color": "#f68c1e",
+    "aliases": [
+      "AlilPost"
+    ],
+    "countries": [
+      "IL"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://alilpost.com/en/tracking/",
+    "trackingSearchUrl": "https://alilpost.com/en/tracking/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "allegro-one": {
     "displayName": "Allegro One",
     "color": "#006d57",
@@ -18016,6 +18036,41 @@
       }
     ]
   },
+  "emu-express": {
+    "displayName": "EMU Express",
+    "color": "#8e2b84",
+    "aliases": [
+      "Express Mail Universal",
+      "Express Mail Universal LLC",
+      "EMU Post"
+    ],
+    "countries": [
+      "UZ",
+      "KZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tashkent",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://emu.uz/en/tracking",
+    "trackingUrlTemplate": "https://emu.uz/en/tracking?id={trackingNumber}",
+    "trackingSearchUrl": "https://emu.uz/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "emu.uz",
+          "www.emu.uz"
+        ],
+        "pathPattern": "^/(?:uz|ru|en)/tracking$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "endeavour-delivery": {
     "displayName": "Endeavour Delivery",
     "color": "#410156",
@@ -20233,6 +20288,34 @@
     ],
     "detectionRules": []
   },
+  "flecha-amarilla": {
+    "displayName": "Paquetería Flecha Amarilla",
+    "color": "#fcca30",
+    "aliases": [
+      "Flecha Amarilla",
+      "Paquetería GFA",
+      "Paquetería y Mensajería Flecha Amarilla",
+      "Servicios de Paquetería y Envíos Flecha Amarilla"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.paqueteria-flechaamarilla.com.mx/",
+    "trackingSearchUrl": "https://www.paqueteria-flechaamarilla.com.mx/inicio",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^(?:CB|[CP])\\d{6,7}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "fleetex": {
     "displayName": "FleetExpress",
     "color": "#572aee",
@@ -21073,6 +21156,30 @@
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "garantpost": {
+    "displayName": "Garantpost",
+    "color": "#094fa3",
+    "aliases": [
+      "Гарантпост",
+      "EMS Garantpost",
+      "ЕМС Гарантпост",
+      "ООО «ЕМС Гарантпост»",
+      "Garant Post"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://garantpost.ru/",
+    "trackingSearchUrl": "https://garantpost.ru/tracking/",
+    "linkRules": [],
     "detectionRules": []
   },
   "gati": {
@@ -26756,6 +26863,40 @@
       }
     ]
   },
+  "kargoturk": {
+    "displayName": "KargoTurk",
+    "color": "#4d148c",
+    "aliases": [
+      "Kargo Türk",
+      "Kargo Turk",
+      "KargoTürk",
+      "KargoTurk Teslimat Hizmetleri Limited Şirketi"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.kargoturk.com.tr/kargo-takip",
+    "trackingUrlTemplate": "https://online.kargoturk.com.tr/tracking?har_kod={trackingNumber}",
+    "trackingSearchUrl": "https://www.kargoturk.com.tr/kargo-takip",
+    "linkRules": [
+      {
+        "domains": [
+          "online.kargoturk.com.tr"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "har_kod"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "kart2door": {
     "displayName": "Kart2Door",
     "color": "#f36c09",
@@ -27173,6 +27314,29 @@
         "confidence": "low"
       }
     ]
+  },
+  "korexgarant": {
+    "displayName": "Korexgarant",
+    "color": "#013550",
+    "aliases": [
+      "Корэксгарант",
+      "КОРЭКСГАРАНТ",
+      "ООО «КОРЭКСГАРАНТ»",
+      "Корэкс"
+    ],
+    "countries": [
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Minsk",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://korex.by/",
+    "trackingSearchUrl": "https://korex.by/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "kronos-express": {
     "displayName": "Kronos Express",
@@ -30746,6 +30910,37 @@
         "confidence": "low"
       }
     ]
+  },
+  "motorex": {
+    "displayName": "Motorex",
+    "color": "#fc0203",
+    "aliases": [
+      "MOTOREX",
+      "Motor Express Delivery Sdn Bhd",
+      "Motorex Same Day Delivery"
+    ],
+    "countries": [
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kuala_Lumpur",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.motorex.com.my/en/tracking-motorex",
+    "trackingUrlTemplate": "https://www.motorex.com.my/en/getTrackingList/{trackingNumber}",
+    "trackingSearchUrl": "https://www.motorex.com.my/en/tracking-motorex",
+    "linkRules": [
+      {
+        "domains": [
+          "www.motorex.com.my",
+          "motorex.com.my"
+        ],
+        "path": "^/en/getTrackingList/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "movin": {
     "displayName": "MOVIN",
@@ -35164,6 +35359,42 @@
           "ponyexpress.ru"
         ],
         "path": "^/support/servisy-samoobsluzhivaniya/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "porlor": {
+    "displayName": "PorLor Express",
+    "color": "#e09920",
+    "aliases": [
+      "Por Lor Express",
+      "PORLOR",
+      "PORLOR EXPRESS COMPANY LIMITED",
+      "บริษัท ปอลอ เอ็กซ์เพรส จำกัด",
+      "ปอลอ เอ็กซ์เพรส"
+    ],
+    "countries": [
+      "TH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Bangkok",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.porlor.co.th/",
+    "trackingUrlTemplate": "https://www.porlor.co.th/Tracking?search={trackingNumber}",
+    "trackingSearchUrl": "https://www.porlor.co.th/Tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "porlor.co.th",
+          "www.porlor.co.th"
+        ],
+        "pathPattern": "^/Tracking$",
+        "params": [
+          "search"
+        ]
       }
     ],
     "detectionRules": []
@@ -40603,6 +40834,28 @@
       }
     ]
   },
+  "spark-kz": {
+    "displayName": "Spark",
+    "color": "#a3dd2c",
+    "aliases": [
+      "Spark Logistics",
+      "Spark Логистика",
+      "ТОО Spark Логистика"
+    ],
+    "countries": [
+      "KZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Almaty",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://spark.kz/",
+    "trackingSearchUrl": "https://spark.kz/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "speed-and-safe": {
     "displayName": "Gokulam Speed & Safe",
     "color": "#2e3192",
@@ -43458,6 +43711,38 @@
         "confidence": "high"
       }
     ]
+  },
+  "tinypack": {
+    "displayName": "TinyPack",
+    "color": "#3dae2b",
+    "aliases": [
+      "Tiny Pack",
+      "Distribuidora y Transportadora del Pacífico"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tinypack.mx/rastreo/",
+    "trackingUrlTemplate": "https://tinypack.mx/rastreo?codigo={trackingNumber}",
+    "trackingSearchUrl": "https://tinypack.mx/rastreo/",
+    "linkRules": [
+      {
+        "domains": [
+          "tinypack.mx"
+        ],
+        "pathPattern": "^/rastreo/?$",
+        "params": [
+          "codigo"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "tirupati-courier": {
     "displayName": "Shree Tirupati Courier",

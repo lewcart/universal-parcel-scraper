@@ -2,7 +2,7 @@
   "carrier": "jrt",
   "records": [
     {
-      "number": "JRT9900000001MM",
+      "number": "JRT9999999980MM",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -11,10 +11,10 @@
         "carrier": "jrt",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of the number JRT's tracker gives as the order's own."
+      "note": "Made-up number in the shape of the number JRT's tracker gives as the order's own. Its serial sits far beyond the range in use."
     },
     {
-      "number": "UP9900000000000001",
+      "number": "UP9999999999999980",
       "role": "order_reference",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -26,7 +26,7 @@
           "jrt"
         ]
       },
-      "note": "Made-up number in the shape of a shipper's reference that JRT's tracker finds an order by, UP and sixteen digits."
+      "note": "Made-up number in the shape of a shipper's reference that JRT's tracker finds an order by, UP and sixteen digits. Its serial sits far beyond the range in use."
     }
   ]
 }

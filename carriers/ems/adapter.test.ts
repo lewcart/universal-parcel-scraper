@@ -33,7 +33,7 @@ describe('EMS result projection', () => {
   });
 
   it('also handles EMS history from another postal operator', () => {
-    const result = parse(fixture('international'), 'EW000000005FR');
+    const result = parse(fixture('international'), 'EW999999987FR');
     expect(result.events).toHaveLength(9);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit',
       last_status_text: 'Arrived at post office', last_update: null, last_update_local: '2026-08-06T07:51:00' });
@@ -205,7 +205,7 @@ describe('EMS retrieval and registration', () => {
     const url = CARRIERS.ems.trackingUrl!(NUMBER);
     expect(parseTrackingInput(url)).toMatchObject({ carrier: 'ems', trackingNumber: NUMBER, source: 'link', confidence: 'high' });
     expect(detectCarrier(NUMBER)).toBe('china-post');
-    expect(detectCarrier('EW000000005FR')).toBe('la-poste');
+    expect(detectCarrier('EW999999987FR')).toBe('la-poste');
     expect(detectCarrier('LZ000000005CN')).toBe('china-post');
   });
 });

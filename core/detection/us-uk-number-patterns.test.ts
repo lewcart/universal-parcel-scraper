@@ -29,12 +29,12 @@ describe('USPS whole package barcodes', () => {
 
   it('selects USPS for a routing barcode when the bare PIC rule would select it', () => {
     for (const zip of ['00000', '000000000']) {
-      for (const pic of [PIC, '9300100000012345678902', '9400100000000123456780', '9505500000000123456782', '9101900000000123456788']) {
+      for (const pic of [PIC, '9300109999999999999981', '9400100000000123456780', '9505500000000123456782', '9101999999999999999989']) {
         expect(detectCarrierMatch(`420${zip}${pic}`)).toMatchObject({ carrier: 'usps', confidence: 'high', candidates: ['usps'] });
         expect(recognitionCandidates(`420${zip}${pic}`, { phase: 'browser' })).toEqual([]);
       }
       // A Mailer ID that does not fit its channel, or a family DHL eCommerce also tracks.
-      for (const pic of ['9205510000000012345670', '9300190000012345678903', '9100000000000000000002', '9261290000000012345677', '9361200000012345678900']) {
+      for (const pic of ['9205519999999999999984', '9300190000012345678903', '9100000000000000000002', '9261290000000012345677', '9361200000012345678900']) {
         const raw = `420${zip}${pic}`;
         expect(detectCarrierMatch(raw)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
         expect(detectCarrierMatch(raw).preferred).toContain('usps');
@@ -89,12 +89,12 @@ describe('USPS whole package barcodes', () => {
 
   it('selects USPS for a 22-digit PIC with a channel, a conforming Mailer ID and a passing check digit', () => {
     // Made-up PICs for channels 92 (nine-digit MID), 93 (six-digit MID), 94 (online), 95 (retail) and legacy 91.
-    for (const pic of [PIC, '9300100000012345678902', '9400100000000123456780', '9505500000000123456782', '9101900000000123456788']) {
+    for (const pic of [PIC, '9300109999999999999981', '9400100000000123456780', '9505500000000123456782', '9101999999999999999989']) {
       expect(detectCarrierMatch(pic)).toMatchObject({ carrier: 'usps', confidence: 'high', candidates: ['usps'] });
       expect(recognitionCandidates(pic)).toEqual([]);
     }
     // A nine-digit MID starts with 9 and a six-digit one never does.
-    for (const pic of ['9205510000000012345670', '9300190000012345678903', '9100000000000000000002']) {
+    for (const pic of ['9205519999999999999984', '9300190000012345678903', '9100000000000000000002']) {
       expect(isValidUspsPackageBarcode(pic)).toBe(true);
       expect(detectCarrierMatch(pic)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['usps'] });
     }
@@ -173,7 +173,7 @@ describe('JJD licence plates', () => {
   });
 
   it('keeps every other JJD plate with DHL', () => {
-    for (const plate of ['JJD0099999999', 'JJD000200000000000', 'JJD00020000000000000', 'JJD000200000000000A', 'JJD000000000000000000000000']) {
+    for (const plate of ['JJD9999999980', 'JJD000200000000000', 'JJD00020000000000000', 'JJD000200000000000A', 'JJD000000000000000000000000']) {
       expect(detectCarrierMatch(plate)).toMatchObject({ carrier: 'dhl', confidence: 'high' });
     }
   });
@@ -200,7 +200,7 @@ describe('Royal Mail and Parcelforce links', () => {
 
 describe('UK fourteen-digit parcel numbers', () => {
   // Synthetic numbers in the ranges the carriers' own tracking pages show.
-  it.each([['15500000000001', 'dpd-uk'], ['15500000000001M', 'dpd-uk'], ['15970000000000', 'dpd-uk'], ['15970000000000E', 'dpd-uk'],
+  it.each([['15500000000001', 'dpd-uk'], ['15500000000001M', 'dpd-uk'], ['15979999999981', 'dpd-uk'], ['15970000000000E', 'dpd-uk'],
     ['60120000000000', 'dhl-ecommerce-uk']])(
     'suggests the carrier of its range first: %s', (number, carrier) => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
@@ -216,10 +216,10 @@ describe('UK fourteen-digit parcel numbers', () => {
   });
 
   it('asks DPD UK first about its ranges and a British number, and files the parcel under it when other DPD networks know it too', () => {
-    expect(recognitionCandidates('15970000000000')[0]).toMatchObject({ carrier: 'dpd-uk', preferred: true });
+    expect(recognitionCandidates('15979999999981')[0]).toMatchObject({ carrier: 'dpd-uk', preferred: true });
     expect(recognitionCandidates('15500000000001')[0]).toMatchObject({ carrier: 'dpd-uk', preferred: true });
     expect(recognitionCandidates('09440000000000', { countryHint: 'GB' })[0]).toMatchObject({ carrier: 'dpd-uk', countryMatch: 'home' });
-    for (const [number, countryHint] of [['15970000000000', undefined], ['09440000000000', 'GB']] as const) {
+    for (const [number, countryHint] of [['15979999999981', undefined], ['09440000000000', 'GB']] as const) {
       const known: RecognitionOutcome[] = recognitionCandidates(number, { countryHint })
         .filter(({ carrier }) => ['dpd-uk', 'dpd', 'dpd-be'].includes(carrier))
         .map((candidate) => ({ ...candidate, status: 'known', lastActivityAt: '2026-09-09T10:00:00Z' }));
@@ -268,7 +268,7 @@ it('names UniUni for Canadian cross-border shipper references marked U and only 
   for (const number of ['GV00CAA0U000000001', 'JY00CAA0U000000001']) {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'uniuni', confidence: 'high' });
   }
-  for (const number of ['JY00CAA0D000000001', 'JY00CAA0T000000001', 'GV00USA0U000000001', 'JY00CA00A000000001']) {
+  for (const number of ['JY00CAA0D000000001', 'JY00CAA0T000000001', 'GV00USA0U999999980', 'JY00CA00A999999980']) {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['uniuni'] });
   }
   for (const number of ['GV00CAA1U000000001', 'GV00CAA0U00000001', 'G100CAA0U000000001', 'GV00CAA0U0000000001', 'GV00UKA0U000000001',
@@ -319,7 +319,7 @@ describe('Saia twelve-digit PRO numbers', () => {
 
 describe('Metropolitan Warehouse twelve-digit numbers', () => {
   // Made-up numbers across leading digits and check-digit outcomes; the tracker takes any twelve digits.
-  const TWELVE = ['000000000000', '100000000009', '123456789012', '200000000000', '500000000013', '5000 0000 0013', '700000000000',
+  const TWELVE = ['000000000000', '100000000009', '123456789012', '200000000000', '599999999980', '5000 0000 0013', '700000000000',
     '900000000005', '999999999999'];
 
   it('suggests Metropolitan for every twelve-digit number, beside the carriers that share the length', () => {
@@ -331,8 +331,8 @@ describe('Metropolitan Warehouse twelve-digit numbers', () => {
       expect(recognitionCandidates(number, { phase: 'browser' }).map(({ carrier }) => carrier), number).not.toContain('metropolitan-warehouse');
     }
     // A US caller asks Metropolitan first; without a hint the commoner twelve-digit carriers come before it.
-    expect(recognitionCandidates('500000000013', { countryHint: 'US' })[0]).toMatchObject({ carrier: 'metropolitan-warehouse', countryMatch: 'home' });
-    expect(recognitionCandidates('500000000013').map(({ carrier }) => carrier).at(-1)).toBe('metropolitan-warehouse');
+    expect(recognitionCandidates('599999999980', { countryHint: 'US' })[0]).toMatchObject({ carrier: 'metropolitan-warehouse', countryMatch: 'home' });
+    expect(recognitionCandidates('599999999980').map(({ carrier }) => carrier).at(-1)).toBe('metropolitan-warehouse');
   });
 
   it('leaves Metropolitan out for other lengths and for letters', () => {
@@ -421,7 +421,7 @@ describe('FedEx International Connect numbers', () => {
   // Made-up numbers in FIC's layout: three letters, four digits, the sending country and eleven digits.
   // Starlinks Global labels its parcels the same way, so FIC only comes first.
   it('puts FedEx International Connect first for its tracking number layout', () => {
-    for (const number of ['ZZZ0000GB00000000017', 'ZZZ0000US00000000017', 'zzz 0000 gb 0000 0000 017']) {
+    for (const number of ['ZZZ0000GB99999999980', 'ZZZ0000US00000000017', 'zzz 0000 gb 0000 0000 017']) {
       expect(detectCarrierMatch(number), number).toMatchObject({
         carrier: 'unknown', confidence: 'low', candidates: ['fedex-international-connect', 'starlinks-global'], preferred: ['fedex-international-connect'],
       });
@@ -446,7 +446,7 @@ describe('Tusk Logistics labels', () => {
 
 describe('Veho tracking ids and label barcodes', () => {
   it('suggests Veho for VH tracking ids and VEHO facility barcodes without naming it', () => {
-    for (const number of ['VH100000000017', 'VHA1B2C3D4E5F6', 'VEHOABC100000017']) {
+    for (const number of ['VH199999999980', 'VHA1B2C3D4E5F6', 'VEHOABC100000017']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['veho'] });
     }
     for (const number of ['VH10000000017', 'VH1000000000017', 'VEHOAB1100000017', 'VEHOABC10000017']) {
@@ -456,10 +456,10 @@ describe('Veho tracking ids and label barcodes', () => {
 
   it('reads Veho tracking links from the query and from the page route', () => {
     for (const link of [
-      'https://track.shipveho.com/#/trackingid/VH100000000017',
-      'https://track.shipveho.com/?trackingId=VH100000000017',
+      'https://track.shipveho.com/#/trackingid/VH199999999980',
+      'https://track.shipveho.com/?trackingId=VH199999999980',
     ]) {
-      expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: 'VH100000000017', carrier: 'veho', source: 'link' });
+      expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: 'VH199999999980', carrier: 'veho', source: 'link' });
     }
   });
 });
@@ -685,9 +685,9 @@ describe('SkyBox, Délivro, TForce Integrated Solutions, UBX UK and TTK Europe',
     for (const [url, trackingNumber, carrier] of [
       ['https://www.skybox.net/TrackingInformation/IndexPublic?tracking=005100000001', '005100000001', 'skybox'],
       ['https://delivro.dsapp.io/customer/ZZ00000001', 'ZZ00000001', 'delivro'],
-      ['https://tforce-solutions.com/quick-tracking/?tracking=100000001', '100000001', 'tforce-integrated-solutions'],
-      ['https://www.ubx.uk.net/tracking/?consign_note=100000001', '100000001', 'ubx-uk'],
-      ['https://ubx.couriernavigator-secure.com/tracking?consign_note=100000001', '100000001', 'ubx-uk'],
+      ['https://tforce-solutions.com/quick-tracking/?tracking=199999980', '199999980', 'tforce-integrated-solutions'],
+      ['https://www.ubx.uk.net/tracking/?consign_note=199999980', '199999980', 'ubx-uk'],
+      ['https://ubx.couriernavigator-secure.com/tracking?consign_note=199999980', '199999980', 'ubx-uk'],
       ['https://ttkeu.com/tracking/tracking-detail/?id=TE000000001GB', 'TE000000001GB', 'ttk-europe'],
     ] as const) {
       expect(parseTrackingInput(url), url).toMatchObject({ trackingNumber, carrier, source: 'link' });
@@ -705,7 +705,7 @@ describe('SkyBox, Délivro, TForce Integrated Solutions, UBX UK and TTK Europe',
 
   it('leaves their bare numbers to other carriers\' rules', () => {
     expect(detectCarrierMatch('005100000001').candidates ?? []).not.toContain('skybox');
-    expect(detectCarrierMatch('100000001').candidates ?? []).not.toContain('tforce-integrated-solutions');
+    expect(detectCarrierMatch('199999980').candidates ?? []).not.toContain('tforce-integrated-solutions');
   });
 });
 

@@ -611,7 +611,7 @@
       "note": "Printed with a digit as its check character, which FedEx's fifteen-digit check also accepts. DPD UK did not find it in October 2026."
     },
     {
-      "number": "15970000000000",
+      "number": "15979999999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -637,7 +637,7 @@
           "xpressbees"
         ]
       },
-      "note": "Made-up number in DPD UK's 1597 range. ZONE3 UK's courier help page (help-uk.zone3.com) says DPD numbers often start with 1597, and DPD UK's tracker finds parcels in the range; DPD's group tracker reports only their order."
+      "note": "Made-up number in DPD UK's 1597 range. ZONE3 UK's courier help page (help-uk.zone3.com) says DPD numbers often start with 1597, and DPD UK's tracker finds parcels in the range; DPD's group tracker reports only their order. Its serial sits far beyond the range in use."
     }
   ]
 }

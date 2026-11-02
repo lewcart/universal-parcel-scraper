@@ -187,7 +187,7 @@
       "note": "A Singapore Post tracking link archived by the Wayback Machine. A checksum-valid SG item the tracker no longer knows."
     },
     {
-      "number": "CNSGS0000000002",
+      "number": "CNSGS9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -199,7 +199,7 @@
           "singapore-post"
         ]
       },
-      "note": "Made-up number in the shape of two parcels from China the app tracked, which Singapore Post's tracker answered through to delivery."
+      "note": "Made-up number in the shape of two parcels from China the app tracked, which Singapore Post's tracker answered through to delivery. Its serial sits far beyond the range in use."
     }
   ]
 }

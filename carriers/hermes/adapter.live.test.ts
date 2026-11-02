@@ -3,7 +3,7 @@ import { HermesTracker } from './adapter.js';
 
 describe('Hermes live anonymous tracking', () => {
   it('still returns the corpus\'s delivered order', async () => {
-    await expect(new HermesTracker().fetch('62162057330000611')).resolves.toMatchObject({
+    await expect(new HermesTracker().fetch('62162057330000980')).resolves.toMatchObject({
       status: 'delivered',
       last_status_text: expect.stringMatching(/zugestellt|geliefert/i),
     });

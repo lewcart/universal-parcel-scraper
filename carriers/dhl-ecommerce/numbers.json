@@ -2,7 +2,7 @@
   "carrier": "dhl-ecommerce",
   "records": [
     {
-      "number": "33870000000000001",
+      "number": "33879999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -14,7 +14,7 @@
           "dhl-ecommerce"
         ]
       },
-      "note": "Invented placeholder used as a shape check. Filed under DHL eCommerce, which stays one candidate among several."
+      "note": "Invented placeholder used as a shape check. Filed under DHL eCommerce, which stays one candidate among several. Its serial sits far beyond the range in use."
     },
     {
       "number": "3387191106122423",
@@ -34,7 +34,7 @@
       "note": "Official documentation example, not a real shipment. The source attributes it to DHL eCommerce, which stays one candidate among several."
     },
     {
-      "number": "GM1234567890123456",
+      "number": "GM9999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -43,7 +43,7 @@
         "carrier": "dhl-ecommerce",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use."
     },
     {
       "number": "GM60511234500000001",
@@ -79,7 +79,7 @@
       "note": "DHL's guide to its tracking labels gives it as a DHL eCommerce example, not a real shipment: eCommerce IDs typically start with GM and run from ten to thirty-nine characters. Shorter than the sixteen to eighteen digits the high-confidence rule takes, so the GM prefix only puts DHL eCommerce first."
     },
     {
-      "number": "GM1203000045",
+      "number": "GM9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -94,7 +94,7 @@
           "aramex-nz"
         ]
       },
-      "note": "Made-up number in the shape of a DHL Parcel International Direct parcel from the United States to Australia that Webtrack answered with its history up to the hand-over to the Australian partner."
+      "note": "Made-up number in the shape of a DHL Parcel International Direct parcel from the United States to Australia that Webtrack answered with its history up to the hand-over to the Australian partner. Its serial sits far beyond the range in use."
     },
     {
       "number": "0031043534391627906195625053434",
@@ -167,7 +167,7 @@
       "note": "Official documentation example, not a real shipment. A USPS-format number DHL eCommerce issues in the Americas; no rule claims DHL eCommerce for it."
     },
     {
-      "number": "420999999261999900000000000000",
+      "number": "420999999261999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -180,7 +180,7 @@
           "dhl-ecommerce"
         ]
       },
-      "note": "Made-up number in the shape Webtrack answers for a US parcel: the 420 routing prefix and ZIP code in front of the 22 digits."
+      "note": "Made-up number in the shape Webtrack answers for a US parcel: the 420 routing prefix and ZIP code in front of the 22 digits. Its serial sits far beyond the range in use."
     },
     {
       "number": "71234567891234",
@@ -438,7 +438,7 @@
       "note": "Public tracking link; the tracking page returned the history."
     },
     {
-      "number": "UU000000005DE",
+      "number": "UU999999987DE",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -446,7 +446,7 @@
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Synthetic number with a valid S10 check digit in the UU series issued under DE, which Webtrack answers for."
+      "note": "Synthetic number with a valid S10 check digit in the UU series issued under DE, which Webtrack answers for. Its serial sits far beyond the range in use."
     }
   ]
 }

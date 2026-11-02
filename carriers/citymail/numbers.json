@@ -212,7 +212,7 @@
       "note": "Example in the number field of CityMail's own Spåra paket page, which asks for the tracking number with this sample."
     },
     {
-      "number": "BCMXY0000000000000CN",
+      "number": "BCMXY9999999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -221,7 +221,7 @@
         "carrier": "citymail",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a reference CityMail's tracker answered with its own scans."
+      "note": "Made-up number in the shape of a reference CityMail's tracker answered with its own scans. Its serial sits far beyond the range in use."
     }
   ]
 }

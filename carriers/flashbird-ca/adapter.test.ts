@@ -34,7 +34,7 @@ const replying = (response: () => Response) => vi.fn<typeof fetch>().mockImpleme
 describe('FlashBird numbers', () => {
   it('takes twelve digits and nothing else', () => {
     expect(normalizeFlashbirdNumber(' 1000 0000 0017 ')).toBe(DELIVERED);
-    for (const other of ['10000000001', '1000000000170', 'FB0000000017', '']) {
+    for (const other of ['10999999980', '1000000000170', 'FB0000000017', '']) {
       expect(() => normalizeFlashbirdNumber(other), other).toThrow('twelve digits');
     }
   });

@@ -54,7 +54,7 @@ describe('numeric checksum candidates', () => {
   });
 
   it('offers TNT Italy first for a waybill typed with the check digit its label prints after a dash', () => {
-    for (const number of ['ZZ00000001-7', 'zz 00000001 - 7']) {
+    for (const number of ['ZZ99999980-7', 'zz 00000001 - 7']) {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['tnt-it'] });
       expect(detectCarrierMatch(number).candidates).toEqual(expect.arrayContaining(['tnt-it', 'gls-it']));
       expect(recognitionAskedCarriers(number)[0]).toBe('tnt-it');
@@ -146,13 +146,13 @@ describe('numeric checksum candidates', () => {
   });
 
   it('asks Swiss Post Cargo about an SSCC behind its 00 identifier without assigning it', () => {
-    expect(isValidSscc('00312345670000000016')).toBe(true);
-    for (const number of ['00312345670000000017', '312345670000000016', '10312345670000000013', '00312345670000000016\n']) {
+    expect(isValidSscc('00312345679999999981')).toBe(true);
+    for (const number of ['00312345670000000017', '312345670000000016', '10312345670000000013', '00312345679999999981\n']) {
       expect(isValidSscc(number)).toBe(false);
     }
     expect(detectCarrierMatch('00 3 1234567 000000001 6')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
-    expect(detectCarrierMatch('00312345670000000016').candidates).toContain('swiss-post-cargo');
-    expect(recognitionAskedCarriers('00312345670000000016')).toContain('swiss-post-cargo');
+    expect(detectCarrierMatch('00312345679999999981').candidates).toContain('swiss-post-cargo');
+    expect(recognitionAskedCarriers('00312345679999999981')).toContain('swiss-post-cargo');
     expect(detectCarrierMatch('00312345670000000017').candidates).not.toContain('swiss-post-cargo');
   });
 

@@ -2,7 +2,7 @@
   "carrier": "ab-courier",
   "records": [
     {
-      "number": "7000001",
+      "number": "7999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -14,7 +14,7 @@
           "seur"
         ]
       },
-      "note": "Invented placeholder for a seven-digit order number; A&B's tracker names the signer of each public sample."
+      "note": "Invented placeholder for a seven-digit order number; A&B's tracker names the signer of each public sample. Its serial sits far beyond the range in use."
     }
   ]
 }

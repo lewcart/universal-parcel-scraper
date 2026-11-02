@@ -50,7 +50,7 @@
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Dachser, which no rule claims. Consignment number from a delivery SMS the recipient did not expect."
     },
     {
-      "number": "9010000001234",
+      "number": "9019999999986",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -65,7 +65,7 @@
           "yunda"
         ]
       },
-      "note": "Made-up number that follows the published format. Filed under Dachser, which no rule claims."
+      "note": "Made-up number that follows the published format. Filed under Dachser, which no rule claims. Its serial sits far beyond the range in use."
     }
   ]
 }

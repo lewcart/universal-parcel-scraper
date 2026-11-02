@@ -2,7 +2,7 @@
   "carrier": "tsjy",
   "records": [
     {
-      "number": "TSJY990000006CN",
+      "number": "TSJY999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -11,7 +11,7 @@
         "carrier": "tsjy",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of the orders TSJY's tracker answers. Its ninth digit is the S10 check digit of the eight before it, the default check of TSJY's number rule."
+      "note": "Made-up number in the shape of the orders TSJY's tracker answers. Its ninth digit is the S10 check digit of the eight before it, the default check of TSJY's number rule. Its serial sits far beyond the range in use."
     }
   ]
 }

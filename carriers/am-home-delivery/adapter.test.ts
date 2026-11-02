@@ -14,7 +14,7 @@ import { amHomeDeliveryStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = '30000017';
-const DELIVERED_BOL = '7000001';
+const DELIVERED_BOL = '7999980';
 const IN_TRANSIT = 'AM000000123';
 const PENDING = '30000025';
 const UNKNOWN = '30000033';
@@ -84,7 +84,7 @@ describe('AM Home Delivery HTTP adapter', () => {
       ['2026-03-03T00:05:00', 'Received in Consolidation Center', 'accepted', 'Sample Township, New Jersey'],
     ]);
     expect(result.events!.every((event) => event.time === undefined && event.stage_source === 'carrier_map')).toBe(true);
-    expect(JSON.stringify(result)).not.toMatch(/80999|80998|08999|7000001|SOFA|Sofa|LIFTGATE|example\.com|555|2026-03-02/);
+    expect(JSON.stringify(result)).not.toMatch(/80999|80998|08999|7999980|SOFA|Sofa|LIFTGATE|example\.com|555|2026-03-02/);
   });
 
   it('reads an in-transit history, its range of days as the estimate, and a row without a place', () => {

@@ -62,7 +62,7 @@
       "note": "ParcelPanel's DHLink page offered it to try. DHLink's tracker answers it as the tracking number of one of its parcels, delivered in the United States; its check digit fails, so no post issued it."
     },
     {
-      "number": "XZG000000001WL",
+      "number": "XZG999999980WL",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -74,10 +74,10 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of the line provider's XZG tracking numbers DHLink's lookup finds as the parcel's tracking number."
+      "note": "Made-up number in the shape of the line provider's XZG tracking numbers DHLink's lookup finds as the parcel's tracking number. Its serial sits far beyond the range in use."
     },
     {
-      "number": "YLUS0000000001",
+      "number": "YLUS9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -89,10 +89,10 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of the YLUS tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line GOFO delivers."
+      "note": "Made-up number in the shape of the YLUS tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line GOFO delivers. Its serial sits far beyond the range in use."
     },
     {
-      "number": "EYT0000000001HZ",
+      "number": "EYT9999999980HZ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -104,10 +104,10 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of the EYT tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line SwiftX delivers."
+      "note": "Made-up number in the shape of the EYT tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line SwiftX delivers. Its serial sits far beyond the range in use."
     },
     {
-      "number": "QH000000000001FS",
+      "number": "QH999999999980FS",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -119,10 +119,10 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of the QH tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line GOFO delivers."
+      "note": "Made-up number in the shape of the QH tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line GOFO delivers. Its serial sits far beyond the range in use."
     },
     {
-      "number": "YF0000000001CN",
+      "number": "YF9999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -134,10 +134,10 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of the YF tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line GOFO delivers."
+      "note": "Made-up number in the shape of the YF tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line GOFO delivers. Its serial sits far beyond the range in use."
     },
     {
-      "number": "KTDWE0000000001",
+      "number": "KTDWE9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -150,10 +150,10 @@
           "ktd"
         ]
       },
-      "note": "Made-up number in the shape of KTD's tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line SwiftX delivers."
+      "note": "Made-up number in the shape of KTD's tracking numbers DHLink's lookup finds as the parcel's tracking number, on a US line SwiftX delivers. Its serial sits far beyond the range in use."
     },
     {
-      "number": "YHKJ1000000017",
+      "number": "YHKJ1999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -165,10 +165,10 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked to Britain, which DHLink's tracker answered under that tracking number: YHKJ and ten digits."
+      "note": "Made-up number in the shape of a parcel the app tracked to Britain, which DHLink's tracker answered under that tracking number: YHKJ and ten digits. Its serial sits far beyond the range in use."
     },
     {
-      "number": "BY10000000000025CN",
+      "number": "BY19999999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -181,10 +181,10 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of Boyuan's tracking numbers, for which ParcelsApp named DHLink beside Boyuan on a US line: BY, fourteen digits and CN."
+      "note": "Made-up number in the shape of Boyuan's tracking numbers, for which ParcelsApp named DHLink beside Boyuan on a US line: BY, fourteen digits and CN. Its serial sits far beyond the range in use."
     },
     {
-      "number": "TDT1000000025CN",
+      "number": "TDT1999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -197,10 +197,10 @@
           "tuodatong"
         ]
       },
-      "note": "Made-up number in the shape of Tuodatong's tracking numbers, for which ParcelsApp named DHLink beside Tuodatong on an air line from China: TDT, ten digits and CN."
+      "note": "Made-up number in the shape of Tuodatong's tracking numbers, for which ParcelsApp named DHLink beside Tuodatong on an air line from China: TDT, ten digits and CN. Its serial sits far beyond the range in use."
     },
     {
-      "number": "YLEAA1000000025YQ",
+      "number": "YLEAA1999999980YQ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -212,7 +212,7 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of a parcel for which ParcelsApp named a YLE line beside DHLink: YLE, two letters, ten digits and YQ."
+      "note": "Made-up number in the shape of a parcel for which ParcelsApp named a YLE line beside DHLink: YLE, two letters, ten digits and YQ. Its serial sits far beyond the range in use."
     }
   ]
 }

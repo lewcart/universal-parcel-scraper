@@ -98,7 +98,7 @@
       "note": "ParcelWill's HuaHan page offers it as a sample to try; an aggregator sample that no HuaHan source ties to a shipment."
     },
     {
-      "number": "HHWAB0000000001YQ",
+      "number": "HHWAB9999999980YQ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -107,10 +107,10 @@
         "carrier": "huahan",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of HuaHan parcels the app tracked."
+      "note": "Made-up number in the shape of HuaHan parcels the app tracked. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
     },
     {
-      "number": "HHWXY0000000002YQ",
+      "number": "HHWXY9999999980YQ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",

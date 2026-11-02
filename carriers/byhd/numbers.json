@@ -2,7 +2,7 @@
   "carrier": "byhd",
   "records": [
     {
-      "number": "BYHD990000001",
+      "number": "BYHD999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -11,7 +11,7 @@
         "carrier": "byhd",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of the waybills BYHD's tracker finds an order by."
+      "note": "Made-up number in the shape of the waybills BYHD's tracker finds an order by. Its serial sits far beyond the range in use."
     }
   ]
 }

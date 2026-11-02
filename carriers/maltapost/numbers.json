@@ -59,7 +59,7 @@
       "note": "Looked up through MaltaPost's own track-and-trace API; the archived capture holds its history. Detection selects the generic postal carrier."
     },
     {
-      "number": "SNGXP100000025MT",
+      "number": "SNGXP199999980MT",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -72,7 +72,7 @@
           "sengi-express"
         ]
       },
-      "note": "Made-up number in the shape of Sengi Express's numbers for Malta, for which ParcelsApp named MaltaPost beside Sengi and relayed MaltaPost's scans: five letters, nine digits and MT."
+      "note": "Made-up number in the shape of Sengi Express's numbers for Malta, for which ParcelsApp named MaltaPost beside Sengi and relayed MaltaPost's scans: five letters, nine digits and MT. Its serial sits far beyond the range in use."
     }
   ]
 }

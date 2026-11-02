@@ -32,7 +32,7 @@ describe('universal discovery chain', () => {
       expect(universalSources(false, postal)).toEqual(['17TRACK', 'ParcelsApp', 'Ship24', 'UPU']);
       expect(universalSources(true, postal)).toEqual(['17TRACK', 'ParcelsApp', 'Ship24', 'Postal Ninja', 'UPU']);
     }
-    for (const other of ['EB000000005CN', 'RR000000005CN', 'LZ000000005NL', 'LZ000000006CN', '1234/12345678']) {
+    for (const other of ['EB999999987CN', 'RR000000005CN', 'LZ000000005NL', 'LZ000000006CN', '1234/12345678']) {
       expect(universalSources(false, other)[0]).toBe('ParcelsApp');
     }
   });
@@ -42,7 +42,7 @@ describe('universal discovery chain', () => {
     expect(universalSources()).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'UPU']);
     expect(universalSources(true)).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU']);
     expect(universalSources(false, number)).toEqual(['ParcelsApp', 'Ship24', '17TRACK']);
-    expect(universalSources(false, 'EB000000005CN')).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'UPU']);
+    expect(universalSources(false, 'EB999999987CN')).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'UPU']);
     // A carrier's coverage evidence reorders them.
     expect(universalPlan({ carriers: ['usps'], trackingNumber: number }).sources).toEqual(['17TRACK', 'ParcelsApp', 'Ship24']);
   });

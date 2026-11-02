@@ -183,7 +183,7 @@ describe('T-CAT HTTP adapter', () => {
 
   it('rejects numbers T-CAT does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['100000000', '10000000001', '9000000000123', 'TC00000000', '90000000001A', `9${'0'.repeat(70)}`]) {
+    for (const number of ['100000000', '10999999980', '9000000000123', 'TC00000000', '90000000001A', `9${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

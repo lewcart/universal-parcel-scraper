@@ -2,7 +2,7 @@
   "carrier": "boyuan",
   "records": [
     {
-      "number": "BY10000000000017CN",
+      "number": "BY19999999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -15,7 +15,7 @@
           "dhlink"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked on a US line, for which ParcelsApp named Boyuan and DHLink: BY, fourteen digits and CN."
+      "note": "Made-up number in the shape of a parcel the app tracked on a US line, for which ParcelsApp named Boyuan and DHLink: BY, fourteen digits and CN. Its serial sits far beyond the range in use."
     }
   ]
 }

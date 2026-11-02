@@ -10,7 +10,7 @@ import { normalizeTciExpressNumber, parseTciExpress } from './parser.js';
 import { statusMap, tciExpressStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '100000001';
+const DELIVERED = '199999980';
 const IN_TRANSIT = '1000000002';
 const OLD = '300000003';
 const UNKNOWN = '900000009';

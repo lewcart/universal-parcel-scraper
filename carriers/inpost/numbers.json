@@ -42,7 +42,7 @@
       "note": "Quoted in a merchant's reply. InPost's tracker returns its history; twenty-four digits stay one candidate among several."
     },
     {
-      "number": "640000000000000000000001",
+      "number": "649999999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -57,7 +57,7 @@
           "austrian-post"
         ]
       },
-      "note": "Invented number following the 24-digit InPost format. Filed under InPost, which stays one candidate among several."
+      "note": "Invented number following the 24-digit InPost format. Filed under InPost, which stays one candidate among several. Its serial sits far beyond the range in use."
     },
     {
       "number": "642600027844200234823732",
@@ -341,7 +341,25 @@
       "note": "Looked up on Yodel's former tracker, now InPost's UK network, as an archived address shows; the capture was not opened."
     },
     {
-      "number": "520000000000000000000001",
+      "number": "529999999999999999999980",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-21",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost",
+          "ciblex",
+          "bpost",
+          "austrian-post"
+        ]
+      },
+      "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
+    },
+    {
+      "number": "659999999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -359,7 +377,7 @@
       "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
     },
     {
-      "number": "650000000000000000000001",
+      "number": "669999999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -377,7 +395,7 @@
       "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
     },
     {
-      "number": "660000000000000000000001",
+      "number": "809999999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -395,25 +413,7 @@
       "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
     },
     {
-      "number": "800000000000000000000001",
-      "role": "shipment",
-      "evidence": "synthetic",
-      "derivedFrom": "donated_real",
-      "shapeConfirmed": "2026-10-21",
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "inpost",
-          "ciblex",
-          "bpost",
-          "austrian-post"
-        ]
-      },
-      "note": "Made-up number with the first two digits of parcels InPost's tracker answered. Detection lists InPost first for them."
-    },
-    {
-      "number": "820000000000000000000001",
+      "number": "829999999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",

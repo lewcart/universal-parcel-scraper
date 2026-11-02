@@ -4,7 +4,7 @@ import { SpxPhTracker } from './adapter.js';
 import { normalizeSpxPhNumber, parseSpxPh } from './parser.js';
 import { spxPhStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
-const NUMBER = 'PH000000000001';
+const NUMBER = 'PH999999999980';
 const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
 function legacy() {
   const modern = fixture();
@@ -18,7 +18,7 @@ describe('SPX Philippines parser', () => {
     expect(JSON.stringify(result)).not.toContain('PRIVATE-SYNTHETIC');
   });
   it('binds verified modern order aliases without accepting a query echo', () => {
-    const value = fixture(); value.data.order_info.sls_tn = NUMBER; value.data.order_info.spx_tn = 'SPXPH000000000001';
+    const value = fixture(); value.data.order_info.sls_tn = NUMBER; value.data.order_info.spx_tn = 'SPXPH999999999980';
     expect(parseSpxPh(value, NUMBER).events).toHaveLength(2);
     delete value.data.order_info.sls_tn; value.data.requested = NUMBER;
     expect(() => parseSpxPh(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
@@ -133,7 +133,7 @@ describe('SPX Philippines retrieval', () => {
     expect(first.pathname).toBe('/shipment/order/open/order/get_order_info'); expect(first.searchParams.get('spx_tn')).toBe(NUMBER);
     const second = new URL(String(fetcher.mock.calls[1]![0]));
     expect(second.pathname).toBe('/api/v2/fleet_order/tracking/search');
-    expect(second.searchParams.get('sls_tracking_number')).toMatch(/^PH000000000001\|\d{10}[a-f0-9]{64}$/);
+    expect(second.searchParams.get('sls_tracking_number')).toMatch(/^PH999999999980\|\d{10}[a-f0-9]{64}$/);
     expect(fetcher.mock.calls.every(([, init]) => init?.signal instanceof AbortSignal)).toBe(true);
   });
   it('does no I/O for foreign SPX numbers or an aborted lookup', async () => {

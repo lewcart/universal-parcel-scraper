@@ -2,7 +2,7 @@
   "carrier": "spee-dee",
   "records": [
     {
-      "number": "SP0000000000000001",
+      "number": "SP9999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -10,7 +10,7 @@
         "carrier": "spee-dee",
         "confidence": "high"
       },
-      "note": "Synthetic sequential barcode in the 16-digit form. Spee-Dee reuses barcodes and its tracking knows this one, so it is not a negative."
+      "note": "Synthetic barcode in the 16-digit form, which Spee-Dee reuses. Its serial sits far beyond the range in use."
     },
     {
       "number": "SP029692450001607639",

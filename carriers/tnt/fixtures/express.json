@@ -4,7 +4,7 @@
       {
         "shipmentId": 100000000002,
         "consignmentKey": "WW100000001      SYA  202603270800",
-        "consignmentNumber": "100000001",
+        "consignmentNumber": "199999980",
         "customerReference": "SYNTHETIC-REFERENCE",
         "numberOfPieces": 1,
         "signatory": null,
@@ -41,9 +41,9 @@
         ]
       },
       {
-        "shipmentId": 100000000001,
+        "shipmentId": 199999999977,
         "consignmentKey": "WW100000001      SYB  202503100900",
-        "consignmentNumber": "100000001",
+        "consignmentNumber": "199999980",
         "customerReference": null,
         "numberOfPieces": 2,
         "signatory": "SYNTHETIC SIGNATORY",

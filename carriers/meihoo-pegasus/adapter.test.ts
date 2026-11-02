@@ -10,7 +10,7 @@ import { statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import carrier from './carrier.json' with { type: 'json' };
 
-const NUMBER = 'MYH900000001CN';
+const NUMBER = 'MYH999999980CN';
 const REFERENCE = 'MH0000000000001';
 const UNKNOWN = 'MYH900000009CN';
 // Noon in Beijing on 25 March, after the fixture's rows.

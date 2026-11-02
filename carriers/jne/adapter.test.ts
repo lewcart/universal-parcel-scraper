@@ -166,7 +166,7 @@ describe('JNE HTTP adapter', () => {
 
   it('rejects numbers JNE does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['JT1234567890', 'JT123456789012', '12345678901234', '12345678901234567', 'SAMPLETRACKING']) {
+    for (const number of ['JT1234567890', 'JT123456789012', '19999999999980', '12345678901234567', 'SAMPLETRACKING']) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

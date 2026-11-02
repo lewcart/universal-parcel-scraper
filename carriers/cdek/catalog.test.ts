@@ -4,7 +4,7 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 
 describe('CDEK detection', () => {
   it('offers CDEK beside the other eleven-digit carriers when the number starts 10', () => {
-    const match = detectCarrierMatch('10000000001');
+    const match = detectCarrierMatch('10999999980');
     expect(match).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(match.candidates).toContain('cdek');
     expect(match.candidates).toContain('gls-de');
@@ -16,7 +16,7 @@ describe('CDEK detection', () => {
   });
 
   it('asks CDEK first for a Russian or Kazakh parcel', () => {
-    expect(recognitionAskedCarriers('10000000001', { countryHint: 'RU' })[0]).toBe('cdek');
-    expect(recognitionAskedCarriers('10000000001', { countryHint: 'KZ' })[0]).toBe('cdek');
+    expect(recognitionAskedCarriers('10999999980', { countryHint: 'RU' })[0]).toBe('cdek');
+    expect(recognitionAskedCarriers('10999999980', { countryHint: 'KZ' })[0]).toBe('cdek');
   });
 });

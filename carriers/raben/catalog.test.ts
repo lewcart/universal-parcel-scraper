@@ -4,14 +4,14 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 
 describe('Raben detection', () => {
   it('offers Raben for a shipment number of 27 and thirteen digits', () => {
-    for (const number of ['271234567890123', '279876543210987']) {
+    for (const number of ['279999999999981', '279876543210987']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
       expect(detectCarrierMatch(number).candidates, number).toContain('raben');
     }
   });
 
   it('asks Raben after BRT about such a number looked up in Italy', () => {
-    expect(recognitionAskedCarriers('271234567890123', { countryHint: 'IT' })).toEqual(['brt', 'raben']);
+    expect(recognitionAskedCarriers('279999999999981', { countryHint: 'IT' })).toEqual(['brt', 'raben']);
   });
 
   it('leaves other fifteen-digit numbers and other lengths to the carriers that print them', () => {

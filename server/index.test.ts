@@ -89,9 +89,9 @@ describe('tracking HTTP API', () => {
     const track = vi.fn().mockResolvedValue({ ...answer, carrier: 'postlogistics', source: 'postlogistics' });
     const url = await started({ tracker: tracker(track) });
     // The dash makes the reference PostLogistics's own; the tracker gets it as printed.
-    expect((await post(url, { number: '12345678-001' })).status).toBe(200);
-    expect(track.mock.calls[0]![0]).toMatchObject({ number: '12345678-001', carrier: 'postlogistics' });
-    expect((await post(url, { number: ' 12345678-001 ' })).status).toBe(200);
+    expect((await post(url, { number: '19999980-001' })).status).toBe(200);
+    expect(track.mock.calls[0]![0]).toMatchObject({ number: '19999980-001', carrier: 'postlogistics' });
+    expect((await post(url, { number: ' 19999980-001 ' })).status).toBe(200);
     expect(track).toHaveBeenCalledTimes(1);
     // Compact, the same digits leave the carrier open and are a lookup of their own.
     expect((await post(url, { number: '12345678001' })).status).toBe(200);

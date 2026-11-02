@@ -100,7 +100,7 @@ describe('Chunghwa Post international tracking', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
-  it.each(['UH000000005TW', 'FT000000005TW', 'FZ000000005TW'])('queries %s, issued in Taiwan, through the same verified and identity-bound flow', async (number) => {
+  it.each(['UH999999987TW', 'FT000000005TW', 'FZ000000005TW'])('queries %s, issued in Taiwan, through the same verified and identity-bound flow', async (number) => {
     const payload = fixture(); payload[0]!.body.host_rs.MAILNO = number;
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('')).mockResolvedValueOnce(new Response('image'))
       .mockResolvedValueOnce(Response.json(payload));

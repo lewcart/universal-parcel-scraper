@@ -31,7 +31,7 @@ describe('evidence-backed tracking formats', () => {
     expect(detectCarrierMatch('1234567890')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch('1234567890').candidates).toContain('relais-colis');
     // Fourteen digits are DPD's parcel number; Relais Colis is not offered for them.
-    expect(detectCarrierMatch('12345678901234').candidates).not.toContain('relais-colis');
+    expect(detectCarrierMatch('19999999999980').candidates).not.toContain('relais-colis');
   });
 
   it('offers a normalized legacy DTDC reference without selecting it', () => {
@@ -68,7 +68,7 @@ describe('evidence-backed tracking formats', () => {
       .toMatchObject({ carrier: 'dhl-ecommerce-nl', trackingNumber: 'JVGL01234567890123456789', source: 'link' });
     expect(parseTrackingInput('https://www.dhl.de/en/privatkunden/dhl-sendungsverfolgung.html?piececode=JVGL01234567890123456789'))
       .toMatchObject({ carrier: 'dhl', confidence: 'high', source: 'link' });
-    expect(detectCarrierMatch('GM1234567890123456')).toMatchObject({ carrier: 'dhl-ecommerce', confidence: 'high' });
+    expect(detectCarrierMatch('GM9999999999999980')).toMatchObject({ carrier: 'dhl-ecommerce', confidence: 'high' });
   });
 
   it.each(['GM10293847', 'GM1029384756', 'GM10293847561', 'GM102938475610293'])(
@@ -96,7 +96,7 @@ describe('evidence-backed tracking formats', () => {
     }
   });
 
-  it.each(['GM1234567890123456', '1234567890', '9261290100130412345678'])('reads a DHL eCommerce tracking page link like the global one: %s', (number) => {
+  it.each(['GM9999999999999980', '1234567890', '9261290100130412345678'])('reads a DHL eCommerce tracking page link like the global one: %s', (number) => {
     expect(parseTrackingInput(`https://www.dhl.com/us-en/home/tracking/tracking-ecommerce.html?submit=1&tracking-id=${number}`))
       .toEqual(parseTrackingInput(`https://www.dhl.com/us-en/home/tracking.html?submit=1&tracking-id=${number}`));
   });
@@ -207,7 +207,7 @@ describe('evidence-backed tracking formats', () => {
   });
 
   it('suggests FERCAM for the letter O, the year and eight digits', () => {
-    expect(detectCarrierMatch('O2500000001').candidates).toContain('fercam');
+    expect(detectCarrierMatch('O2599999980').candidates).toContain('fercam');
     for (const number of ['02500000001', 'O250000001', 'O25000000001', 'Q2500000001']) {
       expect(detectCarrierMatch(number).candidates, number).not.toContain('fercam');
     }

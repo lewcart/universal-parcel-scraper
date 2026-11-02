@@ -83,7 +83,7 @@ describe('Hermes no-data response', () => {
     const otherShipment = {
       body: {
         auftragsdaten: {
-          lieferscheinnummer: '87654321',
+          lieferscheinnummer: '99999980',
           statusjourneyDto: {
             statusdaten: [{
               sendungsstatusId: 20_000,

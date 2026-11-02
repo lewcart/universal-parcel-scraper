@@ -79,7 +79,7 @@
       }
     },
     {
-      "number": "PKG006261001ES9900000000001A",
+      "number": "PKG006261001ES9999999999980A",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -91,7 +91,7 @@
           "quick-rabbit"
         ]
       },
-      "note": "Made-up number in the shape of a parcel a universal provider files under Quick Rabbit, relaying its tracker’s status names."
+      "note": "Made-up number in the shape of a parcel a universal provider files under Quick Rabbit, relaying its tracker’s status names. Its serial sits far beyond the range in use."
     },
     {
       "number": "WT2527401177023677",

@@ -220,7 +220,7 @@
       "note": "Looked up on Chunghwa Post's own tracker, as an archived address shows; the capture was not opened. The former domestic lookup on postserv.post.gov.tw."
     },
     {
-      "number": "UH000000005TW",
+      "number": "UH999999987TW",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -229,7 +229,7 @@
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of Taiwan-issued UH letter post. The tracker's notes say U letter post cannot be followed online, though the tracker answered one such item with the scan a universal provider had."
+      "note": "Made-up number in the shape of Taiwan-issued UH letter post. The tracker's notes say U letter post cannot be followed online, though the tracker answered one such item with the scan a universal provider had. Its serial sits far beyond the range in use."
     }
   ]
 }

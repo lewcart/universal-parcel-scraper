@@ -1659,7 +1659,7 @@ describe('ParcelsApp result parsing', () => {
   });
 
   it("leaves out ParcelsApp's summary of a Russian Post delivery, on the delivery office's wall clock", () => {
-    const domestic = '10000000000001';
+    const domestic = '10009999999980';
     // Russian Post's own states come on Moscow's clock; the summary on the office's, here seven hours ahead of UTC.
     const delivery = { date: '2026-10-22T09:58:40+00:00', status: 'Вручение адресату почтальоном', carrier: 0, location: 'Example City, 000000' };
     const summary = { date: '2026-10-22T13:58:40+00:00', status: 'Вручено 22 октября', location: 'Example Town' };

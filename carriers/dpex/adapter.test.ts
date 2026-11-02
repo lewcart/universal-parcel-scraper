@@ -232,7 +232,7 @@ describe('DPEX Worldwide HTTP adapter', () => {
   it('sends only a whole air waybill with its check digit: no partial reference, pattern or letters', async () => {
     const fetcher = vi.fn<typeof fetch>();
     // The trackers read % as a wildcard and answer short references with other shipments.
-    for (const number of ['20000000001', '2000000000011', '20000000000%', '2000000000%1', '20000000000*', 'ZZ0000000001', '200000000002', '20000000001,200000000012']) {
+    for (const number of ['20000000001', '2000000000011', '20000000000%', '2000000000%1', '20000000000*', 'ZZ9999999980', '200000000002', '20000000001,200000000012']) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
       await expect(carrier(fetcher).recognize!(number), number).resolves.toEqual({ known: false });
       expect(() => parseDpexChina(fixture('china-delivered'), number), number).toThrow(expect.objectContaining({ kind: 'invalid_input' }));

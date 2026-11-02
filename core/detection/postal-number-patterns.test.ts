@@ -5,7 +5,7 @@ import { checksumRejections, detectCarrierMatch, parseTrackingInput } from './in
 import { carrierIdFromName } from '../catalog/hints.js';
 
 describe('S10-shaped numbers', () => {
-  it.each(['RR123456785TY', 'RR123456785MI', 'RR123456785XX', 'RR123456785YW', 'RR123456785CS', 'RR123456785EN'])(
+  it.each(['RR999999987TY', 'RR999999987MI', 'RR999999987XX', 'RR999999987YW', 'RR999999987CS', 'RR999999987EN'])(
     'leaves %s out of international mail: its suffix names no issuing country',
     (number) => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
@@ -19,7 +19,7 @@ describe('S10-shaped numbers', () => {
     expect(detectCarrierMatch('rr 123 456 785 ty')).toEqual({
       carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'chronopost'], preferred: ['aliexpress'],
     });
-    expect(recognitionCandidates('RR123456785TY')).toEqual([
+    expect(recognitionCandidates('RR999999987TY')).toEqual([
       { carrier: 'aliexpress', needsInput: null, preferred: true },
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
@@ -32,7 +32,7 @@ describe('S10-shaped numbers', () => {
     expect(detectCarrierMatch('rr 123 456 785 mi')).toEqual({
       carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'chronopost'], preferred: ['aliexpress'],
     });
-    expect(recognitionCandidates('RR123456785MI')).toEqual([
+    expect(recognitionCandidates('RR999999987MI')).toEqual([
       { carrier: 'aliexpress', needsInput: null, preferred: true },
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
@@ -45,7 +45,7 @@ describe('S10-shaped numbers', () => {
     expect(detectCarrierMatch('rr 123 456 785 xx')).toEqual({
       carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'chronopost'], preferred: ['aliexpress'],
     });
-    expect(recognitionCandidates('RR123456785XX')[0]).toEqual({ carrier: 'aliexpress', needsInput: null, preferred: true });
+    expect(recognitionCandidates('RR999999987XX')[0]).toEqual({ carrier: 'aliexpress', needsInput: null, preferred: true });
     expect(detectCarrierMatch('RR123456789XX').candidates).toEqual([]);
     expect(checksumRejections('RR123456789XX')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-xx', checksum: 's10' },
       { carrier: 'chronopost', rule: 'chronopost-3', checksum: 's10' }]);
@@ -84,7 +84,7 @@ describe('S10-shaped numbers', () => {
   });
 
   it('names DHL for Deutsche Post items without customer tracking whose check digit holds', () => {
-    for (const number of ['UL123456785DE', 'ux 123 456 785 de']) {
+    for (const number of ['UL999999987DE', 'ux 123 456 785 de']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'dhl', confidence: 'high', candidates: ['dhl'] });
     }
     expect(detectCarrierMatch('UL123456789DE').candidates).not.toContain('dhl');
@@ -176,7 +176,7 @@ describe('Korea Post domestic numbers', () => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
       expect(detectCarrierMatch(number).candidates).toContain('korea-post');
     }
-    for (const number of ['0000000000001', '7000000000001', '100000000001', '10000000000001']) {
+    for (const number of ['0000000000001', '7000000000001', '199999999977', '10009999999980']) {
       expect(detectCarrierMatch(number).candidates).not.toContain('korea-post');
     }
   });
@@ -343,10 +343,10 @@ describe('Australia Post barcodes', () => {
   });
 
   it('suggests Australia Post alone for R and twenty-four digits, and asks it', () => {
-    expect(detectCarrierMatch('R000000000000000000000001')).toEqual({
+    expect(detectCarrierMatch('R999999999999999999999980')).toEqual({
       carrier: 'unknown', confidence: 'low', candidates: ['australia-post'], preferred: [],
     });
-    expect(recognitionAskedCarriers('R000000000000000000000001')).toEqual(['australia-post']);
+    expect(recognitionAskedCarriers('R999999999999999999999980')).toEqual(['australia-post']);
     for (const number of ['R00000000000000000000001', 'R0000000000000000000000001', 'RR00000000000000000000001', 'S000000000000000000000001']) {
       expect(detectCarrierMatch(number).candidates ?? []).not.toContain('australia-post');
     }

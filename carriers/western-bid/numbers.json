@@ -2,7 +2,7 @@
   "carrier": "western-bid",
   "records": [
     {
-      "number": "WBX100000000017",
+      "number": "WBX199999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -14,7 +14,7 @@
           "western-bid"
         ]
       },
-      "note": "Made-up number in the shape of the number Western Bid's tracker gives its own shipments, WBX and twelve digits; its Etsy guides say Western Bid numbers start with WBX."
+      "note": "Made-up number in the shape of the number Western Bid's tracker gives its own shipments, WBX and twelve digits; its Etsy guides say Western Bid numbers start with WBX. Its serial sits far beyond the range in use."
     },
     {
       "number": "WBX190000059587",

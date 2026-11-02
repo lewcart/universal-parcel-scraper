@@ -81,7 +81,7 @@ describe('Closer Logistics HTTP adapter', () => {
   it('keeps no recipient, phone number, address, coordinates, receiver, driver or internal identifier', () => {
     for (const [name, number] of [['delivered', DELIVERED], ['in-transit', IN_TRANSIT], ['pickup', PICKUP]] as const) {
       const text = JSON.stringify(parseCloser(shipment(name), number));
-      expect(text, name).not.toMatch(/Sample (?:Recipient|Customer|Receiver|Town)|Calle|\+34|600 00|40\.\d|-3\.\d|1000001|2000001|30001|6000001|7000001|geoposition/);
+      expect(text, name).not.toMatch(/Sample (?:Recipient|Customer|Receiver|Town)|Calle|\+34|600 00|40\.\d|-3\.\d|1000001|2000001|30001|6000001|7999980|geoposition/);
     }
   });
 

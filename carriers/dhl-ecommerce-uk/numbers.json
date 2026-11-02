@@ -2,7 +2,7 @@
   "carrier": "dhl-ecommerce-uk",
   "records": [
     {
-      "number": "99990000000000",
+      "number": "99999999999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -27,7 +27,7 @@
           "xpressbees"
         ]
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use."
     },
     {
       "number": "60120261600869",

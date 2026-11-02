@@ -2,7 +2,7 @@
   "carrier": "dhl-ecommerce-nl",
   "records": [
     {
-      "number": "JVGL0099999999",
+      "number": "JVGL9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -11,7 +11,7 @@
         "carrier": "dhl-ecommerce-nl",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use."
     },
     {
       "number": "JVGL06289524001751165708",

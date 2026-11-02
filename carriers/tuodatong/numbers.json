@@ -2,7 +2,7 @@
   "carrier": "tuodatong",
   "records": [
     {
-      "number": "TDT1000000017CN",
+      "number": "TDT1999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -15,7 +15,7 @@
           "tuodatong"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked on an air line from China, for which ParcelsApp named Tuodatong and DHLink: TDT, ten digits and CN."
+      "note": "Made-up number in the shape of a parcel the app tracked on an air line from China, for which ParcelsApp named Tuodatong and DHLink: TDT, ten digits and CN. Its serial sits far beyond the range in use."
     }
   ]
 }

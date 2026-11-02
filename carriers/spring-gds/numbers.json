@@ -173,7 +173,7 @@
       "note": "Publicly reported shipment number. PostNL's tracking returned its history, a delivered international item."
     },
     {
-      "number": "LX123456785NL",
+      "number": "LX999999987NL",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -182,7 +182,7 @@
         "carrier": "spring-gds",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use."
     },
     {
       "number": "LX123456789NL",
@@ -597,7 +597,7 @@
       "note": "A PostNL tracking link archived by the Wayback Machine. PostNL's tracker returns its history, an item delivered abroad."
     },
     {
-      "number": "181011000000000017",
+      "number": "181011999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -611,7 +611,7 @@
           "ecoscooting"
         ]
       },
-      "note": "Made-up number in the shape of a parcel for Italy that PostNL's international tracker answered: 1810 and fourteen digits."
+      "note": "Made-up number in the shape of a parcel for Italy that PostNL's international tracker answered: 1810 and fourteen digits. Its serial sits far beyond the range in use."
     }
   ]
 }

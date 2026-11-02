@@ -4,7 +4,7 @@ import { TrawlClient } from '../../core/transport/trawl.js';
 import { priorityUniversalSource, universalPlan } from '../plan.js';
 import { adapter, juxiNumber, parseTrack718, TRACK718_API } from './adapter.js';
 
-const number = 'JXCZZ9000000001YQ';
+const number = 'JXCZZ9999999980YQ';
 const row = () => ({ track: number, fromKey: 'www.juxiex.com', result: 40, origin: '01', isMerge: false,
   from: [{ ondate: '2031-03-04T12:30:00+08:00', status: 'Shipment picked up', address: 'Example City' }],
   to: [{ ondate: '2031-03-06T10:20:00-05:00', status: 'Delivered', address: 'Test City' }], frist: [], wms: [] });

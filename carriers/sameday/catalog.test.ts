@@ -3,7 +3,7 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 
 describe('Sameday detection', () => {
   it('offers Sameday for an AWB whose client code holds a digit before LN or LL', () => {
-    for (const number of ['1ZZ9LN000000001', '1XZ9LN000000000001', '1ZZ9LL000000001', '1XZ9LL000000000001']) {
+    for (const number of ['1ZZ9LN999999980', '1XZ9LN000000000001', '1ZZ9LL000000001', '1XZ9LL999999999980']) {
       expect(detectCarrierMatch(number), number).toMatchObject({
         carrier: 'unknown', confidence: 'low', candidates: ['sameday'],
       });

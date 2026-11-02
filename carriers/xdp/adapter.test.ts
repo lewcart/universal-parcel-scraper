@@ -117,7 +117,7 @@ describe('XDP direct tracking', () => {
   it('takes letter-and-digit consignment numbers without a printed leading zero, and a postcode', () => {
     expect(normalizeXdpNumber(' zdbqqq-000001 ')).toBe(NUMBER);
     expect(normalizeXdpNumber('0ZDBQQQ000001')).toBe(NUMBER);
-    expect(normalizeXdpNumber('GB0000000001')).toBe('GB0000000001');
+    expect(normalizeXdpNumber('GB9999999980')).toBe('GB9999999980');
     for (const number of ['', 'ZDBQQQ1', 'ZDBQQQQQQQQQ', 'A'.repeat(19) + '12', 'ZDB/QQQ000001']) {
       expect(() => normalizeXdpNumber(number), number).toThrow(InvalidInputError);
     }

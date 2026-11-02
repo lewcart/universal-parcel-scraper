@@ -2,7 +2,7 @@
   "carrier": "lingdong",
   "records": [
     {
-      "number": "SZLD9900000001",
+      "number": "SZLD9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -11,7 +11,7 @@
         "carrier": "lingdong",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of the waybills Lingdong International's tracker answers."
+      "note": "Made-up number in the shape of the waybills Lingdong International's tracker answers. Its serial sits far beyond the range in use."
     }
   ]
 }

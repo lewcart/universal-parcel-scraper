@@ -3,7 +3,7 @@ import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 
 // A shared barcode shape establishes the brand, not its tracking service.
-const NUMBER = 'H000000000000008';
+const NUMBER = 'H999999999999985';
 
 describe('Evri service routing', () => {
   it('keeps a bare barcode ambiguous between domestic and international services', () => {

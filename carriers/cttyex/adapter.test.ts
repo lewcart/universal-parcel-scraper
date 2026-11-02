@@ -12,7 +12,7 @@ import { normalizeCttyexNumber, parseCttyex } from './parser.js';
 import { cttyexStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const UNKNOWN = 'CTTY9900000001CN';
+const UNKNOWN = 'CTTY9999999980CN';
 const IN_TRANSIT = 'CTTY9900000002CN';
 const REGISTERED = 'CTTY9900000003CN';
 

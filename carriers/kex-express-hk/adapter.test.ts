@@ -21,8 +21,8 @@ const answering = (body: () => Response) => vi.fn<typeof fetch>().mockImplementa
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 // Imperva's refusal, which replaces the whole page.
 const BLOCKED = '<html style="height:100%"><head><META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"></head><body style="margin:0px;height:100%">'
-  + '<iframe id="main-iframe" src="/_Incapsula_Resource?CWUDNSAI=00&incident_id=0-000000000000000000" frameborder=0 width="100%" height="100%">'
-  + 'Request unsuccessful. Incapsula incident ID: 0-000000000000000000</iframe></body></html>';
+  + '<iframe id="main-iframe" src="/_Incapsula_Resource?CWUDNSAI=00&incident_id=0-099999999999999980" frameborder=0 width="100%" height="100%">'
+  + 'Request unsuccessful. Incapsula incident ID: 0-099999999999999980</iframe></body></html>';
 // The rows of the delivered page's timeline, in the order the page lists them.
 const rowsOf = (html: string): string[] => [...html.match(/ {52}<li>[\s\S]*?<\/li>/g)!];
 const withRows = (html: string, rows: string[]) => {

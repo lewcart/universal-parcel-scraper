@@ -2,7 +2,7 @@
   "carrier": "amazon-logistics",
   "records": [
     {
-      "number": "AT0000000001",
+      "number": "AT9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -11,10 +11,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the AT marketplace prefix."
+      "note": "Invented placeholder for the AT marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "BE0000000001",
+      "number": "BE9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -23,10 +23,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the BE marketplace prefix."
+      "note": "Invented placeholder for the BE marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "CH0000000001",
+      "number": "CH9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -35,10 +35,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the CH marketplace prefix."
+      "note": "Invented placeholder for the CH marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "DE0000000001",
+      "number": "DE9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -47,10 +47,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the DE marketplace prefix."
+      "note": "Invented placeholder for the DE marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "ES0000000001",
+      "number": "ES9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -59,10 +59,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the ES marketplace prefix."
+      "note": "Invented placeholder for the ES marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "FR0000000001",
+      "number": "FR9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -71,10 +71,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the FR marketplace prefix."
+      "note": "Invented placeholder for the FR marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "FR1234567890",
+      "number": "FR9999999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -83,10 +83,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
     },
     {
-      "number": "GB0000000001",
+      "number": "GB9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -95,10 +95,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the GB marketplace prefix."
+      "note": "Invented placeholder for the GB marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "IE0000000001",
+      "number": "IE9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -107,10 +107,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the IE marketplace prefix."
+      "note": "Invented placeholder for the IE marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "IT0000000001",
+      "number": "IT9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -119,10 +119,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the IT marketplace prefix."
+      "note": "Invented placeholder for the IT marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "NL0000000001",
+      "number": "NL9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -131,10 +131,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the NL marketplace prefix."
+      "note": "Invented placeholder for the NL marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "PL0000000001",
+      "number": "PL9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -143,10 +143,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the PL marketplace prefix."
+      "note": "Invented placeholder for the PL marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "PT0000000001",
+      "number": "PT9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -155,10 +155,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the PT marketplace prefix."
+      "note": "Invented placeholder for the PT marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "SE0000000001",
+      "number": "SE9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -167,7 +167,7 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the SE marketplace prefix."
+      "note": "Invented placeholder for the SE marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
       "number": "TBA000000000000",
@@ -183,7 +183,7 @@
       "note": "Open-source project example, not a real shipment."
     },
     {
-      "number": "TBA000000000001",
+      "number": "TBA999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -235,7 +235,7 @@
       "note": "Open-source project example, not a real shipment. The source lists it as a valid Amazon Logistics number with the Canadian prefix."
     },
     {
-      "number": "UK0000000001",
+      "number": "UK9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -244,10 +244,10 @@
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "Invented placeholder for the UK marketplace prefix."
+      "note": "Invented placeholder for the UK marketplace prefix. Its serial sits far beyond the range in use."
     },
     {
-      "number": "ZZ0000000001",
+      "number": "ZZ9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -261,7 +261,7 @@
           "aramex-nz"
         ]
       },
-      "note": "Invented placeholder used as a shape check. Filed under Amazon Logistics, which no rule claims."
+      "note": "Invented placeholder used as a shape check. Filed under Amazon Logistics, which no rule claims. Its serial sits far beyond the range in use."
     },
     {
       "number": "C1004444443",

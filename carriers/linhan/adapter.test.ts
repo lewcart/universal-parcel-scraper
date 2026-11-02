@@ -245,7 +245,7 @@ describe('LinHan International HTTP adapter', () => {
 
   it('refuses numbers LinHan does not issue, and pre-aborted or spent lookups, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['LHGJ9900001CD', 'LHGJ990000001CD', 'LHGJ99000001CN', 'JHGJ99000001CD', 'LHGJ9900000ACD', 'JH9900000001CN',
+    for (const number of ['LHGJ9900001CD', 'LHGJ990000001CD', 'LHGJ99000001CN', 'JHGJ99000001CD', 'LHGJ9900000ACD', 'JH9999999980CN',
       'SAMPLETRACKING', `LHGJ${'0'.repeat(70)}CD`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }

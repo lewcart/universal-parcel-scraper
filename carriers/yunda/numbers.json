@@ -23,7 +23,7 @@
       "note": "Open-source project example, not a real shipment. The source attributes it to Yunda Express, which stays one candidate among several."
     },
     {
-      "number": "000000000000001",
+      "number": "099999999999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -37,7 +37,7 @@
           "yunda"
         ]
       },
-      "note": "Synthetic domestic waybill shape; DPD France shares its length, so it stays ambiguous."
+      "note": "Synthetic domestic waybill shape; DPD France shares its length, so it stays ambiguous. Its serial sits far beyond the range in use."
     },
     {
       "number": "313016422911811",

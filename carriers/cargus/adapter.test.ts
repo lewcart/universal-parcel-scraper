@@ -43,7 +43,7 @@ describe('Cargus numbers', () => {
         expect(recognitionAskedCarriers(number, { countryHint }), `${number} ${countryHint}`).not.toContain('cargus');
       }
     }
-    for (const other of ['2000000001', '0100000000', '840000000', '870000000', '10000000001', '85000000']) {
+    for (const other of ['2000000001', '0100000000', '840000000', '870000000', '10999999980', '85000000']) {
       expect(detectCarrierMatch(other).candidates ?? [], other).not.toContain('cargus');
     }
   });

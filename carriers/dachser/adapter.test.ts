@@ -9,7 +9,7 @@ const WRONG_DACHSER_NUMBER = '12345678';
 const WRONG_DACHSER_URL = 'https://customeriberia.dachser.com/customerarea/'
   + 'utilidades/seguimiento-publico/detalle?numeroUnico=12345678'
   + '&hash=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-const SHIPMENT_NUMBER = '9010000001234';
+const SHIPMENT_NUMBER = '9019999999986';
 
 const fixture = (name: string): Record<string, unknown> => JSON.parse(
   readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'),
@@ -28,7 +28,7 @@ describe('Dachser capability URL', () => {
     expect(validateDachserTrackingUrl(WRONG_DACHSER_URL, WRONG_DACHSER_NUMBER)).toBe(WRONG_DACHSER_URL);
     expect(() => validateDachserTrackingUrl('http://customeriberia.dachser.com/customerarea/utilidades/seguimiento-publico/detalle?numeroUnico=12345678&hash=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', WRONG_DACHSER_NUMBER))
       .toThrow('must use https://customeriberia.dachser.com');
-    expect(() => validateDachserTrackingUrl(WRONG_DACHSER_URL, '87654321'))
+    expect(() => validateDachserTrackingUrl(WRONG_DACHSER_URL, '99999980'))
       .toThrow('belongs to a different tracking number');
     expect(() => validateDachserTrackingUrl('https://customeriberia.dachser.com/customerarea/utilidades/seguimiento-publico/detalle?numeroUnico=12345678', WRONG_DACHSER_NUMBER))
       .toThrow('must include its access parameters');
@@ -44,7 +44,7 @@ describe('Dachser capability URL', () => {
       kind: 'invalid_input',
       message: 'Dachser links must use https://customeriberia.dachser.com',
     });
-    await expect(tracker.fetch('87654321', WRONG_DACHSER_URL)).rejects.toMatchObject({
+    await expect(tracker.fetch('99999980', WRONG_DACHSER_URL)).rejects.toMatchObject({
       kind: 'invalid_input',
       message: 'The Dachser URL belongs to a different tracking number',
     });

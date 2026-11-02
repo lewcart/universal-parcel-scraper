@@ -48,7 +48,7 @@
       "note": "A shipment number in the sample invoice specification of Raben Austria's customer guide, beside a separate reference column."
     },
     {
-      "number": "271234567890123",
+      "number": "279999999999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -62,10 +62,10 @@
           "raben"
         ]
       },
-      "note": "Made-up number in the shape of a shipment number Raben's own tracker finds: 27 and thirteen digits."
+      "note": "Made-up number in the shape of a shipment number Raben's own tracker finds: 27 and thirteen digits. Its serial sits far beyond the range in use."
     },
     {
-      "number": "279182736455120",
+      "number": "279999999999984",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -80,7 +80,7 @@
           "raben"
         ]
       },
-      "note": "Made-up number in the shape of the shipment numbers in Raben Austria's customer guide, 27 and thirteen digits, whose last digit happens to pass the GS1 check, as about one Raben number in ten does, so FedEx is suggested too."
+      "note": "Made-up number in the shape of the shipment numbers in Raben Austria's customer guide, 27 and thirteen digits, whose last digit happens to pass the GS1 check, as about one Raben number in ten does, so FedEx is suggested too. Its serial sits far beyond the range in use."
     }
   ]
 }

@@ -73,7 +73,7 @@ describe('Bombino Express HTTP adapter', () => {
     const result = parseBombino(fixture('in-transit'), IN_TRANSIT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'SHIPMENT FORWARDED TO FEDEX',
       last_update_local: '2026-05-04T10:12:00', expected_delivery: '2026-05-08', destination_country: 'US',
-      delivery_carrier: 'fedex', delivery_tracking_number: '100000000001' });
+      delivery_carrier: 'fedex', delivery_tracking_number: '199999999977' });
     // A hold until the account is settled, then the unhold without the reply's trailing dash.
     expect(result.events!.slice(3, 5).map((event) => [event.description, event.stage])).toEqual([
       ['SHIPMENT UNHOLD', 'in_transit'], ['Shipment Hold Due to Inscan Credit Limit exceeded', 'exception'],
@@ -83,12 +83,12 @@ describe('Bombino Express HTTP adapter', () => {
 
   it('leaves the partner out unless one catalog carrier’s link carries the forwarding number', () => {
     for (const [forwarding_no, forwarding_url] of [
-      ['100000000001', ''],
-      ['100000000001', 'https://www.fedex.com/fedextrack/'],
-      ['100000000001', 'https://www.sample-partner.invalid/track?n=100000000001'],
-      ['100000000001', 'https://parcelsapp.com/en/tracking/100000000001'],
+      ['199999999977', ''],
+      ['199999999977', 'https://www.fedex.com/fedextrack/'],
+      ['199999999977', 'https://www.sample-partner.invalid/track?n=199999999977'],
+      ['199999999977', 'https://parcelsapp.com/en/tracking/199999999977'],
       [IN_TRANSIT, `https://www.fedex.com/fedextrack/?trknbr=${IN_TRANSIT}`],
-      ['', 'https://www.fedex.com/fedextrack/?trknbr=100000000001'],
+      ['', 'https://www.fedex.com/fedextrack/?trknbr=199999999977'],
     ]) {
       const result = parseBombino(changed('in-transit', (body) => {
         Object.assign(body, { forwarding_no, forwarding_url });
@@ -99,7 +99,7 @@ describe('Bombino Express HTTP adapter', () => {
     }
     // The shipment's details name the forwarding number too.
     const detailed = parseBombino(changed('in-transit', (body) => { body.forwarding_no = ''; }), IN_TRANSIT);
-    expect(detailed).toMatchObject({ delivery_carrier: 'fedex', delivery_tracking_number: '100000000001' });
+    expect(detailed).toMatchObject({ delivery_carrier: 'fedex', delivery_tracking_number: '199999999977' });
   });
 
   it('reads a return, a scan without wording or state, and a name in a scan’s wording', () => {

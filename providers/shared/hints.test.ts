@@ -27,7 +27,7 @@ describe('carrier names reported by universal providers', () => {
     expect(brandCarrierForNumber('DPD Group', '06080000000002')).toBe('dpd');
     expect(brandCarrierForNumber('DPD Group', '06200000000002')).toBe('dpd-at');
     expect(brandCarrierForNumber('DPD Group', '06030000000002')).toBe('dpd');
-    expect(brandCarrierForNumber('dpd', '10000000000001')).toBe('dpd-fr');
+    expect(brandCarrierForNumber('dpd', '10009999999980')).toBe('dpd-fr');
     // A DPD France 250… number is its own high-confidence shape.
     expect(brandCarrierForNumber('DPD', '250000000000000')).toBe('dpd-fr');
     // DPD Poland's waybill, thirteen digits and a letter, and its 13xx depot range.
@@ -101,12 +101,12 @@ describe('carrier names reported by universal providers', () => {
 
   it('reads a bare brand none of whose networks fits the number as a group name', () => {
     // DHLink tracks its line provider XZG's numbers; no DPD network has their layout.
-    expect(universalCarrierHints(['XZG', 'DHLink', 'DPD Group'], 'XZG000000001WL')).toEqual({
+    expect(universalCarrierHints(['XZG', 'DHLink', 'DPD Group'], 'XZG999999980WL')).toEqual({
       reported_carriers: ['XZG', 'DHLink', 'DPD Group'], discovered_carrier: 'dhlink',
     });
     expect(universalCarrierHints(['GLS', 'FedEx'], '000000000000').discovered_carrier).toBe('fedex');
     // Beside a name outside the catalog, or a carrier none of whose rules fits either, no hint.
-    expect(universalCarrierHints(['Some Forwarder', 'DPD Group', 'DHLink'], 'XZG000000001WL').discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['Some Forwarder', 'DPD Group', 'DHLink'], 'XZG999999980WL').discovered_carrier).toBeUndefined();
     expect(universalCarrierHints(['DPD Group', 'Royal Mail'], 'QQ000000000QQ').discovered_carrier).toBeUndefined();
     // A network of the brand that fits keeps it a name of its own.
     expect(universalCarrierHints(['Evri Group', 'Royal Mail'], 'H00A0B0000000003').discovered_carrier).toBeUndefined();

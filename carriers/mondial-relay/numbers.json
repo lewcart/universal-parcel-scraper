@@ -2,7 +2,7 @@
   "carrier": "mondial-relay",
   "records": [
     {
-      "number": "12123456780101006623123454",
+      "number": "12123999999999999999999987",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -11,7 +11,7 @@
         "carrier": "mondial-relay",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use."
     },
     {
       "number": "4744000791",
@@ -1154,7 +1154,7 @@
       "note": "An archived tracking link with a 26-digit label barcode whose check digits pass. Mondial Relay's tracker finds no parcel under it any more."
     },
     {
-      "number": "FV00000001",
+      "number": "FV99999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -1167,7 +1167,7 @@
           "tnt-it"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which InPost Spain’s own tracking page answered and a universal provider filed under InPost (ES): FV and eight digits."
+      "note": "Made-up number in the shape of a parcel the app tracked, which InPost Spain’s own tracking page answered and a universal provider filed under InPost (ES): FV and eight digits. Its serial sits far beyond the range in use."
     }
   ]
 }

@@ -290,7 +290,7 @@
       "note": "Public status question about an ordinary China Post air parcel to New Zealand. China Post's own trace knows the number."
     },
     {
-      "number": "ZS10000000001",
+      "number": "ZS19999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -299,10 +299,10 @@
         "carrier": "china-post",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a ZS number, which China Post's app service knows behind a contact phone's last four digits."
+      "note": "Made-up number in the shape of a ZS number, which China Post's app service knows behind a contact phone's last four digits. Its serial sits far beyond the range in use."
     },
     {
-      "number": "ZC10000000001",
+      "number": "ZC19999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -311,10 +311,10 @@
         "carrier": "china-post",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a ZC number, which China Post's app service knows behind a contact phone's last four digits."
+      "note": "Made-up number in the shape of a ZC number, which China Post's app service knows behind a contact phone's last four digits. Its serial sits far beyond the range in use."
     },
     {
-      "number": "ZA10000000001",
+      "number": "ZA19999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -323,10 +323,10 @@
         "carrier": "china-post",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a ZA number, which China Post's app service knows behind a contact phone's last four digits."
+      "note": "Made-up number in the shape of a ZA number, which China Post's app service knows behind a contact phone's last four digits. Its serial sits far beyond the range in use."
     },
     {
-      "number": "ZA10000000009",
+      "number": "ZA19999999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -335,7 +335,7 @@
         "carrier": "china-post",
         "confidence": "high"
       },
-      "note": "Made-up ZA number whose last digit happens to close La Poste's GS1 key, as about one China Post number in ten does; La Poste uses no Z prefix, so China Post is still selected."
+      "note": "Made-up ZA number whose last digit happens to close La Poste's GS1 key, as about one China Post number in ten does; La Poste uses no Z prefix, so China Post is still selected. Its serial sits far beyond the range in use."
     }
   ]
 }

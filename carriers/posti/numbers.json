@@ -2,7 +2,7 @@
   "carrier": "posti",
   "records": [
     {
-      "number": "CP123456785FI",
+      "number": "CP999999987FI",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -10,7 +10,7 @@
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Invented checksum-valid Finnish-issued S10 number. The issuer makes Posti a recognition candidate; offline detection stays with the unknown postal carrier."
+      "note": "Invented checksum-valid Finnish-issued S10 number. The issuer makes Posti a recognition candidate; offline detection stays with the unknown postal carrier. Its serial sits far beyond the range in use."
     },
     {
       "number": "CP123456789FI",

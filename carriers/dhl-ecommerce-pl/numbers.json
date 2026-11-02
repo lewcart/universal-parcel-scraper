@@ -2,7 +2,7 @@
   "carrier": "dhl-ecommerce-pl",
   "records": [
     {
-      "number": "99999999995",
+      "number": "99999999984",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -23,7 +23,7 @@
           "ppl"
         ]
       },
-      "note": "Made-up waybill in the eleven-digit shape the portal answers with, closing with its check digit; several carriers share the shape."
+      "note": "Made-up waybill in the eleven-digit shape the portal answers with, closing with its check digit; several carriers share the shape. Its serial sits far beyond the range in use."
     },
     {
       "number": "JJD000030214008000129555645",

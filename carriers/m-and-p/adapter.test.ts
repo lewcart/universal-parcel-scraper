@@ -194,7 +194,7 @@ describe('M&P HTTP adapter', () => {
 
   it('rejects what is not a number it issues, and pre-aborted lookups, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['', '1234567', '10000000001', '1000000000000001', 'AB1000000000001', '0'.repeat(70)]) {
+    for (const number of ['', '1234567', '10999999980', '1000000000000001', 'AB1000000000001', '0'.repeat(70)]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

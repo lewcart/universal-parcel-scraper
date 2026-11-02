@@ -5,7 +5,7 @@ import { parcelTrackingLinks } from './parcel.js';
 describe('Amazon order-history store', () => {
   it('follows the number\'s country, or where Amazon sends that country\'s visitors', () => {
     expect(amazonOrdersUrl('CH1234567890')).toBe('https://www.amazon.de/gp/your-account/order-history');
-    expect(amazonOrdersUrl('FR1234567890')).toBe('https://www.amazon.fr/gp/your-account/order-history');
+    expect(amazonOrdersUrl('FR9999999981')).toBe('https://www.amazon.fr/gp/your-account/order-history');
     expect(['LI', 'LU', 'DK', 'NO', 'FI', 'CZ', 'GR'].map((prefix) => amazonMarketplace(`${prefix}1234567890`))).toEqual(Array(7).fill('de'));
     expect(amazonMarketplace('IS1234567890')).toBe('co.uk');
     // A delivery country never overrides the country a number names.

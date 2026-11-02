@@ -67,7 +67,7 @@ describe('Foxpost direct tracking', () => {
     expect(normalizeFoxpostNumber(' clfox 10000 00000 00001 ')).toBe(NUMBER);
     expect(normalizeFoxpostNumber('z1234567890')).toBe('Z1234567890');
     expect(normalizeFoxpostNumber('66 1234 5678')).toBe('6612345678');
-    for (const number of ['6663900001', '6663900000001', '66639000000000000001']) expect(normalizeFoxpostNumber(number)).toBe(number);
+    for (const number of ['6663900001', '6663999999982', '66639000000000000001']) expect(normalizeFoxpostNumber(number)).toBe(number);
     expect(foxpostTrackingUrl(' clfox100000000000001')).toBe(`https://foxpost.hu/csomagkovetes/?code=${NUMBER}`);
     for (const number of ['', 'CLFOX10000000000000', 'CLFOX1000000000000011', 'CLFAX100000000000001', 'Z123456789', 'Z12345678901',
       '661234567', '66123456789', '6712345678', 'ABCDEFGHIJ', '666390001', '666390000000000000001', '6663800000001']) {
@@ -190,7 +190,7 @@ describe('Foxpost direct tracking', () => {
   it('keeps detection and the tracking link on Foxpost', () => {
     expect(detectCarrierMatch(NUMBER)).toMatchObject({ carrier: 'foxpost', confidence: 'high' });
     // Home deliveries' numbers start 66639; other carriers print ten digits too, so Foxpost leads at low confidence.
-    for (const number of ['6663900001', '6663900000001', '66639000000000000001']) {
+    for (const number of ['6663900001', '6663999999982', '66639000000000000001']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['foxpost'] });
       expect(recognitionAskedCarriers(number)[0], number).toBe('foxpost');
     }

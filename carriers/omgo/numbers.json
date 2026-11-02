@@ -116,7 +116,7 @@
       "note": "The number ParcelPanel's OMGO Express tracking page offered to try, archived by the Wayback Machine. The page rotates its example. OMGO's tracker returns its cross-border history to Switzerland."
     },
     {
-      "number": "OMGO0000000000001",
+      "number": "OMGO9999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -124,10 +124,10 @@
         "carrier": "omgo",
         "confidence": "high"
       },
-      "note": "Synthetic shipment-number shape."
+      "note": "Synthetic shipment-number shape. Its serial sits far beyond the range in use."
     },
     {
-      "number": "OMGO0000000050001",
+      "number": "OMGO0000000059980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -135,10 +135,10 @@
         "carrier": "omgo",
         "confidence": "high"
       },
-      "note": "Synthetic suffix also accepted by the generic Colis Privé composite rule."
+      "note": "Synthetic suffix also accepted by the generic Colis Privé composite rule. Its serial sits far beyond the range in use."
     },
     {
-      "number": "OMGO000000000001",
+      "number": "OMGO999999999980",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",

@@ -150,7 +150,7 @@
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Hermes Germany, which stays one candidate among several."
     },
     {
-      "number": "H1234567890123456789",
+      "number": "H9999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -159,10 +159,10 @@
         "carrier": "hermes-de",
         "confidence": "high"
       },
-      "note": "Invented H-prefixed number matching the Hermes Germany shape."
+      "note": "Invented H-prefixed number matching the Hermes Germany shape. Its serial sits far beyond the range in use."
     },
     {
-      "number": "H000000000000008",
+      "number": "H999999999999985",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -175,7 +175,7 @@
           "evri-uk"
         ]
       },
-      "note": "Invented shared H-prefixed barcode; country and service require recognition or an explicit carrier link."
+      "note": "Invented shared H-prefixed barcode; country and service require recognition or an explicit carrier link. Its serial sits far beyond the range in use."
     },
     {
       "number": "02276124008422",

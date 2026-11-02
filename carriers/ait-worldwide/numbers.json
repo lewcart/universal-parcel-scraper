@@ -2,7 +2,7 @@
   "carrier": "ait-worldwide",
   "records": [
     {
-      "number": "100000001",
+      "number": "199999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -11,7 +11,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Invented placeholder for a nine-digit bill of the current FasTrak tracker; the public samples' tracker names their signers."
+      "note": "Invented placeholder for a nine-digit bill of the current FasTrak tracker; the public samples' tracker names their signers. Its serial sits far beyond the range in use."
     },
     {
       "number": "11301624",

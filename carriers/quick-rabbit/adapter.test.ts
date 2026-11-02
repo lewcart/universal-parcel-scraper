@@ -14,7 +14,7 @@ const CODE = 'PKG00620260301000000017';
 const REFERENCE = 'XX0000000000000017';
 const UNKNOWN = 'PKG00620260301000000099';
 // The layout a universal provider files under Quick Rabbit, with its tracker's status names.
-const LONG = 'PKG006261001ES9900000000001A';
+const LONG = 'PKG006261001ES9999999999980A';
 
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const json = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),

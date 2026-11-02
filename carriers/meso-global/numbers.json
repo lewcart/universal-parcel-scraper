@@ -3,7 +3,7 @@
   "gap": "No public page shows a whole Meso-global tracking number.",
   "records": [
     {
-      "number": "ZJKJ1000000017",
+      "number": "ZJKJ1999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -12,7 +12,7 @@
         "carrier": "meso-global",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which Meso-global's tracker answered: ZJKJ, the initials of its Chinese name, and ten digits."
+      "note": "Made-up number in the shape of a parcel the app tracked, which Meso-global's tracker answered: ZJKJ, the initials of its Chinese name, and ten digits. Its serial sits far beyond the range in use."
     }
   ]
 }

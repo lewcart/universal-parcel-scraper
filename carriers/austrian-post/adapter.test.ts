@@ -19,7 +19,7 @@ const HERMES = '10000000000005';
 const receivingBox = () => JSON.parse(readFileSync(new URL('./fixtures/receiving-box.json', import.meta.url), 'utf8'));
 // A parcel sent to Italy through EURODIS, which the reply names by the partner's barcode once the partner takes it over.
 const ABROAD = '1000000000000000000003';
-const EURODIS = '010000000000000000000001';
+const EURODIS = '019999999999999999999980';
 const eurodis = () => JSON.parse(readFileSync(new URL('./fixtures/eurodis.json', import.meta.url), 'utf8'));
 // A letter Deutsche Post sends to Austria, put through the letterbox.
 const INBOUND = 'LY000000005DE';
@@ -111,15 +111,15 @@ describe('Austrian Post public tracking', () => {
   it('reads a parcel sent abroad under the EURODIS barcode the reply names for its 22-digit number', () => {
     const payload = fixture();
     Object.assign(payload.data.einzelsendung, {
-      sendungsnummer: '010000000000000000000001', activeIdentityCode: '010000000000000000000001', originalIdentityCode: NUMBER,
+      sendungsnummer: '019999999999999999999980', activeIdentityCode: '019999999999999999999980', originalIdentityCode: NUMBER,
     });
     expect(parseAustrianPostResponse(payload, NUMBER)).toMatchObject({
-      status: 'delivered', canonical_tracking_number: '010000000000000000000001',
+      status: 'delivered', canonical_tracking_number: '019999999999999999999980',
     });
     expect(parseAustrianPostResponse(fixture(), NUMBER)).not.toHaveProperty('canonical_tracking_number');
     // A barcode alone, without the reply naming the number asked, is another item.
     const unbound = fixture();
-    unbound.data.einzelsendung.sendungsnummer = '010000000000000000000001';
+    unbound.data.einzelsendung.sendungsnummer = '019999999999999999999980';
     expect(() => parseAustrianPostResponse(unbound, NUMBER)).toThrow('different shipment');
   });
 
@@ -168,7 +168,7 @@ describe('Austrian Post public tracking', () => {
     payload.data.einzelsendung.sendungsnummer = '1000000000000000000002';
     expect(() => parseAustrianPostResponse(payload, NUMBER)).toThrow('different shipment');
     // Only a 22-digit number may answer under a 24-digit barcode.
-    for (const [asked, answered] of [[NUMBER, '01000000000000000000001'], [NUMBER, '0100000000000000000000001'], ['010000000000000000000001', NUMBER]] as const) {
+    for (const [asked, answered] of [[NUMBER, '01000000000000000000001'], [NUMBER, '0100000000000000000000001'], ['019999999999999999999980', NUMBER]] as const) {
       const other = fixture();
       other.data.einzelsendung.sendungsnummer = answered;
       expect(() => parseAustrianPostResponse(other, asked), answered).toThrow('different shipment');

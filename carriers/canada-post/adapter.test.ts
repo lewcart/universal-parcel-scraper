@@ -13,7 +13,7 @@ import { isoTime } from '../../core/time/index.js';
 const NUMBER = '0073938000999999';
 const MOVING_NUMBER = '0073938000888888';
 const RETURN_NUMBER = '0073938000777777';
-const NOTICE = '000000000000001';
+const NOTICE = '099999999999981';
 const REFERENCE = '0000000000001';
 const read = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
 const delivered = () => read('delivered');

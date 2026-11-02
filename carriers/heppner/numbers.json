@@ -2,7 +2,7 @@
   "carrier": "heppner",
   "records": [
     {
-      "number": "23456789",
+      "number": "99999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -16,7 +16,7 @@
           "heppner"
         ]
       },
-      "note": "Invented placeholder used as a shape check. Filed under Heppner, which stays one candidate among several."
+      "note": "Invented placeholder used as a shape check. Filed under Heppner, which stays one candidate among several. Its serial sits far beyond the range in use."
     },
     {
       "number": "25631818",

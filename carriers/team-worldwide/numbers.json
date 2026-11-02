@@ -2,7 +2,7 @@
   "carrier": "team-worldwide",
   "records": [
     {
-      "number": "ZZZ200001",
+      "number": "ZZZ999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -11,10 +11,10 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Invented placeholder for a station code and six digits; Team Trac names the signer of each public sample of this layout."
+      "note": "Invented placeholder for a station code and six digits; Team Trac names the signer of each public sample of this layout. Its serial sits far beyond the range in use."
     },
     {
-      "number": "ZZZ200001A",
+      "number": "ZZZ999980A",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -23,10 +23,10 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Invented placeholder for a station code, six digits and a closing letter, a layout Team Trac answers for."
+      "note": "Invented placeholder for a station code, six digits and a closing letter, a layout Team Trac answers for. Its serial sits far beyond the range in use."
     },
     {
-      "number": "26ZZZC200001",
+      "number": "26ZZZC999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -38,7 +38,7 @@
           "colis-prive"
         ]
       },
-      "note": "Invented placeholder for a two-digit year, a station code, a letter and six digits; Team Trac names the signer of each public sample of this layout."
+      "note": "Invented placeholder for a two-digit year, a station code, a letter and six digits; Team Trac names the signer of each public sample of this layout. Its serial sits far beyond the range in use."
     },
     {
       "number": "ATLM00090373R",

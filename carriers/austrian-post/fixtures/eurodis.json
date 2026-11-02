@@ -1,8 +1,8 @@
 {
   "data": {
     "einzelsendung": {
-      "sendungsnummer": "010000000000000000000001",
-      "activeIdentityCode": "010000000000000000000001",
+      "sendungsnummer": "019999999999999999999980",
+      "activeIdentityCode": "019999999999999999999980",
       "originalIdentityCode": "1000000000000000000003",
       "status": "ZU",
       "weight": 1.5,

@@ -2,7 +2,7 @@
   "carrier": "metropolitan-warehouse",
   "records": [
     {
-      "number": "500000000013",
+      "number": "599999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -24,7 +24,7 @@
           "sending"
         ]
       },
-      "note": "Made-up number in the shape of the twelve-digit tracking numbers Metropolitan's own tracker checks and follows."
+      "note": "Made-up number in the shape of the twelve-digit tracking numbers Metropolitan's own tracker checks and follows. Its serial sits far beyond the range in use."
     }
   ]
 }

@@ -196,7 +196,7 @@ describe('GIG Logistics HTTP adapter', () => {
 
   it('leaves references other than a waybill to providers, refuses what no tracker takes, and refuses pre-aborted or spent lookups, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['100000001', '10000000011', 'GIG0000001', 'SAMPLECODE']) {
+    for (const number of ['199999980', '10000000011', 'GIG0000001', 'SAMPLECODE']) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'indeterminate' });
     }
     for (const number of ['', '1000000001/1', 'SAMPLE#CODE', `1${'0'.repeat(70)}`]) {

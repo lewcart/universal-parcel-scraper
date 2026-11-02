@@ -2,7 +2,7 @@
   "carrier": "sengi-express",
   "records": [
     {
-      "number": "SNGXP100000017MT",
+      "number": "SNGXP199999980MT",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -15,7 +15,7 @@
           "sengi-express"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked to Malta, for which ParcelsApp named Sengi and MaltaPost: five letters, nine digits and MT."
+      "note": "Made-up number in the shape of a parcel the app tracked to Malta, for which ParcelsApp named Sengi and MaltaPost: five letters, nine digits and MT. Its serial sits far beyond the range in use."
     }
   ]
 }

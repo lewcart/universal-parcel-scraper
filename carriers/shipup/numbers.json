@@ -2,7 +2,7 @@
   "carrier": "shipup",
   "records": [
     {
-      "number": "SHIPUP123456",
+      "number": "SHIPUP999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -14,7 +14,7 @@
           "colis-prive"
         ]
       },
-      "note": "Invented placeholder used as a shape check. Filed under ShipUp, which no rule claims."
+      "note": "Invented placeholder used as a shape check. Filed under ShipUp, which no rule claims. Its serial sits far beyond the range in use."
     }
   ]
 }

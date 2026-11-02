@@ -260,7 +260,7 @@
       "note": "A unit-test fixture in Sameday's own PHP SDK on GitHub uses it as the parcel number of a parcel status-history reply; test data, not a real shipment."
     },
     {
-      "number": "1ZZ9LN000000001",
+      "number": "1ZZ9LN999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -272,10 +272,10 @@
           "sameday"
         ]
       },
-      "note": "Made-up number in the shape of an AWB whose three-character client code holds a digit, followed by LN and nine digits. Sameday's tracker finds such a parcel as written."
+      "note": "Made-up number in the shape of an AWB whose three-character client code holds a digit, followed by LN and nine digits. Sameday's tracker finds such a parcel as written. Its serial sits far beyond the range in use."
     },
     {
-      "number": "1XZ9LL000000000001",
+      "number": "1XZ9LL999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -287,10 +287,10 @@
           "sameday"
         ]
       },
-      "note": "Made-up number in the shape of an AWB whose three-character client code holds a digit, followed by LL and twelve digits. Sameday's tracker finds such a parcel as written."
+      "note": "Made-up number in the shape of an AWB whose three-character client code holds a digit, followed by LL and twelve digits. Sameday's tracker finds such a parcel as written. Its serial sits far beyond the range in use."
     },
     {
-      "number": "1XL00000000002",
+      "number": "1XL99999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -302,7 +302,7 @@
           "sameday"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which Sameday's tracker answered with its history."
+      "note": "Made-up number in the shape of a parcel the app tracked, which Sameday's tracker answered with its history. Its serial sits far beyond the range in use."
     }
   ]
 }

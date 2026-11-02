@@ -2,7 +2,7 @@
   "carrier": "ciblex",
   "records": [
     {
-      "number": "12345678901234",
+      "number": "19999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -28,10 +28,10 @@
           "xpressbees"
         ]
       },
-      "note": "Invented placeholder used as a shape check. Filed under Ciblex, which stays one candidate among several."
+      "note": "Invented placeholder used as a shape check. Filed under Ciblex, which stays one candidate among several. Its serial sits far beyond the range in use."
     },
     {
-      "number": "123456789012345678900000",
+      "number": "123456789012345678999980",
       "role": "full_barcode",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -46,7 +46,7 @@
           "austrian-post"
         ]
       },
-      "note": "Invented full label barcode of 24 digits. Real ones end in routing digits that read as a postcode, so none are kept."
+      "note": "Invented full label barcode of 24 digits. Real ones end in routing digits that read as a postcode, so none are kept. Its serial sits far beyond the range in use."
     },
     {
       "number": "560815852502035603344150",

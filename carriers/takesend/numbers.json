@@ -3,7 +3,7 @@
   "gap": "No public page shows a whole Take Send number.",
   "records": [
     {
-      "number": "TS2609040000017",
+      "number": "TS2609049999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -15,7 +15,7 @@
           "takesend"
         ]
       },
-      "note": "Made-up number in the layout Take Send's delivery-time posts print with most digits hidden: TS, the date the parcel was registered and seven digits."
+      "note": "Made-up number in the layout Take Send's delivery-time posts print with most digits hidden: TS, the date the parcel was registered and seven digits. Its serial sits far beyond the range in use."
     }
   ]
 }

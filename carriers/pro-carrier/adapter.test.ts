@@ -47,7 +47,7 @@ describe('Pro Carrier HTTP adapter', () => {
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
       last_status_text: 'parcel delivered in mailbox', last_update: null, last_update_local: '2026-03-12T13:05:00',
       expected_delivery: null, service_name: 'PCPL', weight_kg: 0.42, destination_country: 'FR',
-      delivery_carrier: 'colis-prive', delivery_tracking_number: 'ZZ0000000001' });
+      delivery_carrier: 'colis-prive', delivery_tracking_number: 'ZZ9999999980' });
     expect(summary(result)).toEqual([
       ['2026-03-12T13:05:00', 'parcel delivered in mailbox', 'delivered'],
       ['2026-03-12T08:31:00', 'parcel out for delivery', 'out_for_delivery'],
@@ -74,7 +74,7 @@ describe('Pro Carrier HTTP adapter', () => {
 
   it('proposes no Colis Privé lookup, which needs the recipient\'s postcode, and keeps a longer reference out', () => {
     expect(deliveryHandoff('pro-carrier', DELIVERED, parseProCarrier(page('delivered'), DELIVERED))).toBeNull();
-    const longer = parseProCarrier(page('delivered').replace('<dd>ZZ0000000001</dd>', '<dd>ZZ000000000199999</dd>'), DELIVERED);
+    const longer = parseProCarrier(page('delivered').replace('<dd>ZZ9999999980</dd>', '<dd>ZZ000000000199999</dd>'), DELIVERED);
     expect(longer).not.toHaveProperty('delivery_tracking_number');
     expect(longer).not.toHaveProperty('delivery_carrier');
   });

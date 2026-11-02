@@ -158,7 +158,7 @@ describe('Aramex New Zealand tracking adapter', () => {
       ['label not text', (result: Reply) => { result.OnforwardLabelNumber = { label: HANDED_ON }; }],
       ['broken check digit', (result: Reply) => { result.OnforwardLabelNumber = 'XD123456798NZ'; }],
       ['part of the label', (result: Reply) => { result.OnforwardLabelNumber = 'XD123456799'; }],
-      ['another post’s item', (result: Reply) => { result.OnforwardLabelNumber = 'RA123456785CH'; }],
+      ['another post’s item', (result: Reply) => { result.OnforwardLabelNumber = 'RA999999987CH'; }],
       ['an Aramex label', (result: Reply) => { result.OnforwardLabelNumber = TRANSIT; }],
     ] as const) {
       const other = parseAramexNz(edited('onforwarded', change), ONFORWARDED);

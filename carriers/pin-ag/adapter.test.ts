@@ -139,7 +139,7 @@ describe('PIN AG HTTP adapter', () => {
 
   it('rejects numbers PIN does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['010000000000001', '01000000000000012', '100000000001', 'PIN0000000000001', '0100-0000-0000-000X']) {
+    for (const number of ['010000000000001', '01000000000000012', '199999999977', 'PIN0000000000001', '0100-0000-0000-000X']) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: PARCEL }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

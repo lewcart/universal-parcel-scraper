@@ -5,7 +5,7 @@ import { adapter, HermesGermanyTracker, parseHermesGermanyResponse } from './ada
 import { sameInstantIdentityPolicy } from '../../app.js';
 import { STATUSES } from './status.js';
 
-const NUMBER = 'H1234567890123456789';
+const NUMBER = 'H9999999999999999980';
 
 const fixture = (name: string): Array<Record<string, unknown>> => JSON.parse(
   readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'),

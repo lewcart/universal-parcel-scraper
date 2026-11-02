@@ -2,7 +2,7 @@
   "carrier": "spx-ph",
   "records": [
     {
-      "number": "PH000000000001",
+      "number": "PH999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -13,10 +13,10 @@
           "spx-ph"
         ]
       },
-      "note": "Synthetic tracking-number shape for offline detection and transport tests."
+      "note": "Synthetic tracking-number shape for offline detection and transport tests. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
     },
     {
-      "number": "SPXPH000000000001",
+      "number": "SPXPH999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",

@@ -40,7 +40,18 @@
       "note": "GOFO's anonymous national tracking service confirms the whole waybill and national destination. The official reply binds this waybill to the public tracker sample's shipper reference."
     },
     {
-      "number": "CIFR0000000000001",
+      "number": "CIFR9999999999980",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "expect": {
+        "carrier": "gofo-fr",
+        "confidence": "high"
+      },
+      "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/fr/contact-us/. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
+    },
+    {
+      "number": "GFFR9999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -51,18 +62,7 @@
       "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/fr/contact-us/."
     },
     {
-      "number": "GFFR0000000000001",
-      "role": "shipment",
-      "evidence": "synthetic",
-      "derivedFrom": "official_shape",
-      "expect": {
-        "carrier": "gofo-fr",
-        "confidence": "high"
-      },
-      "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/fr/contact-us/."
-    },
-    {
-      "number": "CIFR00000000000001",
+      "number": "CIFR99999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",

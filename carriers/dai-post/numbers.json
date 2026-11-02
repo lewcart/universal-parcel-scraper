@@ -100,7 +100,7 @@
       "note": "A review of DAI Post names it as the shipment DAI Post held in Singapore for GST. DAI Post's tracker returned its history, from the United States to Singapore customs. A shipper's own prefix, not a DAI Post format."
     },
     {
-      "number": "NZC999999999",
+      "number": "NZC999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -109,7 +109,7 @@
         "carrier": "dai-post",
         "confidence": "high"
       },
-      "note": "Synthetic shape of DAI Post's New Zealand numbers, NZC and nine digits, which ePost Global names with a DAI Post tracking link and DAI Post's tracker knows."
+      "note": "Synthetic shape of DAI Post's New Zealand numbers, NZC and nine digits, which ePost Global names with a DAI Post tracking link and DAI Post's tracker knows. Its serial sits far beyond the range in use."
     }
   ]
 }

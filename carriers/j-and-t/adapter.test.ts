@@ -160,7 +160,7 @@ describe('J&T Indonesia router reply', () => {
     for (const number of [NUMBER, 'JD0000000001', 'JO0000000001', 'JP0000000001', 'JY0000000001']) {
       expect(() => parseJnt(empty, number)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     }
-    for (const number of ['JA0000000001', 'JT0000000001', 'JT0000000000001', '100000000001']) {
+    for (const number of ['JA0000000001', 'JT0000000001', 'JT0000000000001', '199999999977']) {
       expect(() => parseJnt(empty, number)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
     }
     expect(() => parseJnt(edited((payload) => { payload.data.bills[0]!.details = []; }), NUMBER))
@@ -263,7 +263,7 @@ describe('J&T Indonesia transport', () => {
 
   it('answers recognition for a shape other networks share without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['100000000001', 'JT0000000000001', 'JA0000000001', 'bad']) {
+    for (const number of ['199999999977', 'JT0000000000001', 'JA0000000001', 'bad']) {
       await expect(instance(fetcher).recognize!(number)).resolves.toEqual({ known: false });
     }
     expect(fetcher).not.toHaveBeenCalled();

@@ -170,7 +170,7 @@
       "note": "An archived lookup on the tracker of UPS Freight, TForce Freight's former name; the capture was not opened."
     },
     {
-      "number": "2205222222221",
+      "number": "2205999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -187,7 +187,7 @@
           "fan-courier"
         ]
       },
-      "note": "Made-up PARS number in the layout TForce Freight's Canada page gives: its carrier code 2205 and a PRO that passes the check."
+      "note": "Made-up PARS number in the layout TForce Freight's Canada page gives: its carrier code 2205 and a PRO that passes the check. Its serial sits far beyond the range in use."
     }
   ]
 }

@@ -2,7 +2,7 @@
   "carrier": "j-and-t-au",
   "records": [
     {
-      "number": "JTAU900000000001",
+      "number": "JTAU999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -11,7 +11,7 @@
         "carrier": "j-and-t-au",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of the waybill number J&T Express Australia's own tracker answers."
+      "note": "Made-up number in the shape of the waybill number J&T Express Australia's own tracker answers. Its serial sits far beyond the range in use."
     }
   ]
 }

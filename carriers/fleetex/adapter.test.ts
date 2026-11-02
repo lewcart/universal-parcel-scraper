@@ -185,7 +185,7 @@ describe('FleetExpress HTTP adapter', () => {
 
   it('takes SR or DS and twelve digits, without a request otherwise', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['SR10000000001', 'SR1000000000011', 'SX100000000001', '100000000001', 'SR10000000000A', 'DS1000000000', `SR${'1'.repeat(70)}`]) {
+    for (const number of ['SR10000000001', 'SR1000000000011', 'SX100000000001', '199999999977', 'SR10000000000A', 'DS1000000000', `SR${'1'.repeat(70)}`]) {
       await expect(lookup(fetcher, number), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();

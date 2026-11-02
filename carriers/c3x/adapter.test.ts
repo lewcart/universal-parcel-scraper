@@ -72,8 +72,8 @@ describe('C3X HTTP adapter', () => {
     expect(result.events).toHaveLength(2);
     // No forwarding agent is named: the number's own rules decide whether a confirmation lookup is proposed.
     expect(deliveryHandoff('c3x', IN_TRANSIT, normalizeCarrierResult(result))).toBeNull();
-    const postal = normalizeCarrierResult(parseC3x(changed('in-transit', (shipment) => { shipment.ForwardingNumber = 'RR000000005IN'; }), IN_TRANSIT));
-    expect(deliveryHandoff('c3x', IN_TRANSIT, postal)).toEqual({ carrier: 'india-post', number: 'RR000000005IN', basis: 'reference' });
+    const postal = normalizeCarrierResult(parseC3x(changed('in-transit', (shipment) => { shipment.ForwardingNumber = 'RR999999987IN'; }), IN_TRANSIT));
+    expect(deliveryHandoff('c3x', IN_TRANSIT, postal)).toEqual({ carrier: 'india-post', number: 'RR999999987IN', basis: 'reference' });
   });
 
   it('keeps only one whole forwarding number other than the airwaybill', () => {
@@ -254,7 +254,7 @@ describe('C3X HTTP adapter', () => {
   it('refuses numbers C3X does not issue, and pre-aborted lookups, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
     for (const number of ['400000000', '40000000000', '400000000A', 'SYN0000000001', `${IN_TRANSIT},${DELIVERED}`, `${IN_TRANSIT}/1`,
-      'RR000000005IN', '4'.repeat(70)]) {
+      'RR999999987IN', '4'.repeat(70)]) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
       await expect(carrier(fetcher).recognize!(number)).resolves.toEqual({ known: false });
     }

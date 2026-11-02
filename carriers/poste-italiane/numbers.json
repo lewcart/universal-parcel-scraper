@@ -407,7 +407,7 @@
       "note": "Registered letter to Austria in a municipality's public integration notes. Poste Italiane's tracker follows it abroad and back to the sender."
     },
     {
-      "number": "KK123456785IT",
+      "number": "KK999999987IT",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -416,7 +416,7 @@
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of an item Poste Italiane's tracker followed to delivery. KK is no S10 service indicator, so detection leaves it to international mail and recognition asks Poste Italiane."
+      "note": "Made-up number in the shape of an item Poste Italiane's tracker followed to delivery. KK is no S10 service indicator, so detection leaves it to international mail and recognition asks Poste Italiane. Its serial sits far beyond the range in use."
     },
     {
       "number": "JF00003251492",
@@ -481,7 +481,7 @@
       "note": "Code its sender quotes in a complaint against Poste Italiane about a lost parcel; the tracker no longer finds it."
     },
     {
-      "number": "F100D00000001",
+      "number": "F100D99999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -493,10 +493,10 @@
           "poste-italiane"
         ]
       },
-      "note": "Made-up number in the shape of a PROMOPACCO PLUS parcel number that Poste's own tracker follows."
+      "note": "Made-up number in the shape of a PROMOPACCO PLUS parcel number that Poste's own tracker follows. Its serial sits far beyond the range in use."
     },
     {
-      "number": "D99000A000001",
+      "number": "D99000A999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -508,10 +508,10 @@
           "poste-italiane"
         ]
       },
-      "note": "Made-up number in the shape of a D parcel code that Poste's own tracker follows as a ROAD EUROPE shipment."
+      "note": "Made-up number in the shape of a D parcel code that Poste's own tracker follows as a ROAD EUROPE shipment. Its serial sits far beyond the range in use."
     },
     {
-      "number": "1C1000A000001",
+      "number": "1C1000A999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -523,10 +523,10 @@
           "poste-italiane"
         ]
       },
-      "note": "Made-up number in the shape of an SDA Crono Express code with 1 before the C, which Poste's own tracker follows."
+      "note": "Made-up number in the shape of an SDA Crono Express code with 1 before the C, which Poste's own tracker follows. Its serial sits far beyond the range in use."
     },
     {
-      "number": "9C1000A000001",
+      "number": "9C1000A999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -538,7 +538,7 @@
           "poste-italiane"
         ]
       },
-      "note": "Made-up number in the shape of an SDA CRONO PLUS code with 9 before the C, which Poste's own tracker follows."
+      "note": "Made-up number in the shape of an SDA CRONO PLUS code with 9 before the C, which Poste's own tracker follows. Its serial sits far beyond the range in use."
     },
     {
       "number": "050000201242",
@@ -1339,7 +1339,7 @@
       "note": "Raccomandata A.R. its sender quotes, with the check digit after a dash, in a complaint against Poste Italiane."
     },
     {
-      "number": "8UW1A2B345678",
+      "number": "8UW1A2B999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -1348,10 +1348,10 @@
         "carrier": "poste-italiane",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a Poste Delivery Business Internazionale Plus code, 8UW and ten letters and digits, which Poste's own tracker follows."
+      "note": "Made-up number in the shape of a Poste Delivery Business Internazionale Plus code, 8UW and ten letters and digits, which Poste's own tracker follows. Its serial sits far beyond the range in use."
     },
     {
-      "number": "JJITA8UW1A2B345678",
+      "number": "JJITA8UW1A2B999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -1360,7 +1360,7 @@
         "carrier": "poste-italiane",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of Poste Italiane's ISO 15459 plate: J, the UPU's agency code J, Poste's UPU operator code ITA and its thirteen-character code. Poste's own tracker follows the whole plate."
+      "note": "Made-up number in the shape of Poste Italiane's ISO 15459 plate: J, the UPU's agency code J, Poste's UPU operator code ITA and its thirteen-character code. Poste's own tracker follows the whole plate. Its serial sits far beyond the range in use."
     },
     {
       "number": "CA088250120DE",
@@ -1463,7 +1463,7 @@
       "note": "PostNL parcel to Italy. Its recipient says Poste Italiane's site still shows it in the Netherlands."
     },
     {
-      "number": "GF00000000001",
+      "number": "GF99999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -1472,7 +1472,7 @@
         "carrier": "poste-italiane",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a Poste Delivery Express parcel that Poste Italiane's tracker follows from its acceptance at a post office: GF and eleven digits."
+      "note": "Made-up number in the shape of a Poste Delivery Express parcel that Poste Italiane's tracker follows from its acceptance at a post office: GF and eleven digits. Its serial sits far beyond the range in use."
     },
     {
       "number": "JG00000104876",

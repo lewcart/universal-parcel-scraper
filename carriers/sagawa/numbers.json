@@ -252,7 +252,7 @@
       "note": "Mail-parser fixture: a retailer's shipping notice names Sagawa and links its tracking site."
     },
     {
-      "number": "471234567890",
+      "number": "999999999980",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -279,10 +279,10 @@
           "yamato"
         ]
       },
-      "note": "Invented twelve digits whose last digit is not the remainder of the first eleven divided by seven, so Japan Post, Sagawa and Yamato stay out of the suggestions."
+      "note": "Invented twelve digits whose last digit is not the remainder of the first eleven divided by seven, so Japan Post, Sagawa and Yamato stay out of the suggestions. Its serial sits far beyond the range in use."
     },
     {
-      "number": "300000000005",
+      "number": "399999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -307,7 +307,7 @@
           "sending"
         ]
       },
-      "note": "Synthetic twelve-digit waybill in the form the official app accepts, with the mod 7 check digit. Shared numeric shapes do not select Sagawa."
+      "note": "Synthetic twelve-digit waybill in the form the official app accepts, with the mod 7 check digit. Shared numeric shapes do not select Sagawa. Its serial sits far beyond the range in use."
     },
     {
       "number": "365729365455",

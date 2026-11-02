@@ -60,7 +60,7 @@ describe('SpeedX tracking page', () => {
     expect(normalizeSpeedxNumber(' spxaaa 000000 000000 000001 ')).toBe(NUMBER);
     expect(normalizeSpeedxNumber('SPXAAA-0000-0000-0001')).toBe('SPXAAA000000000001');
     for (const number of ['SPXAAA00000000001', 'SPXAAA0000000000001', `${NUMBER}1`, 'SPXAA0000000000000000001',
-      'SPXPH000000000001', 'SPX000000000000000000001', 'SPXAAA000000000001/X', `${NUMBER}?x=1`, `SPXAAA${'0'.repeat(60)}`]) {
+      'SPXPH999999999980', 'SPX999999999999999999980', 'SPXAAA000000000001/X', `${NUMBER}?x=1`, `SPXAAA${'0'.repeat(60)}`]) {
       expect(() => normalizeSpeedxNumber(number)).toThrow(InvalidInputError);
     }
   });

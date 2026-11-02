@@ -3,7 +3,7 @@
   "gap": "No public page shows a whole Huaya Express tracking number.",
   "records": [
     {
-      "number": "HYYT990000000001GZ",
+      "number": "HYYT999999999980GZ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -12,7 +12,7 @@
         "carrier": "huaya-express",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a parcel a universal provider files under Huaya Express."
+      "note": "Made-up number in the shape of a parcel a universal provider files under Huaya Express. Its serial sits far beyond the range in use."
     }
   ]
 }

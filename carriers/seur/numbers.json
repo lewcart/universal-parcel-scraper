@@ -621,7 +621,7 @@
       "note": "Seven-digit expedition number from the subject line of SEUR's incident e-mail; the simplified lookup did not locate it."
     },
     {
-      "number": "2026151000000000000001",
+      "number": "2026151099999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -636,7 +636,7 @@
           "estafeta"
         ]
       },
-      "note": "Made-up number in the layout of a sender's reference, dated day before month, that SEUR's lookup found for its shipments."
+      "note": "Made-up number in the layout of a sender's reference, dated day before month, that SEUR's lookup found for its shipments. Its serial sits far beyond the range in use."
     },
     {
       "number": "48285234834793",
@@ -676,7 +676,7 @@
       "note": "Tracking number in a complaint about a locker drop-off; SEUR's tracker returns its history."
     },
     {
-      "number": "REC000000000017",
+      "number": "REC999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -688,7 +688,7 @@
           "seur"
         ]
       },
-      "note": "Made-up pickup reference in the shape of a parcel the app tracked, which SEUR's own lookup confirmed."
+      "note": "Made-up pickup reference in the shape of a parcel the app tracked, which SEUR's own lookup confirmed. Its serial sits far beyond the range in use."
     }
   ]
 }

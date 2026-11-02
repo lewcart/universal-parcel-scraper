@@ -52,7 +52,7 @@ function bot(answers: Record<string, Reply[]> = {}, send?: (content: string) => 
 describe('Hongkong Post numbers', () => {
   it('takes only checksum-valid postal item numbers ending in HK', async () => {
     expect(normalizeHongkongPostNumber(' rr 000000005 hk ')).toBe(NUMBER);
-    for (const number of ['RR000000006HK', 'RR000000005CN', 'RR00000005HK', '12345678901234', 'EE123456789HK', `${NUMBER}${'0'.repeat(60)}`]) {
+    for (const number of ['RR000000006HK', 'RR000000005CN', 'RR00000005HK', '19999999999980', 'EE123456789HK', `${NUMBER}${'0'.repeat(60)}`]) {
       expect(() => normalizeHongkongPostNumber(number), number).toThrow(InvalidInputError);
     }
     const { fetcher, track } = bot();

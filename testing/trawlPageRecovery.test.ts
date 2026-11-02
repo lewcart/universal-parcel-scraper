@@ -70,7 +70,7 @@ const subjects: [string, AdapterFactory, string, string][] = [
   ['hrvatska-posta', hrvatskaPosta, 'LW900000019HR', 'locker'],
   ['loomis-express', loomis, 'NET10000001', 'delivered'],
   ['m-and-p', mAndP, '100000000000001', 'delivered'],
-  ['tci-express', tciExpress, '100000001', 'delivered'],
+  ['tci-express', tciExpress, '199999980', 'delivered'],
   ['zeleris', zeleris, '2472CA19900000123Q', 'delivered'],
 ];
 

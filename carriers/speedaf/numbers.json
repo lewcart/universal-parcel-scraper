@@ -737,7 +737,7 @@
       "note": "A reply to Speedaf Nigeria on X gives it, and Speedaf answers that the number looks wrong."
     },
     {
-      "number": "IE120000000017",
+      "number": "IE129999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -749,7 +749,7 @@
           "speedaf"
         ]
       },
-      "note": "Made-up number in the shape of an Irish one: IE and twelve digits, the layout Speedaf gives its parcels for other countries. Speedaf's site lists a customer service in Ireland; no public page shows an Irish number."
+      "note": "Made-up number in the shape of an Irish one: IE and twelve digits, the layout Speedaf gives its parcels for other countries. Speedaf's site lists a customer service in Ireland; no public page shows an Irish number. Its serial sits far beyond the range in use."
     }
   ]
 }

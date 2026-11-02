@@ -224,7 +224,7 @@ describe('Last One Mile Co-op tracking page', () => {
   it('rejects other numbers before I/O and bounds cancellation, elapsed time and response size', async () => {
     const unused = vi.fn<typeof fetch>();
     // A failed check digit, other lengths, letters, two numbers and an oversized paste.
-    for (const number of ['100000000016', '10000000001', '1000000000150', 'ABCDEFGHIJKL', '10000000001A', `${DELIVERED},${IN_TRANSIT}`, '', '1'.repeat(65)]) {
+    for (const number of ['100000000016', '10999999980', '1000000000150', 'ABCDEFGHIJKL', '10000000001A', `${DELIVERED},${IN_TRANSIT}`, '', '1'.repeat(65)]) {
       await expect(new LastOneMileTracker({ fetcher: unused }).fetch(number), number).rejects.toThrow(InvalidInputError);
     }
     await expect(new LastOneMileTracker({ fetcher: unused }).fetch(DELIVERED, { signal: AbortSignal.abort(new Error('cancelled')) }))

@@ -161,7 +161,7 @@ describe('Fargo tracking adapter', () => {
   it('sends only a whole track ID: shop order numbers, partial IDs and other layouts go nowhere', async () => {
     const fetcher = vi.fn<typeof fetch>();
     for (const number of ['TEZ12345', 'TEZ12345678901', 'TEZ123456A', 'TE123456', 'XTEZ123456', '123456', '123456789',
-      '12345678901234', 'TEZ123456,TEZ000000', 'TEZ123456/history_items', '0'.repeat(65)]) {
+      '19999999999980', 'TEZ123456,TEZ000000', 'TEZ123456/history_items', '0'.repeat(65)]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

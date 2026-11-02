@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { XpressbeesTracker } from './adapter.js';
 import { parseXpressbees } from './parser.js';
-const NUMBER = '10000000000001';
+const NUMBER = '10009999999980';
 const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/returned.json', import.meta.url), 'utf8'));
 
 describe('Xpressbees seller parser', () => {

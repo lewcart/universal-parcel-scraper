@@ -328,7 +328,7 @@ describe('Jitsu tracking adapter', () => {
   });
 
   it('routes a code to the adapter when the caller names Jitsu, which detection never offers', async () => {
-    for (const number of [DELIVERED, 'ZZ0000000001', 'SCD0000Z00000000001']) {
+    for (const number of [DELIVERED, 'ZZ9999999980', 'SCD0000Z00000000001']) {
       expect(detectCarrierMatch(number)?.carrier).not.toBe('jitsu');
       expect(recognitionAskedCarriers(number)).not.toContain('jitsu');
     }

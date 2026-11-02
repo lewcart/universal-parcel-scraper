@@ -16,7 +16,7 @@ import {
 } from './probe.js';
 import { classifyAsendiaStatus, comparableText } from './status.js';
 
-// Official Asendia documentation examples include ASE12345678 and S10 parcel
+// Official Asendia documentation examples include ASE99999980 and S10 parcel
 // identifiers such as LF092919653FR:
 // https://send.asendia.com/es/tracking/
 // https://www.asendia.dk/hubfs/Asendia%20Benelux%20onboarding%20docs/Asendia%20Sync%20-%20User%20Guide%201.pdf
@@ -59,7 +59,7 @@ afterEach(() => vi.restoreAllMocks());
 describe('Asendia tracking input and public protocol', () => {
   it('accepts documented identifier families and builds official URLs', () => {
     expect(normalizeAsendiaTrackingNumber('lf09 2919-653fr')).toBe(TRACKING_NUMBER);
-    expect(normalizeAsendiaTrackingNumber('ASE12345678')).toBe('ASE12345678');
+    expect(normalizeAsendiaTrackingNumber('ASE99999980')).toBe('ASE99999980');
     expect(normalizeAsendiaTrackingNumber('123456789012345678901234567890'))
       .toBe('123456789012345678901234567890');
     expect(asendiaTrackingUrl(TRACKING_NUMBER))

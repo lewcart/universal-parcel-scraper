@@ -127,9 +127,9 @@ describe('HR Parcel HTTP adapter', () => {
   });
 
   it("offers HR Parcel beside Meest for iHerb's numbers and asks it first for Italy", () => {
-    expect(detectCarrierMatch('IHB0000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['hr-parcel', 'meest']) });
-    expect(recognitionCandidates('IHB0000000001', { countryHint: 'IT' })[0]?.carrier).toBe('hr-parcel');
-    expect(recognitionCandidates('IHB0000000001', { countryHint: 'UA' })[0]?.carrier).toBe('meest');
+    expect(detectCarrierMatch('IHB9999999980')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['hr-parcel', 'meest']) });
+    expect(recognitionCandidates('IHB9999999980', { countryHint: 'IT' })[0]?.carrier).toBe('hr-parcel');
+    expect(recognitionCandidates('IHB9999999980', { countryHint: 'UA' })[0]?.carrier).toBe('meest');
     for (const number of ['IHB00000000012', 'IHC0000000001']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('hr-parcel');
     }

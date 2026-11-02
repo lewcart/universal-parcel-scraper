@@ -25,7 +25,7 @@
       "note": "An archived lookup on FedEx International Connect's own tracker shows this FIC tracking number with its destination, service and the parcel's expected handover from the shipper."
     },
     {
-      "number": "ZZZ0000GB00000000017",
+      "number": "ZZZ0000GB99999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -38,7 +38,7 @@
           "starlinks-global"
         ]
       },
-      "note": "Made-up number in the layout of FedEx International Connect's tracking numbers: three letters, four digits, a country code and eleven digits."
+      "note": "Made-up number in the layout of FedEx International Connect's tracking numbers: three letters, four digits, a country code and eleven digits. Its serial sits far beyond the range in use."
     }
   ]
 }

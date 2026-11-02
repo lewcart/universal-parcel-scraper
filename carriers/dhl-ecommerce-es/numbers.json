@@ -2,7 +2,7 @@
   "carrier": "dhl-ecommerce-es",
   "records": [
     {
-      "number": "2800000007",
+      "number": "2899999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -21,10 +21,10 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Made-up ten-digit shipment number. Its shape overlaps other carriers; the portal's answer attributes it."
+      "note": "Made-up ten-digit shipment number. Its shape overlaps other carriers; the portal's answer attributes it. Its serial sits far beyond the range in use."
     },
     {
-      "number": "ES00000010",
+      "number": "ES99999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -37,7 +37,7 @@
           "tnt-it"
         ]
       },
-      "note": "Made-up number in the short form of two letters, seven digits and a zero."
+      "note": "Made-up number in the short form of two letters, seven digits and a zero. Its serial sits far beyond the range in use."
     },
     {
       "number": "DE99999990",

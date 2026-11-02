@@ -196,7 +196,7 @@ describe('American West HTTP adapter', () => {
 
   it('rejects numbers that are not whole pro numbers, and pre-aborted lookups, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['', 'Z', 'ZZ', 'ZZ100000', 'ZZ10000011', 'Z1000001', 'ZZZ1000001', '100000001', 'ZZ100000A', 'ZZ1000001/2',
+    for (const number of ['', 'Z', 'ZZ', 'ZZ100000', 'ZZ10000011', 'Z1000001', 'ZZZ1000001', '199999980', 'ZZ100000A', 'ZZ1000001/2',
       `${DELIVERED}${'9'.repeat(60)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }

@@ -169,7 +169,7 @@ describe('PEC HTTP adapter', () => {
 
   it('rejects codes PEC does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['10000000001', '1000000000177', '1000000000170001', 'PEC100000017', '0'.repeat(80)]) {
+    for (const number of ['10999999980', '1000000000177', '1000000000170001', 'PEC100000017', '0'.repeat(80)]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

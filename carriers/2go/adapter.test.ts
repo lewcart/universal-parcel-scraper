@@ -117,7 +117,7 @@ describe('2GO Express HTTP adapter', () => {
     expect(() => parseTwoGo(fixture('delivered'), IN_TRANSIT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     const mixed = { history: [scan('Order is placed', '2026-04-02 09:14:05'), scan('Parcel is out for delivery', '2026-04-04 08:30:00', IN_TRANSIT)] };
     expect(() => parseTwoGo(mixed, DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    const partial = { history: [scan('Order is placed', '2026-04-02 09:14:05', 'A0000001')] };
+    const partial = { history: [scan('Order is placed', '2026-04-02 09:14:05', 'A9999980')] };
     expect(() => parseTwoGo(partial, DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
@@ -190,7 +190,7 @@ describe('2GO Express HTTP adapter', () => {
 
   it('rejects what is not a 2GO number, and pre-aborted lookups, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['', 'A000001B', 'A00000001B', '00000001B', 'A0000001', 'AB0000001', 'AA000001', 'AA00000001', `A${'0'.repeat(70)}B`]) {
+    for (const number of ['', 'A000001B', 'A00000001B', '00000001B', 'A9999980', 'AB0000001', 'AA000001', 'AA00000001', `A${'0'.repeat(70)}B`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

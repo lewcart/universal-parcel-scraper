@@ -41,7 +41,7 @@
       "note": "Published Asendia USA example; Asendia USA's A1 tracking returned its delivered history on 2026-09-22."
     },
     {
-      "number": "ASE12345678",
+      "number": "ASE99999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -50,7 +50,7 @@
         "carrier": "asendia",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use."
     },
     {
       "number": "ASHK12123456789011",

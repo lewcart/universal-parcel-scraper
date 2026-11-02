@@ -2,7 +2,7 @@
   "carrier": "shouwu",
   "records": [
     {
-      "number": "SWECN000000000017YQ",
+      "number": "SWECN999999999980YQ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -11,7 +11,7 @@
         "carrier": "shouwu",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which Shouwu's tracker answered and a universal provider filed under SWE: SWECN, twelve digits and YQ."
+      "note": "Made-up number in the shape of a parcel the app tracked, which Shouwu's tracker answered and a universal provider filed under SWE: SWECN, twelve digits and YQ. Its serial sits far beyond the range in use."
     }
   ]
 }

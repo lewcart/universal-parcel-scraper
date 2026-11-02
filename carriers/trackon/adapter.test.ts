@@ -208,13 +208,13 @@ describe('Trackon HTTP adapter', () => {
     await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: '2026-09-14T10:48:00.000Z' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
-    await expect(carrier(fetcher).recognize!('10000000001')).resolves.toEqual({ known: false });
+    await expect(carrier(fetcher).recognize!('10999999980')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(3);
   });
 
   it('rejects numbers Trackon does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['', '1234567', '12345678', '100000001', '10000000001', '1000000000111', 'A00000000011', '100000000011,300000000022',
+    for (const number of ['', '1234567', '12345678', '199999980', '10999999980', '1000000000111', 'A00000000011', '100000000011,300000000022',
       '1000000000%', '1'.repeat(65)]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }

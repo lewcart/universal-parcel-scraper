@@ -201,7 +201,7 @@ describe('PostEx HTTP adapter', () => {
 
   it('rejects numbers PostEx does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['0000000000001', '000000000000001', 'PX000000000001', '1', `${'0'.repeat(14)}/`]) {
+    for (const number of ['0000000000001', '099999999999981', 'PX000000000001', '1', `${'0'.repeat(14)}/`]) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

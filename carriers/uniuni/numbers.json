@@ -16,7 +16,7 @@
       "note": "Publicly reported shipment number; the attribution was not independently verified."
     },
     {
-      "number": "U999900000000001",
+      "number": "U999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -25,7 +25,7 @@
         "carrier": "uniuni",
         "confidence": "high"
       },
-      "note": "Made-up number in the public U9999 layout: U9999 and 11 digits."
+      "note": "Made-up number in the public U9999 layout: U9999 and 11 digits. Its serial sits far beyond the range in use."
     },
     {
       "number": "U999902043194518",
@@ -325,7 +325,7 @@
       "note": "A UniUni tracking link archived by the Wayback Machine. UniUni's tracker returns its history; Intelcom's does not know it."
     },
     {
-      "number": "GV00USA0U000000001",
+      "number": "GV00USA0U999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -337,10 +337,10 @@
           "uniuni"
         ]
       },
-      "note": "Made-up number in the shape of a cross-border shipper's reference for the United States, USA0 where Canadian ones carry CAA0, which UniUni's own tracker follows."
+      "note": "Made-up number in the shape of a cross-border shipper's reference for the United States, USA0 where Canadian ones carry CAA0, which UniUni's own tracker follows. Its serial sits far beyond the range in use."
     },
     {
-      "number": "JY00CA00A000000001",
+      "number": "JY00CA00A999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -352,7 +352,7 @@
           "uniuni"
         ]
       },
-      "note": "Made-up number in the shape of the JY shipper's second reference layout, two digits after CA and then A, which UniUni's own tracker follows and a universal provider names as UNI Express."
+      "note": "Made-up number in the shape of the JY shipper's second reference layout, two digits after CA and then A, which UniUni's own tracker follows and a universal provider names as UNI Express. Its serial sits far beyond the range in use."
     },
     {
       "number": "UD00000002827950",

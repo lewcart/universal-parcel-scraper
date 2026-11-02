@@ -397,7 +397,7 @@ describe('JS Express tracking adapter', () => {
     // A courier that does not work where the parcel goes, a number the catalog does not settle, or no country names no courier.
     expect(read({ trackNo: 'H1000000000000000001', country: 'France' }))
       .toEqual({ destination_country: 'FR', delivery_tracking_number: 'H1000000000000000001' });
-    expect(read({ trackNo: '12345678901234', country: 'Germany' })).toEqual({ destination_country: 'DE', delivery_tracking_number: '12345678901234' });
+    expect(read({ trackNo: '19999999999980', country: 'Germany' })).toEqual({ destination_country: 'DE', delivery_tracking_number: '19999999999980' });
     expect(read({ trackNo: 'STRCA0000000000001', country: 'Sample Land' }))
       .toEqual({ destination_country_name: 'Sample Land', delivery_tracking_number: 'STRCA0000000000001' });
     // No number yet, the waybill's own, or one that is no tracking number.

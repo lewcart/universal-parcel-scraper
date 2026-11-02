@@ -10,6 +10,11 @@ reads them.
 answer for it. A sample is either public, with its source, or synthetic, with how it was
 derived. [numbers.schema.json](core/testing/numbers.schema.json) defines the record.
 
+Carriers number their waybills in sequence, so a made-up number low in a range can be someone's
+parcel. A synthetic number fails a check digit detection does not require, uses a postcode or
+range the carrier never issues, or puts its serial far beyond the range in use. Never look one
+up to check.
+
 Source access distinguishes a retrieved page from an indexed excerpt; `dateKind` says
 whether a source date belongs to a publication, comment or carrier reply. Optional context
 keeps the reported service, identifier role and evidence assessment separate from `expect`.

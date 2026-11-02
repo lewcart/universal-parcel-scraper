@@ -464,7 +464,7 @@
       "note": "Looked up on Meest's own tracker, as an archived address shows; the capture was not opened."
     },
     {
-      "number": "IHB0000000001",
+      "number": "IHB9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -477,7 +477,7 @@
           "meest"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked: IHB and ten digits, which Meest's own tracker answered with its registration and collection."
+      "note": "Made-up number in the shape of a parcel the app tracked: IHB and ten digits, which Meest's own tracker answered with its registration and collection. Its serial sits far beyond the range in use."
     }
   ]
 }

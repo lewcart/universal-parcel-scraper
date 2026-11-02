@@ -2,7 +2,7 @@
   "carrier": "laar-courier",
   "records": [
     {
-      "number": "GYE0000000000",
+      "number": "GYE9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -11,7 +11,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Invented placeholder in the layout of the guía Laar's tracker showed; the tracker names who received the one public guía."
+      "note": "Invented placeholder in the layout of the guía Laar's tracker showed; the tracker names who received the one public guía. Its serial sits far beyond the range in use."
     }
   ]
 }

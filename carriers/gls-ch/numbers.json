@@ -2,7 +2,7 @@
   "carrier": "gls-ch",
   "records": [
     {
-      "number": "993990103198",
+      "number": "999999999916",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -30,7 +30,7 @@
           "sending"
         ]
       },
-      "note": "Made-up number that follows the published format. Filed under GLS Switzerland, which stays one candidate among several."
+      "note": "Made-up number that follows the published format. Filed under GLS Switzerland, which stays one candidate among several. Its serial sits far beyond the range in use."
     }
   ]
 }

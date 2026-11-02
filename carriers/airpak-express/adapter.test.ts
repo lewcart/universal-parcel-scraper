@@ -121,7 +121,7 @@ describe('Airpak Express HTTP adapter', () => {
 
   it('sends only a whole connote number: no partial reference, pattern or letters', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['2000000001', '2000000000001', '20000000000%', '20000000000*', 'ZZ0000000001', '000000000000']) {
+    for (const number of ['2000000001', '2000000000001', '20000000000%', '20000000000*', 'ZZ9999999980', '000000000000']) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
       await expect(carrier(fetcher).recognize!(number), number).resolves.toEqual({ known: false });
     }

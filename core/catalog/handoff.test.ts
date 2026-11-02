@@ -48,8 +48,8 @@ describe('general delivery handoff candidates', () => {
     ['TW', 'chunghwa-post'], ['Taiwan', 'chunghwa-post'], ['RS', 'posta-srbije'], ['Serbia', 'posta-srbije'],
     ['IL', 'israel-post'], ['Israel', 'israel-post']])(
     'proposes one national post for a checksum-valid postal reference going to %s', (destination_country, target) => {
-      expect(deliveryHandoff('spring-gds', 'LX123456785NL', { destination_country }))
-        .toEqual({ carrier: target, number: 'LX123456785NL', basis: 'destination' });
+      expect(deliveryHandoff('spring-gds', 'LX999999987NL', { destination_country }))
+        .toEqual({ carrier: target, number: 'LX999999987NL', basis: 'destination' });
     },
   );
   it('proposes a national post only for a postal number its adapter looks up', async () => {
@@ -135,14 +135,14 @@ describe('general delivery handoff candidates', () => {
   it('asks the lookup country\'s post about a Deutsche Post item DHL holds no scan for', () => {
     // DHL's answer for an item Deutsche Post does not scan: no history, no destination.
     const unscanned: CarrierResult = { status: 'unknown', last_update: null, expected_delivery: null, events: [] };
-    expect(detectCarrierMatch('UL123456785DE')).toMatchObject({ carrier: 'dhl', confidence: 'high' });
-    expect(deliveryHandoff('dhl', 'UL123456785DE', unscanned, 'FR'))
-      .toEqual({ carrier: 'la-poste', number: 'UL123456785DE', basis: 'destination' });
-    for (const hint of ['DE', null]) expect(deliveryHandoff('dhl', 'UL123456785DE', unscanned, hint), String(hint)).toBeNull();
+    expect(detectCarrierMatch('UL999999987DE')).toMatchObject({ carrier: 'dhl', confidence: 'high' });
+    expect(deliveryHandoff('dhl', 'UL999999987DE', unscanned, 'FR'))
+      .toEqual({ carrier: 'la-poste', number: 'UL999999987DE', basis: 'destination' });
+    for (const hint of ['DE', null]) expect(deliveryHandoff('dhl', 'UL999999987DE', unscanned, hint), String(hint)).toBeNull();
   });
 
   it('leaves Chronopost the codes, French items and EMS it delivers itself', () => {
-    for (const number of ['XW123456785TS', 'NP123456785JB', 'XY123456785DE', 'CW123456785FR', 'EE123456785CN']) {
+    for (const number of ['XW999999987TS', 'NP123456785JB', 'XY123456785DE', 'CW123456785FR', 'EE123456785CN']) {
       expect(deliveryHandoff('chronopost', number, { destination_country: 'FR' }, 'FR'), number).toBeNull();
       expect(deliveryHandoff('chronopost', number, {}, 'FR'), number).toBeNull();
     }
@@ -152,19 +152,19 @@ describe('general delivery handoff candidates', () => {
 
   it('uses the destination instead of treating a postal reference’s issuer as its delivery operator', () => {
     expect(deliveryHandoff('aliexpress', 'LP00000000000001', {
-      destination_country_name: 'Finland', delivery_tracking_number: 'RA123456785CH',
-    })).toEqual({ carrier: 'posti', number: 'RA123456785CH', basis: 'destination' });
-    expect(deliveryHandoff('spring-gds', 'LX123456785NL', { destination_country: 'NL' })).toBeNull();
+      destination_country_name: 'Finland', delivery_tracking_number: 'RA999999987CH',
+    })).toEqual({ carrier: 'posti', number: 'RA999999987CH', basis: 'destination' });
+    expect(deliveryHandoff('spring-gds', 'LX999999987NL', { destination_country: 'NL' })).toBeNull();
   });
   it('uses the reported operator even when the destination also has another carrier', () => {
     expect(deliveryHandoff('la-poste', 'CW123456785FR', { destination_country: 'FI', delivery_carrier: 'ups' }))
       .toEqual({ carrier: 'ups', number: 'CW123456785FR', basis: 'partner' });
-    expect(deliveryHandoff('spring-gds', 'LX123456785NL', {
+    expect(deliveryHandoff('spring-gds', 'LX999999987NL', {
       destination_country: 'FI', last_status_text: 'Delivery partner: https://www.post.ch/',
-    })).toEqual({ carrier: 'swiss-post', number: 'LX123456785NL', basis: 'partner' });
+    })).toEqual({ carrier: 'swiss-post', number: 'LX999999987NL', basis: 'partner' });
   });
   it.each([
-    ['RA123456785CH', 'swiss-post'], ['1Z1234567890123454', 'ups'], ['CW123456785FR', 'la-poste'],
+    ['RA999999987CH', 'swiss-post'], ['1Z1234567890123454', 'ups'], ['CW123456785FR', 'la-poste'],
   ])('preserves an independently reported reference and proposes its catalog carrier: %s', (reference, carrier) => {
     const result = normalizeCarrierResult({ status: 'in_transit', delivery_tracking_number: reference });
     expect(result.delivery_tracking_number).toBe(reference);
@@ -175,12 +175,12 @@ describe('general delivery handoff candidates', () => {
     expect(deliveryHandoff('aliexpress', 'LP00000000000001', { delivery_tracking_number: reference })).toBeNull();
   });
   it('lets a reported partner take precedence over number detection', () => {
-    expect(deliveryHandoff('aliexpress', 'LX123456785CH', { delivery_tracking_number: 'RA123456785CH', delivery_carrier: 'posti' }))
-      .toEqual({ carrier: 'posti', number: 'RA123456785CH', basis: 'partner' });
+    expect(deliveryHandoff('aliexpress', 'LX123456785CH', { delivery_tracking_number: 'RA999999987CH', delivery_carrier: 'posti' }))
+      .toEqual({ carrier: 'posti', number: 'RA999999987CH', basis: 'partner' });
   });
   it('limits the historical Swiss probe to its known route and respects a different destination', () => {
     expect(deliveryHandoff('aliexpress', 'LX123456785CH', {})).toEqual({ carrier: 'swiss-post', number: 'LX123456785CH', basis: 'reference' });
-    for (const number of ['LX123456789CH', 'LX123456785NL', 'LP00000000000001']) {
+    for (const number of ['LX123456789CH', 'LX999999987NL', 'LP00000000000001']) {
       expect(deliveryHandoff('aliexpress', number, {})).toBeNull();
     }
     expect(deliveryHandoff('aliexpress', 'LX123456785CH', { destination_country: 'FI' }))
@@ -207,7 +207,7 @@ describe('general delivery handoff candidates', () => {
 
 describe('an origin that follows the parcel under its delivery carrier\'s number', () => {
   // AliExpress shows the buyer SDA's waybill, so Cainiao and Poste Italiane know the same number.
-  const waybill = '000D00000001F';
+  const waybill = '000D99999980F';
 
   it('proposes the carrier of the destination country that issues the number', () => {
     expect(followsPartnerNumbers('aliexpress')).toBe(true);
@@ -237,7 +237,7 @@ describe('an origin that follows the parcel under its delivery carrier\'s number
     for (const destination of [{}, { destination_country_name: 'France' }]) {
       expect(deliveryHandoff('aliexpress', reference, destination)).toBeNull();
     }
-    expect(deliveryHandoff('aliexpress', 'DOFR0000000000001HD', { destination_country: 'FR' })).toBeNull();
+    expect(deliveryHandoff('aliexpress', 'DOFR9999999999980HD', { destination_country: 'FR' })).toBeNull();
   });
   it('leaves carriers that track only their own numbers alone', () => {
     for (const carrier of ['poste-italiane', 'four-px', 'la-poste']) {
@@ -269,8 +269,8 @@ describe('delivery partners with an optional input', () => {
 describe('delivery partners that look up only their own references', () => {
   it('asks Poste Italiane about its own numbers, the partner plates it takes over and S10 items from abroad', async () => {
     // DHL names Poste Italiane for parcels bound for Italy, under DHL's own postal number.
-    expect(deliveryHandoff('dhl', 'LF123456785DE', { destination_country: 'IT', delivery_carrier: 'poste-italiane' }))
-      .toEqual({ carrier: 'poste-italiane', number: 'LF123456785DE', basis: 'partner' });
+    expect(deliveryHandoff('dhl', 'LF999999987DE', { destination_country: 'IT', delivery_carrier: 'poste-italiane' }))
+      .toEqual({ carrier: 'poste-italiane', number: 'LF999999987DE', basis: 'partner' });
     expect(deliveryHandoff('dhl', 'LF123456780DE', { destination_country: 'IT', delivery_carrier: 'poste-italiane' })).toBeNull();
     const plate = 'JJD000000000000000000001';
     expect(deliveryHandoff('ppl', plate, { destination_country: 'IT', delivery_carrier: 'poste-italiane' }))
@@ -360,7 +360,7 @@ describe('a partner number another tracker also knows', () => {
 
 describe('partner link handoff candidates', () => {
   it('uses a provider-supplied delivery reference', () => {
-    expect(deliveryHandoff('gls-de', '123456789011', {
+    expect(deliveryHandoff('gls-de', '123459999981', {
       delivery_carrier: 'swiss-post', delivery_tracking_number: '12345678901',
     })).toEqual({ carrier: 'swiss-post', number: '12345678901', basis: 'partner' });
   });
@@ -380,7 +380,7 @@ describe('partner link handoff candidates', () => {
   it('ignores self-links and conflicting partner links', () => {
     expect(deliveryHandoff('posti', 'OTHER12345', { last_status_text: 'https://www.posti.fi/en/tracking' })).toBeNull();
     expect(deliveryHandoff('la-poste', 'OTHER12345', { last_status_text: 'https://www.posti.fi/ and https://www.post.ch/' })).toBeNull();
-    expect(deliveryHandoff('spring-gds', 'LX123456785NL', {
+    expect(deliveryHandoff('spring-gds', 'LX999999987NL', {
       destination_country: 'CH', last_status_text: 'https://www.posti.fi/ and https://www.post.ch/',
     })).toBeNull();
   });

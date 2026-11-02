@@ -2,7 +2,7 @@
   "carrier": "fercam",
   "records": [
     {
-      "number": "O2500000001",
+      "number": "O2599999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -15,7 +15,7 @@
           "gls-it"
         ]
       },
-      "note": "Made-up number in the layout DACHSER & FERCAM Italia's tracker asks for: the letter O, the year and eight digits."
+      "note": "Made-up number in the layout DACHSER & FERCAM Italia's tracker asks for: the letter O, the year and eight digits. Its serial sits far beyond the range in use."
     }
   ]
 }

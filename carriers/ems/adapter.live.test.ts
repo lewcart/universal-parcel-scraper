@@ -10,6 +10,6 @@ describe('EMS live compatibility', () => {
   });
 
   it('recognizes the synthetic empty lookup', async () => {
-    await expect(new EmsTracker().fetch('EB000000005CN')).rejects.toMatchObject({ kind: 'not_found', status: 404 });
+    await expect(new EmsTracker().fetch('EB999999987CN')).rejects.toMatchObject({ kind: 'not_found', status: 404 });
   });
 });

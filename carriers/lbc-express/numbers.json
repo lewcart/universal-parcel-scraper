@@ -2,7 +2,7 @@
   "carrier": "lbc-express",
   "records": [
     {
-      "number": "100000000001",
+      "number": "199999999977",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -25,7 +25,7 @@
           "sending"
         ]
       },
-      "note": "Synthetic tracking-number shape for offline detection and transport tests."
+      "note": "Synthetic tracking-number shape for offline detection and transport tests. Its serial sits far beyond the range in use."
     },
     {
       "number": "162187179777",

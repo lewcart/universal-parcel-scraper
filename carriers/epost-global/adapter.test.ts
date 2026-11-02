@@ -69,7 +69,7 @@ describe('ePost Global HTTP adapter', () => {
       ['2026-03-02T09:42:01', '11', 'registered', 'carrier_map', null],
     ]);
     expect(result.events!.filter((event) => event.time)).toHaveLength(2);
-    expect(JSON.stringify(result)).not.toMatch(/99999|60999|SYNTHETIC-ORDER|7000001|12345678/);
+    expect(JSON.stringify(result)).not.toMatch(/99999|60999|SYNTHETIC-ORDER|7999980|12345678/);
   });
 
   it('reads a Pacific center in summer time, cuts partner places at their digits and names Royal Mail', () => {
@@ -143,7 +143,7 @@ describe('ePost Global HTTP adapter', () => {
     expect(gls.delivery_carrier).toBeUndefined();
     expect(gls.delivery_tracking_number).toBe('GB000000005GB');
     const dai = parseEpostGlobal(rewrite('royal-mail-in-transit', (details) => {
-      Object.assign(details, { Vendor: 'DAI POST', VendorTrackingUrl: 'https://daipost.com/track?tracknbr=NZC999999999', VendorBaseUrl: '' });
+      Object.assign(details, { Vendor: 'DAI POST', VendorTrackingUrl: 'https://daipost.com/track?tracknbr=NZC999999980', VendorBaseUrl: '' });
     }), ROYAL);
     expect(dai.delivery_carrier).toBe('dai-post');
     const own = parseEpostGlobal(rewrite('royal-mail-in-transit', (details) => { details.Track = ROYAL; }), ROYAL);

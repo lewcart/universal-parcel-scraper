@@ -256,7 +256,7 @@ describe('Speedaf HTTP adapter', () => {
 
 describe('Speedaf numbers', () => {
   it('only suggests Speedaf for IE and twelve digits, the layout it gives other countries’ parcels', () => {
-    for (const number of ['IE120000000017', 'ie 1200 0000 0017', 'IE120000000017T']) {
+    for (const number of ['IE129999999980', 'ie 1200 0000 0017', 'IE120000000017T']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['speedaf'] });
     }
     for (const other of ['IE12000000017', 'IE1200000000170', 'IL120000000017']) {

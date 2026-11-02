@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { track718JuxiNumber, projectTrack718, runTrack718Juxi } from './track718-juxi.mjs';
-const number = 'JXCZZ9000000001YQ', api = 'https://apigetway.track718.net/track/real_query_multi';
+const number = 'JXCZZ9999999980YQ', api = 'https://apigetway.track718.net/track/real_query_multi';
 const url = `https://www.track718.com/en/detail?nums=${number}&cb=678`, capture = { captureResponses: [api] };
 const payload = () => ({ status: { code: 0 }, data: [{ track: number, fromKey: 'www.juxiex.com', origin: '04', result: 0,
   recipient: 'PRIVATE', token: 'PRIVATE', from: [], to: [], frist: [], wms: [] }] });

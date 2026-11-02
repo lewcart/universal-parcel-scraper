@@ -2,7 +2,7 @@
   "carrier": "ktd",
   "records": [
     {
-      "number": "KTDWE9900000001",
+      "number": "KTDWE9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -15,7 +15,7 @@
           "ktd"
         ]
       },
-      "note": "Made-up number in the shape of the parcels a universal provider files under KTD. No tracker of the carrier confirms it; DHLink's lookup finds such numbers on its US line SwiftX delivers."
+      "note": "Made-up number in the shape of the parcels a universal provider files under KTD. No tracker of the carrier confirms it; DHLink's lookup finds such numbers on its US line SwiftX delivers. Its serial sits far beyond the range in use."
     }
   ]
 }

@@ -21,7 +21,7 @@
       "note": "ParcelPanel's DayOne page offered it to try. DayOne's tracker answers it as a parcel for Australia that Australia Post delivered."
     },
     {
-      "number": "DOT0000000000000017",
+      "number": "DOT9999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -30,7 +30,7 @@
         "carrier": "dayone",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a DayOne parcel the app tracked and DayOne's tracker answered: DOT and sixteen digits."
+      "note": "Made-up number in the shape of a DayOne parcel the app tracked and DayOne's tracker answered: DOT and sixteen digits. Its serial sits far beyond the range in use."
     }
   ]
 }

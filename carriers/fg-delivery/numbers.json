@@ -2,7 +2,7 @@
   "carrier": "fg-delivery",
   "records": [
     {
-      "number": "FGD0009990000000001000101",
+      "number": "FGD9999999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -11,7 +11,7 @@
         "carrier": "fg-delivery",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of FG Delivery's own shipment code: its help centre says the code starts with FGD and shows a label printing FGD and twenty-two digits under the barcode, at https://contattaci.fgdelivery.it/hc/it/articles/31618654707485-Dove-trovo-il-codice-di-spedizione-per-tracciare-il-mio-pacco."
+      "note": "Made-up number in the shape of FG Delivery's own shipment code: its help centre says the code starts with FGD and shows a label printing FGD and twenty-two digits under the barcode, at https://contattaci.fgdelivery.it/hc/it/articles/31618654707485-Dove-trovo-il-codice-di-spedizione-per-tracciare-il-mio-pacco. Its serial sits far beyond the range in use."
     },
     {
       "number": "CNITEC02244041FLM",

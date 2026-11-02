@@ -122,7 +122,7 @@ describe('PostNL wrong-number handling', () => {
 });
 
 describe('PostNL recognition', () => {
-  const SERIES = '181011000000000017';
+  const SERIES = '181011999999999980';
 
   it('asks the international tracker about the recognized series only', async () => {
     const fetcher = vi.fn<typeof fetch>()
@@ -264,7 +264,7 @@ describe('official PostNL status categories', () => {
 });
 
 describe('PostNL declared capabilities and privacy', () => {
-  const delivered = parsePostNLTrackingResponse(fixture('delivered.json'), 'LX123456785NL');
+  const delivered = parsePostNLTrackingResponse(fixture('delivered.json'), 'LX999999987NL');
   const checks: Record<string, (result: CarrierResult) => boolean> = {
     history: (result) => (result.events?.length ?? 0) > 0,
     location: (result) => (result.events ?? []).some((event) => Boolean(event.location)),
@@ -281,18 +281,18 @@ describe('PostNL declared capabilities and privacy', () => {
     ['CH', 'CH'], [' fi ', 'FI'], ['Switzerland', undefined], [123, undefined], [null, undefined],
   ])('projects only a structured destination code: %s', (destination_code, expected) => {
     const result = parsePostNLTrackingResponse({ data: { items: [{
-      item: 'LX123456785NL', destination_code,
+      item: 'LX999999987NL', destination_code,
       events: [{ category: 'Processing', country_code: 'NL' }],
-    }] } }, 'LX123456785NL');
+    }] } }, 'LX999999987NL');
     expect(result.destination_country).toBe(expected);
     expect(result.delivery_carrier).toBeUndefined();
     expect(result.status).toBe('in_transit');
   });
 
   it('never treats a transit scan country as the shipment destination', () => {
-    const result = parsePostNLTrackingResponse({ data: { items: [{ item: 'LX123456785NL',
+    const result = parsePostNLTrackingResponse({ data: { items: [{ item: 'LX999999987NL',
       events: [{ category: 'Arrived', country_code: 'CH', country_name: 'Switzerland' }],
-    }] } }, 'LX123456785NL');
+    }] } }, 'LX999999987NL');
     expect(result.destination_country).toBeUndefined();
   });
 
@@ -319,9 +319,9 @@ describe('PostNL declared capabilities and privacy', () => {
     expect(delivered.events?.map((event) => event.time)).toEqual([
       '2026-09-03T10:12:00+02:00', '2026-09-03T06:40:00+02:00', '2026-09-01T19:05:00+02:00', '2026-08-28T11:00:00+08:00',
     ]);
-    const multiZone = parsePostNLTrackingResponse({ data: { items: [{ item: 'LX123456785NL',
+    const multiZone = parsePostNLTrackingResponse({ data: { items: [{ item: 'LX999999987NL',
       events: [{ category: 'Processing', datetime_local: '2026-09-02T08:00:00Z', country_code: 'US' }],
-    }] } }, 'LX123456785NL');
+    }] } }, 'LX999999987NL');
     // A country with several zones cannot be resolved; the provider's text is kept.
     expect(multiZone.events?.[0]).toMatchObject({ local_time: '2026-09-02T08:00:00' });
     expect(multiZone.events?.[0]).not.toHaveProperty('time');
@@ -343,7 +343,7 @@ describe('PostNL declared capabilities and privacy', () => {
 });
 
 describe('PostNL ambiguity and clock safety', () => {
-  const number = 'LX123456785NL';
+  const number = 'LX999999987NL';
   const payload = (events: Record<string, unknown>[]) => ({ data: { items: [{ item: number, events }] } });
 
   it.each([

@@ -11,7 +11,7 @@ import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'GYE0000000001';
 const IN_TRANSIT = 'GYE0000000002';
-const UNKNOWN = 'GYE0000000000';
+const UNKNOWN = 'GYE9999999980';
 
 type Row = Record<string, unknown>;
 type Reply = Row & { objetoADeserializar: unknown };

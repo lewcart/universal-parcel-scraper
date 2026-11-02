@@ -16,7 +16,7 @@ import { parseInpostPickup } from './pickup.js';
 // All identifiers and timestamps below are synthetic. Status codes and the
 // response shape follow the keyless inposteasy.com hub as documented by the
 // prior-art client, live-confirmed on IT/PT/GB consignments 2026-08-31.
-const TRACKING_NUMBER = '640000000000000000000001';
+const TRACKING_NUMBER = '649999999999999999999980';
 const DELIVERED = JSON.parse(
   readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'),
 ) as Record<string, unknown>;
@@ -49,7 +49,7 @@ afterEach(() => {
 
 describe('InPost tracking normalization', () => {
   it('accepts the detected InPost families case-insensitively and rejects the rest', () => {
-    expect(normalizeInpostTrackingNumber('640000000000000000000001')).toBe(TRACKING_NUMBER);
+    expect(normalizeInpostTrackingNumber('649999999999999999999980')).toBe(TRACKING_NUMBER);
     expect(normalizeInpostTrackingNumber('jjd0002233564270287')).toBe('JJD0002233564270287');
     expect(normalizeInpostTrackingNumber('8ydr098765432')).toBe('8YDR098765432');
     expect(normalizeInpostTrackingNumber('00abc0000001a001')).toBe('00ABC0000001A001');

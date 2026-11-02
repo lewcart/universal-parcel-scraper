@@ -5,7 +5,7 @@ import { adapter, EkartTracker } from './adapter.js';
 import { parseEkart } from './parser.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { ekartScan } from './status.js';
-const NUMBER = 'FMPP0000000001';
+const NUMBER = 'FMPP9999999980';
 const RETURN = 'BSIC0000000001';
 const load = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
 const fixture = () => load('delivered');

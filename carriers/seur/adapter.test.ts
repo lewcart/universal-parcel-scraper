@@ -121,7 +121,7 @@ describe('SEUR simplified anonymous tracking', () => {
 
   it("finds a shipment by its sender's twenty-two-digit reference, which the lookup names as searched", async () => {
     // Synthetic: a sender's reference dated 15 October 2026, day before month, and SEUR's own number.
-    const reference = '2026151000000000000001';
+    const reference = '2026151099999999999980';
     const body = { ...copy(), identificador_busqueda: reference, clave_envio: '990000000000000000002' };
     expect(parseSeur(body, reference).status).toBe('delivered');
     expect(await adapter(environment(vi.fn<typeof fetch>().mockResolvedValue(response(body)))).recognize!(reference))

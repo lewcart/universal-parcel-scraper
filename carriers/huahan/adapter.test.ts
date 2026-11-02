@@ -6,7 +6,7 @@ import { parseHuahan } from './parser.js';
 
 const NUMBER = 'HHWAA0000000001YQ';
 const fixture = () => ({ ask: 1, data: [{ Code: NUMBER, Error_code: '0000', Status: 'Delivered',
-  Shipper_Hawbcode: 'PRIVATE', Local_Carrier: 'CAINIAO', Local_Number: 'DOFR0000000000001HD', Country_code: 'FR', Detail: [
+  Shipper_Hawbcode: 'PRIVATE', Local_Carrier: 'CAINIAO', Local_Number: 'DOFR9999999999980HD', Country_code: 'FR', Detail: [
     { Occur_date: '2026-01-03 12:15:00', Status: 'CC', Comment: 'The parcel has been successfully delivered.', track_area: 'Destination facility', recipient: 'PRIVATE' },
     { Occur_date: '2026-01-01 10:00:00', Status: 'DF', Comment: 'Departed from origin facility', track_area: 'SHENZHEN' },
   ] }] });
@@ -84,7 +84,7 @@ describe('HuaHan guest tracking', () => {
 
   it('names the destination carrier, its number and the destination country', () => {
     expect(parseHuahan(fixture(), NUMBER)).toMatchObject({ destination_country: 'FR', delivery_carrier: 'aliexpress',
-      delivery_tracking_number: 'DOFR0000000000001HD' });
+      delivery_tracking_number: 'DOFR9999999999980HD' });
     const usps = fixture();
     Object.assign(usps.data[0]!, { Local_Carrier: 'USPS', Local_Number: '9214490000000000000010_D104', Country_code: 'US' });
     expect(parseHuahan(usps, NUMBER)).toMatchObject({ destination_country: 'US', delivery_carrier: 'usps',

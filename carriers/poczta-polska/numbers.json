@@ -292,7 +292,7 @@
       "note": "Barcode whose Poczta Polska tracking page the Wayback Machine archived. Poczta Polska's tracker returns its history: two failed deliveries, the return, and the sender's collection at a post office."
     },
     {
-      "number": "159007730000000011",
+      "number": "159007739999999986",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -301,7 +301,7 @@
         "carrier": "poczta-polska",
         "confidence": "high"
       },
-      "note": "Made-up SSCC under Poczta Polska's GS1 prefix, entered without the barcode's 00, in the shape of a parcel Poczta Polska's tracker answers under the whole barcode."
+      "note": "Made-up SSCC under Poczta Polska's GS1 prefix, entered without the barcode's 00, in the shape of a parcel Poczta Polska's tracker answers under the whole barcode. Its serial sits far beyond the range in use."
     },
     {
       "number": "459007731134862958",

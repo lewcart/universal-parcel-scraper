@@ -55,7 +55,7 @@ describe('United Delivery Service tracking adapter', () => {
       weight_kg: 1.814, dimensions_text: '18 × 14 × 6 in', summary_only: true,
       events: [{ time: '2026-01-14T13:16:53-06:00', location: 'EXAMPLEVILLE, IL', description: 'Delivered', stage: 'delivered', stage_source: 'carrier_map' }],
     });
-    for (const kept of ['Front Door', '100000001', 'Zip', 'Signature', 'photo']) expect(JSON.stringify(result), kept).not.toContain(kept);
+    for (const kept of ['Front Door', '199999980', 'Zip', 'Signature', 'photo']) expect(JSON.stringify(result), kept).not.toContain(kept);
   });
 
   it('reads a received parcel and its estimate, whose year is the one the weekday falls on', () => {

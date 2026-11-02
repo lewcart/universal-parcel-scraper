@@ -41,7 +41,7 @@ describe('command line', () => {
     await expect(main(['track', number], { FLARESOLVERR_URL: 'localhost:8191' })).rejects.toThrow('FLARESOLVERR_URL must be an HTTP(S) URL');
     await expect(main(['serve', '--port', '99999'], {})).rejects.toThrow('Invalid port');
     await expect(main(['track', number, '--carrier', 'nope'], {})).rejects.toThrow('Unknown carrier nope');
-    await expect(main(['track', '12345678901234', '--carrier', 'gls-ch'], {})).rejects.toThrow('requires the four-digit delivery postcode');
+    await expect(main(['track', '19999999999980', '--carrier', 'gls-ch'], {})).rejects.toThrow('requires the four-digit delivery postcode');
     expect(fetcher).not.toHaveBeenCalled();
   });
 

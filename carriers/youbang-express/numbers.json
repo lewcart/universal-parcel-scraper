@@ -3,7 +3,7 @@
   "gap": "No public page shows a whole YouBang Express tracking number.",
   "records": [
     {
-      "number": "YB0000000017CN",
+      "number": "YB9999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -15,7 +15,7 @@
           "youbang-express"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider filed under YBWL."
+      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider filed under YBWL. Its serial sits far beyond the range in use."
     }
   ]
 }

@@ -161,7 +161,7 @@ describe('Poșta Română tracking adapter', () => {
 
   it('takes S10 codes with a valid check digit and two letters with eleven digits, and nothing else, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['ZZ000000015RO', 'ZZ00000001RO', 'ZZ0000000001', '1234567890123', '123456789012', 'ABC']) {
+    for (const number of ['ZZ000000015RO', 'ZZ00000001RO', 'ZZ9999999980', '1234567890123', '123456789012', 'ABC']) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
       await expect(carrier(fetcher).recognize!(number)).resolves.toEqual({ known: false });
     }

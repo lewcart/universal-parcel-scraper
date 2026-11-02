@@ -4,7 +4,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, InpostTracker } from './adapter.js';
 import { parseInpostShipxSummary } from './shipx.js';
 
-const NUMBER = '640000000000000000000001';
+const NUMBER = '649999999999999999999980';
 const CLOCK = '2026-05-04T10:00:00.000+02:00';
 const EXPECTED_CLOCK = '2026-05-04T10:00:00+02:00';
 function shipx(overrides: Record<string, unknown> = {}) {

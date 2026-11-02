@@ -274,8 +274,8 @@ describe('Meest HTTP adapter', () => {
     expect(recognitionAskedCarriers(TRANSIT)).toContain('meest');
     // In the shape of a parcel the app tracked that Meest's tracker answered: iHerb's IHB and ten digits.
     // iHerb's numbers: HR Parcel delivers them in Italy.
-    expect(detectCarrierMatch('IHB0000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['hr-parcel', 'meest'] });
-    expect(recognitionAskedCarriers('IHB0000000001')).toContain('meest');
+    expect(detectCarrierMatch('IHB9999999980')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['hr-parcel', 'meest'] });
+    expect(recognitionAskedCarriers('IHB9999999980')).toContain('meest');
     for (const number of ['IHB000000001', 'IHB00000000012', 'IHC0000000001']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('meest');
     }

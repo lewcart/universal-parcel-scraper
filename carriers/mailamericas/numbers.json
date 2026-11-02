@@ -359,7 +359,7 @@
       "note": "An S10-shaped number whose check digit fails, looked up on MailAmericas' own tracker. The tracker returns a delivered history in Peru."
     },
     {
-      "number": "DOMC000000007R",
+      "number": "DOMC999999980R",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -368,7 +368,7 @@
         "carrier": "mailamericas",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a MailAmericas parcel to the Dominican Republic the app tracked: DOMC, nine digits and R."
+      "note": "Made-up number in the shape of a MailAmericas parcel to the Dominican Republic the app tracked: DOMC, nine digits and R. Its serial sits far beyond the range in use."
     }
   ]
 }

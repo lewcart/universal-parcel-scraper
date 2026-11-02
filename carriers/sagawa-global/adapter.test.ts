@@ -12,7 +12,7 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = '100000000004';
 const IN_TRANSIT = '200000000001';
-const UNKNOWN = '300000000005';
+const UNKNOWN = '399999999980';
 const LOS_ANGELES = 'IDA000000000017';
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');

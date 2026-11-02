@@ -33,7 +33,7 @@
       "note": "Publicly reported shipment number; its attribution is source evidence, not a permanent live-status oracle."
     },
     {
-      "number": "10000000000001",
+      "number": "10009999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -58,7 +58,7 @@
           "xpressbees"
         ]
       },
-      "note": "Synthetic tracking-number shape for offline detection and transport tests."
+      "note": "Synthetic tracking-number shape for offline detection and transport tests. Its serial sits far beyond the range in use."
     },
     {
       "number": "153702660789506",

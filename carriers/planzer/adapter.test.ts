@@ -166,7 +166,7 @@ describe('Planzer and Quickpac no-data responses', () => {
 
   it('rejects a reply for another shipment number', () => {
     expect(() => parsePlanzerTrackingResponse({
-      shipmentNumber: '87654321',
+      shipmentNumber: '99999980',
       overallStatus: { text: { english: 'Shipment on the way' } },
       transportPositions: [{ positionNumber: '00000000000000000017', positionEvents: [] }],
     }, '12345678')).toThrow('different shipment');

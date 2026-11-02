@@ -4,7 +4,7 @@ import { carrierAdapter } from '../../core/catalog/index.js';
 import { createTracker } from '../../facade/index.js';
 import { REGISTRY } from '../../generated/registry.js';
 
-const DELIVERED = '10000000001';
+const DELIVERED = '10999999980';
 const IN_TRANSIT = '10000000002';
 const SERVICE = '/app/service/open/rest/GROUP/en';
 

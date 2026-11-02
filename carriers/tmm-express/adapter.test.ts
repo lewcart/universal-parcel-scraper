@@ -235,7 +235,7 @@ describe('TMM Express HTTP adapter', () => {
 
   it('rejects numbers TMM Express does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['000000001', '00000000011', 'A000000001', 'JJD0000000000000002', `${'0'.repeat(70)}`]) {
+    for (const number of ['000000001', '00000000011', 'A099999980', 'JJD0000000000000002', `${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

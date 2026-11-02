@@ -2,7 +2,7 @@
   "carrier": "delivengo",
   "records": [
     {
-      "number": "LD156008025FR",
+      "number": "LD999999987FR",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -11,7 +11,7 @@
         "carrier": "la-poste",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format. Filed under Delivengo; detection selects La Poste / Colissimo."
+      "note": "Made-up number that follows the published format. Filed under Delivengo; detection selects La Poste / Colissimo. Its serial sits far beyond the range in use."
     },
     {
       "number": "LL016042860FR",

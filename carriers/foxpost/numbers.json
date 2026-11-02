@@ -230,7 +230,7 @@
       "note": "Looked up on Foxpost's own tracker, as an archived address shows; the capture was not opened."
     },
     {
-      "number": "6663900000001",
+      "number": "6663999999982",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -246,7 +246,7 @@
           "korea-post"
         ]
       },
-      "note": "Made-up number with the prefix Foxpost's tracking page and help give its home deliveries. No source gives their length; Foxpost's API caps a parcel's barcode at twenty characters."
+      "note": "Made-up number with the prefix Foxpost's tracking page and help give its home deliveries. No source gives their length; Foxpost's API caps a parcel's barcode at twenty characters. Its serial sits far beyond the range in use."
     }
   ]
 }

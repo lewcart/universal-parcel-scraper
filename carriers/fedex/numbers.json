@@ -544,7 +544,7 @@
       "note": "A sample 34-digit FedEx barcode with its check digit changed, so FedEx is not suggested."
     },
     {
-      "number": "4200000000000000000000700000000021",
+      "number": "4200000000000000000000999999999982",
       "role": "full_barcode",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -556,7 +556,7 @@
           "fedex"
         ]
       },
-      "note": "The 34-digit layout behind USPS's 420 routing prefix, with digits USPS's layout does not fit, so FedEx stays a suggestion."
+      "note": "The 34-digit layout behind USPS's 420 routing prefix, with digits USPS's layout does not fit, so FedEx stays a suggestion. Its serial sits far beyond the range in use."
     },
     {
       "number": "449044304137821",

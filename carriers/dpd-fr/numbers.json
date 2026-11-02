@@ -81,7 +81,7 @@
       "note": "Published integration example, not a real shipment. The source attributes it to DPD France, which stays one candidate among several."
     },
     {
-      "number": "250123456789012",
+      "number": "250999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -90,7 +90,7 @@
         "carrier": "dpd-fr",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use."
     },
     {
       "number": "2500655251129094",

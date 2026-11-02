@@ -3,7 +3,7 @@
   "gap": "no public sample found yet",
   "records": [
     {
-      "number": "S900000000000000001",
+      "number": "S999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -15,7 +15,7 @@
           "stone3pl"
         ]
       },
-      "note": "Invented identifier; this layout is a recognition candidate, not proof of carrier ownership."
+      "note": "Invented identifier; this layout is a recognition candidate, not proof of carrier ownership. Its serial sits far beyond the range in use."
     }
   ]
 }

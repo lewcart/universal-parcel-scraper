@@ -109,7 +109,7 @@ describe('OCS HTTP adapter', () => {
     // Without a company and a number of its shape, nothing is handed over.
     for (const lookup of [
       toSagawa('12345'),
-      toYamatoIntro(UNKNOWN, '10000000001'),
+      toYamatoIntro(UNKNOWN, '10999999980'),
       toYamatoIntro(UNKNOWN).replace(/COUrl=[^&]+/, 'COUrl=https%3A%2F%2Fexample.com%2Ftrack'),
       toHistory(UNKNOWN).replace(/URL=[^"]+/, `URL=https://example.com/track?no=${UNKNOWN}`),
     ]) {

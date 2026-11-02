@@ -52,7 +52,7 @@ describe('public forum tracking examples', () => {
     // Public postal-collector forum, May 2023; normally beyond tracking retention.
     // https://www.philaseiten.de/cgi-bin/index.pl?PR=319289
     try {
-      const result = await new CarrierTrackingAdapter().fetch('delivengo', 'LD156008025FR', null);
+      const result = await new CarrierTrackingAdapter().fetch('delivengo', 'LD999999987FR', null);
       expect(result.events?.length).toBeGreaterThan(0);
     } catch (error) {
       if (error instanceof Error && error.name === 'LaPosteTrackingError') {

@@ -116,7 +116,18 @@
       "note": "Archived lookup on GOFO's Dutch tracker; GOFO's anonymous national tracking service confirms the whole waybill and a Dutch destination."
     },
     {
-      "number": "CINL0000000000001",
+      "number": "CINL9999999999980",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "expect": {
+        "carrier": "gofo-nl",
+        "confidence": "high"
+      },
+      "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/nl/contact-us/. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
+    },
+    {
+      "number": "GFNL9999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -127,18 +138,7 @@
       "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/nl/contact-us/."
     },
     {
-      "number": "GFNL0000000000001",
-      "role": "shipment",
-      "evidence": "synthetic",
-      "derivedFrom": "official_shape",
-      "expect": {
-        "carrier": "gofo-nl",
-        "confidence": "high"
-      },
-      "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/nl/contact-us/."
-    },
-    {
-      "number": "CINL00000000000001",
+      "number": "CINL99999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",

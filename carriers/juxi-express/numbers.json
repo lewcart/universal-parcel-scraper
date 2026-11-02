@@ -21,7 +21,7 @@
       "note": "ParcelPanel's Juxi Express page offers it as a sample. No tracker of the carrier remains to confirm it."
     },
     {
-      "number": "JXCZZ9000000001YQ",
+      "number": "JXCZZ9999999980YQ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -30,7 +30,7 @@
         "carrier": "juxi-express",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of parcels a universal provider files under SHJX, Juxi Express's name there."
+      "note": "Made-up number in the shape of parcels a universal provider files under SHJX, Juxi Express's name there. Its serial sits far beyond the range in use."
     }
   ]
 }

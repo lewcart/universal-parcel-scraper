@@ -21,7 +21,7 @@
       "note": "Example Sendungsnummer from the carrier's tracking form, where it goes with a Betriebsnummer; on its own eos matches it to unrelated shipments. The source attributes it to Swiss Post Cargo, which no rule claims."
     },
     {
-      "number": "00312345670000000016",
+      "number": "00312345679999999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -35,10 +35,10 @@
           "nz-post"
         ]
       },
-      "note": "Invented SSCC behind the 00 identifier, with a valid GS1 check digit, in the form eos tracks freight barcodes; not a known shipment."
+      "note": "Invented SSCC behind the 00 identifier, with a valid GS1 check digit, in the form eos tracks freight barcodes; not a known shipment. Its serial sits far beyond the range in use."
     },
     {
-      "number": "PL-12345678",
+      "number": "PL-99999981",
       "role": "order_reference",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -51,7 +51,7 @@
           "tnt-it"
         ]
       },
-      "note": "Invented customer reference in the printed PL- and eight-digit form eos answers as a reference; not a known shipment."
+      "note": "Invented customer reference in the printed PL- and eight-digit form eos answers as a reference; not a known shipment. Its serial sits far beyond the range in use."
     },
     {
       "number": "00876401518210952508",

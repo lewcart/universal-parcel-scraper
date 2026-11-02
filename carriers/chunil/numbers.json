@@ -2,7 +2,7 @@
   "carrier": "chunil",
   "records": [
     {
-      "number": "10000000001",
+      "number": "10999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -22,7 +22,7 @@
           "mainfreight"
         ]
       },
-      "note": "Invented placeholder for an eleven-digit waybill; the public sample's tracker names its sender and recipient, masked."
+      "note": "Invented placeholder for an eleven-digit waybill; the public sample's tracker names its sender and recipient, masked. Its serial sits far beyond the range in use."
     }
   ]
 }

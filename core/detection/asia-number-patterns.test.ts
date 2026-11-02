@@ -27,7 +27,7 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
 
   it.each([
     ['LP00000000000001', 'aliexpress'],
-    ['LP00000000000000001', 'aliexpress'],
+    ['LP99999999999999980', 'aliexpress'],
     ['LP0000000000001CN', 'four-px'],
     ['1000000000016', 'delhivery'],
     ['10000000000016', 'delhivery'],
@@ -48,7 +48,7 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
 
   it('includes the LP and thirteen-digit Delhivery candidates within bounded HTTP preflight', () => {
     expect(recognitionAskedCarriers('LP00000000000001')).toContain('aliexpress');
-    expect(recognitionAskedCarriers('LP00000000000000001')).toContain('aliexpress');
+    expect(recognitionAskedCarriers('LP99999999999999980')).toContain('aliexpress');
     expect(recognitionAskedCarriers('LP0000000000001CN')).toContain('four-px');
     expect(recognitionAskedCarriers('2820000000001')).toContain('delhivery');
   });
@@ -56,11 +56,11 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
   it('ranks a carrier whose check digit passes ahead of popularity alone', () => {
     // Synthetic twelve digits; only the first passes Purolator's Luhn check.
     expect(recognitionCandidates('300000000004')[0]!.carrier).toBe('purolator');
-    expect(recognitionCandidates('300000000005').map(candidate => candidate.carrier)).not.toContain('purolator');
+    expect(recognitionCandidates('399999999980').map(candidate => candidate.carrier)).not.toContain('purolator');
   });
 
   it('names Ekart for its known merchant codes and only suggests it for other letters', () => {
-    for (const number of ['FMPP0000000001', 'MYSR0000000001', 'BSIC0000000001', 'SRTP0000000001', 'fmpp 0000000001']) {
+    for (const number of ['FMPP9999999980', 'MYSR0000000001', 'BSIC0000000001', 'SRTP0000000001', 'fmpp 0000000001']) {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'ekart', confidence: 'high' });
     }
     expect(detectCarrierMatch('QXRC0123456789')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['ekart'] });
@@ -70,8 +70,8 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
   });
 
   it('suggests Cainiao alone for HRBC and ten digits, which its tracker answered and Ekart\'s did not know', () => {
-    expect(detectCarrierMatch('HRBC0123456789')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['aliexpress'] });
-    expect(recognitionCandidates('HRBC0123456789')[0]!.carrier).toBe('aliexpress');
+    expect(detectCarrierMatch('HRBC9999999980')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['aliexpress'] });
+    expect(recognitionCandidates('HRBC9999999980')[0]!.carrier).toBe('aliexpress');
     for (const number of ['HRBC012345678', 'HRBC01234567890', 'HRBX0123456789']) {
       expect(detectCarrierMatch(number).candidates ?? []).not.toContain('aliexpress');
     }
@@ -142,7 +142,7 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     // Forwarders on one Chinese platform share the YQ ending and ten digits; the customer prefix names the forwarder.
     const owners = { JSEJY0000000001YQ: 'js-express', WNBZZ0000000001YQ: 'wanbexpress', FEISH0000000001YQ: '17feia',
       SFCAA0000000001YQ: 'sfc', CJPZZA0000000001YQ: 'cj-packet', BUFZA0000000001YQ: 'buffalo-ex',
-      JXCYT0000000001YQ: 'juxi-express', FARZZ0000000001YQ: 'far-international' };
+      JXCYT0000000001YQ: 'juxi-express', FARZZ9999999980YQ: 'far-international' };
     for (const [number, carrier] of Object.entries(owners)) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier, confidence: 'high', candidates: [carrier] });
       expect(recognitionCandidates(number), number).toEqual([]);
@@ -159,7 +159,7 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
   });
 
   it('names Shouwu International for SWECN, twelve digits and YQ, and only that layout', () => {
-    for (const number of ['SWECN000000000017YQ', 'swecn 000000 000017 yq']) {
+    for (const number of ['SWECN999999999980YQ', 'swecn 000000 000017 yq']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'shouwu', confidence: 'high', candidates: ['shouwu'] });
     }
     for (const number of ['SWECN0000000017YQ', 'SWECN00000000017YQ', 'SWECN0000000000017YQ', 'SWEHK000000000017YQ',
@@ -178,7 +178,7 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
   });
 
   it('names MeiHoo Pegasus for MYH, nine digits and CN, and only that layout', () => {
-    for (const number of ['MYH900000001CN', 'myh 900 000 001 cn']) {
+    for (const number of ['MYH999999980CN', 'myh 900 000 001 cn']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'meihoo-pegasus', confidence: 'high', candidates: ['meihoo-pegasus'] });
     }
     for (const number of ['MYH90000001CN', 'MYH9000000001CN', 'MYH900000001US', 'MYX900000001CN', 'MYH900000001']) {
@@ -187,7 +187,7 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
   });
 
   it('names Techlink for its dated ZHPHD waybills ending in ML', () => {
-    expect(detectCarrierMatch('ZHPHD260101000001ML')).toMatchObject({ carrier: 'techlink', confidence: 'high', candidates: ['techlink'] });
+    expect(detectCarrierMatch('ZHPHD260101999980ML')).toMatchObject({ carrier: 'techlink', confidence: 'high', candidates: ['techlink'] });
     expect(detectCarrierMatch('zhphd 260101 000001 ml')).toMatchObject({ carrier: 'techlink', confidence: 'high' });
     // A month or day that cannot be a date, another prefix or ending, or a digit too many or too few is no Techlink waybill.
     for (const number of ['ZHPHD261301000001ML', 'ZHPHD260132000001ML', 'ZHPHX260101000001ML', 'ZHPHD260101000001MX',
@@ -205,59 +205,59 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
   });
 
   it('asks DHLink about its line provider\'s XZG tracking numbers without naming it from the shape', () => {
-    expect(detectCarrierMatch('XZG000000001WL')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
-    expect(recognitionAskedCarriers('XZG000000001WL')).toEqual(['dhlink']);
+    expect(detectCarrierMatch('XZG999999980WL')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(recognitionAskedCarriers('XZG999999980WL')).toEqual(['dhlink']);
     for (const number of ['XZG00000001WL', 'XZG0000000001WL', 'XZG000000001WX', 'XZH000000001WL', 'YIL000000001WL']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
 
   it('asks DHLink about YLUS tracking numbers on its GOFO line without naming it from the shape', () => {
-    expect(detectCarrierMatch('YLUS0000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(detectCarrierMatch('YLUS9999999980')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
     expect(detectCarrierMatch('ylus 0000 0000 01')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
-    expect(recognitionAskedCarriers('YLUS0000000001')).toEqual(['dhlink']);
+    expect(recognitionAskedCarriers('YLUS9999999980')).toEqual(['dhlink']);
     for (const number of ['YLUS000000001', 'YLUS00000000001', 'YLUK0000000001', 'XLUS0000000001', 'YLUS000000000A', 'YL0000000001YQ']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
 
   it('asks DHLink about EYT tracking numbers on its SwiftX line without naming it from the shape', () => {
-    expect(detectCarrierMatch('EYT0000000001HZ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
-    expect(recognitionAskedCarriers('EYT0000000001HZ')).toEqual(['dhlink']);
+    expect(detectCarrierMatch('EYT9999999980HZ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(recognitionAskedCarriers('EYT9999999980HZ')).toEqual(['dhlink']);
     for (const number of ['EYT000000001HZ', 'EYT00000000001HZ', 'EYT0000000001HX', 'EYZ0000000001HZ', 'XZG000000001HZ']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
 
   it('asks DHLink about QH tracking numbers on its GOFO line without naming it from the shape', () => {
-    expect(detectCarrierMatch('QH000000000001FS')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
-    expect(recognitionAskedCarriers('QH000000000001FS')).toEqual(['dhlink']);
+    expect(detectCarrierMatch('QH999999999980FS')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(recognitionAskedCarriers('QH999999999980FS')).toEqual(['dhlink']);
     for (const number of ['QH00000000001FS', 'QH0000000000001FS', 'QH000000000001FX', 'QX000000000001FS', 'QH000000000001']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
 
   it('asks DHLink about YF tracking numbers on its GOFO line without naming it from the shape', () => {
-    expect(detectCarrierMatch('YF0000000001CN')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(detectCarrierMatch('YF9999999980CN')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
     expect(detectCarrierMatch('yf 0000 0000 01 cn')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
-    expect(recognitionAskedCarriers('YF0000000001CN')).toEqual(['dhlink']);
+    expect(recognitionAskedCarriers('YF9999999980CN')).toEqual(['dhlink']);
     for (const number of ['YF000000001CN', 'YF00000000001CN', 'YF0000000001CX', 'YX0000000001CN', 'YF0000000001']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
 
   it('asks DHLink about KTD\'s KTDWE tracking numbers on its SwiftX line before a provider names KTD', () => {
-    expect(detectCarrierMatch('KTDWE0000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink', 'ktd'] });
-    expect(recognitionAskedCarriers('KTDWE0000000001')).toEqual(['dhlink']);
+    expect(detectCarrierMatch('KTDWE9999999980')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink', 'ktd'] });
+    expect(recognitionAskedCarriers('KTDWE9999999980')).toEqual(['dhlink']);
     for (const number of ['KTDWE000000001', 'KTDWE00000000001', 'KTDWA0000000001', 'KTD0000000001', 'KTDWE0000000001CN']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
 
   it('asks DHLink about YHKJ tracking numbers on its line to Britain without naming it from the shape', () => {
-    expect(detectCarrierMatch('YHKJ1000000017')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(detectCarrierMatch('YHKJ1999999980')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
     expect(detectCarrierMatch('yhkj 1000 0000 17')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
-    expect(recognitionAskedCarriers('YHKJ1000000017')).toEqual(['dhlink']);
+    expect(recognitionAskedCarriers('YHKJ1999999980')).toEqual(['dhlink']);
     for (const number of ['YHKJ100000017', 'YHKJ10000000017', 'YHKX1000000017', 'YHKJ1000000017CN']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
@@ -344,7 +344,7 @@ describe('wave eight Australian courier rules', () => {
 
 describe('Chinese fulfilment warehouse numbers', () => {
   it('names DayOne for DOT and sixteen digits, and only that layout', () => {
-    for (const number of ['DOT0000000000000017', 'DOT1000000000000017', 'dot 0000 0000 0000 0017']) {
+    for (const number of ['DOT9999999999999980', 'DOT1000000000000017', 'dot 0000 0000 0000 0017']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'dayone', confidence: 'high' });
     }
     for (const number of ['DOT000000000000001', 'DOT00000000000000017', 'DOT000000000000001A', 'DOC0000000000000017']) {
@@ -353,7 +353,7 @@ describe('Chinese fulfilment warehouse numbers', () => {
   });
 
   it('suggests Z-Leading for ZL, two letters and nine digits, and only that layout', () => {
-    for (const number of ['ZLXX000000017', 'zlab 000 000 001']) {
+    for (const number of ['ZLXX999999980', 'zlab 000 000 001']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['z-leading'] });
     }
     for (const number of ['ZLXX00000001', 'ZLXX0000000017', 'ZLX0000000017', 'ZL0X000000017', 'ZMXX000000017', 'XLXX000000017']) {
@@ -362,7 +362,7 @@ describe('Chinese fulfilment warehouse numbers', () => {
   });
 
   it('suggests Pengyou for three letters, nine digits and PY, and only that layout', () => {
-    for (const number of ['ZZZ000000017PY', 'zzz 000 000 017 py']) {
+    for (const number of ['ZZZ999999980PY', 'zzz 000 000 017 py']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['pengyou'] });
     }
     for (const number of ['ZZZ00000017PY', 'ZZZ0000000017PY', 'ZZ000000017PY', 'ZZZ000000017PX', 'ZZ0000000017PY']) {
@@ -380,7 +380,7 @@ describe('Chinese fulfilment warehouse numbers', () => {
   });
 
   it('suggests YouBang Express for YB, ten digits and CN, and only that layout', () => {
-    for (const number of ['YB0000000017CN', 'yb 0000 0000 17 cn']) {
+    for (const number of ['YB9999999980CN', 'yb 0000 0000 17 cn']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['youbang-express'] });
     }
     for (const number of ['YB000000017CN', 'YB00000000017CN', 'YC0000000017CN', 'YB0000000017CX']) {
@@ -389,7 +389,7 @@ describe('Chinese fulfilment warehouse numbers', () => {
   });
 
   it('names Xinghe Freight for GZXH, its company code, ten digits and YQ, and only that layout', () => {
-    for (const number of ['GZXH0000000017YQ', 'gzxh 0000 0000 17 yq']) {
+    for (const number of ['GZXH9999999980YQ', 'gzxh 0000 0000 17 yq']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'xinghe-freight', confidence: 'high' });
     }
     for (const number of ['GZXH000000017YQ', 'GZXH00000000017YQ', 'GZYL0000000017YQ', 'GZXH0000000017YT']) {
@@ -408,7 +408,7 @@ describe('Chinese fulfilment warehouse numbers', () => {
   });
 
   it('names Meso-global for ZJKJ and ten digits, and only that layout', () => {
-    for (const number of ['ZJKJ1000000017', 'zjkj 1000 0000 17']) {
+    for (const number of ['ZJKJ1999999980', 'zjkj 1000 0000 17']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'meso-global', confidence: 'high' });
     }
     for (const number of ['ZJKJ100000017', 'ZJKJ10000000017', 'ZJKX1000000017', 'ZJKJ1000000017CN']) {
@@ -431,14 +431,14 @@ describe('Chinese fulfilment warehouse numbers', () => {
   });
 
   it('suggests Take Send for TS, a registration date and seven digits without naming it', () => {
-    for (const number of ['TS2609040000017', 'ts 260904 0000017']) {
+    for (const number of ['TS2609049999980', 'ts 260904 0000017']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['takesend'] });
     }
     for (const number of ['TS2613040000017', 'TS2609320000017', 'TS260904000017', 'TS26090400000017', 'TX2609040000017']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('takesend');
     }
-    expect(parseTrackingInput('http://k5.takesend.com:8180/WebTrack?action=list&language=en&bills=TS2609040000017')).toMatchObject({
-      trackingNumber: 'TS2609040000017', carrier: 'takesend', source: 'link',
+    expect(parseTrackingInput('http://k5.takesend.com:8180/WebTrack?action=list&language=en&bills=TS2609049999980')).toMatchObject({
+      trackingNumber: 'TS2609049999980', carrier: 'takesend', source: 'link',
     });
   });
 
@@ -475,7 +475,7 @@ describe('First Flight (Middle East) and DD Express links', () => {
 
 describe('Boyuan tracking numbers', () => {
   it('suggests Boyuan and DHLink for BY, fourteen digits and CN, and only that layout', () => {
-    for (const number of ['BY10000000000017CN', 'by 10000000000017 cn']) {
+    for (const number of ['BY19999999999980CN', 'by 10000000000017 cn']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['boyuan', 'dhlink'] });
     }
     for (const number of ['BY1000000000017CN', 'BY100000000000017CN', 'BY10000000000017US', 'BX10000000000017CN', 'BYHD100000017']) {
@@ -484,21 +484,21 @@ describe('Boyuan tracking numbers', () => {
   });
 
   it('asks DHLink about the number and names Boyuan from a provider', () => {
-    expect(recognitionAskedCarriers('BY10000000000017CN')).toEqual(['dhlink']);
+    expect(recognitionAskedCarriers('BY19999999999980CN')).toEqual(['dhlink']);
     expect(carrierIdFromName('Boyuan')).toBe('boyuan');
     expect(carrierIdFromName('博远供应链')).toBe('boyuan');
   });
 
   it('reads Boyuan tracker links', () => {
-    expect(parseTrackingInput('https://tms.boyuangyl.com/trackIndex.htm?documentCode=BY10000000000017CN')).toMatchObject({
-      trackingNumber: 'BY10000000000017CN', carrier: 'boyuan', source: 'link',
+    expect(parseTrackingInput('https://tms.boyuangyl.com/trackIndex.htm?documentCode=BY19999999999980CN')).toMatchObject({
+      trackingNumber: 'BY19999999999980CN', carrier: 'boyuan', source: 'link',
     });
   });
 });
 
 describe('Tuodatong tracking numbers', () => {
   it('suggests DHLink and Tuodatong for TDT, ten digits and CN, and only that layout', () => {
-    for (const number of ['TDT1000000017CN', 'tdt 1000000017 cn']) {
+    for (const number of ['TDT1999999980CN', 'tdt 1000000017 cn']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink', 'tuodatong'] });
     }
     for (const number of ['TDT100000017CN', 'TDT10000000017CN', 'TDT1000000017US', 'TDX1000000017CN', 'TD1000000017CN']) {
@@ -509,10 +509,10 @@ describe('Tuodatong tracking numbers', () => {
   });
 
   it('asks DHLink about the number, names Tuodatong from a provider and reads its tracker links', () => {
-    expect(recognitionAskedCarriers('TDT1000000017CN')).toEqual(['dhlink']);
+    expect(recognitionAskedCarriers('TDT1999999980CN')).toEqual(['dhlink']);
     for (const name of ['Tuodatong', 'TDTWL', '拓达通物流']) expect(carrierIdFromName(name), name).toBe('tuodatong');
-    expect(parseTrackingInput('https://www.tuodatong56.com/tms/trackIndex.htm?documentCode=TDT1000000017CN')).toMatchObject({
-      trackingNumber: 'TDT1000000017CN', carrier: 'tuodatong', source: 'link',
+    expect(parseTrackingInput('https://www.tuodatong56.com/tms/trackIndex.htm?documentCode=TDT1999999980CN')).toMatchObject({
+      trackingNumber: 'TDT1999999980CN', carrier: 'tuodatong', source: 'link',
     });
   });
 });

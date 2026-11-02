@@ -21,8 +21,8 @@ const html = (body: string, init: ResponseInit = {}) => new Response(body,
 const answering = (answer: () => Response) => vi.fn<typeof fetch>().mockImplementation(async () => answer());
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 const IMPERVA = '<html style="height:100%"><head><META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"></head><body style="margin:0px;height:100%">'
-  + '<iframe id="main-iframe" src="/_Incapsula_Resource?CWUDNSAI=00&incident_id=0-000000000000000000" frameborder=0 width="100%" height="100%">'
-  + 'Request unsuccessful. Incapsula incident ID: 0-000000000000000000</iframe></body></html>';
+  + '<iframe id="main-iframe" src="/_Incapsula_Resource?CWUDNSAI=00&incident_id=0-099999999999999980" frameborder=0 width="100%" height="100%">'
+  + 'Request unsuccessful. Incapsula incident ID: 0-099999999999999980</iframe></body></html>';
 const ASP_ERROR = '<!DOCTYPE html><html><head><title>Error</title></head><body><div class="container body-content">'
   + '<h1 class="text-danger">Error.</h1><h2 class="text-danger">An error occurred while processing your request.</h2></div></body></html>';
 /** The delivered page with its history table's rows replaced. */

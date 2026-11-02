@@ -210,7 +210,7 @@
       "note": "An Australia Post tracking link archived by the Wayback Machine; the tracker returns its history. A ten-character consignment number."
     },
     {
-      "number": "1ABZ00000001",
+      "number": "1ABZ99999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -223,7 +223,7 @@
           "colis-prive"
         ]
       },
-      "note": "Made-up number in the shape of a StarTrack Express consignment that Australia Post's tracker lists with its articles: three characters with a letter, then Z and eight digits."
+      "note": "Made-up number in the shape of a StarTrack Express consignment that Australia Post's tracker lists with its articles: three characters with a letter, then Z and eight digits. Its serial sits far beyond the range in use."
     },
     {
       "number": "0301006785462006320995",
@@ -481,7 +481,7 @@
       "note": "An Australia Post tracking search archived by the Wayback Machine. Australia Post's tracker shows no scans for it, so nothing confirms the barcode is Australia Post's, and Swiss Post's 18-digit rule takes it."
     },
     {
-      "number": "R000000000000000000000001",
+      "number": "R999999999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -493,7 +493,7 @@
           "australia-post"
         ]
       },
-      "note": "Made-up number in the shape of a domestic Parcel Post article that Australia Post's tracker lists under the whole number: R and twenty-four digits."
+      "note": "Made-up number in the shape of a domestic Parcel Post article that Australia Post's tracker lists under the whole number: R and twenty-four digits. Its serial sits far beyond the range in use."
     }
   ]
 }

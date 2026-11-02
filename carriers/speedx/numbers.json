@@ -19,7 +19,7 @@
       "note": "Public report attributed to SpeedX, whose tracking page returns its history."
     },
     {
-      "number": "SPXLAX000002601010000001",
+      "number": "SPXLAX999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -28,7 +28,7 @@
         "carrier": "speedx",
         "confidence": "high"
       },
-      "note": "Made-up 24-character number: SPX, a three-letter hub and 18 digits."
+      "note": "Made-up 24-character number: SPX, a three-letter hub and 18 digits. Its serial sits far beyond the range in use."
     },
     {
       "number": "SPXMIA008952609060000499",
@@ -100,7 +100,7 @@
       "note": "Publicly reported shipment number; the attribution was not independently verified."
     },
     {
-      "number": "SPX000000000000000000001",
+      "number": "SPX999999999999999999980",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -109,7 +109,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "SPX followed only by digits, without the hub letters, must not resolve to SpeedX."
+      "note": "SPX followed only by digits, without the hub letters, must not resolve to SpeedX. Its serial sits far beyond the range in use."
     },
     {
       "number": "SPXSFO007852604130001175",

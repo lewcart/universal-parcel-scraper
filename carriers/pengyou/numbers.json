@@ -3,7 +3,7 @@
   "gap": "No public page shows a whole Pengyou tracking number.",
   "records": [
     {
-      "number": "ZZZ000000017PY",
+      "number": "ZZZ999999980PY",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -15,7 +15,7 @@
           "pengyou"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider filed under Pengyou."
+      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider filed under Pengyou. Its serial sits far beyond the range in use."
     }
   ]
 }

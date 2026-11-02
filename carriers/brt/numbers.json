@@ -564,7 +564,7 @@
       "note": "A BRT parcel-ID search archived by the Wayback Machine. BRT's page returns the history of the shipment the parcel belongs to."
     },
     {
-      "number": "EOB99099100000000015",
+      "number": "EOB99099199999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -576,7 +576,7 @@
           "brt"
         ]
       },
-      "note": "Made-up number in the shape of the EOB customer parcel IDs BRT's parcel search finds."
+      "note": "Made-up number in the shape of the EOB customer parcel IDs BRT's parcel search finds. Its serial sits far beyond the range in use."
     }
   ]
 }

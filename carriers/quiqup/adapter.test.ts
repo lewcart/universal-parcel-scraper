@@ -12,7 +12,7 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = '12345679';
 const IN_TRANSIT = '1234567';
-const UNKNOWN = '23456789';
+const UNKNOWN = '99999980';
 
 type Row = Record<string, unknown>;
 type Order = Row & { state_changes: Row[]; delivery_time: Row };

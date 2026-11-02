@@ -2,7 +2,7 @@
   "carrier": "postlogistics",
   "records": [
     {
-      "number": "12345678-001",
+      "number": "19999980-001",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -11,10 +11,10 @@
         "carrier": "postlogistics",
         "confidence": "high"
       },
-      "note": "Invented reference showing the portal's eight-digit and three-digit segments."
+      "note": "Invented reference showing the portal's eight-digit and three-digit segments. Its serial sits far beyond the range in use."
     },
     {
-      "number": "12345678002",
+      "number": "19999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -34,10 +34,10 @@
           "mainfreight"
         ]
       },
-      "note": "Invented compact shape for the recognition route; not a known shipment."
+      "note": "Invented compact shape for the recognition route; not a known shipment. Its serial sits far beyond the range in use."
     },
     {
-      "number": "000000000000000000",
+      "number": "099999999999999980",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -50,7 +50,7 @@
           "ecoscooting"
         ]
       },
-      "note": "Invented placeholder used as a shape check. Filed under PostLogistics, which no rule claims."
+      "note": "Invented placeholder used as a shape check. Filed under PostLogistics, which no rule claims. Its serial sits far beyond the range in use."
     },
     {
       "number": "47803744-001",

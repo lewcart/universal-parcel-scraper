@@ -8,7 +8,7 @@ import { normalizeSundarbanNumber, parseSundarban } from './parser.js';
 import { statusMap, sundarbanCodeStage, sundarbanStage, sundarbanWordingStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '10000000000001';
+const DELIVERED = '10009999999980';
 const IN_TRANSIT = '10000000000002';
 const UNKNOWN = '10000000000003';
 
@@ -66,7 +66,7 @@ describe('Sundarban Courier HTTP adapter', () => {
 
   it('keeps no sender, recipient, phone, address, contents, vehicle, manifest, bag, delivery man or remark', () => {
     const json = JSON.stringify(parseSundarban(fixture('delivered'), DELIVERED));
-    expect(json).not.toMatch(/Sample (?:Sender|Receiver|Goods|Rider|booking)|Example (?:Road|Lane|Branch)|Sample Town|01000000|SAMPLE-VEHICLE|900001|SMP-DOC|N\/A|10000000000001/);
+    expect(json).not.toMatch(/Sample (?:Sender|Receiver|Goods|Rider|booking)|Example (?:Road|Lane|Branch)|Sample Town|01000000|SAMPLE-VEHICLE|900001|SMP-DOC|N\/A|10009999999980/);
   });
 
   it('reads a parcel on its way, and keeps a time the service gives beside the day', () => {

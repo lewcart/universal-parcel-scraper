@@ -211,7 +211,7 @@ describe('Dragon Star Curier HTTP adapter', () => {
 
   it('rejects numbers DSC does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['000001', '0000000001', 'A0000001', 'ABCDEFGH', `${'0'.repeat(70)}`]) {
+    for (const number of ['000001', '0000000001', 'A9999980', 'ABCDEFGH', `${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

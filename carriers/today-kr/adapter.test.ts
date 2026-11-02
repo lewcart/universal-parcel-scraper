@@ -293,7 +293,7 @@ describe('To-Day HTTP adapter', () => {
 
   it('rejects numbers To-Day does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['10000000001', '1000000000170000', 'SAMPLETRACKING', 'TD000000001KRX', '1'.repeat(80)]) {
+    for (const number of ['10999999980', '1000000000170000', 'SAMPLETRACKING', 'TD000000001KRX', '1'.repeat(80)]) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

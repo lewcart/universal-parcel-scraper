@@ -49,7 +49,7 @@ describe('recognition candidates', () => {
   it('asks GLS Poland and GLS Austria about the 12-digit form only for a caller in their country', () => {
     // Synthetic: the same parcel number printed with its GLS check digit. A Polish or Austrian
     // caller's network is asked first and tracks without the postcode GLS Germany requires.
-    const number = '123456789011';
+    const number = '123459999981';
     for (const network of ['gls-at', 'gls-pl']) expect(detectCarrierMatch(number).candidates).toContain(network);
     expect(recognitionAskedCarriers(number, { countryHint: 'PL' })[0]).toBe('gls-pl');
     expect(recognitionAskedCarriers(number, { countryHint: 'AT' })[0]).toBe('gls-at');
@@ -68,7 +68,7 @@ describe('recognition candidates', () => {
 
   it('asks 4PX before Emile about Emile\'s sixteen-digit barcodes and settles on 4PX when both know one', () => {
     // Synthetic: Emile's barcode on a parcel 4PX hands over; 4PX's feed holds the whole journey.
-    const number = 'EM0000000000000001CA';
+    const number = 'EM9999999999999980CA';
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['four-px', 'emile'] });
     expect(recognitionCandidates(number, { countryHint: 'CA' })).toEqual([
       { carrier: 'four-px', needsInput: null, preferred: true },
@@ -112,7 +112,7 @@ describe('recognition candidates', () => {
   it('keeps direct hints and number evidence ahead of weak ordering hints', () => {
     expect(recognitionCandidates('06080000000002', { countryHint: 'GB', priorities: { 'dpd-uk': 1e6 } })[0]?.carrier).toBe('dpd');
     expect(recognitionCandidates('06080000000002', { hint: 'seur', countryHint: 'GB' })[0]?.carrier).toBe('seur');
-    const shadowed = recognitionCandidates('10000000000001', { countryHint: 'CH', priorities: { dpd: 1e6 } });
+    const shadowed = recognitionCandidates('10009999999980', { countryHint: 'CH', priorities: { dpd: 1e6 } });
     expect(shadowed.map(({ carrier }) => carrier)).not.toContain('dpd');
   });
 
@@ -162,13 +162,13 @@ describe('recognition candidates', () => {
     expect(recognitionCandidates('1Z999AA10123456784')).toEqual([]);
     // A DPD France depot: DPD France cannot be asked, and DPD Switzerland's or
     // DPD Germany's group-wide answer would file its parcel under the wrong network.
-    expect(recognitionCandidates('10000000000001').map((candidate) => candidate.carrier)).toEqual(['seur', 'brt', 'anteraja', 'ciblex', 'delhivery']);
+    expect(recognitionCandidates('10009999999980').map((candidate) => candidate.carrier)).toEqual(['seur', 'brt', 'anteraja', 'ciblex', 'delhivery']);
   });
 
   it('asks GLS France, then GLS Germany, then GLS Switzerland about a GLS number', () => {
     // GLS's group overview answers for every network's parcels alike, so GLS
     // Germany and GLS Switzerland always agree; GLS France answers only its own.
-    for (const number of ['12345678901', '123456789011', 'AB12CD34']) {
+    for (const number of ['12345678901', '123459999981', 'AB12CD34']) {
       expect(recognitionAskedCarriers(number).slice(0, 3)).toEqual(['gls-fr', 'gls-de', 'gls-ch']);
     }
     expect(recognitionAskedCarriers('ABCDEF')).toEqual(['gls-de', 'gls-ch']);
@@ -246,7 +246,7 @@ describe('recognition candidates', () => {
     // A failed check digit under another post's suffix is a mistyped number:
     // Chronopost's own codes without one keep its prefixes or suffixes.
     expect(recognitionCandidates('CE123456789FI')).toEqual([]);
-    expect(recognitionCandidates('RA123456785CH')).toEqual([]);
+    expect(recognitionCandidates('RA999999987CH')).toEqual([]);
   });
 });
 
@@ -254,7 +254,7 @@ describe('asking carriers', () => {
   it('keeps browser checks separate from HTTP checks', () => {
     expect(recognitionCandidates('000000000011').map(({ carrier }) => carrier)).not.toContain('fedex');
     expect(recognitionCandidates('000000000011', { phase: 'browser' }).map(({ carrier }) => carrier)).toEqual(['fedex']);
-    expect(recognitionCandidates('33870000000000001', { phase: 'browser' }).map(({ carrier }) => carrier)).toEqual(['dhl-ecommerce']);
+    expect(recognitionCandidates('33879999999999980', { phase: 'browser' }).map(({ carrier }) => carrier)).toEqual(['dhl-ecommerce']);
   });
   it('aborts callbacks at the deadline and on caller cancellation', async () => {
     let seen: AbortSignal | undefined;

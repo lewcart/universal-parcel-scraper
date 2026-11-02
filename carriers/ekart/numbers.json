@@ -416,7 +416,7 @@
       "note": "A Flipkart order ID put into Ekart's tracking link and archived by the Wayback Machine. Ekart tracks the shipment's own ID, not the order's."
     },
     {
-      "number": "FMPP0000000001",
+      "number": "FMPP9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -424,7 +424,7 @@
         "carrier": "ekart",
         "confidence": "high"
       },
-      "note": "Synthetic tracking-number shape for offline detection and transport tests."
+      "note": "Synthetic tracking-number shape for offline detection and transport tests. Its serial sits far beyond the range in use."
     }
   ]
 }

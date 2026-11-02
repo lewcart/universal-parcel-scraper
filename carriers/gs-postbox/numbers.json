@@ -2,7 +2,7 @@
   "carrier": "gs-postbox",
   "records": [
     {
-      "number": "210000091000",
+      "number": "210999970300",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -33,7 +33,7 @@
           "sending"
         ]
       },
-      "note": "Made-up number in the shape of the half-price (반값택배) parcels GS Postbox's tracker shows: twelve digits starting 210. Every public number found is a lookup on that tracker, which shows the sender's and the recipient's partly masked names."
+      "note": "Made-up number in the shape of the half-price (반값택배) parcels GS Postbox's tracker shows: twelve digits starting 210. Every public number found is a lookup on that tracker, which shows the sender's and the recipient's partly masked names. Its serial sits far beyond the range in use."
     }
   ]
 }

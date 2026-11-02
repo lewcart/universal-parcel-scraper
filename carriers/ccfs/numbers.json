@@ -2,7 +2,7 @@
   "carrier": "ccfs",
   "records": [
     {
-      "number": "100000000001",
+      "number": "199999999977",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -26,10 +26,10 @@
           "sending"
         ]
       },
-      "note": "Invented placeholder for a twelve-digit pro number; the public sample's tracker names its signer."
+      "note": "Invented placeholder for a twelve-digit pro number; the public sample's tracker names its signer. Its serial sits far beyond the range in use."
     },
     {
-      "number": "A0000001",
+      "number": "A9999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -44,7 +44,7 @@
           "loggi"
         ]
       },
-      "note": "Invented placeholder for a freight bill number, one letter and seven digits."
+      "note": "Invented placeholder for a freight bill number, one letter and seven digits. Its serial sits far beyond the range in use."
     }
   ]
 }

@@ -16,7 +16,7 @@
       "note": "Publicly reported label code, called the tracking number next to the S10 shipment code. The source attributes it to Chronopost; no rule matches this shape."
     },
     {
-      "number": "12345678901234E",
+      "number": "99999999999984E",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -32,10 +32,10 @@
           "dpd-uk"
         ]
       },
-      "note": "Invented placeholder used as a shape check. Filed under Chronopost, which stays one candidate among several."
+      "note": "Invented placeholder used as a shape check. Filed under Chronopost, which stays one candidate among several. Its serial sits far beyond the range in use."
     },
     {
-      "number": "PZ123456785JF",
+      "number": "PZ999999987JF",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -44,7 +44,7 @@
         "carrier": "chronopost",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
     },
     {
       "number": "XA547564856FR",
@@ -73,7 +73,7 @@
       "note": "Open-source project example, not a real shipment. The source attributes it to Chronopost; detection selects La Poste / Colissimo."
     },
     {
-      "number": "XU123456785FR",
+      "number": "XU999999987FR",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -99,7 +99,7 @@
       "note": "Publicly reported shipment number; the attribution was not independently verified. Called the shipment code, next to a separate 28-character tracking number."
     },
     {
-      "number": "XW123456785TS",
+      "number": "XW999999987TS",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -111,7 +111,19 @@
       "note": "Made-up number that follows the published format."
     },
     {
-      "number": "XR123456785TS",
+      "number": "XR999999987TS",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-08",
+      "expect": {
+        "carrier": "chronopost",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of Chronopost parcels whose S10 check digit passes and whose TS suffix is no country. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
+    },
+    {
+      "number": "XT999999987TS",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -123,7 +135,7 @@
       "note": "Made-up number in the shape of Chronopost parcels whose S10 check digit passes and whose TS suffix is no country."
     },
     {
-      "number": "XT123456785TS",
+      "number": "NP999999980JB",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -132,19 +144,7 @@
         "carrier": "chronopost",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of Chronopost parcels whose S10 check digit passes and whose TS suffix is no country."
-    },
-    {
-      "number": "NP123456789JB",
-      "role": "shipment",
-      "evidence": "synthetic",
-      "derivedFrom": "invented",
-      "shapeConfirmed": "2026-10-08",
-      "expect": {
-        "carrier": "chronopost",
-        "confidence": "high"
-      },
-      "note": "Made-up number with Chronopost's own JB suffix and no S10 check digit, as its numbers outside the dedicated prefixes often have."
+      "note": "Made-up number with Chronopost's own JB suffix and no S10 check digit, as its numbers outside the dedicated prefixes often have. Its serial sits far beyond the range in use."
     },
     {
       "number": "XT010847192TS",
@@ -521,7 +521,7 @@
       "note": "Chronopost's tracker returns its history: a DPD-network parcel entering France, delivered by Chronopost."
     },
     {
-      "number": "04000000000019",
+      "number": "04999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -545,10 +545,10 @@
           "dpd-uk"
         ]
       },
-      "note": "Made-up number in the shape of parcels the app tracked: a DPD parcel number's fourteen digits without its check character, which Chronopost's own tracker answered with their history. Fourteen digits are shared with DPD's networks, BRT, SEUR and others, so Chronopost is only a suggestion."
+      "note": "Made-up number in the shape of parcels the app tracked: a DPD parcel number's fourteen digits without its check character, which Chronopost's own tracker answered with their history. Fourteen digits are shared with DPD's networks, BRT, SEUR and others, so Chronopost is only a suggestion. Its serial sits far beyond the range in use."
     },
     {
-      "number": "XN246813579024",
+      "number": "XN999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -560,7 +560,7 @@
           "chronopost"
         ]
       },
-      "note": "Made-up number in the shape of a parcel Chronopost's tracker answered with its own scans, which a universal provider also names Chronopost France."
+      "note": "Made-up number in the shape of a parcel Chronopost's tracker answered with its own scans, which a universal provider also names Chronopost France. Its serial sits far beyond the range in use."
     }
   ]
 }

@@ -4,7 +4,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, InpostTracker, parseInpostTrackingResponse } from './adapter.js';
 import { needsInpostPickup, parseInpostPickup } from './pickup.js';
 
-const NUMBER = '640000000000000000000001';
+const NUMBER = '649999999999999999999980';
 const hub = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
 const shipx = () => JSON.parse(readFileSync(new URL('./fixtures/shipx-collected.json', import.meta.url), 'utf8'));
 const HUB_URL = `https://inposteasy.com/api/tracking/${NUMBER}?language=en`;

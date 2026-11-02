@@ -2,7 +2,7 @@
   "carrier": "veho",
   "records": [
     {
-      "number": "VH100000000017",
+      "number": "VH199999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -14,7 +14,7 @@
           "veho"
         ]
       },
-      "note": "Made-up tracking id in the layout Veho's API documentation and tracker give: fourteen characters starting VH."
+      "note": "Made-up tracking id in the layout Veho's API documentation and tracker give: fourteen characters starting VH. Its serial sits far beyond the range in use."
     },
     {
       "number": "VEHOATL000021976",

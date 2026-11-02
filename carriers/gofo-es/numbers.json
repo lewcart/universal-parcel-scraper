@@ -40,7 +40,18 @@
       "note": "A Spanish reviewer on GOFO's Trustpilot page gives it as the tracking number; GOFO's anonymous national tracking service confirms the whole waybill and a Spanish destination."
     },
     {
-      "number": "CIES0000000000001",
+      "number": "CIES9999999999980",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "expect": {
+        "carrier": "gofo-es",
+        "confidence": "high"
+      },
+      "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/es/contact-us/. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
+    },
+    {
+      "number": "GFES9999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -51,18 +62,7 @@
       "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/es/contact-us/."
     },
     {
-      "number": "GFES0000000000001",
-      "role": "shipment",
-      "evidence": "synthetic",
-      "derivedFrom": "official_shape",
-      "expect": {
-        "carrier": "gofo-es",
-        "confidence": "high"
-      },
-      "note": "Synthetic identifier following the national format described by GOFO customer support at https://www.gofo.com/es/contact-us/."
-    },
-    {
-      "number": "CIES00000000000001",
+      "number": "CIES99999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",

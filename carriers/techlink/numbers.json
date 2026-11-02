@@ -21,7 +21,7 @@
       "note": "TrackShip's Techlink page offers it as the carrier's tracking-number pattern."
     },
     {
-      "number": "ZHPHD260101000001ML",
+      "number": "ZHPHD260101999980ML",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -30,7 +30,7 @@
         "carrier": "techlink",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a parcel from China that Techlink's tracker answered and a universal provider filed under Techlink."
+      "note": "Made-up number in the shape of a parcel from China that Techlink's tracker answered and a universal provider filed under Techlink. Its serial sits far beyond the range in use."
     }
   ]
 }

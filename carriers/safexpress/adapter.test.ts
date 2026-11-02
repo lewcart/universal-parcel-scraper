@@ -41,7 +41,7 @@ describe('Safexpress history parsing', () => {
   });
 
   it('accepts the official form lengths without making them detector evidence', () => {
-    for (const number of ['87654321', '876543210', NUMBER, '123456789012345']) expect(normalizeSafexpressNumber(number)).toBe(number);
+    for (const number of ['99999980', '876543210', NUMBER, '123456789012345']) expect(normalizeSafexpressNumber(number)).toBe(number);
     expect(normalizeSafexpressNumber('1000 7654-3210')).toBe(NUMBER);
     for (const number of ['1234567', '1234567890', `${NUMBER}1`, `${NUMBER},${NUMBER}`, 'ABC123456789']) {
       expect(() => normalizeSafexpressNumber(number)).toThrowError(expect.objectContaining({ kind: 'invalid_input' }));
@@ -54,7 +54,7 @@ describe('Safexpress history parsing', () => {
       { status: 'Ok', data: { tracking: [shipment(), shipment()] } }]) {
       expect(() => parseSafexpress(body, NUMBER)).toThrowError(expect.objectContaining({ kind: 'schema' }));
     }
-    const old = '87654321';
+    const old = '99999980';
     expect(parseSafexpress(payload(shipment({ wayblNo: old, details: [detail('BOOKED', '2025-04-01', { wayblNo: old })], status: [] })), old).events).toHaveLength(1);
   });
 

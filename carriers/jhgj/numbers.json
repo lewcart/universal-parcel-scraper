@@ -2,7 +2,7 @@
   "carrier": "jhgj",
   "records": [
     {
-      "number": "JH9900000001CN",
+      "number": "JH9999999980CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -14,7 +14,7 @@
           "jhgj"
         ]
       },
-      "note": "Made-up number in the shape of the waybills Jiuhao International's own tracker answers, which a Hualei number rule makes."
+      "note": "Made-up number in the shape of the waybills Jiuhao International's own tracker answers, which a Hualei number rule makes. Its serial sits far beyond the range in use."
     }
   ]
 }

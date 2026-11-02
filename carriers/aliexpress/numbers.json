@@ -2,7 +2,7 @@
   "carrier": "aliexpress",
   "records": [
     {
-      "number": "DOFR0000000000001HD",
+      "number": "DOFR9999999999980HD",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -10,10 +10,10 @@
         "carrier": "aliexpress",
         "confidence": "high"
       },
-      "note": "Synthetic Cainiao shipment-number shape."
+      "note": "Synthetic Cainiao shipment-number shape. Its serial sits far beyond the range in use."
     },
     {
-      "number": "DOFR000000000001HD",
+      "number": "DOFR999999999980HD",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -23,7 +23,7 @@
       }
     },
     {
-      "number": "DOFR0000000000001HU",
+      "number": "DOFR9999999999980HU",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -114,7 +114,7 @@
       "note": "Customer reports an AliExpress tracking reference and linehaul history; the format does not select a delivery carrier."
     },
     {
-      "number": "LP00000000000000001",
+      "number": "LP99999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -126,7 +126,7 @@
           "aliexpress"
         ]
       },
-      "note": "Made-up number in the shape of an AliExpress parcel that Cainiao's tracker answered with its own scans and its hand-over to the local delivery company, while no universal provider knew it. Cainiao's numeric LP references usually carry fourteen digits and no public page shows this longer series, so the shape only suggests AliExpress."
+      "note": "Made-up number in the shape of an AliExpress parcel that Cainiao's tracker answered with its own scans and its hand-over to the local delivery company, while no universal provider knew it. Cainiao's numeric LP references usually carry fourteen digits and no public page shows this longer series, so the shape only suggests AliExpress. Its serial sits far beyond the range in use."
     },
     {
       "number": "AP00821064969338",
@@ -289,7 +289,7 @@
       "note": "A Cainiao tracking link archived by the Wayback Machine. Cainiao's tracking reply archived with it holds its history."
     },
     {
-      "number": "CNFR000000000001HD",
+      "number": "CNFR999999999980HD",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -1030,7 +1030,7 @@
       "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Italy."
     },
     {
-      "number": "9C0000J000001",
+      "number": "9C0000J999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -1042,10 +1042,10 @@
           "poste-italiane"
         ]
       },
-      "note": "Synthetic code in SDA's layout with a J, as on AliExpress parcels to Italy whose code Cainiao's tracker answered for before Poste Italiane knew it."
+      "note": "Synthetic code in SDA's layout with a J, as on AliExpress parcels to Italy whose code Cainiao's tracker answered for before Poste Italiane knew it. Its serial sits far beyond the range in use."
     },
     {
-      "number": "000D00000001F",
+      "number": "000D99999980F",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -1057,10 +1057,10 @@
           "poste-italiane"
         ]
       },
-      "note": "Synthetic waybill in a thirteen-character shape SDA uses in Italy. AliExpress shows the buyer such a number while the parcel is still on Cainiao's leg, and Cainiao's tracker returns its history before Poste Italiane knows the number."
+      "note": "Synthetic waybill in a thirteen-character shape SDA uses in Italy. AliExpress shows the buyer such a number while the parcel is still on Cainiao's leg, and Cainiao's tracker returns its history before Poste Italiane knows the number. Its serial sits far beyond the range in use."
     },
     {
-      "number": "RR123456785XX",
+      "number": "RR999999987XX",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -1073,10 +1073,10 @@
           "chronopost"
         ]
       },
-      "note": "Made-up number in the shape of a parcel Cainiao's tracker answered with its own scans. Its S10 check digit passes, but its XX suffix names no country, so it is not international mail."
+      "note": "Made-up number in the shape of a parcel Cainiao's tracker answered with its own scans. Its S10 check digit passes, but its XX suffix names no country, so it is not international mail. Its serial sits far beyond the range in use."
     },
     {
-      "number": "HRBC0123456789",
+      "number": "HRBC9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -1088,10 +1088,10 @@
           "aliexpress"
         ]
       },
-      "note": "Made-up number in the shape of two parcels from China, ten days apart, that a universal provider followed under Cainiao and YFH. Cainiao's tracker answered the first; Ekart's and YFH's did not know it, and Ekart's did not know the second, delivered in Canada. HRBC is no merchant code Ekart is known to use."
+      "note": "Made-up number in the shape of two parcels from China, ten days apart, that a universal provider followed under Cainiao and YFH. Cainiao's tracker answered the first; Ekart's and YFH's did not know it, and Ekart's did not know the second, delivered in Canada. HRBC is no merchant code Ekart is known to use. Its serial sits far beyond the range in use."
     },
     {
-      "number": "RTZ5P00D00000001",
+      "number": "RTZ5P00D99999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -1103,10 +1103,10 @@
           "aliexpress"
         ]
       },
-      "note": "Made-up number in the shape of an AliExpress parcel to Italy that Cainiao's tracker answered with its own line-haul, customs and last-mile notice scans. The thirteen characters after RTZ have the layout of Poste Italiane's 5P codes, which Poste's tracker did not know yet and which it does not take with RTZ before them, so the shape only suggests AliExpress."
+      "note": "Made-up number in the shape of an AliExpress parcel to Italy that Cainiao's tracker answered with its own line-haul, customs and last-mile notice scans. The thirteen characters after RTZ have the layout of Poste Italiane's 5P codes, which Poste's tracker did not know yet and which it does not take with RTZ before them, so the shape only suggests AliExpress. Its serial sits far beyond the range in use."
     },
     {
-      "number": "FMP5P00D00000001",
+      "number": "FMP5P00D99999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -1118,7 +1118,7 @@
           "aliexpress"
         ]
       },
-      "note": "Made-up number in the shape of an AliExpress parcel to Italy that Cainiao's tracker answered with its line-haul, customs and hand-over to the local delivery company, and that a universal provider also attributed to Cainiao. As after RTZ, the thirteen characters after FMP have the layout of Poste Italiane's 5P codes; Vinted Go's FMP numbers carry UW there instead. The shape only suggests AliExpress."
+      "note": "Made-up number in the shape of an AliExpress parcel to Italy that Cainiao's tracker answered with its line-haul, customs and hand-over to the local delivery company, and that a universal provider also attributed to Cainiao. As after RTZ, the thirteen characters after FMP have the layout of Poste Italiane's 5P codes; Vinted Go's FMP numbers carry UW there instead. The shape only suggests AliExpress. Its serial sits far beyond the range in use."
     }
   ]
 }

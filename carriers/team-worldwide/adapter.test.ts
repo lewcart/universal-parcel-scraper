@@ -238,7 +238,7 @@ describe('Team Worldwide HTTP adapter', () => {
 
   it('rejects numbers Team does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['', 'ZZZ10000', 'ZZZ1000011', 'ZZ1000011', '100000001', 'ZZZ100001AB', '2ZZZC100001', '26ZZZ1100001', '26ZZZC10000',
+    for (const number of ['', 'ZZZ10000', 'ZZZ1000011', 'ZZ1000011', '199999980', 'ZZZ100001AB', '2ZZZC100001', '26ZZZ1100001', '26ZZZC10000',
       'ZZZM1000000R', 'ZZZM100000011', 'ZZZ100001/2', `${DELIVERED}${'9'.repeat(60)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }

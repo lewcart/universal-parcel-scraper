@@ -3,7 +3,7 @@
   "gap": "No public page shows a whole Z-Leading tracking number.",
   "records": [
     {
-      "number": "ZLXX000000017",
+      "number": "ZLXX999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -15,7 +15,7 @@
           "z-leading"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which two universal providers filed under Zhongling."
+      "note": "Made-up number in the shape of a parcel the app tracked, which two universal providers filed under Zhongling. Its serial sits far beyond the range in use."
     }
   ]
 }

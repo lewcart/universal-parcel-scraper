@@ -170,7 +170,7 @@ describe('standalone tracker', () => {
   it('detects a USPS routing barcode as typed and gives providers only its package identifier', async () => {
     // Invented package identifiers, the 22-digit one outside the PIC rule, behind the made-up ZIP code 00314,
     // with or without a ZIP+4: 30, 34 and 38 digits.
-    const pic = '9205510000000012345670';
+    const pic = '9205519999999999999984';
     const pic26 = '92000000000123456789012344';
     for (const [typed, expected] of [[`42000314${pic}`, pic], [`420003142718${pic}`, pic], [`42000314${pic26}`, pic26],
       [`420003142718${pic26}`, pic26]] as const) {

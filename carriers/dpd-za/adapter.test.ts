@@ -9,7 +9,7 @@ import { dpdZaWording, normalizeDpdZaNumber, parseDpdZa } from './parser.js';
 import { dpdZaRailStage, dpdZaStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ZZ0000000001';
+const DELIVERED = 'ZZ9999999980';
 const IN_TRANSIT = 'ZZ0000000002';
 const UNKNOWN = 'ZZ0000000009';
 

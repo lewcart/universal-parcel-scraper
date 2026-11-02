@@ -36,7 +36,7 @@
       "note": "Example on TrackShip's J&T Saudi Arabia page; J&T's tracker no longer lists it."
     },
     {
-      "number": "JTE300000000001",
+      "number": "JTE399999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -44,7 +44,7 @@
         "carrier": "j-and-t-middle-east",
         "confidence": "high"
       },
-      "note": "Synthetic identifier following the waybill check in J&T Express Middle East's own tracking form at https://www.jtexpress.me/KSA/trackOrder."
+      "note": "Synthetic identifier following the waybill check in J&T Express Middle East's own tracking form at https://www.jtexpress.me/KSA/trackOrder. Its serial sits far beyond the range in use."
     }
   ]
 }

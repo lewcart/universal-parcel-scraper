@@ -2,7 +2,7 @@
   "carrier": "gzyl",
   "records": [
     {
-      "number": "YL9900000001YQ",
+      "number": "YL9999999980YQ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -14,7 +14,7 @@
           "gzyl"
         ]
       },
-      "note": "Made-up number in the shape of the waybills GZYL's tracker answers, which a Hualei number rule makes."
+      "note": "Made-up number in the shape of the waybills GZYL's tracker answers, which a Hualei number rule makes. Its serial sits far beyond the range in use."
     }
   ]
 }

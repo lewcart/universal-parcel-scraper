@@ -78,7 +78,7 @@ describe('Timely Titan HTTP adapter', () => {
     ]);
     expect(result.events!.every((event) => event.time === undefined && (!event.stage || event.stage_source === 'carrier_map'))).toBe(true);
     // Who signed, the courier and their phones are left out.
-    expect(JSON.stringify(result)).not.toMatch(/示例人|样本员|电话|10000000000|10000000001|11183|Sampleshop/);
+    expect(JSON.stringify(result)).not.toMatch(/示例人|样本员|电话|10000000000|10999999980|11183|Sampleshop/);
   });
 
   it('reads a parcel on its way, and one at customs', () => {

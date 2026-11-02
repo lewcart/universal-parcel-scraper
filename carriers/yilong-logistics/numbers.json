@@ -2,7 +2,7 @@
   "carrier": "yilong-logistics",
   "records": [
     {
-      "number": "YIL990000001WL",
+      "number": "YIL999999980WL",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -11,7 +11,7 @@
         "carrier": "yilong-logistics",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of the waybills Yilong Logistics' tracker answers."
+      "note": "Made-up number in the shape of the waybills Yilong Logistics' tracker answers. Its serial sits far beyond the range in use."
     }
   ]
 }

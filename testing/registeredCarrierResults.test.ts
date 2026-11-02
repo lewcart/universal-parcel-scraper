@@ -39,7 +39,7 @@ const cases = [
   { carrier: 'correios-br', number: 'AA000000014BR', fixtureNumber: 'AA000000005BR', fixture: 'delivered.json' },
   { carrier: 'yunda', number: '0000000000001', fixture: 'delivered.json' },
   { carrier: 'ems', number: 'EB000000014CN', fixture: 'positive.html', unresolved: true },
-  { carrier: 'spring-gds', number: 'LX123456799NL', fixtureNumber: 'LX123456785NL', fixture: 'delivered.json', unresolved: true },
+  { carrier: 'spring-gds', number: 'LX123456799NL', fixtureNumber: 'LX999999987NL', fixture: 'delivered.json', unresolved: true },
   { carrier: 'uniuni', number: 'UUS0000000000000001', fixture: 'delivered.json', unresolved: true },
   { carrier: 'ctt-express', number: '0000000000000000000001', fixture: 'pickup.json', unresolved: true },
   { carrier: 'pos-malaysia', number: 'RR000000014MY', fixtureNumber: 'RR000000005MY', fixture: 'international.json', unresolved: true },

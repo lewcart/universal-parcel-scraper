@@ -72,7 +72,7 @@ describe('Postal Ninja result parsing', () => {
   });
 
   it('reads the UTC suffix Postal Ninja writes on Russian Post\'s scans as no zone', () => {
-    const domestic = '10000000000001';
+    const domestic = '10009999999980';
     const scans = [
       { ds: 'Russian Post', dt: '2026-10-16T11:30:40Z', dsc: 'Done. Accepted at the post office' },
       { ds: 'Russian Post', dt: '2026-10-17T15:02:10Z', dsc: 'Arrived at the sorting center' },

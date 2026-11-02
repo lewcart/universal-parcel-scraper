@@ -9,7 +9,7 @@ import { adapter, HuayaTracker } from './adapter.js';
 import { HUAYA_ORIGIN, parseHuayaPage, parseHuayaTrack } from './parser.js';
 import { ENTRIES, statusMap } from './status.js';
 
-const NUMBER = 'HYYT990000000001GZ';
+const NUMBER = 'HYYT999999999980GZ';
 const UNKNOWN = 'HYYT990000000009GZ';
 // A day after the hand-over row, on Beijing's clock.
 const READ_AT = Date.parse('2026-03-15T08:00:00Z');

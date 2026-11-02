@@ -2,7 +2,7 @@
   "carrier": "ems",
   "records": [
     {
-      "number": "EB000000005CN",
+      "number": "EB999999987CN",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -11,7 +11,7 @@
         "carrier": "china-post",
         "confidence": "high"
       },
-      "note": "Synthetic EMS S10 identifier; bare numbers retain their national postal operator, while an EMS link or manual selection chooses EMS."
+      "note": "Synthetic EMS S10 identifier; bare numbers retain their national postal operator, while an EMS link or manual selection chooses EMS. Its serial sits far beyond the range in use."
     },
     {
       "number": "EB865157741CN",
@@ -28,7 +28,7 @@
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source calls it a China Post EMS parcel; detection selects China Post."
     },
     {
-      "number": "EW000000005FR",
+      "number": "EW999999987FR",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -37,7 +37,7 @@
         "carrier": "la-poste",
         "confidence": "high"
       },
-      "note": "Synthetic second EMS origin; selecting EMS does not reassign French postal number detection."
+      "note": "Synthetic second EMS origin; selecting EMS does not reassign French postal number detection. Its serial sits far beyond the range in use."
     },
     {
       "number": "em595337205jp",

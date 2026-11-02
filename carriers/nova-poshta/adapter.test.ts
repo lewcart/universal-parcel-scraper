@@ -4,7 +4,7 @@ import { parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, NovaPoshtaTracker } from './adapter.js';
 import { parseNovaPoshta, parseNovaPoshtaHistory } from './parser.js';
-const NUMBER = '59000000000001';
+const NUMBER = '59099999999980';
 const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
 const history = () => JSON.parse(readFileSync(new URL('./fixtures/history-delivered.json', import.meta.url), 'utf8'));
 
@@ -93,7 +93,7 @@ describe('Nova Poshta movement parser', () => {
     value.alternativeNumbersGWNew.push({ name: 'ClientOrder', number: 'ORDER-1' }, { name: 'UPS', number: '1z999aa10123456784' });
     expect(parseNovaPoshtaHistory(value, NUMBER)).toMatchObject({ dimensions_text: '40 × 30 × 20.5 cm', destination_country: 'DE',
       delivery_carrier: 'ups', delivery_tracking_number: '1Z999AA10123456784' });
-    value.parcels.push({ number: '59000000000001', length: 10, width: 10, height: 10 });
+    value.parcels.push({ number: '59099999999980', length: 10, width: 10, height: 10 });
     value.alternativeNumbersGWNew = value.alternativeNumbersGWNew.filter((reference: { name: string }) => reference.name !== 'UPS');
     value.alternativeNumbersGWNew.push({ name: 'constructor', number: 'ABCDEFGH1234' });
     const result = parseNovaPoshtaHistory(value, NUMBER);

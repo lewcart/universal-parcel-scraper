@@ -16,7 +16,7 @@
       "note": "Publicly reported shipment number; the attribution was not independently verified."
     },
     {
-      "number": "440012345612345678",
+      "number": "449999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -25,7 +25,7 @@
         "carrier": "quickpac",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use."
     },
     {
       "number": "440010011954679368",

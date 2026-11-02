@@ -244,7 +244,7 @@
       "note": "Made-up Portuguese reference in the public CNPRT layout, with zeros for the postcode digits."
     },
     {
-      "number": "PRT00000001234000000001",
+      "number": "PRT00000001234999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -253,10 +253,10 @@
         "carrier": "ecoscooting",
         "confidence": "high"
       },
-      "note": "Made-up Portuguese reference typed without its CN, as a user typed a real one. Ecoscooting answers it with the CN put back."
+      "note": "Made-up Portuguese reference typed without its CN, as a user typed a real one. Ecoscooting answers it with the CN put back. Its serial sits far beyond the range in use."
     },
     {
-      "number": "ESP00000123400000000001",
+      "number": "ESP00000123499999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -265,7 +265,7 @@
         "carrier": "ecoscooting",
         "confidence": "high"
       },
-      "note": "Made-up Spanish reference in the public CNESP layout, typed without its CN like the Portuguese one."
+      "note": "Made-up Spanish reference in the public CNESP layout, typed without its CN like the Portuguese one. Its serial sits far beyond the range in use."
     },
     {
       "number": "CNPRT19501971234009605248",

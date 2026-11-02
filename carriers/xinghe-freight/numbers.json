@@ -3,7 +3,7 @@
   "gap": "No public page shows a whole Xinghe Freight tracking number.",
   "records": [
     {
-      "number": "GZXH0000000017YQ",
+      "number": "GZXH9999999980YQ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -12,7 +12,7 @@
         "carrier": "xinghe-freight",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider filed under GZXH."
+      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider filed under GZXH. Its serial sits far beyond the range in use."
     }
   ]
 }

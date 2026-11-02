@@ -67,7 +67,7 @@
       "note": "Published integration example, not a real shipment. The Smart Data family is corroborated by a public tracked-mail report."
     },
     {
-      "number": "8G12345678905",
+      "number": "8G99999999983",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -76,7 +76,7 @@
         "carrier": "la-poste",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format."
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
     },
     {
       "number": "8G45061126689",
@@ -107,7 +107,7 @@
       "note": "Publicly reported shipment number; the attribution was not independently verified."
     },
     {
-      "number": "RA123456785FR",
+      "number": "RA999999987FR",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -119,7 +119,7 @@
       "note": "Made-up number that follows the published format."
     },
     {
-      "number": "870012345678049",
+      "number": "870999999999961",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -128,10 +128,10 @@
         "carrier": "la-poste",
         "confidence": "high"
       },
-      "note": "Made-up numeric tracked-mail identifier; La Poste documents fifteen-character tracked mail."
+      "note": "Made-up numeric tracked-mail identifier; La Poste documents fifteen-character tracked mail. Its serial sits far beyond the range in use."
     },
     {
-      "number": "870012345678901",
+      "number": "870999999999980",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -145,7 +145,7 @@
           "yunda"
         ]
       },
-      "note": "Invented fifteen-digit tracked-mail identifier whose last digit is not La Poste's key, so La Poste stays one suggestion."
+      "note": "Invented fifteen-digit tracked-mail identifier whose last digit is not La Poste's key, so La Poste stays one suggestion. Its serial sits far beyond the range in use."
     },
     {
       "number": "88000012680741A",

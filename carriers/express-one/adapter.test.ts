@@ -112,7 +112,7 @@ describe('Express One direct tracking', () => {
     expect(normalizeExpressOneNumber(' 1000 0000 0000 0000 0000 0001 ')).toBe(NUMBER);
     expect(normalizeExpressOneNumber('1000000000001')).toBe('1000000000001');
     expect(expressOneTrackingUrl(NUMBER)).toBe(`https://tracking.expressone.hu/?plc_number=${NUMBER}`);
-    for (const number of ['', '100000000000', '10000000000001', '10000000000000000000001', '1000000000000000000000001', 'A00000000000000000000001', 'ABC12345']) {
+    for (const number of ['', '100000000000', '10009999999980', '10000000000000000000001', '1000000000000000000000001', 'A00000000000000000000001', 'ABC12345']) {
       expect(() => normalizeExpressOneNumber(number), number).toThrow(InvalidInputError);
     }
   });

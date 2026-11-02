@@ -11,7 +11,7 @@ import { aexWording, parseAex } from './parser.js';
 import { aexMappedStage, aexStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'A000000001';
+const DELIVERED = 'A099999980';
 const TRANSIT = 'A000000002';
 const UNKNOWN = 'A000000000';
 const page = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
@@ -111,8 +111,8 @@ describe('AEX tracking adapter', () => {
     const many = page('in-transit').replace(/<div class="tracking-event-row">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/, (row: string) => row.repeat(301));
     const broken = [
       page('delivered').replace('Historial de eventos', 'Historial'),
-      page('delivered').replace('<div class="card-header">', '<div class="card-header">Historial de eventos - <small>Guía A000000001</small></div><div class="card-header">'),
-      page('delivered').replace('<small>Guía A000000001</small>', '<small>A000000001</small>'),
+      page('delivered').replace('<div class="card-header">', '<div class="card-header">Historial de eventos - <small>Guía A099999980</small></div><div class="card-header">'),
+      page('delivered').replace('<small>Guía A099999980</small>', '<small>A099999980</small>'),
       page('delivered').replace('timeline-container', 'timeline-list'),
       page('delivered').replace('Viernes, 13 de Marzo del 2026', 'Viernes, 31 de Febrero del 2026'),
       page('delivered').replace('Viernes, 13 de Marzo del 2026', 'Viernes, 13 de Marzus del 2026'),

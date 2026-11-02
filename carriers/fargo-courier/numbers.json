@@ -2,7 +2,7 @@
   "carrier": "fargo-courier",
   "records": [
     {
-      "number": "FCLIN00000000",
+      "number": "FCLIN99999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -11,7 +11,7 @@
         "carrier": "fargo-courier",
         "confidence": "high"
       },
-      "note": "Zeroed waybill in the shape of Fargo's FCLIN waybills, which the tracker does not know."
+      "note": "Made-up waybill in the shape of Fargo's FCLIN waybills, which the tracker does not know. Its serial sits far beyond the range in use."
     }
   ]
 }

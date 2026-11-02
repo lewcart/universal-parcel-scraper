@@ -23,7 +23,7 @@
       "note": "ParcelPanel's FAR International page offered it to try, as the Wayback Machine archived it. FAR's own tracker answers it as a parcel flown from Hong Kong to the US that FedEx delivered."
     },
     {
-      "number": "FARZZ0000000001YQ",
+      "number": "FARZZ9999999980YQ",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -32,7 +32,7 @@
         "carrier": "far-international",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a parcel FAR's own tracker answers with its history to the destination's last mile, which a universal provider files under FAR International."
+      "note": "Made-up number in the shape of a parcel FAR's own tracker answers with its history to the destination's last mile, which a universal provider files under FAR International. Its serial sits far beyond the range in use."
     }
   ]
 }

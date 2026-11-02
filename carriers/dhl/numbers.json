@@ -89,7 +89,19 @@
       "note": "Publicly reported shipment number. DHL's recipient page returned its delivery in France and linked La Poste's tracking."
     },
     {
-      "number": "CY123456785DE",
+      "number": "CY999999987DE",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-09-12",
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "Made-up number that follows the published format. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use. Its serial sits far beyond the range in use."
+    },
+    {
+      "number": "JJD9999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -101,7 +113,7 @@
       "note": "Made-up number that follows the published format."
     },
     {
-      "number": "JJD0099999999",
+      "number": "LF999999987DE",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -113,19 +125,7 @@
       "note": "Made-up number that follows the published format."
     },
     {
-      "number": "LF123456785DE",
-      "role": "shipment",
-      "evidence": "synthetic",
-      "derivedFrom": "official_shape",
-      "shapeConfirmed": "2026-09-12",
-      "expect": {
-        "carrier": "dhl",
-        "confidence": "high"
-      },
-      "note": "Made-up number that follows the published format."
-    },
-    {
-      "number": "LF123456785US",
+      "number": "LF999999987US",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -134,7 +134,7 @@
         "carrier": "usps",
         "confidence": "high"
       },
-      "note": "Made-up number that follows the published format. Filed under DHL; detection names USPS, the issuing post."
+      "note": "Made-up number that follows the published format. Filed under DHL; detection names USPS, the issuing post. Its serial sits far beyond the range in use."
     },
     {
       "number": "LF123456789DE",
@@ -149,7 +149,7 @@
       "note": "Invented placeholder whose S10 check digit does not validate. Filed under DHL, which no rule claims."
     },
     {
-      "number": "LX123456785DE",
+      "number": "LX999999987DE",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -514,7 +514,7 @@
       "note": "A German postal parcel number typed into DHL's tracking page, archived by the Wayback Machine. DHL's recipient page returned its delivery in the Netherlands and linked DHL eCommerce Netherlands' tracking."
     },
     {
-      "number": "RA123456785DE",
+      "number": "RA999999987DE",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -523,10 +523,10 @@
         "carrier": "dhl",
         "confidence": "high"
       },
-      "note": "Made-up Deutsche Post registered letter number that follows the S10 format."
+      "note": "Made-up Deutsche Post registered letter number that follows the S10 format. Its serial sits far beyond the range in use."
     },
     {
-      "number": "A0123456789ABCDEF01F",
+      "number": "A0999999986ABCDEF01F",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -535,10 +535,10 @@
         "carrier": "dhl",
         "confidence": "high"
       },
-      "note": "Made-up Frankier-ID: A0, seventeen hexadecimal characters and the CRC-4 check character of Deutsche Post's DV-Freimachung specification."
+      "note": "Made-up Frankier-ID: A0, seventeen hexadecimal characters and the CRC-4 check character of Deutsche Post's DV-Freimachung specification. Its serial sits far beyond the range in use."
     },
     {
-      "number": "UL123456785DE",
+      "number": "UL999999987DE",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -547,7 +547,7 @@
         "carrier": "dhl",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a Deutsche Post item without customer tracking: U, a letter, nine digits with a valid S10 check digit, and DE."
+      "note": "Made-up number in the shape of a Deutsche Post item without customer tracking: U, a letter, nine digits with a valid S10 check digit, and DE. Its serial sits far beyond the range in use."
     }
   ]
 }

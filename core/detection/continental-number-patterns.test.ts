@@ -17,10 +17,10 @@ describe('continental shipment candidates', () => {
 
   it("offers SEUR a sender's reference dated day before month, beside APC Overnight's barcode dated month first", () => {
     // Synthetic: 15 October 2026 reads only day first; 10 December or 12 October reads both ways.
-    expect(detectCarrierMatch('2026151000000000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: [] });
-    expect(detectCarrierMatch('2026151000000000000001').candidates).toContain('seur');
-    expect(detectCarrierMatch('2026151000000000000001').candidates).not.toContain('apc-overnight');
-    expect(recognitionAskedCarriers('2026151000000000000001')).toContain('seur');
+    expect(detectCarrierMatch('2026151099999999999980')).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: [] });
+    expect(detectCarrierMatch('2026151099999999999980').candidates).toContain('seur');
+    expect(detectCarrierMatch('2026151099999999999980').candidates).not.toContain('apc-overnight');
+    expect(recognitionAskedCarriers('2026151099999999999980')).toContain('seur');
     expect(detectCarrierMatch('2026101200000000000001')).toMatchObject({ confidence: 'low', preferred: ['apc-overnight'] });
     expect(detectCarrierMatch('2026101200000000000001').candidates).toEqual(expect.arrayContaining(['apc-overnight', 'seur']));
     for (const number of ['2026131300000000000001', '1926151000000000000001', '202615100000000000001']) {
@@ -29,7 +29,7 @@ describe('continental shipment candidates', () => {
   });
 
   it("offers SEUR a pickup's REC reference and asks it, and only that layout", () => {
-    for (const number of ['REC000000000017', 'rec 0000 0000 0017']) {
+    for (const number of ['REC999999999980', 'rec 0000 0000 0017']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['seur'] });
       for (const countryHint of [undefined, 'ES', 'PT']) expect(recognitionAskedCarriers(number, { countryHint }), number).toEqual(['seur']);
     }
@@ -39,9 +39,9 @@ describe('continental shipment candidates', () => {
   });
 
   it('asks BRT about EOB customer parcel IDs without naming BRT from the shape', () => {
-    expect(isBrtTrackingNumber('EOB99099100000000015')).toBe(true);
-    expect(detectCarrierMatch('EOB99099100000000015')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['brt'], preferred: [] });
-    expect(recognitionAskedCarriers('EOB99099100000000015')).toEqual(['brt']);
+    expect(isBrtTrackingNumber('EOB99099199999999980')).toBe(true);
+    expect(detectCarrierMatch('EOB99099199999999980')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['brt'], preferred: [] });
+    expect(recognitionAskedCarriers('EOB99099199999999980')).toEqual(['brt']);
     for (const number of ['EOB9909910000000001', 'EOB990991000000000150', 'EOC99099100000000015', 'XEOB99099100000000015', 'EOB9909910000000001A']) {
       expect(isBrtTrackingNumber(number)).toBe(false);
       expect(detectCarrierMatch(number).candidates ?? []).not.toContain('brt');
@@ -65,7 +65,7 @@ describe('continental shipment candidates', () => {
   });
 
   it('lists InPost first for the 24-digit prefixes its tracker answers, beside the other 24-digit carriers', () => {
-    for (const number of ['200000000000000000000001', '520000000000000000000001', '620000000000000000000001', '630000000000000000000001', '800000000000000000000001']) {
+    for (const number of ['200000000000000000000001', '529999999999999999999980', '620000000000000000000001', '630000000000000000000001', '809999999999999999999980']) {
       const detected = detectCarrierMatch(number);
       expect(detected).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['inpost'] });
       expect(detected.candidates).toEqual(expect.arrayContaining(['austrian-post', 'bpost', 'ciblex']));
@@ -73,10 +73,10 @@ describe('continental shipment candidates', () => {
       expect(recognitionCandidates(number)[0]!.carrier).toBe('inpost');
     }
     // Express One prints 60 too.
-    for (const number of ['600000000000000000000001', '010000000000000000000001', '000000000000000000000001', '560000000000000000000001', '610000000000000000000001', '680000000000000000000001', '81000000000000000000001', '8000000000000000000000001']) {
+    for (const number of ['600000000000000000000001', '019999999999999999999980', '000000000000000000000001', '560000000000000000000001', '610000000000000000000001', '680000000000000000000001', '81000000000000000000001', '8000000000000000000000001']) {
       expect(detectCarrierMatch(number).preferred).not.toContain('inpost');
     }
-    expect(recognitionCandidates('010000000000000000000001', { countryHint: 'AT' })[0]!.carrier).toBe('austrian-post');
+    expect(recognitionCandidates('019999999999999999999980', { countryHint: 'AT' })[0]!.carrier).toBe('austrian-post');
   });
 
   it('names bpost for its S10 numbers, but not for a U barcode, which bpost does not track', () => {
@@ -179,7 +179,7 @@ describe('continental shipment candidates', () => {
       { number: '3C9900A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
       { number: '1C9900A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
       { number: '9C9900A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
-      { number: 'D99000A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
+      { number: 'D99000A999980', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
       { number: '990A00000001A', candidates: ['aliexpress', 'poste-italiane'], asked: ['poste-italiane', 'aliexpress'] },
     ]) {
       expect(isPosteItalianeTrackingNumber(number)).toBe(true);
@@ -192,7 +192,7 @@ describe('continental shipment candidates', () => {
   });
 
   it('lets Poste Italiane take the S10 numbers it issues and leaves foreign ones alone', () => {
-    for (const number of ['CW123456785IT', 'CP123456785IT', 'KK123456785IT']) {
+    for (const number of ['CW123456785IT', 'CP123456785IT', 'KK999999987IT']) {
       expect(isPosteItalianeTrackingNumber(number)).toBe(true);
     }
     expect(detectCarrierMatch('CW123456785IT')).toMatchObject({ carrier: 'poste-italiane', confidence: 'high' });
@@ -496,7 +496,7 @@ describe('Nova Global and ShipEntegra numbers', () => {
 describe('J&T Express Middle East waybills', () => {
   // Synthetic numbers in the layout J&T Express Middle East's tracking form checks; none is a real parcel.
   it('names J&T Express Middle East for JTE and twelve digits only', () => {
-    for (const number of ['JTE300000000001', 'JTE000000000001']) {
+    for (const number of ['JTE399999999980', 'JTE000000000001']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'j-and-t-middle-east', confidence: 'high' });
     }
     for (const number of ['JTE30000000001', 'JTE3000000000001', 'JTF300000000001', 'JT300000000001']) {
@@ -804,7 +804,7 @@ describe('wave eight courier rules', () => {
   });
 
   it('names HuaHan for HHW, two letters, ten digits and YQ', () => {
-    expect(detectCarrierMatch('HHWAB0000000001YQ')).toMatchObject({ carrier: 'huahan', confidence: 'high' });
+    expect(detectCarrierMatch('HHWAB9999999980YQ')).toMatchObject({ carrier: 'huahan', confidence: 'high' });
     expect(carrierIdFromName('Huanhan Logistics')).toBe('huahan');
     for (const number of ['HHWAB000000001YQ', 'HHWA0000000001YQ', 'HHXAB0000000001YQ', 'HHWAB0000000001YX']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('huahan');
@@ -1005,7 +1005,7 @@ describe('JP HOME, CargoLine and Ambro Express links', () => {
 
 describe('PostNL eighteen-digit numbers for Italy', () => {
   it('offers PostNL for 1810 and fourteen digits and asks it, and only for that series', () => {
-    for (const number of ['181011000000000017', '1810 1100 0000 0000 17']) {
+    for (const number of ['181011999999999980', '1810 1100 0000 0000 17']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['spring-gds']) });
       expect(recognitionAskedCarriers(number, { countryHint: 'IT' }), number).toEqual(['spring-gds']);
     }
@@ -1032,7 +1032,7 @@ describe('Avis Logistics, Depo and e-Cargo links', () => {
 
 describe('Sengi Express numbers for Malta', () => {
   it('suggests MaltaPost and Sengi Express for five letters, nine digits and MT, and only that layout', () => {
-    for (const number of ['SNGXP100000017MT', 'sngxp 100000017 mt']) {
+    for (const number of ['SNGXP199999980MT', 'sngxp 100000017 mt']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['maltapost', 'sengi-express'] });
     }
     for (const number of ['SNGX100000017MT', 'SNGXPQ100000017MT', 'SNGXP10000017MT', 'SNGXP1000000017MT', 'SNGXP100000017IT', 'SNGX1100000017MT']) {
@@ -1041,7 +1041,7 @@ describe('Sengi Express numbers for Malta', () => {
   });
 
   it('asks MaltaPost about the number and names Sengi Express from a provider', () => {
-    expect(recognitionAskedCarriers('SNGXP100000017MT')).toEqual(['maltapost']);
+    expect(recognitionAskedCarriers('SNGXP199999980MT')).toEqual(['maltapost']);
     expect(carrierIdFromName('Sengi')).toBe('sengi-express');
     expect(carrierIdFromName('SENGI Express')).toBe('sengi-express');
   });
@@ -1049,7 +1049,7 @@ describe('Sengi Express numbers for Malta', () => {
 
 describe('Western Bid numbers and links', () => {
   it('suggests Western Bid for WBX and twelve digits, and only that layout', () => {
-    for (const number of ['WBX100000000017', 'wbx 100000000017']) {
+    for (const number of ['WBX199999999980', 'wbx 100000000017']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['western-bid'] });
     }
     for (const number of ['WBX10000000017', 'WBX1000000000017', 'WB100000000017', 'WBY100000000017']) {
@@ -1060,8 +1060,8 @@ describe('Western Bid numbers and links', () => {
 
   it('reads both tracker hosts', () => {
     for (const host of ['track.westparcel.com', 'track.westernbid.com']) {
-      expect(parseTrackingInput(`https://${host}/?trackNumber=WBX100000000017`)).toMatchObject({
-        trackingNumber: 'WBX100000000017', carrier: 'western-bid', source: 'link',
+      expect(parseTrackingInput(`https://${host}/?trackNumber=WBX199999999980`)).toMatchObject({
+        trackingNumber: 'WBX199999999980', carrier: 'western-bid', source: 'link',
       });
     }
   });

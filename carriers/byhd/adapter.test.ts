@@ -14,7 +14,7 @@ import { statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import carrier from './carrier.json' with { type: 'json' };
 
-const NUMBER = 'BYHD990000001';
+const NUMBER = 'BYHD999999980';
 const PARTNER = '9900000000000000000001';
 const UNKNOWN = 'BYHD990000009';
 // Noon in Beijing on 6 March, after the fixture's row.

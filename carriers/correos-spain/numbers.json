@@ -39,7 +39,7 @@
       "note": "Expedition code of a publicly reported Paq Ligero parcel: the parcel code's first fifteen characters and a check letter. Correos' own tracker lists it as that parcel's only expedition code."
     },
     {
-      "number": "PH00ZZ000000001X",
+      "number": "PH00ZZ999999970X",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "observed_request",
@@ -47,7 +47,7 @@
         "carrier": "correos-spain",
         "confidence": "high"
       },
-      "note": "Synthetic Correos expedition-code shape."
+      "note": "Synthetic Correos expedition-code shape. Its serial sits far beyond the range in use."
     },
     {
       "number": "PH00ZZ0000000010100000W",
@@ -61,7 +61,7 @@
       "note": "Synthetic Correos parcel-code shape: an expedition code's first fifteen characters, package 01, the placeholder postcode 00000 and a check letter."
     },
     {
-      "number": "PH00ZZ00000001A",
+      "number": "PH00ZZ99999980A",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -69,10 +69,10 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "One digit short of an expedition code."
+      "note": "One digit short of an expedition code. Its serial sits far beyond the range in use."
     },
     {
-      "number": "XH00ZZ000000001H",
+      "number": "XH00ZZ999999980H",
       "role": "negative",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -80,7 +80,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Expedition-code shape outside the Correos product prefixes."
+      "note": "Expedition-code shape outside the Correos product prefixes. Its serial sits far beyond the range in use."
     },
     {
       "number": "PH00ZZ000000001A",

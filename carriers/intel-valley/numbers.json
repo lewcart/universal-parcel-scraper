@@ -3,7 +3,7 @@
   "gap": "No public page shows a whole Intel-Valley tracking number.",
   "records": [
     {
-      "number": "IV123400000017",
+      "number": "IV123499999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -15,7 +15,7 @@
           "intel-valley"
         ]
       },
-      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider filed under INTEL-VALLEY."
+      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider filed under INTEL-VALLEY. Its serial sits far beyond the range in use."
     }
   ]
 }

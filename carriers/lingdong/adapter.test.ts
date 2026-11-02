@@ -10,7 +10,7 @@ import { statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import carrier from './carrier.json' with { type: 'json' };
 
-const NUMBER = 'SZLD9900000001';
+const NUMBER = 'SZLD9999999980';
 const UNKNOWN = 'SZLD9900000009';
 // Noon in Beijing on 5 March, after the fixture's rows.
 const READ_AT = Date.parse('2026-03-05T04:00:00Z');

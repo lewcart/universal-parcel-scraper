@@ -99,7 +99,7 @@ describe('CEVA Logistics HTTP adapter', () => {
       ['APPSET', null, '2026-03-09T17:00:01Z'], ['CHKOFD', 'in_transit', '2026-03-09T15:02:10'], ['POD', 'delivered', '2026-03-09T13:41:00'],
     ]);
     expect(result.events!.filter((event) => event.stage === undefined).map((event) => event.provider_code)).toEqual(['APPSET', 'APPOFR', 'UNACTC']);
-    expect(JSON.stringify(result)).not.toMatch(/SAMPLE SIGNER|sample\.|Sample Dialer|ED 03\/09|7000001|SAMPLEBOL|exception|zipCode|Third Party/);
+    expect(JSON.stringify(result)).not.toMatch(/SAMPLE SIGNER|sample\.|Sample Dialer|ED 03\/09|7999980|SAMPLEBOL|exception|zipCode|Third Party/);
   });
 
   it('takes the milestone’s word for a delivery or a closure, and a cancelled booking as an exception', () => {

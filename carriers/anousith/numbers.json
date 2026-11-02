@@ -2,7 +2,7 @@
   "carrier": "anousith",
   "records": [
     {
-      "number": "1000000000009",
+      "number": "1999999999987",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -17,7 +17,7 @@
           "korea-post"
         ]
       },
-      "note": "Synthetic bill in the shape Anousith's tracker takes: thirteen digits, which several other carriers' rules also take."
+      "note": "Synthetic bill in the shape Anousith's tracker takes: thirteen digits, which several other carriers' rules also take. Its serial sits far beyond the range in use."
     }
   ]
 }

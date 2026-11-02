@@ -124,7 +124,7 @@ describe('Qwintry HTTP adapter', () => {
       cdek('0000000001', 'not a link'),
       cdek('', 'https://www.cdek.ru/ru/tracking?order_id='),
       '<p class="alert alert-warning">Parcel will be delivered by courier service - IML, local track-number will be assigned later.</p>',
-      `<p class="alert alert-warning">Boxberry: <a href="http://boxberry.ru/tracking/?id=ZZ0000000001">ZZ0000000001</a> <a href="https://www.cdek.ru/ru/tracking?order_id=ZZ0000000001">CDEK</a></p>`,
+      `<p class="alert alert-warning">Boxberry: <a href="http://boxberry.ru/tracking/?id=ZZ9999999980">ZZ9999999980</a> <a href="https://www.cdek.ru/ru/tracking?order_id=ZZ9999999980">CDEK</a></p>`,
     ]) {
       const result = parseQwintry(withNotice(fixture('delivered'), notice), DELIVERED);
       expect(result, notice).not.toHaveProperty('delivery_carrier');

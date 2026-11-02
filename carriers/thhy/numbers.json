@@ -2,7 +2,7 @@
   "carrier": "thhy",
   "records": [
     {
-      "number": "AT9900000001TH",
+      "number": "AT9999999980TH",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -14,7 +14,7 @@
           "thhy"
         ]
       },
-      "note": "Made-up number in the shape of the waybills Tianhui Hengyuan's tracker answers, which a Hualei number rule makes."
+      "note": "Made-up number in the shape of the waybills Tianhui Hengyuan's tracker answers, which a Hualei number rule makes. Its serial sits far beyond the range in use."
     }
   ]
 }

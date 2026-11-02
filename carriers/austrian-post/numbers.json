@@ -215,7 +215,7 @@
       "note": "An Austrian Post parcel number from a public Paketda question. Austrian Post's tracking returned its history with the parcel's weight and size."
     },
     {
-      "number": "010000000000000000000001",
+      "number": "019999999999999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -230,7 +230,7 @@
           "austrian-post"
         ]
       },
-      "note": "Made-up number in the shape of the EURODIS barcode of a parcel Austrian Post's tracker followed abroad."
+      "note": "Made-up number in the shape of the EURODIS barcode of a parcel Austrian Post's tracker followed abroad. Its serial sits far beyond the range in use."
     },
     {
       "number": "1021107502202813903809",

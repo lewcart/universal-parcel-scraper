@@ -146,7 +146,7 @@
       "note": "Looked up on Vinted Go's own tracker, as an archived address shows; the capture was not opened."
     },
     {
-      "number": "VGS90000000000001",
+      "number": "VGS99999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -155,10 +155,10 @@
         "carrier": "vinted-go",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a VGS number Vinted Go's own tracking service answers."
+      "note": "Made-up number in the shape of a VGS number Vinted Go's own tracking service answers. Its serial sits far beyond the range in use."
     },
     {
-      "number": "VGS9000000000001",
+      "number": "VGS9999999999980",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "donated_real",
@@ -167,7 +167,7 @@
         "carrier": "vinted-go",
         "confidence": "high"
       },
-      "note": "Made-up number in the shape of a VGS number of thirteen digits Vinted Go's own tracking service answers."
+      "note": "Made-up number in the shape of a VGS number of thirteen digits Vinted Go's own tracking service answers. Its serial sits far beyond the range in use."
     },
     {
       "number": "FMP1UW2ABCDEFGHI",

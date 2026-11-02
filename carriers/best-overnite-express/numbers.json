@@ -2,7 +2,7 @@
   "carrier": "best-overnite-express",
   "records": [
     {
-      "number": "20000002",
+      "number": "29999981",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "invented",
@@ -17,7 +17,7 @@
           "tforce-freight"
         ]
       },
-      "note": "Invented placeholder for an eight-digit PRO number; the tracker names the consignee and signer of the archived public sample."
+      "note": "Invented placeholder for an eight-digit PRO number; the tracker names the consignee and signer of the archived public sample. Its serial sits far beyond the range in use."
     }
   ]
 }

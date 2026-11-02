@@ -45,10 +45,12 @@ export function austrianPostShowsEstimate(summary: string, newestReason: string)
 const DELIVERED = /\b(?:wurde zugestellt|aus postempfangsbox abgeholt|successfully delivered)\b/i;
 
 // Scans of an item another post sends to Austria: the sending post's posting
-// and dispatch, as Austrian Post relays them, then its own processing once the
-// item arrives. A letter put through the letterbox is delivered.
+// (BNT) or acceptance (ANI) and dispatch, as Austrian Post relays them, then its
+// own processing once the item arrives. A letter put through the letterbox is
+// delivered.
 const WORDINGS: Readonly<Record<string, ClassifiedStatus | undefined>> = {
   'postaufgabe im ausland': SUMMARY.AN,
+  'sendung wurde im ausland angenommen': SUMMARY.AN,
   'sendung in bearbeitung aufgabeland': SUMMARY.IV,
   'sendung für auslandstransport bereit': SUMMARY.IV,
   'sendung ins zielland unterwegs': SUMMARY.IV,

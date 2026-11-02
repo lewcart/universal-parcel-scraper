@@ -141,6 +141,15 @@
       "note": "The sending post's acceptance of an item it sends to Austria, as Austrian Post relays it."
     },
     {
+      "code": "ANI",
+      "wording": "Sendung wurde im Ausland angenommen",
+      "language": "de",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "The sending post's acceptance of an item it sends to Austria, as Austrian Post relays it: the same minute as that post's own acceptance scan."
+    },
+    {
       "code": "BNT",
       "wording": "Sendung in Bearbeitung Aufgabeland",
       "language": "de",

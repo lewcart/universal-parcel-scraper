@@ -138,6 +138,8 @@ describe('Austrian Post public tracking', () => {
       ['Postaufgabe im Ausland', 'accepted'],
     ]);
     expect(statusMap.stage('BNT', 'postaufgabe im ausland')).toBe('accepted');
+    expect(statusMap.stage('ANI', 'sendung wurde im ausland angenommen')).toBe('accepted');
+    expect(austrianPostEventStatus('ANI', '', 'Sendung wurde im Ausland angenommen')).toMatchObject({ stage: 'accepted' });
     expect(statusMap.stage('EXP', 'sendung ins zielland unterwegs')).toBe('in_transit');
     expect(statusMap.stage('BNT', 'eingeworfen')).toBe('delivered');
     // Only the bare wording: a notice put through the letterbox is no delivery.

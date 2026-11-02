@@ -41,6 +41,8 @@ const CODES: Readonly<Record<string, Stage>> = {
   // Waiting at the post office for the recipient.
   IZR: 'ready_for_pickup',
   PVI: 'ready_for_pickup',
+  // "Pošiljka je bila prevzeta": the recipient collected it at the post office, a delivery.
+  VR: 'delivered',
 };
 
 /** The next step a failed delivery names when the item goes back to its sender. */

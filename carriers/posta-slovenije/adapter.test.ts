@@ -32,6 +32,11 @@ const edited = (name: string, change: (payload: Reply) => void): Reply => {
 };
 const delivery = (time: string): Row => ({ ...(fixture('delivered') as Reply).result.statuses.at(-1)!, postalId: '9004',
   postalName: 'Poskusno', statusDateTime: time });
+// The recipient's collection at the post office the item waited at.
+const collection = (time: string): Row => ({ ...(fixture('waiting') as Reply).result.statuses.at(-1)!, code: 'VR',
+  codeDescriptionSI: 'Pošiljka je bila prevzeta', codeDetailedDescriptionSI: 'Pošiljka je bila prevzeta na pošti',
+  codeDescriptionEN: 'The item has been picked up', codeDetailedDescriptionEN: 'The item was picked up at the post office',
+  subCode: 'VRIP', statusId: 3, statusName: 'Dostavljena', statusDateTime: time, pickupAddress: '', unitType: 0, unitId: '' });
 const rows = (result: ReturnType<typeof parsePostaSlovenije>) =>
   result.events!.map(event => [event.time, event.provider_code, event.description, event.location, event.stage]);
 
@@ -154,10 +159,13 @@ describe('Pošta Slovenije tracking adapter', () => {
       last_status_text: 'The item is ready for pickup at the post office' });
     expect(rows(waiting)[1]).toEqual(['2026-03-10T05:58:59Z', 'VDO',
       'Unsuccessful delivery attempt. The item will be redirected to the post office', 'Poskusno', 'failed_attempt']);
-    const collected = parsePostaSlovenije(edited('waiting', payload => { payload.result.statuses.push(delivery('2026-03-12T11:00:00Z')); }),
+    const collected = parsePostaSlovenije(edited('waiting', payload => { payload.result.statuses.push(collection('2026-03-12T11:00:00Z')); }),
       WAITING);
-    expect(collected).toMatchObject({ status: 'delivered', current_stage: 'delivered', pickup_point: 'Poskusno',
-      delivered_at: '2026-03-12T11:00:00Z' });
+    expect(collected).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
+      pickup_point: 'Poskusno', delivered_at: '2026-03-12T11:00:00Z',
+      last_status_text: 'The item has been picked up. The item was picked up at the post office' });
+    const handed = parsePostaSlovenije(edited('waiting', payload => { payload.result.statuses.push(delivery('2026-03-12T11:00:00Z')); }), WAITING);
+    expect(handed).toMatchObject({ current_stage: 'delivered', pickup_point: 'Poskusno' });
     // A wait that is not at a post office, or a delivery to the door, names no pickup point.
     const locker = parsePostaSlovenije(edited('waiting', payload => { payload.result.statuses.at(-1)!.unitType = 8; }), WAITING);
     expect(locker).toMatchObject({ current_stage: 'ready_for_pickup' });

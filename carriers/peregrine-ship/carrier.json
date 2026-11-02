@@ -1,0 +1,43 @@
+{
+  "id": "peregrine-ship",
+  "displayName": "Peregrine Ship",
+  "aliases": [
+    "Peregrine Group Limited",
+    "Peregrine Ship Solutions"
+  ],
+  "region": {
+    "countries": [
+      "HK",
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#174cff"
+  },
+  "selectable": true,
+  "timezone": "Asia/Hong_Kong",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.peregrineship.com/track/f/{trackingNumber}",
+    "searchUrl": "https://track.peregrineship.com/track/f",
+    "canaryUrl": "https://track.peregrineship.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.peregrineship.com"
+      ],
+      "path": "^/track/[fl]/([^/?#,;|]+)/?$"
+    }
+  ],
+  "detection": []
+}

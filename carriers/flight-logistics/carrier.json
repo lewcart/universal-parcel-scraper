@@ -1,0 +1,34 @@
+{
+  "id": "flight-logistics",
+  "displayName": "Flight Logistics",
+  "aliases": [
+    "Flight Logistics Group",
+    "Flight Logistics Group Ltd"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#007ac3"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.flightlg.com/myflight-shipment-tracking/?method=tracking",
+    "canaryUrl": "https://www.flightlg.com/myflight-shipment-tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

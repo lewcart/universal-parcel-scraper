@@ -1455,3 +1455,18 @@ describe('Quick Fort', () => {
       .toMatchObject({ trackingNumber: 'QFT900000000017', carrier: 'quick-fort', source: 'link' });
   });
 });
+
+describe('Peregrine Ship', () => {
+  it('reads its names and tracking links', () => {
+    for (const name of ['Peregrine Ship', 'Peregrine Group Limited']) expect(carrierIdFromName(name), name).toBe('peregrine-ship');
+    expect(parseTrackingInput('https://track.peregrineship.com/track/f/PS0000100017'))
+      .toMatchObject({ trackingNumber: 'PS0000100017', carrier: 'peregrine-ship', source: 'link' });
+    expect(parseTrackingInput('https://track.peregrineship.com/track/l/PS0000100017'))
+      .toMatchObject({ trackingNumber: 'PS0000100017', carrier: 'peregrine-ship', source: 'link' });
+  });
+
+  it('reads no number from a link holding several, and offers Peregrine Ship for no number shape', () => {
+    expect(parseTrackingInput('https://track.peregrineship.com/track/f/PS0000100017,PS0000100025')?.carrier).not.toBe('peregrine-ship');
+    expect(detectCarrierMatch('PS0000100017').candidates ?? []).not.toContain('peregrine-ship');
+  });
+});

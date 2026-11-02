@@ -747,3 +747,19 @@ describe('WP Ground and Global Parcel Service', () => {
     expect(detectCarrierMatch(`42000000${PIC}`)).toMatchObject({ carrier: 'usps', confidence: 'high', candidates: ['usps'] });
   });
 });
+
+describe('Flight Logistics and Southwestern Motor Transport', () => {
+  it('reads their names', () => {
+    for (const [name, id] of [['Flight Logistics', 'flight-logistics'], ['Flight Logistics Group Ltd', 'flight-logistics'], ['Southwestern Motor Transport', 'southwestern-motor-transport'], ['SMT Lines', 'southwestern-motor-transport']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+  });
+
+  it('offers them for no number shape', () => {
+    for (const number of ['FLT000100017', '000100017', '0001000017']) {
+      const candidates = detectCarrierMatch(number).candidates ?? [];
+      expect(candidates, number).not.toContain('flight-logistics');
+      expect(candidates, number).not.toContain('southwestern-motor-transport');
+    }
+  });
+});

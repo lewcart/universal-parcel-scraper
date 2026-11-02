@@ -20692,6 +20692,27 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     ],
     "detectionRules": []
   },
+  "flight-logistics": {
+    "displayName": "Flight Logistics",
+    "color": "#007ac3",
+    "aliases": [
+      "Flight Logistics Group",
+      "Flight Logistics Group Ltd"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.flightlg.com/myflight-shipment-tracking/",
+    "trackingSearchUrl": "https://www.flightlg.com/myflight-shipment-tracking/?method=tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "flippost": {
     "displayName": "Flip Post",
     "color": "#2f4e77",
@@ -35184,6 +35205,36 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     ],
     "detectionRules": []
   },
+  "peregrine-ship": {
+    "displayName": "Peregrine Ship",
+    "color": "#174cff",
+    "aliases": [
+      "Peregrine Group Limited",
+      "Peregrine Ship Solutions"
+    ],
+    "countries": [
+      "HK",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.peregrineship.com/",
+    "trackingUrlTemplate": "https://track.peregrineship.com/track/f/{trackingNumber}",
+    "trackingSearchUrl": "https://track.peregrineship.com/track/f",
+    "linkRules": [
+      {
+        "domains": [
+          "track.peregrineship.com"
+        ],
+        "path": "^/track/[fl]/([^/?#,;|]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "performance-freight": {
     "displayName": "Performance Freight",
     "color": "#842d44",
@@ -41453,6 +41504,27 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "southwestern-motor-transport": {
+    "displayName": "Southwestern Motor Transport",
+    "color": "#ff0045",
+    "aliases": [
+      "SMT Lines",
+      "Southwestern Motor Transport, Inc."
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.smtl.com/",
+    "trackingSearchUrl": "https://profoundui.smtl.com/profoundui/start?pgm=profoundui/mwp705c&p1=0&l1=1&p2=none&l2=4&p3=none&l3=4",
+    "linkRules": [],
     "detectionRules": []
   },
   "sp-express": {
@@ -50470,6 +50542,7 @@ export const CARRIER_IDS = [
   "fleetex",
   "fleetoptics",
   "flickpost",
+  "flight-logistics",
   "flippost",
   "flipxpress",
   "fliway",
@@ -50874,6 +50947,7 @@ export const CARRIER_IDS = [
   "peninsula-truck-lines",
   "penta-express",
   "peqasus-az",
+  "peregrine-ship",
   "performance-freight",
   "peru-box-air",
   "pfc-express",
@@ -51042,6 +51116,7 @@ export const CARRIER_IDS = [
   "sorthub",
   "south-african-post-office",
   "southeastern-freight-lines",
+  "southwestern-motor-transport",
   "sp-express",
   "spark-kz",
   "speed-and-safe",
@@ -51794,6 +51869,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fleetex": [],
   "fleetoptics": ["fleetoptics-1"],
   "flickpost": [],
+  "flight-logistics": [],
   "flippost": [],
   "flipxpress": [],
   "fliway": [],
@@ -52198,6 +52274,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "peninsula-truck-lines": [],
   "penta-express": [],
   "peqasus-az": [],
+  "peregrine-ship": [],
   "performance-freight": [],
   "peru-box-air": [],
   "pfc-express": ["pfc-express-1"],
@@ -52366,6 +52443,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sorthub": [],
   "south-african-post-office": ["south-african-post-office-s10"],
   "southeastern-freight-lines": [],
+  "southwestern-motor-transport": [],
   "sp-express": ["sp-express-1"],
   "spark-kz": [],
   "speed-and-safe": [],

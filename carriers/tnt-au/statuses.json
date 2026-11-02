@@ -2,6 +2,7 @@
   "carrier": "tnt-au",
   "entries": [
     {"wording": "Your shipment data is lodged", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "The sender's consignment data, before TNT has the parcel."},
+    {"wording": "We've collected your shipment", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "TNT picking the parcel up from the sender, after the consignment data and before the first depot."},
     {"wording": "We're processing your shipment", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Written at each depot the parcel passes, the delivering one included."},
     {"wording": "Your shipment's with a driver", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "Minutes before the delivery on the same day."},
     {"wording": "We've delivered your shipment", "stage": "delivered", "language": "en", "confirmedBy": "live"},

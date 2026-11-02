@@ -81,6 +81,7 @@ describe('TNT Australia tracking', () => {
   it('keeps the estimated delivery of a consignment on its way, and stages another wording by the shared rules or not at all', () => {
     const result = parseTntAu(withRows(
       ['Your shipment data is lodged', '02/03/2026', '14:19', 'Perth - Kewdale'],
+      ['We\'ve collected your shipment', '02/03/2026', '16:40', 'Perth - Kewdale'],
       ['Book-In Delivery Requested', '03/03/2026', '08:00', 'Bunbury'],
       ['Out for delivery', '04/03/2026', '07:00', 'Bunbury'],
       ['Synthetic note', '04/03/2026', '07:05', ''],
@@ -88,7 +89,8 @@ describe('TNT Australia tracking', () => {
     expect(result.events?.map((event) => [event.description, event.location, event.stage, event.stage_source])).toEqual([
       ['Synthetic note', undefined, undefined, undefined],
       ['Out for delivery', 'Bunbury', 'out_for_delivery', 'wording:language'],
-      ['Book-In Delivery Requested', 'Bunbury', 'registered', 'none'],
+      ['Book-In Delivery Requested', 'Bunbury', 'accepted', 'none'],
+      ['We\'ve collected your shipment', 'Perth - Kewdale', 'accepted', 'carrier_map'],
       ['Your shipment data is lodged', 'Perth - Kewdale', 'registered', 'carrier_map'],
     ]);
     expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', last_status_text: 'Synthetic note', expected_delivery: '2026-03-03' });

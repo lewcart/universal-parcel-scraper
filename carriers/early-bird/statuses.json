@@ -160,6 +160,30 @@
       "confirmedBy": "live"
     },
     {
+      "wording": "The package has been delivered in a bag on your mailbox.",
+      "language": "en",
+      "stage": "delivered",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "Paketet är levererat till din dörr.",
+      "language": "sv",
+      "stage": "delivered",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "Paketet är levererat till din postlåda.",
+      "language": "sv",
+      "stage": "delivered",
+      "confirmedBy": "live"
+    },
+    {
+      "wording": "Paketet är levererat i en påse på din postlåda.",
+      "language": "sv",
+      "stage": "delivered",
+      "confirmedBy": "live"
+    },
+    {
       "wording": "Ditt paket har nu levererats av Early Bird. Om paketet inte fick plats i postlådan så har det hängts i en påse på din postlåda alternativt dörr",
       "language": "sv",
       "stage": "delivered",

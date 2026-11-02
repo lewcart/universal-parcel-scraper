@@ -5,8 +5,8 @@ Døgnposten, Post Danmark's parcel-locker brand, carried PostNord numbers, so it
 
 An SSCC typed with its 00 identifier is suggested with PostNord first when it
 carries a Danish (57) or Swedish (73) GS1 prefix and its check digit passes.
-Bring stays first for its 00370 and 00373 parcels, and Norwegian and Finnish
-prefixes keep PostNord among the other candidates. Several carriers share
+Bring stays first for its 00370 and 00373 parcels, Early Bird for SSCCs under its GS1 company
+prefix, and those and Norwegian and Finnish prefixes keep PostNord among the other candidates. Several carriers share
 twenty digits, so recognition asks PostNord through the same lookup.
 
 Mail from abroad reaches PostNord when a caller names it, a provider names it, or a

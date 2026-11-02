@@ -45,7 +45,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -73,7 +72,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -101,7 +99,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -183,7 +180,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -211,7 +207,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -239,7 +234,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -267,7 +261,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -295,7 +288,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -323,7 +315,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -351,7 +342,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -379,7 +369,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -407,7 +396,6 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "bring-posten",
           "early-bird",
           "swiss-post-cargo",
           "postnord",
@@ -435,9 +423,9 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "postnord",
           "early-bird",
           "swiss-post-cargo",
+          "postnord",
           "usps",
           "nz-post",
           "matkahuolto"

@@ -2640,7 +2640,7 @@ export const CARRIER_CATALOG = {
         "checksum": "s10"
       },
       {
-        "pattern": "^00(?!373)\\d(?:57|73)\\d{15}$",
+        "pattern": "^00(?!373|\\d73402216)\\d(?:57|73)\\d{15}$",
         "confidence": "low",
         "checksum": "sscc",
         "preferred": true
@@ -5148,7 +5148,7 @@ export const CARRIER_CATALOG = {
         "preferred": true
       },
       {
-        "pattern": "^0037[03]\\d{15}$",
+        "pattern": "^0037(?:0|3(?!402216))\\d{15}$",
         "confidence": "low",
         "checksum": "sscc",
         "preferred": true

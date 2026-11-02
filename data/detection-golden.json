@@ -1973,7 +1973,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -1982,15 +1981,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -1998,7 +1996,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2007,15 +2004,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2023,7 +2019,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2032,15 +2027,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2048,7 +2042,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2057,15 +2050,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2073,7 +2065,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2082,15 +2073,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2098,7 +2088,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2107,15 +2096,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2123,7 +2111,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2132,15 +2119,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2148,7 +2134,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2157,15 +2142,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2173,7 +2157,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2182,15 +2165,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2198,7 +2180,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2207,15 +2188,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2223,7 +2203,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2232,15 +2211,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -2248,7 +2226,6 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bring-posten",
       "early-bird",
       "swiss-post-cargo",
       "postnord",
@@ -2257,15 +2234,14 @@
       "matkahuolto"
     ],
     "preferred": [
-      "bring-posten",
       "early-bird"
     ],
     "asked": [
       "early-bird",
-      "bring-posten",
       "matkahuolto",
       "swiss-post-cargo",
-      "postnord"
+      "postnord",
+      "nz-post"
     ]
   },
   {
@@ -3212,22 +3188,21 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "postnord",
       "early-bird",
       "swiss-post-cargo",
+      "postnord",
       "usps",
       "nz-post",
       "matkahuolto"
     ],
     "preferred": [
-      "postnord",
       "early-bird"
     ],
     "asked": [
-      "postnord",
       "early-bird",
       "matkahuolto",
       "swiss-post-cargo",
+      "postnord",
       "nz-post"
     ]
   },

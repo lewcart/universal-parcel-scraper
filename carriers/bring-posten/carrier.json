@@ -126,7 +126,7 @@
     },
     {
       "id": "bring-posten-3",
-      "pattern": "^0037[03]\\d{15}$",
+      "pattern": "^0037(?:0|3(?!402216))\\d{15}$",
       "confidence": "low",
       "checksum": "sscc",
       "preferred": true

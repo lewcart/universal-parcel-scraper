@@ -24,8 +24,8 @@ digit fails, without a request. The service does not know the eighteen-digit for
 Archived lookups on both of Early Bird's trackers and the samples a tracking aggregator offers for
 it share one serial sequence under the GS1 company prefix `73402216`, its serials rising with
 time, and the service answers them. `early-bird-1` suggests Early Bird for SSCCs under that
-prefix, and preflight asks it. Bring's and PostNord's broader rules for Nordic SSCCs also fit
-them. An SSCC under another prefix names whoever issued it, so no rule offers Early Bird for it.
+prefix first, and preflight asks it. PostNord's broader rule for Nordic SSCCs also lists PostNord,
+which takes some parcels over under the same number, after it; Bring's rule leaves the prefix out. An SSCC under another prefix names whoever issued it, so no rule offers Early Bird for it.
 
 ## Notes
 

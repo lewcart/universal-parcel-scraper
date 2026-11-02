@@ -3925,20 +3925,7 @@
     "reason": "DAO's own SSCCs typed with their 00 identifier also fit PostNord's Danish SSCC rule and the broad Swiss Post Cargo, NZ Post and USPS candidates. PostNord and DAO are both listed first, and recognition asks DAO."
   },
   {
-    "shape": "9{20} starting with 0037340221 that passes the SSCC check",
-    "carriers": [
-      "bring-posten",
-      "early-bird",
-      "nz-post",
-      "postnord",
-      "swiss-post-cargo",
-      "usps",
-      "matkahuolto"
-    ],
-    "reason": "Early Bird's own SSCCs typed with their 00 identifier and extension digit 3 also fit Bring's, PostNord's and Matkahuolto's SSCC rules and the broad Swiss Post Cargo, NZ Post and USPS candidates. Bring and Early Bird are both listed first, and recognition asks Early Bird."
-  },
-  {
-    "shape": "9{20} starting with 00, another extension digit than 3 and 73402216, that passes the SSCC check",
+    "shape": "9{20} starting with 00, an extension digit and 73402216, that passes the SSCC check",
     "carriers": [
       "early-bird",
       "nz-post",
@@ -3947,7 +3934,7 @@
       "usps",
       "matkahuolto"
     ],
-    "reason": "Early Bird's own SSCCs with another extension digit fall outside Bring's rule but still fit PostNord's and Matkahuolto's SSCC rules and the broad Swiss Post Cargo, NZ Post and USPS candidates. PostNord and Early Bird are both listed first, and recognition asks both."
+    "reason": "Early Bird's own SSCCs typed with their 00 identifier, under its GS1 company prefix, also fit PostNord's and Matkahuolto's SSCC rules and the broad Swiss Post Cargo, NZ Post and USPS candidates. Early Bird alone is listed first, as Bring's and PostNord's first-listed SSCC rules leave its prefix out, and recognition asks it."
   },
   {
     "shape": "9{20} starting with 0039358094 that passes the SSCC check",

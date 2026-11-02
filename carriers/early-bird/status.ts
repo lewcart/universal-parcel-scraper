@@ -37,7 +37,9 @@ const WORDINGS: readonly (readonly [RegExp, Stage])[] = [
   // Collected from the locker by the recipient.
   [/^the package has been collected from the parcel locker\.$/, 'delivered'],
   [/^paketet har hämtats ur paketskåpet\.$/, 'delivered'],
-  [/^the package has been delivered to your (?:door|mailbox)\.$/, 'delivered'],
+  // At the door, in the mailbox, or in a bag hung on the mailbox.
+  [/^the package has been delivered (?:to your (?:door|mailbox)|in a bag on your mailbox)\.$/, 'delivered'],
+  [/^paketet är levererat (?:till din (?:dörr|postlåda)|i en påse på din postlåda)\.$/, 'delivered'],
   [/^ditt paket har nu levererats av early bird\./, 'delivered'],
 ];
 

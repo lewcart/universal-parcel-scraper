@@ -260,12 +260,15 @@ describe('Early Bird tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url) === EARLY_BIRD_ENDPOINT)).toBe(true);
   });
 
-  it('suggests Early Bird for SSCCs under its GS1 prefix and asks it', () => {
+  it('suggests Early Bird alone first for SSCCs under its GS1 prefix and asks it, with PostNord after it', () => {
     for (const number of [DOOR, EXTENDED]) {
-      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: expect.arrayContaining(['early-bird']) });
-      expect(recognitionAskedCarriers(number)).toContain('early-bird');
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['early-bird'] });
+      expect(detectCarrierMatch(number).candidates, number).toContain('postnord');
+      expect(recognitionAskedCarriers(number)[0], number).toBe('early-bird');
     }
-    expect(recognitionAskedCarriers(DOOR)[0]).toBe('early-bird');
+    // Under another Swedish prefix, Bring's and PostNord's rules still come first.
+    expect(detectCarrierMatch(FOREIGN).preferred).toEqual(['bring-posten']);
+    expect(detectCarrierMatch('00873402217999999992').preferred).toEqual(['postnord']);
     for (const number of [FOREIGN, LEGACY, '00373402216999999991', DOOR.slice(2)]) {
       expect(recognitionAskedCarriers(number), number).not.toContain('early-bird');
     }

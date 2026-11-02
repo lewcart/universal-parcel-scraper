@@ -5,9 +5,10 @@ import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../../core/detectio
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { canadaProvinceTimeZone, countryCode, isoTime } from '../../core/time/index.js';
+import { canadaProvinceTimeZone, countryCode, firstOccurrence, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { hasSeveralClocks, mainZone } from '../../places/zones.js';
 import { jsExpressChinaClock } from './clock.js';
 import { IMILE_RECEIVER, LIST_PLACE } from './identity.js';
 import { jsExpressEnglish, jsExpressStage } from './status.js';
@@ -46,6 +47,10 @@ const STRAIGHTSHIP = /straightship/i;
 const STRAIGHTSHIP_RECORD = /^package information is created in the system$/i;
 // A town and the code of its province or state, as a courier's wording ends with them.
 const PROVINCE = /,\s*([A-Z]{2})$/;
+// The offset a row states, as "+02:00".
+const OFFSET = /^[+-]\d{2}:\d{2}$/;
+// A row's code, as "OIT" or "DSD".
+const CODE = /^[A-Z]{2,4}$/;
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
 
@@ -112,6 +117,21 @@ function scanZone(description: string, location: string, label: string, straight
   return jsExpressChinaClock(description, location) ?? null;
 }
 
+/**
+ * The destination's clock for a row without a place, when the destination
+ * keeps one clock and the offset the row states is that clock's at the row's
+ * wall clock: the destination courier's and post's rows, relayed from another
+ * country's post or not. Other rows' offsets are not read: Straightship's
+ * carry China's, and the airports' can be another country's.
+ */
+function statedZone(local: string, offset: string, country: string | null): string | null {
+  const zone = country && OFFSET.test(offset) && !hasSeveralClocks(country) ? mainZone(country) : null;
+  return zone && firstOccurrence(DateTime.fromISO(local, { zone })).toFormat('ZZ') === offset ? zone : null;
+}
+
+/** An optional string a row can carry; anything else counts as none. */
+const optional = (record: Record<string, unknown>, key: string): string => (typeof record[key] === 'string' ? clean(record[key], 16) : '');
+
 /** An optional text field; anything but a string is a changed reply. */
 function text(record: Record<string, unknown>, key: string, maxLength = 300): string {
   const value = record[key];
@@ -157,8 +177,8 @@ function handoff(waybill: Record<string, unknown>, number: string, country: stri
  * The reply of the English tracking page's lookup `index.php?c=trace` for one
  * number: `code` 0 and the waybill, with the country it goes to, the
  * destination courier's number once it has one, and the scans newest first by
- * wall clock, each a date, a place and a wording. An unknown number gets
- * `code` 1 and "未获取到任何数据,请提供有效单号!". The rows' offsets, the
+ * wall clock, each a date, a place, a wording, a code and an offset. An
+ * unknown number gets `code` 1 and "未获取到任何数据,请提供有效单号!". The
  * shop's order number, the delivery photos and the estimate are not read.
  */
 export function parseJsExpress(payload: unknown, rawNumber: string): CarrierResult {
@@ -184,8 +204,10 @@ export function parseJsExpress(payload: unknown, rawNumber: string): CarrierResu
   if (!rows.length) throw new NoHistoryError(PROVIDER);
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'JS Express returned an oversized history');
 
+  const destination = text(waybill, 'country', 60);
+  const country = countryCode(destination);
   const seen = new Set<string>();
-  const scans: { local: string; label: string; description: string; location: string }[] = [];
+  const scans: { local: string; label: string; description: string; location: string; offset: string; code: string | null }[] = [];
   for (const row of rows) {
     if (!isRecord(row) || typeof row.date !== 'string' || typeof row.status !== 'string') throw new SchemaError(PROVIDER, 'JS Express history changed');
     const label = text(row, 'address', 200);
@@ -195,18 +217,20 @@ export function parseJsExpress(payload: unknown, rawNumber: string): CarrierResu
     const key = JSON.stringify([local, location, description]);
     if (seen.has(key)) continue;
     seen.add(key);
-    scans.push({ local, label: clean(label, 120), description, location });
+    const code = optional(row, 'code');
+    scans.push({ local, label: clean(label, 120), description, location, offset: optional(row, 'timeZone'), code: CODE.test(code) ? code : null });
   }
 
   const straightship = scans.some((scan) => STRAIGHTSHIP.test(scan.description));
-  const events = scans.map(({ local, label, description, location }): CarrierEvent => {
-    const zone = scanZone(description, location, label, straightship);
+  const events = scans.map(({ local, label, description, location, offset, code }): CarrierEvent => {
+    const zone = scanZone(description, location, label, straightship) ?? (location ? null : statedZone(local, offset, country));
     const time = zone ? isoTime(local, zone)?.iso : undefined;
-    const staged = jsExpressStage(description);
+    const staged = jsExpressStage(description, code);
     return {
       ...(time ? { time } : { local_time: local }),
       ...(location ? { location } : {}),
       description: jsExpressEnglish(description) ?? description,
+      ...(code ? { provider_code: code } : {}),
       ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
     };
   });
@@ -217,8 +241,6 @@ export function parseJsExpress(payload: unknown, rawNumber: string): CarrierResu
   const newest = events[0]!;
   const current = events.find((event) => event.stage);
   const stage = current?.stage as Stage | undefined;
-  const destination = text(waybill, 'country', 60);
-  const country = countryCode(destination);
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source } : {}),

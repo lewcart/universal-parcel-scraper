@@ -51,10 +51,13 @@ delivers them. Tracked through the lookup its English tracking page makes.
   Straightship's record of the parcel's data comes within a minute of the Chinese warehouse's
   inbound scan only when the one is read on UTC and the other on Beijing time, and its
   deliveries then come before the 9 pm its round promises.
-- Rows at an airport's code or without a place keep `local_time`, as do other couriers' rows:
-  iMile's name no country. Each row also carries an offset, which the adapter does not read:
-  Straightship's rows carry China's, and Amsterdam's carry its winter offset in summer. The newest row's instant, when it has one, is the last update, and a
-  dated delivery's is the delivery time.
+- Each row also carries an offset, often another place's: Straightship's rows carry China's,
+  Amsterdam's carry its winter offset in summer, and Gatwick's and Singapore's others. A row
+  without a place is read on the destination's clock when the destination keeps one clock and the
+  row's offset is that clock's at its wall clock, as the destination post's and courier's rows
+  are. Other rows at an airport's code or without a place keep `local_time`, as do other
+  couriers' rows: iMile's name no country. The newest row's instant, when it has one, is the
+  last update, and a dated delivery's is the delivery time.
 - JS Express's own rows and its partners' share the history in their partners' words. A
   destination courier's wording repeats the place with its province, as "Delivered (Sample Town,
   ON)": the adapter moves it into the location, so the wording stays the same from town to town.
@@ -65,6 +68,9 @@ delivers them. Tracked through the lookup its English tracking page makes.
 - iMile's scans as the destination courier open with the centre's name in 【】, so each pair of
   centres makes a new wording. They take the stage iMile's own sentences give, as its adapter
   reads them.
+- Each row carries a code, kept as its `provider_code`. Most rows are `OIT` whatever happened, so a
+  code gives a stage only to a wording the map lacks, and only where it settles one alone: the
+  order's data, the collection, the round, the pickup point, a failed attempt and the delivery.
 - Partners' records of the parcel's data move nothing and have no stage. Straightship's "Package
   will be delivered before 9:00pm" is its driver's round, out for delivery, as Straightship's own
   map reads it.

@@ -319,6 +319,45 @@ describe('JS Express tracking adapter', () => {
     expect(recorded).toMatchObject({ current_stage: 'accepted', last_status_text: 'Processed' });
   });
 
+  it("dates a row without a place on the destination's one clock when the offset it states is that clock's, and keeps its code", () => {
+    const stated = (date: string, address: string, status: string, timeZone: string, code?: string): Row & { code?: string } =>
+      ({ ...row(date, address, status), timeZone, ...(code ? { code } : {}) });
+    const rows = [
+      stated('2026-10-30 08:18:00', 'Array', 'Item arrival at collection point for pick-up', '+02:00', 'DOD'),
+      stated('2026-10-29 13:02:00', 'Array', 'Your shipment has arrived at the postal operator of the country of destination', '+02:00', 'OIT'),
+      stated('2026-10-29 13:02:00', 'Array', 'Arrival distribution office', '+02:00', 'OIT'),
+      // Before the clock change the destination's offset was +03:00.
+      stated('2026-10-24 01:24:00', 'Array', 'Departure to country of destination', '+03:00', 'OIT'),
+      // A row at a place takes that place's clock later, whatever offset it states.
+      stated('2026-10-23 22:07:39', 'Sample Hub', 'Package scanned at carrier facility', '+03:00', 'OIT'),
+      // An offset that is not the destination's, or not one at all, leaves the wall clock.
+      stated('2026-10-23 13:15:00', '', 'Sample courier note', '+08:00', 'OIT'),
+      stated('2026-10-23 12:15:00', '', 'Sample courier note', 'GMT+2', 'oit'),
+      stated('2026-10-18 21:27:54', 'Shenzhen General Warehouse', 'Item has been collected', '+08:00', 'OPU'),
+    ];
+    const cyprus = parseJsExpress(waybill(rows, { country: 'Cyprus' }), DELIVERED);
+    expect(cyprus.events?.map((event) => [event.time ?? event.local_time, event.provider_code, event.stage])).toEqual([
+      ['2026-10-30T08:18:00+02:00', 'DOD', 'ready_for_pickup'],
+      ['2026-10-29T13:02:00+02:00', 'OIT', 'in_transit'],
+      ['2026-10-29T13:02:00+02:00', 'OIT', 'in_transit'],
+      ['2026-10-24T01:24:00+03:00', 'OIT', 'in_transit'],
+      ['2026-10-23T22:07:39', 'OIT', 'in_transit'],
+      ['2026-10-23T13:15:00', 'OIT', undefined],
+      ['2026-10-23T12:15:00', undefined, undefined],
+      ['2026-10-18T21:27:54+08:00', 'OPU', 'accepted'],
+    ]);
+    expect(cyprus).toMatchObject({ last_update: '2026-10-30T08:18:00+02:00', current_stage: 'ready_for_pickup' });
+    // A destination with several clocks, or none named, leaves every such row on its wall clock.
+    for (const fields of [{ country: 'United States' }, { country: '' }]) {
+      const result = parseJsExpress(waybill(rows.map((scan) => ({ ...scan, timeZone: '-05:00' })), fields), DELIVERED);
+      expect(result.events?.slice(0, 4).map((event) => event.time ?? event.local_time)).toEqual([
+        '2026-10-30T08:18:00', '2026-10-29T13:02:00', '2026-10-29T13:02:00', '2026-10-24T01:24:00']);
+    }
+    // A code that settles a stage gives it to a wording the map lacks.
+    const unknown = parseJsExpress(withList([{ ...row('2026-10-23 13:15:00', '', 'Sample courier note'), code: 'DSD' } as Row]), DELIVERED);
+    expect(unknown.events?.[0]).toMatchObject({ provider_code: 'DSD', stage: 'delivered', stage_source: 'carrier_map' });
+  });
+
   it("keeps a Colissimo leg's announced return open until the parcel is back with its sender", () => {
     const announced = parseJsExpress(withList([
       row('2026-05-03 14:00:00', 'Sample Center', "Votre Colissimo n'a pas pu vous être livré en raison d'un problème d'adresse. Il va être retourné à l'expéditeur.")]), DELIVERED);
@@ -512,7 +551,25 @@ describe('JS Express status vocabulary', () => {
     }
     expect(statusMap.gaps.every(gap => gap.wording && gap.note)).toBe(true);
     for (const wording of ['constructor', 'toString', 'Sample delivered note']) expect(jsExpressMappedStage(wording), wording).toBeUndefined();
-    expect(statusMap.stage('7', 'delivered')).toBeUndefined();
     expect(jsExpressStage('')).toBeNull();
+  });
+
+  it('reads a wording the map lacks by its code where the code settles the stage alone, and a gap whatever its code', () => {
+    const unknown = 'Sample courier note';
+    for (const [code, stage] of [['OIR', 'registered'], ['OPU', 'accepted'], ['DIG', 'out_for_delivery'], ['DOD', 'ready_for_pickup'],
+      ['DDF', 'failed_attempt'], ['DSD', 'delivered']] as const) {
+      expect(statusMap.stage(code, normalizeStatusWording(unknown)), code).toBe(stage);
+      expect(jsExpressStage(unknown, code), code).toEqual({ stage, source: 'carrier_map' });
+      expect(statusMapAnswer({ carrier: 'js-express', providerCode: code, description: unknown }), code).toEqual({ kind: 'mapped', stage });
+    }
+    // Most rows are OIT whatever happened, and the courier's exceptions DDE, a forward among them: those take the wording.
+    for (const code of ['OIT', 'DDE', 'OCP', 'DCF', '7']) expect(statusMap.stage(code, normalizeStatusWording(unknown)), code).toBeUndefined();
+    expect(jsExpressStage('Alert, Forwarded -> Your item was forwarded to a different address', 'DDE')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    // The wording's map comes first, and a record of data stays a gap under any code.
+    expect(statusMap.stage('DSD', normalizeStatusWording('Item has been collected'))).toBe('accepted');
+    const gap = statuses.entries.find((entry) => !('stage' in entry))!.wording;
+    expect(statusMap.stage('OIR', normalizeStatusWording(gap))).toBeUndefined();
+    expect(jsExpressStage(gap, 'OIR')).toBeNull();
+    expect(statusMapAnswer({ carrier: 'js-express', providerCode: 'OIT', description: gap })).toMatchObject({ kind: 'intentional_gap' });
   });
 });

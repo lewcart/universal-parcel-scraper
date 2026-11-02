@@ -51,7 +51,8 @@ instead.
   after the script's last row and in Beijing's office hours whatever the destination, Mexico's and
   Canada's included. Readers who got no parcel marked it wrong. On a record with rows written
   ahead, a delivery row is held back and named with them; on one written as it happened, it is a
-  scan. Xinghe Freight's records, on the same tenant, are read the same way.
+  scan. The page shows no creation times, so a delivery row it shows is held back and named too.
+  Xinghe Freight's records, on the same tenant, are read the same way.
 - Rows coded `CO_C_CR` come from the platform's custom track product (轨迹定制), which writes
   them to a script: on Tianhui Hengyuan they read like China Post's scans, all on one second of
   the minute, and on Mayi Yinfu they have the parcel abroad before it reaches the airport. They
@@ -70,8 +71,8 @@ instead.
   written after the change, an hour later. Of two rows alike but for clocks an hour apart, the one
   written later is dropped.
 - GZYL leaves a row's place empty and writes the town after some wordings, as in "Leaving the
-  sorting center" followed by the town. The adapter reads that town as the place, so a wording
-  reads the same for every town. A row can also name its city after the wording, in brackets;
+  sorting center" followed by the town, a postcode sometimes before it. The adapter cuts the
+  postcode and reads that town as the place, so a wording reads the same for every town. A row can also name its city after the wording, in brackets;
   the status map reads the wording without it, and the row keeps it as written.
 - A record that names its channel and the channel's transfer number hands the parcel over when
   the channel label is in the platform's table, the delivery carrier's own detection offers the

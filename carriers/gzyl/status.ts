@@ -1,6 +1,7 @@
 import type { Stage } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import statuses from './statuses.json' with { type: 'json' };
+import { hualeiScanText } from './text.js';
 
 const WORDINGS = new Map<string, Stage>(statuses.entries.map((entry) => [normalizeStatusWording(entry.wording), entry.stage as Stage]));
 
@@ -16,11 +17,12 @@ const PLACE_TAIL = / \[[^\]]+\]$/;
 /**
  * The stage GZYL's map gives a row, by its `normalizeStatusWording` wording.
  * A row's kind code, when it has one, groups many wordings and decides nothing.
- * A placed wording that still carries its town, as a provider relays it, and a
- * wording with its city in brackets, read as the wording alone.
+ * A placed wording that still carries its town, with or without a postcode
+ * before it, as a provider relays it, and a wording with its city in brackets,
+ * read as the wording alone.
  */
 export function gzylStage(_code: string | null, wording: string): Stage | undefined {
-  const prefix = PLACED.find((placed) => wording.startsWith(placed) && TOWN.test(wording.slice(placed.length)));
+  const prefix = PLACED.find((placed) => wording.startsWith(placed) && TOWN.test(hualeiScanText(wording.slice(placed.length))));
   return WORDINGS.get(wording) ?? (prefix ? WORDINGS.get(prefix.trimEnd()) : undefined) ?? WORDINGS.get(wording.replace(PLACE_TAIL, ''));
 }
 

@@ -1,6 +1,7 @@
 import type { CarrierResult } from '../../core/result/index.js';
 import { normalizeHualeiNumber, parseHualeiPage, parseHualeiTrack, type HualeiTenant } from './hualei.js';
 import { gzylStage, PLACED_WORDINGS, TOWN } from './status.js';
+import { hualeiScanText } from './text.js';
 
 export const PROVIDER = 'GZYL';
 export const GZYL_ORIGIN = 'http://134.175.243.207:8082';
@@ -9,10 +10,11 @@ export const GZYL_ORIGIN = 'http://134.175.243.207:8082';
  * GZYL writes the town of a sorting centre, or of the parcel's way, after some
  * wordings ("Leaving the sorting center Town") and leaves the row's place
  * empty. The town becomes the place, so a wording reads the same for every
- * town; other rows stay whole.
+ * town; other rows stay whole. A postcode is cut first, so a town written after
+ * one, as in "Delivered 00000 Town", is still read as the town.
  */
 export function splitGzylRow(content: string, location: string): { content: string; location: string } {
-  const text = content.trim().split(/\s+/).join(' ');
+  const text = hualeiScanText(content);
   for (const wording of PLACED_WORDINGS) {
     if (text.slice(0, wording.length + 1).toLowerCase() !== `${wording.toLowerCase()} `) continue;
     const town = text.slice(wording.length + 1);

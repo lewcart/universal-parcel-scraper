@@ -177,6 +177,16 @@ describe('Hualei track interface', () => {
     expect(parseHualeiTrack(live, NUMBER, GZYL, after)).not.toHaveProperty('written_ahead');
   });
 
+  it("reads the town GZYL writes after a delivery's postcode as its place", () => {
+    const after = Date.parse('2026-03-10T00:00:00Z');
+    const live = edited((record) => {
+      record.trackDetails.unshift({ ...record.trackDetails[0], track_content: 'Delivered 00000 Sampletown', track_date: '2026-03-07 10:00:00',
+        track_createdate: '2026-03-07 22:20:00' });
+    });
+    expect(parseHualeiTrack(live, NUMBER, GZYL, after)).toMatchObject({ current_stage: 'delivered', last_status_text: 'Delivered',
+      events: expect.arrayContaining([expect.objectContaining({ description: 'Delivered', location: 'Sampletown', stage: 'delivered' })]) });
+  });
+
   it('keeps when the platform wrote each row, which only the track interface says', () => {
     const late = edited((record) => { for (const row of record.trackDetails) row.track_createdate = '2026-03-05 18:00:00'; });
     const events = parseHualeiTrack(late, NUMBER, GZYL, READ_AT)!.events!;
@@ -324,6 +334,20 @@ describe('Hualei tracking page', () => {
     expect(parseHualeiPage(page('page'), 'SHOP-REF-0001', GZYL, READ_AT).canonical_tracking_number).toBe(NUMBER);
     const text = JSON.stringify(result);
     for (const value of ['Synthetic Recipient', 'Synthetic Clerk', '0000', 'SHOP-REF-0001']) expect(text, value).not.toContain(value);
+  });
+
+  it("holds back the delivery row GZYL's script ends in, since the page shows no creation times", () => {
+    const after = Date.parse('2026-03-10T00:00:00Z');
+    const delivered = page('page').replace('<table style="table-layout:fixed;display: inline-table;">', `$&
+                        <tr><td>2026-03-07 10:00:00</td><td></td><td>Delivered 00000 Sampletown</td></tr>`);
+    const result = parseHualeiPage(delivered, NUMBER, GZYL, after);
+    expect(result).toMatchObject({ current_stage: 'customs', last_update: '2026-03-06T15:10:42+08:00', written_ahead: ['2026-03-07T10:00:00+08:00'] });
+    expect(result.events!.map((event) => event.description)).not.toContain('Delivered');
+    expect(parseHualeiPage(delivered, NUMBER, XINGHE_FREIGHT, after)).toMatchObject({ current_stage: 'customs' });
+    // A tenant whose scripts end in no delivery row shows it as a scan, its town as the place.
+    expect(parseHualeiPage(delivered, NUMBER, { ...GZYL, scriptedDelivery: undefined }, after)).toMatchObject({ current_stage: 'delivered',
+      events: [expect.objectContaining({ description: 'Delivered', location: 'Sampletown' }), expect.anything(), expect.anything(), expect.anything(), expect.anything()] });
+    expect(parseHualeiPage(page('page'), NUMBER, GZYL, after)).not.toHaveProperty('written_ahead');
   });
 
   it('reads the answer for an unknown number as not found, and anything else unbound as inconclusive', () => {

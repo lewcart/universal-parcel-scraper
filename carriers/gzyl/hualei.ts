@@ -87,7 +87,8 @@ export interface HualeiTenant {
   /**
    * The tenant's scripts end in a delivery row the platform writes on its own day, in an evening
    * batch, rather than ahead: on a record with rows written ahead, a delivery row is the script's
-   * too, and is held back and named with them.
+   * too, and is held back and named with them. The page shows no creation times, so a delivery
+   * row it shows is held back too.
    */
   readonly scriptedDelivery?: true;
 }
@@ -237,18 +238,20 @@ function stageOf(tenant: HualeiTenant, code: string, description: string): { sta
  * a forecast, not a scan, and so are a row of the custom track product and a
  * row dated after the lookup on the trackers' clock. So is the delivery row of
  * a tenant whose scripts end in one written on its day, on a record with rows
- * written ahead. Identical rows count
+ * written ahead or on the page, which shows no creation times. Identical rows count
  * once, and so do rows the tenant says repeat another. A row the tenant has
  * English for is staged and deduplicated by its own wording, then shown in
  * English. `ahead` lists the clocks of the rows held back as written ahead
  * and of the custom track's, as the tenant reads them.
  */
-function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number): { events: CarrierEvent[]; truncated: boolean; ahead: string[] } {
+function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number, page: boolean): { events: CarrierEvent[]; truncated: boolean; ahead: string[] } {
   const seen = new Set<string>();
   const ahead = new Set<string>();
   const kept: { clock: string; index: number; event: CarrierEvent; english?: string }[] = [];
   const clocks = rows.map((row) => wallClock(row.clock, tenant.provider));
-  const scripted = tenant.scriptedDelivery === true && rows.some((row, index) => writtenAhead(row, clocks[index]!));
+  // The page shows no creation times, so it cannot tell a script's delivery row from a scan: there
+  // every delivery row of such a tenant is held back, as the track interface holds a script's.
+  const scripted = tenant.scriptedDelivery === true && (page || rows.some((row, index) => writtenAhead(row, clocks[index]!)));
   rows.forEach((row, index) => {
     const local = clocks[index]!;
     const placed = isoTime(local, HUALEI_ZONE)!;
@@ -337,8 +340,8 @@ interface Facts {
  * The result. The record's own summary status is not read: it can be ahead
  * of the rows held back.
  */
-function result(rows: readonly HualeiRow[], facts: Facts, tenant: HualeiTenant, readAt: number): CarrierResult {
-  const { events, truncated, ahead } = scans(rows, tenant, readAt);
+function result(rows: readonly HualeiRow[], facts: Facts, tenant: HualeiTenant, readAt: number, page = false): CarrierResult {
+  const { events, truncated, ahead } = scans(rows, tenant, readAt, page);
   // The order exists, but nothing it holds is due yet. Rows written ahead are named, here and
   // beside the scans kept, so that a provider's copies of them are not taken for scans.
   if (!events.length) {
@@ -548,7 +551,7 @@ export function parseHualeiPage(html: string, raw: string, tenant: HualeiTenant,
   return result(waybill.rows, {
     number, tracking: tenant.pageEcho ? '' : tracking, ...(downstream ? { downstream } : {}),
     destination: (waybill.cells.get('目的地') ?? '').toUpperCase(),
-  }, tenant, readAt);
+  }, tenant, readAt, true);
 }
 
 function retryAfterMs(response: Response): number | undefined {

@@ -6674,6 +6674,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "agt-kurye": {
+    "displayName": "AGT Kurye",
+    "color": "#2e2d2d",
+    "aliases": [
+      "AGT Kurye Hizmetleri A.Ş.",
+      "AGT Hızlı Kurye Hizmetleri A.Ş.",
+      "AGT Kargo"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.agtkurye.com.tr/",
+    "trackingSearchUrl": "https://takip.agtkurye.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ahamove": {
     "displayName": "Ahamove",
     "color": "#0d4073",
@@ -8359,6 +8381,39 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "aqx-logistics": {
+    "displayName": "AQX Logistics",
+    "color": "#1d253d",
+    "aliases": [
+      "AQX Logistics LLC",
+      "إيه كيو إكس للشحن"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://aqxlogistics.com/",
+    "trackingUrlTemplate": "https://aqxlogistics.com/track?id={trackingNumber}",
+    "trackingSearchUrl": "https://aqxlogistics.com/track",
+    "linkRules": [
+      {
+        "domains": [
+          "aqxlogistics.com",
+          "www.aqxlogistics.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "aramex-au": {
     "displayName": "Aramex Australia",
@@ -15972,6 +16027,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "domesa": {
+    "displayName": "Domesa",
+    "color": "#003ca6",
+    "aliases": [
+      "DOMESA",
+      "Documentos Mercantiles",
+      "Documentos Mercantiles S.A."
+    ],
+    "countries": [
+      "VE"
+    ],
+    "selectable": true,
+    "timezone": "America/Caracas",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.portal.domesa.com.ve/",
+    "trackingSearchUrl": "https://www.portal.domesa.com.ve/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "domex": {
     "displayName": "Domex",
     "color": "#ffcd05",
@@ -23547,6 +23624,26 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "herona-express": {
+    "displayName": "Herona Express",
+    "color": "#fe0000",
+    "aliases": [
+      "PT Herona Express"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.heronaexpress.co.id/",
+    "trackingSearchUrl": "https://tracking.heronaexpress.co.id/lacak.php",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "hey-couriers": {
     "displayName": "Hey Couriers",
     "color": "#f5551e",
@@ -24244,6 +24341,41 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "hub-group-final-mile": {
+    "displayName": "Hub Group Final Mile",
+    "color": "#d24f40",
+    "aliases": [
+      "NSD",
+      "NonstopDelivery",
+      "NonStopDelivery",
+      "NonstopDelivery LLC",
+      "ShipNSD",
+      "Hub Group NSD"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.hubgroup.com/logistics-management/final-mile/",
+    "trackingSearchUrl": "https://www.hubgroup.com/logistics-management/final-mile/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.shipnsd.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "t"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "hunter-express": {
     "displayName": "Hunter Express",
@@ -26255,6 +26387,27 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://jetlogistic.kz/",
     "trackingSearchUrl": "https://jetlogistic.kz/",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "jetizz": {
+    "displayName": "Jetizz",
+    "color": "#ff0000",
+    "aliases": [
+      "Jetizz Kargo",
+      "Jetizz Hızlı Taşımacılık A.Ş."
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://jetizz.com/",
+    "trackingSearchUrl": "https://app.jetizz.com/gonderi-takip",
     "linkRules": [],
     "detectionRules": []
   },
@@ -29761,6 +29914,29 @@ export const CARRIER_CATALOG = {
         "preferred": true
       }
     ]
+  },
+  "mailex": {
+    "displayName": "Mailex",
+    "color": "#ed2127",
+    "aliases": [
+      "매일택배",
+      "Mailex Canada",
+      "Mailex Global"
+    ],
+    "countries": [
+      "CA",
+      "KR"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.mailexglobal.com/",
+    "trackingSearchUrl": "https://www.mailexglobal.com/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "mailplus-au": {
     "displayName": "MailPlus",
@@ -49412,6 +49588,7 @@ export const CARRIER_IDS = [
   "aeropost",
   "aex-paraguay",
   "afghan-post",
+  "agt-kurye",
   "ahamove",
   "ahl-courier",
   "aics",
@@ -49459,6 +49636,7 @@ export const CARRIER_IDS = [
   "apple-express",
   "apx-logistics",
   "aquiline",
+  "aqx-logistics",
   "aramex-au",
   "aramex-nz",
   "aras-kargo",
@@ -49666,6 +49844,7 @@ export const CARRIER_IDS = [
   "dobropost",
   "dohrn-transfer",
   "domain-logistics",
+  "domesa",
   "domex",
   "dpd-at",
   "dpd-be",
@@ -49866,6 +50045,7 @@ export const CARRIER_IDS = [
   "hepsijet",
   "hercules-freight",
   "hermes-at",
+  "herona-express",
   "hey-couriers",
   "hfd",
   "hi-trans",
@@ -49888,6 +50068,7 @@ export const CARRIER_IDS = [
   "htt-logistics",
   "huahan",
   "huaya-express",
+  "hub-group-final-mile",
   "hunter-express",
   "hy-express",
   "hye",
@@ -49943,6 +50124,7 @@ export const CARRIER_IDS = [
   "jersey-post",
   "jet-global",
   "jet-logistic",
+  "jetizz",
   "jetline-couriers",
   "jetpak",
   "jhgj",
@@ -50041,6 +50223,7 @@ export const CARRIER_IDS = [
   "maersk-ecommerce",
   "magyar-posta",
   "mailamericas",
+  "mailex",
   "mailplus-au",
   "mainfreight",
   "major-express",
@@ -50716,6 +50899,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aeropost": ["aeropost-1"],
   "aex-paraguay": [],
   "afghan-post": [],
+  "agt-kurye": [],
   "ahamove": [],
   "ahl-courier": [],
   "aics": [],
@@ -50763,6 +50947,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "apple-express": ["apple-express-1"],
   "apx-logistics": [],
   "aquiline": ["aquiline-1"],
+  "aqx-logistics": [],
   "aramex-au": ["aramex-au-1"],
   "aramex-nz": ["aramex-nz-mx","aramex-nz-1","aramex-nz-2"],
   "aras-kargo": ["aras-kargo-1"],
@@ -50970,6 +51155,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dobropost": ["dobropost-1"],
   "dohrn-transfer": [],
   "domain-logistics": [],
+  "domesa": [],
   "domex": [],
   "dpd-at": ["dpd-at-1"],
   "dpd-be": ["dpd-be-1"],
@@ -51170,6 +51356,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hepsijet": [],
   "hercules-freight": [],
   "hermes-at": [],
+  "herona-express": [],
   "hey-couriers": [],
   "hfd": [],
   "hi-trans": [],
@@ -51192,6 +51379,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "htt-logistics": [],
   "huahan": ["huahan-1"],
   "huaya-express": ["huaya-express-1"],
+  "hub-group-final-mile": [],
   "hunter-express": [],
   "hy-express": [],
   "hye": [],
@@ -51247,6 +51435,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jersey-post": ["jersey-post-s10"],
   "jet-global": [],
   "jet-logistic": [],
+  "jetizz": [],
   "jetline-couriers": [],
   "jetpak": [],
   "jhgj": ["jhgj-1"],
@@ -51345,6 +51534,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "maersk-ecommerce": ["maersk-ecommerce-1"],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic","magyar-posta-package","magyar-posta-letter","magyar-posta-europe-standard"],
   "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-domc","mailamericas-s10"],
+  "mailex": [],
   "mailplus-au": ["mailplus-au-1"],
   "mainfreight": ["mainfreight-1"],
   "major-express": [],

@@ -8,6 +8,7 @@ import { wordingStage } from '../../core/status/index.js';
 import { BudgetExceededError, carrierErrorKind, IndeterminateError, SchemaError, InvalidInputError } from '../../core/errors/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { isoTime } from '../../core/time/index.js';
 
 const NUMBER = '0073938000999999';
 const MOVING_NUMBER = '0073938000888888';
@@ -205,6 +206,31 @@ describe('Canada Post clock and estimate boundaries', () => {
     // Such a guess does not reorder the newest-first history.
     out.events[0].datetime.date = '2026-03-15'; out.events[0].datetime.time = '22:00:00';
     expect(parse(out, MOVING_NUMBER).events?.[0]?.provider_code).toBe('0174');
+  });
+
+  it('reads a scan in a province on one clock on that clock when its offset label does not hold there', () => {
+    // Live shape: Winnipeg's scans of 2026-10-30 came labelled -06:00 while Manitoba was on -05:00,
+    // and were first read before the instant that label gives. Synthetic towns.
+    const scan = (city: string, regionCd: string, date: string, time: string, zoneOffset: string) =>
+      ({ cd: '0405', descEn: 'Item arrived', type: 'Induction', datetime: { date, time, zoneOffset }, locationAddr: { city, regionCd, countryCd: 'CA' } });
+    const p = moving();
+    p.events.unshift(
+      scan('MB SUMMER', 'MB', '2026-10-30', '01:16:17', '-06:00'),
+      scan('MB RIGHT', 'MB', '2026-10-30', '02:16:17', '-05:00'),
+      // Manitoba stays on -05:00 after 2026-10-31.
+      scan('MB AFTER', 'MB', '2026-11-02', '01:00:00', '-06:00'),
+      scan('AB RIGHT', 'AB', '2026-10-29', '02:52:39', '-06:00'),
+      // The hour Nova Scotia's clock repeats when it falls back, on its second pass.
+      scan('NS REPEATED', 'NS', '2026-11-01', '01:30:00', '-04:00'),
+      // A province where some places keep another clock keeps the label.
+      scan('ON CENTRAL', 'ON', '2026-07-30', '01:00:00', '-05:00'),
+    );
+    const times = Object.fromEntries(parse(p, MOVING_NUMBER).events!.filter(event => event.provider_code === '0405').map(event => [event.location, event.time]));
+    expect(times).toEqual({
+      // On the runtime's clock for Manitoba, which time zone data before 2026e still turns back to -06:00.
+      'MB SUMMER, MB': '2026-10-30T01:16:17-05:00', 'MB RIGHT, MB': '2026-10-30T02:16:17-05:00', 'MB AFTER, MB': isoTime('2026-11-02T01:00:00', 'America/Winnipeg')!.iso,
+      'AB RIGHT, AB': '2026-10-29T02:52:39-06:00', 'NS REPEATED, NS': '2026-11-01T01:30:00-04:00', 'ON CENTRAL, ON': '2026-07-30T01:00:00-05:00',
+    });
   });
 
   it.each(['+02:99', '+14:01', '+23:00', '-14:01'])('preserves invalid offset %s rather than accepting normalized time', offset => {

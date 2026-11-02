@@ -89,7 +89,26 @@ function relayedClock(code: string, country: string, region: string): { zone: st
   return { zone: abroad ? countryTimeZone(country) : null };
 }
 
-function eventClock(value: unknown, relayed: { zone: string | null } | null = null): Record<string, string> {
+// Provinces and territories wholly on one clock: Alberta, Manitoba, the Maritimes and Yukon.
+// Elsewhere a place can keep another offset than the province's main clock.
+const ONE_CLOCK_PROVINCES: ReadonlySet<string> = new Set(['AB', 'MB', 'NB', 'NS', 'PE', 'YT']);
+
+/**
+ * The instant of a scan in a province on one clock whose offset label does not hold on that
+ * clock. Canada Post labelled Winnipeg's scans -06:00 on 2026-10-30, while Manitoba was on
+ * -05:00, before it stayed on -05:00 for good: the label put them after the moment they were
+ * first read, while Alberta's, Ontario's and Québec's scans carried their own offsets. The wall
+ * clock is read on the province's clock. A label that holds on it, as in an hour a clock change
+ * repeats, stands.
+ */
+function provinceClock(local: string, offset: string, region: string): string | null {
+  const zone = ONE_CLOCK_PROVINCES.has(region) ? canadaProvinceTimeZone(region) : null;
+  const labelled = DateTime.fromISO(`${local}${offset}`, { setZone: true });
+  if (!zone || !labelled.isValid || labelled.setZone(zone).toFormat("yyyy-MM-dd'T'HH:mm:ss") === local) return null;
+  return isoTime(local, zone)?.iso ?? null;
+}
+
+function eventClock(value: unknown, relayed: { zone: string | null } | null = null, province = ''): Record<string, string> {
   if (value == null) return {};
   if (!isRecord(value)) throw new SchemaError('canada-post', 'Canada Post returned an invalid scan clock');
   const date = textField(value, 'date', 32);
@@ -102,7 +121,7 @@ function eventClock(value: unknown, relayed: { zone: string | null } | null = nu
     if (placed) return { time: placed.iso };
     if (/^(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))$/i.test(offset)) {
       const parsed = explicitOffsetTime(`${local}${offset}`);
-      if (parsed) return { time: parsed.iso };
+      if (parsed) return { time: (province && provinceClock(local, offset, province)) || parsed.iso };
     } else if (!offset) {
       // UTC validates the calendar only; no timezone is attached to local digits.
       const parsed = DateTime.fromISO(local, { zone: 'UTC' });
@@ -179,7 +198,7 @@ export function parseCanadaPostTrackingResponse(payload: unknown, trackingNumber
     const signature = type === 'Signature' || code === SIGNATURE_CODE;
     const stage = signature ? null : canadaPostScanStage(code, description) ?? canadaPostStage(description);
     const relayed = relayedClock(code, country, region);
-    const clock = eventClock(raw.datetime, relayed);
+    const clock = eventClock(raw.datetime, relayed, relayed || (country && country !== 'CA') ? '' : region.toUpperCase());
     const event: CarrierEvent = { ...clock, description: stage === 'delivered' ? 'Delivered' : description,
       provider_code: code, ...(stage ? { stage } : {}), ...(location ? { location } : {}) };
     return { event, type, signature, region, country, sourceDate: isRecord(raw.datetime) ? calendarDate(raw.datetime.date) : null,

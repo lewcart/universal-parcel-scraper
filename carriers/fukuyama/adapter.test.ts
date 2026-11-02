@@ -12,7 +12,7 @@ import { decodeFukuyamaPage, normalizeFukuyamaNumber, parseFukuyama } from './pa
 import { fukuyamaStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '10000000001';
+const DELIVERED = '10999999980';
 // A ten-digit number, which the page prints padded to eleven digits.
 const IN_TRANSIT = '1000000002';
 const UNKNOWN = '10000000003';
@@ -45,7 +45,7 @@ describe('Fukuyama Transporting tracking page', () => {
   it('asks for the page of the whole number through the supplied transport', async () => {
     const fetcher = serving(bytes('delivered'));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new FukuyamaTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 100-0000-0001 ', { budgetMs: 1000.5 }))
+    await expect(new FukuyamaTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 109-9999-9980 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledOnce();
     const [[url, init]] = fetcher.mock.calls as [[string, RequestInit]];
@@ -134,8 +134,8 @@ describe('Fukuyama Transporting tracking page', () => {
     // A ten-digit number is not the eleven-digit one that ends the same way.
     expect(() => parseFukuyama(page('in-transit'), '11000000002')).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     const shown = (text: string) => ($: CheerioAPI) => { $('.p-recieve_detail_table_td').first().text(text); };
-    expect(() => parseFukuyama(edited('delivered', shown('100-0000-00012')), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(() => parseFukuyama(edited('delivered', shown(`100-0000-0001${'-'.repeat(40)}9`)), DELIVERED))
+    expect(() => parseFukuyama(edited('delivered', shown('109-9999-99802')), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseFukuyama(edited('delivered', shown(`109-9999-9980${'-'.repeat(40)}9`)), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
@@ -223,7 +223,7 @@ describe('Fukuyama Transporting tracking page', () => {
     await expect(new FukuyamaTracker({ fetcher: unused }).fetch(DELIVERED, { signal: AbortSignal.abort(new Error('cancelled')) }))
       .rejects.toThrow('cancelled');
     expect(unused).not.toHaveBeenCalled();
-    expect(normalizeFukuyamaNumber(' 100 0000.0001 ')).toBe(DELIVERED);
+    expect(normalizeFukuyamaNumber(' 109 9999.9980 ')).toBe(DELIVERED);
     expect(normalizeFukuyamaNumber('010-0000-0002')).toBe(`0${IN_TRANSIT}`);
     const hanging = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
       const signal = init?.signal;

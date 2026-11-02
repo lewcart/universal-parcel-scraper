@@ -295,10 +295,10 @@ describe('Poczta Polska identity-bound scans', () => {
     value.number = prefix;
     expect(() => parsePocztaPolska(value, prefix)).toThrowError(expect.objectContaining({ kind: 'schema' }));
     // The SSCC a label prints after "(00)" is looked up as the whole barcode.
-    expect(normalizePocztaPolskaNumber('1 5900773 000000001 1')).toBe('00159007730000000011');
-    value.number = '00159007730000000011'; value.mailInfo.number = '00159007730000000011';
-    expect(parsePocztaPolska(value, '159007730000000011').canonical_tracking_number).toBe('00159007730000000011');
-    expect(() => normalizePocztaPolskaNumber('15900773000000001')).toThrowError(expect.objectContaining({ kind: 'invalid_input' }));
+    expect(normalizePocztaPolskaNumber('1 5900773 999999998 6')).toBe('00159007739999999986');
+    value.number = '00159007739999999986'; value.mailInfo.number = '00159007739999999986';
+    expect(parsePocztaPolska(value, '159007739999999986').canonical_tracking_number).toBe('00159007739999999986');
+    expect(() => normalizePocztaPolskaNumber('15900773999999998')).toThrowError(expect.objectContaining({ kind: 'invalid_input' }));
     expect(normalizePocztaPolskaNumber('px 0000000001')).toBe('PX0000000001');
     expect(normalizePocztaPolskaNumber('rr 000000005 pl')).toBe('RR000000005PL');
   });

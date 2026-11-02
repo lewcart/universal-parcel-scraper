@@ -133,7 +133,7 @@ describe('Nippon Express tracking adapter', () => {
     expect(normalizeNipponExpressNumber('５１２３４５６７８９５')).toBe(ABSENT);
     expect(normalizeNipponExpressNumber('312-345-678-901')).toBe(OTHER);
     // The tracker also takes a last digit that is the rest divided by nine, and eight digits.
-    for (const number of ['312345678903', '10000001', '100000000001']) expect(normalizeNipponExpressNumber(number)).toBe(number);
+    for (const number of ['312345678903', '10000001', '199999999978']) expect(normalizeNipponExpressNumber(number)).toBe(number);
     const fetcher = vi.fn<typeof fetch>();
     for (const number of ['312345678902', '1234567', '100000000000000', 'NX312345678901', '00912345678905']) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });

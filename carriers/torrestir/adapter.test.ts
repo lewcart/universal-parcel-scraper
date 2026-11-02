@@ -14,7 +14,7 @@ import statuses from './statuses.json' with { type: 'json' };
 import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
 const DELIVERED = 'M0010003A00123456781';
-const IN_TRANSIT = 'M0010004500234567892';
+const IN_TRANSIT = 'M0010004500999999802';
 const UNKNOWN = 'M0010005B00345678903';
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
@@ -34,7 +34,7 @@ describe('Torrestir HTTP adapter', () => {
   it('opens the tracker’s Portuguese page for the whole code once, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('in-transit')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new TorrestirTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' m001 0004 5002 3456 7892 ', { budgetMs: 1000.5 }))
+    await expect(new TorrestirTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' m001 0004 5009 9999 9802 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'out_for_delivery' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
@@ -204,7 +204,7 @@ describe('Torrestir HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeTorrestirNumber('m001-0004-5002-3456-7892')).toBe(IN_TRANSIT);
+    expect(normalizeTorrestirNumber('m001-0004-5009-9999-9802')).toBe(IN_TRANSIT);
   });
 
   it('recognizes a shipment the tracker shows and not a code it does not know', async () => {

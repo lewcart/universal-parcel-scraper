@@ -27,32 +27,32 @@ import {
  */
 describe('S10, with one implementation for the client and the server', () => {
   it('agrees with the former server implementation on already-normalized input', () => {
-    expect(isValidS10TrackingNumber('RA123456785CH')).toBe(true);
-    expect(isValidS10TrackingNumber('RA123456789CH')).toBe(false);
-    expect(isValidS10TrackingNumber('RA12345678CH')).toBe(false);
+    expect(isValidS10TrackingNumber('RA999999987CH')).toBe(true);
+    expect(isValidS10TrackingNumber('RA999999989CH')).toBe(false);
+    expect(isValidS10TrackingNumber('RA99999998CH')).toBe(false);
     expect(supportsSwissPostHandoff('LW230226618CH')).toBe(true);
     expect(supportsSwissPostHandoff('LW230226619CH')).toBe(false);
     expect(supportsSwissPostHandoff('RR230226618CH')).toBe(false);
   });
 
   it('now also accepts the printed spelling the server copy used to reject', () => {
-    expect(isValidS10TrackingNumber('ra 123.456-785 ch')).toBe(true);
+    expect(isValidS10TrackingNumber('ra 999.999-987 ch')).toBe(true);
     expect(supportsSwissPostHandoff('lw 230 226 618 ch')).toBe(true);
   });
 });
 
 describe('Chronopost numbers with an S10 check digit', () => {
-  it.each(['XR123456785TS', 'XT123456785TS', 'XT123456785FR', 'XR123456785DE'])('selects Chronopost for %s', (number) => {
+  it.each(['XR999999987TS', 'XT999999987TS', 'XT999999987FR', 'XR999999987DE'])('selects Chronopost for %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'chronopost', confidence: 'high', candidates: ['chronopost'] });
     expect(recognitionAskedCarriers(number)).toEqual([]);
   });
 
   it('keeps a mistyped number a Chronopost suggestion rather than international mail', () => {
-    expect(detectCarrierMatch('XT123456789TS')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['chronopost'] });
-    expect(recognitionAskedCarriers('XT123456789TS')).toEqual(['chronopost']);
+    expect(detectCarrierMatch('XT999999989TS')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['chronopost'] });
+    expect(recognitionAskedCarriers('XT999999989TS')).toEqual(['chronopost']);
   });
 
-  it.each(['RR123456785TS', 'RR123456785JF', 'RR123456785JB', 'NP123456789JB', 'HL123456789JF'])(
+  it.each(['RR999999987TS', 'RR999999987JF', 'RR999999987JB', 'NP999999980JB', 'HL123456789JF'])(
     'selects Chronopost for %s, whose suffix is its own rather than a country',
     (number) => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'chronopost', confidence: 'high', candidates: ['chronopost'] });
@@ -61,7 +61,7 @@ describe('Chronopost numbers with an S10 check digit', () => {
     },
   );
 
-  it.each(['RR123456785RV', 'RR123456785VF'])('asks Chronopost about %s, a rarer suffix of its own', (number) => {
+  it.each(['RR999999987RV', 'RR999999987VF'])('asks Chronopost about %s, a rarer suffix of its own', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['chronopost'] });
     expect(recognitionAskedCarriers(number)).toEqual(['chronopost']);
     expect(checksumRejections(number)).toEqual([]);
@@ -242,13 +242,13 @@ describe('Ukrainian S10 items', () => {
 });
 
 describe('Italian S10 items', () => {
-  it.each(['CE123456785IT', 'CP123456785IT', 'EE123456785IT', 'LC123456785IT', 'RN123456785IT'])('names Poste Italiane, which tracks %s', (number) => {
+  it.each(['CE999999987IT', 'CP123456785IT', 'EE999999987IT', 'LC999999987IT', 'RN999999987IT'])('names Poste Italiane, which tracks %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'poste-italiane', confidence: 'high', candidates: ['poste-italiane'] });
     expect(recognitionAskedCarriers(number)).toEqual([]);
   });
 
   it('leaves its other items to international mail and asks it about them', () => {
-    for (const number of ['KK123456785IT', 'UB123456785IT']) {
+    for (const number of ['KK999999987IT', 'UB999999987IT']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
       expect(recognitionAskedCarriers(number)[0], number).toBe('poste-italiane');
     }
@@ -278,23 +278,23 @@ describe('Latvian S10 items', () => {
 });
 
 describe('Deutsche Post Frankier-IDs', () => {
-  it.each(['A0123456789ABCDEF01F', 'A000000000000000000A'])('names DHL, whose letter tracking answers %s', (number) => {
+  it.each(['A0999999986ABCDEF01F', 'A000000000000000000A'])('names DHL, whose letter tracking answers %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'dhl', confidence: 'high', candidates: ['dhl'] });
     expect(detectCarrierMatch(number.toLowerCase())).toMatchObject({ carrier: 'dhl', confidence: 'high' });
   });
 
   it('names nobody for a failed check character, another order mark or a number without letters', () => {
-    for (const number of ['A0123456789ABCDEF010', 'A0123456789ABCDEF01G', 'B0123456789ABCDEF01F', 'A0123456789ABCDEF01', '00123456789012345670']) {
+    for (const number of ['A0999999986ABCDEF010', 'A0999999986ABCDEF01G', 'B0999999986ABCDEF01F', 'A0999999986ABCDEF01', '00123456789012345670']) {
       expect(detectCarrierMatch(number).candidates, number).not.toContain('dhl');
     }
-    expect(checksumFailures('A0123456789ABCDEF010')).toContainEqual(expect.objectContaining({ carrier: 'dhl', rule: 'dhl-15' }));
+    expect(checksumFailures('A0999999986ABCDEF010')).toContainEqual(expect.objectContaining({ carrier: 'dhl', rule: 'dhl-15' }));
   });
 });
 
 describe('normalization', () => {
   it('uppercases and strips the separators carriers print', () => {
-    expect(normalizeTrackingNumber(' ra 123 456-789 ch ')).toBe('RA123456789CH');
-    expect(formatTrackingNumber('993412345612345678')).toBe('99.34.123456.12345678');
+    expect(normalizeTrackingNumber(' ra 999 999-989 ch ')).toBe('RA999999989CH');
+    expect(formatTrackingNumber('993412345699999980')).toBe('99.34.123456.99999980');
   });
 
   it('reads an SSCC printed behind its bracketed GS1 identifier', () => {
@@ -367,15 +367,15 @@ describe('normalization', () => {
 
 describe('the detection engine', () => {
   it('selects a carrier only when exactly one rule claims high confidence', () => {
-    expect(detectCarrier('RA123456785CH')).toBe('swiss-post');
-    expect(detectCarrierMatch('RA123456785CH')).toMatchObject({ carrier: 'swiss-post', confidence: 'high' });
+    expect(detectCarrier('RA999999987CH')).toBe('swiss-post');
+    expect(detectCarrierMatch('RA999999987CH')).toMatchObject({ carrier: 'swiss-post', confidence: 'high' });
     expect(detectCarrierMatch('')).toEqual({ carrier: 'unknown', confidence: 'none', candidates: [], preferred: [] });
   });
 
   it('rejects a number whose declared checksum does not verify', () => {
-    expect(detectCarrier('RA123456789CH')).toBe('unknown');
-    expect(isValidMondialRelayBarcode('12123456780101006623123454')).toBe(true);
-    expect(isValidMondialRelayBarcode('12123456780101006623123455')).toBe(false);
+    expect(detectCarrier('RA999999989CH')).toBe('unknown');
+    expect(isValidMondialRelayBarcode('12123999999999999999999987')).toBe(true);
+    expect(isValidMondialRelayBarcode('12123999999999999999999985')).toBe(false);
   });
 
   it('checks the Hermes digit before offering Hermes for a 14-digit number', () => {
@@ -406,18 +406,18 @@ describe('the detection engine', () => {
   });
 
   it('offers GLS for a 12-digit number only when its check digit passes', () => {
-    // 11 digits, weights 3-1 from the right plus one: 12345678901 → 1.
-    expect(isValidGlsParcelNumber('123456789011')).toBe(true);
-    expect(isValidGlsParcelNumber('123456789012')).toBe(false);
-    expect(isValidGlsParcelNumber('12345678901')).toBe(false);
-    expect(detectCarrierMatch('123456789011').candidates).toEqual(expect.arrayContaining(['gls-ch', 'gls-de', 'gls-fr']));
-    expect(detectCarrierMatch('123456789012').candidates).not.toContain('gls-de');
+    // 11 digits, weights 3-1 from the right plus one: 12345999998 → 1.
+    expect(isValidGlsParcelNumber('123459999981')).toBe(true);
+    expect(isValidGlsParcelNumber('123459999989')).toBe(false);
+    expect(isValidGlsParcelNumber('12345999998')).toBe(false);
+    expect(detectCarrierMatch('123459999981').candidates).toEqual(expect.arrayContaining(['gls-ch', 'gls-de', 'gls-fr']));
+    expect(detectCarrierMatch('123459999989').candidates).not.toContain('gls-de');
     // 11 digits are the same parcel number without its check digit.
-    expect(detectCarrierMatch('12345678901').candidates).toEqual(expect.arrayContaining(['gls-ch', 'gls-de', 'gls-fr']));
+    expect(detectCarrierMatch('12345999998').candidates).toEqual(expect.arrayContaining(['gls-ch', 'gls-de', 'gls-fr']));
   });
 
   it('keeps GLS to its 11- and 12-digit parcel numbers', () => {
-    expect(detectCarrierMatch('123456789011').candidates).toEqual(expect.arrayContaining(['gls-ch', 'gls-de']));
+    expect(detectCarrierMatch('123459999981').candidates).toEqual(expect.arrayContaining(['gls-ch', 'gls-de']));
     expect(detectCarrierMatch('1234567890123').candidates).not.toEqual(expect.arrayContaining(['gls-ch']));
     expect(detectCarrierMatch('12345678901234').candidates).not.toEqual(expect.arrayContaining(['gls-de']));
   });
@@ -433,18 +433,18 @@ describe('the detection engine', () => {
     for (const number of ['06000000000003', '06030000000002', '06190000000001']) {
       expect(detectCarrierMatch(number)).toMatchObject({ confidence: 'low', preferred: ['dpd'] });
     }
-    expect(detectCarrierMatch('10000000000001')).toMatchObject({
+    expect(detectCarrierMatch('10009999999980')).toMatchObject({
       carrier: 'unknown', confidence: 'low', preferred: ['dpd-fr'],
     });
-    expect(detectCarrierMatch('10000000000001').candidates[0]).toBe('dpd-fr');
+    expect(detectCarrierMatch('10009999999980').candidates[0]).toBe('dpd-fr');
     // DPD Austria's depot codes prefer it; a code its depot list skips stays a plain DPD shape.
     expect(detectCarrierMatch('06200000000002')).toMatchObject({ confidence: 'low', preferred: ['dpd-at'] });
     expect(detectCarrierMatch('06310000000002')).toMatchObject({ confidence: 'low', preferred: [] });
   });
 
   it('reads a number out of a pasted carrier link', () => {
-    expect(parseTrackingInput('https://service.post.ch/ekp-web/ui/entry/search/RA123456785CH'))
-      .toMatchObject({ trackingNumber: 'RA123456785CH', carrier: 'swiss-post', source: 'link' });
+    expect(parseTrackingInput('https://service.post.ch/ekp-web/ui/entry/search/RA999999987CH'))
+      .toMatchObject({ trackingNumber: 'RA999999987CH', carrier: 'swiss-post', source: 'link' });
   });
 
   it('reads a GETOnline link on the shared host as SkyNet only for its own stid', () => {
@@ -459,7 +459,7 @@ describe('the detection engine', () => {
     }
   });
 
-  it.each(['PH000000000001', 'SPXPH000000000001'])(
+  it.each(['PH999999999980', 'SPXPH999999999980'])(
     'reads the SPX Philippines portal bare query: %s', (number) => {
       expect(parseTrackingInput(`https://spx.ph/track?${number}`)).toMatchObject({
         trackingNumber: number, carrier: 'spx-ph', confidence: 'high', source: 'link',
@@ -490,15 +490,15 @@ describe('the detection engine', () => {
   });
 
   it('decodes an SPX bare query without admitting another path, host or query syntax', () => {
-    expect(parseTrackingInput('https://spx.ph/track?%50%48000000000001')).toMatchObject({
-      trackingNumber: 'PH000000000001', carrier: 'spx-ph', source: 'link',
+    expect(parseTrackingInput('https://spx.ph/track?%50%48999999999980')).toMatchObject({
+      trackingNumber: 'PH999999999980', carrier: 'spx-ph', source: 'link',
     });
     for (const url of [
-      'https://spx.ph/other?PH000000000001',
-      'https://spx.ph.example.com/track?PH000000000001',
-      'https://spx.ph/track?unknown=PH000000000001',
-      'https://spx.ph/track?PH000000000001&PH000000000002',
-      'https://spx.ph/track?PH000000000001%2CPH000000000002',
+      'https://spx.ph/other?PH999999999980',
+      'https://spx.ph.example.com/track?PH999999999980',
+      'https://spx.ph/track?unknown=PH999999999980',
+      'https://spx.ph/track?PH999999999980&PH000000000002',
+      'https://spx.ph/track?PH999999999980%2CPH000000000002',
     ]) {
       expect(parseTrackingInput(url).carrier).not.toBe('spx-ph');
     }
@@ -518,12 +518,12 @@ describe('the detection engine', () => {
   });
 
   it('binds Nova Poshta through the current official tracking path', () => {
-    expect(parseTrackingInput('https://novaposhta.ua/en/tracking/59000000000001/')).toMatchObject({
-      trackingNumber: '59000000000001', carrier: 'nova-poshta', confidence: 'high', source: 'link',
+    expect(parseTrackingInput('https://novaposhta.ua/en/tracking/59099999999980/')).toMatchObject({
+      trackingNumber: '59099999999980', carrier: 'nova-poshta', confidence: 'high', source: 'link',
     });
   });
 
-  it.each(['87001234567890', '870012345678049'])('selects La Poste for numeric tracked mail: %s', (number) => {
+  it.each(['87099999999990', '870999999999961'])('selects La Poste for numeric tracked mail: %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'la-poste', confidence: 'high' });
     expect(parseTrackingInput(`Suivi : ${number}`)).toMatchObject({
       trackingNumber: number, carrier: 'la-poste', confidence: 'high', source: 'text',
@@ -665,34 +665,34 @@ describe('the detection engine', () => {
   });
 
   it('recognizes the PostLogistics printed reference without claiming every 11-digit number', () => {
-    expect(parseTrackingInput('12345678-001')).toMatchObject({
-      trackingNumber: '12345678-001', carrier: 'postlogistics', confidence: 'high', source: 'number',
+    expect(parseTrackingInput('19999980-001')).toMatchObject({
+      trackingNumber: '19999980-001', carrier: 'postlogistics', confidence: 'high', source: 'number',
     });
-    expect(detectCarrier('12345678001')).not.toBe('postlogistics');
-    expect(parseTrackingInput('https://tracking.postlogistics.ch/public/trackandtrace/12345678-001'))
-      .toMatchObject({ trackingNumber: '12345678-001', carrier: 'postlogistics', source: 'link' });
+    expect(detectCarrier('19999980001')).not.toBe('postlogistics');
+    expect(parseTrackingInput('https://tracking.postlogistics.ch/public/trackandtrace/19999980-001'))
+      .toMatchObject({ trackingNumber: '19999980-001', carrier: 'postlogistics', source: 'link' });
     // Its tracking page moved to Swiss Post Cargo's tracker, whose links keep the reference with it.
-    expect(parseTrackingInput('https://apv.swisspost-cargo.com/public/trackandtrace/12345678-001'))
-      .toMatchObject({ trackingNumber: '12345678-001', carrier: 'postlogistics', source: 'link' });
-    expect(formatTrackingNumber('12345678001', 'postlogistics')).toBe('12345678-001');
-    expect(formatTrackingNumber('12345678001')).toBe('12345678001');
+    expect(parseTrackingInput('https://apv.swisspost-cargo.com/public/trackandtrace/19999980-001'))
+      .toMatchObject({ trackingNumber: '19999980-001', carrier: 'postlogistics', source: 'link' });
+    expect(formatTrackingNumber('19999980001', 'postlogistics')).toBe('19999980-001');
+    expect(formatTrackingNumber('19999980001')).toBe('19999980001');
   });
 
   it('suggests Swiss Post Cargo for a PL reference, printed or compact, and asks it to confirm', () => {
     // TNT Italy's national waybills have the compact shape too, so both are asked.
-    for (const number of ['PL-12345678', 'pl12345678']) {
+    for (const number of ['PL-99999981', 'pl99999981']) {
       expect(parseTrackingInput(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['swiss-post-cargo', 'tnt-it'] });
       expect(recognitionAskedCarriers(number)).toEqual(['tnt-it', 'swiss-post-cargo']);
     }
-    for (const number of ['PL-1234567', 'PL-123456789', 'PX-12345678']) {
+    for (const number of ['PL-9999998', 'PL-999999819', 'PX-99999981']) {
       expect(detectCarrierMatch(number).candidates).not.toContain('swiss-post-cargo');
     }
   });
 
   it('reads Swiss Post Cargo links from both tracker hosts, keeping a reference as printed', () => {
     for (const host of ['apv', 'tt']) {
-      expect(parseTrackingInput(`https://${host}.swisspost-cargo.com/public/trackandtrace/AB-12345678`))
-        .toMatchObject({ trackingNumber: 'AB-12345678', carrier: 'swiss-post-cargo', confidence: 'high', source: 'link' });
+      expect(parseTrackingInput(`https://${host}.swisspost-cargo.com/public/trackandtrace/AB-99999981`))
+        .toMatchObject({ trackingNumber: 'AB-99999981', carrier: 'swiss-post-cargo', confidence: 'high', source: 'link' });
     }
   });
 });
@@ -827,8 +827,8 @@ describe('checksum rejections', () => {
     // ACS and Geniki Taxydromiki print ten plain digits.
     expect(checksumRejections('1 234 567-890')).toEqual([waybill]);
     expect(checksumRejections('1234567891')).toEqual([]);
-    expect(checksumRejections('RA123456789CH')).toContainEqual({ carrier: 'swiss-post', rule: 'swiss-post-1', checksum: 's10' });
-    expect(checksumRejections('RA123456785CH')).toEqual([]);
+    expect(checksumRejections('RA999999989CH')).toContainEqual({ carrier: 'swiss-post', rule: 'swiss-post-1', checksum: 's10' });
+    expect(checksumRejections('RA999999987CH')).toEqual([]);
     expect(checksumRejections('')).toEqual([]);
   });
 
@@ -864,7 +864,7 @@ describe('checksum rejections', () => {
     expect(checksumFailures('1 234 567-890')).toEqual(checksumRejections('1 234 567-890'));
     expect(checksumFailures('1234567891')).toEqual([]);
     expect(checksumFailures('')).toEqual([]);
-    for (const number of ['1234567890', '123456789012', '123456789013', '123456789012345', '250123456789010', 'RA123456789CH']) {
+    for (const number of ['1234567890', '123456789012', '123456789013', '123456789012345', '250123456789010', 'RA999999989CH']) {
       expect(checksumFailures(number)).toEqual(expect.arrayContaining(checksumRejections(number)));
     }
   });

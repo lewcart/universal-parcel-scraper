@@ -8,7 +8,7 @@ import { normalizePostnordNumber, parsePostnord } from './parser.js';
 import { classifyPostnordStatus } from './status.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 
-const NUMBER = '00573000000000000001';
+const NUMBER = '00573099999999999981';
 const OTHER_NUMBER = '00573000000000000002';
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
 const payload = () => structuredClone(fixture);
@@ -290,7 +290,7 @@ describe('PostNord direct tracking', () => {
     expect(url.origin + url.pathname).toBe('https://api2.postnord.com/rest/shipment/v1/trackingweb/shipmentInformation');
     expect(Object.fromEntries(url.searchParams)).toEqual({ shipmentId: NUMBER, locale: 'en', timeZone: 'UTC' });
     expect(new Headers(fetcher.mock.calls[0]?.[1]?.headers).get('X-CustomHeader')).not.toBe(new Headers(fetcher.mock.calls[1]?.[1]?.headers).get('X-CustomHeader'));
-    expect(normalizePostnordNumber('00573 000000000000001')).toBe(NUMBER);
+    expect(normalizePostnordNumber('00573 099999999999981')).toBe(NUMBER);
     expect(normalizePostnordNumber('rr 000000005 se')).toBe('RR000000005SE');
     for (const invalid of ['123', 'RR000000006SE', `${NUMBER}?id=other`]) expect(() => normalizePostnordNumber(invalid)).toThrow(InvalidInputError);
   });

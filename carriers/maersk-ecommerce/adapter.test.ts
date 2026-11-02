@@ -55,7 +55,7 @@ describe('Maersk eCommerce HTTP adapter', () => {
     const result = parseMaersk(fixture('in-transit'), PARCEL);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
       last_status_text: 'In-Transit Scan', last_update: '2026-04-06T16:10:00Z', expected_delivery: '2026-04-08', service_name: 'Standard',
-      destination_country: 'US', delivery_carrier: 'amazon-logistics', delivery_tracking_number: 'TBA000000000001' });
+      destination_country: 'US', delivery_carrier: 'amazon-logistics', delivery_tracking_number: 'TBA999989999880' });
     expect(result).not.toHaveProperty('delivered_at');
     expect(result.events!.map((event) => [event.time, event.location, event.provider_code, event.stage])).toEqual([
       ['2026-04-06T16:10:00Z', undefined, '77100', 'in_transit'],

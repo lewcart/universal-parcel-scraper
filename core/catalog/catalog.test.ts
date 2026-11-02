@@ -31,8 +31,8 @@ describe('the derived CARRIERS record', () => {
       name: 'Swiss Post',
       capabilities: { selectable: true, timezone: 'Europe/Zurich', tracking: { mode: 'automatic', adapter: 'swiss-post' } },
     });
-    expect(CARRIERS['swiss-post'].trackingUrl?.('RA123456785CH'))
-      .toBe('https://service.post.ch/ekp-web/ui/entry/search/RA123456785CH');
+    expect(CARRIERS['swiss-post'].trackingUrl?.('RA999999987CH'))
+      .toBe('https://service.post.ch/ekp-web/ui/entry/search/RA999999987CH');
     expect(CARRIERS['swiss-post'].trackingSearchUrl).toBe('https://www.post.ch/de/empfangen/sendung-verfolgen');
     expect(CARRIERS['swiss-post'].helpUrl).toBe('https://www.post.ch/de/hilfe-und-kontakt/empfangen');
     expect(SELECTABLE_CARRIERS.every((carrier) => carrier.capabilities.selectable)).toBe(true);
@@ -54,7 +54,7 @@ describe('the derived CARRIERS record', () => {
   });
 
   it('shortens the numbers whose portal expects a different form', () => {
-    expect(trackingNumberForLink('mondial-relay', '12123456780101006623123454')).toBe('121234567801');
+    expect(trackingNumberForLink('mondial-relay', '12123999999999999999999987')).toBe('121239999999');
     // Border Express's tracker takes the consignment a unit's barcode is read into.
     expect(trackingNumberForLink('border-express', 'ZZZZBX00000010000001')).toBe('ZZZZ010000');
     expect(trackingNumberForLink('border-express', '00000001')).toBe('00000001');
@@ -62,13 +62,13 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('the-courier-guy', 'ld 000001')).toBe('LD-000001');
     expect(trackingNumberForLink('the-courier-guy', 'DD-000001')).toBe('DD-000001');
     expect(trackingNumberForLink('the-courier-guy', 'TESTA1')).toBe('TESTA1');
-    expect(trackingNumberForLink('swiss-post', 'RA123456785CH')).toBe('RA123456785CH');
-    expect(trackingNumberForLink('postlogistics', '12345678001')).toBe('12345678-001');
-    expect(trackingNumberForLink('cdl', '1000000010')).toBe('100000001-0');
-    expect(trackingNumberForLink('cdl', '100000001-0')).toBe('100000001-0');
+    expect(trackingNumberForLink('swiss-post', 'RA999999987CH')).toBe('RA999999987CH');
+    expect(trackingNumberForLink('postlogistics', '19999980001')).toBe('19999980-001');
+    expect(trackingNumberForLink('cdl', '1999999800')).toBe('199999980-0');
+    expect(trackingNumberForLink('cdl', '199999980-0')).toBe('199999980-0');
     expect(trackingNumberForLink('cdl', 'CDL00000000001')).toBe('CDL00000000001');
     // tnt.it finds a waybill without the check digit its label prints after a dash, tnt.com a consignment without GE and WW.
-    expect(trackingNumberForLink('tnt-it', 'ZZ00000001-7')).toBe('ZZ00000001');
+    expect(trackingNumberForLink('tnt-it', 'ZZ99999980-7')).toBe('ZZ99999980');
     expect(trackingNumberForLink('tnt-it', 'ZZ00000001')).toBe('ZZ00000001');
     // TForce Freight's page takes the PRO a PARS number carries.
     expect(trackingNumberForLink('tforce-freight', '2205123456782')).toBe('123456782');
@@ -98,11 +98,11 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('noest', 'ABC-123-00000000')).toBe('ABC-123-00000000');
     expect(trackingNumberForLink('noest', 'SAMPLE')).toBe('SAMPLE');
     expect(CARRIERS.noest.trackingUrl?.('ABC12300000000')).toBe('https://app.noest-dz.com/list/t/ABC-123-00000000');
-    expect(trackingNumberForLink('paperfly', '010125000000A1A1')).toBe('010125-000000-A1-A1');
-    expect(trackingNumberForLink('paperfly', 'z0101250000a1a1')).toBe('Z-010125-0000-A1-A1');
+    expect(trackingNumberForLink('paperfly', '010980000000A1A1')).toBe('010980-000000-A1-A1');
+    expect(trackingNumberForLink('paperfly', 'z0109800000a1a1')).toBe('Z-010980-0000-A1-A1');
     expect(trackingNumberForLink('paperfly', 'PFLBDZZ0000000000')).toBe('PFL-BD-ZZ-0000000000');
     expect(trackingNumberForLink('paperfly', 'SAMPLE')).toBe('SAMPLE');
-    expect(CARRIERS.paperfly.trackingUrl?.('01012500000A1A1')).toBe('https://go.paperfly.com.bd/track/order/010125-00000-A1-A1');
+    expect(CARRIERS.paperfly.trackingUrl?.('01098000000A1A1')).toBe('https://go.paperfly.com.bd/track/order/010980-00000-A1-A1');
     expect(CARRIERS['pack-man'].trackingUrl?.('A00000017')).toBe('https://pack-man.gr/anazitisi-apostolis.html?code=A-00000017');
     expect(trackingNumberForLink('upaya', 'qqqqqq000000000000')).toBe('QQQQQQ00000-0000000');
     expect(trackingNumberForLink('upaya', 'QQQQQQ0000-0000000')).toBe('QQQQQQ0000-0000000');
@@ -119,8 +119,8 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('ecoscooting', 'prt 0000000 1234 000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', 'CNPRT00000001234000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', '000000000000000001')).toBe('000000000000000001');
-    expect(CARRIERS.postlogistics.trackingUrl?.('12345678001'))
-      .toBe('https://apv.swisspost-cargo.com/public/trackandtrace/12345678-001');
+    expect(CARRIERS.postlogistics.trackingUrl?.('19999980001'))
+      .toBe('https://apv.swisspost-cargo.com/public/trackandtrace/19999980-001');
     expect(trackingNumberForLink('gofo-fr', 'PK00000000000000000001'))
       .toBe('PK-0000000000000000000-1');
     expect(CARRIERS['gofo-fr'].trackingUrl?.('PK00000000000000000001'))
@@ -170,13 +170,13 @@ describe('the catalog lookups the server reads', () => {
 
   it('anchors the server requirement filter and leaves the form filter unanchored', () => {
     // A 26-digit Mondial Relay label barcode carries its own check digits.
-    expect(activeRequirements('mondial-relay', '12123456780101006623123454')).toEqual([]);
+    expect(activeRequirements('mondial-relay', '12123999999999999999999987')).toEqual([]);
     expect(activeRequirements('mondial-relay', '12345678').map((item) => item.validator)).toEqual(['internationalPostcode']);
     expect(carrierRequirements('mondial-relay', '12345678').map((item) => item.field)).toEqual(['postcode']);
     // The brand forms are found without a postcode.
-    expect(activeRequirements('mondial-relay', '1212345678')).toEqual([]);
-    expect(activeRequirements('mondial-relay', '121234567801')).toEqual([]);
-    expect(activeRequirements('swiss-post', 'RA123456785CH')).toEqual([]);
+    expect(activeRequirements('mondial-relay', '1212399999')).toEqual([]);
+    expect(activeRequirements('mondial-relay', '121239999999')).toEqual([]);
+    expect(activeRequirements('swiss-post', 'RA999999987CH')).toEqual([]);
   });
 
   it('tells optional postcodes from required ones', () => {
@@ -186,7 +186,7 @@ describe('the catalog lookups the server reads', () => {
     for (const [carrier, number] of [
       ['gls-ch', '999999999916'],
       ['gls-de', '123456789018'],
-      ['heppner', '23456789'],
+      ['heppner', '99999980'],
       ['mondial-relay', '12345678'],
     ] as const) {
       expect(activeRequirements(carrier, number).map((item) => item.optional), carrier).toEqual([undefined]);
@@ -249,10 +249,10 @@ describe('tracking links', () => {
   });
 
   it('links a parcel to the source of its displayed result', () => {
-    expect(parcelTrackingLinks({ carrier: 'swiss-post', trackingNumber: 'RA123456785CH' })).toEqual([{
+    expect(parcelTrackingLinks({ carrier: 'swiss-post', trackingNumber: 'RA999999987CH' })).toEqual([{
       carrier: CARRIERS['swiss-post'],
       name: 'Swiss Post',
-      url: 'https://service.post.ch/ekp-web/ui/entry/search/RA123456785CH',
+      url: 'https://service.post.ch/ekp-web/ui/entry/search/RA999999987CH',
       active: true,
       ready: true,
       role: 'active',

@@ -136,9 +136,9 @@ describe('Swiss Post Cargo tracking', () => {
 
   it('leaves a Type 3 relay of Swiss Post tracking to the Swiss Post adapter', () => {
     const relayed = fixture('relayed-swiss-post');
-    expect(() => parseSwissPostCargoResponse(relayed, '99.34.123456.12345678')).toThrow(NotFoundError);
+    expect(() => parseSwissPostCargoResponse(relayed, '99.34.123456.99999980')).toThrow(NotFoundError);
     try {
-      parseSwissPostCargoResponse(relayed, '99.34.123456.12345678');
+      parseSwissPostCargoResponse(relayed, '99.34.123456.99999980');
     } catch (error) {
       expect(error).toMatchObject({
         status: 404,
@@ -250,7 +250,7 @@ describe('Swiss Post Cargo tracking', () => {
 });
 
 describe('Swiss Post Cargo recognition', () => {
-  const sscc = '00312345670000000016';
+  const sscc = '00312345679999999981';
   const answer = (payload: unknown) => vi.fn<typeof fetch>().mockResolvedValue(
     new Response(JSON.stringify(payload), { status: 200 }),
   );
@@ -275,11 +275,11 @@ describe('Swiss Post Cargo recognition', () => {
     const fetcher = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(new Response(JSON.stringify({ Data: null }), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(fixture('shared-reference')), { status: 200 }));
-    await expect(new SwissPostCargoTracker({ fetcher, now: () => Date.parse('2026-09-01T12:00:00Z') }).recognizes('PL12345678'))
+    await expect(new SwissPostCargoTracker({ fetcher, now: () => Date.parse('2026-09-01T12:00:00Z') }).recognizes('PL99999981'))
       .resolves.toMatchObject({ known: true });
     expect(fetcher.mock.calls.map(([, init]) => init?.body)).toEqual([
-      JSON.stringify({ Identifier: 'PL12345678' }),
-      JSON.stringify({ Identifier: 'PL-12345678' }),
+      JSON.stringify({ Identifier: 'PL99999981' }),
+      JSON.stringify({ Identifier: 'PL-99999981' }),
     ]);
   });
 
@@ -365,7 +365,7 @@ describe('Swiss Post Cargo customer references', () => {
   it('refuses a reference that names two current consignments', () => {
     const payload = sharedReference();
     (payload.Data as unknown[]).push({
-      Identifier: '00312345670000000055',
+      Identifier: '00312345679999999955',
       History: [
         { TimeStamp: '2026-08-18T06:00:00', Status: 'NTF', Description: 'Shipment data received' },
         { TimeStamp: '2026-08-19T10:00:00', Status: 'POD', Description: 'Delivered', City: 'Bern' },

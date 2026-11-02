@@ -3,7 +3,7 @@ import { fetchPostlogistics, PostlogisticsTracker } from './adapter.js';
 
 // A validly shaped barcode that was never issued: the endpoint answers
 // `Data: null`, which is PostLogistics' "unknown identifier".
-const POSTLOGISTICS_WRONG_NUMBER = '000000000000000000';
+const POSTLOGISTICS_WRONG_NUMBER = '099999999999999980';
 // A current Swiss Post parcel barcode, supplied outside the repository: the
 // endpoint relays Swiss Post's scans for it as `Type: 3`.
 const SWISS_POST_TRACKING_NUMBER = process.env.SWISS_POST_TRACKING_NUMBER;

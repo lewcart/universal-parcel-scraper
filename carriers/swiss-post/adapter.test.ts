@@ -326,8 +326,8 @@ describe('Swiss Post projection', () => {
   });
 
   it('ignores structured text without stringifying it into shipment data', () => {
-    const result = parseSwissPostShipment({ globalStatus: ['DELIVERED'], shipmentNumber: ['993412345612345678'],
-      internationalBarcode: ['RA123456785CH'], lastEventDateTime: ['2026-01-01'], calculatedDeliveryDate: ['2026-01-02'] }, [
+    const result = parseSwissPostShipment({ globalStatus: ['DELIVERED'], shipmentNumber: ['993412345699999980'],
+      internationalBarcode: ['RA999999987CH'], lastEventDateTime: ['2026-01-01'], calculatedDeliveryDate: ['2026-01-02'] }, [
       { eventCode: ['PARCEL.*.1.1003'], timestamp: '2026-01-01T12:00:00Z' },
       { eventCode: 'PARCEL.*.1.1003', timestamp: ['2026-01-01T12:00:00Z'] },
     ]);
@@ -392,8 +392,8 @@ describe('Swiss Post projection', () => {
       status: 'out_for_delivery',
       current_stage: 'out_for_delivery',
       last_status_text: 'Loading into delivery vehicle',
-      canonical_tracking_number: '993412345612345678',
-      international_tracking_number: 'RA123456785CH',
+      canonical_tracking_number: '993412345699999980',
+      international_tracking_number: 'RA999999987CH',
       timezone: 'Europe/Zurich',
     });
   });
@@ -537,8 +537,8 @@ describe('Swiss Post translation table', () => {
     };
     const tracker = new SwissPostTracker({ fetcher });
 
-    await expect(tracker.fetch('993412345612345678', { signal: controller.signal })).rejects.toThrow('unreachable');
-    const result = await tracker.fetch('993412345612345678');
+    await expect(tracker.fetch('993412345699999980', { signal: controller.signal })).rejects.toThrow('unreachable');
+    const result = await tracker.fetch('993412345699999980');
 
     expect(tableRequests).toBe(2);
     expect(result.events?.[1]?.description).toBe('Shipment is being forwarded');
@@ -685,7 +685,7 @@ describe('Swiss Post network failure recovery', () => {
       if (url.endsWith('/events')) return new Response(JSON.stringify(events));
       return new Response(JSON.stringify({ 'shipment-text--': translations }));
     };
-    const lookup = new SwissPostTracker({ fetcher }).fetch('993412345612345678', { budgetMs: 12_000 });
+    const lookup = new SwissPostTracker({ fetcher }).fetch('993412345699999980', { budgetMs: 12_000 });
     await vi.advanceTimersByTimeAsync(6_300);
     await expect(lookup).resolves.toMatchObject({ status: 'out_for_delivery' });
     // Half of the 12-second budget, then the retry within the rest.
@@ -695,7 +695,7 @@ describe('Swiss Post network failure recovery', () => {
 });
 
 describe("Swiss Post in the reader's language", () => {
-  const SHIPMENT = '993412345612345678';
+  const SHIPMENT = '993412345699999980';
   // Swiss Post's wording of the fixture's newest scan in its four languages.
   const LOADING: Record<string, string> = { en: 'Loading into delivery vehicle', de: 'Verlad in Zustellfahrzeug',
     fr: 'Chargement dans le véhicule de livraison ', it: 'Caricamento nel veicolo di consegna' };
@@ -732,7 +732,7 @@ describe("Swiss Post in the reader's language", () => {
 });
 
 describe('Swiss Post outage page', () => {
-  const SHIPMENT = '993412345612345678';
+  const SHIPMENT = '993412345699999980';
   const html = (body: string, status = 200) => new Response(body, { status, headers: { 'Content-Type': 'text/html' } });
 
   /** A lookup whose calls matching `step` get `reply`; every other call answers as usual. */

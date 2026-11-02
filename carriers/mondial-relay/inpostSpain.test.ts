@@ -8,7 +8,7 @@ import { MondialRelayTracker, mondialRelayTrackingUrl } from './adapter.js';
 import { parseInpostSpainPage } from './inpostSpain.js';
 
 // Every number, label and instant here is synthetic.
-const NUMBER = 'FV00000001';
+const NUMBER = 'FV99999981';
 const PAGE_URL = `https://www.inpost.es/seguimiento-del-envio/?parcelNumber=${NUMBER}`;
 const FIXTURE = readFileSync(new URL('./fixtures/inpost-es-awaiting-collection.html', import.meta.url), 'utf8');
 
@@ -120,7 +120,7 @@ describe('InPost Spain tracking page', () => {
 
   it('tracks an FV number on the page alone, without a browser or an account', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(FIXTURE, { headers: { 'Content-Type': 'text/html' } }));
-    const result = await new MondialRelayTracker({ fetcher, trawl: null }).fetch(' fv 0000-0001 ');
+    const result = await new MondialRelayTracker({ fetcher, trawl: null }).fetch(' fv 9999-9981 ');
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(PAGE_URL);
@@ -153,11 +153,11 @@ describe('InPost Spain tracking page', () => {
       .mockResolvedValueOnce(new Response(details([], 404)))
       .mockResolvedValueOnce(new Response('<html><head><title>Just a moment...</title></head></html>', { status: 403 }));
     const tracker = new MondialRelayTracker({ fetcher, trawl: null });
-    await expect(tracker.recognize(' fv 0000-0001 ')).resolves.toMatchObject({ known: true });
+    await expect(tracker.recognize(' fv 9999-9981 ')).resolves.toMatchObject({ known: true });
     await expect(tracker.recognize(NUMBER)).resolves.toEqual({ known: false });
     // A browser check is no answer.
     await expect(tracker.recognize(NUMBER)).rejects.toBeInstanceOf(ChallengeError);
-    for (const number of ['12345678', '1234567890', '123456789012', 'FV0000001', 'FV000000001']) {
+    for (const number of ['12345678', '1234567890', '123456789012', 'FV9999998', 'FV099999981']) {
       await expect(tracker.recognize(number), number).resolves.toEqual({ known: false });
     }
     expect(fetcher).toHaveBeenCalledTimes(3);
@@ -167,7 +167,7 @@ describe('InPost Spain tracking page', () => {
     expect(detectCarrierMatch(NUMBER)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch(NUMBER).candidates).toContain('mondial-relay');
     expect(recognitionAskedCarriers(NUMBER)[0]).toBe('mondial-relay');
-    for (const number of ['FV0000001', 'FV000000001', 'FW00000001']) expect(detectCarrierMatch(number).candidates, number).not.toContain('mondial-relay');
+    for (const number of ['FV9999998', 'FV099999981', 'FW99999981']) expect(detectCarrierMatch(number).candidates, number).not.toContain('mondial-relay');
     for (const number of ['12345678', '1234567890', '123456789012']) expect(recognitionAskedCarriers(number), number).not.toContain('mondial-relay');
     vi.useFakeTimers({ now: new Date('2026-10-23T12:00:00Z'), toFake: ['Date'] });
     try {
@@ -183,7 +183,7 @@ describe('InPost Spain tracking page', () => {
   it('leaves Mondial Relay’s own numbers to the app and the website', async () => {
     const fetcher = vi.fn<typeof fetch>();
     await expect(new MondialRelayTracker({ fetcher, trawl: null }).fetch('12345678')).rejects.toBeInstanceOf(InputRequiredError);
-    await expect(new MondialRelayTracker({ fetcher, trawl: null }).fetch('FV0000001')).rejects.toThrow('InPost Spain number');
+    await expect(new MondialRelayTracker({ fetcher, trawl: null }).fetch('FV9999998')).rejects.toThrow('InPost Spain number');
     await expect(new MondialRelayTracker({ fetcher, trawl: null }).fetch('1234567890')).rejects.toBeInstanceOf(ChallengeError);
     expect(fetcher).not.toHaveBeenCalled();
   });

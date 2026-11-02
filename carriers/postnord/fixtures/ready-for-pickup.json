@@ -1,6 +1,6 @@
 {
-  "shipmentId": "00573000000000000001",
-  "actualReturnedId": "00573000000000000001",
+  "shipmentId": "00573099999999999981",
+  "actualReturnedId": "00573099999999999981",
   "showSplitShipmentOverview": false,
   "serviceName": "Parcel",
   "serviceCode": "19",
@@ -14,7 +14,7 @@
     "openingHours": [{ "day": "Monday", "open": true, "current": true, "spans": [{ "openTime": "08:00", "closeTime": "21:00" }] }]
   },
   "items": [{
-    "itemId": "00573000000000000001",
+    "itemId": "00573099999999999981",
     "deliveryInformation": { "deliveryTo": "Private delivery instructions" },
     "status": { "code": "AVAILABLE_FOR_DELIVERY", "header": "The shipment item has been delivered to a service point" },
     "returnDate": "2026-01-20T00:00:00.000Z",

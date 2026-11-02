@@ -780,10 +780,10 @@ describe('Mondial Relay web session', () => {
 
 
 describe('documented Mondial Relay 26-digit label barcode', () => {
-  const barcode = '12123456780101006623123454';
+  const barcode = '12123999999999999999999987';
   it('keeps carrier acceptance distinct from electronic registration and hub scans', () => {
     const result = parseMondialRelayTrackingResponse({ Expedition: {
-      Numero: '12345678',
+      Numero: '12399999',
       SuiviContextuel: 'Prise en charge de votre colis sur notre site logistique TEST_DEPOT',
       Evenements: [
         { Date: '2026-01-03T10:00:00', Libelle: 'Prise en charge de votre colis sur notre site logistique TEST_DEPOT' },
@@ -795,15 +795,15 @@ describe('documented Mondial Relay 26-digit label barcode', () => {
     expect(result.events?.map((event) => event.stage)).toEqual(['in_transit', 'accepted', 'registered']);
   });
   it('uses the public alias without deriving a postcode from routing digits', () => {
-    expect(normalizeMondialRelayCredential(barcode)).toEqual({ shipment: '121234567801', postcode: '', canonicalShipment: '12345678', barcode: true });
-    expect(mondialRelayTrackingUrl(barcode)).toBe(`${TRACKING_PAGE}?numeroExpedition=121234567801`);
+    expect(normalizeMondialRelayCredential(barcode)).toEqual({ shipment: '121239999999', postcode: '', canonicalShipment: '12399999', barcode: true });
+    expect(mondialRelayTrackingUrl(barcode)).toBe(`${TRACKING_PAGE}?numeroExpedition=121239999999`);
     expect(() => normalizeMondialRelayCredential(barcode.slice(0, -1) + '5')).toThrow('Invalid Mondial Relay barcode');
     expect(() => normalizeMondialRelayCredential(barcode.slice(0, 14) + '1' + barcode.slice(15))).toThrow('Invalid Mondial Relay barcode');
     expect(() => normalizeMondialRelayCredential(barcode.slice(0, -1) + '5')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
   });
   it('requires returned shipment identity to match the documented embedded number', () => {
-    expect(parseMondialRelayTrackingResponse(syntheticSuccessFixture('12345678'), barcode)).toMatchObject({ status: 'out_for_delivery' });
-    expect(() => parseMondialRelayTrackingResponse(syntheticSuccessFixture('87654321'), barcode)).toThrow('different shipment');
+    expect(parseMondialRelayTrackingResponse(syntheticSuccessFixture('12399999'), barcode)).toMatchObject({ status: 'out_for_delivery' });
+    expect(() => parseMondialRelayTrackingResponse(syntheticSuccessFixture('99999980'), barcode)).toThrow('different shipment');
   });
   it('fetches the public alias and accepts only its canonical shipment', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
@@ -817,17 +817,17 @@ describe('documented Mondial Relay 26-digit label barcode', () => {
       .mockResolvedValueOnce(new Response(JSON.stringify({
         tier: 3,
         statusCode: 200,
-        url: apiUrl('121234567801', ''),
+        url: apiUrl('121239999999', ''),
         html: VUE_PAGE,
-        body: numericByteObject(JSON.stringify(syntheticSuccessFixture('12345678'))),
+        body: numericByteObject(JSON.stringify(syntheticSuccessFixture('12399999'))),
       }), { headers: { 'Content-Type': 'application/json' } }));
     const result = await new MondialRelayTracker({
       trawl: new TrawlClient('http://trawl.internal:8191/scrape'),
     }).fetch(barcode);
     expect(String(fetcher.mock.calls[1]![0])).toBe('http://trawl.internal:8191/scrape');
     expect(JSON.parse(String(fetcher.mock.calls[1]![1]?.body))).toMatchObject({
-      url: apiUrl('121234567801', ''),
+      url: apiUrl('121239999999', ''),
     });
-    expect(result.tracking_url).toBe(`${TRACKING_PAGE}?numeroExpedition=121234567801`);
+    expect(result.tracking_url).toBe(`${TRACKING_PAGE}?numeroExpedition=121239999999`);
   });
 });

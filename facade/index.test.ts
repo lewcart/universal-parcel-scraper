@@ -343,14 +343,14 @@ describe('standalone tracker', () => {
     const tracker = createTracker({ providers: [], registry: recognizers({
       postlogistics: asked, 'gls-fr': asked, 'gls-de': asked, 'gls-ch': asked, 'dhl-ecommerce-pl': asked,
     }, lookup) });
-    await expect(tracker.recognize('12345678-001')).resolves.toMatchObject({ asked: [] });
-    await expect(tracker.track({ number: '12345678-001' })).resolves.toMatchObject({
+    await expect(tracker.recognize('19999980-001')).resolves.toMatchObject({ asked: [] });
+    await expect(tracker.track({ number: '19999980-001' })).resolves.toMatchObject({
       carrier: 'postlogistics', source: 'postlogistics', attempts: [{ source: 'postlogistics', kind: 'ok' }],
     });
     expect(asked).not.toHaveBeenCalled();
-    expect(lookup.mock.calls[0]![0]).toMatchObject({ number: '12345678001' });
+    expect(lookup.mock.calls[0]![0]).toMatchObject({ number: '19999980001' });
     // The compact digits fit other carriers too, and are asked about.
-    expect((await tracker.recognize('12345678001')).asked).toContain('postlogistics');
+    expect((await tracker.recognize('19999980001')).asked).toContain('postlogistics');
     expect(asked).toHaveBeenCalled();
   });
 

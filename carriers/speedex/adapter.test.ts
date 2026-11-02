@@ -12,7 +12,7 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = '700000000017';
 const IN_TRANSIT = '050000000025';
-const RETURNED = 'JJD000000000000000000';
+const RETURNED = 'JJD099999999999999980';
 const UNKNOWN = '700000000009';
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
@@ -174,7 +174,7 @@ describe('Speedex HTTP adapter', () => {
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
     expect(normalizeSpeedexNumber('7000-0000-0017')).toBe(DELIVERED);
-    expect(normalizeSpeedexNumber('jjd 000000000000000000')).toBe(RETURNED);
+    expect(normalizeSpeedexNumber('jjd 099999999999999980')).toBe(RETURNED);
   });
 
   it('routes a number filed under Speedex to the adapter, and leaves twelve digits to the user', async () => {

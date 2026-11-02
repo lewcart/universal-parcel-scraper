@@ -253,9 +253,9 @@ describe('Mondial Relay app step', () => {
   });
 
   it('asks the app for a label barcode without the stored postcode', async () => {
-    // The checksummed public sample barcode from adapter.test.ts: brand 12, shipment 12345678.
-    const barcode = '12123456780101006623123454';
-    const uid = '1212345678';
+    // The checksummed public sample barcode from adapter.test.ts: brand 12, shipment 12399999.
+    const barcode = '12123999999999999999999987';
+    const uid = '1212399999';
     const { calls, client } = service({ search: [() => json({ list: [{ expedition: expedition(uid), delivery: {} }] })], detail: [() => json(detail(uid))] });
     await expect(new MondialRelayTracker({ app: client, trawl: null }).fetch(barcode, POSTCODE))
       .resolves.toMatchObject({ status: 'out_for_delivery', tracking_source: 'mobile-app-response' });

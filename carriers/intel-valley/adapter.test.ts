@@ -14,8 +14,8 @@ import { normalizeIntelValleyNumber, parseIntelValley } from './parser.js';
 import { flightBooked, intelValleyStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const PARCEL = 'IV123400000017';
-const UNKNOWN = 'IV123400000028';
+const PARCEL = 'IV123499999980';
+const UNKNOWN = 'IV123499999928';
 
 type Row = Record<string, unknown>;
 type Item = Row & { details: Row[] };
@@ -41,7 +41,7 @@ describe('Intel-Valley HTTP adapter', () => {
   it('asks the tracking page’s lookup for the whole number in capitals, with the page’s key, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(text('in-transit')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new IntelValleyTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' iv 1234 0000 0017 ', { budgetMs: 1000.5 }))
+    await expect(new IntelValleyTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' iv 1234 9999 9980 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'in_transit' });
     expect(fetcher).toHaveBeenCalledOnce();
     const [[url, init]] = fetcher.mock.calls as [[string, RequestInit]];
@@ -49,7 +49,7 @@ describe('Intel-Valley HTTP adapter', () => {
     expect(`${asked.origin}${asked.pathname}`).toBe(INTEL_VALLEY_API);
     // The key is the Base64 of the query's MD5 in hexadecimal, a digest of the synthetic query.
     expect([...asked.searchParams]).toEqual([['callbackparam', INTEL_VALLEY_CALLBACK], ['method', 'track'],
-      ['key', 'MzE2N2M5YTY0OTEwNDE1Zjg1N2E2ZDVlMGEyOTAwYmM='], ['param', `{"sp":"","nums":["${PARCEL}"]}`]]); // gitleaks:allow
+      ['key', 'YTYxMDk2YzRiNGRhZWE4OWQ1ZjYzNWEwN2VjY2YwMmU='], ['param', `{"sp":"","nums":["${PARCEL}"]}`]]); // gitleaks:allow
     expect(String(url)).toBe(intelValleyLookupUrl(PARCEL));
     expect(init).toMatchObject({ method: 'GET', redirect: 'manual', signal: expect.any(AbortSignal), headers: {
       Referer: `${INTEL_VALLEY_PAGE}?c=${PARCEL}`, 'User-Agent': 'SyntheticHost/1.0',
@@ -137,14 +137,14 @@ describe('Intel-Valley HTTP adapter', () => {
 
   it('refuses numbers outside Intel-Valley’s layout, and pre-aborted or spent lookups, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['IV12340000001', 'IV1234000000171', 'IX123400000017', 'SAMPLETRACKING', `IV${'0'.repeat(70)}`]) {
+    for (const number of ['IV12349999998', 'IV1234999999801', 'IX123499999980', 'SAMPLETRACKING', `IV${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
       await expect(carrier(fetcher).recognize!(number), number).resolves.toEqual({ known: false });
     }
     await expect(carrier(fetcher).track({ number: PARCEL }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     await expect(carrier(fetcher).track({ number: PARCEL }, { budgetMs: 0 })).rejects.toMatchObject({ kind: 'budget' });
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeIntelValleyNumber('iv-1234-0000-0017')).toBe(PARCEL);
+    expect(normalizeIntelValleyNumber('iv-1234-9999-9980')).toBe(PARCEL);
   });
 
   it('sends a read that fails to connect or hangs once more inside the budget', async () => {
@@ -165,7 +165,7 @@ describe('Intel-Valley numbers', () => {
   it('suggests IV and twelve digits, and recognition asks the tracker, which files a parcel it knows', async () => {
     expect(detectCarrierMatch(PARCEL)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['intel-valley'] });
     for (const countryHint of [undefined, 'GB', 'IT']) expect(recognitionAskedCarriers(PARCEL, { countryHint })).toEqual(['intel-valley']);
-    for (const other of ['IV12340000001', 'IV1234000000171', 'IVA23400000017']) {
+    for (const other of ['IV12349999998', 'IV1234999999801', 'IVA23499999980']) {
       expect(detectCarrierMatch(other).candidates ?? [], other).not.toContain('intel-valley');
     }
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => (String(url).startsWith(INTEL_VALLEY_API)

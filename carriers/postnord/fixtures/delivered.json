@@ -1,6 +1,6 @@
 {
-  "shipmentId": "00573000000000000001",
-  "actualReturnedId": "00573000000000000001",
+  "shipmentId": "00573099999999999981",
+  "actualReturnedId": "00573099999999999981",
   "showSplitShipmentOverview": false,
   "serviceName": "Parcel",
   "serviceCode": "19",
@@ -8,7 +8,7 @@
   "receiver": { "address": { "name": "Private Recipient", "street": "Example Private Address", "postCode": "99999", "countryCode": "SE" } },
   "sender": { "name": "Example Shop AB", "address": { "street": "Private Sender Address" } },
   "items": [{
-    "itemId": "00573000000000000001",
+    "itemId": "00573099999999999981",
     "deliveryInformation": { "deliveryTo": "Private delivery instructions", "deliveryToInfo": "Private destination" },
     "senderReference": "Private sender reference",
     "status": { "code": "DELIVERED", "header": "The shipment item has been delivered to the recipient", "description": "Private delivery detail" },

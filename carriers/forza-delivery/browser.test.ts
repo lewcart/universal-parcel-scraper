@@ -6,7 +6,7 @@ import { FORZA_MAX_BYTES } from './parser.js';
 import { FORZA_API, FORZA_ORIGIN, forzaLookupBody } from './request.js';
 
 vi.mock('../../core/transport/localBrowser.js', () => ({ withRemoteBrowser: vi.fn() }));
-const number = 'FD0000001';
+const number = 'FD0999980';
 const fixture = readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8');
 const reply = (body = fixture, status = 200, url = FORZA_API, headers: Record<string, string> = {}) =>
   Object.defineProperty(new Response(body, { status, headers }), 'url', { value: url });

@@ -13,7 +13,7 @@ import { cdlScanStage, cdlStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const LABEL = 'CDL00000000017';
-const ORDER = '100000001-0';
+const ORDER = '199999980-0';
 const ABSENT = 'CDL99999999999';
 type Payload = Record<string, unknown> & { trackingEvents: Record<string, unknown>[]; trackingInformation: Record<string, unknown> };
 const fixture = (name: string): Payload => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8')) as Payload;
@@ -47,14 +47,14 @@ describe('CDL tracking adapter', () => {
   });
 
   it('puts back the hyphen of an order number, which the service matches only as printed', async () => {
-    expect(cdlRequestNumber('1000000010')).toBe(ORDER);
+    expect(cdlRequestNumber('1999999800')).toBe(ORDER);
     expect(cdlRequestNumber(ORDER)).toBe(ORDER);
     expect(cdlRequestNumber('cdl00000000017')).toBe(LABEL);
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('in-transit')));
-    await expect(carrier(fetcher).track({ number: '1000000010' })).resolves.toMatchObject({ current_stage: 'in_transit' });
+    await expect(carrier(fetcher).track({ number: '1999999800' })).resolves.toMatchObject({ current_stage: 'in_transit' });
     expect(String(fetcher.mock.calls[0]![0])).toBe(`${CDL_DETAILS}?value=${ORDER}`);
     // The tracking link carries the printed form too.
-    expect(CARRIERS.cdl.trackingUrl?.('1000000010')).toBe(`https://apps.cdldelivers.com/Tracking-Page/track?id=${ORDER}`);
+    expect(CARRIERS.cdl.trackingUrl?.('1999999800')).toBe(`https://apps.cdldelivers.com/Tracking-Page/track?id=${ORDER}`);
   });
 
   it('reads a delivered parcel newest first in Eastern time, with the completed delivery last in its minute', () => {
@@ -86,7 +86,7 @@ describe('CDL tracking adapter', () => {
   });
 
   it('keeps a parcel the shipper has not handed over registered, and sorts scans by their clocks', () => {
-    const result = parseCdl(fixture('in-transit'), '1000000010');
+    const result = parseCdl(fixture('in-transit'), '1999999800');
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-07-08T00:52:13-04:00' });
     expect(result.delivered_at).toBeUndefined();
     expect(result.events!.map(event => [event.time, event.description, event.location, event.stage])).toEqual([
@@ -134,13 +134,13 @@ describe('CDL tracking adapter', () => {
     lower.trackingInformation.referenceNumber = ' cdl00000000017 ';
     expect(parseCdl(lower, LABEL)).toMatchObject({ status: 'delivered' });
     // The service matches other fields too: another reference is no answer for this number.
-    for (const reference of ['CDL00000000018', 'CDL0000000001', '1000000010', '100000001-1', '10001.021026']) {
+    for (const reference of ['CDL00000000018', 'CDL0000000001', '1999999800', '199999980-1', '10001.021026']) {
       const other = fixture('delivered');
       other.trackingInformation.referenceNumber = reference;
       expect(() => parseCdl(other, LABEL), reference).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     }
     const unhyphenated = fixture('in-transit');
-    unhyphenated.trackingInformation.referenceNumber = '1000000010';
+    unhyphenated.trackingInformation.referenceNumber = '1999999800';
     expect(() => parseCdl(unhyphenated, ORDER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     for (const reference of [null, 10001, ['CDL00000000017']]) {
       const missing = fixture('delivered');
@@ -172,7 +172,7 @@ describe('CDL tracking adapter', () => {
 
   it('takes CDL label and order numbers only, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['CDL0000000001', 'CDL000000000170', 'CDDL00000001', '100000001', '10000000101', '10001.021026',
+    for (const number of ['CDL0000000001', 'CDL000000000170', 'CDDL99999980', '199999980', '19999998001', '10001.021026',
       '1700000000000ABCDEFG', 'X'.repeat(70)]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
       await expect(carrier(fetcher).recognize!(number)).resolves.toEqual({ known: false });
@@ -229,7 +229,7 @@ describe('CDL tracking adapter', () => {
   it('routes a CDL label number to the adapter and asks it about an order number typed with its hyphen', async () => {
     expect(detectCarrierMatch(LABEL)).toMatchObject({ carrier: 'cdl', confidence: 'high' });
     expect(recognitionCandidates(ORDER).map(candidate => candidate.carrier)).toContain('cdl');
-    expect(recognitionCandidates('1000000010').map(candidate => candidate.carrier)).not.toContain('cdl');
+    expect(recognitionCandidates('1999999800').map(candidate => candidate.carrier)).not.toContain('cdl');
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(fixture('delivered')));
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: LABEL }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'cdl', source: 'cdl', result: { current_stage: 'delivered' } });

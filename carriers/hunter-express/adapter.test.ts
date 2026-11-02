@@ -20,7 +20,7 @@ const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_REC
 const replying = (response: () => Response) => vi.fn<typeof fetch>().mockImplementation(async () => response());
 const CLOUDFLARE = '<html><head><title>Just a moment...</title></head><script>window._cf_chl_opt={}</script></html>';
 // The detail-panel address of the delivered fixture's depot row, and its ticks.
-const DEPOT_ROW = 'Depot+In%3aSAMPLEVILLE%7c%7c14%2f04%2f2026%7c%7c100000001%7c%7c639117486000000000%7c%7c639117486000000000';
+const DEPOT_ROW = 'Depot+In%3aSAMPLEVILLE%7c%7c14%2f04%2f2026%7c%7c199999980%7c%7c639117486000000000%7c%7c639117486000000000';
 
 describe('Hunter Express HTTP adapter', () => {
   it('opens the tracker with the number in its address, as the search box does', async () => {
@@ -50,7 +50,7 @@ describe('Hunter Express HTTP adapter', () => {
       { time: '2026-04-14T09:12:00+10:00', description: 'Pickup Completed', stage: 'accepted', stage_source: 'carrier_map' },
     ]);
     expect(result).not.toHaveProperty('expected_delivery_from');
-    expect(JSON.stringify(result)).not.toMatch(/SAMPLE \(|Sampletown|VIC|100000001|17\/04|-10\.0|mydel/);
+    expect(JSON.stringify(result)).not.toMatch(/SAMPLE \(|Sampletown|VIC|199999980|17\/04|-10\.0|mydel/);
   });
 
   it('adds the newer dated status above the history and reads the estimate window', () => {
@@ -80,7 +80,7 @@ describe('Hunter Express HTTP adapter', () => {
     const page = text('delivered.html');
     const dayOf = (body: string) => parseHunterExpress(body, DELIVERED).events!.find((event) => event.description === 'Depot In');
     for (const changed of [
-      page.replace(DEPOT_ROW, DEPOT_ROW.replace('100000001', '100000003')),
+      page.replace(DEPOT_ROW, DEPOT_ROW.replace('199999980', '100000003')),
       page.replace(DEPOT_ROW, DEPOT_ROW.replace('SAMPLEVILLE', 'OTHERVILLE')),
       page.replace(DEPOT_ROW, DEPOT_ROW.replace('14%2f04', '13%2f04')),
       // Ticks a day off the row's date, or in the wrong order.
@@ -124,7 +124,7 @@ describe('Hunter Express HTTP adapter', () => {
     for (const [index, body] of [
       '',
       '<html><body><main>Sample maintenance page</main></body></html>',
-      page.replace('id="IdConsignment" value="100000001"', 'id="IdConsignment" value="sample"'),
+      page.replace('id="IdConsignment" value="199999980"', 'id="IdConsignment" value="sample"'),
       page.replace('<input type="hidden" name="IdConsignment"', '<input type="hidden" id="IdConsignment" value="1"><input type="hidden" name="IdConsignment"'),
       page.replace('Current Status: Delivered', 'Status: Delivered'),
       page.replace('GridScansAdv GridScansAdv', 'GridScans'),

@@ -17,9 +17,9 @@ import { classifyHeppnerEvent, heppnerCode } from './status.js';
 
 // Fully synthetic provider-shaped values. Live tests deliberately use only a
 // wrong-number canary because Heppner does not publish a reusable demo shipment.
-const TEST_TRACKING_NUMBER = '23456789';
+const TEST_TRACKING_NUMBER = '99999980';
 const TEST_POSTCODE = '75001';
-const TEST_CAPABILITY = 'MjM0NTY3ODkmNzUwMDEmRlI=';
+const TEST_CAPABILITY = 'OTk5OTk5ODAmNzUwMDEmRlI=';
 
 function json(relativePath: string): unknown {
   return JSON.parse(readFileSync(fileURLToPath(new URL(relativePath, import.meta.url)), 'utf8'));
@@ -37,7 +37,7 @@ afterEach(() => vi.restoreAllMocks());
 
 describe('Heppner anonymous tracking input', () => {
   it('normalizes the current eight-digit form and infers the countries from postcode length', () => {
-    expect(normalizeHeppnerTrackingNumber('23 456 789')).toBe(TEST_TRACKING_NUMBER);
+    expect(normalizeHeppnerTrackingNumber('99 999 980')).toBe(TEST_TRACKING_NUMBER);
     expect(normalizeHeppnerCredential(TEST_TRACKING_NUMBER, TEST_POSTCODE)).toEqual({
       trackingNumber: TEST_TRACKING_NUMBER,
       postcode: TEST_POSTCODE,
@@ -52,7 +52,7 @@ describe('Heppner anonymous tracking input', () => {
   });
 
   it('rejects unsupported identifiers, postcodes, and parameter injection', () => {
-    for (const value of ['2345678', '234567890', '2345-6789', '2345678A', '23456789&admin=true']) {
+    for (const value of ['9999998', '999999800', '9999-9980', '9999998A', '99999980&admin=true']) {
       expect(() => normalizeHeppnerTrackingNumber(value)).toThrow('exactly 8 digits');
     }
     for (const postcode of ['750', '750010', '75A01', '75001&countryCode=CH']) {

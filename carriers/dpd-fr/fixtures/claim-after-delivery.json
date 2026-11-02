@@ -1,9 +1,9 @@
 {
   "scenario": "outbound parcel delivered on 23 January and then subject to a claim, alongside the return leg the same page describes",
-  "outboundNumber": "250123456789012",
+  "outboundNumber": "250999999999980",
   "returnNumber": "10612345678901",
   "outboundDetails": [
-    ["N° colis", "250123456789012"],
+    ["N° colis", "250999999999980"],
     ["Numéro de référence interne", "private-order-reference"],
     ["Livraison prévue", "24/01/2026"],
     ["Livré le", "23/01/2026"]

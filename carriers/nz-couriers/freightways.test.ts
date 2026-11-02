@@ -100,7 +100,7 @@ describe.each(NETWORKS)('$provider tracking links with the sender’s account', 
     expect(fallback.mock.calls.map(([url]) => String(url))).toEqual([accountLookup, `${freightwaysApi(network)}?query=${NUMBER}`]);
     // A number only the account's lookup takes is asked once.
     const once = vi.fn<typeof fetch>().mockImplementation(async () => empty());
-    const longer = 'ZZ0000000001';
+    const longer = 'ZZ9900099980';
     await expect(carrier(network, once).track({ number: longer, trackingUrl: composite.replace(NUMBER, longer) }))
       .rejects.toMatchObject({ kind: 'not_found' });
     expect(once).toHaveBeenCalledTimes(1);

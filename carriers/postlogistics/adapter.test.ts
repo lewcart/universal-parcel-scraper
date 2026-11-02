@@ -21,7 +21,7 @@ function fixture(name: string): unknown {
   return JSON.parse(readFileSync(path.join(folder, 'fixtures', name), 'utf8'));
 }
 
-const POSTLOGISTICS_WRONG_NUMBER = '000000000000000000';
+const POSTLOGISTICS_WRONG_NUMBER = '099999999999999980';
 
 function jsonResponse(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
@@ -84,8 +84,8 @@ describe('PostLogistics wrong-number handling', () => {
   });
 
   it('tries the printed 8-3 identifier after a stored compact number is unknown', async () => {
-    const compact = '12345678001';
-    const dashed = '12345678-001';
+    const compact = '19999980001';
+    const dashed = '19999980-001';
     const fetcher = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(jsonResponse({ Type: 1, Data: null }))
       .mockResolvedValueOnce(jsonResponse({
@@ -106,7 +106,7 @@ describe('PostLogistics wrong-number handling', () => {
   });
 
   it('queries an already dashed identifier only once', async () => {
-    const dashed = '12345678-001';
+    const dashed = '19999980-001';
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(jsonResponse({
       Type: 1, Data: [{ Identifier: dashed, History: [] }],
     }));
@@ -117,7 +117,7 @@ describe('PostLogistics wrong-number handling', () => {
   });
 
   it('does not reinterpret a differently punctuated reference', async () => {
-    const reference = '1234567-8001';
+    const reference = '1999998-0001';
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(jsonResponse({ Type: 1, Data: null }));
 
     await expect(new PostlogisticsTracker({ fetcher }).fetch(reference))
@@ -126,7 +126,7 @@ describe('PostLogistics wrong-number handling', () => {
   });
 
   it('keeps an undashed match and never falls through to a different shipment', async () => {
-    const compact = '12345678001';
+    const compact = '19999980001';
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(jsonResponse({
       Type: 1, Data: [{ Identifier: compact, History: [] }],
     }));
@@ -136,10 +136,10 @@ describe('PostLogistics wrong-number handling', () => {
   });
 
   it('recognizes only a reference with scans and reports its dated activity', async () => {
-    const compact = '12345678001';
+    const compact = '19999980001';
     const fetcher = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(jsonResponse({ Type: 1, Data: null }))
-      .mockResolvedValueOnce(jsonResponse({ Type: 1, Data: [{ Identifier: '12345678-001', History: [{
+      .mockResolvedValueOnce(jsonResponse({ Type: 1, Data: [{ Identifier: '19999980-001', History: [{
         TimeStamp: '2026-09-01T09:00:00+02:00', Status: 'TRN',
         Description: 'Shipment in transit', City: 'Zurich',
       }] }] }));
@@ -153,11 +153,11 @@ describe('PostLogistics wrong-number handling', () => {
     const fetcher = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(jsonResponse({ Type: 1, Data: null }))
       .mockResolvedValueOnce(jsonResponse({ Type: 1, Data: null }))
-      .mockResolvedValueOnce(jsonResponse({ Type: 1, Data: [{ Identifier: '12345678001', History: [] }] }));
+      .mockResolvedValueOnce(jsonResponse({ Type: 1, Data: [{ Identifier: '19999980001', History: [] }] }));
     const tracker = new PostlogisticsTracker({ fetcher });
 
-    await expect(tracker.recognizes('12345678001')).resolves.toEqual({ known: false });
-    await expect(tracker.recognizes('12345678001')).resolves.toEqual({ known: false, lastActivityAt: null });
+    await expect(tracker.recognizes('19999980001')).resolves.toEqual({ known: false });
+    await expect(tracker.recognizes('19999980001')).resolves.toEqual({ known: false, lastActivityAt: null });
   });
 });
 
@@ -232,7 +232,7 @@ describe('PostLogistics response types and event ordering', () => {
     const result = parsePostlogisticsTrackingResponse({
       Type: 1,
       Data: [{
-        Identifier: '12345678-001',
+        Identifier: '19999980-001',
         History: [
           { TimeStamp: '2026-09-01T07:33:49.9', Status: 'NTF', Description: 'réception données Poste', City: '' },
           { TimeStamp: '2026-09-01T13:16:42.727', Status: 'RFS', Description: 'Réception des marchandises Poste', City: 'Hub Dintikon' },
@@ -241,7 +241,7 @@ describe('PostLogistics response types and event ordering', () => {
           { TimeStamp: '2026-09-02T14:35:51.77', Status: 'POD', Description: 'LIVRE SCANNE', City: 'Zurich' },
         ],
       }],
-    }, '12345678001');
+    }, '19999980001');
 
     expect(result).toMatchObject({
       status: 'delivered',
@@ -265,7 +265,7 @@ describe('PostLogistics response types and event ordering', () => {
     const result = parsePostlogisticsTrackingResponse({
       Type: 1,
       Data: [{
-        Identifier: '12345678-001',
+        Identifier: '19999980-001',
         History: [
           { TimeStamp: '2026-09-02T09:14:07.833', Status: 'SCA', Description: 'Chargement pour livraison', City: '' },
           { TimeStamp: '2026-09-02T14:35:12.5', Status: 'IMG', Description: 'IMAGE', City: '' },
@@ -273,16 +273,16 @@ describe('PostLogistics response types and event ordering', () => {
           { TimeStamp: '2026-09-02T14:35:51.77', Status: 'SIG', Description: 'SIGNATURE', City: 'Zurich' },
         ],
       }],
-    }, '12345678001');
+    }, '19999980001');
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', delivered_at: '2026-09-02T14:35:51.77' });
     expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual([
       ['SIG', 'delivered'], ['POD', 'delivered'], ['IMG', undefined], ['SCA', 'out_for_delivery'],
     ]);
     const moving = parsePostlogisticsTrackingResponse({
-      Type: 1, Data: [{ Identifier: '12345678-001', History: [
+      Type: 1, Data: [{ Identifier: '19999980-001', History: [
         { TimeStamp: '2026-09-02T09:14:07.833', Status: 'SCA', Description: 'Chargement pour livraison' },
       ] }],
-    }, '12345678001');
+    }, '19999980001');
     expect(moving).not.toHaveProperty('delivered_at');
   });
 
@@ -290,14 +290,14 @@ describe('PostLogistics response types and event ordering', () => {
     const result = parsePostlogisticsTrackingResponse({
       Type: 1,
       Data: [{
-        Identifier: '12345678-001',
+        Identifier: '19999980-001',
         History: [
           { TimeStamp: '2026-09-02T09:14:07', Status: 'RFS', Description: 'Accepted' },
           { TimeStamp: '2026-09-02T09:14:07', Status: 'SCA', Description: 'Loaded for delivery' },
           { TimeStamp: '2026-09-02T14:35:51', Status: 'IMG', Description: 'IMAGE' },
         ],
       }],
-    }, '12345678001');
+    }, '19999980001');
 
     expect(result).toMatchObject({ status: 'in_transit', last_status_text: 'IMAGE' });
     expect(result.events?.map((event) => event.description)).toEqual(['IMAGE', 'Loaded for delivery', 'Accepted']);
@@ -326,7 +326,7 @@ describe('PostLogistics response types and event ordering', () => {
       .mockResolvedValue(jsonResponse(fixture('relayed-swiss-post.json')));
 
     // The portal's dotted form names the same barcode as the echo.
-    await expect(fetchPostlogistics('99.34.123456.12345678')).rejects.toMatchObject({
+    await expect(fetchPostlogistics('99.34.123456.99999980')).rejects.toMatchObject({
       name: 'NotFoundError',
       status: 404,
       kind: 'not_found',
@@ -394,11 +394,11 @@ describe('PostLogistics history codes', () => {
   it('keeps an announcement registered when its wording has no classification rule', () => {
     const payload = {
       Type: 1,
-      Data: [{ Identifier: '12345678-001', History: [{
+      Data: [{ Identifier: '19999980-001', History: [{
         TimeStamp: '2026-09-01T07:33:49.9', Status: 'NTF', Description: 'réception données Poste',
       }] }],
     };
-    const result = parsePostlogisticsTrackingResponse(payload, '12345678001');
+    const result = parsePostlogisticsTrackingResponse(payload, '19999980001');
     expect(result).toMatchObject({ status: 'pending', current_stage: 'registered' });
     expect(resultStage(result)).toBe('registered');
     expect(resultHasUpdate(result)).toBe(true);
@@ -413,10 +413,10 @@ describe('PostLogistics history codes', () => {
     ['POD', 'delivered', 'delivered'],
   ] as const)('uses %s for the summary and scan even without recognizable wording', (code, status, stage) => {
     const result = parsePostlogisticsTrackingResponse({
-      Type: 1, Data: [{ Identifier: '12345678-001', History: [{
+      Type: 1, Data: [{ Identifier: '19999980-001', History: [{
         TimeStamp: '2026-09-01T09:00:00+02:00', Status: code, Description: 'Carrier scan',
       }] }],
-    }, '12345678001');
+    }, '19999980001');
     expect(result).toMatchObject({ status, current_stage: stage, events: [{ stage }] });
     expect(resultStage(result)).toBe(stage);
   });

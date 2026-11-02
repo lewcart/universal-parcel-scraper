@@ -86,26 +86,26 @@ afterEach(() => vi.restoreAllMocks());
 describe('DPD France tracking input', () => {
   it('accepts the official 12-to-15-digit formats and builds the public URL', () => {
     expect(normalizeDPDFranceTrackingNumber('1059 4002 3786 11')).toBe('10594002378611');
-    expect(normalizeDPDFranceTrackingNumber('250.123.456.789.012')).toBe(TEST_TRACKING_NUMBER);
-    expect(normalizeDPDFranceTrackingNumber('012345678901')).toBe('012345678901');
+    expect(normalizeDPDFranceTrackingNumber('250.999.999.999.980')).toBe(TEST_TRACKING_NUMBER);
+    expect(normalizeDPDFranceTrackingNumber('099999999998')).toBe('099999999998');
     expect(dpdFranceTrackingUrl(TEST_TRACKING_NUMBER))
       .toBe(`https://trace.dpd.fr/fr/trace/${TEST_TRACKING_NUMBER}`);
   });
 
   it('looks a label barcode up by its parcel number when the GS1 check digit matches', () => {
-    expect(normalizeDPDFranceTrackingNumber('2501 2345 6789 0127')).toBe(TEST_TRACKING_NUMBER);
-    expect(dpdFranceTrackingUrl('2501234567890127'))
+    expect(normalizeDPDFranceTrackingNumber('2509 9999 9999 9801')).toBe(TEST_TRACKING_NUMBER);
+    expect(dpdFranceTrackingUrl('2509999999999801'))
       .toBe(`https://trace.dpd.fr/fr/trace/${TEST_TRACKING_NUMBER}`);
-    expect(() => normalizeDPDFranceTrackingNumber('2501234567890128')).toThrow('12 to 15 digits');
+    expect(() => normalizeDPDFranceTrackingNumber('2509999999999808')).toThrow('12 to 15 digits');
   });
 
   it('rejects unsafe or non-France identifiers', () => {
     for (const value of [
-      '25012345678',
-      '2501234567890120',
-      '350123456789012',
-      '25012345678901A',
-      '250123456789012?admin=true',
+      '25099999999',
+      '2509999999999800',
+      '350999999999980',
+      '25099999999998A',
+      '250999999999980?admin=true',
     ]) {
       expect(() => normalizeDPDFranceTrackingNumber(value)).toThrow('12 to 15 digits');
     }
@@ -198,7 +198,7 @@ describe('DPD France rendered tracking', () => {
         ['29/12/2025', '15:36', 'Colis en retour vers l\'adresse d\'expédition, en attente de livraison chez l’expéditeur', 'Agence DPD de La Crau (283)'],
         ['28/12/2025', '09:00', 'Colis en préparation chez l´expéditeur', ''],
       ],
-    }), '2501234567890127');
+    }), '2509999999999801');
 
     expect(result).toMatchObject({
       status: 'delivered',
@@ -293,7 +293,7 @@ describe('DPD France rendered tracking', () => {
       TEST_TRACKING_NUMBER,
     )).toThrow(DPDFranceTrackingError);
     expect(() => parseDPDFranceTrackingHtml(
-      trackingFixture({ outboundNumber: '250123456789099' }),
+      trackingFixture({ outboundNumber: '250999999999999' }),
       TEST_TRACKING_NUMBER,
     )).toThrow('different shipment');
   });

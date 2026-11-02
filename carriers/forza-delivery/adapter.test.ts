@@ -10,7 +10,7 @@ import { forzaWording, normalizeForzaNumber, parseForza, parseForzaReply } from 
 import { forzaStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'FD0000001';
+const DELIVERED = 'FD0999980';
 const IN_TRANSIT = 'FD0000002';
 const UNKNOWN = 'FD0000000';
 
@@ -40,7 +40,7 @@ describe('Forza Delivery tracking adapter', () => {
   it('posts the guía to the page method once, as the tracking page builds it, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(text('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new ForzaTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' fd- 000 0001 ', { budgetMs: 1000.5 }))
+    await expect(new ForzaTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' fd- 099 9980 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
@@ -51,7 +51,7 @@ describe('Forza Delivery tracking adapter', () => {
     expect(body.path).toBe('Tracking/GetNewDeliveryTracking');
     // The page's parameters for a guía, with no reference, phone or captcha token.
     expect(JSON.parse(body.data)).toEqual({ Method: 'GetNewDeliveryTracking',
-      Params: { GuideSerie: 'FD', GuideNumber: '0000001', TicketNumber: '', NirPhone: 0, Phone: 0 } });
+      Params: { GuideSerie: 'FD', GuideNumber: '0999980', TicketNumber: '', NirPhone: 0, Phone: 0 } });
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'forza-delivery', step: 'direct', outcome: 'ok' }));
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
@@ -163,9 +163,9 @@ describe('Forza Delivery tracking adapter', () => {
   it('counts an order only when it is the guía asked, read as the number the tracker reads', () => {
     expect(() => parseForzaReply(text('in-transit'), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'Forza answered for another guía' }));
-    // The tracker reads the digits as a number: FD000001 and FD00000001 are FD1, as the order says.
-    expect(parseForzaReply(text('delivered'), 'FD000001').events).toHaveLength(11);
-    expect(parseForzaReply(text('delivered'), 'FD00000001').events).toHaveLength(11);
+    // The tracker reads the digits as a number: FD999980 and FD00999980 are FD999980, as the order says.
+    expect(parseForzaReply(text('delivered'), 'FD999980').events).toHaveLength(11);
+    expect(parseForzaReply(text('delivered'), 'FD00999980').events).toHaveLength(11);
     for (const change of [
       (order: Row) => { order.GuideSerie = 'FX'; },
       (order: Row) => { order.id = 'FD2'; },
@@ -183,7 +183,7 @@ describe('Forza Delivery tracking adapter', () => {
       (answer: Answer) => { answer.ObjectValue.IdResult = '202'; },
       (answer: Answer) => { answer.ObjectValue.order = null as never; },
       (answer: Answer) => { delete answer.ObjectValue.order.GuideNumber; },
-      (answer: Answer) => { answer.ObjectValue.order.GuideNumber = '1'; },
+      (answer: Answer) => { answer.ObjectValue.order.GuideNumber = '999980'; },
       (answer: Answer) => { answer.ObjectValue.order.GuideNumber = 1.5; },
       (answer: Answer) => { answer.ObjectValue.order.milestones = 'milestones' as never; },
       (answer: Answer) => { answer.ObjectValue.order.milestones = Array.from({ length: 501 }, () => answer.ObjectValue.order.milestones[0]!); },
@@ -279,7 +279,7 @@ describe('Forza Delivery tracking adapter', () => {
 
 describe('Forza Delivery numbers', () => {
   it('suggests Forza for an FD guía with low confidence, and preflight asks it', () => {
-    for (const number of [DELIVERED, 'FD000001', 'FD00000001']) {
+    for (const number of [DELIVERED, 'FD999980', 'FD00999980']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['forza-delivery']) });
       expect(recognitionAskedCarriers(number), number).toContain('forza-delivery');
     }

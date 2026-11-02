@@ -953,6 +953,7 @@ describe('classifyWording', () => {
       ['Warehouse scanning bagging', 'in_transit'], ['Master Airway Bill Number Received', 'in_transit'],
       ['Master air waybill assigned', 'in_transit'], ['Unbagging', 'in_transit'],
       ['Parcel has been packed and is ready for outbound shipping', 'in_transit'],
+      ['Inbound scan【ABC】', 'in_transit'], ['Inbound scan [ABC]', 'in_transit'], ['Item inbound scanning', 'in_transit'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
     // A delivery window is not a sender's notice.
     expect(wordingStage('Expected from tomorrow', 'pending')).toBe('pending');

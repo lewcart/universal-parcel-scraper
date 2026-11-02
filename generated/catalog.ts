@@ -15661,6 +15661,48 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "dimex": {
+    "displayName": "DIMEX",
+    "color": "#0e4097",
+    "aliases": [
+      "Даймэкс",
+      "ДАЙМЭКС",
+      "Даймекс",
+      "Daimeks",
+      "DIMEX Express",
+      "Daily International Messenger Express"
+    ],
+    "countries": [
+      "RU",
+      "KZ",
+      "BY",
+      "AM",
+      "KG",
+      "EE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dimex.ws/",
+    "trackingUrlTemplate": "https://www.dimex.ws/otslezhivanie-nakladnyh/?nomer={trackingNumber}&lng=rus",
+    "trackingSearchUrl": "https://www.dimex.ws/otslezhivanie-nakladnyh/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.dimex.ws",
+          "dimex.ws"
+        ],
+        "pathPattern": "^/otslezhivanie-nakladnyh/?$",
+        "params": [
+          "nomer"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "direct-couriers": {
     "displayName": "Direct Couriers",
     "color": "#f3852e",
@@ -15742,6 +15784,42 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/(?:(?:en/)?track|prosledete-vashata-pratka|tr/gonderinizi-takip-ediniz)/?$",
         "params": [
           "code"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "dnipro-llc": {
+    "displayName": "Dnipro LLC",
+    "color": "#1c7bd3",
+    "aliases": [
+      "DNIPRO LLC",
+      "DniproLLC",
+      "Днипро ЛЛС",
+      "Дніпро ЛЛС"
+    ],
+    "countries": [
+      "US",
+      "UA"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://dniprollc.com/en/packages-tracking/",
+    "trackingUrlTemplate": "https://dniprollc.com/en/packages-tracking/?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://dniprollc.com/en/packages-tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "dniprollc.com",
+          "www.dniprollc.com"
+        ],
+        "pathPattern": "^/(?:en/)?packages-tracking/?$",
+        "params": [
+          "tracking"
         ]
       }
     ],
@@ -19185,6 +19263,34 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "express-ru": {
+    "displayName": "Express.Ru",
+    "color": "#e31e24",
+    "aliases": [
+      "ExpressRu",
+      "Экспресс Точка Ру",
+      "Express Tochka Ru",
+      "Экспресс.Ру"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.express.ru/",
+    "trackingSearchUrl": "https://www.express.ru/office/tracking",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^WEB(?:N\\d{7,10}|\\d{10})$",
+        "confidence": "low"
+      }
+    ]
+  },
   "ezship": {
     "displayName": "ezShip",
     "color": "#ff8000",
@@ -20313,7 +20419,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?:CB|[CP])\\d{6,7}$",
+        "pattern": "^(?:CB\\d{6}|[CP]\\d{6,7})$",
         "confidence": "low"
       }
     ]
@@ -44115,6 +44221,42 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "topdelivery": {
+    "displayName": "TopDelivery",
+    "color": "#feaa00",
+    "aliases": [
+      "Top Delivery",
+      "ТопДеливери",
+      "ТопДоставка",
+      "Internet Logistika",
+      "ООО «Интернет Логистика»"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.topdelivery.ru/",
+    "trackingUrlTemplate": "https://www.topdelivery.ru/tracking/?order={trackingNumber}",
+    "trackingSearchUrl": "https://www.topdelivery.ru/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.topdelivery.ru",
+          "topdelivery.ru"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "order"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "topex-logistics": {
     "displayName": "Topex Logistics",
     "color": "#3058a8",
@@ -49515,9 +49657,11 @@ export const CARRIER_IDS = [
   "dhlink",
   "diakinisis",
   "dida-international",
+  "dimex",
   "direct-couriers",
   "direct-freight-express",
   "direx",
+  "dnipro-llc",
   "dnx-cargo",
   "dobropost",
   "dohrn-transfer",
@@ -49605,6 +49749,7 @@ export const CARRIER_IDS = [
   "explus-logistics",
   "express-one",
   "express-one-bg",
+  "express-ru",
   "ezship",
   "famafutar",
   "famiport",
@@ -50288,6 +50433,7 @@ export const CARRIER_IDS = [
   "tonda-global",
   "too-express",
   "top-logistics-au",
+  "topdelivery",
   "topex-logistics",
   "toptrans",
   "topyou",
@@ -50815,9 +50961,11 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhlink": ["dhlink-1","dhlink-xzg","dhlink-ylus","dhlink-eyt","dhlink-qh","dhlink-yf","dhlink-ktdwe","dhlink-yhkj","dhlink-by","dhlink-tdt","dhlink-yle"],
   "diakinisis": [],
   "dida-international": [],
+  "dimex": [],
   "direct-couriers": [],
   "direct-freight-express": [],
   "direx": [],
+  "dnipro-llc": [],
   "dnx-cargo": [],
   "dobropost": ["dobropost-1"],
   "dohrn-transfer": [],
@@ -50905,6 +51053,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "explus-logistics": [],
   "express-one": [],
   "express-one-bg": [],
+  "express-ru": ["express-ru-1"],
   "ezship": [],
   "famafutar": [],
   "famiport": [],
@@ -51588,6 +51737,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tonda-global": [],
   "too-express": [],
   "top-logistics-au": [],
+  "topdelivery": [],
   "topex-logistics": [],
   "toptrans": [],
   "topyou": ["topyou-1"],

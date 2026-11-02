@@ -4475,5 +4475,17 @@
     "pattern": "^\\d{12,13}$",
     "kind": "collision",
     "reason": "KargoTurk tracks the sending shop's own barcode, twelve or thirteen digits whose leading digits differ from shop to shop, shapes many other networks print, so the shape cannot name KargoTurk."
+  },
+  {
+    "carrier": "dimex",
+    "pattern": "^\\d{8}$",
+    "kind": "collision",
+    "reason": "DIMEX waybills are eight digits, a shape several other networks print, so the shape cannot name DIMEX."
+  },
+  {
+    "carrier": "topdelivery",
+    "pattern": "^\\d{6,8}$",
+    "kind": "collision",
+    "reason": "TopDelivery numbers are a counter of six to eight digits, shapes many other networks print, so the shape cannot name TopDelivery."
   }
 ]

@@ -186,6 +186,26 @@ describe('evidence-backed tracking formats', () => {
     expect(detectCarrierMatch('QSA000000001').candidates).toContain('purolator');
   });
 
+  it('suggests Paquetería Flecha Amarilla for its P, C and CB guías, typed with or without the space', () => {
+    // Synthetic guías in the layouts archived lookups on its former tracker show.
+    for (const number of ['P000001', 'C 0000001', 'CB000001', 'p-000001']) {
+      expect(detectCarrierMatch(number).candidates, number).toContain('flecha-amarilla');
+    }
+    for (const number of ['P00001', 'C00000001', 'CB0000001', 'TP000001', 'I000001', 'Q000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('flecha-amarilla');
+    }
+  });
+
+  it("suggests Express.Ru for its Web- orders and WEBN waybills", () => {
+    // Synthetic numbers in the layouts its tracker hint and API guide give.
+    for (const number of ['Web-0000000001', 'WEB0000000001', 'WEBN0000001', 'WEBN0000000001']) {
+      expect(detectCarrierMatch(number).candidates, number).toContain('express-ru');
+    }
+    for (const number of ['Web-000000001', 'WEB00000000001', 'WEBN000001', 'WEBN00000000001', 'WEX0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('express-ru');
+    }
+  });
+
   it('suggests FERCAM for the letter O, the year and eight digits', () => {
     expect(detectCarrierMatch('O2500000001').candidates).toContain('fercam');
     for (const number of ['02500000001', 'O250000001', 'O25000000001', 'Q2500000001']) {

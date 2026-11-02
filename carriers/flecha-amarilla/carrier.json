@@ -35,7 +35,7 @@
   "detection": [
     {
       "id": "flecha-amarilla-1",
-      "pattern": "^(?:CB|[CP])\\d{6,7}$",
+      "pattern": "^(?:CB\\d{6}|[CP]\\d{6,7})$",
       "confidence": "low"
     }
   ]

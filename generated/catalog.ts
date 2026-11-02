@@ -37112,6 +37112,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "qatar-post": {
+    "displayName": "Qatar Post",
+    "color": "#002e6d",
+    "aliases": [
+      "Q-Post",
+      "Qatar Postal Services Company",
+      "بريد قطر"
+    ],
+    "countries": [
+      "QA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Qatar",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.qatarpost.qa/TrackAndTrace",
+    "trackingUrlTemplate": "https://www.qatarpost.qa/TrackAndTrace?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.qatarpost.qa/TrackAndTrace",
+    "linkRules": [
+      {
+        "domains": [
+          "www.qatarpost.qa",
+          "qatarpost.qa"
+        ],
+        "pathPattern": "^/TrackAndTrace/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "qls-quince": {
     "displayName": "QLS",
     "color": "#0a1e3d",
@@ -50652,6 +50686,7 @@ export const CARRIER_IDS = [
   "pullman-cargo",
   "pushpak-courier",
   "pxc-pacific",
+  "qatar-post",
   "qls-quince",
   "quality-post",
   "quantium-solutions",
@@ -51970,6 +52005,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pullman-cargo": [],
   "pushpak-courier": [],
   "pxc-pacific": [],
+  "qatar-post": [],
   "qls-quince": [],
   "quality-post": [],
   "quantium-solutions": [],

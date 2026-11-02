@@ -29,6 +29,9 @@ export interface TrackingLinkCase {
 // independently of the generated link templates, so a template that drifts
 // fails here instead of passing against itself.
 export const trackingLinkCases: TrackingLinkCase[] = [
+  { carrier: 'qatar-post', number: 'EE000000005QA',
+    route: /^https:\/\/www\.qatarpost\.qa\/TrackAndTrace\?trackingNumber=EE000000005QA$/,
+    marker: /Track and Trace for Qatar Post|Use Tracking ID for item tracking/ },
   { carrier: 'rex-indonesia', number: '22201740631928',
     route: /^https:\/\/www\.rex\.co\.id\/id\/tracking\/\?airwaybill=22201740631928$/,
     marker: /Data Not Found for Konosemen Number|No Konosemen/ },

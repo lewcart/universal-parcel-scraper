@@ -2342,6 +2342,7 @@ export const REGISTRY: RegistryDefinition = {
     "purolator": "purolator",
     "pushpak-courier": "universal",
     "pxc-pacific": "universal",
+    "qatar-post": "universal",
     "qls-quince": "universal",
     "quality-post": "universal",
     "quantium-solutions": "quantium-solutions",

@@ -1,0 +1,47 @@
+{
+  "id": "qatar-post",
+  "displayName": "Qatar Post",
+  "aliases": [
+    "Q-Post",
+    "Qatar Postal Services Company",
+    "بريد قطر"
+  ],
+  "region": {
+    "countries": [
+      "QA"
+    ]
+  },
+  "brand": {
+    "color": "#002e6d"
+  },
+  "selectable": true,
+  "timezone": "Asia/Qatar",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.qatarpost.qa/TrackAndTrace?trackingNumber={trackingNumber}",
+    "searchUrl": "https://www.qatarpost.qa/TrackAndTrace",
+    "canaryUrl": "https://www.qatarpost.qa/TrackAndTrace",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.qatarpost.qa",
+        "qatarpost.qa"
+      ],
+      "pathPattern": "^/TrackAndTrace/?$",
+      "params": [
+        "trackingNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

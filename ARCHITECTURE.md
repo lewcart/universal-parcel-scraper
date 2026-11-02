@@ -187,7 +187,8 @@ Evri International's tracker is the reverse: it also finds a parcel by its deliv
 number, and that number stays the partner's. A universal provider that names the tracker for
 a number another carrier's high-confidence rule claims hints that carrier, not Evri.
 When a partial carrier answer names the partner, the fallbacks leave that
-lookup a third of the budget, at most 30 seconds.
+lookup a third of the budget, at most 30 seconds. A fallback that runs out its share ends the
+fallbacks, whatever the clock then reads.
 
 A result's `service_name` is the carrier's own name for the shipping service the parcel
 travels under, as its page shows it. It names the product only, never a status, the merchant

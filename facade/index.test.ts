@@ -477,9 +477,9 @@ describe('standalone tracker', () => {
         return new Response('', { status: 503 });
       });
     }
-    /** Every request waits for its signal. */
-    const stalled = () => vi.fn<typeof fetch>().mockImplementation((_url, init) => new Promise((_, reject) => {
-      init!.signal!.addEventListener('abort', () => reject(init!.signal!.reason), { once: true });
+    /** Every request waits for its signal, and calls `aborted` when it ends. */
+    const stalled = (aborted = () => {}) => vi.fn<typeof fetch>().mockImplementation((_url, init) => new Promise((_, reject) => {
+      init!.signal!.addEventListener('abort', () => { aborted(); reject(init!.signal!.reason); }, { once: true });
     }));
     const summary: CarrierResult = { status: 'in_transit', current_stage: 'in_transit', last_status_text: 'In transit',
       last_update: '2026-01-03T09:00:45Z', summary_only: true, events: [] };
@@ -774,9 +774,14 @@ describe('standalone tracker', () => {
       const named = { ...summary, delivery_carrier: 'posti', delivery_tracking_number: 'LOCAL12345' };
       const partnered = new AdapterRegistry({ factories: { ups: () => ({ id: 'ups', steps: ['direct'], track: async () => named }),
         posti: () => ({ id: 'posti', steps: ['direct'], track: partner }) }, carriers: { ups: 'ups', posti: 'posti' } }, environment);
+      // On a loaded run a timer can fire before Date.now reaches its deadline, since Node schedules it
+      // on the event loop's cached clock: here Date.now lags 100 ms once the provider is cut.
+      const now = Date.now.bind(Date);
+      let clock: { mockRestore: () => void } | undefined;
+      const fetcher = stalled(() => { clock ??= vi.spyOn(Date, 'now').mockImplementation(() => now() - 100); });
       // The partner's third of the budget stays long enough for a loaded test run to reach it.
-      const answer = await createTracker({ registry: partnered, fetcher: stalled(), providers: ['ParcelsApp', 'Ship24'] })
-        .track({ number }, { budgetMs: 1_500 });
+      const answer = await createTracker({ registry: partnered, fetcher, providers: ['ParcelsApp', 'Ship24'] })
+        .track({ number }, { budgetMs: 1_500 }).finally(() => clock?.mockRestore());
       expect(answer).toMatchObject({ source: 'ups', handoff: { carrier: 'posti', confirmed: true },
         attempts: [{ source: 'ups', kind: 'ok' }, { source: 'ParcelsApp', kind: 'budget' }, { source: 'posti', kind: 'ok' }] });
       expect(answer.attempts).toHaveLength(3);

@@ -294,7 +294,8 @@ export function createTracker(options: TrackerOptions = {}) {
         const left = remaining();
         if (signal.aborted || left <= reserve) break;
         const share = left - reserve;
-        const cut = reserve ? AbortSignal.any([signal, AbortSignal.timeout(share)]) : signal;
+        const timer = reserve ? AbortSignal.timeout(share) : null;
+        const cut = timer ? AbortSignal.any([signal, timer]) : signal;
         const answer = await attempt(candidate, () => provider(candidate, async () => scansOf(candidate, resolveResult(await universal.fetchSource(candidate,
           number, Math.min(share + DEADLINE_SLACK_MS, universalSourceBudget(candidate)), providerPostcode, zone, cut, input.countryHint, carrier))), cut), cut);
         const filled = answer && partial ? fillPartialAnswer(carrier, number, partial, answer) : answer;
@@ -304,6 +305,9 @@ export function createTracker(options: TrackerOptions = {}) {
           source = candidate;
           break;
         }
+        // A provider that ran out its share leaves the partner's reserve, whatever the clock reads: a
+        // timer can fire before Date.now reaches its deadline, and the sliver it leaves is no lookup.
+        if (timer?.aborted) break;
       }
     }
     if (!result) throw new TrackingError(attempts, signal.aborted

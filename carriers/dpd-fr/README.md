@@ -26,6 +26,8 @@ non-2xx statuses are indeterminate.
   0 or 1 (12–15 digits) are suggestions; 14-digit numbers from the ex-Exapaq
   depots 10xx list DPD France first (DPD's published depot table and the
   published integration example), without selecting it.
+- Recognition never asks DPD France. It reads over plain HTTP only, and
+  Cloudflare challenges every plain GET of the trace page.
 - Labels print the `250` number with a GS1 check digit as a sixteenth digit, and
   links often carry that form. When the check digit matches, detection lists DPD
   France first and the adapter looks the parcel up by its fifteen digits, the

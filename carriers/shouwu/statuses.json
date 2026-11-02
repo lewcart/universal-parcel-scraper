@@ -277,6 +277,13 @@
       "language": "en",
       "confirmedBy": "live",
       "note": "DHL's first scan in Germany, relayed after the sort that follows customs at the destination."
+    },
+    {
+      "wording": "Arrived at hub",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "A hub on the way to the delivering carrier, after customs released the parcel at the gateway airport."
     }
   ]
 }

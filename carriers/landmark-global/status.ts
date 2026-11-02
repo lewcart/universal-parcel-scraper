@@ -1,6 +1,11 @@
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
+// The pallet a parcel joins names its number: "Grouped when pallet scanned to crossing (DDU #1234)". The map holds it as "#…".
+const PALLET = 'Grouped when pallet scanned to crossing (DDU #…)';
+const PALLET_NUMBER = /^(grouped when pallet scanned to crossing \(ddu #)\d{1,10}(\))$/i;
+const palletKey = (wording: string): string => wording.replace(PALLET_NUMBER, '$1…$2');
+
 const WORDINGS = new Map<string, ClassifiedStatus>([
   ['Delivered', { status: 'delivered', stage: 'delivered' }],
   ['Delivered - Delivery / deposit with non-recurring authority', { status: 'delivered', stage: 'delivered' }],
@@ -21,10 +26,14 @@ const WORDINGS = new Map<string, ClassifiedStatus>([
     // The hand-over to the destination's postal operator for the last mile, which the shared rules read as a delivery.
     'Item deposited to local postal operator',
     // A carrier's facility, seen after Landmark's processing.
-    'Package scanned at carrier facility'].map(wording => [wording, { status: 'in_transit', stage: 'in_transit' }] as [string, ClassifiedStatus]),
+    'Package scanned at carrier facility',
+    // The parcel put on a pallet for the crossing to the destination country, before the export.
+    PALLET,
+    // The export from the sending country's office of exchange, after the crossing.
+    'Departure from office of exchange'].map(wording => [wording, { status: 'in_transit', stage: 'in_transit' }] as [string, ClassifiedStatus]),
 ]);
 
-export function landmarkStatus(wording: string): ClassifiedStatus | undefined { return WORDINGS.get(wording); }
+export function landmarkStatus(wording: string): ClassifiedStatus | undefined { return WORDINGS.get(palletKey(wording)); }
 
 /** Each label's stage by its normalized wording, left out where two labels fold together with different stages. */
 const STAGE_BY_WORDING = new Map<string, Stage | undefined>();
@@ -34,4 +43,4 @@ for (const [label, { stage }] of WORDINGS) {
 }
 
 /** What the map says about one scan: Landmark's own label, as the parser reads it; a delivery is stored as "Delivered". */
-export const statusMap: CarrierStatusMap = { stage: (_code, wording) => STAGE_BY_WORDING.get(wording), gaps: [] };
+export const statusMap: CarrierStatusMap = { stage: (_code, wording) => STAGE_BY_WORDING.get(palletKey(wording)), gaps: [] };

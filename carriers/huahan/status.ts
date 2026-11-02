@@ -35,6 +35,8 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['in transit', 'in_transit'],
   ['the parcel is on the way to the local warehouse.', 'in_transit'],
   ['in transit, shipment remained at sorting hub', 'in_transit'],
+  ['in transit, arrived to hu hub', 'in_transit'],
+  ['in transit, parcel has entered the linehaul network.', 'in_transit'],
   ['the courier will deliver the parcel soon. additional details are available in the sameday app, email or sms.', 'out_for_delivery'],
 ]);
 

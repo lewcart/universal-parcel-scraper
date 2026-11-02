@@ -9,6 +9,7 @@ import { landmarkStatus } from './status.js';
 import metadata from './carrier.json' with { type: 'json' };
 import statuses from './statuses.json' with { type: 'json' };
 import { InvalidInputError } from '../../core/errors/index.js';
+import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 
 const NUMBER = 'LTN00000001N1';
 const fixture = () => readFileSync(new URL('./fixtures/delivered.html', import.meta.url), 'utf8');
@@ -125,6 +126,15 @@ describe('Landmark Global history', () => {
     expect(landmarkStatus('__proto__')).toBeUndefined();
     first.remove(); $('.current-status h3').text('Onboard for delivery'); $('.current-status .time').attr('data-time', $('tbody tr').first().find('.time').attr('data-time'));
     expect(parseLandmark($.html(), NUMBER)).toMatchObject({ status: 'out_for_delivery' });
+  });
+  it('reads the pallet row by its wording whatever pallet it names, and the export from the office of exchange in transit', () => {
+    for (const description of ['Grouped when pallet scanned to crossing (DDU #1234)', 'Grouped when pallet scanned to crossing (DDU #7)', 'Departure from office of exchange']) {
+      expect(landmarkStatus(description), description).toEqual({ status: 'in_transit', stage: 'in_transit' });
+      expect(statusMapAnswer({ carrier: 'landmark-global', providerCode: null, description }), description).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    }
+    for (const description of ['Grouped when pallet scanned to crossing (DDU #12A)', 'Grouped when pallet scanned to crossing (DDU #)', 'Grouped when pallet scanned to crossing']) {
+      expect(landmarkStatus(description), description).toBeUndefined();
+    }
   });
   it('maps deposit delivery explicitly without exposing the delivery permission', () => {
     const $ = load(fixture());

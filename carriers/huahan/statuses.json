@@ -29,6 +29,8 @@
     {"code": "IA", "wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "The parcel is on the way to the local warehouse.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"code": "IA", "wording": "In Transit, Shipment remained at sorting hub", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"code": "IA", "wording": "In Transit, Arrived to HU HUB", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination carrier's hub in Hungary, after its receipt."},
+    {"code": "IA", "wording": "In Transit, Parcel has entered the Linehaul network.", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination carrier's trunk route between its hubs, after the hub scan."},
     {"wording": "The courier will deliver the parcel soon. Additional details are available in the SAMEDAY app, email or SMS.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "The destination carrier's own words for the scan HuaHan codes CB, at the same instant."},
     {"code": "CB", "wording": "Out for Delivery, Parcel is at courier, delivery expected soon.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "The destination carrier's courier scan, relayed under HuaHan's code."},
     {"code": "CC", "wording": "Delivered, Parcel was delivered successfully", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "The destination carrier's delivery, relayed under HuaHan's code with that carrier's wording."},

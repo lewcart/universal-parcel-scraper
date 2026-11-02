@@ -1,0 +1,57 @@
+{
+  "carrier": "magic-trans",
+  "gap": "No public page shows a Magic Trans shipment number; its tracker's examples are a nine-digit act number, a shape other carriers' rules take, and TR…MT cargo codes left in the page's HTML comments.",
+  "records": [
+    {
+      "number": "008654745",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://magic-trans.ru/otsledit-gruz/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Magic Trans' tracker page prints it as the example act number; not a known shipment."
+    },
+    {
+      "number": "TR005133118MT",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://magic-trans.ru/otsledit-gruz/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Left in an HTML comment as the tracker input's example cargo code on Magic Trans' tracker page; visitors do not see it and no shipment is known."
+    },
+    {
+      "number": "TR009688642MT",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://magic-trans.ru/otsledit-gruz/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Left in an HTML comment in the result template of Magic Trans' tracker page; visitors do not see it and no shipment is known."
+    }
+  ]
+}

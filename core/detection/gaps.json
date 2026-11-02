@@ -4493,5 +4493,11 @@
     "pattern": "^\\d{6,8}$",
     "kind": "collision",
     "reason": "TopDelivery numbers are a counter of six to eight digits, shapes many other networks print, so the shape cannot name TopDelivery."
+  },
+  {
+    "carrier": "magic-trans",
+    "pattern": "^(?:\\d{9}|TR\\d{9}MT)$",
+    "kind": "by_design",
+    "reason": "Magic Trans' tracker gives a nine-digit act number as its example, a shape other carriers' rules take, and leaves TR…MT cargo codes only in its HTML comments, with no shipment known behind them, so detection does not offer Magic Trans."
   }
 ]

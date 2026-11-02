@@ -1,0 +1,47 @@
+{
+  "id": "magic-trans",
+  "displayName": "Magic Trans",
+  "aliases": [
+    "Мейджик Транс",
+    "ТК Мейджик Транс",
+    "MagicTrans",
+    "ООО «МТ ЛОГИСТИКА»"
+  ],
+  "region": {
+    "countries": [
+      "RU"
+    ]
+  },
+  "brand": {
+    "color": "#008dcc"
+  },
+  "selectable": true,
+  "timezone": "Europe/Moscow",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://magic-trans.ru/otsledit-gruz/?id={trackingNumber}",
+    "searchUrl": "https://magic-trans.ru/otsledit-gruz/",
+    "canaryUrl": "https://magic-trans.ru/otsledit-gruz/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "magic-trans.ru"
+      ],
+      "pathPattern": "^/otsledit-gruz/?$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": []
+}

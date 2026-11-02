@@ -29833,6 +29833,40 @@
       }
     ]
   },
+  "magic-trans": {
+    "displayName": "Magic Trans",
+    "color": "#008dcc",
+    "aliases": [
+      "Мейджик Транс",
+      "ТК Мейджик Транс",
+      "MagicTrans",
+      "ООО «МТ ЛОГИСТИКА»"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://magic-trans.ru/otsledit-gruz/",
+    "trackingUrlTemplate": "https://magic-trans.ru/otsledit-gruz/?id={trackingNumber}",
+    "trackingSearchUrl": "https://magic-trans.ru/otsledit-gruz/",
+    "linkRules": [
+      {
+        "domains": [
+          "magic-trans.ru"
+        ],
+        "pathPattern": "^/otsledit-gruz/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "magyar-posta": {
     "displayName": "Magyar Posta",
     "color": "#346631",
@@ -37483,6 +37517,32 @@
     },
     "canaryUrl": "https://rayspeed.com/en/track",
     "trackingSearchUrl": "https://rayspeed.com/en/track",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "red-express": {
+    "displayName": "Red Express",
+    "color": "#f93a3a",
+    "aliases": [
+      "RedExpress",
+      "Red Express Cargo",
+      "Рэд Экспресс",
+      "Ред Экспресс",
+      "РЭД Экспресс",
+      "ОсОО «РЭД Экспресс»"
+    ],
+    "countries": [
+      "KG",
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Bishkek",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://redexpress.kg/",
+    "trackingSearchUrl": "https://redexpress.kg/",
     "linkRules": [],
     "detectionRules": []
   },

@@ -29835,6 +29835,40 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "magic-trans": {
+    "displayName": "Magic Trans",
+    "color": "#008dcc",
+    "aliases": [
+      "Мейджик Транс",
+      "ТК Мейджик Транс",
+      "MagicTrans",
+      "ООО «МТ ЛОГИСТИКА»"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://magic-trans.ru/otsledit-gruz/",
+    "trackingUrlTemplate": "https://magic-trans.ru/otsledit-gruz/?id={trackingNumber}",
+    "trackingSearchUrl": "https://magic-trans.ru/otsledit-gruz/",
+    "linkRules": [
+      {
+        "domains": [
+          "magic-trans.ru"
+        ],
+        "pathPattern": "^/otsledit-gruz/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "magyar-posta": {
     "displayName": "Magyar Posta",
     "color": "#346631",
@@ -37485,6 +37519,32 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://rayspeed.com/en/track",
     "trackingSearchUrl": "https://rayspeed.com/en/track",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "red-express": {
+    "displayName": "Red Express",
+    "color": "#f93a3a",
+    "aliases": [
+      "RedExpress",
+      "Red Express Cargo",
+      "Рэд Экспресс",
+      "Ред Экспресс",
+      "РЭД Экспресс",
+      "ОсОО «РЭД Экспресс»"
+    ],
+    "countries": [
+      "KG",
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Bishkek",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://redexpress.kg/",
+    "trackingSearchUrl": "https://redexpress.kg/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -50383,6 +50443,7 @@ export const CARRIER_IDS = [
   "macau-post",
   "madhur-courier",
   "maersk-ecommerce",
+  "magic-trans",
   "magyar-posta",
   "mailamericas",
   "mailex",
@@ -50588,6 +50649,7 @@ export const CARRIER_IDS = [
   "ram-hand-to-hand",
   "rangel",
   "rayspeed",
+  "red-express",
   "redbox-mv",
   "redpack",
   "redur",
@@ -51699,6 +51761,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "macau-post": [],
   "madhur-courier": [],
   "maersk-ecommerce": ["maersk-ecommerce-1"],
+  "magic-trans": [],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic","magyar-posta-package","magyar-posta-letter","magyar-posta-europe-standard"],
   "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-domc","mailamericas-s10"],
   "mailex": [],
@@ -51904,6 +51967,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ram-hand-to-hand": ["ram-hand-to-hand-1"],
   "rangel": [],
   "rayspeed": [],
+  "red-express": [],
   "redbox-mv": [],
   "redpack": [],
   "redur": [],

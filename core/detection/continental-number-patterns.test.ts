@@ -1166,3 +1166,17 @@ describe('Andreani shipment numbers', () => {
     }
   });
 });
+
+describe('Magic Trans and Red Express', () => {
+  it('reads their names and Magic Trans tracking links', () => {
+    for (const [name, carrier] of [
+      ['Мейджик Транс', 'magic-trans'], ['MagicTrans', 'magic-trans'], ['RedExpress', 'red-express'], ['РЭД Экспресс', 'red-express'],
+    ] as const) expect(carrierIdFromName(name), name).toBe(carrier);
+    expect(parseTrackingInput('https://magic-trans.ru/otsledit-gruz/?id=000100017'))
+      .toMatchObject({ trackingNumber: '000100017', carrier: 'magic-trans', source: 'link' });
+  });
+
+  it('leaves Magic Trans act numbers and cargo codes without a rule', () => {
+    for (const number of ['000100017', 'TR000100017MT']) expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('magic-trans');
+  });
+});

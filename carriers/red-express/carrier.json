@@ -1,0 +1,39 @@
+{
+  "id": "red-express",
+  "displayName": "Red Express",
+  "aliases": [
+    "RedExpress",
+    "Red Express Cargo",
+    "Рэд Экспресс",
+    "Ред Экспресс",
+    "РЭД Экспресс",
+    "ОсОО «РЭД Экспресс»"
+  ],
+  "region": {
+    "countries": [
+      "KG",
+      "RU"
+    ]
+  },
+  "brand": {
+    "color": "#f93a3a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Bishkek",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://redexpress.kg/",
+    "canaryUrl": "https://redexpress.kg/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

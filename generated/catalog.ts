@@ -28071,7 +28071,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lex-id"
     },
     "canaryUrl": "https://lex.co.id/",
     "trackingSearchUrl": "https://lex.co.id/tracking",
@@ -28098,7 +28098,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lex-my"
     },
     "canaryUrl": "https://lex.com.my/",
     "trackingUrlTemplate": "https://lex.com.my/tracking?references={trackingNumber}",

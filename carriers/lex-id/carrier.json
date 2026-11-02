@@ -19,15 +19,25 @@
   "timezone": "Asia/Jakarta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "lex-id",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "provider_code"
+  ],
   "portal": {
     "searchUrl": "https://lex.co.id/tracking",
     "canaryUrl": "https://lex.co.id/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status"
+    ],
     "discarded": [],
     "unavailable": []
   },

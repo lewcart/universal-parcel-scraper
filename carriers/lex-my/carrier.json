@@ -18,16 +18,26 @@
   "timezone": "Asia/Kuala_Lumpur",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "lex-my",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "provider_code"
+  ],
   "portal": {
     "url": "https://lex.com.my/tracking?references={trackingNumber}",
     "searchUrl": "https://lex.com.my/tracking",
     "canaryUrl": "https://lex.com.my/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status"
+    ],
     "discarded": [],
     "unavailable": []
   },

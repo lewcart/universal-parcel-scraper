@@ -2041,6 +2041,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/shipecom\.com\/track\/E00A0000099$/,
     marker: /We could not find that number|Tracking history/,
     shipmentNotFound: { status: 404, marker: /We could not find that number/ } },
+  // The page posts the number in its references parameter to the platform's search and shows no result for one it does not hold.
+  { carrier: 'lex-my', number: 'TMYLE000000000',
+    route: /^https:\/\/lex\.com\.my\/tracking\?references=TMYLE000000000$/,
+    marker: /No Result Found/ },
   // The tracker's frame repeats the number in its item parameter as its heading, with no scan for one it does not hold.
   { carrier: 'go-logistics-au', number: '9999999999',
     route: /^https:\/\/services\.gologistics\.com\.au\/track\/iframe2\.php\?item=9999999999$/,

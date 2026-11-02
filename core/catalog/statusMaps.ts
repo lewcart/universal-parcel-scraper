@@ -279,6 +279,8 @@ import { statusMap as goExpress } from '../../carriers/go-express/status.js';
 import { statusMap as globalpost } from '../../carriers/globalpost/status.js';
 import { statusMap as gmsWorldwide } from '../../carriers/gms-worldwide/status.js';
 import { statusMap as goLogisticsAu } from '../../carriers/go-logistics-au/status.js';
+import { statusMap as lexId } from '../../carriers/lex-id/status.js';
+import { statusMap as lexMy } from '../../carriers/lex-my/status.js';
 import { statusMap as go4 } from '../../carriers/go4/status.js';
 import { statusMap as gobolt } from '../../carriers/gobolt/status.js';
 import { statusMap as gofo } from '../../carriers/gofo/status.js';
@@ -755,7 +757,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   jhgj, jifan, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
   'kit-tk': kitTk, 'komon-express': komonExpress, 'korea-post': koreaPost, 'kolay-gelsin': kolayGelsin, 'kuehne-nagel': kuehneNagel, 'kun-express': kunExpress, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih,
-  'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'lbc-express': lbcExpress, 'leopards-courier': leopardsCourier, liccardi, 'linear-logistics': linearLogistics,
+  'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'lbc-express': lbcExpress, 'lex-id': lexId, 'lex-my': lexMy, 'leopards-courier': leopardsCourier, liccardi, 'linear-logistics': linearLogistics,
   'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
   'line-clear': lineClear, lingdong, linhan, 'lion-parcel': lionParcel, logen, loggi, logisimple, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,

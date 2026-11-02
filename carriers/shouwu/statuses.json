@@ -368,6 +368,14 @@
       "language": "en",
       "confirmedBy": "live",
       "note": "The delivering partner collecting the parcel from Shouwu's depot abroad, after the clearance. Shouwu had the parcel long before, so it is no handover from the sender."
+    },
+    {
+      "wording": "This parcel has been delivered",
+      "stage": "delivered",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "The delivering partner's delivery in the Netherlands, after its out-for-delivery rows."
     }
   ]
 }

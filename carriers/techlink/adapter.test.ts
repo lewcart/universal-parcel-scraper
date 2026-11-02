@@ -163,6 +163,11 @@ describe('Techlink status vocabulary', () => {
     expect(statusMapAnswer({ carrier: 'techlink', providerCode: 'Warehousing_Packed', description: 'Parcel has been packed and is ready for outbound shipping' }))
       .toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(statusMapAnswer({ carrier: 'techlink', providerCode: 'Synthetic_Code', description: 'synthetic wording' })).toEqual({ kind: 'unknown' });
+    // A family's code maps only the wording listed with it; another of its rows falls to the shared rules.
+    expect(statusMapAnswer({ carrier: 'techlink', providerCode: 'InTransit_Other', description: 'Your shipment has arrived at sorting center' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'techlink', providerCode: 'InTransit_Other', description: 'Synthetic other scan' })).toEqual({ kind: 'unknown' });
+    expect(techlinkStage('InTransit_Other', 'Delivery attempted, recipient not at home')).not.toMatchObject({ source: 'carrier_map' });
     expect(techlinkStage('Synthetic_Code', 'synthetic wording')).toBeNull();
   });
 });

@@ -1,3 +1,4 @@
+import { usStateTimeZone } from '../../core/time/index.js';
 import { ambiguousAddressCodes, countryName, trackingPlace } from '../../places/trackingLocation.js';
 
 /**
@@ -25,23 +26,39 @@ function countryLabel(value: string): string {
 }
 
 /**
+ * A town's name, or ''. Beside its country or its state, a town in capitals
+ * counts too, with five letters or more or several words.
+ */
+function townName(name: string, carriers: ReadonlySet<string>, qualified: boolean): string {
+  const letters = name.match(/\p{L}/gu)?.length ?? 0;
+  const capitals = qualified && /^\p{Lu}[\p{Lu}\p{M} .'’-]*$/u.test(name)
+    && (letters >= 5 || (letters >= 3 && /\s/u.test(name))) && !carriers.has(name.toLocaleLowerCase('en-US'));
+  return capitals ? name : placeName(name, carriers);
+}
+
+// A town in the United States with its state and ZIP code, as USPS writes one: "Example City, CA 00000".
+const US_TOWN = /^([^,]+),\s*([A-Z]{2})\s+(\d{5})$/u;
+
+/**
  * The place of a bracket, or ''. A town can follow its country, "[USA,Example City]",
- * and keeps a trailing postcode, "[Example Town 00000]"; after a country a town in
- * capitals counts too, with five letters or more or several words. A country alone
+ * and keeps a trailing postcode, "[Example Town 00000]". A town in the United States
+ * can come with its state and ZIP code, "[Example City, CA 00000]". A country alone
  * is the place too, "[ES]" or "[Spain 00000]", with the postcode put first so the
  * country stays last.
  */
 function bracketPlace(value: string, carriers: ReadonlySet<string>): string {
+  const us = US_TOWN.exec(value.trim());
+  if (us && usStateTimeZone(us[2])) {
+    const town = townName(us[1]!.trim(), carriers, true);
+    return town ? `${town}, ${us[2]} ${us[3]}` : '';
+  }
   const [, head = '', rest] = /^([^,]+)(?:,([^,]+))?$/u.exec(value) ?? [];
   const country = rest === undefined ? '' : countryLabel(head);
   if (rest !== undefined && !country) return '';
   const [, name = '', postcode] = /^(.*?)(?:\s+(\d{4,5}))?$/u.exec((rest ?? head).trim())!;
   const alone = country ? '' : countryLabel(name);
   if (alone) return postcode ? `${postcode}, ${alone}` : alone;
-  const letters = name.match(/\p{L}/gu)?.length ?? 0;
-  const capitals = Boolean(country) && /^\p{Lu}[\p{Lu}\p{M} .'’-]*$/u.test(name)
-    && (letters >= 5 || (letters >= 3 && /\s/u.test(name))) && !carriers.has(name.toLocaleLowerCase('en-US'));
-  const town = capitals ? name : placeName(name, carriers);
+  const town = townName(name, carriers, Boolean(country));
   const place = town && postcode ? `${town} ${postcode}` : town;
   return place && country ? `${place}, ${country}` : place;
 }

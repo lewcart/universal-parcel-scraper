@@ -393,6 +393,9 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...country, description: 'Arrived at pick-up point', location: '00000, Spain' }, country)).toBe(true);
     const code = { ...stored, stage: 'in_transit', description: '[ES] Out for delivery' };
     expect(policy?.matches?.({ ...code, description: 'Out for delivery', location: 'ES' }, code)).toBe(true);
+    // So did a US town with its state and ZIP code.
+    const state = { ...stored, stage: 'in_transit', description: '[Example City, CA 00000] Arrived at destination country/region sorting center' };
+    expect(policy?.matches?.({ ...state, description: 'Arrived at destination country/region sorting center', location: 'Example City, CA 00000' }, state)).toBe(true);
   });
 
   it('lets an LBC scan gain its town and drop a representative\'s name with its provider code', () => {

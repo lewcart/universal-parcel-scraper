@@ -283,6 +283,10 @@ describe('Cainiao projection', () => {
       .toMatchObject({ location: 'EXAMPLE CITY, USA', description: 'Arrived at local delivery center' });
     expect(scan('[ES,Exampleville 99999] Received by local delivery company').events?.[0])
       .toMatchObject({ location: 'Exampleville 99999, ES', description: 'Received by local delivery company' });
+    // A US town can come with its state and ZIP code, a town in capitals too.
+    expect(scan('[Example City, CA 00000] Arrived at destination country/region sorting center').events?.[0])
+      .toMatchObject({ location: 'Example City, CA 00000', description: 'Arrived at destination country/region sorting center' });
+    expect(scan('[EXAMPLE CITY, TX 00000] Arrived').events?.[0]).toMatchObject({ location: 'EXAMPLE CITY, TX 00000', description: 'Arrived' });
     // A code a state shares is written out: CA is Canada there, not California.
     expect(scan('[CA,Exampleville] Arrived').events?.[0]).toMatchObject({ location: 'Exampleville, Canada', description: 'Arrived' });
     // A town keeps its postcode, and a country alone is the place, its postcode put first.
@@ -294,7 +298,8 @@ describe('Cainiao projection', () => {
     // Other codes, abbreviations, carrier names, numbers and a bracket alone are no place.
     for (const wording of ['[Fr] Arrived', '[GOFO] Arrived', '[Example Post] Arrived', '[Post(NL)] Arrived',
       '[Hub 12] Arrived', '[Hub 123456] Arrived', '[EXAMPLEVILLE 99999] Arrived', '[Exampleville]', 'Arrived [Exampleville]',
-      '[USA,GOFO] Arrived', '[USA,Example Post] Arrived', '[Exampleville,Example City] Arrived']) {
+      '[USA,GOFO] Arrived', '[USA,Example Post] Arrived', '[Exampleville,Example City] Arrived',
+      '[Exampleville, ZZ 00000] Arrived', '[Example Post, CA 00000] Arrived', '[Exampleville, CA 0000] Arrived', '[GOFO, CA 00000] Arrived']) {
       expect(scan(wording).events?.[0]).toMatchObject({ location: '', description: wording });
       expect(scan(wording).last_status_text).toBe(wording);
     }

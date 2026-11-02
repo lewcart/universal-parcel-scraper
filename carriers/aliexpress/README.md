@@ -118,7 +118,8 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
   reads it when the wording has no bracket. A bracket can name the country first,
   `[USA,Example City]` or `[ES,Town 00000]`: the location is then the town, with a trailing
   postcode, followed by that country, and a town in capitals counts when it has five letters or
-  several words. A bracket can also name a country alone, `[ES]` or `[Spain 00000]`, which puts
+  several words. A US town can come with its state and ZIP code, `[Town, CA 00000]`, and keeps
+  them, as USPS writes its places. A bracket can also name a country alone, `[ES]` or `[Spain 00000]`, which puts
   the postcode first so the country stays last. A country code a state shares is written out
   ("Canada"). Otherwise the location is the town alone.
 - In the United States a scan's offset follows its site, so the place lookup can tell

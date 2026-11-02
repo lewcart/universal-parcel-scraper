@@ -21,6 +21,31 @@ const fixture = (region: string) => JSON.parse(readFileSync(new URL(`../gofo-${r
 const item = (value: ReturnType<typeof fixture>) => value.data[0];
 const bind = (value: ReturnType<typeof fixture>) => { item(value).lastTrackEvent = { ...item(value).trackEventList[0] }; item(value).trackEventCount = item(value).trackEventList.length; };
 
+describe('GOFO France acceptance', () => {
+  const codes = (value: ReturnType<typeof fixture>) => parseGofoFrance(value, 'GFFR00000000000001').events?.map(event => [event.provider_code, event.stage]);
+
+  it("reads the sorting centre taking the parcel in as the acceptance when it is GOFO's first scan", () => {
+    const value = fixture('fr');
+    item(value).trackEventList = item(value).trackEventList.filter((row: { processCode: string }) => ['100', '202', '200'].includes(row.processCode));
+    bind(value);
+    expect(codes(value)).toEqual([['200', 'in_transit'], ['202', 'accepted'], ['100', 'registered']]);
+    expect(parseGofoFrance(value, 'GFFR00000000000001')).toMatchObject({ current_stage: 'in_transit' });
+  });
+
+  it('keeps a later sorting centre, and one after a cut list, in transit', () => {
+    const later = fixture('fr');
+    const rows = item(later).trackEventList.filter((row: { processCode: string }) => ['100', '202', '200'].includes(row.processCode));
+    item(later).trackEventList = [{ ...rows[1], processDate: rows[0].processDate }, ...rows];
+    bind(later);
+    expect(codes(later)?.map(([code, stage]) => `${code}:${stage}`)).toEqual(['202:in_transit', '200:in_transit', '202:accepted', '100:registered']);
+    const cut = fixture('fr');
+    item(cut).trackEventList = rows.slice(0, 2);
+    bind(cut);
+    item(cut).trackEventCount = 3;
+    expect(codes(cut)).toEqual([['200', 'in_transit'], ['202', 'in_transit']]);
+  });
+});
+
 describe.each(cases)('GOFO $region identity and history', ({ region, number, parse, normalize, stage, delivery, count }) => {
   it('binds the whole national parcel and keeps explicit instants, service and code evidence', () => {
     const result = normalizeCarrierResult(parse(fixture(region), number));

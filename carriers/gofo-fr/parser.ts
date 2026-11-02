@@ -135,6 +135,11 @@ export function parseRegionalGofo(payload: unknown, rawNumber: string, region: G
     const key = JSON.stringify(event);
     if (!seen.has(key)) { seen.add(key); events.push(event); }
   }
+  // In France, "pris en charge au centre de tri" (202) is where GOFO takes the parcel in when no scan
+  // came before it but the sender's preparation: its first physical scan, as GOFO US's origin hub. The
+  // same code names later sorting centres, and a cut list may have lost the scan before it.
+  const physical = [...events].reverse().find(event => event.stage !== 'registered');
+  if (region === 'FR' && physical?.provider_code === '202' && Number(item.trackEventCount) === rows.length) physical.stage = 'accepted';
   const latest = events[0]!, stage = latest.stage as Stage | undefined;
   const service = clean(item.serviceName, 80);
   return { status: stage ? languageStageStatus(stage) : 'unknown', ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),

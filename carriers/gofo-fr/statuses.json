@@ -41,7 +41,8 @@
       "wording": "Votre colis a été pris en charge au centre de tri",
       "language": "fr",
       "stage": "in_transit",
-      "confirmedBy": "live"
+      "confirmedBy": "live",
+      "note": "Also names later sorting centres. As GOFO's first scan after the sender's preparation, in a whole list, the parser reads it as the acceptance."
     },
     {
       "code": "LS004",

@@ -37403,7 +37403,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
   },
   "quick-fort": {
     "displayName": "Quick Fort",
-    "color": "#ff6600",
+    "color": "#0a275f",
     "aliases": [
       "Quick Fort",
       "QuickFort",

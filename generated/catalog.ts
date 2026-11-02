@@ -44125,6 +44125,43 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "tnt-au": {
+    "displayName": "TNT Australia",
+    "color": "#ff6600",
+    "aliases": [
+      "TNT Express Australia",
+      "TNT Australia Domestic"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "tnt-au"
+    },
+    "canaryUrl": "https://www.tntexpress.com.au/interaction/Trackntrace.aspx",
+    "trackingUrlTemplate": "https://www.tntexpress.com.au/interaction/ASPs/trackref_detail.asp?con={trackingNumber}",
+    "trackingSearchUrl": "https://www.tntexpress.com.au/interaction/Trackntrace.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "tntexpress.com.au"
+        ],
+        "pathPattern": "^/interaction/(?:asps/trackref_detail\\.asp|trackref\\.aspx)$",
+        "params": [
+          "con"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?!(?:BNI|BYS|CLC|CUB|GWD|LTN|MPX|NZC|QSS|QSP|RMP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "tnt-it": {
     "displayName": "TNT Italy",
     "color": "#ff6600",
@@ -50604,6 +50641,7 @@ export const CARRIER_IDS = [
   "tirupati-courier",
   "tiui",
   "tmm-express",
+  "tnt-au",
   "tnt-it",
   "today-kr",
   "togo-post",
@@ -51915,6 +51953,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tirupati-courier": [],
   "tiui": [],
   "tmm-express": [],
+  "tnt-au": ["tnt-au-1"],
   "tnt-it": ["tnt-it-1","tnt-it-check"],
   "today-kr": [],
   "togo-post": [],

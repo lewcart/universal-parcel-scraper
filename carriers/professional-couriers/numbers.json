@@ -19,7 +19,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "A Voxya complaint against The Professional Couriers gives it as a shipment marked delivered but not received."
@@ -61,7 +62,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "A Voxya complaint against The Professional Couriers gives it as the courier tracking number of a delayed parcel."
@@ -103,7 +105,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "A Voxya complaint against The Professional Couriers gives it as the tracking number of a parcel booked for Goa."

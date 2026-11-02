@@ -6,7 +6,7 @@ consignments through its public HTML tracking page.
 
 TNT Australia's domestic consignments, three letters and nine digits, are not offered for TNT:
 tnt.com's API refuses them as invalid input and sends the lookup to TNT Australia's own tracker,
-which the adapter does not read. Detection suggests Purolator for that shape.
+which [TNT Australia](../tnt-au/README.md) reads.
 
 ## How it works
 

@@ -44123,6 +44123,43 @@
     ],
     "detectionRules": []
   },
+  "tnt-au": {
+    "displayName": "TNT Australia",
+    "color": "#ff6600",
+    "aliases": [
+      "TNT Express Australia",
+      "TNT Australia Domestic"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "tnt-au"
+    },
+    "canaryUrl": "https://www.tntexpress.com.au/interaction/Trackntrace.aspx",
+    "trackingUrlTemplate": "https://www.tntexpress.com.au/interaction/ASPs/trackref_detail.asp?con={trackingNumber}",
+    "trackingSearchUrl": "https://www.tntexpress.com.au/interaction/Trackntrace.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "tntexpress.com.au"
+        ],
+        "pathPattern": "^/interaction/(?:asps/trackref_detail\\.asp|trackref\\.aspx)$",
+        "params": [
+          "con"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?!(?:BNI|BYS|CLC|CUB|GWD|LTN|MPX|NZC|QSS|QSP|RMP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "tnt-it": {
     "displayName": "TNT Italy",
     "color": "#ff6600",

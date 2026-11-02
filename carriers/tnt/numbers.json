@@ -241,7 +241,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "Looked up on TNT's tracking API from its Australian site, as an archived reply shows; TNT answers that it is a TNT Australia domestic consignment and sends the lookup to TNT Australia's own tracker."
@@ -265,7 +266,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "Looked up on TNT's tracking API from its Australian site, as an archived reply shows; TNT answers that it is a TNT Australia domestic consignment and sends the lookup to TNT Australia's own tracker."
@@ -289,7 +291,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "Looked up on TNT's tracking API from its Australian site, as an archived reply shows; TNT answers that it is a TNT Australia domestic consignment and sends the lookup to TNT Australia's own tracker."

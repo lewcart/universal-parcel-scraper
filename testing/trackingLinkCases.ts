@@ -2057,6 +2057,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'go-logistics-au', number: '9999999999',
     route: /^https:\/\/services\.gologistics\.com\.au\/track\/iframe2\.php\?item=9999999999$/,
     marker: /Coupon\/Consignment Tracking/ },
+  // The tracker's page repeats the consignment in its con parameter, with one row saying no consignment was found.
+  { carrier: 'tnt-au', number: 'TNA000000009',
+    route: /^https:\/\/www\.tntexpress\.com\.au\/interaction\/ASPs\/trackref_detail\.asp\?con=TNA000000009$/,
+    marker: /Consignment No: TNA000000009/ },
   // The page loads the fragment for the number in its address, which fills its search box and renders the
   // parcel or says the number does not exist, with HTTP 200.
   { carrier: 'skybox', number: '009900000099',

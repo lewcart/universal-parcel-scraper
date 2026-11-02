@@ -4486,7 +4486,7 @@
     "carrier": "tnt",
     "pattern": "^[A-Z]{3}\\d{9}$",
     "kind": "by_design",
-    "reason": "TNT Australia's domestic consignments print three letters and nine digits, but tnt.com refuses them and sends the lookup to TNT Australia's own tracker, which the TNT adapter does not read, so detection does not offer TNT for them."
+    "reason": "TNT Australia's domestic consignments print three letters and nine digits, but tnt.com refuses them and sends the lookup to TNT Australia's own tracker, so detection offers TNT Australia for them instead."
   },
   {
     "carrier": "topdelivery",

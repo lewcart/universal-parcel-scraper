@@ -96,7 +96,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "Open-source project example, not a real shipment."
@@ -114,7 +115,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "context": {
@@ -134,7 +136,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "Open-source project example, not a real shipment."
@@ -151,7 +154,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "Open-source project example, not a real shipment."
@@ -168,7 +172,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "Open-source project example, not a real shipment."
@@ -322,7 +327,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns a parcel from the United States that cleared customs and was collected from a counter."
@@ -345,7 +351,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "A lettered Purolator PIN without the usual zeroes after its letters, whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
@@ -368,7 +375,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
@@ -391,7 +399,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."
@@ -414,7 +423,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "purolator"
+          "purolator",
+          "tnt-au"
         ]
       },
       "note": "A Purolator PIN whose tracking page the Wayback Machine archived. Purolator's tracker returns its history."

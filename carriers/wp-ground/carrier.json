@@ -18,17 +18,38 @@
   "timezone": "America/Los_Angeles",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "wp-ground",
+    "steps": [
+      "direct"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://www.wpglogis.com/tracking/?ext_trackingNumber={trackingNumber}",
     "searchUrl": "https://www.wpglogis.com/tracking/",
     "canaryUrl": "https://www.wpglogis.com/tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "proof_of_delivery",
+      "weight",
+      "dimensions"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "proof_of_delivery",
+      "weight",
+      "dimensions"
+    ],
     "unavailable": []
   },
   "links": [

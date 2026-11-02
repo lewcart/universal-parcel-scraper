@@ -10,7 +10,7 @@ import { naqelWording, normalizeNaqelNumber, parseNaqel } from './parser.js';
 import { naqelStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '100000001';
+const DELIVERED = '199999980';
 const IN_TRANSIT = '200000002';
 const UNKNOWN = '300000003';
 // The in-transit waybill's first piece: the waybill and a five-digit piece counter.
@@ -199,7 +199,7 @@ describe('Naqel HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeNaqelNumber(' 100-000-001 ')).toBe(DELIVERED);
+    expect(normalizeNaqelNumber(' 199-999-980 ')).toBe(DELIVERED);
     expect(normalizeNaqelNumber('10000000')).toBe('10000000');
     expect(normalizeNaqelNumber(PIECE)).toBe(PIECE);
   });

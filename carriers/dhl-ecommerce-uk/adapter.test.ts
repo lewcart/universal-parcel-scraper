@@ -11,7 +11,7 @@ import { DhlEcommerceUkTracker, adapter } from './adapter.js';
 import { normalizeDhlEcommerceUkNumber, parseDhlEcommerceUk } from './parser.js';
 import { dhlEcommerceUkStage } from './status.js';
 
-const NUMBER = '99990000000000';
+const NUMBER = '99999999999981';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
 const environment = (fetcher: typeof fetch) => ({ trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {}, fetcher });
 const html = (body: string) => new Response(body, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8' } });
@@ -116,7 +116,7 @@ describe('DHL eCommerce UK parser', () => {
   });
 
   it('accepts shipment and return numbers only', () => {
-    expect(normalizeDhlEcommerceUkNumber(' 9999 0000 000000 ')).toBe(NUMBER);
+    expect(normalizeDhlEcommerceUkNumber(' 9999 9999 999981 ')).toBe(NUMBER);
     expect(normalizeDhlEcommerceUkNumber('999999999')).toBe('999999999');
     for (const value of ['', '1234567', '899999999', '999900000000001', 'JD014600000000000000']) {
       expect(() => normalizeDhlEcommerceUkNumber(value)).toThrow(InvalidInputError);
@@ -151,7 +151,7 @@ describe('DHL eCommerce UK adapter', () => {
     await expect(instance.recognize?.(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: '2026-04-03T17:19:00.000Z' });
     const absent = adapter(environment(async () => html(fixture('missing'))));
     await expect(absent.recognize?.(NUMBER)).resolves.toEqual({ known: false });
-    await expect(absent.recognize?.('JVGL0099999999')).resolves.toEqual({ known: false });
+    await expect(absent.recognize?.('JVGL9999999980')).resolves.toEqual({ known: false });
   });
 
   it('asks recognition only about the ranges its page shows', () => {

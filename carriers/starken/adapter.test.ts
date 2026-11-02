@@ -9,7 +9,7 @@ import { starkenStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
-const DELIVERED = '100000001';
+const DELIVERED = '199999980';
 const IN_TRANSIT = '100000002';
 const CLOSED = '100000003';
 const UNKNOWN = '100000009';
@@ -44,7 +44,7 @@ describe('Starken HTTP adapter', () => {
   it('asks a key for a sealed token, then reads the order under it, through the supplied transport', async () => {
     const fetcher = service(() => sealed(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new StarkenTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 100-000-001 ', { budgetMs: 1000.5 }))
+    await expect(new StarkenTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 199-999-980 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     const [[keyUrl, keyInit], [historyUrl, historyInit]] = fetcher.mock.calls as [[string, RequestInit], [string, RequestInit]];
@@ -54,7 +54,7 @@ describe('Starken HTTP adapter', () => {
       'Content-Type': 'application/json', Origen: 'CL', Origin: 'https://www.starken.cl', 'User-Agent': 'SyntheticHost/1.0' } });
     expect(JSON.parse(String(keyInit.body))).toEqual({ token });
     // The token carries the page's source, a UTC clock, the shared key and the whole order number.
-    expect(starkenOpen(token, STARKEN_TOKEN_PASSPHRASE)).toMatch(/^STARKENCL\|\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\|[^|]{8,}\|100000001$/);
+    expect(starkenOpen(token, STARKEN_TOKEN_PASSPHRASE)).toMatch(/^STARKENCL\|\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\|[^|]{8,}\|199999980$/);
     expect(historyUrl).toBe(`${STARKEN_API}/historialClOfs/${DELIVERED}`);
     expect(historyInit).toMatchObject({ method: 'GET', redirect: 'manual', signal: expect.any(AbortSignal),
       headers: { Apikey: KEY, Origen: 'CL', Origin: 'https://www.starken.cl', 'User-Agent': 'SyntheticHost/1.0' } });

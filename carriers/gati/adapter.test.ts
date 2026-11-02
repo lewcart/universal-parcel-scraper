@@ -9,7 +9,7 @@ import { normalizeGatiNumber, parseGati } from './parser.js';
 import { gatiStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '100000001';
+const DELIVERED = '199999980';
 const IN_TRANSIT = '200000002';
 const UNKNOWN = '400000004';
 const TOKEN = '1000|SyntheticPageToken0000000000000000000000000';
@@ -225,13 +225,13 @@ describe('AllcargoGATI HTTP adapter', () => {
 
   it('rejects numbers Gati does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['10000000', '1000000010', 'A00000001', '100000001,200000002', '1'.repeat(65)]) {
+    for (const number of ['10000000', '1000000010', 'A00000001', '199999980,200000002', '1'.repeat(65)]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeGatiNumber('100-000-001')).toBe(DELIVERED);
-    expect(normalizeGatiNumber(' 100 000 001 ')).toBe(DELIVERED);
+    expect(normalizeGatiNumber('199-999-980')).toBe(DELIVERED);
+    expect(normalizeGatiNumber(' 199 999 980 ')).toBe(DELIVERED);
   });
 
   it('ends a hanging lookup inside the caller’s budget', async () => {
@@ -246,7 +246,7 @@ describe('AllcargoGATI HTTP adapter', () => {
 
   it('routes a number filed under AllcargoGATI to the adapter', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url) === GATI_TOKEN_URL ? grant() : json(fixture('delivered')));
-    const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: '100 000 001', carrier: 'gati' }, { budgetMs: 3000 });
+    const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: '199 999 980', carrier: 'gati' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'gati', source: 'gati', result: { current_stage: 'delivered' } });
     expect(fetcher.mock.calls.some(([url, init]) => String(url) === GATI_TRACKING_URL && init?.body === JSON.stringify({ docketNo: DELIVERED }))).toBe(true);
   });

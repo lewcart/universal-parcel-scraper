@@ -12,7 +12,7 @@ import { forwardAirStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = '12345679';
-const IN_TRANSIT = '87654321';
+const IN_TRANSIT = '99999980';
 const UNKNOWN = '11111111';
 
 type Row = Record<string, unknown>;
@@ -43,12 +43,12 @@ describe('Forward Air HTTP adapter', () => {
   it('asks the tracking page’s lookup for the whole waybill once, naming the site, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('in-transit')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new ForwardAirTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 8765 4321 ', { budgetMs: 1000.5 }))
+    await expect(new ForwardAirTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 9999 9980 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'in_transit' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(`${FORWARD_AIR_API}?numbers=${IN_TRANSIT}`);
-    expect(forwardAirLookupUrl('8765-4321')).toBe(String(url));
+    expect(forwardAirLookupUrl('9999-9980')).toBe(String(url));
     expect(init).toMatchObject({ method: 'GET', redirect: 'manual', signal: expect.any(AbortSignal), headers: {
       Accept: 'application/json', Origin: 'https://www.forwardair.com', Referer: 'https://www.forwardair.com/', 'User-Agent': 'SyntheticHost/1.0',
     } });
@@ -178,13 +178,13 @@ describe('Forward Air HTTP adapter', () => {
     expect(() => parseForwardAir(fixture('in-transit'), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     expect(() => parseForwardAir(transit((shipment) => { shipment.AirbillNumber = '087654321'; }), IN_TRANSIT))
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(parseForwardAir(transit((shipment) => { shipment.AirbillNumber = ' 87654321 '; }), IN_TRANSIT).events).toHaveLength(7);
+    expect(parseForwardAir(transit((shipment) => { shipment.AirbillNumber = ' 99999980 '; }), IN_TRANSIT).events).toHaveLength(7);
   });
 
   it('rejects a changed reply', () => {
     for (const change of [
       (shipment: Shipment) => { delete shipment.AirbillNumber; },
-      (shipment: Shipment) => { shipment.AirbillNumber = 87654321; },
+      (shipment: Shipment) => { shipment.AirbillNumber = 99999980; },
       (shipment: Shipment) => { shipment.Statuses = 'scans' as never; },
       (shipment: Shipment) => { shipment.Statuses = Array.from({ length: 501 }, () => shipment.Statuses[0]!); },
       (shipment: Shipment) => { shipment.Statuses[0] = 'scan' as never; },
@@ -251,7 +251,7 @@ describe('Forward Air HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeForwardAirNumber('8765 4321')).toBe(IN_TRANSIT);
+    expect(normalizeForwardAirNumber('9999 9980')).toBe(IN_TRANSIT);
   });
 
   it('tries a read that hangs once more, and ends inside the budget', async () => {

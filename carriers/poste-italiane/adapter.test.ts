@@ -62,7 +62,7 @@ describe('Poste Italiane tracking normalization', () => {
     // PROMOPACCO PLUS: F, three digits, D and eight digits.
     expect(normalizePosteItalianeTrackingNumber('f990d00000001')).toBe('F990D00000001');
     // D, five digits, a letter and six digits.
-    expect(normalizePosteItalianeTrackingNumber('d99000a000001')).toBe('D99000A000001');
+    expect(normalizePosteItalianeTrackingNumber('d99000a999980')).toBe('D99000A999980');
     // Registered mail: eleven digits and the check digit, printed after a dash or a space.
     expect(normalizePosteItalianeTrackingNumber('99000000001-0')).toBe('990000000010');
     expect(normalizePosteItalianeTrackingNumber('99000000001 0')).toBe('990000000010');
@@ -76,7 +76,7 @@ describe('Poste Italiane tracking normalization', () => {
   });
 
   it('claims the Poste Delivery Web and Express codes of parcels booked online, and nothing near them', () => {
-    for (const number of ['GF00000000001', 'EF60000000001', 'EG00000000001', 'JG00000000001', 'LF40000000001']) {
+    for (const number of ['GF99999999980', 'EF60000000001', 'EG00000000001', 'JG00000000001', 'LF40000000001']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'poste-italiane', confidence: 'high' });
       expect(normalizePosteItalianeTrackingNumber(number.toLowerCase().replace(/^(..)/, '$1 ')), number).toBe(number);
     }
@@ -101,9 +101,9 @@ describe('Poste Italiane tracking normalization', () => {
   });
 
   it('claims Business Internazionale Plus codes and the plate wrapping a code, and nothing near them', () => {
-    expect(normalizePosteItalianeTrackingNumber('8uw1a2b345678')).toBe('8UW1A2B345678');
-    expect(normalizePosteItalianeTrackingNumber('jjita 8uw1a2b345678')).toBe('JJITA8UW1A2B345678');
-    for (const number of ['8UW1A2B345678', 'JJITA8UW1A2B345678', 'JJITA1UW1G2J193065']) {
+    expect(normalizePosteItalianeTrackingNumber('8uw1a2b999980')).toBe('8UW1A2B999980');
+    expect(normalizePosteItalianeTrackingNumber('jjita 8uw1a2b999980')).toBe('JJITA8UW1A2B999980');
+    for (const number of ['8UW1A2B999980', 'JJITA8UW1A2B999980', 'JJITA1UW1G2J193065']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'poste-italiane', confidence: 'high' });
     }
     for (const raw of ['2UW1A2B345678', 'JJITA8UW1A2B34567', 'JJITA8UW1A2B3456789', 'JJITB8UW1A2B345678', 'JJD8UW1A2B345678']) {
@@ -113,7 +113,7 @@ describe('Poste Italiane tracking normalization', () => {
   });
 
   it('takes the S10 number of mail from abroad for a hand-off, which detection leaves to the sending post', () => {
-    for (const number of ['RR123456785DE', 'LF123456785DE', 'CP123456785FR', 'LX123456785NL', 'RA123456785CN']) {
+    for (const number of ['RR123456785DE', 'LF999999987DE', 'CP123456785FR', 'LX999999987NL', 'RA123456785CN']) {
       expect(normalizePosteItalianeTrackingNumber(number.toLowerCase()), number).toBe(number);
       expect(detectCarrierMatch(number).candidates, number).not.toContain('poste-italiane');
     }

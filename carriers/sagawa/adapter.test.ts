@@ -12,7 +12,7 @@ import { normalizeSagawaNumber, parseSagawaWidget, sagawaRejection } from './par
 import { sagawaState, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = '300000000005';
+const NUMBER = '399999999980';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const DELIVERED = fixture('delivered.json');
 const NO_DATA = fixture('no-data.json');
@@ -33,7 +33,7 @@ const track = (fetcher: typeof fetch, number = NUMBER) => adapter(environment(fe
 
 describe('Sagawa Express waybill', () => {
   it('takes a 10- or 12-digit waybill and drops the printed hyphens', () => {
-    expect(normalizeSagawaNumber(' 3000-0000-0005 ')).toBe(NUMBER);
+    expect(normalizeSagawaNumber(' 3999-9999-9980 ')).toBe(NUMBER);
     expect(normalizeSagawaNumber('1234567890')).toBe('1234567890');
     for (const number of ['12345678901', '3000000000051', '30000000000A', '', '9'.repeat(65)]) {
       expect(() => normalizeSagawaNumber(number)).toThrow(InvalidInputError);
@@ -55,7 +55,7 @@ describe('Sagawa Express widget reply', () => {
       last_update: null, expected_delivery: null, timezone: 'Asia/Tokyo', summary_only: true, events: [] });
     // provider_code is a declared result field, so normalization keeps it only as text.
     expect(() => normalizeCarrierResult({ ...result, provider_code: 51 })).toThrow(TypeError);
-    expect(parseSagawaWidget(widget(info => { info.trackingNo = '3000-0000-0005'; }), NUMBER).status).toBe('delivered');
+    expect(parseSagawaWidget(widget(info => { info.trackingNo = '3999-9999-9980'; }), NUMBER).status).toBe('delivered');
     for (const entry of statuses.entries) expect(sagawaState(entry.code)?.stage).toBe(entry.stage);
   });
 
@@ -63,7 +63,7 @@ describe('Sagawa Express widget reply', () => {
     for (const payload of [
       widget(info => { info.trackingNo = '300000000016'; }),
       widget(info => { delete info.trackingNo; }),
-      widget(info => { info.trackingNo = 300000000005; }),
+      widget(info => { info.trackingNo = 399999999980; }),
       widget(info => { info.state = 51; }),
       widget(info => { info.state = '51'; }),
       widget(info => { delete info.stateMassage; }),
@@ -122,7 +122,7 @@ describe('Sagawa Express widget reply', () => {
 describe('Sagawa Express app request', () => {
   it('posts the waybill to the widget refresh with the app key', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(json(DELIVERED));
-    await expect(track(fetcher, '3000-0000-0005')).resolves.toMatchObject({ status: 'delivered', summary_only: true });
+    await expect(track(fetcher, '3999-9999-9980')).resolves.toMatchObject({ status: 'delivered', summary_only: true });
     expect(fetcher).toHaveBeenCalledOnce();
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(SAGAWA_WIDGET_API);

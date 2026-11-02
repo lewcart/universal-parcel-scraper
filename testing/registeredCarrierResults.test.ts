@@ -34,7 +34,7 @@ const cases = [
   { carrier: 'yunexpress', number: 'YT0000000000000001', fixture: 'in-transit.json', unresolved: true },
   { carrier: 'postnord', number: '00573000000000000001', fixture: 'delivered.json' },
   { carrier: 'bpost', number: '000000000000000000000001', fixture: 'delivered.json' },
-  { carrier: 'purolator', number: '100000000001', fixture: 'delivered.json', unresolved: true },
+  { carrier: 'purolator', number: '199999999977', fixture: 'delivered.json', unresolved: true },
   { carrier: 'yto', number: 'YT0000000000001', fixture: 'delivered.json' },
   { carrier: 'correios-br', number: 'AA000000014BR', fixtureNumber: 'AA000000005BR', fixture: 'delivered.json' },
   { carrier: 'yunda', number: '0000000000001', fixture: 'delivered.json' },
@@ -67,7 +67,7 @@ const cases = [
   { carrier: 'estafeta', number: '900000000001A000000002', fixture: 'full-guide-lookup.html', unresolved: true },
   { carrier: 'the-courier-guy', number: 'LD000001', fixture: 'pudo-delivered.json', unresolved: true },
   { carrier: 'the-courier-guy', number: 'DD000001', fixture: 'collection-cancelled.json', unresolved: true },
-  { carrier: 'relais-colis', number: 'CC200000000401', fixture: 'grouped-history.html', unresolved: true },
+  { carrier: 'relais-colis', number: 'CC299999999980', fixture: 'grouped-history.html', unresolved: true },
   { carrier: 'ciblex', number: '000000000000000000000001', fixture: 'full-barcode.html', unresolved: true },
 
 ];

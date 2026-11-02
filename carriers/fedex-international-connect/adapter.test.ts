@@ -10,7 +10,7 @@ import { normalizeFicNumber, parseFic } from './parser.js';
 import { ficStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ZZZ0000GB00000000017';
+const DELIVERED = 'ZZZ0000GB99999999980';
 const TRANSIT = 'ZZZ0000US00000000025';
 const UNKNOWN = 'ZZZ0000GB00000000033';
 
@@ -23,7 +23,7 @@ describe('FedEx International Connect HTTP adapter', () => {
   it('asks the tracker for the whole number in capitals through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(html(page('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new FicTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' zzz0000gb 00000000017 ', { budgetMs: 1000.5 }))
+    await expect(new FicTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' zzz0000gb 99999999980 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledOnce();
     const [[url, init]] = fetcher.mock.calls as [[string, RequestInit]];
@@ -145,7 +145,7 @@ describe('FedEx International Connect HTTP adapter', () => {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeFicNumber('zzz-0000-gb-00000000017')).toBe(DELIVERED);
+    expect(normalizeFicNumber('zzz-0000-gb-99999999980')).toBe(DELIVERED);
   });
 
   it('sends a read that fails to connect once more inside the budget', async () => {

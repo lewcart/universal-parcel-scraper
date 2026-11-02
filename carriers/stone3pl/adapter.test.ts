@@ -9,7 +9,7 @@ import { adapter, STONE3PL_API, Stone3plTracker } from './adapter.js';
 import { normalizeStone3plNumber, parseStone3pl, stone3plWording } from './parser.js';
 import { stone3plStage } from './status.js';
 
-const NUMBER = 'S900000000000000001';
+const NUMBER = 'S999999999999999980';
 const MISSING = 'S900000000000000002';
 type Row = Record<string, unknown>;
 type Reply = { code: number; data: { all_data: Row[] } };
@@ -118,7 +118,7 @@ describe('Stone3PL', () => {
   it('makes a low-confidence suggestion and parses official tracking links', () => {
     expect(detectCarrierMatch(NUMBER)).toMatchObject({ carrier: 'unknown', candidates: expect.arrayContaining(['stone3pl']) });
     expect(parseTrackingInput(`https://stone3pl.com/?route=services/track&nums=${NUMBER}`)).toMatchObject({ trackingNumber: NUMBER, carrier: 'stone3pl' });
-    expect(normalizeStone3plNumber(' s900 000000000000001 ')).toBe(NUMBER);
+    expect(normalizeStone3plNumber(' s999 999999999999980 ')).toBe(NUMBER);
     expect(() => normalizeStone3plNumber('S123&other=1')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     expect(stone3plWording('Delivered, signed by Synthetic Recipient')).toBe('Delivered');
     expect(stone3plWording('Call +61 400 000 000')).not.toContain('400');

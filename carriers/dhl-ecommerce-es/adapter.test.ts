@@ -10,7 +10,7 @@ import { DhlEcommerceEsTracker, adapter } from './adapter.js';
 import { normalizeDhlEcommerceEsNumber, parseDhlEcommerceEs } from './parser.js';
 import { dhlEcommerceEsStatus, dhlEcommerceEsSummaryStage } from './status.js';
 
-const NUMBER = '2800000007';
+const NUMBER = '2899999980';
 const INBOUND = 'CC000000005DE';
 const POINT = 'EXAMPLE NEWSAGENT\nCALLE DE EJEMPLO 1\n00000 EXAMPLEVILLE';
 const REJECTED = '<html><head><title>Request Rejected</title></head><body>The requested URL was rejected. Please consult with your administrator.</body></html>';
@@ -181,7 +181,7 @@ describe('DHL eCommerce Iberia parser', () => {
     // The licence plate of another query is not this shipment's identity.
     expect(() => parseDhlEcommerceEs(clone(), 'JJD00000000000000000001')).toThrowError(expect.objectContaining({ kind: 'schema' }));
     const spaced = clone();
-    spaced.ExpeditionNumber = '28 00000007';
+    spaced.ExpeditionNumber = '28 99999980';
     expect(() => parseDhlEcommerceEs(spaced, NUMBER)).toThrowError(expect.objectContaining({ kind: 'schema' }));
     expect(() => parseDhlEcommerceEs([clone()], NUMBER)).toThrowError(expect.objectContaining({ kind: 'schema' }));
     const scan = clone();
@@ -193,9 +193,9 @@ describe('DHL eCommerce Iberia parser', () => {
   });
 
   it('accepts the numbers the portal answers and nothing else', () => {
-    expect(normalizeDhlEcommerceEsNumber(' 28 0000 0007 ')).toBe(NUMBER);
-    expect(normalizeDhlEcommerceEsNumber('es-0000001-0')).toBe('ES00000010');
-    for (const number of ['280000000007', INBOUND, 'JJD00000000000000000001', '0099990099990000000001', 'JVGL0099999999', '3SABCD012345678']) {
+    expect(normalizeDhlEcommerceEsNumber(' 28 9999 9980 ')).toBe(NUMBER);
+    expect(normalizeDhlEcommerceEsNumber('es-9999998-0')).toBe('ES99999980');
+    for (const number of ['280000000007', INBOUND, 'JJD00000000000000000001', '0099990099990000000001', 'JVGL9999999980', '3SABCD012345678']) {
       expect(normalizeDhlEcommerceEsNumber(number)).toBe(number);
     }
     for (const number of ['', '   ', '12345678901', 'ES00000011', '00340434000000000000', '<script>']) {
@@ -228,7 +228,7 @@ describe('DHL eCommerce Iberia adapter', () => {
       expect(init?.signal).toBeDefined();
       return Response.json(clone());
     };
-    const result = normalizeCarrierResult(await new DhlEcommerceEsTracker({ fetcher }).fetch(' 28-0000-0007 '));
+    const result = normalizeCarrierResult(await new DhlEcommerceEsTracker({ fetcher }).fetch(' 28-9999-9980 '));
     expect(result.current_stage).toBe('delivered');
     expect(calls).toBe(1);
   });

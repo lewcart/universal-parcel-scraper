@@ -8,7 +8,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { dateLocalClocks } from '../../places/clocks.js';
 import { adapter, DHLSessionError, DHLTracker, dhlTrackingUrl, normalizeDHLTrackingNumber, parseDHLTrackingResponse } from './adapter.js';
 
-const NUMBER = 'LF123456785DE';
+const NUMBER = 'LF999999987DE';
 const CONFIG = 'https://www.dhl.de/int-verfolgen/data/config?domain=de&language=en';
 const SEARCH = `https://www.dhl.de/int-verfolgen/data/search?piececode=${NUMBER}&noRedirect=true&language=en`;
 
@@ -329,7 +329,7 @@ describe('DHL public tracking normalization', () => {
   });
 
   it('normalizes safe identifiers and builds an official tracking link', () => {
-    expect(normalizeDHLTrackingNumber('lf 123.456-785 de')).toBe(NUMBER);
+    expect(normalizeDHLTrackingNumber('lf 999.999-987 de')).toBe(NUMBER);
     expect(dhlTrackingUrl(NUMBER)).toBe(`https://www.dhl.de/en/privatkunden/dhl-sendungsverfolgung.html?piececode=${NUMBER}`);
     expect(() => normalizeDHLTrackingNumber('https://evil.example')).toThrow('invalid');
   });

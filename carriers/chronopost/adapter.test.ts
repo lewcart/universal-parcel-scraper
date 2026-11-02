@@ -39,7 +39,7 @@ describe('Chronopost direct tracking', () => {
     const reply = (skybill: string) => parseChronopostTrackingXml(history(transit).split(number).join(skybill), skybill);
     expect(reply('LX123456785TW')).toMatchObject({ delivery_carrier: 'la-poste' });
     expect(reply('CP123456785CN')).toMatchObject({ delivery_carrier: 'la-poste' });
-    for (const own of ['EE123456785TW', 'LX123456785FR', 'XT123456785TS', 'LX123456785JF']) {
+    for (const own of ['EE123456785TW', 'LX123456785FR', 'XT999999987TS', 'LX123456785JF']) {
       expect(reply(own)).not.toHaveProperty('delivery_carrier');
     }
   });
@@ -525,15 +525,15 @@ describe('Chronopost direct tracking', () => {
 
   it('shares the whole-number validation, claims its own prefixes and asks Chronopost for a generic postal number over HTTP', async () => {
     expect(normalizeChronopostNumber('xt 123456799 ts')).toBe(number);
-    expect(normalizeChronopostNumber('12345678901234E')).toBe('12345678901234E');
+    expect(normalizeChronopostNumber('99999999999984E')).toBe('99999999999984E');
     expect(normalizeChronopostNumber('1234 5678 9012 34')).toBe('12345678901234');
-    expect(normalizeChronopostNumber('xn 2468 1357 9024')).toBe('XN246813579024');
+    expect(normalizeChronopostNumber('xn 9999 9999 9980')).toBe('XN999999999980');
     for (const invalid of ['12345678901234A', '6A00000000000', '1234567890123', 'XN24681357902', 'XN2468135790246', 'XM246813579024', number + '<tag>']) {
       expect(() => normalizeChronopostNumber(invalid)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     }
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'chronopost', confidence: 'high' });
-    expect(detectCarrierMatch('XN246813579024')).toEqual({ carrier: 'unknown', confidence: 'low', candidates: ['chronopost'], preferred: [] });
-    expect(recognitionAskedCarriers('XN246813579024')[0]).toBe('chronopost');
+    expect(detectCarrierMatch('XN999999999980')).toEqual({ carrier: 'unknown', confidence: 'low', candidates: ['chronopost'], preferred: [] });
+    expect(recognitionAskedCarriers('XN999999999980')[0]).toBe('chronopost');
     for (const other of ['XN24681357902', 'XN2468135790246', 'XM246813579024']) expect(detectCarrierMatch(other).candidates).not.toContain('chronopost');
     expect(recognitionCandidates('RA123456785IR').map(candidate => candidate.carrier)).toContain('chronopost');
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(fixture));

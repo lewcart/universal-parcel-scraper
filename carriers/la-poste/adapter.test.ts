@@ -112,10 +112,10 @@ describe('La Poste tracking input', () => {
   });
   it('normalizes domestic and UPU identifiers and builds official URLs', () => {
     expect(normalizeLaPosteTrackingNumber('ab 123.456-78901')).toBe(TRACKING_NUMBER);
-    expect(normalizeLaPosteTrackingNumber('RA123456785FR')).toBe('RA123456785FR');
+    expect(normalizeLaPosteTrackingNumber('RA999999987FR')).toBe('RA999999987FR');
     expect(normalizeLaPosteTrackingNumber('12345678901234q')).toBe('12345678901234Q');
     expect(normalizeLaPosteTrackingNumber('87 0012 3456 7890')).toBe('87001234567890');
-    expect(normalizeLaPosteTrackingNumber('87 0012 3456 78901')).toBe('870012345678901');
+    expect(normalizeLaPosteTrackingNumber('87 0999 9999 99980')).toBe('870999999999980');
     expect(normalizeLaPosteTrackingNumber('88 0012 3456 7890a')).toBe('88001234567890A');
 
     const page = new URL(laPosteTrackingUrl(TRACKING_NUMBER));
@@ -525,7 +525,7 @@ describe('La Poste response normalization', () => {
   });
 
   it('normalizes Chronopost shipments returned by the same unified API', () => {
-    const chronopostNumber = 'PZ123456785JF';
+    const chronopostNumber = 'PZ999999987JF';
     const fixture = deliveredFixture();
     fixture[0]!.shipment.idShip = chronopostNumber;
     fixture[0]!.shipment.product = 'chronopost';
@@ -858,7 +858,7 @@ describe('La Poste status vocabulary', () => {
 });
 
 describe('La Poste adapter factory', () => {
-  it.each(['87001234567890', '870012345678901'])('retrieves tracked mail without changing the numeric identifier: %s', async (number) => {
+  it.each(['87001234567890', '870999999999980'])('retrieves tracked mail without changing the numeric identifier: %s', async (number) => {
     const fixture = deliveredFixture();
     fixture[0]!.shipment.idShip = number;
     fixture[0]!.shipment.product = 'Envoi suivi';

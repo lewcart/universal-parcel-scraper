@@ -131,9 +131,9 @@ describe('BRT direct tracking', () => {
   });
 
   it('follows an EOB customer parcel ID through the same parcel search', async () => {
-    const customerId = 'EOB99099100000000015';
+    const customerId = 'EOB99099199999999980';
     const list = parcelList.replace(`<td>${PARCEL_ID}</td></tr>`, `<td>${customerId}</td></tr>`);
-    expect(normalizeBrtNumber('eob 9909 9100 0000 0001 5')).toBe(customerId);
+    expect(normalizeBrtNumber('eob 9909 9199 9999 9998 0')).toBe(customerId);
     for (const n of [customerId.slice(0, -1), customerId + '0', 'EOC99099100000000015', 'EOB9909910000000001A']) {
       expect(() => normalizeBrtNumber(n)).toThrow(InvalidInputError);
     }

@@ -10,7 +10,7 @@ import {
 } from './adapter.js';
 import { amazonShippingStatus } from './status.js';
 
-const TRACKING_NUMBER = 'FR1234567890';
+const TRACKING_NUMBER = 'FR9999999981';
 
 const fixture = (name: string): Record<string, unknown> => JSON.parse(
   readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'),
@@ -62,7 +62,7 @@ afterEach(() => vi.restoreAllMocks());
 
 describe('Amazon Shipping France input', () => {
   it('normalizes the documented FR plus ten-digit format and builds official URLs', () => {
-    expect(normalizeAmazonShippingTrackingNumber(' fr12 3456-7890 '))
+    expect(normalizeAmazonShippingTrackingNumber(' fr99 9999-9981 '))
       .toBe(TRACKING_NUMBER);
     expect(amazonShippingTrackingUrl(TRACKING_NUMBER))
       .toBe(`https://track.amazon.fr/tracking/${TRACKING_NUMBER}`);
@@ -78,7 +78,7 @@ describe('Amazon Shipping France input', () => {
       'TBA12345678901',
       'TBA1234567890123',
       'FR123456789A',
-      'FR1234567890?admin=true',
+      'FR9999999981?admin=true',
       'FR123456789É',
     ]) {
       expect(() => normalizeAmazonShippingTrackingNumber(value)).toThrow('European country prefix');
@@ -420,26 +420,26 @@ describe('Amazon Shipping discovery boundaries', () => {
     'supports the %s format', (prefix) => expect(normalizeAmazonShippingTrackingNumber(`${prefix}0000000001`)).toBe(`${prefix}0000000001`),
   );
   it('uses official regional portals and recognizes US numbers', () => {
-    expect(amazonShippingTrackingApiUrl('UK0000000001')).toBe('https://track.amazon.co.uk/api/tracker/UK0000000001');
-    expect(amazonShippingTrackingApiUrl('IT0000000001')).toContain('track.amazon.it');
-    expect(amazonShippingTrackingApiUrl('ES0000000001')).toContain('track.amazon.es');
-    expect(amazonShippingTrackingApiUrl('TBA000000000001')).toContain('track.amazon.com/api/tracker/TBA000000000001');
-    expect(amazonShippingTrackingApiUrl('BE0000000001')).toContain('track.amazon.fr');
+    expect(amazonShippingTrackingApiUrl('UK9999999980')).toBe('https://track.amazon.co.uk/api/tracker/UK9999999980');
+    expect(amazonShippingTrackingApiUrl('IT9999999980')).toContain('track.amazon.it');
+    expect(amazonShippingTrackingApiUrl('ES9999999980')).toContain('track.amazon.es');
+    expect(amazonShippingTrackingApiUrl('TBA999999999980')).toContain('track.amazon.com/api/tracker/TBA999999999980');
+    expect(amazonShippingTrackingApiUrl('BE9999999980')).toContain('track.amazon.fr');
   });
   it('does not mistake an expired shipment placeholder for real movement', () => {
     expect(() => parseAmazonShippingTrackingResponse(historyExpiredFixture()))
       .toThrow('history has expired');
   });
   it('rejects contradictory identity even with usable tracking history', () => {
-    expect(() => parseAmazonShippingTrackingResponse({ ...deliveredFixture(), trackingId: 'FR0000000002' }, 'Europe/Paris', 'FR0000000001'))
+    expect(() => parseAmazonShippingTrackingResponse({ ...deliveredFixture(), trackingId: 'FR0000000002' }, 'Europe/Paris', 'FR9999999980'))
       .toThrow('different tracking number');
   });
   it('rejects structured identity even when it contains the requested number', () => {
-    for (const trackingId of [['FR0000000001'], { value: 'FR0000000001' }]) {
-      expect(() => parseAmazonShippingTrackingResponse({ ...deliveredFixture(), trackingId }, 'Europe/Paris', 'FR0000000001'))
+    for (const trackingId of [['FR9999999980'], { value: 'FR9999999980' }]) {
+      expect(() => parseAmazonShippingTrackingResponse({ ...deliveredFixture(), trackingId }, 'Europe/Paris', 'FR9999999980'))
         .toThrow('different tracking number');
     }
-    expect(parseAmazonShippingTrackingResponse({ ...deliveredFixture(), trackingId: 'FR0000000001' }, 'Europe/Paris', 'FR0000000001').status)
+    expect(parseAmazonShippingTrackingResponse({ ...deliveredFixture(), trackingId: 'FR9999999980' }, 'Europe/Paris', 'FR9999999980').status)
       .toBe('delivered');
   });
   it('reads the tracker clock as UTC on every host, and the estimate on the day of the number country', () => {

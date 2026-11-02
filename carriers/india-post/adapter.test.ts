@@ -15,8 +15,8 @@ import { locatePlace } from '../../places/index.js';
 // Every identifier, office, pincode and timestamp below is synthetic; both
 // numbers are recorded in numbers.json as made-up values with valid check
 // digits. Event wordings reuse India Post's own English labels.
-const SAMPLE_NUMBER = 'JN067614884IN';
-const WRONG_VALID_NUMBER = 'RR000000005IN';
+const SAMPLE_NUMBER = 'JN999999987IN';
+const WRONG_VALID_NUMBER = 'RR999999987IN';
 const CSRF_TOKEN = 'fixtureCsrfToken0123456789012345';
 const DELIVERED = JSON.parse(
   readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'),
@@ -153,7 +153,7 @@ it('reads "lost" only as a whole word, not Lagos before "To" in a flight remark'
 
 describe('India Post tracking input', () => {
   it('accepts only valid India-issued S10 identifiers and builds the scraper URL', () => {
-    expect(normalizeIndiaPostTrackingNumber('jn 067.614-884 in')).toBe(SAMPLE_NUMBER);
+    expect(normalizeIndiaPostTrackingNumber('jn 999.999-987 in')).toBe(SAMPLE_NUMBER);
     const url = new URL(indiaPostTrackingUrl(SAMPLE_NUMBER));
     expect(url.origin).toBe('https://myspeedpost.com');
     expect(url.pathname).toBe('/track');
@@ -163,7 +163,7 @@ describe('India Post tracking input', () => {
     for (const value of [
       'JN067614885IN',
       'JN067614884FR',
-      'JN067614884IN&admin=true',
+      'JN999999987IN&admin=true',
       '123',
     ]) {
       expect(() => normalizeIndiaPostTrackingNumber(value)).toThrow('valid 13-character S10');

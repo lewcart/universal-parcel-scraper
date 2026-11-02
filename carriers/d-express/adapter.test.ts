@@ -11,7 +11,7 @@ import { normalizeDexpressNumber, parseDexpress } from './parser.js';
 import { dexpressMappedStage, dexpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ZZ0000000001';
+const DELIVERED = 'ZZ9999999980';
 const IN_TRANSIT = 'ZZ0000000002';
 const UNKNOWN = 'ZZ0000000003';
 
@@ -198,12 +198,12 @@ describe('D Express HTTP adapter', () => {
   it('refuses what D Express does not issue, or a cancelled lookup, without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
     // The tracker's search is looser than the form: only whole codes are sent.
-    for (const number of ['ZZ000000000', 'ZZ00000000000', 'Z00000000001', '000000000001', 'ZZ000000000_', 'ZZ%', 'ZZ0000000001,ZZ0000000002', '0'.repeat(65)]) {
+    for (const number of ['ZZ000000000', 'ZZ00000000000', 'Z00000000001', '000000000001', 'ZZ000000000_', 'ZZ%', 'ZZ9999999980,ZZ0000000002', '0'.repeat(65)]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeDexpressNumber(' zz 0000-000-001 ')).toBe(DELIVERED);
+    expect(normalizeDexpressNumber(' zz 9999-999-980 ')).toBe(DELIVERED);
   });
 
   it('tries a read that hangs once more inside the budget', async () => {

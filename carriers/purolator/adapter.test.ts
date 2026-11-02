@@ -7,7 +7,7 @@ import { normalizePurolatorNumber, parsePurolator } from './parser.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 
-const NUMBER = '100000000001';
+const NUMBER = '199999999977';
 const OTHER = '100000000002';
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
 const payload = () => structuredClone(fixture);
@@ -182,7 +182,7 @@ describe('Purolator direct tracking', () => {
     expect(headers.get('x-api-key')).toBeTruthy();
     expect(headers.has('Authorization')).toBe(false);
     expect(headers.has('Cookie')).toBe(false);
-    expect(normalizePurolatorNumber('100 000 000.001')).toBe(NUMBER);
+    expect(normalizePurolatorNumber('199 999 999.977')).toBe(NUMBER);
     for (const invalid of ['123', 'BYS000000000', `${NUMBER}?tracking=other`]) expect(() => normalizePurolatorNumber(invalid)).toThrow(InvalidInputError);
   });
 

@@ -10,7 +10,7 @@ import { parseDpdRo, parseDpdRoReply } from './parser.js';
 import { dpdRoOperation, dpdRoPhase, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = '80000000001';
+const DELIVERED = '89999999980';
 const ABROAD = '80000000002';
 const CANCELLED = '80000000003';
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
@@ -23,7 +23,7 @@ describe('DPD Romania HTTP adapter', () => {
   it('asks the public track endpoint once, in English, through the supplied transport and records the step', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply('delivered'));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new DpdRoTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 8000 0000 001 ', { budgetMs: 1000.5 }))
+    await expect(new DpdRoTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 8999 9999 980 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;

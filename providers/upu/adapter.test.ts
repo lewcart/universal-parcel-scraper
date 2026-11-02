@@ -3,7 +3,7 @@ import { adapter, parseUpuResponse } from './adapter.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { DEFAULT_USER_AGENT } from '../../core/transport/index.js';
 
-const number = 'EB000000005CN';
+const number = 'EB999999987CN';
 const scan = (EventCd = 'EMA', EventNm = 'Posting/Collection', EventDT = '/Date(1789202880000+0200)/') =>
   ({ EventCd, EventNm, EventDT, EventLocation: 'Sorting office', Signature: 'PRIVATE PERSON' });
 const payload = (Events = [scan()]) => [{ ID: number, Events, State: 3, DestinationCountryCd: 'IN' }];
@@ -112,7 +112,7 @@ describe('UPU postal tracking', () => {
   it('uses one bounded anonymous GET with no browser, cookie or postcode', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json(payload()));
     const tracker = create(fetcher);
-    await expect(tracker.track({ number: 'eb 000000005 cn', postcode: 'PRIVATE' }, { budgetMs: 1000 }))
+    await expect(tracker.track({ number: 'eb 999999987 cn', postcode: 'PRIVATE' }, { budgetMs: 1000 }))
       .resolves.toMatchObject({ tracking_provider: 'UPU' });
     expect(fetcher).toHaveBeenCalledOnce();
     expect(fetcher.mock.calls[0]![0]).toBe(`https://globaltracktrace.ptc.post/gtt.api/service.svc/rest/ItemTTWithTrans/${number}/EN`);

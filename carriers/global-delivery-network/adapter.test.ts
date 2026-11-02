@@ -8,7 +8,7 @@ import { gdnUrl, normalizeGdnNumber, parseGdn } from './parser.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 // Synthetic: a twelve-digit parcel number and a made-up recipient, as the tracker lays them out.
-const NUMBER = '100000000001';
+const NUMBER = '199999999977';
 const input = (label: string, value: string) => `<label>${label}</label><input type="text" readonly="readonly" value="${value}" /><br />`;
 const row = (clock: string, wording: string, place = ' - ') =>
   `<tr><td class="table_row_nowrap">${clock}</td><td class="table_row">${wording}</td><td class="table_row">${place}</td></tr>`;
@@ -30,9 +30,9 @@ const MISSING = '<html><body><h1 id="banner_icon_text">Tracking</h1>\n<h1 style=
 
 describe('Global Delivery Network tracker page', () => {
   it('takes twelve-digit parcel numbers only', () => {
-    expect(normalizeGdnNumber('1000 0000 0001')).toBe(NUMBER);
+    expect(normalizeGdnNumber('1999 9999 9977')).toBe(NUMBER);
     expect(gdnUrl(NUMBER)).toBe(`https://pds.gdnparcel.com/pds_tracking.asp?track=${NUMBER}`);
-    for (const raw of ['10000000001', '1000000000011', 'ZZ0000000001']) {
+    for (const raw of ['10999999980', '1000000000011', 'ZZ9999999980']) {
       expect(() => normalizeGdnNumber(raw)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     }
     // Twelve digits are many carriers' numbers: no rule claims them.

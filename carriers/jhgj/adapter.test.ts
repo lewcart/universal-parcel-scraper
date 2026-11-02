@@ -13,7 +13,7 @@ import { statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import carrier from './carrier.json' with { type: 'json' };
 
-const NUMBER = 'JH9900000001CN';
+const NUMBER = 'JH9999999980CN';
 const REFERENCE = 'SHOP-REF-0007';
 const UNKNOWN = 'JH9900000002CN';
 // Noon in Beijing on 14 March: the script's rows from the destination's customs on are still ahead.
@@ -35,7 +35,7 @@ const track = (fetcher: typeof fetch, number = NUMBER) => adapter(environment(fe
 describe('Jiuhao International tracking adapter', () => {
   it('asks its own Hualei tracker for the whole number over plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(json(fixture('track')));
-    await expect(new JhgjTracker({ fetcher, recorder: NOOP_RECORDER }).fetch('jh 9900000001 cn')).resolves.toMatchObject({ destination_country: 'PL' });
+    await expect(new JhgjTracker({ fetcher, recorder: NOOP_RECORDER }).fetch('jh 9999999980 cn')).resolves.toMatchObject({ destination_country: 'PL' });
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(`${JHGJ_ORIGIN}/selectTrack.htm?documentCode=${NUMBER}`);
     expect(JHGJ_ORIGIN).toBe('http://119.29.157.172:8082');

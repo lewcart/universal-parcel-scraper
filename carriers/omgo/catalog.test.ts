@@ -5,7 +5,7 @@ import { carrierIdFromName } from '../../core/catalog/hints.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { createTracker, TrackingError } from '../../facade/index.js';
 
-const number = 'OMGO0000000000001';
+const number = 'OMGO9999999999980';
 const history: unknown = JSON.parse(readFileSync(new URL('./fixtures/in-transit.json', import.meta.url), 'utf8'));
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 
@@ -23,7 +23,7 @@ describe('OMGO catalog and tracking', () => {
     expect(carrierIdFromName('Omgo')).toBe('omgo');
   });
 
-  it.each(['OMGO000000000001', 'OMGO00000000000001', 'OMGA0000000000001'])(
+  it.each(['OMGO999999999980', 'OMGO00000000000001', 'OMGA0000000000001'])(
     'does not claim unsupported number %s', (value) => {
       expect(detectCarrierMatch(value).candidates).not.toContain('omgo');
     },

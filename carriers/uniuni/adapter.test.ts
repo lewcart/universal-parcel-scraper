@@ -11,7 +11,7 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 const NUMBER = 'UUS0000000000000001';
 const OTHER = 'UUS0000000000000002';
 const UUSC_NUMBER = 'UUSC000000000001';
-const U9999_NUMBER = 'U999900000000001';
+const U9999_NUMBER = 'U999999999999980';
 const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
 const uuscFixture = () => JSON.parse(readFileSync(new URL('./fixtures/uusc-delivered.json', import.meta.url), 'utf8'));
 
@@ -39,7 +39,7 @@ describe('UniUni confirmed parcel formats', () => {
     expect(suggestion.confidence).toBe('low');
     expect(new RegExp(rule.pattern).test(U9999_NUMBER)).toBe(true);
     expect(new RegExp(suggestion.pattern).test(U9999_NUMBER)).toBe(false);
-    expect(normalizeUniuniRecognitionNumber('u9999-00000 000001')).toBe(U9999_NUMBER);
+    expect(normalizeUniuniRecognitionNumber('u9999-99999 999980')).toBe(U9999_NUMBER);
     expect(new RegExp(rule.pattern).test('U999800000000001')).toBe(false);
     expect(new RegExp(suggestion.pattern).test('U999800000000001')).toBe(true);
     expect(normalizeUniuniRecognitionNumber('U000100000000001')).toBe('U000100000000001');
@@ -286,7 +286,7 @@ describe('UniUni direct retrieval', () => {
     const value = uuscFixture(); value.data.valid_tno[0].tno = U9999_NUMBER;
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json(value));
     const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
-    await expect(instance.recognize!('u9999 00000000001')).resolves.toEqual({ known: true, lastActivityAt: '2026-01-05T22:00:00.000Z' });
+    await expect(instance.recognize!('u9999 99999999980')).resolves.toEqual({ known: true, lastActivityAt: '2026-01-05T22:00:00.000Z' });
     expect(new URL(String(fetcher.mock.calls[0]![0])).searchParams.get('id')).toBe(U9999_NUMBER);
   });
 
@@ -299,7 +299,7 @@ describe('UniUni direct retrieval', () => {
     await expect(instance.recognize!('zz00-caa0 z000000001')).resolves.toEqual({ known: true, lastActivityAt: '2026-01-05T22:00:00.000Z' });
     expect(new URL(String(fetcher.mock.calls[0]![0])).searchParams.get('id')).toBe(reference);
     expect(normalizeUniuniRecognitionNumber('ZZ00USA0Z000000001')).toBe('ZZ00USA0Z000000001');
-    expect(normalizeUniuniRecognitionNumber('jy00-ca00 a000000001')).toBe('JY00CA00A000000001');
+    expect(normalizeUniuniRecognitionNumber('jy00-ca00 a999999980')).toBe('JY00CA00A999999980');
     await expect(instance.recognize!(reference)).resolves.toEqual({ known: false });
     for (const number of ['ZZ00CAA1Z000000001', 'ZZ00CAA0Z00000001', 'Z100CAA0Z000000001', 'ZZ00CAA00000000001', 'ZZ00UKA0Z000000001',
       'ZZ00CA00A000000001', 'JY00CA00Z000000001']) {

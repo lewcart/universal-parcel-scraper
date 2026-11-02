@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, OmgoTracker } from './adapter.js';
 
-const NUMBER = 'OMGO0000000000001';
+const NUMBER = 'OMGO9999999999980';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 const page = () => new Response(fixture('tracking-page.html'));

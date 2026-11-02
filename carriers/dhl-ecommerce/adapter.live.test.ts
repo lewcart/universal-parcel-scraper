@@ -8,6 +8,6 @@ describe('DHL eCommerce native recognition', () => {
   });
 
   it('reports a synthetic regional miss without starting a browser', async () => {
-    await expect(new DHLEcommerceTracker().recognize('33870000000000001')).resolves.toEqual({ known: false });
+    await expect(new DHLEcommerceTracker().recognize('33879999999999980')).resolves.toEqual({ known: false });
   });
 });

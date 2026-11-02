@@ -7,7 +7,7 @@ const instance = () => adapter({ trawl: null, browserExecutablePath: null, recor
 
 describe('DHL eCommerce UK live tracking', () => {
   it('identifies an absent shipment', async () => {
-    await expect(instance().track({ number: '99990000000000' })).rejects.toMatchObject({ kind: 'not_found' });
+    await expect(instance().track({ number: '99999999999981' })).rejects.toMatchObject({ kind: 'not_found' });
   });
 
   it.skipIf(!process.env.DHL_ECOMMERCE_UK_TRACKING_NUMBER)('returns identity-bound public history', async () => {

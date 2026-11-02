@@ -91,7 +91,7 @@
 
     <script>
         function formatTrackingNo() {
-            var TrackingId = '500000000013';
+            var TrackingId = '599999999980';
             var NewTrackingId = '';
             for (var i = 0; i < TrackingId.length; i++) {
                 if (i !== 0 && i % 4 === 0) NewTrackingId += ' ';
@@ -100,7 +100,7 @@
             $("#SetTrackingId1, #SetTrackingId").text(NewTrackingId);
         }
 
-        var historyTrans = [{"Event":"Furniture Received by Metro-<Warehouse>-Hub","ID":7000005,"EventID":23,"Date":"03/03/2026 01:05 AM","Location":"Sample Hub, CA"},{"Event":"Pickup completed, No exceptions","ID":7000004,"EventID":18,"Date":"03/03/2026 01:05 AM","Location":"EXAMPLE CITY, CA"},{"Event":"Pickup scheduled for 03/03/2026","ID":7000003,"EventID":10,"Date":"03/03/2026 01:05 AM","Location":"EXAMPLE CITY, CA"},{"Event":"Pickup document attached","ID":7000002,"EventID":92,"Date":"03/02/2026 04:10 AM","Location":"EXAMPLE CITY, CA"},{"Event":"Order registered","ID":7000001,"EventID":1,"Date":"02/24/2026 03:40 PM","Location":"EXAMPLE CITY, CA"}];
+        var historyTrans = [{"Event":"Furniture Received by Metro-<Warehouse>-Hub","ID":7000005,"EventID":23,"Date":"03/03/2026 01:05 AM","Location":"Sample Hub, CA"},{"Event":"Pickup completed, No exceptions","ID":7000004,"EventID":18,"Date":"03/03/2026 01:05 AM","Location":"EXAMPLE CITY, CA"},{"Event":"Pickup scheduled for 03/03/2026","ID":7000003,"EventID":10,"Date":"03/03/2026 01:05 AM","Location":"EXAMPLE CITY, CA"},{"Event":"Pickup document attached","ID":7000002,"EventID":92,"Date":"03/02/2026 04:10 AM","Location":"EXAMPLE CITY, CA"},{"Event":"Order registered","ID":7999980,"EventID":1,"Date":"02/24/2026 03:40 PM","Location":"EXAMPLE CITY, CA"}];
         var abbr = "";
 
         $(document).ready(function () {

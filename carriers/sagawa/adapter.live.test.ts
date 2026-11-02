@@ -6,7 +6,7 @@ const instance = () => adapter({ fetcher: fetch, env: {}, recorder: NOOP_RECORDE
 
 describe('Sagawa Express live widget', () => {
   it('answers a well-formed unknown waybill with a clean not-found', async () => {
-    await expect(instance().track({ number: '300000000005' })).rejects.toMatchObject({ kind: 'not_found' });
+    await expect(instance().track({ number: '399999999980' })).rejects.toMatchObject({ kind: 'not_found' });
   });
 
   it.skipIf(!process.env.SAGAWA_TRACKING_NUMBER)('reads the current state of a real waybill without history or times', async () => {

@@ -8,7 +8,7 @@ import { normalizeLbcNumber, parseLbcWebsite } from './parser.js';
 
 type Json = Record<string, unknown>;
 
-const NUMBER = '100000000001';
+const NUMBER = '199999999977';
 const website = (): Json => JSON.parse(readFileSync(new URL('./fixtures/website.json', import.meta.url), 'utf8')) as Json;
 const mobileXml = () => readFileSync(new URL('./fixtures/mobile.xml', import.meta.url), 'utf8');
 const trackingStatus = (reply: Json): Json => ['data', 'Body', 'LBCTrackAndTraceResponse', 'LBCTrackAndTraceResult', 'TrackingStatus']
@@ -65,12 +65,12 @@ describe('LBC website history', () => {
     expect(() => parseLbcWebsite({ success: false, data: 'PRIVATE' }, NUMBER)).toThrow(expect.objectContaining({ kind: 'transport' }));
   });
   it('validates input before retrieval', () => {
-    expect(normalizeLbcNumber(' 1000 0000 0001 ')).toBe(NUMBER);
-    for (const number of ['1000000001', '10000000001', '10000000000001']) expect(normalizeLbcNumber(number)).toBe(number);
-    for (const number of ['100000001', '1000000000001', '100000000000001']) {
+    expect(normalizeLbcNumber(' 1999 9999 9977 ')).toBe(NUMBER);
+    for (const number of ['1000000001', '10999999980', '10009999999980']) expect(normalizeLbcNumber(number)).toBe(number);
+    for (const number of ['199999980', '1000000000001', '100000000000001']) {
       expect(() => normalizeLbcNumber(number)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     }
-    expect(() => normalizeLbcNumber('100000000001&x=1')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
+    expect(() => normalizeLbcNumber('199999999977&x=1')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
   });
 });
 

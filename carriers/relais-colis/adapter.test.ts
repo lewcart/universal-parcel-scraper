@@ -17,7 +17,7 @@ import {
 import { classifyRelaisColisStatus, comparableText } from './status.js';
 
 // Synthetic number following the official format.
-const OFFICIAL_EXAMPLE = 'CC200000000401';
+const OFFICIAL_EXAMPLE = 'CC299999999980';
 const CSRF_TOKEN = 'public-test.csrf-token';
 
 type Step = [string, string];
@@ -98,7 +98,7 @@ afterEach(() => vi.restoreAllMocks());
 
 describe('Relais Colis tracking input', () => {
   it('accepts the public official example and builds the current tracking URL', () => {
-    expect(normalizeRelaisColisTrackingNumber(' cc 2000.0000-0401 ')).toBe(OFFICIAL_EXAMPLE);
+    expect(normalizeRelaisColisTrackingNumber(' cc 2999.9999-9980 ')).toBe(OFFICIAL_EXAMPLE);
     expect(normalizeRelaisColisTrackingNumber('1234567890')).toBe('1234567890');
     const url = new URL(relaisColisTrackingUrl());
     expect(url.origin).toBe('https://relaiscolis.com');
@@ -111,7 +111,7 @@ describe('Relais Colis tracking input', () => {
       '123456789',
       '12345678901234567',
       'ABCDEFGHIJKL',
-      'CC200000000401&admin=true',
+      'CC299999999980&admin=true',
       'CC20000000040É',
     ]) {
       expect(() => normalizeRelaisColisTrackingNumber(value)).toThrow('10 to 16');
@@ -239,7 +239,7 @@ describe('Relais Colis HTML normalization', () => {
     }), OFFICIAL_EXAMPLE)).toThrow(RelaisColisTrackingError);
 
     expect(() => parseRelaisColisTrackingHtml(trackingPage({
-      trackingNumber: 'CC999999999901',
+      trackingNumber: 'CC999999999980',
     }), OFFICIAL_EXAMPLE)).toThrow('different shipment');
 
     expect(() => parseRelaisColisTrackingHtml(
@@ -270,22 +270,22 @@ describe('Relais Colis HTML normalization', () => {
     const withForm = (trackingNumber: string, page = groupedHistory) => page.replace('<div class="container">',
       `<div class="container">${searchForm(trackingNumber)}`);
     expect(parseRelaisColisTrackingHtml(withForm(OFFICIAL_EXAMPLE), OFFICIAL_EXAMPLE).events).toHaveLength(4);
-    expect(() => parseRelaisColisTrackingHtml(groupedHistory.replace(OFFICIAL_EXAMPLE, 'CC999999999901'), OFFICIAL_EXAMPLE))
+    expect(() => parseRelaisColisTrackingHtml(groupedHistory.replace(OFFICIAL_EXAMPLE, 'CC999999999980'), OFFICIAL_EXAMPLE))
       .toThrow('different shipment');
     for (const page of [
       // Separators the normalizer strips must not hide a second number past a length cap.
-      groupedHistory.replace(OFFICIAL_EXAMPLE, `${OFFICIAL_EXAMPLE} - - - - - - - - - CC999999999901`),
+      groupedHistory.replace(OFFICIAL_EXAMPLE, `${OFFICIAL_EXAMPLE} - - - - - - - - - CC999999999980`),
       groupedHistory.replace('>Votre colis</p>', '>Colis retour</p>'),
       groupedHistory.replace('</a>', `<p class="back-subedtext back-subedtext--sub">${OFFICIAL_EXAMPLE}</p></a>`),
-      groupedHistory.replace('</body>', '<p class="back-subedtext back-subedtext--sub">CC999999999901</p></body>'),
-      withForm('CC999999999901'),
+      groupedHistory.replace('</body>', '<p class="back-subedtext back-subedtext--sub">CC999999999980</p></body>'),
+      withForm('CC999999999980'),
       withForm(OFFICIAL_EXAMPLE, groupedHistory.replace(/<div class="back">[\s\S]*?<\/div>/, '')),
     ]) expect(() => parseRelaisColisTrackingHtml(page, OFFICIAL_EXAMPLE)).toThrow('shipment identifier');
   });
 
   it('reports absence only for the echoed number beside the explicit no-history message', () => {
     expect(() => parseRelaisColisTrackingHtml(noHistory, OFFICIAL_EXAMPLE)).toThrow(RelaisColisTrackingError);
-    expect(() => parseRelaisColisTrackingHtml(noHistory.replace(`value="${OFFICIAL_EXAMPLE}"`, 'value="CC999999999901"'), OFFICIAL_EXAMPLE))
+    expect(() => parseRelaisColisTrackingHtml(noHistory.replace(`value="${OFFICIAL_EXAMPLE}"`, 'value="CC999999999980"'), OFFICIAL_EXAMPLE))
       .toThrow('different shipment');
     const field = /<input type="text"[^>]*>/.exec(noHistory)![0];
     for (const page of [noHistory.replace(`value="${OFFICIAL_EXAMPLE}"`, ''), noHistory.replace(field, field + field)]) {

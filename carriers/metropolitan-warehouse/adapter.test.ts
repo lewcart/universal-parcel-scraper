@@ -11,7 +11,7 @@ import {
 import { metropolitanWarehouseStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const IN_TRANSIT = '500000000013';
+const IN_TRANSIT = '599999999980';
 const DELIVERED = '500000000021';
 const UNKNOWN = '500000000099';
 const PATH = '/Client/GetWixOrderTrackingDetails?eqs=SyntheticKey%2Fabc123';
@@ -41,7 +41,7 @@ describe('Metropolitan Warehouse HTTP adapter', () => {
   it('checks the number, asks for the order’s link and opens the order’s page as the tracker does, through the supplied transport', async () => {
     const fetcher = found('in-transit');
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new MetropolitanWarehouseTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 5000 0000 0013 ', { budgetMs: 1000.5 }))
+    await expect(new MetropolitanWarehouseTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 5999 9999 9980 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'in_transit' });
     expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
       `${METROPOLITAN_WAREHOUSE_CHECK}?trackid=${IN_TRANSIT}`, `${METROPOLITAN_WAREHOUSE_LINK}?trackingid=${IN_TRANSIT}`, DETAILS,
@@ -231,7 +231,7 @@ describe('Metropolitan Warehouse HTTP adapter', () => {
   });
 
   it('rejects numbers Metropolitan does not issue and pre-aborted lookups without a request', async () => {
-    expect(normalizeMetropolitanWarehouseNumber(' 5000-0000-0013 ')).toBe(IN_TRANSIT);
+    expect(normalizeMetropolitanWarehouseNumber(' 5999-9999-9980 ')).toBe(IN_TRANSIT);
     const fetcher = vi.fn<typeof fetch>();
     for (const number of ['50000000001', '5000000000130', 'TRX500000000', 'SAMPLETRACKING', '', '5'.repeat(65)]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });

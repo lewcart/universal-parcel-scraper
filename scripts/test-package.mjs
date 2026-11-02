@@ -86,9 +86,9 @@ try {
         return new Response(omgoReplies['tracking-page.html']);
       }
       assert.equal(String(url), 'https://omgoexpress.cn/wp-admin/admin-ajax.php');
-      assert.equal(init.body.get('tracking_codes'), 'OMGO0000000000001');
+      assert.equal(init.body.get('tracking_codes'), 'OMGO9999999999980');
       return new Response(omgoReplies['tracking.json']);
-    } }).track({ number: 'OMGO0000000000001', carrier: 'omgo' });
+    } }).track({ number: 'OMGO9999999999980', carrier: 'omgo' });
     assert.equal(omgo.source, 'omgo');
     assert.equal(omgo.result.status, 'in_transit');
     assert.equal(omgoRequests, 2);

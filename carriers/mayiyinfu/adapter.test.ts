@@ -11,7 +11,7 @@ import { statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import carrier from './carrier.json' with { type: 'json' };
 
-const NUMBER = 'MY9900000001US';
+const NUMBER = 'MY9999999980US';
 const REFERENCE = 'REFTEST000001';
 const UNKNOWN = 'MY9900000002US';
 const READ_AT = Date.parse('2026-03-25T04:00:00Z');
@@ -25,7 +25,7 @@ const track = (fetcher: typeof fetch, number = NUMBER) => adapter(environment(fe
 describe('Mayi Yinfu tracking adapter', () => {
   it('asks its own Hualei tracker for the whole number over plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(json(fixture('track')));
-    await expect(new MayiyinfuTracker({ fetcher, recorder: NOOP_RECORDER }).fetch('my 9900000001 us')).resolves.toMatchObject({ destination_country: 'ES' });
+    await expect(new MayiyinfuTracker({ fetcher, recorder: NOOP_RECORDER }).fetch('my 9999999980 us')).resolves.toMatchObject({ destination_country: 'ES' });
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(`${MAYIYINFU_ORIGIN}/selectTrack.htm?documentCode=${NUMBER}`);
     expect(MAYIYINFU_ORIGIN).toBe('http://www.mayiyinfu.com.cn:8082');

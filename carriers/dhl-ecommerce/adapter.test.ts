@@ -10,7 +10,7 @@ import {
   normalizeDHLEcommerceNumber, parseDHLEcommerceResponse, parseDHLEcommerceWebtrackResponse,
 } from './adapter.js';
 
-const NUMBER = '33870000000000001';
+const NUMBER = '33879999999999980';
 const EMPTY_WEBTRACK = { total: 0, limit: 10, offset: 0, packages: [] };
 
 it('uses browser recognition only for recoverable HTTP failures and retains the history', async () => {
@@ -31,7 +31,7 @@ function webtrack() {
   return {
     total: 1, limit: 10, offset: 0,
     packages: [{
-      trackedValue: NUMBER, tmiUid: 'synthetic-package-id', trackingId: 'GM1234567890123456',
+      trackedValue: NUMBER, tmiUid: 'synthetic-package-id', trackingId: 'GM9999999999999980',
       packageId: 'SYNTHETICPACKAGE123', status: 'En Route', estimatedDeliveryDate: '2026-09-14',
       sender: { name: 'Synthetic Webshop', postalCode: 'PRIVATE POSTCODE' },
       recipient: { name: 'PRIVATE RECIPIENT', address: 'PRIVATE ADDRESS' },
@@ -216,7 +216,7 @@ describe('DHL eCommerce normalization', () => {
   });
 
   it('normalizes numbers and creates the global tracking link', () => {
-    expect(normalizeDHLEcommerceNumber('gm 1234-5678.9012 3456')).toBe('GM1234567890123456');
+    expect(normalizeDHLEcommerceNumber('gm 9999-9999.9999 9980')).toBe('GM9999999999999980');
     expect(dhlEcommerceTrackingUrl(NUMBER)).toContain(`tracking-id=${NUMBER}&submit=1`);
     expect(() => normalizeDHLEcommerceNumber('https://evil.example')).toThrow();
   });
@@ -336,12 +336,12 @@ describe('DHL eCommerce Webtrack', () => {
     ]);
     expect(JSON.stringify(result)).not.toContain('PRIVATE');
     expect(JSON.stringify(result)).not.toContain('synthetic-package-id');
-    expect(JSON.stringify(result)).not.toContain('GM1234567890123456');
+    expect(JSON.stringify(result)).not.toContain('GM9999999999999980');
   });
 
   it('accepts an exact returned carrier identifier and rejects a query echo without a package identity', () => {
     const payload = webtrack();
-    expect(parseDHLEcommerceWebtrackResponse(payload, 'GM1234567890123456').events).toHaveLength(3);
+    expect(parseDHLEcommerceWebtrackResponse(payload, 'GM9999999999999980').events).toHaveLength(3);
     payload.packages[0]!.trackingId = ''; payload.packages[0]!.packageId = '';
     expect(() => parseDHLEcommerceWebtrackResponse(payload, NUMBER)).toThrow('unidentified');
   });

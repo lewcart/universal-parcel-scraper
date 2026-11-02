@@ -10,7 +10,7 @@ import { normalizeFargoCourierNumber, parseFargoCourier } from './parser.js';
 import { fargoCourierMappedStage, fargoCourierStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = 'FCLIN00000000';
+const NUMBER = 'FCLIN99999980';
 const OLDER = '0000001';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const delivered = fixture('delivered.html');
@@ -34,7 +34,7 @@ describe('Fargo Courier direct tracking', () => {
     expect(result.last_update_local).toBeUndefined();
     expect(result.events?.map(event => [event.time, event.provider_code, event.description, event.location, event.stage])).toEqual([
       ['2026-03-03T11:20:00+03:00', 'PODCRE', 'Waybill has been PODed', 'HUB', 'delivered'],
-      ['2026-03-03T11:18:00+03:00', 'WBLDLV', 'Waybill FCLIN00000000 delivered', 'HUB', 'delivered'],
+      ['2026-03-03T11:18:00+03:00', 'WBLDLV', 'Waybill FCLIN99999980 delivered', 'HUB', 'delivered'],
       ['2026-03-03T08:00:00+03:00', 'WBLALD', 'Waybill allocated to delivery HUB-7 - HUB', 'HUB', 'out_for_delivery'],
       ['2026-03-03T08:00:00+03:00', 'DELCRE', 'Parcel FCG5 scanned onto delivery HUB-7', 'HUB', 'out_for_delivery'],
       // The event's second line joins the first.
@@ -69,8 +69,8 @@ describe('Fargo Courier direct tracking', () => {
   });
 
   it('binds the page to the whole waybill, in any case', () => {
-    expect(parseFargoCourier(edit($ => $('th:contains("Waybill Number")').next('td').text(' : fclin00000000')), NUMBER).status).toBe('delivered');
-    expect(parseFargoCourier(delivered, ' fclin 0000 0000 ').status).toBe('delivered');
+    expect(parseFargoCourier(edit($ => $('th:contains("Waybill Number")').next('td').text(' : fclin99999980')), NUMBER).status).toBe('delivered');
+    expect(parseFargoCourier(delivered, ' fclin 9999 9980 ').status).toBe('delivered');
     // The tracker also finds a waybill by its parcels' labels.
     for (const asked of ['FCLIN00000001', 'FCG0000005', '0000000']) {
       expect(() => parseFargoCourier(delivered, asked), asked).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
@@ -82,7 +82,7 @@ describe('Fargo Courier direct tracking', () => {
   });
 
   it('takes waybill-shaped numbers only', () => {
-    expect(normalizeFargoCourierNumber(' fclin0000-0000 ')).toBe(NUMBER);
+    expect(normalizeFargoCourierNumber(' fclin9999-9980 ')).toBe(NUMBER);
     expect(normalizeFargoCourierNumber(OLDER)).toBe(OLDER);
     for (const number of ['', '12345', 'FCLIN', 'FCLIN00000000000', 'ABCDEFG0000000', 'FCLIN0000000A', '0'.repeat(65)]) {
       expect(() => normalizeFargoCourierNumber(number), number).toThrow(InvalidInputError);
@@ -97,7 +97,7 @@ describe('Fargo Courier direct tracking', () => {
     expect(() => parseFargoCourier(sucuri, NUMBER)).toThrowError(expect.objectContaining({ kind: 'challenge' }));
     expect(() => parseFargoCourier(history(), NUMBER)).toThrowError(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
     // Invoicing alone is no scan.
-    expect(() => parseFargoCourier(history(row('WBLINV', 'Waybill FCLIN00000000 invoiced on invoice number 42', '06-04-2026', '09:00', 'HUB')), NUMBER))
+    expect(() => parseFargoCourier(history(row('WBLINV', 'Waybill FCLIN99999980 invoiced on invoice number 42', '06-04-2026', '09:00', 'HUB')), NUMBER))
       .toThrowError(expect.objectContaining({ name: 'NoHistoryError' }));
   });
 
@@ -162,7 +162,7 @@ describe('Fargo Courier direct tracking', () => {
     const fetcher = vi.fn<typeof fetch>(async () => reply());
     const instance = adapter({ ...environment(fetcher), userAgent: 'SyntheticAgent/1.0' });
     expect(instance.recognize).toBeUndefined();
-    expect(await instance.track({ number: ' fclin00000000 ' })).toMatchObject({ status: 'delivered' });
+    expect(await instance.track({ number: ' fclin99999980 ' })).toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(URL_OF(NUMBER));

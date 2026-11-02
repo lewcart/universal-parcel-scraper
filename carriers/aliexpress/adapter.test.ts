@@ -192,11 +192,11 @@ describe('Cainiao Express home-delivery numbers', () => {
   it('asks only AliExpress\'s feed when it answers, and for any other number', async () => {
     const fetcher = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(jsonResponse(fixture('delivered-dofr.json')))
-      .mockResolvedValueOnce(empty('INTERNAL', 'DOFR0000000000001HD'))
+      .mockResolvedValueOnce(empty('INTERNAL', 'DOFR9999999999980HD'))
       .mockResolvedValueOnce(empty('EXTERNAL', CAINIAO_WRONG_NUMBER));
     const tracker = new CainiaoTracker({ fetcher });
-    await expect(tracker.fetch('DOFR0000000000001HD')).resolves.toMatchObject({ status: 'delivered' });
-    await expect(tracker.fetch('DOFR0000000000001HD')).resolves.toMatchObject({ status: 'pending' });
+    await expect(tracker.fetch('DOFR9999999999980HD')).resolves.toMatchObject({ status: 'delivered' });
+    await expect(tracker.fetch('DOFR9999999999980HD')).resolves.toMatchObject({ status: 'pending' });
     await expect(tracker.fetch(CAINIAO_WRONG_NUMBER)).rejects.toMatchObject({ kind: 'not_found' });
     expect(fetcher.mock.calls.map(endpoint)).toEqual(Array(3).fill('https://global.cainiao.com/global/detail.json'));
   });
@@ -237,7 +237,7 @@ describe('Cainiao projection', () => {
       // A delivered parcel has no estimate left to show.
       expected_delivery: null,
       delivered_at: '2026-03-04T10:15:00+01:00',
-      delivery_tracking_number: 'RA123456785CH',
+      delivery_tracking_number: 'RA999999987CH',
     });
     expect(delivered.events?.map((event) => [event.description, event.stage])).toEqual([
       ['Delivered', 'delivered'],
@@ -402,19 +402,19 @@ describe('Cainiao projection', () => {
       'LP00000000000001').events?.[0]).toMatchObject({ time: '2026-06-10T05:57:00+08:00' });
   });
 
-  it.each(['ra 123.456-785 ch', 'RA123456785CH'])('normalizes the machine-readable partner reference before host validation: %s', (reference) => {
+  it.each(['ra 999.999-987 ch', 'RA999999987CH'])('normalizes the machine-readable partner reference before host validation: %s', (reference) => {
     const result = normalizeCarrierResult(parseCainiaoTrackingResponse({ module: [{ mailNo: 'LP00000000000001',
       copyRealMailNo: reference, latestTrace: { actionCode: 'LH_ARRIVE' }, detailList: [],
     }] }, 'LP00000000000001'));
-    expect(result.delivery_tracking_number).toBe('RA123456785CH');
+    expect(result.delivery_tracking_number).toBe('RA999999987CH');
     expect(result.delivery_carrier).toBeUndefined();
   });
 
   it('uses display prose only when the machine-readable reference is invalid', () => {
     const result = normalizeCarrierResult(parseCainiaoTrackingResponse({ module: [{ mailNo: 'LP00000000000001',
-      copyRealMailNo: 'bad?number', realMailNo: 'Handover reference: ra123456785ch', detailList: [],
+      copyRealMailNo: 'bad?number', realMailNo: 'Handover reference: ra999999987ch', detailList: [],
     }] }, 'LP00000000000001'));
-    expect(result.delivery_tracking_number).toBe('RA123456785CH');
+    expect(result.delivery_tracking_number).toBe('RA999999987CH');
   });
 
   it('reports the estimate as a window while the parcel is still moving', () => {

@@ -4,7 +4,7 @@ import { normalizeOmgoNumber, parseOmgoNonce, parseOmgoTrackingJson } from './pa
 import { omgoStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = 'OMGO0000000000001';
+const NUMBER = 'OMGO9999999999980';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const payload = () => JSON.parse(fixture('tracking.json'));
 const parse = (value: unknown) => parseOmgoTrackingJson(JSON.stringify(value), NUMBER);
@@ -100,7 +100,7 @@ describe('OMGO tracking parser', () => {
 describe('OMGO page configuration', () => {
   it('reads its synthetic nonce and normalizes only the supported identifier', () => {
     expect(parseOmgoNonce(fixture('tracking-page.html'))).toBe('aabbccddee');
-    expect(normalizeOmgoNumber('omgo 0000000000001')).toBe(NUMBER);
+    expect(normalizeOmgoNumber('omgo 9999999999980')).toBe(NUMBER);
     expect(() => normalizeOmgoNumber(`X${NUMBER}`)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
   });
 

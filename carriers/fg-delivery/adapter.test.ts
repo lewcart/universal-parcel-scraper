@@ -9,7 +9,7 @@ import { normalizeFgDeliveryNumber, parseFgDelivery } from './parser.js';
 import { fgDeliveryStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'FGD0009990000000001000101';
+const DELIVERED = 'FGD9999999999999999999980';
 const IN_TRANSIT = 'FGD0009990000000002000101';
 const UNKNOWN = 'FGD0009990000000003000101';
 // The sender's reference of the delivered parcel: Cainiao's code for it.
@@ -182,7 +182,7 @@ describe('FG Delivery HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeFgDeliveryNumber('fgd 0009990000 000001000101')).toBe(DELIVERED);
+    expect(normalizeFgDeliveryNumber('fgd 9999999999 999999999980')).toBe(DELIVERED);
   });
 
   it('tries a read that never reaches the site once more inside the budget', async () => {

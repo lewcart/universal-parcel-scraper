@@ -36,10 +36,10 @@ describe('Estafeta bound history', () => {
     expect(() => parseEstafetaLookup(pieces.html(), guide)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
   it('binds a two-day guide whose service letter takes the 14th place', () => {
-    const guide = '9000000000001D00000002';
+    const guide = '9999999999980D00000002';
     const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8').replaceAll('900000000001A000000002', guide);
     const history = fixture('full-guide-history.html');
-    expect(normalizeEstafetaNumber('9000000000001d00000002')).toBe(guide);
+    expect(normalizeEstafetaNumber('9999999999980d00000002')).toBe(guide);
     expect(parseEstafetaHistory(history, parseEstafetaLookup(fixture('full-guide-lookup.html'), guide)).canonical_tracking_number).toBeUndefined();
     expect(parseEstafetaHistory(history, parseEstafetaLookup(fixture('full-guide-lookup.html'), NUMBER)).canonical_tracking_number).toBe(guide);
     for (const number of ['9000000000001DD0000002', '90000000000001D0000002']) {

@@ -11,7 +11,7 @@ import { normalizeSkynetSaNumber, parseSkynetSa } from './parser.js';
 import { skynetSaStage } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'ZZ0000000001';
+const DELIVERED = 'ZZ9999999980';
 const IN_TRANSIT = 'ZZ0000000002';
 const REFERENCE = 'ZZ0000000003';
 const LISTED = 'ZZ0000000004';
@@ -52,7 +52,7 @@ describe('SkyNet South Africa HTTP adapter', () => {
   it('opens the tracking page’s circuit over long polling, through the supplied transport, and closes it', async () => {
     const { fetcher, requests, sent, texts } = hub({ polls: [shipment('delivered.html')] });
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new SkynetSaTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' zz00 0000 0001 '))
+    await expect(new SkynetSaTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' zz99 9999 9980 '))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     const page = `${SKYNET_SA_TRACKER}T?R=${DELIVERED}`;
     expect(requests).toEqual([`GET ${page}`, `POST ${SKYNET_SA_HUB}/negotiate?negotiateVersion=1`, `GET ${POLL}`, `POST ${POLL}`,
@@ -175,7 +175,7 @@ describe('SkyNet South Africa HTTP adapter', () => {
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
     expect(carrier(fetcher).recognize).toBeUndefined();
-    expect(normalizeSkynetSaNumber(' zz-0000 0000.01 ')).toBe(DELIVERED);
+    expect(normalizeSkynetSaNumber(' zz-9999 9999.80 ')).toBe(DELIVERED);
   });
 
   it('routes a number filed under SkyNet South Africa to the adapter, and claims none by shape', async () => {

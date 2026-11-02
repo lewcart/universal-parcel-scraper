@@ -4,7 +4,7 @@ import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { createTracker } from '../../facade/index.js';
 
-const number = 'DOFR0000000000001HD';
+const number = 'DOFR9999999999980HD';
 const delivered: unknown = JSON.parse(readFileSync(new URL('./fixtures/delivered-dofr.json', import.meta.url), 'utf8'));
 const inTransit = JSON.parse(readFileSync(new URL('./fixtures/in-transit.json', import.meta.url), 'utf8')) as {
   module: Record<string, unknown>[];
@@ -12,7 +12,7 @@ const inTransit = JSON.parse(readFileSync(new URL('./fixtures/in-transit.json', 
 
 describe('Cainiao DOFR detection', () => {
   it('normalizes the complete identifier and routes it to Cainiao without a manual selection', async () => {
-    const printed = 'dofr 0000000000001 hd';
+    const printed = 'dofr 9999999999980 hd';
     expect(parseTrackingInput(printed)).toMatchObject({
       carrier: 'aliexpress', trackingNumber: printed, confidence: 'high',
     });
@@ -67,8 +67,8 @@ describe('Cainiao DOFR detection', () => {
     }
   });
 
-  it.each(['DOFR000000000001HD', 'DOFR00000000000001HD', 'DOFR0000000000001HU', 'DOGB0000000000001HD',
-    'CNFR000000000001HD', 'CNFR0000000000001HU'])(
+  it.each(['DOFR999999999980HD', 'DOFR00000000000001HD', 'DOFR9999999999980HU', 'DOGB0000000000001HD',
+    'CNFR999999999980HD', 'CNFR0000000000001HU'])(
     'leaves unsupported format %s unresolved', (value) => {
       expect(detectCarrierMatch(value).candidates).not.toContain('aliexpress');
     },
@@ -77,7 +77,7 @@ describe('Cainiao DOFR detection', () => {
 
 describe('partner numbers Cainiao follows', () => {
   // AliExpress shows the buyer SDA's waybill while the parcel is still on Cainiao's leg.
-  const waybill = '000D00000001F';
+  const waybill = '000D99999980F';
   // Recognition asks the day after the fixture's last scan on Cainiao's local clock.
   beforeEach(() => {
     vi.useFakeTimers({ toFake: ['Date'] });
@@ -160,7 +160,7 @@ describe('partner numbers Cainiao follows', () => {
 
   it.each(['CNUSUP00000000001', 'CNBR00000000001', 'CNMEX0000000001', 'CACAINIAO00000000001',
     'RLV00000001', 'RLDW00000001', 'JNCN000000000001', 'ECSC00AARO00000001', 'PA0000000001', 'F00000000000001',
-    '9C0000I000001', '9C0000J000001', 'RTZ5P00D00000001', 'FMP5P00D00000001', 'GFUS00000000000001'])('asks Cainiao about %s', (value) => {
+    '9C0000I000001', '9C0000J999980', 'RTZ5P00D99999980', 'FMP5P00D99999980', 'GFUS00000000000001'])('asks Cainiao about %s', (value) => {
     expect(detectCarrierMatch(value)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: [] });
     expect(recognitionAskedCarriers(value)).toContain('aliexpress');
   });

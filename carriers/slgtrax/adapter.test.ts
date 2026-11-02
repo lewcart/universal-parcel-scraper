@@ -12,7 +12,7 @@ import { slgtraxStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { fakeBudgetClock } from '../../testing/budgetClock.js';
 
-const DELIVERED = '10000000000001';
+const DELIVERED = '10009999999980';
 const IN_TRANSIT = '10000000000002';
 const UNKNOWN = '10000000000000';
 
@@ -36,7 +36,7 @@ describe('SLGTrax HTTP adapter', () => {
   it('asks the tracking box’s lookup for the whole number, once, through the supplied transport', async () => {
     const fetcher = answering(() => reply(fixture('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new SlgtraxTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1000 0000 0000 01 ', { budgetMs: 1000.5 }))
+    await expect(new SlgtraxTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' 1000 9999 9999 80 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;

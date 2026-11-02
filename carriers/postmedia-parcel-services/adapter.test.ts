@@ -13,7 +13,7 @@ import { normalizePostmediaNumber, normalizePostmediaPostcode, parsePostmedia } 
 import { postmediaStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'BNI000000001';
+const DELIVERED = 'BNI999999980';
 const MOVING = 'BNI000000002';
 const UNKNOWN = 'BNI000000000';
 // Z starts no Canadian postal code.
@@ -133,7 +133,7 @@ describe('Postmedia Parcel Services HTTP adapter', () => {
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'Postmedia Parcel Services answered for another parcel' }));
     await expect(lookup(answering(reply(fixture('delivered'))), 'BNI000000010')).rejects.toMatchObject({ kind: 'indeterminate' });
     expect(() => parsePostmedia(changed('delivered', (body) => { delete body.tracking_id; }), DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
-    expect(parsePostmedia(changed('delivered', (body) => { body.tracking_id = 'bni000000001'; }), DELIVERED)).toMatchObject({ status: 'delivered' });
+    expect(parsePostmedia(changed('delivered', (body) => { body.tracking_id = 'bni999999980'; }), DELIVERED)).toMatchObject({ status: 'delivered' });
   });
 
   it('keeps a browser check, a moved API and a changed reply apart from a missing parcel', async () => {
@@ -178,7 +178,7 @@ describe('Postmedia Parcel Services HTTP adapter', () => {
       await expect(lookup(fetcher, DELIVERED, postcode), postcode).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizePostmediaNumber('bni 000 000 001')).toBe(DELIVERED);
+    expect(normalizePostmediaNumber('bni 999 999 980')).toBe(DELIVERED);
     for (const postcode of ['z9z9z9', ' Z9Z  9Z9 ', 'z9z-9z9']) expect(normalizePostmediaPostcode(postcode)).toBe(POSTCODE);
     // Another code goes as typed, in capitals; the tracker answers whether it holds a parcel under it.
     expect(normalizePostmediaPostcode('9z9 z9z')).toBe('9Z9 Z9Z');
@@ -215,7 +215,7 @@ describe('Postmedia Parcel Services HTTP adapter', () => {
     expect(normalizeCarrierInputs('postmedia-parcel-services', DELIVERED, '', ' z9z  9z9 ')).toEqual({ trackingUrl: null, postcode: POSTCODE });
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('delivered')));
     const answer = await createTracker({ fetcher, providers: [], env: {} })
-      .track({ number: 'bni 000 000 001', carrier: 'postmedia-parcel-services', postcode: 'z9z9z9' }, { budgetMs: 3000 });
+      .track({ number: 'bni 999 999 980', carrier: 'postmedia-parcel-services', postcode: 'z9z9z9' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'postmedia-parcel-services', source: 'postmedia-parcel-services', result: { current_stage: 'delivered' } });
     expect(String(fetcher.mock.calls[0]![0])).toBe(postmediaQueryUrl(DELIVERED, POSTCODE));
     await expect(createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED, carrier: 'postmedia-parcel-services' }))

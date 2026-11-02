@@ -5,7 +5,7 @@ import { IndiaPostTracker } from './adapter.js';
 // Live compatibility checks for the MySpeedPost Livewire flow. The wrong-number
 // case runs in the opt-in live suite; the real-parcel case additionally needs a
 // parcel the operator is authorized to query (never commit its number).
-const WRONG_VALID_NUMBER = 'RR000000005IN';
+const WRONG_VALID_NUMBER = 'RR999999987IN';
 
 describe('India Post live tracking', () => {
   it.skipIf(!process.env.INDIA_POST_TRACKING_NUMBER)(

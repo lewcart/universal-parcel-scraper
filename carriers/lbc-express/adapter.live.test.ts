@@ -18,7 +18,7 @@ describe('LBC mobile API live', () => {
     expect(result.delivered_at).toBeUndefined();
   });
   it('keeps a synthetic remittance identifier inconclusive for parcel tracking', async () => {
-    await expect(direct().track({ number: '100000000001' })).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(direct().track({ number: '199999999977' })).rejects.toMatchObject({ kind: 'indeterminate' });
   });
 });
 
@@ -31,6 +31,6 @@ describe('LBC anonymous browser live', () => {
     expect(result.delivered_at).toBeUndefined();
   });
   it.skipIf(!executablePath)('keeps a bound but empty synthetic result inconclusive', async () => {
-    await expect(instance().track({ number: '100000000001' })).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(instance().track({ number: '199999999977' })).rejects.toMatchObject({ kind: 'indeterminate' });
   });
 });

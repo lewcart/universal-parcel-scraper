@@ -10,10 +10,10 @@ it('distinguishes a missing parcel from expired history through stable error rea
     .mockRejectedValueOnce(new AmazonShippingHistoryExpiredError())
     .mockRejectedValueOnce(new AmazonShippingNotFoundError())
     .mockRejectedValueOnce(new Error('Transport failed'));
-  await expect(amazonShippingEligibility('FR0000000001')).resolves.toBe('available');
-  await expect(amazonShippingEligibility('FR0000000001')).resolves.toBe('expired');
-  await expect(amazonShippingEligibility('FR0000000001')).resolves.toBe('not-found');
-  await expect(amazonShippingEligibility('FR0000000001')).rejects.toThrow('Transport failed');
+  await expect(amazonShippingEligibility('FR9999999980')).resolves.toBe('available');
+  await expect(amazonShippingEligibility('FR9999999980')).resolves.toBe('expired');
+  await expect(amazonShippingEligibility('FR9999999980')).resolves.toBe('not-found');
+  await expect(amazonShippingEligibility('FR9999999980')).rejects.toThrow('Transport failed');
   expect(new AmazonShippingHistoryExpiredError()).toMatchObject({ kind: 'indeterminate', reason: 'history_expired' });
   expect(new AmazonShippingNotFoundError()).toMatchObject({ kind: 'not_found', reason: 'shipment_not_found' });
 });

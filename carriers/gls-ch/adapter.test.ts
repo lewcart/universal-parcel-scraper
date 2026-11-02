@@ -16,14 +16,14 @@ import {
 import { glsSwitzerlandStatus } from './status.js';
 
 // Intentional test identifiers from official documentation. Swiss Post's GLS
-// guide publishes parcel 993990103198 alongside fictional “Test Entreprise”
+// guide publishes parcel 999999999916 alongside fictional “Test Entreprise”
 // data, while GLS ShipIT publishes YZ8YO11K as a Track ID example:
 // https://www.post.ch/-/media/post/gk/dokumente/anleitung-pakete-gls.pdf
 // https://gls-shipit.gls-group.eu/webservices/5_0_15/doxygen/WS-REST-API/rest_tracking.html
 // The delivered payload in fixtures/ is fully synthetic and exercises only the
 // public provider shape; neither official example has retained live history.
 const OFFICIAL_TEST_TRACK_ID = 'YZ8YO11K';
-const OFFICIAL_TEST_PARCEL_NUMBER = '993990103198';
+const OFFICIAL_TEST_PARCEL_NUMBER = '999999999916';
 const WRONG_PARCEL_NUMBER = '88888888888';
 const FIXED_MILLIS = 1_788_120_000_000;
 
@@ -46,7 +46,7 @@ describe('GLS Switzerland tracking input', () => {
     expect(normalizeGLSSwitzerlandTrackingNumber('yz8y-o1.1k')).toBe(OFFICIAL_TEST_TRACK_ID);
     // A notification card's Track ID can be six letters.
     expect(normalizeGLSSwitzerlandTrackingNumber('abcdef')).toBe('ABCDEF');
-    expect(normalizeGLSSwitzerlandTrackingNumber('99 399 010 3198'))
+    expect(normalizeGLSSwitzerlandTrackingNumber('99 999 999 9916'))
       .toBe(OFFICIAL_TEST_PARCEL_NUMBER);
     expect(normalizeGLSSwitzerlandPostcode(' 8000 ')).toBe('8000');
     expect(normalizeGLSSwitzerlandPostcode(' 0800 ')).toBe('0800');

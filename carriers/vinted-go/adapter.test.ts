@@ -37,14 +37,14 @@ describe('Vinted Go HTTP adapter', () => {
 
   it('asks the tracking service for a VGS number as printed', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply('delivered'));
-    await expect(carrier(fetcher).track({ number: 'vgs 9000 0000 0000 01' })).resolves.toMatchObject({ status: 'delivered' });
-    expect(String(fetcher.mock.calls[0]![0])).toBe('https://carrier.vintedgo.com/public/v3/tracking_events/VGS90000000000001');
+    await expect(carrier(fetcher).track({ number: 'vgs 9999 9999 9999 80' })).resolves.toMatchObject({ status: 'delivered' });
+    expect(String(fetcher.mock.calls[0]![0])).toBe('https://carrier.vintedgo.com/public/v3/tracking_events/VGS99999999999980');
   });
 
   it('asks the tracking service for a VGS number of thirteen digits', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply('delivered'));
-    await expect(carrier(fetcher).track({ number: 'VGS9000000000001' })).resolves.toMatchObject({ status: 'delivered' });
-    expect(String(fetcher.mock.calls[0]![0])).toBe('https://carrier.vintedgo.com/public/v3/tracking_events/VGS9000000000001');
+    await expect(carrier(fetcher).track({ number: 'VGS9999999999980' })).resolves.toMatchObject({ status: 'delivered' });
+    expect(String(fetcher.mock.calls[0]![0])).toBe('https://carrier.vintedgo.com/public/v3/tracking_events/VGS9999999999980');
   });
 
   it('asks the tracking service for a code of sixteen capital letters and digits', async () => {

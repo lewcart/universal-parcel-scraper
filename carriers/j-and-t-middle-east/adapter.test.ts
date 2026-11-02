@@ -11,7 +11,7 @@ import { normalizeJAndTMiddleEastNumber, parseJAndTMiddleEast } from './parser.j
 import { jAndTMiddleEastStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const DELIVERED = 'JTE300000000001';
+const DELIVERED = 'JTE399999999980';
 const IN_TRANSIT = 'JTE300000000002';
 const UNKNOWN = 'JTE300000000000';
 
@@ -113,7 +113,7 @@ describe('J&T Express Middle East HTTP adapter', () => {
     ]) {
       expect(() => parseJAndTMiddleEast(changed('delivered', change), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     }
-    expect(parseJAndTMiddleEast(changed('delivered', (answer) => { answer.keyword = 'jte300000000001'; }), DELIVERED).events).toHaveLength(6);
+    expect(parseJAndTMiddleEast(changed('delivered', (answer) => { answer.keyword = 'jte399999999980'; }), DELIVERED).events).toHaveLength(6);
   });
 
   it('rejects a changed reply', () => {
@@ -186,7 +186,7 @@ describe('J&T Express Middle East HTTP adapter', () => {
     }
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    expect(normalizeJAndTMiddleEastNumber('jte 3000 0000 0001')).toBe(DELIVERED);
+    expect(normalizeJAndTMiddleEastNumber('jte 3999 9999 9980')).toBe(DELIVERED);
   });
 
   it('tries a lookup that does not reach the site once more inside the budget', async () => {

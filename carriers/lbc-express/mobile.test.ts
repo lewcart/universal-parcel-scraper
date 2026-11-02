@@ -6,7 +6,7 @@ import { adapter } from './adapter.js';
 import { LBC_MOBILE_API, parseLbcMobile } from './mobile.js';
 import statuses from './statuses.json' with { type: 'json' };
 
-const NUMBER = '100000000001';
+const NUMBER = '199999999977';
 const xml = () => readFileSync(new URL('./fixtures/mobile.xml', import.meta.url), 'utf8');
 const instance = (fetcher: typeof fetch) => adapter({
   fetcher, env: {}, browserExecutablePath: null, trawl: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
@@ -27,7 +27,7 @@ describe('LBC mobile history', () => {
   it.each(['wrong identity', 'duplicate identity', 'missing identity', 'wrong namespace', 'malformed XML', 'DTD', 'nested text', 'bad clock'])('rejects %s without exposing raw XML', mode => {
     let body = xml();
     if (mode === 'wrong identity') body = body.replace(NUMBER, '100000000002');
-    if (mode === 'duplicate identity') body = body.replace('</TrackingNo>', '</TrackingNo><TrackingNo>100000000001</TrackingNo>');
+    if (mode === 'duplicate identity') body = body.replace('</TrackingNo>', '</TrackingNo><TrackingNo>199999999977</TrackingNo>');
     if (mode === 'missing identity') body = body.replace(/<TrackingNo>.*?<\/TrackingNo>/, '');
     if (mode === 'wrong namespace') body = body.replace('http://tempuri.org/', 'https://other.example/');
     if (mode === 'malformed XML') body = body.replace('</TrackingStatus>', '</Other>');
@@ -153,7 +153,7 @@ describe('LBC direct transport', () => {
     expect(error).not.toHaveProperty('diagnostics');
     expect((error as Error).cause).toBeUndefined();
     expect(key).not.toBe('');
-    expect(JSON.stringify(error)).not.toMatch(/PRIVATE|100000000001/);
+    expect(JSON.stringify(error)).not.toMatch(/PRIVATE|199999999977/);
     expect(JSON.stringify(error)).not.toContain(key);
   });
   it('starts no request for invalid or pre-aborted input', async () => {

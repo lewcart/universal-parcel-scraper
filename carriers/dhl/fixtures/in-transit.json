@@ -1,15 +1,15 @@
 {
   "sendungen": [
     {
-      "id": "LF123456785DE",
+      "id": "LF999999987DE",
       "hasCompleteDetails": true,
       "sendungsinfo": {
-        "gesuchteSendungsnummer": "LF123456785DE",
+        "gesuchteSendungsnummer": "LF999999987DE",
         "empfaenger": "Private recipient"
       },
       "sendungsdetails": {
         "sendungsnummern": {
-          "sendungsnummer": "LF123456785DE"
+          "sendungsnummer": "LF999999987DE"
         },
         "zielland": "Germany",
         "sendungsverlauf": {

@@ -411,7 +411,8 @@ export const CARRIER_CATALOG = {
       "Spring GDS",
       "Mailing Technology",
       "PostNL - Netherlands Post",
-      "Spring Global Mail"
+      "Spring Global Mail",
+      "PostNL International Mail"
     ],
     "countries": [
       "NL"

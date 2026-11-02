@@ -6,7 +6,7 @@ import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { countryCode, explicitOffsetTime } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { topyouStage } from './status.js';
+import { isImileRelay, topyouStage } from './status.js';
 
 export const PROVIDER = 'TopYou';
 // A long history is a few kilobytes.
@@ -39,11 +39,12 @@ const OWN_OFFSET = '+08:00';
 /**
  * A scan's clock. TopYou's own scans state +08:00. The delivery carrier's
  * come either as a wall clock without an offset, which their place dates
- * (USPS's), or with the destination's offset on a UTC wall clock: GOFO's
- * scans in France and Italy, stated +01:00, came an hour before GOFO's own
- * instants for them.
+ * (USPS's), or on a UTC wall clock under another offset: GOFO's scans in
+ * France and Italy, stated +01:00, came an hour before GOFO's own instants
+ * for them, and iMile's in Germany, stated +08:00 like TopYou's own, eight
+ * hours before iMile's.
  */
-function scanClock(row: Record<string, unknown>): { time: string } | { local_time: string } {
+function scanClock(row: Record<string, unknown>, imile: boolean): { time: string } | { local_time: string } {
   const match = CLOCK.exec(text(row, 'changeDate', 32));
   const zone = text(row, 'timeZone', 8);
   const local = match ? `${match[1]}-${match[2]}-${match[3]}T${match[4]}` : '';
@@ -53,7 +54,7 @@ function scanClock(row: Record<string, unknown>): { time: string } | { local_tim
     throw new SchemaError(PROVIDER, 'TopYou returned an invalid scan time');
   }
   if (!zone) return { local_time: local };
-  const instant = explicitOffsetTime(`${local}${zone === OWN_OFFSET ? zone : '+00:00'}`);
+  const instant = explicitOffsetTime(`${local}${zone === OWN_OFFSET && !imile ? zone : '+00:00'}`);
   if (!instant) throw new SchemaError(PROVIDER, 'TopYou returned an invalid scan time');
   return { time: instant.iso };
 }
@@ -76,7 +77,7 @@ function projectRow(row: Record<string, unknown>): { key: string; clock: string;
   const description = text(row, 'record').replace(DANGLING, '');
   if (!description) throw new SchemaError(PROVIDER, 'TopYou returned a scan without wording');
   const code = cleanScalar(row.status, 8);
-  const clock = scanClock(row);
+  const clock = scanClock(row, isImileRelay(description));
   const location = place(row, 'time' in clock);
   const staged = topyouStage(code, description);
   const event: CarrierEvent = {

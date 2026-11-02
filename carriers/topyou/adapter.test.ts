@@ -90,6 +90,23 @@ describe('TopYou HTTP adapter', () => {
     ]);
   });
 
+  it('reads iMile’s scans it relays stated +08:00 on UTC wall clocks, and TopYou’s own on China’s', () => {
+    // iMile dates its delivery round 07:19:36+01:00; TopYou relays it as 06:19:36 "+08:00".
+    const relayed = changed('in-transit', (track) => {
+      const last = track.trackInfo!.at(-1)!;
+      track.trackInfo!.push(
+        { ...last, id: '900005', changeDate: '2026/04/17 18:00:00', location: null, record: 'Shipment arrived in the destination country', status: '20' },
+        { ...last, id: '900006', changeDate: '2026/04/18 06:18:31', location: null, record: 'Delivery, Your order has assigned delivery drvier.', status: '20' },
+        { ...last, id: '900007', changeDate: '2026/04/18 06:19:36', location: null, record: 'Delivery, Our delivery associate is out for delivery.', status: '20' },
+      );
+    });
+    expect(scans(parseTopyou(relayed, IN_TRANSIT)).slice(0, 3)).toEqual([
+      ['2026-04-18T06:19:36Z', '20', 'out_for_delivery'],
+      ['2026-04-18T06:18:31Z', '20', 'in_transit'],
+      ['2026-04-17T18:00:00+08:00', '20', 'in_transit'],
+    ]);
+  });
+
   it('reads a newest-first reply the same, and dates a delivery TopYou scans itself', () => {
     const newestFirst = changed('delivered', (track) => { track.trackInfo!.reverse(); });
     expect(parseTopyou(newestFirst, DELIVERED)).toEqual(parseTopyou(fixture('delivered'), DELIVERED));

@@ -47,6 +47,9 @@ function imileRelayStage(wording: string): Stage | null | undefined {
   return code ? imileSentenceStage(code, wording.slice(step[0].length)) : undefined;
 }
 
+/** Whether TopYou relays the scan from iMile: iMile's step label and a sentence iMile's map knows. */
+export const isImileRelay = (wording: string): boolean => imileRelayStage(wording) !== undefined;
+
 /**
  * A scan's stage: its wording in TopYou's map, then a delivered or returned
  * code, then iMile's map for a scan relayed from iMile, then the shared

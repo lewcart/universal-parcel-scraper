@@ -272,6 +272,10 @@ describe('DHLink HTTP adapter', () => {
       row('2026-03-10 08:00:00', '2026-03-10 18:05:00', 'SAMPLEVILLE, US', 'Package received & scanned at warehouse')]);
     expect(timeline(warehouse.events)).toEqual([['2026-03-10T18:00:00+08:00', null, 'in_transit', 'SHENZHEN'],
       ['2026-03-10T09:00:00+08:00', null, 'accepted', 'shen zhen'], ['2026-03-10T08:00:00+08:00', null, 'accepted', 'SAMPLEVILLE, US']]);
+    // A relayed label row's "SYSTEM" names no place.
+    expect(relayed([row('2026-03-10 07:00:00', '2026-03-10 18:05:00', 'SYSTEM, US', 'Shipping Label Created')]).events![0])
+      .toMatchObject({ description: 'Shipping Label Created', stage: 'registered' });
+    expect(relayed([row('2026-03-10 07:00:00', '2026-03-10 18:05:00', 'SYSTEM, US', 'Shipping Label Created')]).events![0]).not.toHaveProperty('location');
   });
 
   it('drops the row’s own clock from the end of a node’s wording, and keeps any other', () => {

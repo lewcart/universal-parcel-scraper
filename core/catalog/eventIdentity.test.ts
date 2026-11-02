@@ -206,6 +206,7 @@ describe('same-instant identity policies', () => {
     const policy = sameInstantIdentityPolicy('unknown', { supportsScanMatching: true });
     const stored = { stage: 'registered', description: 'Shipping Label Created', location: 'US, SYSTEM, SYSTEM', providerCode: '' };
     expect(policy?.matches?.({ ...stored, location: '' }, stored)).toBe(true);
+    expect(policy?.matches?.({ ...stored, location: '' }, { ...stored, location: 'SYSTEM, [US]' })).toBe(true);
     const arrival = { stage: 'in_transit', description: 'Arrival', location: '目的国', providerCode: 'InTransit_Other' };
     expect(policy?.matches?.({ ...arrival, location: '' }, arrival)).toBe(true);
     const depot ={ stage: 'delivered', description: 'Delivered', location: 'from the operational headquarters in EXAMPLE TOWN (Example Region)', providerCode: '' };
@@ -673,10 +674,13 @@ describe('same-instant identity policies', () => {
     ]) expect(policy?.matches?.(cleared, different)).toBe(false);
   });
 
-  it('lets a DHLink scan shown without a place take over the row stored with only a country as its place', () => {
+  it('lets a DHLink scan shown without a place take over the row stored with only a country, or a placeholder, as its place', () => {
     const policy = sameInstantIdentityPolicy('dhlink', { supportsScanMatching: true });
     const handed = { stage: 'in_transit', description: 'Package handed over to airline', location: '', providerCode: '' };
     expect(policy?.matches?.(handed, { ...handed, location: 'Canada' })).toBe(true);
+    const label = { stage: 'registered', description: 'Shipping Label Created', location: '', providerCode: '' };
+    expect(policy?.matches?.(label, { ...label, location: 'SYSTEM, US', stage: 'accepted' })).toBe(true);
+    expect(policy?.matches?.(label, { ...label, location: 'SYSTEM, Sample Town' })).toBe(false);
     for (const different of [
       { ...handed, location: 'Sample Town' },
       { ...handed, location: 'Canada', description: 'Package departed from the warehouse' },

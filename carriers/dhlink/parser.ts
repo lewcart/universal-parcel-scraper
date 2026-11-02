@@ -4,7 +4,7 @@ import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } fro
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { countryCode, firstOccurrence, isoTime, usStateTimeZone } from '../../core/time/index.js';
-import { cleanScalar } from '../../core/transport/index.js';
+import { cleanScalar } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 import { countryZones } from '../../places/zones.js';
 import { DHLINK_RECORD_ZONE as RECORD_ZONE, usClockCopy } from './clock.js';
@@ -47,7 +47,7 @@ const CHINA_NAMES = new RegExp(`^(?:${[
   'xiamen', 'yiwu', 'zhengzhou', 'zhongshan', 'zhuhai',
 ].join('|')})(?:shi|city)?$`);
 const COUNTRY = /^[A-Z]{2}$/;
-const PLACEHOLDERS = new Set(['', '.', '-', 'none', 'null', 'unknown']);
+const PLACEHOLDERS = new Set(['', '.', '-', 'none', 'null', 'unknown', 'system']);
 // A state with its ZIP code, as relayed USPS rows name the office: the state stays.
 const STATE_ZIP = /\b([A-Z]{2})[ ,;]+\d{5}(?:-\d{4})?\b/g;
 // British and Canadian postcodes.
@@ -119,6 +119,9 @@ function placeOf(raw: string): { location: string; china: boolean } {
   const kept = china ? parts.filter((part) => !COUNTRY.test(part)) : parts;
   return { location: kept.every((part) => COUNTRY.test(part)) ? '' : [...new Set(kept)].join(', '), china };
 }
+
+/** A stored row's place as the parser now reads it, or nothing for a placeholder or a country alone. */
+export const dhlinkPlace = (raw: string): string => placeOf(raw).location;
 
 interface Scan {
   stamp: string;

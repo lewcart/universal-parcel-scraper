@@ -59,11 +59,11 @@ export function hasPrivateDeliveryDetails(description: string): boolean {
   return /\bpin\s*:|(?:access|security|pickup|collection) code|(?:door|house) (?:no\b|number)|signed (?:for )?by|signature|numero civico|firmato da|signe par|signé par|code (?:de retrait|d['’]acc[eè]s)|num[eé]ro de (?:rue|maison)|abholcode|zugangscode|hausnummer|unterschrieben von|codice (?:di ritiro|di accesso)|c[oó]digo (?:pin|secreto|de (?:recogida|retirada|retiro|acceso|acesso|entrega|seguridad|seguran[cç]a|levantamento|recolha|desbloqueo|desbloqueio|apertura|abertura))|firmad[oa] por|firma del destinatari|assinad[oa] por|assinatura|n[uú]mero (?:de (?:portal|puerta|casa|piso|vivienda|pol[ií]cia)|da (?:porta|casa))|(?:porta|puerta) n\.?\s?[º°]|n\.?\s?[º°] (?:de |da )?porta/i.test(description);
 }
 
-// Labels providers put where a place belongs: a feed's system user ("US, SYSTEM, SYSTEM"),
+// Labels providers put where a place belongs: a feed's system user ("US, SYSTEM, SYSTEM", "SYSTEM, [US]"),
 // an order system's data centre, a line-haul agent, GLS Italy's unnamed sorting hub, Poczta
 // Polska's "International Postal System" for a scan relayed from abroad and China Post's "目的国"
 // ("destination country"), which its feed gives an airline's arrival where it names no country's code.
-const NOT_PLACES = /^(?:(?:[A-Z]{2}, )?system(?:, system)*|(?:uni )?data cent(?:er|re)|linehaul agent|centro di smistamento(?: - hub)?|international postal system|the carrier|目的国)$/i;
+const NOT_PLACES = /^(?:(?:[A-Z]{2}, )?system(?:, system)*(?:, \[?[A-Z]{2}\]?)?|(?:uni )?data cent(?:er|re)|linehaul agent|centro di smistamento(?: - hub)?|international postal system|the carrier|目的国)$/i;
 // JCEX's places as 17TRACK relays them, followed by the row's UTC offset: a town in the United
 // States with its state and postcode, "Example Town;CA;99999;-07:00", or the country JCEX files
 // the row under, "US+08:00".

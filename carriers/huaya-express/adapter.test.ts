@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { carrierIdFromName } from '../../core/catalog/hints.js';
+import { sameInstantIdentityPolicy } from '../../core/catalog/eventIdentity.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
@@ -70,6 +71,39 @@ describe('Huaya Express tracking adapter', () => {
     expect(result.delivery_carrier).toBeUndefined();
     const text = JSON.stringify(result);
     for (const value of ['Synthetic Recipient', 'Example Street', 'HY-TEST-001', 'HYTEST0000000000001']) expect(text, value).not.toContain(value);
+  });
+
+  it('reads a label row written at "US, SYSTEM, SYSTEM", that place repeated in its wording, with no place', () => {
+    const reply = structuredClone(fixture('track')) as [{ data: [{ trackDetails: Record<string, string>[] }] }];
+    const rows = reply[0].data[0].trackDetails;
+    rows.push({ ...rows.at(-1)!, track_date: '2026-02-27 08:45:25', track_createdate: '2026-02-28 14:40:06',
+      track_content: 'US, SYSTEM, SYSTEM, Shipping Label Created', track_location: 'US, SYSTEM, SYSTEM' });
+    rows[4]!.track_content = 'GUANGZHOU, Package handed over to airline';
+    const events = parseHuayaTrack(reply, NUMBER, READ_AT)!.events!;
+    expect(events.at(-1)).toMatchObject({ time: '2026-02-27T08:45:25+08:00', description: 'Shipping Label Created',
+      stage: 'registered', stage_source: 'carrier_map' });
+    expect(events.at(-1)!.location).toBeUndefined();
+    expect(events[4]).toMatchObject({ description: 'Package handed over to airline', location: 'GUANGZHOU', stage: 'in_transit' });
+    for (const wording of ['GUANGZHOU', 'GUANGZHOU,', 'GUANGZHOUX, Package handed over to airline']) {
+      rows[4]!.track_content = wording;
+      expect(parseHuayaTrack(reply, NUMBER, READ_AT)!.events![4]!.description, wording).toBe(wording.replace(/,$/, ''));
+    }
+  });
+
+  it('lets a label row stored with its place repeated, or at "US, SYSTEM, SYSTEM", be taken over once read without it', () => {
+    const policy = sameInstantIdentityPolicy('huaya-express', { supportsScanMatching: true })!;
+    const stored = { stage: 'registered', description: 'US, SYSTEM, SYSTEM, Shipping Label Created', location: 'US, SYSTEM, SYSTEM', providerCode: '' };
+    const incoming = { ...stored, description: 'Shipping Label Created', location: '' };
+    expect(policy.matches?.(incoming, stored)).toBe(true);
+    expect(policy.matches?.(incoming, { ...stored, description: 'Shipping Label Created' })).toBe(true);
+    const handed = { stage: 'in_transit', description: 'GUANGZHOU, Package handed over to airline', location: 'GUANGZHOU', providerCode: '' };
+    expect(policy.matches?.({ ...handed, description: 'Package handed over to airline' }, handed)).toBe(true);
+    for (const different of [
+      { ...incoming, description: 'Package handed over to airline' },
+      { ...incoming, location: 'GUANGZHOU' },
+    ]) expect(policy.matches?.(different, stored), JSON.stringify(different)).toBe(false);
+    expect(policy.matches?.({ ...handed, description: 'Package handed over to airline', location: '' }, handed)).toBe(false);
+    expect(policy.matches?.({ ...handed, description: 'Package handed over to airline', location: 'SHENZHEN' }, handed)).toBe(false);
   });
 
   it('holds back a row dated after the lookup', () => {

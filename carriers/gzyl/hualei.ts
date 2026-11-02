@@ -24,7 +24,7 @@ import { isoTime } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import type { CarrierId } from '../../generated/catalog.js';
-import { hualeiPlace, hualeiScanText } from './text.js';
+import { hualeiPlace, hualeiScanText, hualeiWording } from './text.js';
 
 export { hualeiScanText };
 
@@ -263,7 +263,7 @@ function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number,
     if (placed.timestamp > readAt) return;
     const parts = tenant.split?.(row.content, row.location) ?? row;
     const place = hualeiPlace(parts.location);
-    const wording = hualeiScanText(parts.content);
+    const wording = hualeiWording(parts.content, parts.location);
     const description = wording || place;
     if (!description) return;
     const location = wording ? place : '';

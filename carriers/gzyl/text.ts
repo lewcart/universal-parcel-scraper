@@ -29,11 +29,24 @@ export function hualeiScanText(value: string, maxLength = 500): string {
     .replace(/^[\s,，:：;；/]+|[\s,，:：;；/]+$/g, '');
 }
 
-// What some trackers print in a row's place when it has none: the platform's "SYSTEM", a form's "Delivery Location".
-const NO_PLACE = /^(?:system|delivery location)$/i;
+// What some trackers print in a row's place when it has none: the platform's "SYSTEM", alone or after a
+// country's code as a relayed label row gives it ("US, SYSTEM, SYSTEM"), and a form's "Delivery Location".
+const NO_PLACE = /^(?:(?:[A-Z]{2}, ?)?system(?:, ?system)*|delivery location)$/i;
 
 /** A row's place as scan text, or nothing where the tracker prints a word for no place. */
 export function hualeiPlace(value: string): string {
   const place = hualeiScanText(value, 200);
   return NO_PLACE.test(place) ? '' : place;
+}
+
+/**
+ * A row's wording as scan text, without its place where the tracker writes that place again at the
+ * head of the wording: "US, SYSTEM, SYSTEM, Shipping Label Created" at "US, SYSTEM, SYSTEM".
+ */
+export function hualeiWording(content: string, location: string): string {
+  const wording = hualeiScanText(content);
+  const place = hualeiScanText(location, 200);
+  if (!place || wording.slice(0, place.length).toLowerCase() !== place.toLowerCase()) return wording;
+  const rest = /^\s*[,，]\s*(\S[\s\S]*)$/.exec(wording.slice(place.length));
+  return rest ? rest[1]! : wording;
 }

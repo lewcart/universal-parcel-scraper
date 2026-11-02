@@ -1440,3 +1440,18 @@ describe('YTO waybills led by G', () => {
     }
   });
 });
+
+describe('Quick Fort', () => {
+  it('suggests Quick Fort for QFT and twelve digits', () => {
+    expect(detectCarrierMatch('QFT900000000017')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['quick-fort'] });
+    for (const number of ['QFT90000000017', 'QFT9000000000017', 'QFX900000000017', 'XQFT90000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('quick-fort');
+    }
+  });
+
+  it('reads its names and tracking links', () => {
+    for (const name of ['Quick Fort', 'QuickFort', '速丰捷运']) expect(carrierIdFromName(name), name).toBe('quick-fort');
+    expect(parseTrackingInput('https://www.quick-fort.com/search_kuai_di/search/orderid/QFT900000000017'))
+      .toMatchObject({ trackingNumber: 'QFT900000000017', carrier: 'quick-fort', source: 'link' });
+  });
+});

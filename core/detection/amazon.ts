@@ -9,7 +9,7 @@
  */
 import { CARRIER_CATALOG } from '../../generated/catalog.js';
 
-export const AMAZON_NUMBER_PATTERN = CARRIER_CATALOG['amazon-logistics'].detectionRules[0].pattern;
+export const AMAZON_NUMBER_PATTERN: string = CARRIER_CATALOG['amazon-logistics'].detectionRules[0]!.pattern;
 
 export function isAmazonTrackingNumber(raw: string): boolean {
   return new RegExp(AMAZON_NUMBER_PATTERN).test(raw.replace(/[\s.-]/g, '').toUpperCase());

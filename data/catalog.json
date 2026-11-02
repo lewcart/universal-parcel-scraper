@@ -37380,6 +37380,43 @@
     ],
     "detectionRules": []
   },
+  "quick-fort": {
+    "displayName": "Quick Fort",
+    "color": "#ff6600",
+    "aliases": [
+      "Quick Fort",
+      "QuickFort",
+      "速丰捷运",
+      "速丰捷运国际物流有限公司"
+    ],
+    "countries": [
+      "HK",
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.quick-fort.com/cms/c/orders",
+    "trackingUrlTemplate": "https://www.quick-fort.com/search_kuai_di/search/orderid/{trackingNumber}",
+    "trackingSearchUrl": "https://www.quick-fort.com/cms/c/orders",
+    "linkRules": [
+      {
+        "domains": [
+          "quick-fort.com"
+        ],
+        "path": "^/search_kuai_di/search/orderid/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^QFT\\d{12}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "quick-rabbit": {
     "displayName": "Quick Rabbit",
     "color": "#f6851f",

@@ -2351,6 +2351,7 @@ export const REGISTRY: RegistryDefinition = {
     "qls-quince": "universal",
     "quality-post": "universal",
     "quantium-solutions": "quantium-solutions",
+    "quick-fort": "universal",
     "quick-rabbit": "quick-rabbit",
     "quickpac": "planzer",
     "quicksilver-sa": "quicksilver-sa",

@@ -91958,6 +91958,14 @@
     ]
   },
   {
+    "input": "QFT900000000017",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "quick-fort"
+    ]
+  },
+  {
     "input": "QGB8C",
     "carrier": "unknown",
     "confidence": "none",

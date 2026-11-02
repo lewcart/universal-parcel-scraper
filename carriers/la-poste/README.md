@@ -47,8 +47,9 @@ The feed answers with an array; only the entry whose `shipment.idShip` equals
 the requested number is read. `returnCode` 104 is the only positive not-found;
 any other non-zero code is inconclusive, so the router can fall back to a
 universal provider. A number outside La Poste's formats gets HTTP 400 with
-`returnCode` 412 ("numéro non postal") instead. That is invalid input, so
-recognition reads it as unknown rather than as a transport failure.
+`returnCode` 412 ("numéro non postal") instead, and one with a wrong check digit
+HTTP 400 with `returnCode` 101 ("Clé de contrôle invalide"). Both are invalid
+input, so recognition reads them as unknown rather than as a transport failure.
 
 ## Notes
 

@@ -24,7 +24,8 @@ import { eventStage, eventStatus, GROUP_STATUSES } from './status.js';
 // - `returnCode` 104 is the positive "unknown shipment"; any other non-zero
 //   code is an inconclusive provider failure.
 // - An HTTP 400 whose `response.returnCode` is 412 ("numéro non postal") is
-//   La Poste refusing a number outside its formats, so it is invalid input.
+//   La Poste refusing a number outside its formats, and 101 a number that fails
+//   its check digit ("Clé de contrôle invalide"), so both are invalid input.
 //   Any other 400 stays an HTTP failure.
 // - Production HTTP 403s carried La Poste's "Site indisponible - Incident en
 //   cours" page and immediately following checks succeeded, so a 403 is
@@ -49,8 +50,11 @@ const MAX_RESPONSE_BYTES = 2_000_000;
 const MAX_EVENTS_TO_RETURN = 100;
 /** The provider's "unknown shipment" return code. */
 const UNKNOWN_SHIPMENT_CODE = 104;
-/** The return code of an HTTP 400 for a number La Poste does not issue. */
-const NOT_POSTAL_CODE = 412;
+/** The return codes of an HTTP 400 for a number La Poste does not issue: its check digit is wrong, or it is outside La Poste's formats. */
+const REFUSED_NUMBER_CODES = new Map([
+  [101, 'La Poste rejects the check digit of this tracking number'],
+  [412, 'La Poste does not issue this tracking number'],
+]);
 
 function number(value: unknown): number | null {
   if (typeof value !== 'number' && (typeof value !== 'string' || !value.trim())) return null;
@@ -391,7 +395,8 @@ export class LaPosteTracker {
         allowHttpStatuses: [400],
       });
       if (response.status === 400) {
-        if (rejectionCode(bytes) === NOT_POSTAL_CODE) throw new InvalidInputError('La Poste', 'La Poste does not issue this tracking number', { reason: 'wrong_number' });
+        const refusal = REFUSED_NUMBER_CODES.get(rejectionCode(bytes) ?? -1);
+        if (refusal) throw new InvalidInputError('La Poste', refusal, { reason: 'wrong_number' });
         throw new UpstreamHttpError('La Poste tracking', 400);
       }
       const { result, point } = parseShipment(parseJsonBytes(bytes, 'La Poste'), normalized);

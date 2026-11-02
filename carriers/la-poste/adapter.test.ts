@@ -389,9 +389,12 @@ describe('La Poste refusal of a number it does not issue', () => {
     status: 400, response: { returnCode, returnMessage: 'Le numéro que vous avez saisi n’est pas valide.', idShip: TRACKING_NUMBER },
   }, { status: 400 });
 
-  it('reads an HTTP 400 with code 412 as invalid input, which recognition counts as unknown', async () => {
-    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => refusal(412));
-    await expect(new LaPosteTracker({ fetcher }).fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'invalid_input' });
+  it.each([
+    ['outside its formats', 412],
+    ['with a wrong check digit', 101],
+  ])('reads an HTTP 400 for a number %s as invalid input, which recognition counts as unknown', async (_, code) => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => refusal(code));
+    await expect(new LaPosteTracker({ fetcher }).fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'invalid_input', reason: 'wrong_number' });
     expect(fetcher).toHaveBeenCalledOnce();
     const instance = adapter({ trawl: null, browserExecutablePath: null, fetcher, recorder: recordingRecorder().recorder, env: {} });
     await expect(instance.recognize!(TRACKING_NUMBER)).resolves.toEqual({ known: false });

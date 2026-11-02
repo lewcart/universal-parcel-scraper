@@ -25,7 +25,8 @@ answers.
   destination, and all of its rows are written when the order is created, dated ahead. A buyer
   reported a parcel the script showed as delivered that never came. A row written more than
   twelve hours before its own clock is a forecast, not a scan, and is held back, as is a row
-  dated after the lookup on Beijing time. An order whose rows are all held back has no history
+  dated after the lookup on Beijing time. The tracking page shows no creation times, so a
+  delivery row it shows is held back too. An order whose rows are all held back has no history
   yet, and the rows written ahead are named so that a universal provider's copies of them are
   set aside. The record's own summary status is not read.
 - Scan times are wall clocks without an offset, on the tracker's Beijing clock at the destination

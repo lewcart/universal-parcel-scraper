@@ -128,6 +128,15 @@ describe('Meiteshun Logistics tracking adapter', () => {
     ]);
   });
 
+  it('holds back a delivery row the page shows, since it shows no creation times', () => {
+    const row = (clock: string, wording: string) => `<tr><td>${clock}</td><td></td><td>${wording}</td></tr>`;
+    const delivered = page('page').replace('<table style="table-layout:fixed;display: inline-table;">',
+      (table) => table + row('2026-03-15 10:00:00', 'US,Delivered Sampletown,99999'));
+    const result = parseMtscnPage(delivered, NUMBER, READ_AT);
+    expect(result).toMatchObject({ current_stage: 'in_transit', last_status_text: 'item outbound in sorting center', written_ahead: ['2026-03-15T10:00:00+08:00'] });
+    expect(result.events).toEqual(parseMtscnPage(page('page'), NUMBER, READ_AT).events);
+  });
+
   it('reads only the page that echoes the number as not found, and a block page as no answer', async () => {
     const unknown = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('no-track'))).mockResolvedValueOnce(html(page('page-unknown')));
     await expect(adapter(environment(unknown)).track({ number: 'AMTS990000002FS' })).rejects.toMatchObject({ kind: 'not_found' });

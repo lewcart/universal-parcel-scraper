@@ -43,7 +43,9 @@ export function splitMtscnRow(content: string, location: string): { content: str
   return head ? { content: rest.slice(head[0].length), location: head[1]! } : { content: rest, location };
 }
 
-export const MTSCN: HualeiTenant = { carrier: 'mtscn', provider: PROVIDER, origin: MTSCN_ORIGIN, stage: mtscnStage, split: splitMtscnRow };
+// The script, its delivery included, is written when the order is created. The page shows no
+// creation times, so a delivery row it shows is held back as the script's.
+export const MTSCN: HualeiTenant = { carrier: 'mtscn', provider: PROVIDER, origin: MTSCN_ORIGIN, stage: mtscnStage, split: splitMtscnRow, scriptedDelivery: true };
 
 export const normalizeMtscnNumber = (raw: string): string => normalizeHualeiNumber(raw, PROVIDER);
 /** The track interface's reply, or null when it holds no row for the number. */

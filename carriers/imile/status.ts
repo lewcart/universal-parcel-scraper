@@ -85,8 +85,10 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
   ['the delivery method has been confirmed with the recipient as self-pickup', null],
   ['inventory count scan', null],
   ['your order has been delivered successfully', 'delivered'],
-  // The short form of a centre's delivery, "【centre】Delivered", as JS Express relays it.
+  // The short form of a centre's delivery, "【centre】Delivered", as JS Express relays it, and the German centres' form
+  // naming who took the parcel: "【centre】Delivered, receiver type:【Self or Family】.".
   ['delivered', 'delivered'],
+  ['delivered, receiver type:', 'delivered'],
   ['your package was received', 'delivered'],
   ['order delivery failed, returning to sender', 'exception'],
   ['shipment returned to origin', 'returned'],

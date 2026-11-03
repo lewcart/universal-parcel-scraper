@@ -565,6 +565,8 @@ describe('JS Express status vocabulary', () => {
     // Most rows are OIT whatever happened, and the courier's exceptions DDE, a forward among them: those take the wording.
     for (const code of ['OIT', 'DDE', 'OCP', 'DCF', '7']) expect(statusMap.stage(code, normalizeStatusWording(unknown)), code).toBeUndefined();
     expect(jsExpressStage('Alert, Forwarded -> Your item was forwarded to a different address', 'DDE')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    // iMile's German centres name who took the parcel; iMile's reading delivers it under any code.
+    expect(jsExpressStage('【Sample01】Delivered, receiver type:【Neighbour】.', 'OIT')).toEqual({ stage: 'delivered', source: 'carrier_map' });
     // The wording's map comes first, and a record of data stays a gap under any code.
     expect(statusMap.stage('DSD', normalizeStatusWording('Item has been collected'))).toBe('accepted');
     const gap = statuses.entries.find((entry) => !('stage' in entry))!.wording;

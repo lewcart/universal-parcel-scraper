@@ -25,7 +25,7 @@
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
 import { deliveryForecastRemainder } from '../../core/status/language.js';
-import type { CarrierStatusMap } from '../../core/status/statusMap.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /** English labels for the guest API enumeration, used when the API sends no translation. */
 export const API_LABELS: Record<string, string> = {
@@ -127,7 +127,7 @@ const SCAN_STAGES: Readonly<Record<string, Stage>> = {
   DEX: 'failed_attempt', // "We couldn't deliver your parcel, it will soon be available at a retrieval point"
   DEXD: 'failed_attempt', // "There was an issue to drop off your parcel due to a lack of space in the retrieval point"
   DLR: 'failed_attempt', // "We couldn't deliver your parcel and had to return it to the depot"
-  DLW: 'failed_attempt', // "Your parcel is being held at our delivery depot, your premises were closed"
+  DLW: 'failed_attempt', // "Your parcel is being held at our delivery depot, your premises were closed"; see `wordedScanStage`
   DEHD: 'ready_for_pickup', // "Your parcel has been delivered to the retrieval point, it will soon be available for collection"
   DEHDY: 'ready_for_pickup', // "Your parcel has been delivered to the retrieval point"
   DODEI: 'ready_for_pickup', // "Your parcel is available at the retrieval point", twin AVAILABLE_FOR_COLLECTION
@@ -139,6 +139,16 @@ const SCAN_STAGES: Readonly<Record<string, Stage>> = {
 /** The stage for a guest API scan code, or null when the code is not mapped. */
 export function scanStage(code: string): Stage | null {
   return Object.hasOwn(SCAN_STAGES, code) ? SCAN_STAGES[code]! : null;
+}
+
+// DLW holds the parcel at the delivery depot and its wording gives the reason: "your premises were
+// closed" is a round that could not be made. Worded as DLQ is, the parcel waits there for a round,
+// none tried yet: German histories show it between the depot's sorting scans with no round before.
+const WAITING_AT_DEPOT = normalizeStatusWording('Your parcel is at our delivery depot, it will soon be on its way');
+
+/** The stage for a guest API scan code read with its wording, or null when the code is not mapped. */
+export function wordedScanStage(code: string, wording: string): Stage | null {
+  return code === 'DLW' && normalizeStatusWording(wording) === WAITING_AT_DEPOT ? 'in_transit' : scanStage(code);
 }
 
 /**
@@ -168,7 +178,7 @@ const MOVES_WITHOUT_MILESTONE = "DPD's map leaves it unmapped on purpose: it mov
  * answered by the code alone.
  */
 export const statusMap: CarrierStatusMap = {
-  stage: (code) => (code ? scanStage(code) ?? apiStage(code) : null) ?? undefined,
+  stage: (code, wording) => (code ? wordedScanStage(code, wording) ?? apiStage(code) : null) ?? undefined,
   gaps: [
     { code: 'PARCEL_HANDED', note: MOVES_WITHOUT_MILESTONE },
     { code: 'IN_TRANSIT', note: MOVES_WITHOUT_MILESTONE },

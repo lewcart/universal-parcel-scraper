@@ -230,6 +230,15 @@
       "note": "Scan code: a failed delivery round, the recipient's premises closed."
     },
     {
+      "code": "DLW",
+      "wording": "Your parcel is at our delivery depot, it will soon be on its way",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Scan code: held at the delivery depot with DLQ's wording, waiting for a round, none tried yet."
+    },
+    {
       "code": "DEX",
       "wording": "We couldn't deliver your parcel, it will soon be available at a retrieval point. You will be informed of the location upon arrival",
       "language": "en",

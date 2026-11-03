@@ -16,7 +16,7 @@ import { decodeText, fetchBounded, parseJsonBytes, userAgentOf, type TrawlClient
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { DPD_DE_SESSION_OPENING, DpdOtherCountryError, sharedDpdAppService, type DpdParcelShop } from '../dpd-de/service.js';
 import {
-  API_LABELS, NOTICE_SCANS, PROOF_OF_DELIVERY_SCAN, apiStage, apiStatus, scanStage, wordingStatus,
+  API_LABELS, NOTICE_SCANS, PROOF_OF_DELIVERY_SCAN, apiStage, apiStatus, wordedScanStage, wordingStatus,
 } from './status.js';
 
 // Protocol provenance:
@@ -480,12 +480,13 @@ export function parseDPDTrackingApi(
     const zoneId = new Set(entries.map((entry) => clean(entry.eventDateAndTimeZoneId))).size === 1
       ? entries[0]?.eventDateAndTimeZoneId
       : null;
-    const stage = scanStage(code) ?? apiStage(code) ?? (twin ? apiStage(twin.description) : null);
+    const description = clean(textual(raw.translation) ?? textual(raw.eventTypeText) ?? apiDescription(raw.eventType))
+      || 'Tracking update';
+    const stage = wordedScanStage(code, description) ?? apiStage(code) ?? (twin ? apiStage(twin.description) : null);
     append({
       time: apiEventTime(zone, raw.date, raw.time, zoneId, null),
       location: apiLocation(raw),
-      description: clean(textual(raw.translation) ?? textual(raw.eventTypeText) ?? apiDescription(raw.eventType))
-        || 'Tracking update',
+      description,
       ...(stage ? { stage } : {}),
       ...(code ? { provider_code: code } : {}),
     });

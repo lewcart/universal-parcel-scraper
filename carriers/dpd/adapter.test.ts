@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import type { StepRecord, StepRecorder } from '../../core/telemetry/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import { DPD_DE_APP_API } from '../dpd-de/service.js';
@@ -11,7 +12,7 @@ import {
   parseDPDTrackingApi,
   parseDPDTrackingHtml,
 } from './adapter.js';
-import { apiStage, apiStatus, scanStage, wordingStatus } from './status.js';
+import { apiStage, apiStatus, scanStage, wordedScanStage, wordingStatus } from './status.js';
 
 // Every identifier below is synthetic: a 14-digit number that matches DPD's
 // shape but was never issued, and made-up names for the private fields the
@@ -777,13 +778,34 @@ describe('DPD status vocabulary', () => {
   it('documents every mapped code in statuses.json', () => {
     const { entries } = JSON.parse(
       readFileSync(new URL('./statuses.json', import.meta.url), 'utf8'),
-    ) as { entries: Array<{ code: string; stage?: string }> };
+    ) as { entries: Array<{ code: string; wording: string; stage?: string }> };
 
-    for (const { code, stage } of entries) {
+    for (const { code, wording, stage } of entries) {
       // The proof-of-delivery scans are staged by the parser, not by a map.
       if (code === 'DEYY' || code === 'DODEYY') continue;
-      expect([code, scanStage(code) ?? apiStage(code)]).toEqual([code, stage ?? null]);
+      expect([code, wordedScanStage(code, wording) ?? apiStage(code)]).toEqual([code, stage ?? null]);
     }
+  });
+
+  it('reads a depot hold worded as a wait for the round as in transit, and with a closed premises as a failed round', () => {
+    expect(wordedScanStage('DLW', 'Your parcel is at our delivery depot, it will soon be on its way')).toBe('in_transit');
+    expect(wordedScanStage('DLW', 'Your parcel is being held at our delivery depot, your premises were closed')).toBe('failed_attempt');
+    expect(wordedScanStage('DLW', 'Synthetic hold reason')).toBe('failed_attempt');
+    expect(wordedScanStage('DLQ', 'Your parcel is at our delivery depot, it will soon be on its way')).toBe('in_transit');
+    expect(statusMapAnswer({ carrier: 'dpd-de', providerCode: 'DLW', description: 'Your parcel is at our delivery depot, it will soon be on its way' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'dpd-de', providerCode: 'DLW', description: 'Your parcel is being held at our delivery depot, your premises were closed' }))
+      .toEqual({ kind: 'mapped', stage: 'failed_attempt' });
+    const result = parseDPDTrackingApi({
+      parcelNumber: TRACKING_NUMBER,
+      status: { description: 'AT_DELIVERY_CENTER' },
+      parcelHistory: [],
+      parcelEvents: [
+        { date: '2026-07-16', time: '05:00:00', city: 'Example', country: 'DE', eventType: 'DLS', translation: 'Your parcel has been sorted and is ready for delivery' },
+        { date: '2026-07-16', time: '11:00:00', city: 'Example', country: 'DE', eventType: 'DLW', translation: 'Your parcel is at our delivery depot, it will soon be on its way' },
+      ],
+    }, TRACKING_NUMBER, true);
+    expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual([['DLW', 'in_transit'], ['DLS', 'in_transit']]);
   });
 
   it('treats a failed attempt as a retry and a return as an exception', () => {

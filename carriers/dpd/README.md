@@ -65,6 +65,9 @@ signal.
   unmapped. `statusMap` in [status.ts](status.ts) lists every code and label
   left unmapped on purpose, for the app's review queue, such as `ENA`, a data
   exchange inside DPD's systems seen before the parcel reached the origin depot.
+- `DLW` holds the parcel at the delivery depot, and its label gives the reason.
+  Closed premises make it a failed round. Labelled like `DLQ`, the parcel waits
+  for a round, with none tried before it, and reads as in transit.
 - When DPD's unit in another country takes the parcel, the group's history
   dates `PARCEL_HANDED` anew, after the parcel's later milestones. Dated after
   one of them, it is that hand-off between units and reads as in transit, as

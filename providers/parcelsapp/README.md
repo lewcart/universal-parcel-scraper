@@ -508,6 +508,11 @@ step exists for future protocol changes.
 - So do PostNL's scans in Britain. FedEx International Connect lists the same scans two hours
   after ParcelsApp's digits, on Dutch summer time, so those digits are their UTC instants. Read
   on PostNL's Amsterdam clock, they came out two hours early. PostNL's other scans keep it.
+- So do a shipping partner's rows filed under USPS, whose wording repeats their place
+  ("Shipping Label Created, EXAMPLE CITY, CA 12345"). USPS's own rows read "Shipping Label
+  Created, USPS Awaiting Item" and keep its wall clock. Read on its place's clock, such a
+  label came eight hours after ParcelsApp first returned it, and Juxi Express's rows of
+  that shape fall between 17TRACK's instants of the same warehouse's steps as labeled.
 - North American scans: the dates of UPS, FedEx, UniUni, EasyShip and DHL eCommerce are
   the scan's local clock, as UPS's own instants, FedEx's own page, UniUni's own feed,
   Ship24's offsets and DHL eCommerce's Webtrack, which names each scan's clock, show on US

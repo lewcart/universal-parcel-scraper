@@ -218,6 +218,16 @@ function dayEvent(day: string, description: string): CarrierEvent | null {
  * no place, are Beijing's (`carrierClock`).
  */
 const WALL_CLOCKS = new Set(['usps', 'canadapost', 'gofoexpress', 'speedpak', 'ems', 'cainiao', 'ecoscooting', '4pxexpress', 'mailamericas', '1st']);
+/**
+ * A shipping partner's row that ParcelsApp files under USPS, its place repeated
+ * after its wording ("Shipping Label Created, EXAMPLE CITY, CA 12345"), where
+ * USPS's own rows read "Shipping Label Created, USPS Awaiting Item". Its date
+ * is the instant: read on its place's clock, a label came eight hours after
+ * ParcelsApp first returned it, and Juxi Express's rows of this shape fall
+ * between 17TRACK's instants of the same warehouse's steps as labeled.
+ */
+const USPS_PARTNER_ROW = /,[^,]+,\s*[A-Z]{2}\s+\d{5}(?:-\d{4})?$/;
+const uspsPartnerRow = (name: unknown, status: string) => nameKey(name) === 'usps' && USPS_PARTNER_ROW.test(status.trim());
 // Known clocks that are the destination or origin country's (`knownClock`).
 const DESTINATION = 'destination';
 const ORIGIN = 'origin';
@@ -922,6 +932,7 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
   if (carrier === 'tnt' && /^\d{9}$/.test(number)) return null;
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
+  if (uspsPartnerRow(name, status)) return null;
   if (carrier === 'paack' || carrier === 'vinted-go' || carrier === 'austrian-post' || carrier === 'straightship'
     || ownOffset(name, state.date, scanLocation(name, state.location))) return null;
   // PostNL's scans in Britain have their UTC instants: FIC shows the same scans on Dutch time.
@@ -1098,7 +1109,7 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const name = stateCarrierName(payload, raw);
   const location = scanLocation(name, raw.location);
   const offset = ownOffset(name, raw.date, location);
-  const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
+  const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset && !uspsPartnerRow(name, status);
   const relay = polandPostRelay(name, raw.date, location, number, destination);
   const pitneyBowes = relay ? undefined : pitneyBowesClock(payload, raw, status, destination);
   const own = relay?.zone ?? (pitneyBowes ? pitneyBowes.zone : carrierClock(payload, raw, number, status, destination));

@@ -1273,6 +1273,21 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
+  it('keeps the instant of a shipping partner\'s row filed under USPS, its place after its wording', () => {
+    // Live shape: the label came 9 minutes before ParcelsApp returned it, at 04:40 under a UTC
+    // label; read on California's clock, it came 8 hours after.
+    const label = 'Shipping Label Created, EXAMPLE CITY, CA 12345';
+    expect(parseParcelsAppResponse({ carriers: ['USPS'], states: [
+      { date: '2026-11-05T09:12:00Z', status: 'Arrived at USPS Regional Facility', carrier: 0, location: 'EXAMPLE CITY CA DISTRIBUTION CENTER' },
+      { date: '2026-11-03T04:40:00Z', status: label, carrier: 0, location: 'EXAMPLE CITY, CA 12345' },
+    ] }, number, identity(), null, Date.parse('2026-11-03T04:50:00Z')).events?.map((scan) => [scan.time, scan.description])).toEqual([
+      ['2026-11-05T17:12:00.000Z', 'Arrived at USPS Regional Facility'], // USPS's own row, on California's clock
+      ['2026-11-03T04:40:00.000Z', label],
+    ]);
+    expect(parseParcelsAppHtml(rendered(carrierRow('03 Nov 2026', '04:40', label, 'USPS')), number, 'America/New_York')
+      .events?.[0]?.time).toBe('2026-11-03T04:40:00.000Z');
+  });
+
   it('lends a wall-clock scan with no place the clock of its network\'s nearest placed scan, as a guess', () => {
     const times = (carriers: string[], states: Record<string, unknown>[], timezone: string | null = null) =>
       parseParcelsAppResponse({ carriers, states }, number, identity(), timezone).events?.map((scan) => scan.time);

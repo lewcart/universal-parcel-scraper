@@ -23,7 +23,8 @@ browser is needed.
   warehouse scan in Guangzhou to the hand-over to the local carrier in the destination country,
   and the destination carrier's label row the tracker shows before the warehouse scan. That row
   is written at "US, SYSTEM, SYSTEM", a place the platform reads as none, repeated at the head of
-  its wording, which is read without it.
+  its wording, which is read without it. The tracker writes the warehouse receipt in Chinese,
+  "到达收货点", which the map lists too.
 - Scan times are wall clocks without an offset on the platform's Beijing clock and are read on
   it; a row dated after the lookup is held back.
 - 17TRACK names the forwarder GZHY, which is kept as an alias.

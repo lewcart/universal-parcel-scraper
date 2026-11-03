@@ -14,7 +14,6 @@ export function universalSourceBudget(source: Source): number {
 
 /** Evidence-based exception to affinity/rotation, shared by discovery and routing. */
 export function priorityUniversalSource(trackingNumber?: string): Source | undefined {
-  if (trackingNumber && /^JXC[A-Z]{2}\d{10}YQ$/.test(normalizeTrackingNumber(trackingNumber))) return 'Track718';
   // The Express corpus has complete Ship24 histories where ParcelsApp can be empty or input-gated.
   if (trackingNumber && /^\d{10}$/.test(normalizeTrackingNumber(trackingNumber))) return 'Ship24';
   // E-series and untested formats keep ordinary discovery.
@@ -90,15 +89,15 @@ export function universalPlan(options: {
   const juxi = carriers.find(candidate => candidate && CARRIERS.has(candidate)) === 'juxi-express' || !named && !!trackingNumber && /^JXC[A-Z]{2}\d{10}YQ$/.test(normalizeTrackingNumber(trackingNumber));
   const eligible = defaults.filter(source => (source !== 'Track718' || juxi)
     && (source !== 'UPU' || trackingNumber === undefined || isValidS10TrackingNumber(trackingNumber)));
-  if (juxi && !eligible.includes('Track718')) eligible.unshift('Track718');
+  // Track718 rarely holds a Juxi parcel the others lack, and each try costs a browser read: it comes last.
+  if (juxi && !eligible.includes('Track718')) eligible.push('Track718');
   const ordered = orderUniversalSources(eligible, tiers);
   if (options.enableTrack123 && carriers[0] === 'fedex' && !!trackingNumber
     && /^(?:\d{12}|\d{15}|\d{20})$/.test(normalizeTrackingNumber(trackingNumber))) ordered.unshift('Track123');
   // The number's priority provider goes first, unless the carrier's evidence left it out.
   const priority = ordered.find((source) => source === priorityUniversalSource(trackingNumber));
   return {
-    sources: juxi ? ['Track718', ...ordered.filter(source => source !== 'Track718')]
-      : priority ? [priority, ...ordered.filter((source) => source !== priority)] : ordered,
+    sources: priority ? [priority, ...ordered.filter((source) => source !== priority)] : ordered,
     carrier,
     tier: (source) => tiers?.[source] ?? 'unknown',
     rank: (source) => tierRank(tiers, source),

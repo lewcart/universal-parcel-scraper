@@ -160,6 +160,13 @@ describe('GOFO US history', () => {
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'GOFO returned an inconclusive lookup (code 500)' }));
     expect(() => parseGofo({ ...fixture(), success: 0, code: 'x'.repeat(80) }, NUMBER))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'GOFO returned an inconclusive lookup' }));
+    // Its message is shown beside the code, unless it is long or quotes a number.
+    expect(() => parseGofo({ ...fixture(), success: 0, code: 20002, msg: ' Too many\nrequests ' }, NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'GOFO returned an inconclusive lookup (code 20002): Too many requests' }));
+    for (const msg of [`No record for ${NUMBER}`, 'Order 12345 failed', 'x'.repeat(121), 7]) {
+      expect(() => parseGofo({ ...fixture(), success: 0, code: 20002, msg }, NUMBER))
+        .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'GOFO returned an inconclusive lookup (code 20002)' }));
+    }
   });
 
   it('rejects incomplete histories and summaries even when dates or descriptions coincide', () => {

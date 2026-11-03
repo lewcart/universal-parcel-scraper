@@ -105,9 +105,12 @@ export function parseGofo(payload: unknown, rawNumber: string, site: GofoSite = 
   const number = normalizeGofoNumber(rawNumber, site);
   if (!isRecord(payload)) throw new SchemaError(site.provider);
   if (payload.code !== 200 || payload.success !== 1) {
-    // GOFO's own code tells its failures apart in diagnostics.
+    // GOFO's own code, and the `msg` its page shows beside it, tell its failures apart in
+    // diagnostics, such as a rate limit. A message quoting a number is left out.
     const code = Number.isInteger(payload.code) && Math.abs(payload.code as number) < 1e6 ? ` (code ${payload.code as number})` : '';
-    throw new IndeterminateError(site.provider, `GOFO returned an inconclusive lookup${code}`);
+    const said = clean(payload.msg, 500);
+    const message = said && said.length <= 120 && !/\d{5}/.test(said) && !said.toUpperCase().includes(number) ? `: ${said}` : '';
+    throw new IndeterminateError(site.provider, `GOFO returned an inconclusive lookup${code}${message}`);
   }
   if (!isRecord(payload.data) || !Array.isArray(payload.data.success) || payload.data.success.length > 25
     || !payload.data.success.every(isRecord) || !isRecord(payload.data.error)) throw new SchemaError(site.provider);

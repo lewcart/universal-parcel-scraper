@@ -15,11 +15,14 @@ import type { CarrierStatus } from '../../core/result/index.js';
 import { trackingLanguageStage, type Stage } from '../../core/status/index.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
-const RETURNED_TERMS = ['return to sender', 'returned to sender', 'returning to sender'];
+// USPS's "Refused" is the addressee refusing the item, which USPS returns to the sender.
+const RETURNED_TERMS = ['return to sender', 'returned to sender', 'returning to sender', 'refused'];
+// An address the carrier could not deliver to ("Insufficient Address", "No Such Number") ends the round;
+// the item can go out again once the address is resolved.
 const FAILED_ATTEMPT_TERMS = [
   'delivery attempted', 'delivery attempt', 'notice left', 'no access',
   'receptacle blocked', 'business closed', 'no secure location', 'no authorized recipient',
-  'missed delivery', 'redelivery', 'unclaimed', 'vacant', 'no such number',
+  'missed delivery', 'redelivery', 'unclaimed', 'vacant', 'no such number', 'insufficient address',
 ];
 const EXCEPTION_TERMS = ['alert', 'exception', 'damaged', 'lost', 'seized', 'dispute', 'held for pickup'];
 const DELIVERED_TERMS = ['delivered'];

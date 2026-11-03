@@ -65,6 +65,8 @@ describe('USPS status vocabulary', () => {
     expect(uspsStage('Delivered, In/At Mailbox')).toBe('delivered');
     expect(uspsStage('Out for Delivery')).toBe('out_for_delivery');
     expect(uspsStage('Notice Left')).toBe('failed_attempt');
+    expect(uspsStage('Insufficient Address')).toBe('failed_attempt');
+    expect(uspsStage('Refused')).toBe('returned');
     expect(uspsStage('Pre-Shipment')).toBe('registered');
     // A label printed at the counter, dated by its day alone; the scan of the item that follows is the acceptance.
     expect(uspsStage('Shipping Label Printed at Post Office')).toBe('registered');

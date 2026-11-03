@@ -233,11 +233,35 @@ describe('Postal Ninja result parsing', () => {
       memphis('UPS', '2026-08-16T13:25:00', 'Departed from Facility'),
       memphis('UPS', '2026-08-17T12:40:00', 'Delivered'),
     ]), number, 'America/Chicago'))).toEqual(['2026-08-17T17:40:00.000Z', '2026-08-16T18:25:00.000Z', 'local 2026-08-16T12:25:00']);
-    // Beside another service, the office's clock is not read.
+    // Beside another service, UPS's office clock is not read.
     expect(parsePostalNinjaResponse(withEvents([
       { ds: 'USPS', dt: '2026-08-17T10:00:00', dsc: 'Out for delivery', loc: 'ATLANTA, GA 30301' },
       { ds: 'UPS', dt: '2026-08-17T11:17:00', dsc: 'Delivered', loc: 'Atlanta, GA, United States' },
     ]), number).last_update).toBeNull();
+  });
+
+  it('places USPS\'s scans by their facility beside other services, and keeps those nothing places off a zone abroad', () => {
+    const scans = [
+      { ds: 'Spring GDS', dt: '2026-10-28T10:00:00', dsc: 'Shipment data received' },
+      // No place: each borrows the Pacific clock of the nearest USPS scan that names its state.
+      { ds: 'USPS', dt: '2026-11-02T03:00:29', dsc: 'Inbound into customs' },
+      { ds: 'USPS', dt: '2026-11-02T16:45:00', dsc: 'Arrived at USPS Facility', loc: 'EXAMPLE CITY, CA 90001' },
+      { ds: 'United States Postal Service', dt: '2026-11-03T06:05:00', dsc: 'Arrived at Post Office', loc: 'Example Town, CA, United States' },
+      { ds: 'USPS', dt: '2026-11-03T06:10:00', dsc: 'Out for Delivery' },
+    ];
+    expect(times(parsePostalNinjaResponse(withEvents(scans), number, 'Europe/Amsterdam', 'spring-gds'))).toEqual([
+      '2026-11-03T14:10:00.000Z', '2026-11-03T14:05:00.000Z', '2026-11-03T00:45:00.000Z', '2026-11-02T11:00:29.000Z',
+      '2026-10-28T09:00:00.000Z',
+    ]);
+    // With no USPS scan to borrow from, its scan keeps its wall time rather than the Amsterdam zone of the carrier, and
+    // borrows a US one.
+    const unplaced = withEvents([scans[0], scans[1]]);
+    expect(times(parsePostalNinjaResponse(unplaced, number, 'Europe/Amsterdam', 'spring-gds'))).toEqual([
+      'local 2026-11-02T03:00:29', '2026-10-28T09:00:00.000Z',
+    ]);
+    expect(times(parsePostalNinjaResponse(unplaced, number, 'America/New_York'))).toEqual([
+      '2026-11-02T08:00:29.000Z', '2026-10-28T14:00:00.000Z',
+    ]);
   });
 
   it('reads local clocks beside other services, or for a postal item that crosses a border, only in the carrier\'s zone', () => {

@@ -121,9 +121,15 @@ numbers or handles cannot end the lookup.
 - A carrier's home is no clock by itself: Poste Italiane's scans are UTC, two hours off
   Rome time in summer, and the consolidators the catalog files under China report their
   destination scans at the destination's clocks.
+- USPS keeps the scanning facility's clock in any history, as its own tracker does: on
+  spring GDS items, its scans at California facilities came at their Pacific digits, and
+  read on the Amsterdam zone routing passes for spring GDS they came eight and nine hours
+  early. Each is placed by the state its location names, as [USPS's adapter](../../carriers/usps/clock.ts)
+  reads it, and one that names none borrows from those that do. With none to borrow from it
+  keeps its wall time rather than a routing zone outside the US.
 - Known clocks that are not established: DHL Express keeps each facility's clock, but
   names its newest US and Canadian scans without their state ("MARSHALL-USA"); Australia
-  Post, Canada Post, USPS and Correios do Brasil keep the scan's clock in countries with
+  Post, Canada Post and Correios do Brasil keep the scan's clock in countries with
   several; New Zealand Post relays China Post's scans at Chinese time; 4PX gives Chinese
   scans in UTC and US scans twelve hours early. Russian Post's scans come with a UTC
   suffix on the office's wall clock: an acceptance and a delivery ParcelsApp dates at

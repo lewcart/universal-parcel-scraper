@@ -23,7 +23,7 @@ import { isRecord } from '../../core/types.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { classifyEvent, event, hasPrivateDeliveryDetails, isNotice, numberOf, result, text, type UniversalSource } from '../shared/result.js';
 import { courierZone, universalCarrierHints } from '../shared/hints.js';
-import { carrierHomeZone, originLeg, serviceZone, wallClock } from './clocks.js';
+import { borrowsRoutingZone, carrierHomeZone, originLeg, serviceZone, wallClock } from './clocks.js';
 
 const SOURCE: UniversalSource = 'Postal Ninja';
 const GET_API = 'https://postal.ninja/track/get';
@@ -104,7 +104,8 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
   }
   // A scan whose service's clock is unknown here borrows a zone: that of the
   // nearest earlier scan of the same service with an established one, else of
-  // the nearest later one, else the carrier's, else, in a history the service
+  // the nearest later one, else the carrier's, unless a USPS scan would borrow
+  // a zone outside the US (borrowsRoutingZone), else, in a history the service
   // reports alone, the one its name gives. This is a guess, which keeps a reply
   // dated when its newest scan names no place. A scan whose hour is unknown
   // (false) keeps its wall time.
@@ -116,7 +117,8 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
       && typeof other.zone === 'string' ? other.zone : null;
     for (let earlier = index - 1; earlier >= 0; earlier -= 1) { const borrowed = established(scans[earlier]!); if (borrowed) return borrowed; }
     for (let later = index + 1; later < scans.length; later += 1) { const borrowed = established(scans[later]!); if (borrowed) return borrowed; }
-    return timezone ?? (journey.alone ? courierZone(service, number, wall) : null);
+    if (timezone) return borrowsRoutingZone(service, timezone) ? timezone : null;
+    return journey.alone ? courierZone(service, number, wall) : null;
   };
   const events = scans.map((scan, index): CarrierEvent => {
     if (scan.wall === null) return scan.event;

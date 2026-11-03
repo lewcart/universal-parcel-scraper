@@ -10,11 +10,14 @@
  */
 import { CAINIAO_CHINA_ZONE, cainiaoInChina } from '../../carriers/aliexpress/clock.js';
 import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
+import { uspsScanZone } from '../../carriers/usps/clock.js';
 import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
 import { carrierIdFromName } from '../../core/catalog/hints.js';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { DateTime } from 'luxon';
-import { canadaProvinceTimeZone, countryCode, countryTimeZone, postalOfficeZone, sharedClockZone, usStateTimeZone } from '../../core/time/index.js';
+import {
+  canadaProvinceTimeZone, countryCode, countryTimeZone, postalOfficeZone, sharedClockZone, timeZoneCountry, usStateTimeZone,
+} from '../../core/time/index.js';
 import { courierZone } from '../shared/hints.js';
 
 /** Services whose every scan is at one clock, wherever it happened and whatever other services the history names. */
@@ -121,6 +124,25 @@ const LOCATED_CLOCKS: ReadonlySet<string> = new Set(['FedEx', 'UPS']);
  */
 const TWELVE_HOUR_CLOCKS: ReadonlySet<string> = new Set(['UPS']);
 
+/**
+ * USPS, whose scans keep the scanning facility's wall clock in any history,
+ * as USPS's own tracker gives them: on spring GDS items, its scans at
+ * California facilities came at their Pacific digits. Each is placed by the
+ * state its location names, as USPS's adapter reads it; one that names none
+ * borrows from the others.
+ */
+const isUsps = (service: string) => carrierIdFromName(service) === 'usps';
+
+/**
+ * Whether a scan of the service may borrow the zone routing passes for the
+ * parcel's carrier: a USPS scan borrows no zone of a country outside the US,
+ * such as the Amsterdam zone of a spring GDS item, which put its scans eight
+ * and nine hours early. It keeps its wall time instead.
+ */
+export function borrowsRoutingZone(service: string, zone: string): boolean {
+  return !isUsps(service) || timeZoneCountry(zone) === null;
+}
+
 /** A scan dated without a time is written as midnight (FedEx's pickup, Geodis's departure). */
 const MIDNIGHT = /T00:00(?::00)?$/;
 const POSTAL_CODE = /^(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
@@ -192,7 +214,8 @@ export function originLeg({ service, description }: Pick<Scan, 'service' | 'desc
  * it: the destination post's clock for a scan Swiss Post relays from it, the
  * office's for DHL Germany's copies at a European one, a UTC
  * post's or the origin's that an S10 suffix names for its copies, its fixed
- * or network clock in any history, China's for Cainiao's steps in China, else
+ * or network clock in any history, China's for Cainiao's steps in China, the
+ * facility's for USPS's scans that name its state, else
  * in a history it reports alone its location's clock, or a local clock's
  * country: the destination's, else the service's (`courierZone`) or the
  * carrier's. A destination on another clock than the service's may be a
@@ -213,6 +236,7 @@ export function serviceZone(scan: Scan, journey: Journey): string | null | false
   if (fixed) return fixed;
   if (MIDNIGHT.test(wall) || (TWELVE_HOUR_CLOCKS.has(service) && wall.slice(11, 13) === '12' && !delivered)) return false;
   if (service === CAINIAO && originLeg(scan)) return CAINIAO_CHINA_ZONE;
+  if (isUsps(service)) return uspsScanZone(location) ?? locationZone(location);
   if (!journey.alone) return null;
   if (LOCATED_CLOCKS.has(service)) return locationZone(location);
   if (!LOCAL_CLOCKS.has(service)) return null;

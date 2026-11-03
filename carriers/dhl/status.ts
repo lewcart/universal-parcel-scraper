@@ -54,7 +54,7 @@ export function stageForText(text: string, fallback = 'in_transit'): string {
   if (/returned to (?:the )?sender|zurück.*absender|rücksendung|retour/.test(value)) return 'returned';
   // "Delivery not possible" comes after the loading onto the delivery vehicle, before the parcel
   // waits at a retail outlet: a failed attempt, as the partner posts' copies of the scan read it.
-  if (/not delivered|could not be delivered|unable to deliver|delivery attempt|delivery (?:was )?not possible|nicht.*zugestellt|zustellversuch|nicht angetroffen/.test(value)) return 'failed_attempt';
+  if (/not delivered|could not be delivered|unable to deliver|delivery attempt|delivery (?:was )?not possible|\bnicht\b[^.]*\bzugestellt\b|zustellversuch|nicht angetroffen/.test(value)) return 'failed_attempt';
   // GENERATED equivalents of DHL's existing forecast behavior: a forecast retains
   // the structured progress fallback; it cannot establish delivery or pre-advice.
   if (/will be delivered|sera livr[ée]|wird\s+(?!zugestellt\b).+zugestellt|sar[àa] consegnat/.test(value)) return fallback;

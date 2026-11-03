@@ -254,8 +254,15 @@ describe('Olva Courier HTTP adapter', () => {
 
   it('rejects numbers Olva does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['ALIOLVA9900000', 'XYZOLVA99000001', '1Z9999999999999999', '12345678', '20-1000029']) {
-      await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
+    // The years a number's digits can be read as depend on the clock, so it stays in the year these were chosen for.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-11-01T12:00:00Z'));
+    try {
+      for (const number of ['ALIOLVA9900000', 'XYZOLVA99000001', '1Z9999999999999999', '12345678', '20-1000029']) {
+        await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
+      }
+    } finally {
+      vi.useRealTimers();
     }
     await expect(carrier(fetcher).track({ number: GUIDE }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();

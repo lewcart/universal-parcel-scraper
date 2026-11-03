@@ -195,8 +195,15 @@ describe('OCASA tracking adapter', () => {
   it('reads the notice for an unknown number as not found and recognizes a known shipment, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(page('in-transit'))).mockResolvedValueOnce(reply(page('not-found')))
       .mockResolvedValueOnce(reply(page('not-found'))).mockResolvedValueOnce(reply(page('in-transit')));
-    // A local clock dates the last activity without an instant.
-    await expect(carrier(fetcher).recognize!(TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-03T07:40:00' });
+    // A local clock dates the last activity without an instant. The page's dates have no year, which
+    // comes from the clock, so the clock stays near the fixture's scans.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-01-10T12:00:00Z'));
+    try {
+      await expect(carrier(fetcher).recognize!(TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-01-03T07:40:00' });
+    } finally {
+      vi.useRealTimers();
+    }
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'not_found' });
     // A page for another number is no answer either way.

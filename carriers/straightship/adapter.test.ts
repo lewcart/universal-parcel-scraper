@@ -255,8 +255,15 @@ describe('Straightship numbers', () => {
       expect(detectCarrierMatch(other).candidates, other).not.toContain('straightship');
     }
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => page(fixture('in-transit').replaceAll(IN_TRANSIT, number)));
-    await expect(createTracker({ fetcher, providers: [], env: {} }).recognize(number, { budgetMs: 3000 }))
-      .resolves.toMatchObject({ carrier: 'straightship' });
+    // Recognition adopts a shipment with recent activity, so the clock stays near the fixture's scans.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-20T12:00:00Z'));
+    try {
+      await expect(createTracker({ fetcher, providers: [], env: {} }).recognize(number, { budgetMs: 3000 }))
+        .resolves.toMatchObject({ carrier: 'straightship' });
+    } finally {
+      vi.useRealTimers();
+    }
     expect(String(fetcher.mock.calls[0]?.[0])).toBe(straightshipTrackingUrl(number));
   });
 });

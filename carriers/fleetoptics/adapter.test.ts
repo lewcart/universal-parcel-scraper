@@ -192,8 +192,15 @@ describe('FleetOptics HTTP adapter', () => {
   it('recognizes a known number and the unknown-number notice, and asks nothing for a number FleetOptics does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(page(fixture('in-transit')))
       .mockResolvedValueOnce(page(fixture('not-found')));
-    // A local clock dates the last activity without an instant.
-    await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-10-18T13:27:00' });
+    // A local clock dates the last activity without an instant. The page's dates have no year, which
+    // comes from the clock, so the clock stays near the fixture's scans.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-25T12:00:00Z'));
+    try {
+      await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toEqual({ known: true, lastActivityAt: null, lastActivityLocal: '2026-10-18T13:27:00' });
+    } finally {
+      vi.useRealTimers();
+    }
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('F0000')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

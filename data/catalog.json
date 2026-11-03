@@ -29346,6 +29346,8 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "liuchen",
+      "recognitionRank": 748,
+      "recognitionPattern": "^LCWL\\d{8}YQ$",
       "localClocks": true
     },
     "canaryUrl": "https://www.liuchenwl.com/",
@@ -29363,7 +29365,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^LCWL\\d{8}YQ$",
+        "confidence": "low"
+      }
+    ]
   },
   "ljx-express": {
     "displayName": "LJX Express",

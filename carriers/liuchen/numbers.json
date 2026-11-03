@@ -1,5 +1,20 @@
 {
   "carrier": "liuchen",
-  "gap": "No public page shows a Liuchen number; its tracker takes numbers in a form.",
-  "records": []
+  "records": [
+    {
+      "number": "LCWL99000001YQ",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-11-03",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "liuchen"
+        ]
+      },
+      "note": "Made-up number in the shape of a parcel the app tracked, which a universal provider reported from Liuchen: LCWL, the initials of 六尘物流, eight digits and YQ. Its serial sits far beyond the range in use."
+    }
+  ]
 }

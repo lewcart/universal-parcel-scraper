@@ -1484,6 +1484,19 @@ describe('Topnic', () => {
   });
 });
 
+describe('Liuchen', () => {
+  it('offers Liuchen at low confidence for LCWL, eight digits and YQ, and asks it', () => {
+    expect(detectCarrierMatch('lcwl 9900 0001 yq')).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['liuchen'], preferred: [],
+    });
+    expect(recognitionCandidates('LCWL99000001YQ').map((candidate) => candidate.carrier)).toEqual(['liuchen']);
+    for (const number of ['LCWL9900001YQ', 'LCWL990000001YQ', 'LCWL99000001CN', 'LCGJ99000001YQ', 'XLCWL99000001YQ']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('liuchen');
+      expect(recognitionCandidates(number).map((candidate) => candidate.carrier), number).not.toContain('liuchen');
+    }
+  });
+});
+
 describe('WooliiPorter', () => {
   it('reads its names and tracking links', () => {
     for (const name of ['WooliiPorter', 'Woolii']) expect(carrierIdFromName(name), name).toBe('wooliiporter');

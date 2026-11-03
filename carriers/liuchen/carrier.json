@@ -25,7 +25,11 @@
       "direct",
       "retry"
     ],
-    "localClocks": true
+    "localClocks": true,
+    "recognition": {
+      "rank": 748,
+      "pattern": "^LCWL\\d{8}YQ$"
+    }
   },
   "capabilities": [
     "history",
@@ -69,5 +73,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "liuchen-1",
+      "pattern": "^LCWL\\d{8}YQ$",
+      "confidence": "low"
+    }
+  ]
 }

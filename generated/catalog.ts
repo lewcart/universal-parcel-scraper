@@ -29350,6 +29350,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "tracking": {
       "mode": "automatic",
       "adapter": "liuchen",
+      "recognitionRank": 748,
+      "recognitionPattern": "^LCWL\\d{8}YQ$",
       "localClocks": true
     },
     "canaryUrl": "https://www.liuchenwl.com/",
@@ -29367,7 +29369,12 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^LCWL\\d{8}YQ$",
+        "confidence": "low"
+      }
+    ]
   },
   "ljx-express": {
     "displayName": "LJX Express",
@@ -52431,7 +52438,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "lingdong": ["lingdong-1"],
   "linhan": ["linhan-1"],
   "lion-parcel": ["lion-parcel-1"],
-  "liuchen": [],
+  "liuchen": ["liuchen-1"],
   "ljx-express": [],
   "lm-parcel": ["lm-parcel-1"],
   "logen": [],

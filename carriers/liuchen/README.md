@@ -29,9 +29,12 @@ Tracked through the lookup its tracking page makes.
 
 ## Numbers
 
-No public page shows a Liuchen number, so there is no detection rule and the adapter takes any
-number of eight or more letters and digits: a parcel reaches it when it is filed under Liuchen or
-opened from its tracking link.
+A parcel a universal provider reported from Liuchen was numbered `LCWL`, the initials of 六尘物流,
+eight digits and `YQ`, the way its sister tenants put their own initials first (Jifan's `JFGJ`,
+LinHan's `LHGJ`). With that one parcel and no public number, the rule offering Liuchen for that
+layout is low, and recognition asks the tracker about it. The adapter takes any number of eight or
+more letters and digits: other numbers reach it when they are filed under Liuchen or opened from its
+tracking link.
 
 ## Links
 

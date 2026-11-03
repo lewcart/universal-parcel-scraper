@@ -112,6 +112,21 @@ describe('Liuchen HTTP adapter', () => {
     expect(parseTrackingInput(`https://www.liuchenwl.com/index/tracknumber/track?nos=${IN_TRANSIT}`))
       .toMatchObject({ trackingNumber: IN_TRANSIT, carrier: 'liuchen', source: 'link' });
   });
+
+  it('recognizes a known number and the unknown-number answer, and asks nothing for what is no waybill', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('in-transit')))
+      .mockResolvedValueOnce(reply(fixture('not-found')));
+    await expect(carrier(fetcher).recognize!(IN_TRANSIT)).resolves.toMatchObject({ known: true, lastActivityAt: expect.any(String) });
+    await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
+    await expect(carrier(fetcher).recognize!('LC-0')).resolves.toEqual({ known: false });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([[403, 'challenge'], [429, 'rate_limited'], [503, 'maintenance']] as const)(
+    'preserves HTTP %s as %s during recognition', async (status, kind) => {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response('', { status }));
+      await expect(carrier(fetcher).recognize!(IN_TRANSIT)).rejects.toMatchObject({ kind });
+    });
 });
 
 describe('Liuchen status vocabulary', () => {

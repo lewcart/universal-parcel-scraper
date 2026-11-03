@@ -54,6 +54,13 @@ describe('French carrier number candidates', () => {
     expect(detectCarrierMatch('GFUSA000000075001').candidates).toEqual(['colis-prive']);
   });
 
+  it("does not read a postcode into numbers with DobroPost's prefix", () => {
+    // DBRPST and eleven digits: the last five look like a French postcode.
+    expect(detectCarrierMatch('DBRPST00000075001').candidates ?? []).not.toContain('colis-prive');
+    expect(detectCarrierMatch('DBRPST0000075001')).toMatchObject({ carrier: 'dobropost', confidence: 'high' });
+    expect(detectCarrierMatch('DBRPSU00000075001').candidates).toEqual(['colis-prive']);
+  });
+
   it('offers GLS France to HTTP recognition for shared numeric and alpha references', () => {
     for (const number of ['36631000001', '366310000017', 'A1B2C3D4']) {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });

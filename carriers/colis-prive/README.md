@@ -34,8 +34,9 @@ recipient's postcode.
   The corpus keeps bare 12-character numbers only.
 - Yanwen's US last-mile numbers, `YW` with a hub code and twelve digits,
   YWE's numbers, `YWE` and fourteen digits, GOFO's numbers, `GF` or `CI` with a
-  country code and thirteen digits, and Cainiao's `CNG` numbers with fourteen
-  digits also end in five digits; detection does not read those as a postcode.
+  country code and thirteen digits, Cainiao's `CNG` numbers with fourteen digits
+  and numbers that open with DobroPost's prefix `DBRPST` also end in five digits;
+  detection does not read those as a postcode.
 - `.divDesti` is removed before any text is read, not filtered afterwards — a
   later selector can forget a filter, not a removal.
 - A page for another shipment is a schema error, never a result.

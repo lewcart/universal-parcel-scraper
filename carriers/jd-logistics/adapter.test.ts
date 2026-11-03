@@ -211,6 +211,20 @@ describe('JD Logistics international projection', () => {
     expect(result.events?.filter(event => event.provider_code !== 'DMSCD').every(event => event.stage_source === 'carrier_map')).toBe(true);
   });
 
+  it('reads a sorting center abroad sending a parcel on and receiving it by its codes', () => {
+    const reply = history();
+    const nodes = reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList as Record<string, unknown>[];
+    nodes.splice(0, nodes.length,
+      { operatorTime: '2026-09-30 08:45:04', operationCode: 'TVA', operatorDesc: 'Your package has arrived at 【Sample Sorting Center】' },
+      { operatorTime: '2026-09-30 06:33:16', operationCode: 'TVD', operatorDesc: 'Your package has been sent to 【Sample Sorting Center】' },
+      { operatorTime: '2026-09-29 08:00:00', operationCode: 'COSH', operatorDesc: 'Order Created.' });
+    const result = parseJdLogistics(reply, NUMBER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map' });
+    expect(result.events?.map(event => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['TVA', 'in_transit', 'carrier_map'], ['TVD', 'in_transit', 'carrier_map'], ['COSH', 'registered', 'carrier_map'],
+    ]);
+  });
+
   it('keeps the partner\'s number out of the departure\'s wording and gives it as the delivery number', () => {
     const reply = history();
     const nodes = reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList as Record<string, unknown>[];

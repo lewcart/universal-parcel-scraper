@@ -134,15 +134,16 @@ describe('HuaHan guest tracking', () => {
       { Occur_date: '2026-01-06 09:34:00', Status: 'LD', Comment: 'Arrived at destination airport', track_area: 'NL' },
       { Occur_date: '2026-01-06 06:34:00', Status: 'QG', Comment: 'Import Customs clearance started', track_area: 'NL' },
       { Occur_date: '2026-01-05 16:35:58', Status: 'QF', Comment: 'Departed from airport of Origin', track_area: 'HK' },
+      { Occur_date: '2026-01-05 12:09:12', Status: 'AP', Comment: 'Received by airport of Origin', track_area: 'HK' },
       { Occur_date: '2026-01-03 12:54:49', Status: 'BG', Comment: 'Export customs clearance completed', track_area: 'HK' },
       { Occur_date: '2026-01-03 06:54:41', Status: 'GG', Comment: 'Transfer to Origin airport', track_area: 'CN' },
     ];
     const result = parseHuahan(journey, NUMBER);
     expect(result.current_stage).toBe('delivered');
     expect(result.events!.map(event => event.stage)).toEqual(['delivered', 'out_for_delivery', 'in_transit',
-      'in_transit', 'in_transit', 'customs', 'in_transit', 'in_transit', 'in_transit']);
+      'in_transit', 'in_transit', 'customs', 'in_transit', 'in_transit', 'in_transit', 'in_transit']);
     expect(result.events!.filter(event => event.stage_source === 'carrier_map').map(event => event.provider_code))
-      .toEqual(['CC', 'CB', 'IA', 'YG', 'LD', 'QG', 'QF', 'BG', 'GG']);
+      .toEqual(['CC', 'CB', 'IA', 'YG', 'LD', 'QG', 'QF', 'AP', 'BG', 'GG']);
   });
 
   it('keeps the destination carrier\'s placed line for a scan also listed in generic words', () => {

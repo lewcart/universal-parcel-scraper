@@ -384,6 +384,8 @@
       "confirmedBy": "live",
       "firstSeen": "2026-11-03",
       "note": "The hand-over to the last-mile partner after import clearance; \"deliverey\" is Shouwu's spelling."
-    }
+    },
+    {"wording": "NOA received", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The destination agent's receipt of the flight's notice of arrival, after the landing and before clearance."},
+    {"wording": "Customs clearance in progress", "stage": "customs", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "Import clearance under way, before \"Customs clearance has been completed\"."}
   ]
 }

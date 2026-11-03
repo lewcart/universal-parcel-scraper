@@ -39,6 +39,9 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['CXLMHL', MOVING],
   ['DMSCR', MOVING],
   ['SCVS', MOVING],
+  // Sent on to a sorting center abroad, then its arrival there.
+  ['TVD', MOVING],
+  ['TVA', MOVING],
   ['VUVU', MOVING],
   // GOFO's hubs, the line haul between them and its delivery station, relayed under JD's codes.
   ['DMLMLW', MOVING],

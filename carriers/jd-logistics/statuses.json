@@ -300,6 +300,20 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-29",
       "note": "Delivered (已送达)."
+    },
+    {
+      "code": "TVD",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Sent on to a sorting center abroad (Your package has been sent to 【…】)."
+    },
+    {
+      "code": "TVA",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Arrived at a sorting center abroad (Your package has arrived at 【…】)."
     }
   ]
 }

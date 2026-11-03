@@ -2,14 +2,14 @@ import { classifyWording, type ClassifiedWording, type Stage } from '../../core/
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // The origin milestone codes are documented by getCargoTrack. The web tracker
-// adds the flight and clearance milestones, JY for the hand-off to the
-// destination carrier, and codes for that carrier's out-for-delivery (CB),
-// delivery-point arrival (PB) and delivery (CC) scans. IA covers that carrier's
-// other scans, and CA its depot scans: the map reads the wordings seen, the
-// shared rules the rest.
+// adds the origin airport's receipt (AP), the flight and clearance milestones,
+// JY for the hand-off to the destination carrier, and codes for that carrier's
+// out-for-delivery (CB), delivery-point arrival (PB) and delivery (CC) scans.
+// IA covers that carrier's other scans, and CA its depot scans: the map reads
+// the wordings seen, the shared rules the rest.
 const CODES: ReadonlyMap<string, Stage> = new Map([
   ['IR', 'registered'], ['AF', 'accepted'], ['DF', 'in_transit'], ['GG', 'in_transit'], ['BG', 'in_transit'],
-  ['QF', 'in_transit'], ['QG', 'customs'], ['LD', 'in_transit'], ['YG', 'in_transit'], ['JY', 'in_transit'],
+  ['AP', 'in_transit'], ['QF', 'in_transit'], ['QG', 'customs'], ['LD', 'in_transit'], ['YG', 'in_transit'], ['JY', 'in_transit'],
   ['CB', 'out_for_delivery'], ['PB', 'ready_for_pickup'], ['CC', 'delivered'],
 ]);
 // Scans under IA, relayed without a code or under a tracking provider's own code: HuaHan's

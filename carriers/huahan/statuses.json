@@ -37,6 +37,7 @@
     {"wording": "The courier will deliver the parcel soon. Additional details are available in the SAMEDAY app, email or SMS.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "The destination carrier's own words for the scan HuaHan codes CB, at the same instant."},
     {"code": "CB", "wording": "Out for Delivery, Parcel is at courier, delivery expected soon.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "The destination carrier's courier scan, relayed under HuaHan's code."},
     {"code": "CC", "wording": "Delivered, Parcel was delivered successfully", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "The destination carrier's delivery, relayed under HuaHan's code with that carrier's wording."},
-    {"code": "CC", "wording": "The parcel has been successfully delivered.", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "A second delivery wording from the same destination carrier under the same code."}
+    {"code": "CC", "wording": "The parcel has been successfully delivered.", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "A second delivery wording from the same destination carrier under the same code."},
+    {"code": "AP", "wording": "Received by airport of Origin", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The origin airport's receipt, after export clearance and before the departure from it."}
   ]
 }

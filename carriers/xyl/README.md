@@ -13,8 +13,9 @@ Its site gives no number layout and no public page shows an XYL number, so there
 ## Why there is no adapter
 
 Its tracker is a tenant of the Kingtrans platform, which answers an open XML lookup without a
-session or CAPTCHA, but it blocks an address for a while after two quick requests. No public number
-is known to see a found reply.
+session or CAPTCHA. It refuses with an HTTP 403 page saying requests come too often
+(`此请求访问太过频繁`) after two quick requests, and sometimes on an address's first, so it could
+not carry regular checks. No public number is known to see a found reply.
 
 ## Links
 

@@ -73,6 +73,8 @@ const SCAN_STAGES: readonly [RegExp, Stage][] = [
   [/^Delivery in the way to the DHL Point\.?$/i, 'in_transit'],
   // The DHL BOX locker or DHL POP point holding the parcel for its recipient, with its address and hours.
   [/^Shipment is waiting in .{1,300}$/i, 'ready_for_pickup'],
+  // Its recipient collected the parcel from that locker or point.
+  [/^Shipment collected from DHL (?:Parcelstation|POP|Point|BOX)\b.{0,120}$/i, 'delivered'],
 ];
 
 /** The stage of one history scan's wording, once the recipient's acknowledgement is cut off. */

@@ -42,6 +42,9 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['in transit, scanned by dpd at parcel delivery centre.', 'in_transit'],
   ['in transit, at parcel delivery centre.', 'in_transit'],
   ['the courier will deliver the parcel soon. additional details are available in the sameday app, email or sms.', 'out_for_delivery'],
+  ['delivery attempted', 'failed_attempt'],
+  ['delivery attempted, unfortunately we have not been able to deliver your parcel. pickup parcelshop delivery after first delivery attempt.', 'failed_attempt'],
+  ['awaiting pickup, parcel was deposited in pickup parcel station', 'ready_for_pickup'],
 ]);
 
 const GAPS = [{

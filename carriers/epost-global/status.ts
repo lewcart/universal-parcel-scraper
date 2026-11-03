@@ -24,6 +24,7 @@ const STAGES: ReadonlyMap<string, Stage> = new Map([
   ['airline delay', 'in_transit'],
   ['collected from the airline for processing', 'in_transit'],
   // PostNL, through Spring.
+  ['the item has been manifested and ready to transport', 'in_transit'],
   ['the item is tied to a mawb and ready for shipment', 'in_transit'],
   // La Poste's wording for parcels PostNL brings to France, after they left the United States.
   ['your item has been dropped off by the sender with our postal partner in the country of origin.', 'in_transit'],

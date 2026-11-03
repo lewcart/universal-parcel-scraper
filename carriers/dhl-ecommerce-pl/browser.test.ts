@@ -64,13 +64,16 @@ describe('DHL Poland browser history', () => {
     payload.events[0]!.description = 'The shipment was delivered to the Recipient. The shipment received by PRIVATE';
     expect(parseDhlPolandHistory(payload, WAYBILL).events?.[0]).toMatchObject({ description: 'The shipment was delivered to the Recipient.', stage: 'delivered' });
   });
-  it('reads the way to a locker or point in transit, and the locker or point holding the parcel as ready for pickup', () => {
+  it('reads the way to a locker or point in transit, the locker or point holding the parcel as ready for pickup, and its collection as delivered', () => {
     const way = history();
     way.events[0]!.description = 'Delivery in the way to the DHL Point';
     expect(parseDhlPolandHistory(way, WAYBILL).events?.[0]).toMatchObject({ stage: 'in_transit' });
     const payload = history();
     payload.events[0]!.description = 'Shipment is waiting in Automat DHL BOX 24/7:Przykładowa 1 00-001 Miasto Opening hours: Mon.00:00 - 23:59 Sun.00:00 - 23:59';
     expect(parseDhlPolandHistory(payload, WAYBILL).events?.[0]).toMatchObject({ stage: 'ready_for_pickup' });
+    // Its recipient collects the parcel there.
+    payload.events[0]!.description = 'Shipment collected from DHL Parcelstation. . Thank you!';
+    expect(parseDhlPolandHistory(payload, WAYBILL).events?.[0]).toMatchObject({ stage: 'delivered' });
   });
   it('keeps unknown and informational wording without guessing a stage', () => {
     const payload = history(); payload.events[0]!.description = 'The recipient was informed about the date of delivery.';

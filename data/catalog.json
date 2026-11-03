@@ -11513,7 +11513,8 @@
     "color": "#ae2326",
     "aliases": [
       "CCFS",
-      "Cross Country Freight Solutions"
+      "Cross Country Freight Solutions",
+      "CrossCountry Freight"
     ],
     "countries": [
       "US"
@@ -15375,7 +15376,8 @@
     "aliases": [
       "DHL Parcel Netherlands",
       "DHL Parcel Benelux",
-      "DHL eCommerce Benelux"
+      "DHL eCommerce Benelux",
+      "DHL Parcel (NL)"
     ],
     "countries": [
       "NL",
@@ -15710,6 +15712,28 @@
         "confidence": "low"
       }
     ]
+  },
+  "dhx": {
+    "displayName": "DHX",
+    "color": "#492f91",
+    "aliases": [
+      "Dependable Hawaiian Express",
+      "DHX-Dependable Hawaiian Express"
+    ],
+    "countries": [
+      "US",
+      "GU"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dhx.com/quicktrack.aspx",
+    "trackingSearchUrl": "https://www.dhx.com/quicktrack.aspx",
+    "linkRules": [],
+    "detectionRules": []
   },
   "diakinisis": {
     "displayName": "Diakinisis",
@@ -21608,7 +21632,8 @@
     "aliases": [
       "Gebrueder Weiss",
       "Gebruder Weiss",
-      "GW"
+      "GW",
+      "Gebrüder Weiss (GW)"
     ],
     "countries": [
       "AT",
@@ -22294,7 +22319,10 @@
       "GLS Portugal",
       "General Logistics Systems Portugal",
       "GLOBALTRANS",
-      "GlobalTrans Toledo"
+      "GlobalTrans Toledo",
+      "GLS Spain (National)",
+      "GLS (PT)",
+      "GLS Portugal (National)"
     ],
     "countries": [
       "ES",
@@ -26295,6 +26323,40 @@
     "canaryUrl": "https://jaskipin.co.id/",
     "trackingSearchUrl": "https://jaskipin.co.id/tracking",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "jb-hunt": {
+    "displayName": "J.B. Hunt",
+    "color": "#fedb00",
+    "aliases": [
+      "JB Hunt",
+      "J.B. Hunt Transport",
+      "J.B. Hunt Transport Services",
+      "J.B. Hunt Final Mile"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/",
+    "trackingUrlTemplate": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/",
+    "linkRules": [
+      {
+        "domains": [
+          "jbhunt.com"
+        ],
+        "pathPattern": "^/shippers/final-mile-services/track-shipments/?$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "jcex": {
@@ -33388,7 +33450,8 @@
       "Optima Courier",
       "Optima Courier, Inc.",
       "Optima Courier Inc",
-      "ShipOptima"
+      "ShipOptima",
+      "Optima"
     ],
     "countries": [
       "US"
@@ -34085,7 +34148,8 @@
       "Pallex",
       "Pall-Ex UK",
       "Pall-Ex (UK) Ltd",
-      "Pall-Ex Group"
+      "Pall-Ex Group",
+      "Pallex M-O"
     ],
     "countries": [
       "GB"
@@ -35678,7 +35742,8 @@
       "Pilot",
       "Pilot - A Maersk Company",
       "Maersk Ground Freight",
-      "Pilot Delivers"
+      "Pilot Delivers",
+      "Pilot Freight Services (Maersk)"
     ],
     "countries": [
       "US"
@@ -38395,6 +38460,28 @@
     },
     "canaryUrl": "https://rodonaves.com.br/rastreio-de-mercadoria",
     "trackingSearchUrl": "https://rodonaves.com.br/rastreio-de-mercadoria",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "rohlig": {
+    "displayName": "Röhlig Logistics",
+    "color": "#002c61",
+    "aliases": [
+      "Rohlig",
+      "Röhlig",
+      "Rohlig Logistics"
+    ],
+    "countries": [
+      "DE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.rohlig.com/",
+    "trackingSearchUrl": "https://www.rohlig.com/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -42662,7 +42749,8 @@
     "aliases": [
       "Frontline Freight",
       "Frontline Freight, Inc.",
-      "Frontline Freight Inc"
+      "Frontline Freight Inc",
+      "STG"
     ],
     "countries": [
       "US"
@@ -42907,7 +42995,8 @@
       "Super Parcel",
       "SP Track",
       "Ant Parcel",
-      "Ant Parcel Track"
+      "Ant Parcel Track",
+      "Ant Parcel Tracking"
     ],
     "countries": [
       "CN"

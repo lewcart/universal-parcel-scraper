@@ -11517,7 +11517,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "color": "#ae2326",
     "aliases": [
       "CCFS",
-      "Cross Country Freight Solutions"
+      "Cross Country Freight Solutions",
+      "CrossCountry Freight"
     ],
     "countries": [
       "US"
@@ -15379,7 +15380,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "aliases": [
       "DHL Parcel Netherlands",
       "DHL Parcel Benelux",
-      "DHL eCommerce Benelux"
+      "DHL eCommerce Benelux",
+      "DHL Parcel (NL)"
     ],
     "countries": [
       "NL",
@@ -15714,6 +15716,28 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
         "confidence": "low"
       }
     ]
+  },
+  "dhx": {
+    "displayName": "DHX",
+    "color": "#492f91",
+    "aliases": [
+      "Dependable Hawaiian Express",
+      "DHX-Dependable Hawaiian Express"
+    ],
+    "countries": [
+      "US",
+      "GU"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dhx.com/quicktrack.aspx",
+    "trackingSearchUrl": "https://www.dhx.com/quicktrack.aspx",
+    "linkRules": [],
+    "detectionRules": []
   },
   "diakinisis": {
     "displayName": "Diakinisis",
@@ -21612,7 +21636,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "aliases": [
       "Gebrueder Weiss",
       "Gebruder Weiss",
-      "GW"
+      "GW",
+      "Gebrüder Weiss (GW)"
     ],
     "countries": [
       "AT",
@@ -22298,7 +22323,10 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "GLS Portugal",
       "General Logistics Systems Portugal",
       "GLOBALTRANS",
-      "GlobalTrans Toledo"
+      "GlobalTrans Toledo",
+      "GLS Spain (National)",
+      "GLS (PT)",
+      "GLS Portugal (National)"
     ],
     "countries": [
       "ES",
@@ -26299,6 +26327,40 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "canaryUrl": "https://jaskipin.co.id/",
     "trackingSearchUrl": "https://jaskipin.co.id/tracking",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "jb-hunt": {
+    "displayName": "J.B. Hunt",
+    "color": "#fedb00",
+    "aliases": [
+      "JB Hunt",
+      "J.B. Hunt Transport",
+      "J.B. Hunt Transport Services",
+      "J.B. Hunt Final Mile"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/",
+    "trackingUrlTemplate": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/",
+    "linkRules": [
+      {
+        "domains": [
+          "jbhunt.com"
+        ],
+        "pathPattern": "^/shippers/final-mile-services/track-shipments/?$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "jcex": {
@@ -33392,7 +33454,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "Optima Courier",
       "Optima Courier, Inc.",
       "Optima Courier Inc",
-      "ShipOptima"
+      "ShipOptima",
+      "Optima"
     ],
     "countries": [
       "US"
@@ -34089,7 +34152,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "Pallex",
       "Pall-Ex UK",
       "Pall-Ex (UK) Ltd",
-      "Pall-Ex Group"
+      "Pall-Ex Group",
+      "Pallex M-O"
     ],
     "countries": [
       "GB"
@@ -35682,7 +35746,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "Pilot",
       "Pilot - A Maersk Company",
       "Maersk Ground Freight",
-      "Pilot Delivers"
+      "Pilot Delivers",
+      "Pilot Freight Services (Maersk)"
     ],
     "countries": [
       "US"
@@ -38399,6 +38464,28 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     },
     "canaryUrl": "https://rodonaves.com.br/rastreio-de-mercadoria",
     "trackingSearchUrl": "https://rodonaves.com.br/rastreio-de-mercadoria",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "rohlig": {
+    "displayName": "Röhlig Logistics",
+    "color": "#002c61",
+    "aliases": [
+      "Rohlig",
+      "Röhlig",
+      "Rohlig Logistics"
+    ],
+    "countries": [
+      "DE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.rohlig.com/",
+    "trackingSearchUrl": "https://www.rohlig.com/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -42666,7 +42753,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "aliases": [
       "Frontline Freight",
       "Frontline Freight, Inc.",
-      "Frontline Freight Inc"
+      "Frontline Freight Inc",
+      "STG"
     ],
     "countries": [
       "US"
@@ -42911,7 +42999,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "Super Parcel",
       "SP Track",
       "Ant Parcel",
-      "Ant Parcel Track"
+      "Ant Parcel Track",
+      "Ant Parcel Tracking"
     ],
     "countries": [
       "CN"
@@ -50495,6 +50584,7 @@ export const CARRIER_IDS = [
   "dhl-express",
   "dhl-freight",
   "dhlink",
+  "dhx",
   "diakinisis",
   "dida-international",
   "dimex",
@@ -50782,6 +50872,7 @@ export const CARRIER_IDS = [
   "janco-express",
   "janio",
   "jaskipin",
+  "jb-hunt",
   "jcex",
   "jcw-express",
   "jdiex",
@@ -51114,6 +51205,7 @@ export const CARRIER_IDS = [
   "roadie",
   "roadrunner",
   "rodonaves",
+  "rohlig",
   "ross-express",
   "route1-fulfilment",
   "royal-express-mm",
@@ -51825,6 +51917,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhl-express": ["dhl-express-waybill","dhl-express-piece","dhl-express-piece-label","dhl-express-piece-label-after"],
   "dhl-freight": ["dhl-freight-2"],
   "dhlink": ["dhlink-1","dhlink-xzg","dhlink-ylus","dhlink-eyt","dhlink-qh","dhlink-yf","dhlink-ktdwe","dhlink-yhkj","dhlink-by","dhlink-tdt","dhlink-yle"],
+  "dhx": [],
   "diakinisis": [],
   "dida-international": [],
   "dimex": [],
@@ -52112,6 +52205,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "janco-express": ["janco-express-1"],
   "janio": ["janio-1"],
   "jaskipin": [],
+  "jb-hunt": [],
   "jcex": ["jcex-1"],
   "jcw-express": [],
   "jdiex": [],
@@ -52444,6 +52538,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "roadie": ["roadie-1","roadie-2"],
   "roadrunner": [],
   "rodonaves": [],
+  "rohlig": [],
   "ross-express": [],
   "route1-fulfilment": [],
   "royal-express-mm": [],

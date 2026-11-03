@@ -1,0 +1,35 @@
+{
+  "id": "rohlig",
+  "displayName": "Röhlig Logistics",
+  "aliases": [
+    "Rohlig",
+    "Röhlig",
+    "Rohlig Logistics"
+  ],
+  "region": {
+    "countries": [
+      "DE"
+    ]
+  },
+  "brand": {
+    "color": "#002c61"
+  },
+  "selectable": true,
+  "timezone": "Europe/Berlin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.rohlig.com/",
+    "canaryUrl": "https://www.rohlig.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

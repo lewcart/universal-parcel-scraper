@@ -1196,3 +1196,17 @@ describe('DPD Greece and Logistics Solution', () => {
     expect(detectCarrierMatch('60000100017').candidates ?? []).not.toContain('dpd-gr');
   });
 });
+
+describe('Röhlig Logistics and 17TRACK names of European carriers', () => {
+  it('reads their names', () => {
+    for (const [name, id] of [['Röhlig Logistics', 'rohlig'], ['Rohlig', 'rohlig'], ['Gebrüder Weiss (GW)', 'gebrueder-weiss'],
+      ['GLS Spain (National)', 'gls-es'], ['GLS (PT)', 'gls-es'], ['GLS Portugal (National)', 'gls-es'], ['DHL Parcel (NL)', 'dhl-ecommerce-nl']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+  });
+
+  it('reads no link to a Röhlig page and offers it for no number shape', () => {
+    expect(parseTrackingInput('https://www.rohlig.com/?reference=RL000100017')?.carrier).not.toBe('rohlig');
+    for (const number of ['RL000100017', '000100017']) expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('rohlig');
+  });
+});

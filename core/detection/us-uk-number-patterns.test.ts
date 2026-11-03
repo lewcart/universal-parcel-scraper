@@ -788,3 +788,22 @@ describe('Magnum Transportation and Crane Worldwide', () => {
     }
   });
 });
+
+describe('J.B. Hunt and DHX', () => {
+  it('reads their names, and 17TRACK names of US and UK carriers', () => {
+    for (const [name, id] of [['J.B. Hunt', 'jb-hunt'], ['JB hunt', 'jb-hunt'], ['DHX', 'dhx'], ['Dependable Hawaiian Express', 'dhx'], ['ANT PARCEL TRACKING', 'super-parcel-track'],
+      ['Pallex M-O', 'pallex'], ['CrossCountry Freight', 'ccfs'], ['Pilot Freight Services (Maersk)', 'pilot-freight'], ['STG', 'stg-ltl'], ['Optima', 'optima-overnight']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+  });
+
+  it('reads J.B. Hunt tracking links and offers them for no number shape', () => {
+    expect(parseTrackingInput('https://www.jbhunt.com/shippers/final-mile-services/track-shipments/?tracking=JB000100017'))
+      .toMatchObject({ trackingNumber: 'JB000100017', carrier: 'jb-hunt', source: 'link' });
+    for (const number of ['JB000100017', '000100017', '0001000017']) {
+      const candidates = detectCarrierMatch(number).candidates ?? [];
+      expect(candidates, number).not.toContain('jb-hunt');
+      expect(candidates, number).not.toContain('dhx');
+    }
+  });
+});

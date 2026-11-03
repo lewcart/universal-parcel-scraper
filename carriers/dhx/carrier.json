@@ -1,0 +1,35 @@
+{
+  "id": "dhx",
+  "displayName": "DHX",
+  "aliases": [
+    "Dependable Hawaiian Express",
+    "DHX-Dependable Hawaiian Express"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "GU"
+    ]
+  },
+  "brand": {
+    "color": "#492f91"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.dhx.com/quicktrack.aspx",
+    "canaryUrl": "https://www.dhx.com/quicktrack.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

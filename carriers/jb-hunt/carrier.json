@@ -1,0 +1,47 @@
+{
+  "id": "jb-hunt",
+  "displayName": "J.B. Hunt",
+  "aliases": [
+    "JB Hunt",
+    "J.B. Hunt Transport",
+    "J.B. Hunt Transport Services",
+    "J.B. Hunt Final Mile"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#fedb00"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/?tracking={trackingNumber}",
+    "searchUrl": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/",
+    "canaryUrl": "https://www.jbhunt.com/shippers/final-mile-services/track-shipments/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "jbhunt.com"
+      ],
+      "pathPattern": "^/shippers/final-mile-services/track-shipments/?$",
+      "params": [
+        "tracking"
+      ]
+    }
+  ],
+  "detection": []
+}

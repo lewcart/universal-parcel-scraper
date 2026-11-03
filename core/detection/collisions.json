@@ -215,7 +215,8 @@
     "shape": "9{18}",
     "carriers": [
       "bpost",
-      "ecoscooting"
+      "ecoscooting",
+      "gls-es"
     ],
     "reason": "18-digit numbers are shared by bpost and Ecoscooting. Ecoscooting's postcode layout names it; any other 18-digit number stays a low-confidence suggestion."
   },
@@ -1344,7 +1345,8 @@
     "carriers": [
       "bpost",
       "ecoscooting",
-      "quickpac"
+      "quickpac",
+      "gls-es"
     ],
     "reason": "Quickpac claims the 44-prefixed 18-digit range that bpost and Ecoscooting match broadly; the Quickpac rule decides."
   },
@@ -1353,7 +1355,8 @@
     "carriers": [
       "bpost",
       "ecoscooting",
-      "swiss-post"
+      "swiss-post",
+      "gls-es"
     ],
     "reason": "Swiss Post claims the 98/99-prefixed 18-digit range that bpost and Ecoscooting match broadly; the Swiss Post rule decides."
   },
@@ -1362,7 +1365,8 @@
     "carriers": [
       "bpost",
       "ecoscooting",
-      "poczta-polska"
+      "poczta-polska",
+      "gls-es"
     ],
     "reason": "An SSCC under Poczta Polska's GS1 prefix with a valid check digit is its barcode without the 00, which bpost and Ecoscooting match broadly; Poczta Polska is preferred and recognition asks it first."
   },
@@ -1371,7 +1375,8 @@
     "carriers": [
       "bpost",
       "ecoscooting",
-      "paack"
+      "paack",
+      "gls-es"
     ],
     "reason": "Paack's preferred rule takes 5340 and fourteen digits, which bpost and Ecoscooting match broadly; Paack comes first, and none is selected."
   },
@@ -3868,7 +3873,8 @@
     "carriers": [
       "bpost",
       "bring-posten",
-      "ecoscooting"
+      "ecoscooting",
+      "gls-es"
     ],
     "reason": "Bring parcel SSCCs written without their 00 identifier fall in the 18-digit space bpost and Ecoscooting match broadly; Bring's rule lists it first and the number stays a low-confidence suggestion."
   },
@@ -3878,7 +3884,8 @@
       "bpost",
       "bring-posten",
       "ecoscooting",
-      "matkahuolto"
+      "matkahuolto",
+      "gls-es"
     ],
     "reason": "Bring parcel SSCCs written without their 00 identifier fall in the 18-digit space bpost and Ecoscooting match broadly, and a Swedish prefix also fits Matkahuolto's rule, since its tracker answers SSCCs with or without their 00. Bring's rule lists it first and the number stays a low-confidence suggestion."
   },
@@ -3888,7 +3895,8 @@
       "bpost",
       "bring-posten",
       "ecoscooting",
-      "helthjem"
+      "helthjem",
+      "gls-es"
     ],
     "reason": "Helthjem's own SSCCs written without their 00 identifier also fit Bring's 370 rule and the broad bpost and Ecoscooting shapes. Helthjem issues every SSCC under its GS1 company prefix, so the prefix selects Helthjem."
   },
@@ -6823,7 +6831,8 @@
     "carriers": [
       "bpost",
       "ecoscooting",
-      "spring-gds"
+      "spring-gds",
+      "gls-es"
     ],
     "reason": "bpost and Ecoscooting take any eighteen digits at low confidence; spring-gds-1810 adds PostNL for the series its international tracker answered for Italy. All three stay suggestions, and recognition asks PostNL, the only one whose recognition takes the series."
   },

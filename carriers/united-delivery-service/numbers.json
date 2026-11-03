@@ -76,7 +76,8 @@
         "confidence": "low",
         "candidates": [
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "An opened capture of UDS's own tracker shows this shipper barcode received at Lombard and delivered in Illinois."
@@ -99,7 +100,8 @@
         "confidence": "low",
         "candidates": [
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "An opened capture of UDS's own tracker shows this shipper barcode received at Lombard and delivered in Illinois."

@@ -34,7 +34,8 @@
         "confidence": "low",
         "candidates": [
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to bpost, which stays one candidate among several."
@@ -181,7 +182,8 @@
         "confidence": "low",
         "candidates": [
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Public report names this carrier; shipment identity remains unconfirmed."
@@ -266,7 +268,8 @@
         "confidence": "low",
         "candidates": [
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Official parcel-barcode example; the documented prefix prioritizes recognition without asserting shipment existence."

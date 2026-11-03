@@ -608,7 +608,8 @@
         "candidates": [
           "spring-gds",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Made-up number in the shape of a parcel for Italy that PostNL's international tracker answered: 1810 and fourteen digits. Its serial sits far beyond the range in use."

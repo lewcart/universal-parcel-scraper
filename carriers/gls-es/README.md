@@ -51,10 +51,11 @@ carrier of its own on Lisbon's clock would also split the clock the GLS networks
 The shipment number is the expedition number (`codexp` in GLS Spain's web service): ten
 digits starting `1`, nine digits on older shipments. Labels also carry the customer's
 14-digit `codbarras` and an 18-digit parcel barcode built on it, and the sender's reference
-works too. None has a check digit, and these lengths are shared with several carriers. A
-low-confidence rule suggests GLS Spain for ten digits starting `1`, among the other carriers
-that take ten digits; the user picks it, since recognition cannot ask without the postcode.
-The same counter numbers GLS Portugal's shipments.
+works too. None has a check digit, and these lengths are shared with several carriers. Low
+rules suggest GLS Spain for ten digits starting `1`, among the other carriers that take ten
+digits, and for eighteen digits, which GLS Spain's tracker has answered for a parcel barcode
+the app tracked; the user picks it, since recognition cannot ask without the postcode. The
+same counter numbers GLS Portugal's shipments.
 
 ## Links
 

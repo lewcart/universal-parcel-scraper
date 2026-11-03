@@ -19,7 +19,8 @@
         "confidence": "low",
         "candidates": [
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "An archived lookup on Burd's own tracking page; the tracking API reply archived with it (same number) shows the parcel registered."
@@ -42,7 +43,8 @@
         "confidence": "low",
         "candidates": [
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "An archived reply of the status API that Burd's tracking page reads; it shows the parcel registered and received."

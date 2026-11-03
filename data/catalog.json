@@ -22412,6 +22412,10 @@
       {
         "pattern": "^1\\d{9}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{18}$",
+        "confidence": "low"
       }
     ]
   },

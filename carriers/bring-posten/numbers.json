@@ -110,7 +110,8 @@
         "candidates": [
           "bring-posten",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Parcel number in an open-source tracking cache test, beside its Bring tracking link. Bring's tracker returns its history."
@@ -132,7 +133,8 @@
         "candidates": [
           "bring-posten",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Parcel number in an open-source tracking resolver test, beside its Bring tracking link. Bring's tracker returns its history."
@@ -155,6 +157,7 @@
           "bring-posten",
           "bpost",
           "ecoscooting",
+          "gls-es",
           "matkahuolto"
         ]
       },
@@ -177,7 +180,8 @@
         "candidates": [
           "bring-posten",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Parcel number in a published test script, beside its Bring tracking link. Bring's tracker returns its history, with delay deviations and delivery changes."
@@ -199,7 +203,8 @@
         "candidates": [
           "bring-posten",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "A Posten tracking link in a published home automation configuration. Bring's tracker no longer returns it."
@@ -222,6 +227,7 @@
           "bring-posten",
           "bpost",
           "ecoscooting",
+          "gls-es",
           "matkahuolto"
         ]
       },
@@ -245,6 +251,7 @@
           "bring-posten",
           "bpost",
           "ecoscooting",
+          "gls-es",
           "matkahuolto"
         ]
       },
@@ -315,7 +322,8 @@
         "candidates": [
           "bring-posten",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "A Bring tracking link archived by the Wayback Machine. Bring's tracker returns its history."
@@ -351,7 +359,8 @@
         "candidates": [
           "bring-posten",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "A Bring tracking link archived by the Wayback Machine. Bring's tracker returns its history as one of two pieces of a consignment."
@@ -400,6 +409,7 @@
           "bring-posten",
           "bpost",
           "ecoscooting",
+          "gls-es",
           "matkahuolto"
         ]
       },
@@ -443,7 +453,8 @@
         "candidates": [
           "bring-posten",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "A Bring tracking link archived by the Wayback Machine. Bring's tracker returns its history."
@@ -493,7 +504,8 @@
         "candidates": [
           "bring-posten",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "A Posten tracking link archived by the Wayback Machine. Bring's tracker returns its history."

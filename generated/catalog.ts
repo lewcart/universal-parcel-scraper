@@ -22416,6 +22416,10 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       {
         "pattern": "^1\\d{9}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{18}$",
+        "confidence": "low"
       }
     ]
   },
@@ -52241,7 +52245,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "global-parcel-service": [],
   "globalpost": ["globalpost-1"],
   "gls-at": ["gls-at-1","gls-at-2"],
-  "gls-es": ["gls-es-1"],
+  "gls-es": ["gls-es-1","gls-es-2"],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
   "gls-pl": ["gls-pl-1","gls-pl-2"],
   "gms-worldwide": [],

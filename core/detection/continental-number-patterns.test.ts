@@ -387,6 +387,22 @@ describe('Paack label numbers of eighteen digits', () => {
   });
 });
 
+describe('GLS Spain parcel barcodes of eighteen digits', () => {
+  it('suggests GLS Spain for a bare eighteen-digit number, beside the other eighteen-digit rules, without asking it', () => {
+    const detected = detectCarrierMatch('6900 0000 0000 0000 13');
+    expect(detected).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['bpost', 'ecoscooting', 'gls-es'], preferred: [] });
+    // GLS Spain needs the delivery postcode, so recognition does not ask it.
+    expect(recognitionAskedCarriers('690000000000000013')).not.toContain('gls-es');
+    // A number a high rule names keeps that carrier alone.
+    for (const number of ['990000000000000000', '440000000000000000', '280010000000000000']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('gls-es');
+    }
+    for (const number of ['69000000000000001', '6900000000000000013', 'A69000000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('gls-es');
+    }
+  });
+});
+
 describe('FedEx Poland domestic numbers', () => {
   // Synthetic numbers in FedEx Poland's layout; none is a real parcel.
   it('suggests FedEx Poland for thirteen digits starting with 6 and a GS1 check digit, and asks it first in Poland', () => {

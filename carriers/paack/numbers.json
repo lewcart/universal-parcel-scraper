@@ -81,7 +81,8 @@
         "candidates": [
           "paack",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Paack, whose 5340 rule suggests it."
@@ -100,7 +101,8 @@
         "candidates": [
           "paack",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Paack, whose 5340 rule suggests it. Amazon order."
@@ -214,7 +216,8 @@
         "candidates": [
           "paack",
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "An archived Paack tracking link, which carries this label number and the delivery postcode. Paack's own page showed the parcel's history with that postcode."

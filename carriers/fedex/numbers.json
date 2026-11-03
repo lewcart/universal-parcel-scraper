@@ -142,7 +142,8 @@
         "confidence": "low",
         "candidates": [
           "bpost",
-          "ecoscooting"
+          "ecoscooting",
+          "gls-es"
         ]
       },
       "note": "Open-source project example, not a real shipment. Full label barcode rather than the number a user types. The source attributes it to FedEx, which no rule claims."

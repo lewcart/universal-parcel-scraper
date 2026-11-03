@@ -7,8 +7,15 @@ const number = process.env.SWIFTX_TRACKING_NUMBER;
 const unknown = process.env.SWIFTX_UNKNOWN_NUMBER;
 
 describe('SwiftX live public tracking', () => {
-  it.skipIf(!trawl || !number)('returns the parcel\'s history on its sites\' offsets through the browser service', async () => {
-    const result = await new SwiftxTracker({ trawl }).fetch(number!, { budgetMs: 45_000 });
+  it.skipIf(!trawl || !number)('returns the parcel\'s history on its sites\' offsets through the browser service, or says the phone check withholds it', async () => {
+    const read = await new SwiftxTracker({ trawl }).fetch(number!, { budgetMs: 45_000 })
+      .then((result) => ({ result }), (error: unknown) => ({ error }));
+    // The page can ask for the recipient's phone digits; once skipped, it keeps the history back.
+    if ('error' in read) {
+      expect(read.error).toMatchObject({ kind: 'input_required', field: 'recipient verification' });
+      return;
+    }
+    const { result } = read;
     expect(result.last_status_text).toEqual(expect.any(String));
     expect(result.events?.length).toBeGreaterThan(0);
     expect(result.events?.every((event) => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(String(event.time)))).toBe(true);

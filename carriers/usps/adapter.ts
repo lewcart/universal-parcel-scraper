@@ -215,6 +215,28 @@ function handoffsInTransit(events: CarrierEvent[]): CarrierEvent[] {
   return result;
 }
 
+// Stages a scan after the return started takes as part of the trip back to the sender.
+const RETURN_TRIP = new Set(['accepted', 'in_transit', 'out_for_delivery', 'ready_for_pickup', 'delivered']);
+
+/**
+ * From the scan that starts a return ("Return to Sender Processed", "Refused"), the scans are the
+ * trip back: they carry `provider_leg` `return`, and a movement or delivery among them is the
+ * return under way, not a delivery to the recipient. Events are newest first.
+ */
+function returnLeg(events: CarrierEvent[]): CarrierEvent[] {
+  const result = [...events];
+  let returning = false;
+  for (let index = result.length - 1; index >= 0; index--) {
+    const event = result[index]!;
+    if (event.stage === 'returned') returning = true;
+    if (!returning) continue;
+    const trip = RETURN_TRIP.has(event.stage ?? '');
+    result[index] = { ...event, ...(trip ? { stage: 'returned' } : {}),
+      ...(event.stage === 'delivered' ? { description: 'Returned to the sender' } : {}), provider_leg: 'return' };
+  }
+  return result;
+}
+
 /** The server-rendered tracking page, read at `readAt`. */
 export function parseUSPSTrackingHtml(page: string, trackingNumber: string, readAt = Date.now()): CarrierResult {
   const number = normalizeUSPSNumber(trackingNumber);
@@ -274,20 +296,23 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string, read
   rows.sort((left, right) => right.timestamp - left.timestamp || left.index - right.index);
   // The current timeline is newest-first. Keep its order even when some scans
   // have no resolvable timezone; sorting those behind dated scans loses meaning.
-  const events = handoffsInTransit(timeline.length ? timeline.slice(0, MAX_EVENTS_TO_RETURN)
-    : rows.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event));
+  const events = returnLeg(handoffsInTransit(timeline.length ? timeline.slice(0, MAX_EVENTS_TO_RETURN)
+    : rows.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event)));
   const summary = statusArea || banner;
   const statusText = (ORIGIN_POST_NOTICE.test(summary) ? events[0]?.description : undefined) || summary
     || events[0]?.description || 'Tracking information received';
   const reported = uspsStage(`${statusText} ${banner}`)
     ?? events.map((event) => event.stage).find((value): value is NonNullable<typeof value> => value !== undefined);
-  const stage = reported === 'accepted' && events.some((event) => event.stage === 'in_transit') ? 'in_transit' : reported;
-  const status = uspsStatus(`${statusText} ${banner}`, events.length > 0);
+  const moving = reported === 'accepted' && events.some((event) => event.stage === 'in_transit') ? 'in_transit' : reported;
+  // On the trip back, the page's current step is the return under way.
+  const returning = events[0]?.provider_leg === 'return' && RETURN_TRIP.has(moving ?? '');
+  const stage = returning ? 'returned' : moving;
+  const status = returning ? 'exception' : uspsStatus(`${statusText} ${banner}`, events.length > 0);
   const delivered = stage === 'delivered';
   return {
     status,
     ...(stage ? { current_stage: stage } : {}),
-    last_status_text: delivered ? 'Delivered' : statusText,
+    last_status_text: delivered ? 'Delivered' : returning && moving === 'delivered' ? 'Returned to the sender' : statusText,
     last_update: events[0]?.time || null,
     ...(events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
     expected_delivery: delivered ? null : expectedDelivery(`${statusArea} ${banner}`) ?? expectedDelivery(estimate),

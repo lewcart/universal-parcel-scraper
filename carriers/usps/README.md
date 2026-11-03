@@ -119,6 +119,11 @@ Parsing, in order:
 - A parcel a shipping partner collects and moves reaches USPS with an acceptance scan such as
   "USPS in possession of item". After the partner's transit scans that handoff is
   `in_transit`, as is the parcel's stage; only an acceptance before any transit stays one.
+- A return starts with "Return to Sender" or "Refused". From that scan the history is the trip
+  back (`provider_leg` `return`): its movements and its delivery to the sender are `returned`, as
+  is the parcel's stage while the newest scan is on that trip. USPS keeps naming them "Arrived at
+  USPS Facility" and the like, so without this the parcel would read as in transit to the
+  recipient again.
 - There is no direct step: it would only burn the budget on a 403.
 - The package path is loaded directly because the legacy query route can return only
   the global header. A recognizable header-only reply, or the tracking page's head

@@ -130,6 +130,34 @@ describe('USPS rendered page', () => {
     expect(alone.events?.map(event => event.stage)).toEqual(['accepted', 'accepted']);
   });
 
+  it('reads the scans after a return started as the trip back to the sender', () => {
+    const scan = (detail: string, date: string) => `<div class="tb-step collapsed"><div><p class="tb-status-detail">${detail}</p>`
+      + `<p class="tb-location">EXAMPLE CITY, CA 00000</p><p class="tb-date">${date}</p></div></div>`;
+    const steps = TIMELINE_PAGE.slice(TIMELINE_PAGE.indexOf('<div class="tb-step current-step">'), TIMELINE_PAGE.indexOf('<div class="tb-step"><p'));
+    const page = (banner: string, current: string) => TIMELINE_PAGE.replace('<div class="banner-header">Delivered</div>', `<div class="banner-header">${banner}</div>`)
+      .replace(steps, `<div class="tb-step current-step"><p class="tb-status">${banner}</p><p class="tb-status-detail">${current}</p>`
+        + '<p class="tb-location">EXAMPLE CITY, CA 00000</p><p class="tb-date">March 14, 2025 9:58 AM</p></div>'
+        + scan('Refused', 'March 12, 2025 12:40 PM') + scan('Return to Sender Processed', 'March 12, 2025 12:13 PM')
+        + scan('Out for Delivery', 'March 12, 2025 8:02 AM') + scan('Insufficient Address', 'March 11, 2025 4:55 PM'));
+    const back = parseUSPSTrackingHtml(page('In Transit', 'Arrived at USPS Facility'), DELIVERED_NUMBER);
+    expect(back).toMatchObject({ status: 'exception', current_stage: 'returned', last_status_text: 'Arrived at USPS Facility' });
+    expect(back.events?.map(event => [event.description, event.stage, event.provider_leg ?? null])).toEqual([
+      ['Arrived at USPS Facility', 'returned', 'return'],
+      ['Refused', 'returned', 'return'],
+      ['Return to Sender Processed', 'returned', 'return'],
+      ['Out for Delivery', 'out_for_delivery', null],
+      ['Insufficient Address', 'failed_attempt', null],
+    ]);
+    const home = parseUSPSTrackingHtml(page('Delivered', 'Delivered, To Original Sender'), DELIVERED_NUMBER);
+    expect(home).toMatchObject({ status: 'exception', current_stage: 'returned', last_status_text: 'Returned to the sender' });
+    expect(home.events?.[0]).toMatchObject({ description: 'Returned to the sender', stage: 'returned', provider_leg: 'return' });
+    // Without a return, the same scans are the delivery to the recipient.
+    const out = parseUSPSTrackingHtml(page('In Transit', 'Arrived at USPS Facility').replace(scan('Refused', 'March 12, 2025 12:40 PM'), '')
+      .replace(scan('Return to Sender Processed', 'March 12, 2025 12:13 PM'), ''), DELIVERED_NUMBER);
+    expect(out).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(out.events?.some(event => event.provider_leg)).toBe(false);
+  });
+
   it('keeps an unresolved newest scan as local time and rejects another parcel’s timeline', () => {
     const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replaceAll('EXAMPLE CITY, NY 00000', ''), DELIVERED_NUMBER);
     expect(result).toMatchObject({ last_update: null, last_update_local: '2025-03-14T12:17:00' });

@@ -184,6 +184,13 @@ describe('dateLocalClocks', () => {
     ]);
   });
 
+  it('dates a facility a country code prefixes in that country, not in a town its name shares', () => {
+    const result = dateLocalClocks('cne', { status: 'in_transit', destination_country: 'US', events: [
+      { local_time: '2026-10-29T14:01:34', description: 'Depart From Local Facility', location: 'CN.CNE East China Sort Facility' },
+    ] });
+    expect(dated(result.events![0])).toEqual(['2026-10-29T14:01:34+08:00', 'Asia/Shanghai', 'place']);
+  });
+
   it('dates a scan that names a state alone on the state’s clock', () => {
     const result = dateLocalClocks('couriersplease', { status: 'in_transit', destination_country: 'AU', events: [
       { local_time: '2026-10-21T08:00:00', description: 'Delivered', location: 'WA' },

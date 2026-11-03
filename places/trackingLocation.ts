@@ -96,6 +96,12 @@ export function trackingPlace(location: string): TrackingPlace {
   const dashed = /^(.*\S)\s+-\s+(.+)$/.exec(text);
   const dashedCountry = dashed ? dashCountry(dashed[2]!) : null;
   if (dashedCountry) return { country: dashedCountry, place: dashed![1]! };
+  // A country's code before a dot, as CNE writes its facilities: "CN.CNE East China Sort Facility" is in
+  // China, not in East China, Michigan. "ST.LOUIS" and "PT.ELIZABETH" abbreviate Saint and Port.
+  const prefixed = /^([A-Z]{2})\.(\p{L}.*)$/u.exec(text);
+  if (prefixed && regionCodes.has(prefixed[1]!) && !ambiguousAddressCodes.has(prefixed[1]!) && !/^[SP]T$/.test(prefixed[1]!)) {
+    return { country: prefixed[1]!, place: prefixed[2]!.trim() };
+  }
   const fields = [...text.matchAll(/[^,;|()]+/g)].filter((match) => match[0].trim());
   // A code alone between empty fields is alone (",,,DE"). One a state or canton shares is the
   // country another field names, which stays the place: "HOLLAND, NL" is not in Newfoundland,

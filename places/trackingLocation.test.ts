@@ -11,6 +11,8 @@ describe('tracking places', () => {
     ['BENIN CITY - NIGERIA', 'NG', 'BENIN CITY'], ['AMSTERDAM - NETHERLANDS, THE', 'NL', 'AMSTERDAM'],
     ['HONG KONG - HONG KONG SAR, CHINA', 'HK', 'HONG KONG'], ['STERLING - Virginia - USA', 'US', 'STERLING - Virginia'],
     ['ATLANTA - GEORGIA - USA', 'US', 'ATLANTA - GEORGIA'],
+    // A code before a dot, as CNE names its facilities.
+    ['CN.CNE East China Sort Facility', 'CN', 'CNE East China Sort Facility'], ['CN.Shenzhen', 'CN', 'Shenzhen'],
   ])('takes the country off %s', (location, country, place) => {
     expect(trackingPlace(location)).toEqual({ country, place });
   });
@@ -35,7 +37,7 @@ describe('tracking places', () => {
     '', 'Warehouse', 'Paris', 'Buchs AG', 'Basel, BS', 'Wilmington, DE', 'France distribution center',
     'Zürich Briefzentrum', 'Mexico City', 'Andorra la Vella',
     'DHL Paris', 'DHL Netherlands distribution centre', 'JAMAICA NY INTERNATIONAL DISTRIBUTION CENTER', 'Panama City FL',
-    'TBILISI - GEORGIA', 'CURITIBA - PR',
+    'TBILISI - GEORGIA', 'CURITIBA - PR', 'ST.LOUIS', 'PT.ELIZABETH',
   ])('keeps %s whole without guessing a country', (location) => {
     expect(trackingPlace(location)).toEqual({ country: null, place: location });
   });

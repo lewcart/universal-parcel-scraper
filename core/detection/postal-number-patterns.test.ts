@@ -5,7 +5,7 @@ import { checksumRejections, detectCarrierMatch, parseTrackingInput } from './in
 import { carrierIdFromName } from '../catalog/hints.js';
 
 describe('S10-shaped numbers', () => {
-  it.each(['RR999999987TY', 'RR999999987MI', 'RR999999987XX', 'RR999999987YW', 'RR999999987CS', 'RR999999987EN'])(
+  it.each(['RR999999987TY', 'RR999999987MI', 'RR999999987XX', 'RR999999987GO', 'RR999999987YW', 'RR999999987CS', 'RR999999987EN'])(
     'leaves %s out of international mail: its suffix names no issuing country',
     (number) => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
@@ -50,6 +50,19 @@ describe('S10-shaped numbers', () => {
     expect(checksumRejections('RR123456789XX')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-xx', checksum: 's10' },
       { carrier: 'chronopost', rule: 'chronopost-3', checksum: 's10' }]);
     for (const number of ['RR12345678XX', 'RR1234567850XX', 'R1234567850XX']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('aliexpress');
+    }
+  });
+
+  it('suggests AliExpress first for a GO number, a suffix Cainiao gives an AliExpress parcel', () => {
+    expect(detectCarrierMatch('lo 123 456 785 go')).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'chronopost'], preferred: ['aliexpress'],
+    });
+    expect(recognitionCandidates('LO999999987GO')[0]).toEqual({ carrier: 'aliexpress', needsInput: null, preferred: true });
+    expect(detectCarrierMatch('LO123456789GO').candidates).toEqual([]);
+    expect(checksumRejections('LO123456789GO')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-go', checksum: 's10' },
+      { carrier: 'chronopost', rule: 'chronopost-3', checksum: 's10' }]);
+    for (const number of ['LO12345678GO', 'LO1234567850GO', 'L1234567850GO']) {
       expect(detectCarrierMatch(number).candidates, number).not.toContain('aliexpress');
     }
   });

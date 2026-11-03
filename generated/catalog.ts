@@ -332,6 +332,12 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}GO$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -2203,7 +2209,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|F[TZ])\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}AL$)(?![CELR][A-Z]\\d{9}RS$)(?![CELR][A-Z]\\d{9}UA$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!(?:[CE][A-Z]|HC)\\d{9}LT$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$)(?!AS\\d{9}US$)(?!(?:C[A-DF-UW-Z]|[ELR][A-Z])\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|F[TZ])\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}AL$)(?![CELR][A-Z]\\d{9}RS$)(?![CELR][A-Z]\\d{9}UA$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!(?:[CE][A-Z]|HC)\\d{9}LT$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$)(?!AS\\d{9}US$)(?!(?:C[A-DF-UW-Z]|[ELR][A-Z])\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|GO$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -51540,7 +51546,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "swiss-post-cargo": ["swiss-post-cargo-sscc","swiss-post-cargo-pl-reference"],
   "quickpac": ["quickpac-1"],
   "planzer": ["planzer-1","planzer-2"],
-  "aliexpress": ["aliexpress-1","aliexpress-cnfr","aliexpress-2","aliexpress-maersk","aliexpress-lp-reference","aliexpress-lp-17","aliexpress-ap-reference","aliexpress-cnbr","aliexpress-cnmex","aliexpress-cnusup","aliexpress-cacainiao","aliexpress-rl","aliexpress-jncn","aliexpress-gfus","aliexpress-hrbc","aliexpress-ecsc-aaro","aliexpress-pa","aliexpress-f","aliexpress-9c-i","aliexpress-9c-j","aliexpress-rtz","aliexpress-fmp","aliexpress-sda-waybill","aliexpress-ty","aliexpress-mi","aliexpress-xx"],
+  "aliexpress": ["aliexpress-1","aliexpress-cnfr","aliexpress-2","aliexpress-maersk","aliexpress-lp-reference","aliexpress-lp-17","aliexpress-ap-reference","aliexpress-cnbr","aliexpress-cnmex","aliexpress-cnusup","aliexpress-cacainiao","aliexpress-rl","aliexpress-jncn","aliexpress-gfus","aliexpress-hrbc","aliexpress-ecsc-aaro","aliexpress-pa","aliexpress-f","aliexpress-9c-i","aliexpress-9c-j","aliexpress-rtz","aliexpress-fmp","aliexpress-sda-waybill","aliexpress-ty","aliexpress-mi","aliexpress-xx","aliexpress-go"],
   "sunyou": ["sunyou-1","sunyou-2","sunyou-3"],
   "hermes": ["hermes-delivery-note"],
   "spring-gds": ["spring-gds-1","spring-gds-2","spring-gds-3","spring-gds-1810"],

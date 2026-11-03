@@ -201,6 +201,13 @@
       "confidence": "low",
       "preferred": true,
       "checksum": "s10"
+    },
+    {
+      "id": "aliexpress-go",
+      "pattern": "^[A-Z]{2}\\d{9}GO$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
     }
   ]
 }

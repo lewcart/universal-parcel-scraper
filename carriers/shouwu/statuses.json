@@ -376,6 +376,14 @@
       "confirmedBy": "live",
       "firstSeen": "2026-11-02",
       "note": "The delivering partner's delivery in the Netherlands, after its out-for-delivery rows."
+    },
+    {
+      "wording": "The goods have been deliverey to the final delivery service provider",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The hand-over to the last-mile partner after import clearance; \"deliverey\" is Shouwu's spelling."
     }
   ]
 }

@@ -128,6 +128,7 @@ describe('InPost response parsing', () => {
       ['FMD.1001', 'in_transit', 'accepted'],
       ['FMD.1002', 'in_transit', 'accepted'],
       ['LMD.1001', 'out_for_delivery', 'out_for_delivery'],
+      ['LMD.9004', 'exception', 'failed_attempt'],
       ['LMD.9006', 'exception', 'failed_attempt'],
       ['LMD.9015', 'exception', 'failed_attempt'],
       ['MMD.1003', 'in_transit', 'in_transit'],

@@ -796,6 +796,22 @@ describe('ParcelsApp result parsing', () => {
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'accepted', discovered_carrier: 'paack' });
   });
 
+  it('reads the new attempt ParcelsApp relays at a Paack failed attempt’s instant as part of it', () => {
+    const states = (reason: string) => [
+      { date: '2026-07-02T13:29:03Z', status: 'We scheduled a new delivery attempt.', carrier: 0, location: 'ES' },
+      { date: '2026-07-02T13:29:03Z', status: reason, carrier: 0, location: 'ES' },
+      { date: '2026-07-02T09:19:34Z', status: 'Out for delivery', carrier: 0, location: 'ES' },
+    ];
+    const absent = parseParcelsAppResponse({ carriers: ['Paack'], states: states('Customer absent') }, number, identity(), 'Europe/Madrid');
+    expect(absent.events?.map((scan) => [scan.description, scan.stage])).toEqual([
+      ['Customer absent', 'failed_attempt'],
+      ['Out for delivery', 'out_for_delivery'],
+    ]);
+    // Beside a scan of another stage, or at another instant, it stays.
+    const other = parseParcelsAppResponse({ carriers: ['Paack'], states: states('Order details received') }, number, identity(), 'Europe/Madrid');
+    expect(other.events?.map((scan) => [scan.description, scan.stage])).toContainEqual(['New delivery attempt scheduled', 'failed_attempt']);
+  });
+
   it("stores ParcelsApp's English for Sending scans in the tracker's own wording", () => {
     const result = parseParcelsAppResponse({ carriers: ['Sending'], states: [
       { date: '2026-07-02T21:05:00Z', status: 'Out in national route', carrier: 0, location: 'Example Town' },

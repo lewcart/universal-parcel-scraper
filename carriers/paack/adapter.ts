@@ -36,7 +36,7 @@ import { countryCode, countryTimeZone, explicitOffsetTime, type ParsedTime } fro
 import { clean, decodeText, fetchBounded, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { PAACK_EVRI_NUMBER, trackPaackThroughEvri } from './evri.js';
-import { classifyPaackEvent } from './status.js';
+import { classifyPaackEvent, PAACK_NEW_ATTEMPT } from './status.js';
 
 const TRACKING_ENDPOINT = 'https://mydeliveries.paack.app/tracking/order';
 const DEFAULT_TIMEOUT_MS = 15_000;
@@ -296,6 +296,13 @@ export function parsePaackTrackingResponse(
       sourceIndex,
     });
   });
+  // Paack writes the new attempt at the instant of the failed attempt it follows: one step, the failure's.
+  const failedAt = new Set(parsedEvents.filter(({ event }) => event.stage === 'failed_attempt' && event.description !== PAACK_NEW_ATTEMPT)
+    .map(({ timestamp }) => timestamp));
+  for (let index = parsedEvents.length - 1; index >= 0; index--) {
+    const { event, timestamp } = parsedEvents[index]!;
+    if (event.description === PAACK_NEW_ATTEMPT && failedAt.has(timestamp)) parsedEvents.splice(index, 1);
+  }
   parsedEvents.sort((left, right) => (
     right.timestamp - left.timestamp || left.sourceIndex - right.sourceIndex
   ));

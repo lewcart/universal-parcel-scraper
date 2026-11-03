@@ -43,8 +43,8 @@ import { pocztaPolskaPartnerClock } from '../../carriers/poczta-polska/clock.js'
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { CHINESE_CITIES, CHINESE_PROVINCES } from '../shared/china.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
-import { event, isNotice, localEvent, numberOf, place as reportedPlace, result, type UniversalSource } from '../shared/result.js';
-import { carrierScan, markLaterReceipts, markReturnLeg, type CarrierScan } from '../shared/scans.js';
+import { event, eventStage, isNotice, localEvent, numberOf, place as reportedPlace, result, type UniversalSource } from '../shared/result.js';
+import { carrierScan, dropStepNotices, markLaterReceipts, markReturnLeg, type CarrierScan } from '../shared/scans.js';
 import { PARCELSAPP_API, ParcelsAppHttpClient } from './http.js';
 
 const SOURCE: UniversalSource = 'ParcelsApp';
@@ -1625,6 +1625,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     entries.push({ ...state, raw, scan, wording: scan?.wording ?? status });
   }
   if (destination === 'US') dropDhlinkCopies(entries);
+  dropStepNotices(entries, eventStage);
   // Another carrier's copy of a scan placed in its state or province (Cainiao
   // relaying UniUni's "Delivered" at the same minute, with no place) takes
   // that scan's zone, so the two stay one scan. A copy of a GOFO scan with an

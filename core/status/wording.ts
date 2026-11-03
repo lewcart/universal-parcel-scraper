@@ -10,6 +10,9 @@
 import type { Stage } from '../../generated/catalog.js';
 import { deliveryForecastRemainder, trackingLanguageStage } from './language.js';
 
+// A German delivery booked, chosen, simplified or stopped, which no round has started.
+const DELIVERY_ARRANGED = /wunsch|gebucht|gewählt|gewünscht|festgelegt|beauftragt|angefordert|vereinbart|vereinfacht|gestoppt|angehalten/;
+
 export interface ClassifiedWording {
   stage: Stage;
   /**
@@ -84,9 +87,11 @@ export function classifyWording(text: string, fallback: Stage = 'in_transit'): C
     || /\bdeposited\b(?![^.;]*\b(?:by (?:the )?(?:sender|shipper|seller|merchant)|postal partner)\b)/.test(value)) {
     return matched('delivered', 'delivered');
   }
-  // "In delivery", but not a delivery terminal or depot the parcel is sorted in.
-  if (['out for delivery', 'out for doorstep delivery', 'loading into delivery vehicle', 'loaded into delivery vehicle', 'zustellung']
+  // "In delivery", but not a delivery terminal or depot the parcel is sorted in, nor a delivery
+  // booked, chosen or stopped ("Ein WunschTag für die Zustellung wurde gebucht").
+  if (['out for delivery', 'out for doorstep delivery', 'loading into delivery vehicle', 'loaded into delivery vehicle']
     .some((term) => value.includes(term))
+    || (value.includes('zustellung') && !DELIVERY_ARRANGED.test(value))
     || /\bin delivery\b(?! (?:terminal|depot|cent(?:er|re)|office|facility|hub|station|base|area|point)s?\b)/.test(value)) {
     return matched('out_for_delivery', 'out_for_delivery');
   }

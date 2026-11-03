@@ -9,6 +9,7 @@ import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { firstOccurrence, usStateTimeZone } from '../../core/time/index.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { postnlRecordZone } from '../spring-gds/adapter.js';
 import { epostGlobalFacilityScan, epostGlobalStage } from './status.js';
 
 export const PROVIDER = 'ePost Global';
@@ -73,19 +74,33 @@ function facilityZone(description: string, place: string): string | null {
   return state && !SPLIT_STATES.has(state) ? usStateTimeZone(state) : null;
 }
 
-/** A scan's clock: an instant in the center's zone, else the wall clock as stamped. */
-function clockOf(stamp: string, zone: string | null): { time: string } | { local_time: string } {
+type ScanClock = Pick<CarrierEvent, 'time' | 'local_time' | 'time_zone' | 'time_zone_basis'>;
+
+/**
+ * A scan's clock: an instant in the center's zone, or in PostNL's for one of
+ * its own records, else the wall clock as stamped.
+ */
+function clockOf(stamp: string, zone: string | null, postnl: string | null): ScanClock {
   const wall = WALL_CLOCK.exec(stamp)?.[1];
   if (!wall || !DateTime.fromISO(wall, { zone: 'utc' }).isValid) {
     throw new SchemaError(PROVIDER, 'ePost Global returned an invalid scan time');
   }
-  if (!zone) return { local_time: wall };
-  const time = firstOccurrence(DateTime.fromISO(wall, { zone })).toISO({ suppressMilliseconds: true });
+  const reading = zone ?? postnl;
+  if (!reading) return { local_time: wall };
+  const time = firstOccurrence(DateTime.fromISO(wall, { zone: reading })).toISO({ suppressMilliseconds: true });
   if (!time) throw new SchemaError(PROVIDER, 'ePost Global returned an invalid scan time');
-  return { time };
+  return zone ? { time } : { local_time: wall, time, time_zone: reading, time_zone_basis: 'carrier' };
 }
 
-function projectScan(row: unknown): { key: string; event: CarrierEvent } | null {
+/**
+ * The zone of a record Spring's PostNL service keeps without a country, which
+ * ePost Global places in the shipper's country: PostNL's own clock.
+ */
+function postnlZone(code: string, place: string, origin: string | null): string | null {
+  return origin && place === origin && /^\d{1,8}$/.test(code) ? postnlRecordZone(code) : null;
+}
+
+function projectScan(row: unknown, origin: string | null): { key: string; event: CarrierEvent } | null {
   if (!isRecord(row)) throw new SchemaError(PROVIDER, 'ePost Global returned an invalid scan');
   const description = text(row, 'Event');
   if (!description) return null;
@@ -94,7 +109,7 @@ function projectScan(row: unknown): { key: string; event: CarrierEvent } | null 
   const code = text(row, 'ECode', 32);
   const staged = epostGlobalStage(description, code);
   const event: CarrierEvent = {
-    ...clockOf(stamp, facilityZone(description, place)),
+    ...clockOf(stamp, facilityZone(description, place), postnlZone(code, place, origin)),
     description,
     ...(place ? { location: place } : {}),
     ...(code ? { provider_code: code } : {}),
@@ -160,10 +175,15 @@ export function parseEpostGlobal(html: string, raw: string): CarrierResult {
   if (!Array.isArray(rows)) throw new SchemaError(PROVIDER, 'ePost Global returned a shipment without scans');
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'ePost Global returned an oversized history');
 
+  const partner = deliveryPartner(text(details, 'Vendor', 80),
+    text(details, 'VendorTrackingUrl', 500) || text(details, 'VendorBaseUrl', 500));
+  // The shipper's country, where ePost Global places the records Spring's PostNL service keeps without one.
+  const shipper = text(details, 'OCt', 8).toUpperCase();
+  const origin = VENDORS.get(text(details, 'Vendor', 80).toUpperCase()) === 'spring-gds' && /^[A-Z]{2}$/.test(shipper) ? shipper : null;
   const seen = new Set<string>();
   const events: CarrierEvent[] = [];
   for (const row of rows) {
-    const scan = projectScan(row);
+    const scan = projectScan(row, origin);
     if (!scan || seen.has(scan.key)) continue;
     seen.add(scan.key);
     events.push(scan.event);
@@ -183,8 +203,6 @@ export function parseEpostGlobal(html: string, raw: string): CarrierResult {
   // A partner's announcement after ePost Global shipped the parcel is no step back.
   const current = events.find((event) => event.stage && event.stage !== 'registered') ?? events.find((event) => event.stage);
   const stage = current?.stage as Stage | undefined;
-  const partner = deliveryPartner(text(details, 'Vendor', 80),
-    text(details, 'VendorTrackingUrl', 500) || text(details, 'VendorBaseUrl', 500));
   const delivery = partnerNumber(track, number);
   const country = text(details, 'DC', 8).toUpperCase();
   return {

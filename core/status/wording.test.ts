@@ -86,6 +86,16 @@ describe('classifyWording', () => {
     expect(classifyWording('Reported')).toEqual({ stage: 'registered', source: 'wording:language' });
   });
 
+  it('reads a German delivery under way as out for delivery, and one booked, chosen or stopped as no round', () => {
+    for (const wording of ['Zustellung heute', 'Ihre Sendung befindet sich in der Zustellung', 'Die Sendung wurde zur Zustellung übergeben']) {
+      expect(classifyWording(wording), wording).toEqual({ stage: 'out_for_delivery', source: 'wording:out_for_delivery' });
+    }
+    for (const wording of ['Ein WunschTag für die Zustellung wurde gebucht.', 'Wunschzustellung gebucht', 'Zustellung an Nachbarn gewünscht',
+      'Ablageort für die Zustellung festgelegt', 'Vereinfachte Zustellung', 'Zustellung ist gestoppt']) {
+      expect(classifyWording(wording), wording).toEqual({ stage: 'in_transit', source: 'none' });
+    }
+  });
+
   it('classifies carrier-reported problems as exception', () => {
     expect(classifyWording('Colis endommagé')).toEqual({ stage: 'exception', source: 'wording:language' });
     expect(classifyWording('Package refused by the recipient')).toEqual({ stage: 'exception', source: 'wording:language' });

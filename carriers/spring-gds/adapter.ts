@@ -71,6 +71,11 @@ const HOME_ZONE = 'Europe/Amsterdam';
 // Except the label's creation and the processing record without a country,
 // which keep UTC.
 const UTC_RECORDS = new Set(['2001', '3033']);
+
+/** The zone of one of PostNL's own records, which name no country, by its code. */
+export function postnlRecordZone(code: string | undefined): string {
+  return UTC_RECORDS.has(code ?? '') ? 'UTC' : HOME_ZONE;
+}
 // Customs and bagging records carry seven fraction digits and a real "Z".
 const PRECISE_UTC = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{4,7}Z$/;
 
@@ -133,7 +138,7 @@ function scanClock(event: JsonObject): ScanClock {
   if (!wall) return { provider_time_text: raw };
   const local = { local_time: wall.replace(/\.000$/, '') };
   const country = text(event.country_code).trim() || text(event.country_name).trim();
-  if (!country) return { ...local, guesses: [wallInZone(wall, UTC_RECORDS.has(eventCode(event.status) ?? '') ? 'UTC' : HOME_ZONE)] };
+  if (!country) return { ...local, guesses: [wallInZone(wall, postnlRecordZone(eventCode(event.status)))] };
   const zone = countryTimeZone(country);
   // A country alone cannot distinguish mainland clocks from island clocks.
   return zone && !['Europe/Madrid', 'Europe/Lisbon'].includes(zone) ? { ...local, known: wallInZone(wall, zone) } : local;

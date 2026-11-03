@@ -61,14 +61,16 @@ describe('ePost Global HTTP adapter', () => {
       // PostNL's acceptance after ePost Global shipped the parcel.
       ['2026-03-07T08:59:00', '173', 'in_transit', 'carrier_map', 'NL'],
       ['2026-03-05T19:02:00', '6010', 'customs', 'wording:language', 'NL'],
-      ['2026-03-05T17:47:00', '1233', 'registered', 'wording:language', 'US'],
+      // PostNL's pre-advice, which ePost Global places in the shipper's country, on PostNL's clock.
+      ['2026-03-05T17:47:00+01:00', '1233', 'registered', 'wording:language', 'US'],
       ['2026-03-04T23:41:44', '41', 'in_transit', 'carrier_map', null],
       ['2026-03-04T23:40:44-06:00', '32', 'in_transit', 'carrier_map', 'Sampleton IL'],
       ['2026-03-04T15:04:46-06:00', '30', 'accepted', 'carrier_map', 'Sampleton IL'],
       ['2026-03-02T09:43:01', 'EPGS01', 'registered', 'carrier_map', null],
       ['2026-03-02T09:42:01', '11', 'registered', 'carrier_map', null],
     ]);
-    expect(result.events!.filter((event) => event.time)).toHaveLength(2);
+    expect(result.events!.filter((event) => event.time)).toHaveLength(3);
+    expect(result.events![7]).toMatchObject({ local_time: '2026-03-05T17:47:00', time_zone: 'Europe/Amsterdam', time_zone_basis: 'carrier' });
     expect(JSON.stringify(result)).not.toMatch(/99999|60999|SYNTHETIC-ORDER|7999980|12345678/);
   });
 
@@ -97,7 +99,29 @@ describe('ePost Global HTTP adapter', () => {
       { local_time: '2026-03-04T23:40:44', location: 'Sampleton TX' },
       { local_time: '2026-03-04T15:04:46' },
     ]);
-    expect(split.events!.some((event) => event.time)).toBe(false);
+    expect(split.events!.filter((event) => event.time).map((event) => event.provider_code)).toEqual(['1233']);
+  });
+
+  it('dates the records Spring’s PostNL service keeps without a country on PostNL’s clock, and no other partner’s', () => {
+    const spring = parseEpostGlobal(rewrite('spring-delivered', (details) => {
+      const advice = details.Events[8]!;
+      details.Events.splice(8, 0,
+        { ...advice, ECode: '2024', Event: 'The item has been manifested and ready to transport', EventDT: '2026-03-05T17:47:00' },
+        { ...advice, ECode: '2001', Event: 'The shipping label has been created', EventDT: '2026-03-05T17:40:00' });
+    }), SPRING);
+    expect(spring.events!.slice(7, 10).map((event) => [event.provider_code, event.time, event.time_zone])).toEqual([
+      ['2024', '2026-03-05T17:47:00+01:00', 'Europe/Amsterdam'],
+      ['2001', '2026-03-05T17:40:00Z', 'UTC'],
+      ['1233', '2026-03-05T17:47:00+01:00', 'Europe/Amsterdam'],
+    ]);
+    // Placed in another country than the shipper's, or relayed for another partner: the wall clock stands.
+    const elsewhere = parseEpostGlobal(rewrite('spring-delivered', (details) => { details.Events[8]!.Loc = 'CA'; }), SPRING);
+    expect(elsewhere.events![7]).toMatchObject({ provider_code: '1233', local_time: '2026-03-05T17:47:00' });
+    expect(elsewhere.events![7]!.time).toBeUndefined();
+    const other = parseEpostGlobal(rewrite('spring-delivered', (details) => {
+      Object.assign(details, { Vendor: 'GLSEU', VendorTrackingUrl: '', VendorBaseUrl: 'https://gls-group.com/GROUP/en/parcel-tracking' });
+    }), SPRING);
+    expect(other.events![7]!.time).toBeUndefined();
   });
 
   it('does not step back to a partner’s announcement after the parcel was shipped', () => {
@@ -212,7 +236,7 @@ describe('ePost Global HTTP adapter', () => {
 
   it('recognizes a known shipment and the unknown-number answer, and asks nothing for a number ePost Global does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(text('spring-delivered'))).mockResolvedValueOnce(reply(text('not-found')));
-    await expect(carrier(fetcher).recognize!(SPRING)).resolves.toEqual({ known: true, lastActivityAt: '2026-03-05T05:40:44.000Z' });
+    await expect(carrier(fetcher).recognize!(SPRING)).resolves.toEqual({ known: true, lastActivityAt: '2026-03-05T16:47:00.000Z' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('LX000000005NL')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

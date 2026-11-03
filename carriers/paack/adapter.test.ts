@@ -578,9 +578,13 @@ describe('Paack history beside the timeline', () => {
     const timeline = parsePaackTrackingResponse({ ...labelRoute(), eventList: [manifested, scannedAtOnce, inDelivery], triggeredEventList: [] },
       LABEL_POSTCODE);
     expect(timeline.events?.map((event) => event.description)).toEqual(['Out for delivery', 'Shipment accepted', 'Shipment registered']);
+  });
+
+  it('reads a new attempt written at the failed attempt’s instant as part of that step', () => {
     const rescheduledAtOnce = step('SA015', 'additionalDeliveryAttemptScheduled', failed.timestamp, false);
     const history = parsePaackTrackingResponse(failedAttemptRoute([rescheduledAtOnce, failed, inDelivery, scanned, manifested]), LABEL_POSTCODE);
-    expect(history.events?.map((event) => event.description).slice(0, 2)).toEqual(['New delivery attempt scheduled', 'Delivery attempt failed']);
+    expect(history.events?.map((event) => event.description).slice(0, 2)).toEqual(['Delivery attempt failed', 'Out for delivery']);
+    expect(history).toMatchObject({ current_stage: 'failed_attempt', last_status_text: 'Delivery attempt failed' });
   });
 });
 

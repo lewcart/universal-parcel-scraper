@@ -78,7 +78,9 @@ Spain and other carriers deliver them elsewhere, so that shape only suggests Paa
   are sorted newest first and capped at 100.
 - A failed attempt can come as `SA014` with no label, matched as the whole code.
   `additionalDeliveryAttemptScheduled` follows it and stays a failed attempt, so the stage does
-  not fall back to registered while the new attempt waits. `driverAssigned` reads "Courier
+  not fall back to registered while the new attempt waits. Written at the failed attempt's
+  instant, it is part of that step and left out; so is ParcelsApp's "We scheduled a new delivery
+  attempt." beside the failure it relays. `driverAssigned` reads "Courier
   assigned", once per run. `inProgress`, "being processed by Paack", is in transit.
 - `activeEvent` decides the overall status when it maps: the banner can be ahead of the
   timeline. It stays on "Out for delivery" after a failed attempt, so a newer failed attempt,

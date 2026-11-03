@@ -63,6 +63,8 @@ const RETURNING: ClassifiedPaackStatus = { status: 'exception', stage: 'returned
 const EXCEPTION: ClassifiedPaackStatus = { status: 'exception', stage: 'exception', description: 'Shipment exception' };
 const READY_FOR_PICKUP: ClassifiedPaackStatus = { status: 'out_for_delivery', stage: 'ready_for_pickup', description: 'Ready for pickup' };
 const NEW_ATTEMPT: ClassifiedPaackStatus = { status: 'exception', stage: 'failed_attempt', description: 'New delivery attempt scheduled' };
+/** The wording of the new attempt Paack schedules after a failed one. */
+export const PAACK_NEW_ATTEMPT = NEW_ATTEMPT.description;
 const COURIER_ASSIGNED: ClassifiedPaackStatus = { ...OUT_FOR_DELIVERY, description: 'Courier assigned' };
 const IN_TRANSIT: ClassifiedPaackStatus = { status: 'in_transit', stage: 'in_transit', description: 'In transit' };
 
@@ -80,12 +82,18 @@ const RELAYED = new Map<string, ClassifiedPaackStatus>([
   // ParcelsApp's words for two of Paack's steps: driverAssigned, at each round, and inProgress.
   ['driverassigned', COURIER_ASSIGNED],
   ['inprogress', IN_TRANSIT],
+  // ParcelsApp's words for additionalDeliveryAttemptScheduled.
+  ['wescheduledanewdeliveryattempt', NEW_ATTEMPT],
 ]);
 
-/** The stage and stored wording of a Paack timeline label an aggregator relays. */
-export function paackScan(label: string): { stage: Stage; wording: string } | undefined {
+/**
+ * The stage and stored wording of a Paack timeline label an aggregator relays.
+ * The new attempt is written at the instant of the failed attempt it follows,
+ * and is part of that step.
+ */
+export function paackScan(label: string): { stage: Stage; wording: string; partOf?: Stage } | undefined {
   const entry = RELAYED.get(statusKey(label));
-  return entry && { stage: entry.stage, wording: entry.description };
+  return entry && { stage: entry.stage, wording: entry.description, ...(entry === NEW_ATTEMPT ? { partOf: entry.stage } : {}) };
 }
 
 export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {

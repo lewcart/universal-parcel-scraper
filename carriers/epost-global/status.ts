@@ -23,7 +23,8 @@ const STAGES: ReadonlyMap<string, Stage> = new Map([
   ['checked in at origin hub', 'in_transit'],
   ['airline delay', 'in_transit'],
   ['collected from the airline for processing', 'in_transit'],
-  // PostNL, through Spring.
+  // PostNL, through Spring. Its acceptance comes after ePost Global shipped the parcel.
+  ['consignment received at the postnl acceptance centre', 'accepted'],
   ['the item has been manifested and ready to transport', 'in_transit'],
   ['the item is tied to a mawb and ready for shipment', 'in_transit'],
   // La Poste's wording for parcels PostNL brings to France, after they left the United States.

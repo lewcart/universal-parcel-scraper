@@ -166,6 +166,19 @@
       "note": "China's export declaration done before the flight; the parcel is not held in customs."
     },
     {
+      "wording": "Export Released",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "note": "China's export release before the flight; the parcel is not held in customs."
+    },
+    {
+      "wording": "Flight Departed",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
       "wording": "Flight departure",
       "stage": "in_transit",
       "language": "en",

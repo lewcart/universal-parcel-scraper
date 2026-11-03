@@ -48700,7 +48700,9 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "wooliiporter",
+      "recognitionRank": 6,
+      "recognitionPattern": "^WP\\d{13}$"
     },
     "canaryUrl": "https://woolii.com/track",
     "trackingUrlTemplate": "https://woolii.com/track/{trackingNumber}",

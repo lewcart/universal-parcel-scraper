@@ -1,4 +1,68 @@
 {
   "carrier": "wooliiporter",
-  "entries": []
+  "entries": [
+    {
+      "code": "INFO_RECEIVED",
+      "wording": "Information received",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "From the tracking page's script, which lists the code with this label; no captured history yet."
+    },
+    {
+      "code": "HANDED_OVER",
+      "wording": "Handed over",
+      "stage": "accepted",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "The first physical scan: before one the page says the first physical scan has not arrived. From the tracking page's script, which lists the code with this label; no captured history yet."
+    },
+    {
+      "code": "IN_TRANSIT",
+      "wording": "In transit",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "From the tracking page's script, which lists the code with this label; no captured history yet."
+    },
+    {
+      "code": "OUT_FOR_DELIVERY",
+      "wording": "Out for delivery",
+      "stage": "out_for_delivery",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "From the tracking page's script, which lists the code with this label; no captured history yet."
+    },
+    {
+      "code": "DELIVERED",
+      "wording": "Delivered",
+      "stage": "delivered",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "From the tracking page's script, which lists the code with this label; no captured history yet."
+    },
+    {
+      "code": "EXCEPTION",
+      "wording": "Attention required",
+      "stage": "exception",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "From the tracking page's script, which lists the code with this label; no captured history yet."
+    },
+    {
+      "code": "RETURNED",
+      "wording": "Returning",
+      "stage": "returned",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "The page's label says the parcel is on its way back. From the tracking page's script, which lists the code with this label; no captured history yet."
+    },
+    {
+      "code": "UNKNOWN",
+      "wording": "Update pending",
+      "language": "en",
+      "confirmedBy": "bundle",
+      "note": "A status not yet known, which moves nothing. From the tracking page's script, which lists the code with this label; no captured history yet."
+    }
+  ]
 }

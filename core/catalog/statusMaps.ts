@@ -691,6 +691,7 @@ import { statusMap as whistl } from '../../carriers/whistl/status.js';
 import { statusMap as whizDelivery } from '../../carriers/whiz-delivery/status.js';
 import { statusMap as wiio } from '../../carriers/wiio/status.js';
 import { statusMap as winit } from '../../carriers/winit/status.js';
+import { statusMap as wooliiporter } from '../../carriers/wooliiporter/status.js';
 import { statusMap as xdeLogistics } from '../../carriers/xde-logistics/status.js';
 import { statusMap as xdp } from '../../carriers/xdp/status.js';
 import { statusMap as xgs } from '../../carriers/xgs/status.js';
@@ -804,7 +805,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'ubi-smart-parcel': ubiSmartParcel, 'ukp-worldwide': ukpWorldwide, ukrposhta,
   'united-delivery-service': unitedDeliveryService, uniuni, upaya, ups, urbano, urvaam, usps,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, viadireta, 'viettel-post': viettelPost,
-  vimenpaq, 'vinted-go': vintedGo, vozovoz, 'vrl-logistics': vrlLogistics, wanbexpress, 'we-world-express': weWorldExpress, whistl, 'whiz-delivery': whizDelivery, wiio, winit, 'xde-logistics': xdeLogistics, xdp, xgs, 'xinghe-freight': xingheFreight, xlcourier, 'xpo-ltl': xpoLtl, xpressbees,
+  vimenpaq, 'vinted-go': vintedGo, vozovoz, 'vrl-logistics': vrlLogistics, wanbexpress, 'we-world-express': weWorldExpress, whistl, 'whiz-delivery': whizDelivery, wiio, winit, wooliiporter, 'xde-logistics': xdeLogistics, xdp, xgs, 'xinghe-freight': xingheFreight, xlcourier, 'xpo-ltl': xpoLtl, xpressbees,
   yalidine, yamato, yanwen, 'ycs-logistics': ycsLogistics, ydh, 'yilong-logistics': yilongLogistics, yto, yunexpress, yunda, ywe, yypost, zto, 'zto-international': ztoInternational,
   'yurtici-kargo': yurticiKargo, zajil, zeleris, 'zoom-ve': zoomVe, 'zr-express': zrExpress,
 };

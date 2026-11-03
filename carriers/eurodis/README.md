@@ -5,6 +5,11 @@ its members; Austrian Post is the member for Austria and trans-o-flex the member
 shipment is carried by the member in the country of dispatch and handed to the member that
 delivers it. Tracked through EURODIS's own tracker for the whole network.
 
+EURODIS's site now shows only a notice that it is being updated, which sends readers to the
+dispatching or delivering member in their country and lists them; its tracker answers 404,
+which the adapter reports as a moved page, not a missing parcel. The catalog builds no parcel
+link and points the search and help links at that notice.
+
 ## How it works
 
 1. `direct`: a collo barcode is one `GET https://eurodis.com/track-trace?{barcode}`, the address
@@ -70,11 +75,11 @@ universal providers report.
 
 ## Links
 
-The barcode form on `eurodis.com` sends the number as `trackCollo-input-of` to
+The barcode form on `eurodis.com` sent the number as `trackCollo-input-of` to
 `eurodis.com/track-trace`, so
 `eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={number}`
-opens one parcel. Such links, with or without a language folder, are read for EURODIS. The
-other search forms post their fields.
+opened one parcel. Such links, with or without a language folder, are still read for EURODIS.
+The other search forms post their fields.
 
 ## Testing
 

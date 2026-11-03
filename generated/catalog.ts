@@ -18899,8 +18899,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "localClocks": true
     },
     "canaryUrl": "https://eurodis.com/track-trace",
-    "trackingUrlTemplate": "https://eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={trackingNumber}",
     "trackingSearchUrl": "https://eurodis.com/",
+    "helpUrl": "https://eurodis.com/",
     "linkRules": [
       {
         "domains": [

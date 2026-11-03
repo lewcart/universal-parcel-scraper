@@ -7,8 +7,8 @@ const POSTCODE_RUN = /(^|[^\p{L}\p{N}])(?<!\d{1,2}[-/.]\d{1,2}[-/.]|\b(?:jan(?:u
 // Slovakia, Sweden), two and three or four and three with a dash (Poland, Portugal), letters and digits
 // (Canada, the United Kingdom) and four digits and two letters (the Netherlands).
 const POSTCODE_FORM = /(^|[^\p{L}\p{N}])(?:\d{3} \d{2}|\d{2}-\d{3}|\d{4}-\d{3}|[A-Z]\d[A-Z] ?\d[A-Z]\d|[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|\d{4} ?[A-Z]{2})(?![\p{L}\p{N}])/gu;
-// A country's letters before a postcode, as in "CH-8001" or "NL-1012 AB", go with it.
-const POSTCODE_COUNTRY = /(^|[^\p{L}\p{N}])[A-Z]{1,2}-(?=(?:\d{2}-\d{3}|\d{4} ?[A-Z]{2}|\d{4,6})(?![\p{L}\p{N}]))/gu;
+// A country's letters before a postcode, as in "CH-8001", "NL-1012 AB" or "SK-811 01", go with it.
+const POSTCODE_COUNTRY = /(^|[^\p{L}\p{N}])[A-Z]{1,2}-(?=(?:\d{3} \d{2}|\d{2}-\d{3}|\d{4}-\d{3}|\d{4} ?[A-Z]{2}|\d{4,6})(?![\p{L}\p{N}]))/gu;
 // Brackets a postcode leaves empty.
 const EMPTY_BRACKETS = /\(\s*\)|（\s*）/g;
 // A signatory's name follows these markers.

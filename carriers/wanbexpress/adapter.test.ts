@@ -198,4 +198,64 @@ describe('WanbExpress', () => {
     }
     await expect(adapter(environment).track({ number }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
   });
+
+  describe('fallback proxy', () => {
+    const PROXY = 'http://relay.internal:3128';
+    const scrape = (...replies: unknown[][]) => {
+      const fetcher = vi.fn<typeof fetch>();
+      for (const captures of replies) fetcher.mockResolvedValueOnce(reply({ tier: 3, statusCode: 200, html: '', capturedResponses: captures }));
+      return fetcher;
+    };
+    const sent = (fetcher: { mock: { calls: unknown[][] } }) => fetcher.mock.calls
+      .map(call => JSON.parse(String((call[1] as RequestInit).body)) as { proxy?: string; maxTimeout: number });
+    const setup = (fetcher: typeof fetch, env: Record<string, string> = { WANBEXPRESS_FALLBACK_PROXY_URL: ` ${PROXY} ` }) => {
+      const records: unknown[] = [];
+      const carrier = adapter({ env, fetcher: vi.fn<typeof fetch>(async () => reply(challenge)), trawl: new TrawlClient('http://browser.test', fetcher),
+        browserExecutablePath: null, recorder: { ...NOOP_RECORDER, step: event => { records.push(event); } } });
+      return { carrier, records };
+    };
+
+    it('reads once more through the proxy only after the service\'s own read is refused, and records each read\'s route', async () => {
+      const fetcher = scrape([capture(challenge)], [capture(challenge), capture(found())]);
+      const { carrier, records } = setup(fetcher);
+      await expect(carrier.track({ number }, { budgetMs: 20_000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+      const [own, proxied] = sent(fetcher);
+      expect([own!.proxy, proxied!.proxy]).toEqual([undefined, PROXY]);
+      // The first read leaves the proxy half of the time.
+      expect(own!.maxTimeout).toBeLessThanOrEqual(8000);
+      expect(proxied!.maxTimeout).toBeGreaterThan(own!.maxTimeout);
+      expect(records).toMatchObject([
+        { step: 'trawl', outcome: 'challenge', networkRoute: 'default', networkAttempt: 'initial', historyAvailable: false },
+        { step: 'trawl', outcome: 'ok', networkRoute: 'residential', networkAttempt: 'retry', historyAvailable: true },
+      ]);
+      // A read the own route answers leaves the proxy alone.
+      const answered = scrape([capture(found())]);
+      const { carrier: direct, records: directRecords } = setup(answered);
+      await expect(direct.track({ number }, { budgetMs: 20_000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+      expect(sent(answered).map(request => request.proxy)).toEqual([undefined]);
+      expect(directRecords).toMatchObject([{ step: 'trawl', outcome: 'ok', networkRoute: 'default', networkAttempt: 'initial', historyAvailable: true }]);
+    });
+
+    it('keeps rate limits, failed transports, missing parcels and recognition off the proxy', async () => {
+      for (const captures of [[capture(found(), 429)], [{ ...capture(found()), truncated: true }], [capture(missing, 200, number)]]) {
+        const fetcher = scrape(captures);
+        await expect(setup(fetcher).carrier.track({ number }, { budgetMs: 20_000 })).rejects.toBeDefined();
+        expect(sent(fetcher).map(request => request.proxy)).toEqual([undefined]);
+      }
+      const refused = scrape([capture(challenge)]);
+      await expect(setup(refused).carrier.recognizeWithBrowser!(number, {})).rejects.toMatchObject({ kind: 'challenge' });
+      expect(sent(refused).map(request => request.proxy)).toEqual([undefined]);
+      // Without the variable the refusal stands.
+      const unset = scrape([capture(challenge)]);
+      await expect(setup(unset, {}).carrier.track({ number }, { budgetMs: 20_000 })).rejects.toMatchObject({ kind: 'challenge' });
+      expect(sent(unset)).toHaveLength(1);
+    });
+
+    it('refuses a proxy that is not an HTTP(S) origin at setup', () => {
+      for (const proxy of ['relay.internal:3128', `${PROXY}/path`]) {
+        expect(() => setup(vi.fn<typeof fetch>(), { WANBEXPRESS_FALLBACK_PROXY_URL: proxy })).toThrow(TypeError);
+      }
+      expect(() => setup(vi.fn<typeof fetch>(), { WANBEXPRESS_FALLBACK_PROXY_URL: '  ' })).not.toThrow();
+    });
+  });
 });

@@ -11,8 +11,12 @@ export function wanbBrowserNumber(rawUrl, capture = {}) {
     && capture.captureResponses?.length === 1 && capture.captureResponses[0] === API ? number : null;
 }
 
-/** Submit the public form and retain its response after server-side verification. */
-export async function runWanbBrowser({ url, handle, tier, maxTimeout, capture, installPolicy, solveCaptcha, signal }) {
+/**
+ * Submit the public form and retain its response after server-side verification. With
+ * `openContext`, the request's proxy carries the context: only the page's passive check
+ * runs there, and a visible checkbox ends the read unsolved.
+ */
+export async function runWanbBrowser({ url, handle, tier, maxTimeout, capture, installPolicy, solveCaptcha, signal, openContext }) {
   const number = wanbBrowserNumber(url, capture);
   if (!number) return undefined;
   const start = Date.now();
@@ -37,8 +41,9 @@ export async function runWanbBrowser({ url, handle, tier, maxTimeout, capture, i
     signal?.throwIfAborted();
     return await Promise.race([
       (async () => {
-        const created = await handle.browser.newContext();
-        handle.noteTemporaryContext?.();
+        const proxied = !!openContext;
+        const created = proxied ? await openContext() : await handle.browser.newContext();
+        if (!proxied) handle.noteTemporaryContext?.();
         if (expired) { await close(created); throw new Error('Late browser context'); }
         context = created;
         page = await context.newPage();
@@ -104,7 +109,7 @@ export async function runWanbBrowser({ url, handle, tier, maxTimeout, capture, i
           await Promise.all(reads);
           return result();
         };
-        if (version === 'V2') return await checkbox();
+        if (version === 'V2') return proxied ? result() : await checkbox();
         // Run the old passive client only while the public page advertises V3.
         // Its checkbox client can already have loaded another reCAPTCHA instance.
         await page.evaluate(async requested => {
@@ -141,7 +146,7 @@ export async function runWanbBrowser({ url, handle, tier, maxTimeout, capture, i
         const last = entries.at(-1);
         let challenge;
         try { challenge = last?.body ? JSON.parse(last.body) : null; } catch { /* Keep malformed data for the adapter. */ }
-        if (!expired && remaining() > 8000 && verificationStatus < 400 && last?.status === 200
+        if (!proxied && !expired && remaining() > 8000 && verificationStatus < 400 && last?.status === 200
           && !last.error && !last.truncated && challenge?.Succeeded === false && challenge?.Error?.Code === '0x110012') {
           verificationSeen = false; verificationStatus = 0; completed = false; trackingReady = trackingWait();
           const navigation = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: remaining() });

@@ -41,6 +41,15 @@ Verification depends on the browser and its network. A datacenter network can be
 both reCAPTCHA flows; enabled universal providers then take over. An accepted CAPTCHA alone
 never establishes that tracking succeeded.
 
+With `WANBEXPRESS_FALLBACK_PROXY_URL` set to an HTTP(S) proxy, such as a residential
+connection, a lookup whose TRAWL read is refused makes one more read through it; the first read
+leaves it half of the deadline. TRAWL carries the whole context through the proxy and never
+falls back to its own address. Through the proxy the helper runs only the page's passive check
+in a fresh context: it reuses no session and solves nothing, and a visible checkbox ends the
+read as a challenge. Rate limits, failed transports, missing parcels and recognition stay off the
+proxy. Each TRAWL read's step record names its route, `default` or `residential`, without the
+proxy's address.
+
 Set `WANBEXPRESS_TRACKING_NUMBER` and either `WANBEXPRESS_BROWSER_WS_ENDPOINT` or
 `FLARESOLVERR_URL` outside the repository and run
 `npm run test:carriers:live -- carriers/wanbexpress/adapter.live.test.ts`.

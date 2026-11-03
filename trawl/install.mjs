@@ -34,8 +34,9 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   const entry = 'if (!budget) throw new Error("Browser task requires an operation budget")';
   if (source.split(entry).length !== 2) throw new Error('TRAWL tier entry changed');
   const carrierRunners = `${entry}
-  const carrierPage = !proxyUrl && ${fresh ? '!capture.sessionContext && ' : ''}!screenshot && (!method || method === "GET")
+  const carrierRequest = ${fresh ? '!capture.sessionContext && ' : ''}!screenshot && (!method || method === "GET")
     && !body && !Object.keys(extraHeaders ?? {}).length
+  const carrierPage = !proxyUrl && carrierRequest
   const carrierRun = { url, handle, tier: ${tier}, maxTimeout: budget.remaining() - ${reserveMs}, capture,
     installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) }
   if (carrierPage && dhlPolandBrowserNumber(url, capture)) {
@@ -60,9 +61,12 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   if (carrierPage && australiaPostBrowserRequest(url, capture)) return await runAustraliaPostBrowser(carrierRun)
   if (carrierPage && track123Number(url, capture)) return await runTrack123Browser(carrierRun)
   if (carrierPage && fedexSessionNumber(url, capture)) return await fedexSessions.run(carrierRun)
-  if (carrierPage && wanbBrowserNumber(url, capture)) {
-    return await runWanbBrowser({ ...carrierRun, signal: budget.signal,
-      solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout, budget.signal) })
+  // Through a proxy WanbExpress's helper opens its context there and solves nothing.
+  if (carrierRequest && wanbBrowserNumber(url, capture)) {
+    return await runWanbBrowser({ ...carrierRun, signal: budget.signal, ...(proxyUrl ? {
+      openContext: () => newWanbContext(handle.browser, { proxy: proxyUrl, onCreated: handle.noteTemporaryContext,
+        requestReplacement: handle.requestBrowserReplacement }) } : {
+      solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout, budget.signal) }) })
   }
   if (carrierPage && xpoBrowserNumber(url, capture)) {
     return await runXpoBrowser({ ...carrierRun, solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout) })
@@ -78,6 +82,7 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   writeFileSync(path, 'import { attachTrackingCapture, reserveDeadline } from "../utils/tracking-capture.mjs"\n'
     + 'import { solveRecaptchaV2 } from "../solvers/recaptcha"\n'
     + 'import { wanbBrowserNumber, runWanbBrowser } from "../utils/wanbexpress-browser.mjs"\n'
+    + 'import { newFreshContext as newWanbContext } from "@trawl/browser"\n'
     + 'import { xpoBrowserNumber, runXpoBrowser } from "../utils/xpo-browser.mjs"\n'
     + 'import { magyarPostaBrowserNumber, runMagyarPostaBrowser } from "../utils/magyar-posta-browser.mjs"\n'
     + 'import { magyarPostaAppRequest, runMagyarPostaApp } from "../utils/magyar-posta-app.mjs"\n'

@@ -120,7 +120,9 @@ are recoverable. The adapter keeps its identity checks, refusal rules and shared
 the host supplies isolated services or private proxy credentials. A selected route does not
 establish the connection family: IPv6 needs socket evidence, otherwise telemetry says unknown.
 A fallback route is opt-in too: USPS reads through its configured proxy only while the
-carrier refuses the service's own address, and records each read's route the same way.
+carrier refuses the service's own address, and WanbExpress makes one read through its own
+after a refused one. Each records its reads' routes the same way. A proxied read solves no
+challenge.
 
 `createTracker()` validates the input. A number is four to forty letters and digits and
 normally holds a digit. Without one it must be six to ten unbroken letters that a carrier's

@@ -194,3 +194,30 @@ test('bounds callback waits by deadline and cancellation and closes the context'
   assert.equal((await runWanbBrowser(stopped.options)).status, 'error');
   assert.equal(stopped.state.counted, 0);
 });
+
+test('through a proxy, runs only the passive check in the proxied context and leaves a checkbox unsolved', async () => {
+  const passive = fixture(); let opened = 0;
+  const proxiedContext = passive.options.handle.browser.newContext;
+  passive.options.openContext = async () => { opened++; return proxiedContext(); };
+  passive.options.handle.browser.newContext = async () => { throw new Error('unproxied context'); };
+  const solved = [];
+  passive.options.solveCaptcha = async () => { solved.push('solved'); return true; };
+  // The passive check is refused: the page is not reloaded for its checkbox.
+  passive.page.evaluate = async (script, requested) => { if (requested === undefined) return 'V3'; passive.handlers.response(response(challenge)); };
+  passive.options.maxTimeout = 20_000;
+  const refused = await runWanbBrowser(passive.options);
+  assert.deepEqual(refused.capturedResponses.map(row => row.body), [challenge, challenge]);
+  assert.equal(passive.state.navigation, 'https://tracking.wanbexpress.com/');
+  assert.equal(opened, 1);
+  assert.equal(passive.state.counted, 0);
+  assert.equal(passive.state.closed, 1);
+  // A visible checkbox ends the read before the form is touched.
+  const checkbox = fixture(); checkbox.options.openContext = () => checkbox.options.handle.browser.newContext();
+  checkbox.options.solveCaptcha = passive.options.solveCaptcha;
+  checkbox.page.evaluate = async () => 'V2';
+  checkbox.page.locator = () => { throw new Error('form touched'); };
+  const stopped = await runWanbBrowser(checkbox.options);
+  assert.deepEqual(stopped.capturedResponses.map(row => row.body), [challenge]);
+  assert.deepEqual(solved, []);
+  assert.equal(checkbox.state.closed, 1);
+});

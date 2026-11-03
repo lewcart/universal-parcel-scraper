@@ -33,6 +33,8 @@ per pooled browser and discards it on expiry, mismatch or failure. TRAWL's named
 replace it: FedEx's API refuses the tracking call a kept session page makes for a tracking URL,
 and the untrusted input of a session eval never sends one. Australia Post,
 DHL Express, SF Express, WanbExpress, XPO, Asendia, Correios Brazil, DHL Poland, Magyar Posta and ZTO use fresh contexts.
+A request's proxy carries WanbExpress's whole fresh context; through it the helper runs only
+the page's passive check and leaves a visible checkbox unsolved.
 SF Express solves GeeTest's slider locally and asks for at most two other puzzles when it
 cannot read one.
 ZTO solves Dingxiang's slider and ordered-character challenge locally, with at most two

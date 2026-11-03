@@ -28,6 +28,10 @@ const CODES: Readonly<Record<string, ClassifiedStatus>> = {
   '493': CUSTOMS,
   // Closed into an export dispatch at an exchange office (已出口直封).
   '423': IN_TRANSIT,
+  // A centre sending the item back to be dealt with before it is dispatched again, as after a failed security
+  // check (【…】退回，备注:安检退回), under the state label 运送中. Not a return to the sender, which 711 and its
+  // labels give.
+  '447': EXCEPTION,
   // Arrived at the destination's processing centre (到达寄达地处理中心).
   '459': IN_TRANSIT,
   '460': IN_TRANSIT,

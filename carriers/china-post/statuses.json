@@ -30,6 +30,13 @@
       "note": "Scan code (operationCode). 【office】已出口直封 (closed into an export dispatch at an international exchange office)."
     },
     {
+      "code": "447",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-02",
+      "note": "Scan code (operationCode). 【office】退回, here with 备注:安检退回 (sent back at the centre's security check), under the state label 运送中; the centre deals with it and dispatches the item again. Not a return to the sender."
+    },
+    {
       "code": "404",
       "stage": "in_transit",
       "confirmedBy": "live",

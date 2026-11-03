@@ -222,6 +222,17 @@ describe('China Post trace projection', () => {
     }
   });
 
+  it("reads a centre's security-check return as an exception, as its relayed copy reads, not by its in-transit label", () => {
+    const result = parseChinaPostTraces(edit('delivered', (mail) => {
+      mail.mailInfos = [scan(mail, 0), { ...scan(mail, 0), operationCode: '447', operation: '【示例市处理中心】退回，备注:安检退回', stateDesc: '运送中',
+        orgName: '示例市处理中心', orgCode: '00000001', time: '2026-08-02 22:13:47' }];
+      mail.stateDesc = '运送中';
+    }), NUMBER);
+    expect(result.events?.[0]).toMatchObject({ provider_code: '447', stage: 'exception', stage_source: 'carrier_map' });
+    expect(result).toMatchObject({ status: 'exception', current_stage: 'exception' });
+    expect(statusMap.stage('447', normalizeStatusWording('【示例市处理中心】退回，备注:安检退回'))).toBe('exception');
+  });
+
   it('places a foreign scan without an office name in the destination country its code names, in English', () => {
     const located = (orgCode: unknown, receiverCountryName = '美国') => parseChinaPostTraces(edit('delivered', (mail) => {
       Object.assign(scan(mail, 0), { operationCode: '489', operation: '离开境外经转局', orgName: '', orgCode });

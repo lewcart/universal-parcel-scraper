@@ -20,7 +20,9 @@ status maps.
    GBK, with one record per order and its rows. When it says it holds no row (`未查询到轨迹`),
    the adapter posts the same number as the `documentCode` field to `trackIndex.htm`, the
    tracking page the tenant's site opens. The page answers an unknown number with an empty
-   waybill that only echoes the number, which is the only not-found. It also shows the
+   waybill that only echoes the number, which is the only not-found. An order without pieces,
+   destination or scans yet shows the number as its tracking or transfer number too, and has no
+   history yet. It also shows the
    platform's own row for an order without scans, which some tenants' interfaces leave out.
 2. `retry`: the same read once more after a request fails to reach the tracker or hangs. The
    first attempt gets half of the budget.

@@ -127,6 +127,7 @@ const CHALLENGE = /_cf_chl_opt|cf-turnstile|<title>\s*Just a moment|acw_sc__v2|a
 const IDENTITY_FIELDS = ['trackingNumber', 'referenceNumber', 'business_seqinvoicecode', 'business_channeltransfercode'] as const;
 // The page's columns that carry those numbers. The recipient's column is never read.
 const PAGE_IDENTITY_COLUMNS = ['参考号', '跟踪号码', '渠道转单号'] as const;
+const PAGE_OWN_COLUMNS = ['跟踪号码', '渠道转单号'] as const;
 const RECIPIENT_COLUMN = '收件人';
 
 /**
@@ -533,8 +534,11 @@ export function parseHualeiPage(html: string, raw: string, tenant: HualeiTenant,
   const waybills = blocks.map((block) => pageWaybill($, block, provider));
   if (waybills.length === 1 && isUnknown(waybills[0]!, number)) throw new NotFoundError(provider);
   const shown = (waybill: PageWaybill) => Boolean(waybill.pieces || waybill.rows.length || waybill.cells.get('目的地'));
-  const bound = waybills.filter((waybill) => shown(waybill)
-    && PAGE_IDENTITY_COLUMNS.some((column) => identity(waybill.cells.get(column) ?? '') === identity(number)));
+  const holds = (waybill: PageWaybill, columns: readonly string[]) =>
+    columns.some((column) => identity(waybill.cells.get(column) ?? '') === identity(number));
+  // The unknown-number answer echoes the number as a reference only. An order the tracker holds
+  // shows it as its tracking or transfer number even before it has pieces, a destination or a scan.
+  const bound = waybills.filter((waybill) => (shown(waybill) && holds(waybill, PAGE_IDENTITY_COLUMNS)) || holds(waybill, PAGE_OWN_COLUMNS));
   // The page shows one block per number its form echoes back, one per line: on
   // a tenant that hides the number it found an order by, a lone record answers
   // the only number echoed.

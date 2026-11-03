@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { NoHistoryError } from '../../core/errors/index.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
@@ -68,6 +69,14 @@ describe('Lingdong International tracking adapter', () => {
     await expect(adapter(environment(fetcher)).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'not_found' });
     expect(String(fetcher.mock.calls[1]![0])).toBe(`${LINGDONG_ORIGIN}/trackIndex.htm`);
     expect(() => parseLingdongPage(page('page-unknown'), UNKNOWN, READ_AT)).toThrow('could not locate');
+  });
+
+  it('reads an order the page holds by its tracking number, before any piece, destination or scan, as having no history yet', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('no-track'))).mockResolvedValueOnce(html(page('page-order')));
+    await expect(adapter(environment(fetcher)).track({ number: NUMBER })).rejects.toBeInstanceOf(NoHistoryError);
+    expect(() => parseLingdongPage(page('page-order'), NUMBER, READ_AT)).toThrow('no scans for the shipment yet');
+    // Another number is not the order.
+    expect(() => parseLingdongPage(page('page-order'), 'SZLD9900000009', READ_AT)).toThrow('did not show the number as one shipment');
   });
 
   it('maps every wording it lists by wording alone, and the app reads the map', () => {

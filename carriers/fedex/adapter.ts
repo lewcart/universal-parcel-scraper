@@ -4,6 +4,7 @@ import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { recognizeFromBrowserLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { fillPartialAnswer } from '../../core/result/partial.js';
+import { withoutShortenedScans } from '../../core/result/repeats.js';
 import { fedexBarcodeTrackingNumber, fedexGroundEconomyUspsNumber } from '../../core/detection/fedex.js';
 import { uspsPackageIdentifier } from '../../core/detection/usps.js';
 import {
@@ -342,7 +343,9 @@ function shipmentResult(shipment: FedExShipment, number: string): CarrierResult 
   // beside "Departed FedEx hub": a second copy of that scan.
   const at = (event: CarrierEvent) => JSON.stringify([event.time ?? event.local_time ?? '', event.location ?? '']);
   const specific = new Set(listed.filter(({ event }) => event.description !== GENERIC_TRANSIT).map(({ event }) => at(event)));
-  const kept = listed.filter(({ event }) => event.description !== GENERIC_TRANSIT || !specific.has(at(event)));
+  // It can also list a scan bare and again with its detail after " — ": the detailed line stays.
+  const fuller = new Set(withoutShortenedScans(listed.map(({ event }) => event), ' — '));
+  const kept = listed.filter(({ event }) => (event.description !== GENERIC_TRANSIT || !specific.has(at(event))) && fuller.has(event));
   const trimmed = newestFirst(kept).slice(0, MAX_EVENTS_TO_RETURN);
   const newest = trimmed[0];
   const { statusText: keyStatus, statusDetails } = shipment;

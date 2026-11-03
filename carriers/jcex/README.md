@@ -43,7 +43,9 @@ Tracked through the lookup its tracking page makes.
   place. A scan relayed on Beijing's clock comes twice too, once in JCEX's own words under the
   bare place `CN`, sometimes under another code; that row is dropped and the source's words
   stay. The order data, filed under neither a country nor a place, is on Beijing's clock
-  whatever offset it carries.
+  whatever offset it carries. A delivering partner's scan can also come in its short words and
+  again with its sentence after " -> ", at one clock and place, each under the code JCEX gives
+  its words: the fuller row stays.
 - Other rows are read on the clock their place keeps: its country's when the country has one,
   and in the United States its state's when the place names one, as USPS writes it. A row whose
   place is a bare country code keeps that country's clock: JCEX files its Hong Kong hub's rows

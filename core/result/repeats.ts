@@ -44,3 +44,29 @@ export function withoutRepeatedScans(result: CarrierResult): CarrierResult {
   if (!repeats.size) return result;
   return { ...result, events: events.filter((_, index) => !repeats.has(index)) as CarrierEvent[] };
 }
+
+const clockKey = (event: CarrierEvent): string => {
+  if (typeof event.time === 'string') {
+    const at = Date.parse(event.time);
+    return Number.isFinite(at) ? `@${at}` : '';
+  }
+  return typeof event.local_time === 'string' ? event.local_time : '';
+};
+
+/**
+ * One scan an answer lists twice at the same clock and place: in its short wording and in a
+ * longer one that goes on after `separator` ("Colis non livré" and "Colis non livré : client
+ * absent"). The short line is left out and the longer, more specific one stays. Codes must agree
+ * where both lines carry one, unless `anyCode` says the source codes each line by its own words.
+ * Separate scans, worded otherwise, stay; so do scans without a clock or a wording.
+ */
+export function withoutShortenedScans<T extends CarrierEvent>(events: readonly T[], separator: string, options: { anyCode?: boolean } = {}): T[] {
+  const joint = separator.replace(/\s+/g, ' ').toLowerCase();
+  const keyed = events.map((event) => ({ event, clock: clockKey(event), wording: text(event.description), place: text(event.location) }));
+  const shortened = keyed.filter((scan) => scan.clock && scan.wording && keyed.some((other) => other !== scan
+    && other.clock === scan.clock && other.place === scan.place && other.wording.startsWith(`${scan.wording}${joint}`)
+    && (options.anyCode || !scan.event.provider_code || !other.event.provider_code || scan.event.provider_code === other.event.provider_code)));
+  if (!shortened.length) return [...events];
+  const left = new Set(shortened.map(({ event }) => event));
+  return events.filter((event) => !left.has(event));
+}

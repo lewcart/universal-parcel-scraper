@@ -3,6 +3,7 @@ import { dpdParcelNumber, isValidDpdParcelNumber } from '../../core/detection/dp
 import { isAnotherPostItemAtChronopost } from '../../core/detection/chronopost.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { withoutShortenedScans } from '../../core/result/repeats.js';
 import { languageStageStatus, type ClassifiedWording, type Stage } from '../../core/status/index.js';
 import { calendarDay, countryCode, countryTimeZone, explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
@@ -272,7 +273,9 @@ export function parseChronopostTrackingXml(xml: string, rawNumber: string): Carr
     return !earlier || !later || later.timestamp - earlier.timestamp >= REPEAT_MS || later.timestamp < earlier.timestamp
       || scan.event.description !== before.event.description || scan.event.location !== before.event.location;
   });
-  const events = shown.reverse().slice(0, 100).map(scan => scan.event);
+  // A failed attempt can come twice at one second, bare and with its reason after " : ": the
+  // reason's line stays.
+  const events = withoutShortenedScans(shown.reverse().map(scan => scan.event), ' : ').slice(0, 100);
   const latest = events[0]!;
   const reference = references.size === 1 ? [...references][0] : undefined;
   const destination = destinations.size === 1 ? [...destinations][0] : undefined;

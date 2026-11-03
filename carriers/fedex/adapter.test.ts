@@ -252,6 +252,26 @@ describe('FedEx structured response', () => {
     ]);
   });
 
+  it('keeps a scan in its detailed words when FedEx lists it bare too at its instant and place', () => {
+    const payload = inTransitFixture();
+    const shipment = (payload.output as { packages: Record<string, unknown>[] }).packages[0]!;
+    const scan = (time: string, scanLocation: string, scanDetails: string, statusCD = 'AR') =>
+      ({ date: '2026-10-28', time, gmtOffset: '+01:00', scanLocation, status: 'At local FedEx facility', statusCD, scanDetails });
+    const detail = 'Your package is expected to arrive on the scheduled delivery date';
+    shipment.scanEventList = [
+      scan('10:26:00', 'EXAMPLE CITY FR', ''),
+      scan('10:26:00', 'EXAMPLE CITY FR', detail),
+      scan('10:26:00', 'OTHER CITY FR', ''),
+      scan('09:00:00', 'EXAMPLE CITY FR', ''),
+    ];
+    const result = parseFedExTrackingResponse(payload, IN_TRANSIT_NUMBER);
+    expect(result.events?.map((event) => [event.description, event.location])).toEqual([
+      [`At local FedEx facility — ${detail}`, 'EXAMPLE CITY FR'],
+      ['At local FedEx facility', 'OTHER CITY FR'],
+      ['At local FedEx facility', 'EXAMPLE CITY FR'],
+    ]);
+  });
+
   it('keeps the day of a scan FedEx dates without a time, in its place, instead of a midnight', () => {
     const payload = inTransitFixture();
     const shipment = (payload.output as { packages: Record<string, unknown>[] }).packages[0]!;

@@ -178,6 +178,23 @@ describe('JCEX HTTP adapter', () => {
     expect(descriptions).not.toContain('Synthetic reworded scan');
   });
 
+  it("keeps the delivering partner's scan in its fuller words when JCEX lists it twice at one clock and place", () => {
+    const result = parseJcex(changed('relayed', (content) => {
+      const delivered = content.trackDetails.find((row) => row.eventDetailEn === 'Delivered')!;
+      const row = (platformEventCode: string, eventDetailEn: string, location = 'EXAMPLE TOWN,WA,US,00000') => ({
+        ...delivered, timeZone: '-07:00', eventTime: '2026-09-21 05:56:42', countryCode: 'US', platformEventCode, eventDetailEn, eventDetailCn: eventDetailEn, location });
+      content.trackDetails.push(
+        row('AvailableForPickup_Other', 'Arrived at Post Office'),
+        row('InTransit_Other', 'Arrived at Post Office -> Your item arrived at the Post Office at 5:56 am on September 21, 2026 in EXAMPLE TOWN, WA 00000.'),
+        row('InTransit_Other', 'Arrived at Facility', 'OTHER TOWN,WA,US,00000'));
+    }), RELAYED, Date.parse('2026-10-01T00:00:00Z'));
+    const descriptions = result.events!.map((event) => event.description);
+    expect(descriptions).not.toContain('Arrived at Post Office');
+    expect(result.events!.find((event) => event.description!.startsWith('Arrived at Post Office -> '))).toMatchObject({ stage: 'in_transit' });
+    // Another place's scan at the same clock is a scan of its own.
+    expect(descriptions).toContain('Arrived at Facility');
+  });
+
   it('lets the scan a stored copy repeats take the copy\'s row over, by its instant on Beijing\'s clock or its wording and place', () => {
     const policy = sameInstantIdentityPolicy('jcex', { supportsScanMatching: true });
     expect(policy).toMatchObject({ storedSources: ['jcex'], requireProviderCode: false, matchEachScan: true,

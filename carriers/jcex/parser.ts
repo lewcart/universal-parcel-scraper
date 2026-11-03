@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { withoutShortenedScans } from '../../core/result/repeats.js';
 import { classifyWording, languageStageStatus, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { countryCode, countryTimeZone, firstOccurrence, usStateTimeZone, type ParsedTime } from '../../core/time/index.js';
@@ -271,9 +272,11 @@ export function parseJcex(payload: unknown, raw: string, readAt = Date.now()): C
   const ahead = projected.filter(({ at }) => at > readAt || written.has(at));
   // Rows come newest first, but JCEX puts its own milestone, such as the
   // handover to the delivering partner, on top: the rows are ordered by their
-  // clocks, and rows at one time keep the reply's order.
-  const events = projected.filter((scan) => !ahead.includes(scan))
-    .sort((a, b) => b.order - a.order || a.index - b.index).map(({ event }) => event);
+  // clocks, and rows at one time keep the reply's order. A delivering partner's scan can come
+  // twice, in its short words and again with its sentence after " -> ": the fuller line stays,
+  // whatever code JCEX gave each line's words.
+  const events = withoutShortenedScans(projected.filter((scan) => !ahead.includes(scan))
+    .sort((a, b) => b.order - a.order || a.index - b.index).map(({ event }) => event), ' -> ', { anyCode: true });
   // The rows written ahead are named, so that a provider's copies of them are not taken for scans.
   if (!events.length) {
     throw new NoHistoryError(PROVIDER, 'JCEX has no scans for the waybill yet', ahead.length

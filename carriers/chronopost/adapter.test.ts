@@ -435,6 +435,19 @@ describe('Chronopost direct tracking', () => {
     expect(sorted.events).toHaveLength(2);
   });
 
+  it('keeps a failed attempt in the words that give its reason when Chronopost lists it bare too at the same second', () => {
+    const attempt = (label: string) => scan('N', '2026-06-27T18:32:35+02:00', label);
+    for (const order of [['Colis non livré', 'Colis non livré : client absent'], ['Colis non livré : client absent', 'Colis non livré']]) {
+      const result = parseChronopostTrackingXml(history(prepared, ...order.map(attempt)), number);
+      expect(result.events?.map(event => event.description)).toEqual(['Colis non livré : client absent', "Colis en cours de préparation chez l'expéditeur"]);
+      expect(result).toMatchObject({ current_stage: 'failed_attempt', last_status_text: 'Colis non livré : client absent' });
+    }
+    // A bare attempt a second later is another scan.
+    const later = parseChronopostTrackingXml(history(prepared, attempt('Colis non livré : client absent'),
+      scan('N', '2026-06-27T18:32:36+02:00', 'Colis non livré')), number);
+    expect(later.events).toHaveLength(3);
+  });
+
   it('preserves local and invalid clocks without inventing instants', () => {
     const xml = fixture.replaceAll('+01:00', '').replace('2026-01-04T18:38:28', '2026-02-30T18:38:28+99:00');
     const result = resolveResult(parseChronopostTrackingXml(xml, number));

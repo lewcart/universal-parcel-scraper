@@ -64,7 +64,8 @@ fallback')`.
   announced twice.
 - FedEx writes its generic "On the way" beside a specific scan at the same instant and place,
   as beside "Departed FedEx hub". That copy is dropped; an "On the way" alone at its instant
-  or place stays.
+  or place stays. A scan listed bare and again with its detail after " — " at one instant and
+  place, under one code, is shown once, with its detail.
 - The newest captured reply decides. A captured 401/403 is a `ChallengeError`, so routing
   applies cooldown and fallback; it is not hidden behind an older 200 from the same page.
 - A status without usable scans is a partial summary. Compatible history from an earlier

@@ -3,7 +3,7 @@ import type { AdapterRegistry } from '../adapter/index.js';
 import { trackCarrier } from '../adapter/track.js';
 import { UniversalTracker } from '../../providers/universal.js';
 import type { CarrierEvent, CarrierResult } from './index.js';
-import { withoutRepeatedScans } from './repeats.js';
+import { withoutRepeatedScans, withoutShortenedScans } from './repeats.js';
 
 const scan = (time: string, description: string, stage = 'in_transit', more: Partial<CarrierEvent> = {}): CarrierEvent =>
   ({ time, description, stage, stage_source: 'carrier_map', ...more });
@@ -72,5 +72,36 @@ describe('withoutRepeatedScans', () => {
     const browserLookup = vi.fn().mockResolvedValue(result(events));
     const tracker = new UniversalTracker({ providers: ['Ship24'], fetcher: vi.fn<typeof fetch>(), browserLookup });
     expect((await tracker.fetchSource('Ship24', 'ZZ12340678900')).events).toHaveLength(1);
+  });
+});
+
+describe('a scan listed in short and long words', () => {
+  const at = '2026-10-30T16:32:35+00:00';
+  const bare = scan(at, 'Colis non livré', 'failed_attempt', { location: 'Example Depot', provider_code: 'N' });
+  const reason = scan('2026-10-30T16:32:35Z', 'Colis non livré : client absent', 'failed_attempt', { location: ' example depot ', provider_code: 'N' });
+
+  it('keeps the longer line at the same instant and place, wherever it stands', () => {
+    expect(withoutShortenedScans([bare, reason], ' : ')).toEqual([reason]);
+    expect(withoutShortenedScans([reason, bare], ' : ')).toEqual([reason]);
+    const local = { local_time: '2026-10-30T16:32:35', description: 'Arrived at Facility', location: 'EXAMPLE TOWN, WA, US' };
+    const long = { ...local, description: 'Arrived at Facility -> Your item arrived at our facility in EXAMPLE TOWN.' };
+    expect(withoutShortenedScans([long, local], ' -> ')).toEqual([long]);
+  });
+
+  it('leaves separate scans alone', () => {
+    for (const other of [
+      { ...bare, time: '2026-10-30T16:32:36Z' },
+      { ...bare, location: 'Other Depot' },
+      { ...bare, provider_code: 'D' },
+      { ...bare, description: 'Colis non livré, client absent' },
+      { ...bare, description: 'Colis' },
+    ]) expect(withoutShortenedScans([other, reason], ' : '), JSON.stringify(other)).toEqual([other, reason]);
+    expect(withoutShortenedScans([bare, reason], ' -> ')).toEqual([bare, reason]);
+    const unclocked = { description: 'Colis non livré' };
+    expect(withoutShortenedScans([unclocked, { ...unclocked, description: 'Colis non livré : client absent' }], ' : ')).toHaveLength(2);
+  });
+
+  it('lets a source that codes each line by its own words keep the longer line under another code', () => {
+    expect(withoutShortenedScans([{ ...bare, provider_code: 'D' }, reason], ' : ', { anyCode: true })).toEqual([reason]);
   });
 });

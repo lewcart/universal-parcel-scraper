@@ -236,6 +236,8 @@ describe('Hualei track interface', () => {
     expect(hualeiScanText('EXAMPLETOWN, 75001')).toBe('EXAMPLETOWN');
     // A space GBK could not carry arrives as a question mark between two words.
     expect(hualeiScanText('Customs?clearance?completed')).toBe('Customs clearance completed');
+    // So does one between a month and its day.
+    expect(hualeiScanText('Flight is expected to take off on November?4')).toBe('Flight is expected to take off on November 4');
     expect(hualeiScanText('Where is it? Arrived')).toBe('Where is it? Arrived');
     // Longer runs, codes and clocks are not postcodes.
     expect(hualeiScanText('Flight CA123 at 10:30, bag 1234567')).toBe('Flight CA123 at 10:30, bag 1234567');

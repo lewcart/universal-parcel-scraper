@@ -1,6 +1,6 @@
 import type { SameInstantIdentityPolicy, SameInstantScan } from '../../core/catalog/eventIdentity.js';
 import { matchesDroppedLocation, matchesRereadLocation } from '../../core/catalog/locationIdentity.js';
-import { hualeiPlace, hualeiWording } from './text.js';
+import { hualeiPlace, hualeiScanText, hualeiWording } from './text.js';
 
 const normalized = (value: string) => value.replace(/\s+/g, ' ').trim().toLocaleLowerCase('en-US');
 
@@ -17,16 +17,27 @@ function placeless(incoming: SameInstantScan, stored: SameInstantScan): boolean 
 }
 
 /**
+ * Whether a row is stored with text the shared client now reads otherwise, such as a space GBK lost as
+ * `?`, and the incoming scan is that reading at the same place.
+ */
+export function matchesRereadText(incoming: SameInstantScan, stored: SameInstantScan): boolean {
+  const reread = normalized(hualeiScanText(stored.description));
+  return reread !== normalized(stored.description) && reread === normalized(incoming.description)
+    && normalized(incoming.location) === normalized(hualeiPlace(stored.location));
+}
+
+/**
  * A tenant's rows as the shared client rereads them: a delivery row stored with the recipient's
  * postcode in its place takes the place without it, or none, and so does a row stored at "SYSTEM"
- * or with its place repeated at the head of its wording.
+ * or with its place repeated at the head of its wording, or with a space GBK lost.
  */
 export function hualeiIdentityPolicy(sourceCarrierId: string): SameInstantIdentityPolicy {
   return {
     sourceCarrierId, storedSources: [sourceCarrierId], requireProviderCode: false,
     matchEachScan: true,
     matches: (incoming, stored) => matchesRereadLocation(incoming, stored, hualeiPlace)
-      || matchesDroppedLocation(incoming, stored, (location) => !hualeiPlace(location)) || placeless(incoming, stored),
+      || matchesDroppedLocation(incoming, stored, (location) => !hualeiPlace(location)) || placeless(incoming, stored)
+      || matchesRereadText(incoming, stored),
   };
 }
 

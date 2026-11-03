@@ -791,6 +791,18 @@ describe('same-instant identity policies', () => {
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
   });
 
+  it.each(['jrt', 'mayiyinfu', 'gzyl'])('lets a %s row take over the row stored with the space GBK lost as a question mark', (source) => {
+    const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
+    const stored = { stage: 'in_transit', description: 'Flight is expected to take off on November?4', location: '', providerCode: '' };
+    const incoming = { ...stored, description: 'Flight is expected to take off on November 4' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    for (const different of [
+      { ...incoming, description: 'Flight is expected to take off on November 5' },
+      { ...incoming, location: 'Sample Town' },
+      { ...stored },
+    ]) expect(policy?.matches?.(different, stored), different.description).toBe(false);
+  });
+
   it('lets a YunExpress row read on China’s clock take over the row stored on another zone, by wall clock, place and wording', () => {
     expect(sameInstantIdentityPolicy('yunexpress')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('yunexpress', { supportsScanMatching: true });

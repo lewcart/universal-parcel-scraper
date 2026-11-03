@@ -96,8 +96,9 @@ instead.
 - A row can write its place again at the head of its wording ("US, SYSTEM, SYSTEM, Shipping Label
   Created"); the wording is read without it, and a tenant whose rows were stored that way takes
   them over ([identity.ts](identity.ts)).
-- GBK has no room for some spaces, so a space between two words can arrive as `?`; scan text reads
-  it as the space it was.
+- GBK has no room for some spaces, so a space between two words, or between a month and its day,
+  can arrive as `?`; scan text reads it as the space it was, and a row stored with the `?` is taken
+  over by the same row with the space.
 - A partner's row can come with its markup, escaped or not, such as DHL's help link; scan text
   keeps the words without it.
 

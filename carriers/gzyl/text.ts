@@ -14,8 +14,9 @@ const EMPTY_BRACKETS = /\(\s*\)|（\s*）/g;
 // A signatory's name follows these markers.
 const SIGNATORY = /(?:签收人|signed (?:for )?by|signatory)[\s\S]*$/i;
 
-// The interface replies in GBK, which has no room for some spaces: one between two words arrives as `?`.
-const LOST_SPACE = /(?<=\p{L})\?(?=\p{L})/gu;
+// The interface replies in GBK, which has no room for some spaces: one between two words, or between a
+// month and its day ("November?4"), arrives as `?`.
+const LOST_SPACE = /(?<=[\p{L}\p{N}])\?(?=[\p{L}\p{N}])/gu;
 
 // A partner's row can come with its markup, escaped or not: DHL's "more information<a href=…> here.</a>".
 const MARKUP = /<\/?[a-z][^<>]*>|&lt;\/?[a-z][\s\S]*?&gt;/gi;

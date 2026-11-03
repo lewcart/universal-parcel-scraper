@@ -23,6 +23,7 @@
     { "wording": "Delivery Attempted - No Access to Delivery Location", "language": "en", "stage": "failed_attempt", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "Sandbox example. Adapter result status: exception." },
     { "wording": "Alert", "language": "en", "stage": "exception", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "Official Tracking API vocabulary." },
     { "wording": "Return to Sender", "language": "en", "stage": "returned", "confirmedBy": "prior-art", "firstSeen": "2026-09-20", "note": "Adapter result status: exception." },
+    { "wording": "Awaiting Delivery", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "Seen at 9 pm local time after an out-for-delivery scan with no delivery scan that day; the delivery moves to the next business day." },
     { "wording": "International Dispatch Ready", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The international service center's export dispatch, beside its arrival scan, before the flight abroad." },
     { "wording": "Tracking Not Available", "language": "en", "stage": "pending", "confirmedBy": "live", "firstSeen": "2026-09-20", "note": "Rendered verdict banner for unknown or expired numbers; the adapter reports the unlocated unknown result, never a stage." }
   ]

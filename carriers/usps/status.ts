@@ -36,8 +36,10 @@ const REGISTERED_TERMS = [
 // international mail shows the origin post's posting as "Acceptance".
 const ACCEPTED_TERMS = ['accepted', 'acceptance', 'in possession of item', 'picked up', 'picked-up', 'tendered', 'shipment received'];
 const CUSTOMS_TERMS = ['customs', 'clearance'];
+// "Awaiting Delivery (Scan)" ends a delivery day without a delivery scan, at about 9 pm local time; USPS then
+// expects the delivery the next business day.
 const IN_TRANSIT_TERMS = [
-  'in transit', 'on its way', 'in-transit', 'arrived', 'departed', 'departure',
+  'awaiting delivery', 'in transit', 'on its way', 'in-transit', 'arrived', 'departed', 'departure',
   'arrival', 'processed', 'processing', 'distribution center', 'sorting facility',
   'en route', 'in route', 'forwarded', 'transferred', 'tendered to', 'dispatch',
 ];

@@ -11,6 +11,7 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   ['Shipment information received', { status: 'pending', stage: 'registered' }],
   // The sender's order reaching YunExpress before the parcel does.
   ['Order submitted', { status: 'pending', stage: 'registered' }],
+  ['Your package is being prepared by the sender and will be handed over to us soon', { status: 'pending', stage: 'registered' }],
   ['Shipment picked up', { status: 'in_transit', stage: 'accepted' }],
   ['Arrived at origin facility', { status: 'in_transit', stage: 'in_transit' }],
   ['Departed from sort facility', { status: 'in_transit', stage: 'in_transit' }],

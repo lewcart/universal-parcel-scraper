@@ -116,6 +116,14 @@
       "note": "The sender's order reaching YunExpress, before the parcel does."
     },
     {
+      "wording": "Your package is being prepared by the sender and will be handed over to us soon",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Before the hand-over, relayed by a tracking provider. Dated after a scan that moved the parcel, the shared reading of a late registration gives it transit."
+    },
+    {
       "wording": "Arrived at sorting center",
       "stage": "in_transit",
       "language": "en",

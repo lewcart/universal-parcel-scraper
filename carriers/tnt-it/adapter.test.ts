@@ -191,8 +191,15 @@ describe('TNT Italy HTTP adapter', () => {
     const tracker = createTracker({ fetcher, providers: [], env: {} });
     await expect(tracker.track({ number: DELIVERED, carrier: 'tnt-it' }, { budgetMs: 3000 }))
       .resolves.toMatchObject({ carrier: 'tnt-it', source: 'tnt-it', result: { current_stage: 'delivered' } });
-    await expect(tracker.track({ number: DELIVERED }, { budgetMs: 3000 }))
-      .resolves.toMatchObject({ carrier: 'tnt-it', source: 'tnt-it' });
+    // Recognition adopts a shipment with recent activity, so the clock stays near the fixture's scans.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-09-10T12:00:00Z'));
+    try {
+      await expect(tracker.track({ number: DELIVERED }, { budgetMs: 3000 }))
+        .resolves.toMatchObject({ carrier: 'tnt-it', source: 'tnt-it' });
+    } finally {
+      vi.useRealTimers();
+    }
     expect(fetcher.mock.calls.some(([url]) => String(url) === TNT_ITALY_API)).toBe(true);
   });
 });

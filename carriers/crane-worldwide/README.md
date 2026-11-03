@@ -12,8 +12,10 @@ so there is no rule.
 
 ## Why there is no adapter
 
-None is built yet. Its public tracker on webtracker.craneww.com loads a shipment into the page,
-with no page or address per number.
+Its public tracker on webtracker.craneww.com loads a shipment into the page with an HTMX GET of
+`/v2/Shipments?TrackingNumber=<number>`, open without a session or CAPTCHA, with no page or
+address per number. The reply is an HTML fragment; an unknown number gets "0 shipments/loads
+matched the tracking #" and an empty list. No public number is known to see a found reply.
 
 ## Links
 

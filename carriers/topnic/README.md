@@ -12,7 +12,11 @@ is no rule.
 
 ## Why there is no adapter
 
-None is built yet. Its order tracking page shows a number at `/order-tracking/<number>`.
+Its order tracking page at `/order-tracking/<number>` reads an open JSON endpoint,
+`oms-api.topnic.com.hk/api/delivery/tracking?trackingNumber=<number>`, without a session or
+CAPTCHA, which answers an unknown number with `trackingEvent: null`. The page shows a found
+`trackingEvent`'s order number, origin, destination and dated events. No public number is known to
+see a found reply.
 
 ## Links
 

@@ -12,8 +12,11 @@ so there is no rule.
 
 ## Why there is no adapter
 
-None is built yet. Its tracking form posts a pro bill, bill of lading or booking number to a bill
-viewer on portal.magnumlog.com, with no page or address per number.
+Its tracking form posts `trace_type` (`2PTRACE` for a Magnum pro bill, or a C/L pro, bill, bill of
+lading or booking number type) and `search_value` to
+`portal.magnumlog.com/trace/external_bill_viewer.msw`, with no page or address per number. That
+portal's gateway answers with a 502 error, the form's own request included, so no reply is known,
+and no public number is known to see a found one.
 
 ## Links
 

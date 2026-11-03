@@ -50,14 +50,16 @@ function scan(row: unknown, number: string): CarrierEvent {
   if (offset != null && (typeof offset !== 'number' || !Number.isFinite(offset) || Math.abs(offset) > 14 || !Number.isInteger(offset * 60))) {
     throw new SchemaError(PROVIDER, 'ECMS returned an invalid scan offset');
   }
-  // Zero is also used for unzoned partner scans. Preserve nonzero stated offsets,
-  // including fixed standard offsets in summer, without replacing them with DST.
+  // Zero gives the instant itself, in UTC: the relayed partners' scans carry it, and read in their
+  // place they would fall after ECMS recorded them. They have no wall clock of their own here.
+  // Preserve nonzero stated offsets, including fixed standard offsets in summer, without replacing
+  // them with DST.
   const minutes = typeof offset === 'number' ? Math.abs(offset * 60) : 0;
-  const time = typeof offset === 'number' && offset !== 0
-    ? `${local}${offset < 0 ? '-' : '+'}${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}` : undefined;
+  const time = typeof offset !== 'number' ? undefined : offset === 0 ? `${local}Z`
+    : `${local}${offset < 0 ? '-' : '+'}${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
   const location = [...new Set(['cityEnName', 'provinceEnName', 'countryEnName'].map(key => text(row, key, 100)).filter(Boolean))].join(', ');
   const classified = ecmsExpressStage(code, description);
-  return { local_time: local, ...(time ? { time } : {}), description, provider_code: code,
+  return { ...(offset === 0 ? {} : { local_time: local }), ...(time ? { time } : {}), description, provider_code: code,
     ...(location ? { location } : {}), ...(classified ? { stage: classified.stage, stage_source: classified.source } : {}) };
 }
 
@@ -93,7 +95,7 @@ export function parseEcmsExpress(payload: unknown, raw: string): CarrierResult {
   return { status: classified ? languageStageStatus(classified.stage) : 'unknown',
     ...(classified ? { current_stage: classified.stage, current_stage_source: classified.source } : {}),
     provider_code: newest.provider_code!, last_status_text: newest.description!, last_update: newest.time ?? null,
-    last_update_local: newest.local_time!, expected_delivery: null, events: events.slice(0, 100),
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}), expected_delivery: null, events: events.slice(0, 100),
     ...(events.length > 100 ? { history_truncated: true } : {}),
     ...(/^[A-Z]{2}$/.test(destination) ? { destination_country: destination } : {}),
     ...(partner && partner !== 'ecms-express' ? { delivery_carrier: partner,

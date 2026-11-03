@@ -17,13 +17,14 @@ and a named delivery partner. A partner reference is retained only from that
 partner's relayed scans when they agree. Merchant references and payment links
 are discarded.
 
-`operatorTime` encodes a facility wall clock as UTC components. Every scan retains
-that wall clock; nonzero `timeZone` offsets remain exactly as supplied, including
-fixed standard offsets in summer. ECMS writes its own scans' wall clocks from their
-instant with the station's offset, so read at that offset they land on the second the
-API records them, also where the offset is not the place's civil one. Zero is also
-used on unzoned partner scans, so it does not establish UTC. The API's ingestion clock
-is not a scan timestamp.
+`operatorTime` with a nonzero `timeZone` encodes a facility wall clock as UTC components,
+and the offset stays exactly as supplied, including fixed standard offsets in summer. ECMS
+writes its own scans' wall clocks from their instant with the station's offset, so read at
+that offset they land on the second the API records them, also where the offset is not the
+place's civil one. A `timeZone` of zero marks the relayed partners' scans, SpeedX's and
+MICOM's, whose `operatorTime` is the instant: SpeedX's own copies state the same second with
+the place's offset, and read on the place's clock the scan would fall after ECMS recorded it.
+Those scans carry the instant alone. The API's ingestion clock is not a scan timestamp.
 
 The US tracking page, `/en-us/tracking.html`, opens a parcel from `?number=`; the other
 locales' pages still read `?orderNumber=`. Links in either form, and the former trackers'

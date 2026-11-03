@@ -22,13 +22,16 @@ const fixture = () => ({ status: 200, orderNumber: [NUMBER], eseFreightUrl: 'PRI
 }] });
 
 describe('ECMS history', () => {
-  it('keeps complete history, carrier offsets and local partner clocks, discarding private extras', () => {
+  it('keeps complete history, carrier offsets and partner instants, discarding private extras', () => {
     const result = parseEcmsExpress(fixture(), NUMBER);
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: null,
-      last_update_local: '2026-07-04T14:10:00', destination_country: 'US', delivery_carrier: 'speedx', delivery_tracking_number: PARTNER });
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: '2026-07-04T14:10:00Z',
+      destination_country: 'US', delivery_carrier: 'speedx', delivery_tracking_number: PARTNER });
+    expect(result).not.toHaveProperty('last_update_local');
     expect(result.events).toHaveLength(3);
-    expect(result.events![0]).toMatchObject({ local_time: '2026-07-04T14:10:00', provider_code: 'EVENT_301', stage_source: 'carrier_map' });
-    expect(result.events![0]!.time).toBeUndefined();
+    // SpeedX's delivery, relayed with offset zero, is the UTC instant: on Pittsburgh's clock it would
+    // fall after ECMS recorded it, where SpeedX's own copy states 10:09:07-05:00 for 15:09:07 here.
+    expect(result.events![0]).toMatchObject({ time: '2026-07-04T14:10:00Z', provider_code: 'EVENT_301', stage_source: 'carrier_map' });
+    expect(result.events![0]!.local_time).toBeUndefined();
     expect(result.events![1]).toMatchObject({ local_time: '2026-07-03T10:00:00', time: '2026-07-03T10:00:00-08:00' });
     expect(result.events![2]).toMatchObject({ local_time: '2026-07-02T09:00:00', time: '2026-07-02T09:00:00+09:00' });
     expect(JSON.stringify(result)).not.toContain('PRIVATE');

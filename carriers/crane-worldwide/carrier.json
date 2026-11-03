@@ -1,0 +1,34 @@
+{
+  "id": "crane-worldwide",
+  "displayName": "Crane Worldwide",
+  "aliases": [
+    "Crane Worldwide Logistics",
+    "Crane Worldwide (E-commerce)"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#273572"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://webtracker.craneww.com/",
+    "canaryUrl": "https://webtracker.craneww.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

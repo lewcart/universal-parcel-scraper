@@ -763,3 +763,19 @@ describe('Flight Logistics and Southwestern Motor Transport', () => {
     }
   });
 });
+
+describe('Magnum Transportation and Crane Worldwide', () => {
+  it('reads their names', () => {
+    for (const [name, id] of [['Magnum', 'magnum-transportation'], ['Magnum LTL', 'magnum-transportation'], ['Crane Worldwide', 'crane-worldwide'], ['Crane Worldwide (E-commerce)', 'crane-worldwide']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+  });
+
+  it('offers them for no number shape', () => {
+    for (const number of ['000100017', '0001000017', 'CW00010001']) {
+      const candidates = detectCarrierMatch(number).candidates ?? [];
+      expect(candidates, number).not.toContain('magnum-transportation');
+      expect(candidates, number).not.toContain('crane-worldwide');
+    }
+  });
+});

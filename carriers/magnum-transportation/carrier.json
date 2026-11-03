@@ -1,0 +1,34 @@
+{
+  "id": "magnum-transportation",
+  "displayName": "Magnum Transportation",
+  "aliases": [
+    "Magnum",
+    "Magnum LTL"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#022d74"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://magnumlog.com/track-shipment",
+    "canaryUrl": "https://magnumlog.com/track-shipment",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -13878,6 +13878,27 @@
     ],
     "detectionRules": []
   },
+  "crane-worldwide": {
+    "displayName": "Crane Worldwide",
+    "color": "#273572",
+    "aliases": [
+      "Crane Worldwide Logistics",
+      "Crane Worldwide (E-commerce)"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://webtracker.craneww.com/",
+    "trackingSearchUrl": "https://webtracker.craneww.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "credifin": {
     "displayName": "Credifin Logística",
     "color": "#001d9c",
@@ -30032,6 +30053,27 @@
     ],
     "detectionRules": []
   },
+  "magnum-transportation": {
+    "displayName": "Magnum Transportation",
+    "color": "#022d74",
+    "aliases": [
+      "Magnum",
+      "Magnum LTL"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://magnumlog.com/track-shipment",
+    "trackingSearchUrl": "https://magnumlog.com/track-shipment",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "magyar-posta": {
     "displayName": "Magyar Posta",
     "color": "#346631",
@@ -44952,6 +44994,35 @@
     "canaryUrl": "https://www.topex.group/",
     "trackingSearchUrl": "https://www.topex.group/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "topnic": {
+    "displayName": "Topnic",
+    "color": "#2e0b6a",
+    "aliases": [
+      "Topnic Logistics",
+      "Topnic Logistics Limited"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://topnic.com.hk/order-tracking",
+    "trackingUrlTemplate": "https://topnic.com.hk/order-tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://topnic.com.hk/order-tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "topnic.com.hk"
+        ],
+        "path": "^/order-tracking/([^/?#,;|]+)/?$"
+      }
+    ],
     "detectionRules": []
   },
   "toptrans": {

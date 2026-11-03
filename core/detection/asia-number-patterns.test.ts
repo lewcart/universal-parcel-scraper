@@ -1470,3 +1470,16 @@ describe('Peregrine Ship', () => {
     expect(detectCarrierMatch('PS0000100017').candidates ?? []).not.toContain('peregrine-ship');
   });
 });
+
+describe('Topnic', () => {
+  it('reads its names and tracking links', () => {
+    for (const name of ['Topnic', 'Topnic Logistics Limited']) expect(carrierIdFromName(name), name).toBe('topnic');
+    expect(parseTrackingInput('https://topnic.com.hk/order-tracking/TN0000100017'))
+      .toMatchObject({ trackingNumber: 'TN0000100017', carrier: 'topnic', source: 'link' });
+  });
+
+  it('reads no number from a link holding several, and offers Topnic for no number shape', () => {
+    expect(parseTrackingInput('https://topnic.com.hk/order-tracking/TN0000100017,TN0000100025')?.carrier).not.toBe('topnic');
+    expect(detectCarrierMatch('TN0000100017').candidates ?? []).not.toContain('topnic');
+  });
+});

@@ -13882,6 +13882,27 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     ],
     "detectionRules": []
   },
+  "crane-worldwide": {
+    "displayName": "Crane Worldwide",
+    "color": "#273572",
+    "aliases": [
+      "Crane Worldwide Logistics",
+      "Crane Worldwide (E-commerce)"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://webtracker.craneww.com/",
+    "trackingSearchUrl": "https://webtracker.craneww.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "credifin": {
     "displayName": "Credifin Logística",
     "color": "#001d9c",
@@ -30036,6 +30057,27 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     ],
     "detectionRules": []
   },
+  "magnum-transportation": {
+    "displayName": "Magnum Transportation",
+    "color": "#022d74",
+    "aliases": [
+      "Magnum",
+      "Magnum LTL"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://magnumlog.com/track-shipment",
+    "trackingSearchUrl": "https://magnumlog.com/track-shipment",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "magyar-posta": {
     "displayName": "Magyar Posta",
     "color": "#346631",
@@ -44958,6 +45000,35 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "linkRules": [],
     "detectionRules": []
   },
+  "topnic": {
+    "displayName": "Topnic",
+    "color": "#2e0b6a",
+    "aliases": [
+      "Topnic Logistics",
+      "Topnic Logistics Limited"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://topnic.com.hk/order-tracking",
+    "trackingUrlTemplate": "https://topnic.com.hk/order-tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://topnic.com.hk/order-tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "topnic.com.hk"
+        ],
+        "path": "^/order-tracking/([^/?#,;|]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "toptrans": {
     "displayName": "TOPTRANS",
     "color": "#005daa",
@@ -50364,6 +50435,7 @@ export const CARRIER_IDS = [
   "couriersplease",
   "cps-lastmile",
   "cpszy",
+  "crane-worldwide",
   "credifin",
   "cruz-del-sur",
   "cse-russia",
@@ -50806,6 +50878,7 @@ export const CARRIER_IDS = [
   "madhur-courier",
   "maersk-ecommerce",
   "magic-trans",
+  "magnum-transportation",
   "magyar-posta",
   "mailamericas",
   "mailex",
@@ -51210,6 +51283,7 @@ export const CARRIER_IDS = [
   "top-logistics-au",
   "topdelivery",
   "topex-logistics",
+  "topnic",
   "toptrans",
   "topyou",
   "torrestir",
@@ -51691,6 +51765,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "couriersplease": ["couriersplease-1"],
   "cps-lastmile": [],
   "cpszy": [],
+  "crane-worldwide": [],
   "credifin": [],
   "cruz-del-sur": [],
   "cse-russia": [],
@@ -52133,6 +52208,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "madhur-courier": [],
   "maersk-ecommerce": ["maersk-ecommerce-1"],
   "magic-trans": [],
+  "magnum-transportation": [],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic","magyar-posta-package","magyar-posta-letter","magyar-posta-europe-standard"],
   "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-domc","mailamericas-s10"],
   "mailex": [],
@@ -52537,6 +52613,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "top-logistics-au": [],
   "topdelivery": [],
   "topex-logistics": [],
+  "topnic": [],
   "toptrans": [],
   "topyou": ["topyou-1"],
   "torrestir": ["torrestir-1"],

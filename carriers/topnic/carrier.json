@@ -1,0 +1,42 @@
+{
+  "id": "topnic",
+  "displayName": "Topnic",
+  "aliases": [
+    "Topnic Logistics",
+    "Topnic Logistics Limited"
+  ],
+  "region": {
+    "countries": [
+      "HK"
+    ]
+  },
+  "brand": {
+    "color": "#2e0b6a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Hong_Kong",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://topnic.com.hk/order-tracking/{trackingNumber}",
+    "searchUrl": "https://topnic.com.hk/order-tracking",
+    "canaryUrl": "https://topnic.com.hk/order-tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "topnic.com.hk"
+      ],
+      "path": "^/order-tracking/([^/?#,;|]+)/?$"
+    }
+  ],
+  "detection": []
+}

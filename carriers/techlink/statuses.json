@@ -15,6 +15,8 @@
     {"code": "InTransit_Other", "wording": "Your shipment has departed from the transit origin", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The parcel left that sorting centre for its next leg."},
     {"code": "InTransit_Other", "wording": "Your shipment has arrived at the transit destination", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The end of a leg between sorting centres, before the next scan."},
     {"code": "InTransit_Other", "wording": "Your shipment is in process at sorting center", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "A sorting centre handles the parcel."},
+    {"code": "InTransit_Other", "wording": "Shipment Received at Facility", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "A destination hub's intake after the flight's arrival."},
+    {"code": "InTransit_Other", "wording": "Loading Scan", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The same hub loads the parcel for its next leg."},
     {"code": "InTransit_Oversea", "wording": "In transit, it is currently in transit to the next facility", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-30", "note": "A move between facilities in the destination country."}
   ]
 }

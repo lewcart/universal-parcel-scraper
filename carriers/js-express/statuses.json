@@ -88,6 +88,9 @@
     {"wording": "Your shipment has arrived at the postal operator of the country of destination and will be delivered in the coming days.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Arrival distribution office", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination post's delivery office."},
     {"wording": "Not Delivered - Addressee not present- Message left", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "note": "The destination post's failed attempt, with a notice left; JS Express files it as a failed delivery."},
-    {"wording": "Item arrival at collection point for pick-up", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "live", "note": "The destination post's item waiting at its collection point; JS Express files it with its own arrived-and-awaiting-collection status (到达待取)."}
+    {"wording": "Item arrival at collection point for pick-up", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "live", "note": "The destination post's item waiting at its collection point; JS Express files it with its own arrived-and-awaiting-collection status (到达待取)."},
+    {"code": "OIT", "wording": "Arrived to HU HUB", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The Hungarian partner's hub after the hand-over to the local courier."},
+    {"code": "OIT", "wording": "Linehaul Transit", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The same partner's line haul between its hub and a sorting centre."},
+    {"code": "OIT", "wording": "Shipment arrived to sorting centre / Shipment in the sorting centre", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The same partner's sorting centre."}
   ]
 }

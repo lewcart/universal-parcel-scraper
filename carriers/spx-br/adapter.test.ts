@@ -441,6 +441,9 @@ describe('SPX Express Brazil status vocabulary', () => {
     expect(statusMapAnswer({ carrier: 'spx-br', providerCode: 'F650', description: 'Houve um imprevisto durante a entrega do seu pedido' }))
       .toEqual({ kind: 'mapped', stage: 'failed_attempt' });
     expect(statusMapAnswer({ carrier: 'spx-br', providerCode: 'F777', description: 'Aviso sintético' })).toEqual({ kind: 'unknown' });
+    // A sorting centre's pickup at the drop-off point is the parcel's collection, as a first-mile hub's.
+    expect(statusMapAnswer({ carrier: 'spx-br', providerCode: 'SOC_Pickup_Done', description: 'Seu pacote foi coletado' }))
+      .toEqual({ kind: 'mapped', stage: 'accepted' });
     // A code the map does not know falls to the shared wording rules.
     expect(spxBrStage('F981', 'Pedido entregue')).toMatchObject({ stage: 'delivered' });
     expect(spxBrStage('F777', 'Aviso sintético')).toBeNull();

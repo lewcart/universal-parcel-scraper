@@ -48,6 +48,7 @@ const FLEET: ReadonlyMap<string, Stage> = new Map(([
   ['DOP_Received', 'accepted'], // Posted at a drop-off point, as F098.
   ['FMHub_Pickup_Onhold', 'accepted'], // The pickup at the drop-off point waits; the parcel is still there.
   ['FMHub_Pickup_Done', 'accepted'], // F100.
+  ['SOC_Pickup_Done', 'accepted'], // The same pickup at the drop-off point, for a sorting centre.
   ['FMHub_Received', 'in_transit'], ['FMHub_LHTransporting', 'in_transit'], // F440 and F450.
   ['SOC_LHUnloading', 'in_transit'], ['SOC_LHUnloaded', 'in_transit'], // F580.
   ['SOC_Received', 'in_transit'], ['SOC_LHTransporting', 'in_transit'], // F510 and F540.

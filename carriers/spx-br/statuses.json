@@ -454,6 +454,14 @@
       "note": "Fleet feed: paired with F100. The line opens with the first-mile hub in brackets."
     },
     {
+      "code": "SOC_Pickup_Done",
+      "wording": "Seu pacote foi coletado",
+      "language": "pt",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "Fleet feed: the pickup at the drop-off point, as FMHub_Pickup_Done, when a sorting centre collects the parcel; between DOP_Received and the centre's SOC_Received."
+    },
+    {
       "code": "FMHub_Received",
       "wording": "Seu pacote foi recebido pelo hub de coleta",
       "language": "pt",

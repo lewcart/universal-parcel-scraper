@@ -201,6 +201,7 @@ describe('Posti projection', () => {
     ['Item in process in office of exchange.', 'in_transit'],
     ['The item is on its way to the destination country.', 'in_transit'],
     ['Item received for transport', 'accepted'],
+    ['Item is in delivery transportation.', 'out_for_delivery'],
   ])('maps %s independently of the final state and explanatory reason', (description, stage) => {
     const data = fixture();
     hit(data).events = [{ eventDescription: description,

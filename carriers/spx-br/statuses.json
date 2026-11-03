@@ -351,6 +351,14 @@
       "note": "A delivery that could not be completed that day, with another attempt to follow."
     },
     {
+      "code": "A106",
+      "wording": "Um imprevisto ocorreu, mas fique tranquilo, seu pedido seguirá para tentativa de entrega no seu endereço.",
+      "language": "pt",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "note": "Given overnight after a delivery round that ended without F980 or F650; the parcel went out again the next day."
+    },
+    {
       "code": "F980",
       "wording": "Pedido entregue",
       "language": "pt",

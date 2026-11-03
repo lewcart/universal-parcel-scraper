@@ -113,10 +113,21 @@ describe('DHL eCommerce UK parser', () => {
       .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
-  it('rejects a page about another shipment', () => {
-    expect(() => parseDhlEcommerceUk(fixture('delivered'), '99990000000001')).toThrow(expect.objectContaining({ kind: 'schema' }));
+  it('rejects a page about another shipment, and says which test the headline failed', () => {
+    expect(() => parseDhlEcommerceUk(fixture('delivered'), '99990000000001'))
+      .toThrow(expect.objectContaining({ kind: 'schema', message: 'DHL eCommerce UK returned a different shipment' }));
     const mixed = fixture('delivered').replace(`Your shipment ${NUMBER} is out for delivery`, 'Your shipment 99990000000001 is out for delivery');
     expect(() => parseDhlEcommerceUk(mixed, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const reworded = fixture('delivered').replace(`<h3>Your shipment ${NUMBER} `, `<h3>Shipment ${NUMBER} `);
+    expect(() => parseDhlEcommerceUk(reworded, NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'schema', message: 'DHL eCommerce UK returned a headline that does not open with the shipment' }));
+  });
+
+  it('reads a headline and rows that name the shipment more than once', () => {
+    const twice = fixture('delivered').replace(`<h3>Your shipment ${NUMBER} (1 parcel expected) is delivered`,
+      `<h3>Your shipment ${NUMBER} (1 parcel expected) is delivered. Shipment ${NUMBER}`);
+    expect(parseDhlEcommerceUk(twice, NUMBER)).toMatchObject({ status: 'delivered' });
+    expect(JSON.stringify(parseDhlEcommerceUk(twice, NUMBER))).not.toContain(NUMBER);
   });
 
   it('rejects changed columns', () => {

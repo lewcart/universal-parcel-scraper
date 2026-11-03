@@ -28,11 +28,13 @@ function day(text: string): string | undefined {
   return match ? zonedTime(`${match[1]!.padStart(2, '0')} ${match[2]} ${match[3]}`, 'dd MMMM yyyy', ZONE, { locale: 'en' })?.iso.slice(0, 10) : undefined;
 }
 
-/** A sentence names the number asked for or no number at all; it is kept without it. */
+/** Whether a text names a number other than the one asked for. */
+const namesAnother = (text: string, number: string) => (text.match(/\d{7,}/g) ?? []).some((named) => named !== number);
+
+/** A sentence names the number asked for, once or more, or no number at all; it is kept without it. */
 function sentence(text: string, number: string): string | undefined {
-  const named = text.match(/\d{7,}/g) ?? [];
-  if (named.length > 1 || (named.length === 1 && named[0] !== number)) return undefined;
-  return clean(text.replace(number, ' ').replace(/\s+/g, ' '), 200) || undefined;
+  if (namesAnother(text, number)) return undefined;
+  return clean(text.replaceAll(number, ' ').replace(/\s+/g, ' '), 200) || undefined;
 }
 
 export function parseDhlEcommerceUk(html: string, rawNumber: string): CarrierResult {
@@ -49,8 +51,11 @@ export function parseDhlEcommerceUk(html: string, rawNumber: string): CarrierRes
     throw new IndeterminateError(PROVIDER, 'DHL eCommerce UK returned no answer for the shipment');
   }
   const headline = clean(status.find('h3').first().text(), 300);
-  if (status.length !== 1 || !headline.startsWith(`Your shipment ${number} `) || !sentence(headline, number)) {
-    throw new SchemaError(PROVIDER, 'DHL eCommerce UK returned a different shipment');
+  // Each refusal says which test failed, without the page's words, so a host's log tells them apart.
+  if (status.length !== 1) throw new SchemaError(PROVIDER, `DHL eCommerce UK returned ${status.length} status panels`);
+  if (namesAnother(headline, number)) throw new SchemaError(PROVIDER, 'DHL eCommerce UK returned a different shipment');
+  if (!headline.startsWith(`Your shipment ${number} `)) {
+    throw new SchemaError(PROVIDER, 'DHL eCommerce UK returned a headline that does not open with the shipment');
   }
   // The photo panel reuses the journey's layout; only the block under this heading is the history.
   const journey = $('div.parcel-journey').filter((_, node) => clean($(node).find('h4').first().text(), 60) === "Your parcel's journey");

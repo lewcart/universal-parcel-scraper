@@ -375,6 +375,15 @@
       "note": "Scan code: DPD receives the label data, the first scan of a German parcel left at a pickup point, before ENA."
     },
     {
+      "code": "CRY",
+      "wording": "Your collection request has been confirmed",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-30",
+      "note": "Scan code: DPD confirms the collection the sender booked, seen opening a German parcel's history before ENA and the origin depot; the parcel is not with DPD yet."
+    },
+    {
       "code": "DOPKY",
       "wording": "Your parcel has been dropped off in the retrieval point",
       "language": "en",

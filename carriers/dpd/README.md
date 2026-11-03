@@ -65,6 +65,8 @@ signal.
   unmapped. `statusMap` in [status.ts](status.ts) lists every code and label
   left unmapped on purpose, for the app's review queue, such as `ENA`, a data
   exchange inside DPD's systems seen before the parcel reached the origin depot.
+- `CRY` confirms a collection the sender booked. The parcel is not with DPD yet, so it reads
+  as registered.
 - `DLW` holds the parcel at the delivery depot, and its label gives the reason.
   Closed premises make it a failed round. Labelled like `DLQ`, the parcel waits
   for a round, with none tried before it, and reads as in transit.

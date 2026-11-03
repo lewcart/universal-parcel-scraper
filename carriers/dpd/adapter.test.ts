@@ -413,6 +413,19 @@ describe('DPD verified guest payload', () => {
       ],
     }, TRACKING_NUMBER, true);
     expect(collected.events?.map((event) => [event.provider_code, event.stage])).toEqual([['ENA', 'accepted'], ['PKY', 'accepted']]);
+
+    // A booked collection DPD confirms is not yet a pickup.
+    const booked = parseDPDTrackingApi({
+      parcelNumber: TRACKING_NUMBER,
+      parcelHistory: [],
+      parcelEvents: [
+        scan('04:24:00', 'CRY', 'Your collection request has been confirmed'),
+        scan('05:06:13', 'ENA', 'We are exchanging data internally'),
+      ],
+    }, TRACKING_NUMBER, true);
+    expect(booked.events?.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['ENA', 'registered', 'none'], ['CRY', 'registered', undefined],
+    ]);
   });
 
   it('leaves unknown scan codes to the wording rules', () => {

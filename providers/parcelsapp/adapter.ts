@@ -27,6 +27,7 @@ import {
 } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { splitRegionTownZone } from '../../places/index.js';
 import { countryName, militaryPostOffice } from '../../places/trackingLocation.js';
 import { hasSeveralClocks, keepsZone, mainZone } from '../../places/zones.js';
 import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
@@ -619,13 +620,17 @@ function regionClock(location: string): { zone: string; certain: boolean } | nul
   // "Example City, BE, NL" and "EXAMPLE CITY, BE, NL 1234": a region, then some other country.
   if (!country && parts.length > 2 && [parts.at(-2)!, coded ?? parts.at(-1)!].every((part) => /^[A-Z]{2}$/i.test(part))) return null;
   const words = (parts.at(-1) ?? '').replace(POSTAL_CODE, '').replace(US_FACILITY, '').split(/\s+/);
+  // A town keeps its own clock where part of its state keeps another: Florida's Panhandle is on Central time.
+  const stateClock = (state: string, town: string) => splitRegionTownZone('US', state, town) ?? usStateTimeZone(state);
   if (country === 'US') {
     const size = [3, 2, 1].find((count) => words.length >= count && US_STATE_NAMES.has(nameKey(words.slice(-count).join(''))));
-    if (size) return { zone: usStateTimeZone(US_STATE_NAMES.get(nameKey(words.slice(-size).join(''))))!, certain: true };
+    const state = size ? US_STATE_NAMES.get(nameKey(words.slice(-size).join('')))! : '';
+    if (size) return { zone: stateClock(state, words.slice(0, -size).join(' ') || (parts.length > 1 ? parts.at(-2)! : ''))!, certain: true };
   }
   const code = parts.length > 1 || words.length > 1 ? words.at(-1)! : '';
   const town = parts.length > 1 ? parts.at(-2)! : words.slice(0, -1).join(' ');
-  const zone = (country === 'CA' ? null : usStateTimeZone(code)) ?? (country === 'US' ? null : canadaProvinceTimeZone(code));
+  const zone = (country === 'CA' || !usStateTimeZone(code) ? null : stateClock(code.toUpperCase(), town))
+    ?? (country === 'US' ? null : canadaProvinceTimeZone(code));
   return zone ? { zone, certain: country !== null || !countryCode(code) || regionHasTown(code, town) } : null;
 }
 

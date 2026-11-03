@@ -321,7 +321,8 @@
       "placeTimeZone",
       "placesForEvents",
       "preloadPlaces",
-      "restoreLostLetters"
+      "restoreLostLetters",
+      "splitRegionTownZone"
     ],
     "types": [
       "EventPlace",

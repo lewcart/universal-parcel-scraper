@@ -1271,6 +1271,12 @@ describe('ParcelsApp result parsing', () => {
       ['2026-10-03T20:01:13.000Z', 'Delivered'],
       ['2026-10-03T12:54:20.000Z', 'Out for Delivery'],
     ]);
+    // A town of Florida's Panhandle keeps Central time, as GOFO's own feed dates it, whichever way the state is written.
+    expect(times(['GoFo Express'], [
+      scan('2026-11-02T06:15:24Z', 'Pensacola, FL', 'Delivered, Door/Yard.'),
+      scan('2026-11-01T22:40:00Z', 'Pensacola Florida, United States of America', 'Out for Delivery'),
+      scan('2026-11-01T08:00:00Z', 'Tallahassee, FL'),
+    ])).toEqual(['2026-11-02T12:15:24.000Z', '2026-11-02T04:40:00.000Z', '2026-11-01T13:00:00.000Z']);
   });
 
   it('keeps the instant of a shipping partner\'s row filed under USPS, its place after its wording', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { CarrierEvent } from '../core/result/index.js';
-import { airportTimeZone, carrierHomeZone, dateLocalClocks, locatePlace, placeTimeZone } from './index.js';
+import { airportTimeZone, carrierHomeZone, dateLocalClocks, locatePlace, placeTimeZone, splitRegionTownZone } from './index.js';
 
 vi.setConfig({ testTimeout: 30_000 });
 
@@ -15,6 +15,11 @@ describe('placeTimeZone', () => {
     for (const town of ['Port St. Joe, FL', 'Apalachicola, FL', 'Bristol, FL', 'Chattahoochee, FL', 'Tallahassee, FL', 'Orlando, FL']) {
       expect(zoneOf(town), town).toBe('America/New_York');
     }
+    // A town an adapter reads with its state: null in a state of one clock or for a town not found there.
+    expect(splitRegionTownZone('US', 'FL', 'PENSACOLA')).toBe('America/Chicago');
+    expect(splitRegionTownZone('US', 'FL', 'Orlando')).toBe('America/New_York');
+    expect(splitRegionTownZone('US', 'FL', 'Example City')).toBeNull();
+    expect(splitRegionTownZone('US', 'NY', 'Albany')).toBeNull();
   });
 
   it('reads a country of one clock, a state or province, or the nearest zone of a large country', () => {

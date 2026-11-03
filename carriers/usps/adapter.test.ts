@@ -146,6 +146,14 @@ describe('USPS rendered page', () => {
     expect(unnamed.events?.[0]).toMatchObject({ local_time: '2025-03-14T12:17:00' });
   });
 
+  it('reads a town of Florida\'s Panhandle on Central time, and the rest of the state on Eastern', () => {
+    for (const [place, time] of [['PENSACOLA, FL 32501', '2025-03-14T12:17:00-05:00'], ['PENSACOLA FL DISTRIBUTION CENTER', '2025-03-14T12:17:00-05:00'],
+      ['ORLANDO, FL 32801', '2025-03-14T12:17:00-04:00'], ['EXAMPLE CITY, FL 32000', '2025-03-14T12:17:00-04:00']] as const) {
+      const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('EXAMPLE CITY, NY 00000', place), DELIVERED_NUMBER);
+      expect(result.events?.[0], place).toMatchObject({ location: place, time });
+    }
+  });
+
   it('reads a place that gives only its ZIP code in the state of that ZIP code', () => {
     for (const [place, time] of [['EXAMPLE CITY 94000', '2025-03-14T12:17:00-07:00'], ['60000', '2025-03-14T12:17:00-05:00'],
       ['EXAMPLE CITY 10000-0000', '2025-03-14T12:17:00-04:00']] as const) {

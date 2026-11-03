@@ -383,6 +383,21 @@ export function placeTimeZone(place: EventPlace): string | null {
   return zone;
 }
 
+/**
+ * The clock of a town in a state or province part of which keeps another, as
+ * `placeTimeZone` reads it there (Florida's Panhandle keeps Central time). Null
+ * in a region of one clock, or for a town the place reader does not find there.
+ */
+export function splitRegionTownZone(country: string, region: string, town: string): string | null {
+  const others = otherRegionZones(country, region);
+  const name = town.trim();
+  if (!others.length || !name) return null;
+  const place = locatePlace(`${name}, ${region}`, { countries: [country] });
+  if (!place || place.precision !== 'city' || place.country !== country || (place.region && place.region !== region)) return null;
+  const zone = placeTimeZone(place);
+  return zone && (zone === regionZone(country, region) || others.includes(zone)) ? zone : null;
+}
+
 /** The instant a time stands for and the offset it states, in minutes; none for UTC, which says no place's clock. */
 function statedClock(time: string | null | undefined): { at: number; offset: number } | null {
   const raw = time?.trim() ?? '';

@@ -521,7 +521,8 @@ step exists for future protocol changes.
   Step 2 reads them in the zone of the US state or Canadian province the location names
   ("Riverside, CA, US", "Charlotte, NC", "Linden, NJ 12345", "Scranton PA", "Mississauga,
   ON, CA", 4PX's "EXAMPLE CITY, IN, US 12345", USPS's "EXAMPLE CITY IL DISTRIBUTION
-  CENTER" and "ISC EXAMPLE CITY IL (USPS)"), the majority zone where there are several, as
+  CENTER" and "ISC EXAMPLE CITY IL (USPS)"), the majority zone where there are several
+  except in a town of a part with its own clock (Florida's Panhandle keeps Central time), as
   in the USPS adapter. A state written out counts only after the country ("Example City
   Minnesota, United States of America", as Orange Connex writes SpeedPAK's), since Georgia
   is a country too. A code shared with a single-clock country (CO, DE, IL, IN, MT, NL, SK)

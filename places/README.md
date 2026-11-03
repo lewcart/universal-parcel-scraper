@@ -190,7 +190,10 @@ persist them or serve a parcel when place resolution fails.
 `placeTimeZone` gives the zone a place keeps its clock on: its country's, or in a country of
 several zones, its state's or province's (the US, Canada, Australia, Brazil) or the zone whose
 principal place in the tz database's `zone.tab` lies nearest. A place that names only such a
-country takes the zone most of its people live on, or its state's when `region` names one. `airportTimeZone` reads an airport its code
+country takes the zone most of its people live on, or its state's when `region` names one.
+`splitRegionTownZone(country, region, town)` gives a town's clock in a state part of which keeps
+another, for an adapter that knows the state and town but not the place (Florida's Panhandle
+keeps Central time), and null elsewhere. `airportTimeZone` reads an airport its code
 names, alone ("AMS"), with an airport word ("JFK Airport") or with its country ("BNE, AU"): a
 bare code the parcel's way does not bear out places nothing, but it tells a forwarder's clock.
 

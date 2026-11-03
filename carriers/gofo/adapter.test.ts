@@ -154,6 +154,11 @@ describe('GOFO US history', () => {
       expect(() => parseGofo({ ...negative, data: { success: [], error } }, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     }
     for (const success of [true, '1', 0]) { const value = fixture(); value.success = success; expect(() => parseGofo(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' })); }
+    // GOFO's own failure code is named; anything else is not.
+    expect(() => parseGofo({ ...fixture(), success: 0, code: 500 }, NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'GOFO returned an inconclusive lookup (code 500)' }));
+    expect(() => parseGofo({ ...fixture(), success: 0, code: 'x'.repeat(80) }, NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'GOFO returned an inconclusive lookup' }));
   });
 
   it('rejects incomplete histories and summaries even when dates or descriptions coincide', () => {

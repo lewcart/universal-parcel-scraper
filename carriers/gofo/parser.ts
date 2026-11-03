@@ -90,7 +90,11 @@ function scanText(value: unknown): string {
 export function parseGofo(payload: unknown, rawNumber: string, site: GofoSite = GOFO_US): CarrierResult {
   const number = normalizeGofoNumber(rawNumber, site);
   if (!isRecord(payload)) throw new SchemaError(site.provider);
-  if (payload.code !== 200 || payload.success !== 1) throw new IndeterminateError(site.provider, 'GOFO returned an inconclusive lookup');
+  if (payload.code !== 200 || payload.success !== 1) {
+    // GOFO's own code tells its failures apart in diagnostics.
+    const code = Number.isInteger(payload.code) && Math.abs(payload.code as number) < 1e6 ? ` (code ${payload.code as number})` : '';
+    throw new IndeterminateError(site.provider, `GOFO returned an inconclusive lookup${code}`);
+  }
   if (!isRecord(payload.data) || !Array.isArray(payload.data.success) || payload.data.success.length > 25
     || !payload.data.success.every(isRecord) || !isRecord(payload.data.error)) throw new SchemaError(site.provider);
   const entries = payload.data.success;

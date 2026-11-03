@@ -69,6 +69,19 @@ describe('ECMS history', () => {
       events: [{ provider_code: 'EVENT_104', stage: 'registered', stage_source: 'carrier_map' }] });
   });
 
+  it('reads the arrival warehouse, a return notice and a parcel held for collection by ECMS\'s map', () => {
+    for (const [code, wording, stage] of [['S06N616', 'Arriving notification received from terminal', 'in_transit'],
+      ['S08N800', 'Shipment has arrived at ECMS transit warehouse', 'in_transit'], ['S08N804', 'Shipment has departed from ECMS transit warehouse', 'in_transit'],
+      ['EVENT_20018', 'Return to origin', 'exception'], ['EVENT_308', 'Available for pickup', 'ready_for_pickup']] as const) {
+      const data = fixture();
+      const scan = { ...row(), eventCode: code, eventDescription: wording };
+      data.orderInfo[0]!.baseInfo = scan;
+      data.orderInfo[0]!.infoList = [scan];
+      expect(parseEcmsExpress(data, NUMBER), code).toMatchObject({ current_stage: stage, current_stage_source: 'carrier_map',
+        events: [{ provider_code: code, stage, stage_source: 'carrier_map' }] });
+    }
+  });
+
   it('reads SpeedX\'s relayed last-mile scan as in transit by ECMS\'s map', () => {
     const data = fixture();
     const scan = { ...row(), eventCode: 'S07N708', eventDescription: 'Parcel in transit during last mile delivery' };

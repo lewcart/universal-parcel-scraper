@@ -157,6 +157,14 @@
       "confirmedBy": "live"
     },
     {
+      "code": "4014",
+      "wording": "Transportation of the consignment with your postal item is completed",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "The flight's landing abroad, before the arrival at the destination airport."
+    },
+    {
       "code": "4006",
       "wording": "Consignment with your postal item is being prepared for the flight to be sent from the airport.",
       "language": "en",
@@ -190,6 +198,14 @@
       "language": "en",
       "stage": "customs",
       "confirmedBy": "live"
+    },
+    {
+      "code": "87500",
+      "wording": "Located at customs",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "note": "The destination's customs holding the item after it was presented."
     },
     {
       "code": "21600",

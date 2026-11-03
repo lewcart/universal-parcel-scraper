@@ -205,6 +205,15 @@ describe('Ukrposhta status API projection', () => {
     expect(events[1]).not.toHaveProperty('location');
   });
 
+  it("reads the flight's landing abroad as a move and a hold at the destination's customs as customs", () => {
+    const rows = statuses().slice(0, 3);
+    Object.assign(rows[0], { event: '4024', eventName: 'Consignment with your postal item has been sent from the airport' });
+    Object.assign(rows[1], { event: '4014', eventName: 'Transportation of the consignment with your postal item is completed' });
+    Object.assign(rows[2], { event: '87500', eventName: 'Located at customs' });
+    expect(parseUkrposhtaStatuses(rows, NUMBER)).toMatchObject({ current_stage: 'customs' });
+    expect(parseUkrposhtaStatuses(rows, NUMBER).events?.map(event => event.stage)).toEqual(['customs', 'in_transit', 'in_transit']);
+  });
+
   it('dates a delivery in Ukraine, but not one abroad', () => {
     const rows = statuses().slice(0, 2);
     Object.assign(rows[1], { event: '41000', eventName: 'Delivered to Recipient', country: 'UKRAINE', date: '2026-03-29T16:03:37' });

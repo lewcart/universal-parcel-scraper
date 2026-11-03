@@ -17,8 +17,9 @@ page and a changed page keep their failure kinds.
 
 ## Notes
 
-- The rows relay the carrying network's scans in French. They have no codes, so the shared
-  classifier reads each sentence, and an unread one leaves the row without a stage.
+- The rows relay the carrying network's scans in French. They have no codes, so the carrier's map
+  reads each sentence, with any city or airport it names as an ellipsis. The shared classifier
+  reads a sentence the map lacks, and an unread one leaves the row without a stage.
 - Every row is on the tracker's own Hong Kong clock, wherever the scan was: 17TRACK dates the same
   rows on that clock, and a departure from Toronto then falls at night there.
 - Some rows write a place before or after the sentence, with a region or country code and a

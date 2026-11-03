@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { QUICK_FORT_ENDPOINT, QuickFortTracker } from './adapter.js';
 import { parseQuickFort } from './parser.js';
+import { quickFortStage, statusMap } from './status.js';
 
 const NUMBER = 'QFT900000000017';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
@@ -15,6 +16,20 @@ describe('Quick Fort parser', () => {
     expect(result.events?.map(event => event.stage)).toEqual(['in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit',
       'in_transit', 'accepted', 'registered']);
     expect(result.events?.[7]).toMatchObject({ time: '2026-03-02T13:26:54+08:00' });
+    expect(result.current_stage_source).toBe('carrier_map');
+    expect(result.events?.every(event => event.stage_source === 'carrier_map')).toBe(true);
+  });
+
+  it('maps the network\'s sentences whatever city or airport they name, and leaves others to the shared rules', () => {
+    for (const wording of ['Le colis est arrivé au centre de traitement d\'origine à Montréal.',
+      'L\'envoi est arrivé au terminal de fret de l\'aéroport international Pearson de Toronto.',
+      'L\'envoi a quitté l\'aéroport de Vancouver et est en transport international.', 'L\'envoi est arrivé à l\'aéroport in FR.',
+      'L\'envoi a été remis au transporteur.', 'L\'envoi a été remis au transporteur aérien.']) {
+      expect(quickFortStage(wording)).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    }
+    expect(statusMap.stage('', 'l\'envoi a quitté l\'aéroport de vancouver et est en transport international.')).toBe('in_transit');
+    expect(quickFortStage('Le colis a été livré.')).toMatchObject({ stage: 'delivered' });
+    expect(quickFortStage('Le colis a été livré.')?.source).not.toBe('carrier_map');
   });
 
   it('takes the place out of a sentence, before or after it, without its postcode', () => {

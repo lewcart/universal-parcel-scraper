@@ -1,4 +1,21 @@
 {
   "carrier": "quick-fort",
-  "entries": []
+  "entries": [
+    {"wording": "Le transporteur a reçu les informations électroniques de l'envoi.", "language": "fr", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The first row: the shipment's data, before any scan."},
+    {"wording": "L'envoi a été pris en charge par l'entrepôt local au départ.", "language": "fr", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The origin warehouse took the parcel."},
+    {"wording": "Le colis est arrivé au centre de traitement d'origine à ….", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The row names the origin city."},
+    {"wording": "Le colis a été trié et attend son départ.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"wording": "Le traitement au départ est terminé. L'envoi est en préparation pour le transport international.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"wording": "L'envoi est prêt à être transféré vers l'aéroport de départ.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"wording": "L'envoi est arrivé au terminal de fret de l'aéroport ….", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The row names the airport of departure."},
+    {"wording": "L'envoi a été remis au transporteur aérien.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"wording": "L'envoi a quitté l'aéroport … et est en transport international.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The row names the airport of departure."},
+    {"wording": "L'envoi est arrivé à l'aéroport ….", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The row names the destination, by its country code: \"in DE\"."},
+    {"wording": "L'envoi est arrivé au centre de traitement de destination.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"wording": "Le traitement à destination est terminé.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"wording": "L'envoi a été remis au transporteur.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "Handed to the destination courier after the processing there."},
+    {"wording": "L'envoi est arrivé à l'entrepôt local et y est en cours de traitement.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The destination courier's warehouse."},
+    {"wording": "L'envoi est dans le réseau de livraison local.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02"},
+    {"wording": "Le colis est arrivé à l'agence locale de livraison desservant la zone du destinataire.", "language": "fr", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "At the depot that delivers the recipient's area, before the round."}
+  ]
 }

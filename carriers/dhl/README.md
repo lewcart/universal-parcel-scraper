@@ -147,6 +147,9 @@ how a consumer learns that DHL holds one behind a postcode.
   until the arrival scan links the partner. Nor is anyone asked for Spain and
   Italy, where the pages name Correos and SDA but DHL's arrival scans link DHL
   Parcel Spain and DHL Express, and Correos does not know the parcels.
+  Slovakia's partner is SPS, whose track-and-trace host the arrival scan links,
+  not Slovakia's post. SPS's adapter takes only SPS's own references, so it is
+  not asked about DHL's number either.
   Deutsche Post's letter-post items go to the destination's post.
 - `zielland`, the destination country DHL names in the lookup's language, becomes
   `destination_country`, or `destination_country_name` when the name maps to no

@@ -64,7 +64,10 @@ SPS's tracker opens one shipment at `www.sps-sro.sk/moja-zasielka/?shipment_id={
 page reads the number from the address and runs the search. Lookups archived from its earlier
 pages put the same parameter on `/sledovanie-zasielky/`, which now redirects there with the
 query, and on `/en/track-trace/`. The former Webtrace tracker takes the number in separate
-country, depot and serial fields, so its addresses hold no whole number.
+country, depot and serial fields, so its addresses hold no whole number. A link to its host
+names SPS: DHL's arrival scan for a parcel SPS delivers links it bare, as the place to track
+abroad. Whether the tracker finds DHL Paket's `C` numbers is not known yet, so a hand-off asks
+SPS only about its own references.
 
 ## Testing
 

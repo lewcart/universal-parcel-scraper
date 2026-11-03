@@ -1,4 +1,5 @@
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
+import { isSpsLookup, SPS_BARCODE as BARCODE, SPS_PARCEL as PARCEL } from '../../core/detection/sps.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { listsNewestFirst } from '../../core/result/order.js';
@@ -18,15 +19,11 @@ const MAX_EVENTS = 100;
 // the parcel number (703, Slovakia's code, a depot and a serial), the label's
 // barcode with two digits more, the depot and serial without the country, and
 // the SK label code. Partner networks' numbers on that list are theirs.
-const PARCEL = /^703\d{11}$/;
-const BARCODE = /^703\d{11}[0-4]\d$/;
-const LOCAL = /^[0-9A-Z]\d{10}$/;
-const LABEL = /^SK[A-HJ-NP-Z0-9]{5}\d{2}[A-HJ-NP-Z0-9]{9}$/;
 
 /** An SPS parcel number in the compact form its tracking service accepts. */
 export function normalizeSpsNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (![PARCEL, BARCODE, LOCAL, LABEL].some(pattern => pattern.test(number))) {
+  if (!isSpsLookup(number)) {
     throw new InvalidInputError(SPS, 'Slovak Parcel Service numbers are 703 and eleven digits, its sixteen-digit barcode, eleven characters without 703, or an SK label code');
   }
   return number;

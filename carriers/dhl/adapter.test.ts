@@ -277,7 +277,7 @@ describe('DHL public tracking normalization', () => {
   }
   it.each([
     ['Finland', 'postnord'], ['Ukraine', 'meest'], ['Poland', null], ['Switzerland', null],
-    ['Lithuania', null], ['Latvia', null], ['Spain', null], ['Italy', null],
+    ['Lithuania', null], ['Latvia', null], ['Spain', null], ['Italy', null], ['Slovakia', null],
   ])('proposes a parcel bound for %s to the partner DHL names there, when it looks up DHL’s number', (zielland, partner) => {
     expect(deliveryHandoff('dhl', PARCEL, parcel(zielland))).toEqual(partner && { carrier: partner, number: PARCEL, basis: 'destination' });
     expect(deliveryHandoff('dhl', PARCEL, { status: 'in_transit' }, countryCode(zielland))?.carrier ?? null).toBe(partner);
@@ -297,6 +297,10 @@ describe('DHL public tracking normalization', () => {
     const express = parcel('Italy', `https://www.logistics.dhl/it-it/home/tracking/tracking-express.html?submit=1&tracking-id=${PARCEL}`);
     expect(express.delivery_carrier).toBe('dhl-express');
     expect(deliveryHandoff('dhl', PARCEL, express)).toBeNull();
+    // SPS's track-and-trace host names SPS, which is not asked about DHL's number, nor is Slovakia's post.
+    const sps = parcel('Slovakia', 'https://t-t.sps-sro.sk');
+    expect(sps.delivery_carrier).toBe('slovak-parcel-service');
+    expect(deliveryHandoff('dhl', PARCEL, sps)).toBeNull();
   });
 
   it('leaves the destination out when DHL names none', () => {

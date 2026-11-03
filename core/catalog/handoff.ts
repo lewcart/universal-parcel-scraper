@@ -10,6 +10,7 @@ import { isAcsVoucherNumber } from '../detection/acsCourier.js';
 import { isAnotherPostItemAtChronopost } from '../detection/chronopost.js';
 import { isCorreosChileLookup } from '../detection/correosChile.js';
 import { isPosteItalianeLookup } from '../detection/posteItaliane.js';
+import { isSpsLookup } from '../detection/sps.js';
 import { countryCode } from '../time/index.js';
 
 export interface DeliveryHandoff {
@@ -22,6 +23,7 @@ export interface DeliveryHandoff {
 // about a partner's number only fails, however often the hand-off is retried.
 const REFERENCES_LOOKED_UP: Readonly<Record<string, (number: string) => boolean>> = {
   'poste-italiane': isPosteItalianeLookup,
+  'slovak-parcel-service': isSpsLookup,
   // DHL Express tracks its waybills and the piece identifiers on its labels.
   'dhl-express': (number) => isValidDhlExpressWaybill(number) || dhlExpressPieceId(number) !== null,
   // Blue Dart's waybills have eleven digits; ICC Worldwide can link it to other references.
@@ -34,12 +36,13 @@ const REFERENCES_LOOKED_UP: Readonly<Record<string, (number: string) => boolean>
 // DHL Paket's international parcels, its `C` postal numbers, go to the partner
 // DHL names for their destination, not always that country's post: DHL Express
 // in Poland and Switzerland, PostNord in Finland, Itella in Lithuania and
-// Latvia, Meest in Ukraine. Null where the partner does not look up DHL's
+// Latvia, Meest in Ukraine, SPS in Slovakia, which is asked only about its own
+// references (`REFERENCES_LOOKED_UP`). Null where the partner does not look up DHL's
 // number, or where DHL's arrival scans link another partner than its country
 // page names: DHL Parcel Spain rather than Correos, DHL Express in Italy rather
 // than SDA. DHL's arrival scan then links the one that delivers.
 const DHL_PARCEL_PARTNERS: Readonly<Record<string, CarrierId | null>> = {
-  CH: null, ES: null, FI: 'postnord', IT: null, LT: null, LV: null, PL: null, UA: 'meest',
+  CH: null, ES: null, FI: 'postnord', IT: null, LT: null, LV: null, PL: null, SK: 'slovak-parcel-service', UA: 'meest',
 };
 
 // Waybills that take the S10 layout without being postal items: Morning Global's carry

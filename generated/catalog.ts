@@ -41593,6 +41593,11 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
         "params": [
           "shipment_id"
         ]
+      },
+      {
+        "domains": [
+          "t-t.sps-sro.sk"
+        ]
       }
     ],
     "detectionRules": [

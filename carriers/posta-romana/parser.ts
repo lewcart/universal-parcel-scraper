@@ -20,6 +20,9 @@ const DAY = /^\d{2}\.\d{2}\.\d{4}$/;
 const CLOCK = /^\d{2}:\d{2}$/;
 // The site a scan names, after a dash; "Plecat din" (left from) leads a departure's.
 const SITE = /^-\s*(?:plecat din\s+)?/i;
+// "Programat pentru predare incepand cu aceasta data" carries the day the item can be collected
+// from, which can be the next day: a row dated over an hour after the read has not happened yet.
+const CLOCK_SKEW_MS = 3_600_000;
 
 /**
  * Poșta Română's tracker takes S10 item codes, its own and other posts'
@@ -37,7 +40,7 @@ export function normalizePostaRomanaNumber(raw: string): string {
  * Romanian wall clock and the site after a dash. An unknown code and the code
  * of unregistered mail come back with flags instead.
  */
-export function parsePostaRomana(payload: unknown, rawNumber: string): CarrierResult {
+export function parsePostaRomana(payload: unknown, rawNumber: string, readAt = Date.now()): CarrierResult {
   const number = normalizePostaRomanaNumber(rawNumber);
   if (!isRecord(payload) || typeof payload.found !== 'boolean') throw new SchemaError(PROVIDER, 'Poșta Română returned an invalid reply');
   if (!payload.found) {
@@ -62,7 +65,7 @@ export function parsePostaRomana(payload: unknown, rawNumber: string): CarrierRe
     const site = clean(detail.unitatePostala, 160).replace(SITE, '').trim();
     const event: CarrierEvent = { time: clock.iso, description, ...(site ? { location: site } : {}) };
     const identity = JSON.stringify(event);
-    if (seen.has(identity)) return;
+    if (seen.has(identity) || clock.timestamp > readAt + CLOCK_SKEW_MS) return;
     seen.add(identity);
     scans.push({ event, timestamp: clock.timestamp, index });
   });

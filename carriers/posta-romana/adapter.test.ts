@@ -123,6 +123,16 @@ describe('Poșta Română tracking adapter', () => {
     expect(parsePostaRomana(door, COLLECTED).pickup_point).toBeUndefined();
   });
 
+  it('holds back the day collection opens until it comes, as a row dated after the read', () => {
+    // Live shape: the row came dated the next day, 23.7 hours after the read, while the office still processed the item.
+    const scheduled = edited('inbound', payload => { payload.details.at(-1)!.data = '13.06.2026'; });
+    const before = parsePostaRomana(scheduled, INBOUND, Date.parse('2026-06-12T05:40:00Z'));
+    expect(before).toMatchObject({ status: 'in_transit', last_status_text: 'In prelucrare', last_update: '2026-06-12T08:31:00+03:00' });
+    expect(before.pickup_point).toBeUndefined();
+    expect(parsePostaRomana(scheduled, INBOUND, Date.parse('2026-06-13T05:32:00Z'))).toMatchObject({
+      current_stage: 'ready_for_pickup', last_update: '2026-06-13T08:32:00+03:00', pickup_point: 'Oficiul Postal Exemplu 5' });
+  });
+
   it('stages diacritics and new wording through the shared rules, and keeps the rest visible without a stage', () => {
     const accented = edited('exported', payload => { payload.details[5]!.detaliu = 'Expediat din România'; });
     expect(parsePostaRomana(accented, EXPORTED)).toMatchObject({ current_stage: 'in_transit', current_stage_source: 'carrier_map' });

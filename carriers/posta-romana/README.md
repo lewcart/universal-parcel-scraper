@@ -43,6 +43,10 @@ when it is written with diacritics, and passes the rest to the shared wording ru
 "Plecat din" is the one the item left. Once an item moved, "Primit de la expeditor" is its
 sender's post taking it back, and a delivery after "Returnat catre expeditor" reaches the sender.
 
+"Programat pentru predare incepand cu aceasta data" is dated with the day the item can be
+collected from, which can be the next day while the office is still processing it. A row dated
+over an hour after the read is held back until then.
+
 The pickup point is the office named by the scan that scheduled the item for collection, while it
 waits there or once it was collected there. The service name comes from the reply's summary. The
 summary's posting office and date, the country of origin of mail from abroad and the office's

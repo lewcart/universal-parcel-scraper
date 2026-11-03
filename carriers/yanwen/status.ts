@@ -1,6 +1,7 @@
 import type { CarrierStatus } from '../../core/result/index.js';
-import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { languageStageStatus, type ClassifiedStatus, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import { chinaPostRelayedStage } from '../china-post/status.js';
 
 const WORDING = new Map<string, ClassifiedStatus>([
   ['Delivered.', { status: 'delivered', stage: 'delivered' }],
@@ -127,16 +128,23 @@ const DELIVERY_ICON = 'LM40';
 // only the code keeps it.
 const withoutPrefix = (description: string) => description.replace(/^【[^】]*】\s*/, '').replace(/^[a-z]{2}\.(?=\S)/i, '').trim();
 
+// China Post's domestic scans, which Yanwen relays in Chinese with the centre in 【】, read as China Post's own
+// map reads them: "邮件离开【…】，正在发往下一站" in transit, the security check's "【…】退回" an exception.
+function relayedStatus(description: string): ClassifiedStatus | undefined {
+  const stage = chinaPostRelayedStage(normalizeStatusWording(description));
+  return stage ? { status: languageStageStatus(stage), stage } : undefined;
+}
+
 export function yanwenStatus(description: string, code?: string): ClassifiedStatus | undefined {
   if (code === DELIVERY_ICON) return { status: 'delivered', stage: 'delivered' };
-  return WORDING.get(withoutPrefix(description));
+  return WORDING.get(withoutPrefix(description)) ?? relayedStatus(description);
 }
 
 const STAGE_BY_WORDING = new Map([...WORDING].map(([wording, { stage }]) => [normalizeStatusWording(wording), stage]));
 
 /** What the map says about one scan by its milestone icon, the only code it keeps, else its wording. */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => (code === DELIVERY_ICON ? 'delivered' : STAGE_BY_WORDING.get(withoutPrefix(wording))),
+  stage: (code, wording) => (code === DELIVERY_ICON ? 'delivered' : STAGE_BY_WORDING.get(withoutPrefix(wording)) ?? chinaPostRelayedStage(wording)),
   gaps: [{ wording: 'ua.', note: "A partner's scan in Ukraine that Yanwen relays as its country's code alone, without words: it names no stage." }],
 };
 

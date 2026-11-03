@@ -267,6 +267,21 @@ describe('Yanwen result projection', () => {
     expect(result).toMatchObject({ status: 'exception', current_stage: 'failed_attempt' });
   });
 
+  it("reads China Post's domestic scans as China Post's map does, the security check's return as an exception", () => {
+    for (const [wording, stage] of [['中国邮政已收取邮件', 'accepted'], ['邮件到达【示例市处理中心】', 'in_transit'],
+      ['邮件离开【示例市处理中心】，正在发往下一站', 'in_transit'], ['【示例市处理中心】退回，备注:安检退回', 'exception'],
+      ['【示例市处理中心】已出口直封', 'in_transit'], ['出口海关/留存待验', 'customs']] as const) {
+      expect(yanwenStatus(wording)?.stage, wording).toBe(stage);
+      expect(statusMap.stage(null, normalizeStatusWording(wording)), wording).toBe(stage);
+    }
+    const result = history([
+      ['2026-03-02', '22:14:47 [GMT+08]', '', '【示例市处理中心】已出口直封'],
+      ['2026-03-02', '22:13:47 [GMT+08]', '', '【示例市处理中心】退回，备注:安检退回'],
+    ], '运输途中');
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(result.events?.map((event) => event.stage)).toEqual(['in_transit', 'exception']);
+  });
+
   it("stages the delivering carrier's loading in Canada on the scan itself, as the category files it", () => {
     const result = history([
       ['2026-03-10', '07:43:04 [GMT-04]', 'EXAMPLE TOWN, ZZ', 'Loaded on Truck'],

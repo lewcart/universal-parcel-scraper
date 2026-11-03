@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
@@ -5,14 +6,17 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { sameInstantIdentityPolicy } from '../../app.js';
 import { createTracker } from '../../facade/index.js';
-import { adapter, SPX_BR_API, SpxBrTracker } from './adapter.js';
-import { normalizeSpxBrNumber, parseSpxBr, spxBrPlacedText, spxBrWording } from './parser.js';
+import { adapter, SPX_BR_API, SPX_BR_FLEET_API, spxBrFleetQuery, SpxBrTracker } from './adapter.js';
+import { normalizeSpxBrNumber, parseSpxBr, parseSpxBrFleet, spxBrPlacedText, spxBrWording } from './parser.js';
 import { spxBrStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = 'BR2600000000011';
 const IN_TRANSIT = 'BR260000000002X';
 const UNKNOWN = 'BR2600000000003';
+const FLEET = 'BR2600000000045';
+// The order lookup's answer for a number its orders do not hold.
+const NOT_HELD = { retcode: 2, message: 'not found spx order', detail: 'Oops, an unexpected error has occurred', debug: '' };
 
 type Row = Record<string, unknown>;
 type Tracking = Row & { records: Row[] };
@@ -237,6 +241,95 @@ describe('SPX Express Brazil HTTP adapter', () => {
     ]) {
       expect(() => parseSpxBr(changed('delivered', change), DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
     }
+  });
+
+  it('asks the fleet feed, with its checksum and in the page’s Portuguese, for a number the order lookup does not hold', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      vi.setSystemTime(new Date('2026-05-20T00:00:00Z'));
+      const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(NOT_HELD)).mockResolvedValueOnce(reply(fixture('fleet-delivered')));
+      const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+      const result = await new SpxBrTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(FLEET, { budgetMs: 1000 });
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      const [url, init] = fetcher.mock.calls[1]!;
+      const seconds = 1_779_235_200;
+      const checksum = createHash('sha256').update(`${FLEET}${seconds}MGViZmZmZTYzZDJhNDgxY2Y1N2ZlN2Q1ZWJkYzlmZDY=`).digest('hex');
+      expect(String(url)).toBe(`${SPX_BR_FLEET_API}?sls_tracking_number=${FLEET}%7C${seconds}${checksum}`);
+      expect(spxBrFleetQuery(FLEET, seconds)).toBe(`${FLEET}|${seconds}${checksum}`);
+      expect(init).toMatchObject({ redirect: 'manual', signal: expect.any(AbortSignal),
+        headers: { Accept: 'application/json, text/plain, */*', 'User-Agent': 'SyntheticHost/1.0', 'x-language': 'br' } });
+      expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ step: 'direct', outcome: 'indeterminate' }));
+      expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ step: 'legacy', outcome: 'ok', fallbackFrom: 'direct' }));
+      expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
+        last_status_text: 'Seu pacote foi entregue', last_update: '2026-05-19T12:53:20Z', delivered_at: '2026-05-19T12:53:20Z' });
+      expect(result.events!.map((event) => [event.time, event.provider_code, event.stage, event.location ?? null, event.description])).toEqual([
+        ['2026-05-19T12:53:20Z', 'Delivered', 'delivered', null, 'Seu pacote foi entregue'],
+        ['2026-05-19T08:26:40Z', 'Delivering', 'out_for_delivery', null, 'Seu pacote está sendo entregue pelo entregador'],
+        // A hub taking the parcel in is the scan's place; the hub leaves the wording.
+        ['2026-05-19T03:43:20Z', 'LMHub_Received', 'in_transit', 'LM Hub_RJ_Porto Modelo', 'Seu pacote foi recebido pelo centro de distribuição'],
+        ['2026-05-19T03:35:00Z', 'LMHub_LHUnloaded', 'in_transit', null, '[TO20260518TEST2] unloaded at [LM Hub_RJ_Porto Modelo] via Linehaul Trip [LT0TEST00002B1]'],
+        ['2026-05-19T03:20:00Z', 'LMHub_LHUnloading', 'in_transit', null, '[TO20260518TEST2] unloading at [LM Hub_RJ_Porto Modelo] via Linehaul Trip [LT0TEST00002B1]'],
+        ['2026-05-18T16:46:40Z', 'SOC_LHTransporting', 'in_transit', null, 'Pacote [TO20260518TEST2] está sendo transportado para [LM Hub_RJ_Porto Modelo]'],
+        ['2026-05-17T16:46:40Z', 'SOC_Received', 'in_transit', 'SoC_SP_Cidade Exemplo', 'Seu pacote foi recebido pelo centro de triagem'],
+        ['2026-05-17T16:46:39Z', 'SOC_LHUnloaded', 'in_transit', null, '[TO20260517TEST1] unloaded at [SoC_SP_Cidade Exemplo] via Linehaul Trip [LT0TEST00001A1]'],
+        ['2026-05-17T16:26:00Z', 'SOC_LHUnloading', 'in_transit', null, '[TO20260517TEST1] unloading at [SoC_SP_Cidade Exemplo] via Linehaul Trip [LT0TEST00001A1]'],
+        ['2026-05-17T14:20:00Z', 'FMHub_LHTransporting', 'in_transit', null, 'Pacote [TO20260517TEST1] está sendo transportado para [SoC_SP_Cidade Exemplo]'],
+        ['2026-05-17T00:30:00Z', 'FMHub_Received', 'in_transit', 'FM Hub_SP_Vila Amostra', 'Seu pacote foi recebido pelo hub de coleta'],
+        // The hub that made a pickup is not where it happened.
+        ['2026-05-16T22:23:20Z', 'FMHub_Pickup_Done', 'accepted', null, 'Seu pacote foi coletado'],
+        ['2026-05-16T13:36:40Z', 'Created', 'registered', null, 'O pedido foi criado'],
+      ]);
+      const text = JSON.stringify(result);
+      for (const value of ['Destinatária Sintética', '******0000', 'SYNTHETIC']) expect(text, value).not.toContain(value);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('keeps the order lookup’s answer unless the fleet feed holds the parcel or says it has no scans', async () => {
+    const lookup = (fleet: unknown, number = FLEET) => {
+      const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(NOT_HELD)).mockResolvedValueOnce(reply(fleet));
+      return carrier(fetcher).track({ number });
+    };
+    const held = { kind: 'indeterminate', message: 'SPX Express Brazil did not complete the lookup (retcode 2)' };
+    await expect(lookup({ retcode: -1217, message: 'No order tracking information current now', data: null }))
+      .rejects.toMatchObject({ kind: 'indeterminate', name: 'NoHistoryError' });
+    // The feed answers an unknown number with a server error, a rejected checksum with empty data.
+    await expect(lookup({ retcode: -1000, message: 'Server error. Please try again later.', data: {} })).rejects.toMatchObject(held);
+    await expect(lookup({ retcode: 0, message: '', data: {} })).rejects.toMatchObject(held);
+    await expect(lookup(fixture('fleet-delivered'), 'BR2600000000053')).rejects.toMatchObject(held);
+    await expect(lookup({ action_type: 2, redirect_to_error_page: true })).rejects.toMatchObject({ kind: 'challenge' });
+    await expect(lookup({ retcode: 0, data: { sls_tracking_number: FLEET, tracking_list: 'scans' } })).rejects.toMatchObject({ kind: 'schema' });
+    // A number the orders do not know, or one they hold without scans, ends the lookup.
+    for (const body of [fixture('not-found'), { retcode: 0, data: { fulfillment_info: {} } }]) {
+      const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(body));
+      await expect(carrier(fetcher).track({ number: UNKNOWN })).rejects.toThrow();
+      expect(fetcher).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it('rejects a changed fleet reply', () => {
+    const fleet = () => fixture('fleet-delivered') as unknown as { data: { tracking_list: Row[] } & Row } & Row;
+    for (const change of [
+      (body: Row) => { delete body.retcode; },
+      (body: Row) => { body.data = 'shipment'; },
+      (body: { data: Row }) => { delete body.data.sls_tracking_number; },
+      (body: { data: { tracking_list: Row[] } }) => { body.data.tracking_list = Array.from({ length: 1001 }, () => body.data.tracking_list[0]!); },
+      (body: { data: { tracking_list: Row[] } }) => { body.data.tracking_list[0] = 'scan' as never; },
+      (body: { data: { tracking_list: Row[] } }) => { body.data.tracking_list[0]!.status = 'Delivered now'; },
+      (body: { data: { tracking_list: Row[] } }) => { delete body.data.tracking_list[0]!.message; },
+      (body: { data: { tracking_list: Row[] } }) => { body.data.tracking_list[0]!.message = '[LM Hub_RJ_Porto Modelo] '; },
+      (body: { data: { tracking_list: Row[] } }) => { body.data.tracking_list[0]!.timestamp = 1_779_110_000_000; },
+    ]) {
+      const body = fleet();
+      change(body);
+      expect(() => parseSpxBrFleet(body, FLEET)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    }
+    // The feed's English lines name the recipient last, in brackets.
+    const english = fleet();
+    english.data.tracking_list[0]!.message = '[LM Hub_RJ_Porto Modelo] Your parcel has been delivered [Destinatária Sintética]';
+    expect(parseSpxBrFleet(english, FLEET).events![0]).toMatchObject({ description: 'Your parcel has been delivered', stage: 'delivered' });
+    expect(() => parseSpxBrFleet({ ...fleet(), data: { ...fleet().data, tracking_list: [] } }, FLEET)).toThrow(expect.objectContaining({ name: 'NoHistoryError' }));
   });
 
   it('keeps an unknown number, a moved route, a gateway page and a broken reply apart', async () => {

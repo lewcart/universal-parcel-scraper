@@ -1,0 +1,95 @@
+{
+  "retcode": 0,
+  "message": "",
+  "data": {
+    "sls_tracking_number": "BR2600000000045",
+    "need_translate": 0,
+    "delivery_type": "SYNTHETIC",
+    "recipient_name": "Destinatária Sintética",
+    "phone": "******0000",
+    "current_status": "Delivered",
+    "tracking_list": [
+      {
+        "timestamp": 1779195200,
+        "status": "Delivered",
+        "message": "[LM Hub_RJ_Porto Modelo] Seu pacote foi entregue a [Destinatária Sintética] "
+      },
+      {
+        "timestamp": 1779179200,
+        "status": "Delivering",
+        "message": "[LM Hub_RJ_Porto Modelo] Seu pacote está sendo entregue pelo entregador"
+      },
+      {
+        "timestamp": 1779162200,
+        "status": "LMHub_Received",
+        "message": "[LM Hub_RJ_Porto Modelo] Seu pacote foi recebido pelo centro de distribuição"
+      },
+      {
+        "timestamp": 1779161700,
+        "status": "LMHub_LHUnloaded",
+        "message": "[TO20260518TEST2] unloaded at [LM Hub_RJ_Porto Modelo] via Linehaul Trip [LT0TEST00002B1]"
+      },
+      {
+        "timestamp": 1779160800,
+        "status": "LMHub_LHUnloading",
+        "message": "[TO20260518TEST2] unloading at [LM Hub_RJ_Porto Modelo] via Linehaul Trip [LT0TEST00002B1]"
+      },
+      {
+        "timestamp": 1779122800,
+        "status": "SOC_LHTransporting",
+        "message": "Pacote [TO20260518TEST2] está sendo transportado para [LM Hub_RJ_Porto Modelo]"
+      },
+      {
+        "timestamp": 1779036400,
+        "status": "SOC_Received",
+        "message": "[SoC_SP_Cidade Exemplo] Seu pacote foi recebido pelo centro de triagem"
+      },
+      {
+        "timestamp": 1779036399,
+        "status": "SOC_LHUnloaded",
+        "message": "[TO20260517TEST1] unloaded at [SoC_SP_Cidade Exemplo] via Linehaul Trip [LT0TEST00001A1]"
+      },
+      {
+        "timestamp": 1779035160,
+        "status": "SOC_LHUnloading",
+        "message": "[TO20260517TEST1] unloading at [SoC_SP_Cidade Exemplo] via Linehaul Trip [LT0TEST00001A1]"
+      },
+      {
+        "timestamp": 1779027600,
+        "status": "FMHub_LHTransporting",
+        "message": "Pacote [TO20260517TEST1] está sendo transportado para [SoC_SP_Cidade Exemplo]"
+      },
+      {
+        "timestamp": 1778977800,
+        "status": "FMHub_Received",
+        "message": "[FM Hub_SP_Vila Amostra] Seu pacote foi recebido pelo hub de coleta"
+      },
+      {
+        "timestamp": 1778970200,
+        "status": "FMHub_Pickup_Done",
+        "message": "[FM Hub_SP_Vila Amostra] Seu pacote foi coletado"
+      },
+      {
+        "timestamp": 1778938600,
+        "status": "Created",
+        "message": "O pedido foi criado"
+      }
+    ],
+    "status_list": [
+      {
+        "timestamp": 1778938600,
+        "code": 1,
+        "text": "Created",
+        "state_ls": "Created",
+        "icon": "Order Created"
+      },
+      {
+        "timestamp": 1779195200,
+        "code": 1,
+        "text": "Delivered",
+        "state_ls": "Delivered",
+        "icon": "Delivered"
+      }
+    ]
+  }
+}

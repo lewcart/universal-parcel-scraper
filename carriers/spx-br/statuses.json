@@ -404,6 +404,110 @@
       "stage": "returned",
       "confirmedBy": "live",
       "note": "Back with the seller."
+    },
+    {
+      "code": "Created",
+      "wording": "O pedido foi criado",
+      "language": "pt",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with A000 and F000."
+    },
+    {
+      "code": "FMHub_Pickup_Done",
+      "wording": "Seu pacote foi coletado",
+      "language": "pt",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F100. The line opens with the first-mile hub in brackets."
+    },
+    {
+      "code": "FMHub_Received",
+      "wording": "Seu pacote foi recebido pelo hub de coleta",
+      "language": "pt",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F440. The first-mile hub, in brackets before the line, is the place."
+    },
+    {
+      "code": "FMHub_LHTransporting",
+      "wording": "Pacote […] está sendo transportado para […]",
+      "language": "pt",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F450. The transfer order, then the next facility."
+    },
+    {
+      "code": "SOC_LHUnloading",
+      "wording": "[…] unloading at […] via Linehaul Trip […]",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: English in every language. No order row stands for it."
+    },
+    {
+      "code": "SOC_LHUnloaded",
+      "wording": "[…] unloaded at […] via Linehaul Trip […]",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F580. English in every language."
+    },
+    {
+      "code": "SOC_Received",
+      "wording": "Seu pacote foi recebido pelo centro de triagem",
+      "language": "pt",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F510. The sorting centre, in brackets before the line, is the place."
+    },
+    {
+      "code": "SOC_LHTransporting",
+      "wording": "Pacote […] está sendo transportado para […]",
+      "language": "pt",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F540."
+    },
+    {
+      "code": "LMHub_LHUnloading",
+      "wording": "[…] unloading at […] via Linehaul Trip […]",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: English in every language. No order row stands for it."
+    },
+    {
+      "code": "LMHub_LHUnloaded",
+      "wording": "[…] unloaded at […] via Linehaul Trip […]",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: English in every language. No order row stands for it."
+    },
+    {
+      "code": "LMHub_Received",
+      "wording": "Seu pacote foi recebido pelo centro de distribuição",
+      "language": "pt",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F599. The last-mile hub, in brackets before the line, is the place."
+    },
+    {
+      "code": "Delivering",
+      "wording": "Seu pacote está sendo entregue pelo entregador",
+      "language": "pt",
+      "stage": "out_for_delivery",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F600."
+    },
+    {
+      "code": "Delivered",
+      "wording": "Seu pacote foi entregue",
+      "language": "pt",
+      "stage": "delivered",
+      "confirmedBy": "live",
+      "note": "Fleet feed: paired with F980. The line names who took the parcel after it, which is dropped."
     }
   ]
 }

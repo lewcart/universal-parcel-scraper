@@ -19,7 +19,17 @@ numbers carry a PH prefix.
   error names the refusal's codes, failing step and count, never its text. A 404 or a
   redirect is a moved route, and a web page in place of the JSON is a gateway's check.
 - The tracking object must name the number asked.
-- Recognition makes the same request.
+2. `legacy`: an inconclusive order lookup, such as a number its orders do not hold ("not found
+   spx order"), asks the fleet feed the tracker's scripts also read:
+   `GET https://spx.com.br/api/v2/fleet_order/tracking/search` with
+   `sls_tracking_number={number}|{seconds}{checksum}` and `x-language: br`. The checksum is the
+   SHA-256 of the number, the time and the public checksum configuration SPX's Taiwanese and
+   Philippine trackers share. The feed holds parcels the order system does not.
+
+- The feed's `-1217` is a parcel without scans. It answers an unknown number with a server error
+  and a rejected checksum with empty data, so these leave the order lookup's inconclusive answer;
+  the reply must also name the number asked. The recipient and phone fields are not read.
+- Recognition makes the same requests.
 
 ## Notes
 
@@ -45,8 +55,13 @@ numbers carry a PH prefix.
   centre often names it only there. Rows stored with the name in their wording keep their row.
 - The reply can list a customs check filed late among later scans; the history is ordered by
   the clocks.
-- Tracking codes give the stages. Brazilian customs holding or inspecting a parcel is customs,
-  its refusal to import is an exception, and every leg of a return is returned.
+- A fleet line opens with its hub in brackets. The hub leaves the wording and is the place of
+  the hub taking the parcel in; a pickup or a delivery keeps none. Line-haul transfers are in
+  English in every language and keep their transfer and trip ids. A delivery line drops who took
+  the parcel.
+- Tracking codes give the stages, and fleet statuses read like the order codes live parcels
+  paired them with. Brazilian customs holding or inspecting a parcel is customs, its refusal to
+  import is an exception, and every leg of a return is returned.
 
 ## Limitations
 

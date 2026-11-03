@@ -36,9 +36,26 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
   ['F999', 'returned'], // Back with the seller.
 ]);
 
-/** The stage SPX's code gives a scan. */
+/**
+ * The statuses of SPX's fleet feed, which the tracker reads for a number its order lookup
+ * does not hold. Each reads like the order code a live parcel paired it with; the line haul
+ * unloading at a hub has no order code of its own and is a transit scan.
+ */
+const FLEET: ReadonlyMap<string, Stage> = new Map(([
+  ['Created', 'registered'], // A000 and F000.
+  ['FMHub_Pickup_Done', 'accepted'], // F100.
+  ['FMHub_Received', 'in_transit'], ['FMHub_LHTransporting', 'in_transit'], // F440 and F450.
+  ['SOC_LHUnloading', 'in_transit'], ['SOC_LHUnloaded', 'in_transit'], // F580.
+  ['SOC_Received', 'in_transit'], ['SOC_LHTransporting', 'in_transit'], // F510 and F540.
+  ['LMHub_LHUnloading', 'in_transit'], ['LMHub_LHUnloaded', 'in_transit'], ['LMHub_Received', 'in_transit'], // F599.
+  ['Delivering', 'out_for_delivery'], // F600.
+  ['Delivered', 'delivered'], // F980.
+] as const).map(([status, stage]) => [status.toUpperCase(), stage]));
+
+/** The stage SPX's order code or fleet status gives a scan. */
 export function spxBrMappedStage(code: string): Stage | undefined {
-  return CODES.get(code.toUpperCase());
+  const key = code.toUpperCase();
+  return CODES.get(key) ?? FLEET.get(key);
 }
 
 /** A scan's stage: its code, else the shared wording rules, else nothing. */

@@ -6,6 +6,9 @@ domestic parcel from the seller's pickup to the door: hidden rows, a repeated so
 seller's location on the pickup, and a recipient's name in the tracking object and in a
 delivery line the page does not show. `in-transit.json` is a parcel from abroad held at Brazilian
 customs, with a customs check listed after a later scan and a seller pickup without a line of
-its own. `not-found.json` is the answer for a number SPX does not know.
+its own. `not-found.json` is the answer for a number SPX does not know. `fleet-delivered.json`
+follows the fleet feed's reply with `x-language: br` for a domestic delivery, newest scan first:
+hub lines, line-haul transfers in English, and a recipient's name and masked phone in the reply
+and in the delivery line.
 
 Numbers, names, IDs, places, coordinates and clocks are invented.

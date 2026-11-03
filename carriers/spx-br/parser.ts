@@ -1,5 +1,5 @@
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import { eventPoint, type CarrierEvent, type CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { epochSecondsTime } from '../../core/time/index.js';
@@ -134,12 +134,20 @@ export function parseSpxBr(payload: unknown, raw: string): CarrierResult {
   if (!Array.isArray(rows)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned a shipment with invalid scans');
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an oversized history');
 
-  const seen = new Set<string>();
   const events: CarrierEvent[] = [];
   for (const row of rows) {
     if (!isRecord(row)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid scan');
     const event = projectRow(row);
-    if (!event) continue;
+    if (event) events.push(event);
+  }
+  return summarize(events);
+}
+
+/** The result for a history's scans, each once and newest first. */
+function summarize(scans: readonly CarrierEvent[]): CarrierResult {
+  const seen = new Set<string>();
+  const events: CarrierEvent[] = [];
+  for (const event of scans) {
     const key = JSON.stringify(event);
     if (seen.has(key)) continue;
     seen.add(key);
@@ -163,4 +171,66 @@ export function parseSpxBr(payload: unknown, raw: string): CarrierResult {
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };
+}
+
+// The fleet feed's answer for a number it holds no scans for.
+const FLEET_NO_HISTORY = -1217;
+const FLEET_STATUS = /^[A-Za-z0-9_]{1,64}$/;
+// The hub a fleet line opens with: "[LM Hub_RJ_Exemplo] Seu pacote foi recebido pelo centro de distribuição".
+const HUB = /^\[((?:FM|LM) ?Hub_[^\]]{1,100}|SoC_[^\]]{1,100})\]\s*/i;
+// The bracketed name the feed's English line puts after a delivery.
+const LAST_NAMED = /\s*\[[^\]]*\]\s*$/;
+
+function projectFleetRow(row: Record<string, unknown>): CarrierEvent {
+  if (typeof row.status !== 'string' || !FLEET_STATUS.test(row.status.trim())) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid fleet status');
+  const code = row.status.trim();
+  if (typeof row.message !== 'string') throw new SchemaError(PROVIDER, 'SPX Express Brazil returned a scan without wording');
+  const worded = spxBrWording(row.message);
+  const line = code === 'Delivered' ? clean(worded.replace(LAST_NAMED, ''), 500) : worded;
+  // The hub leaves the wording, so it reads the same from hub to hub, and is the place of
+  // the hub taking the parcel in. A pickup or a delivery names the hub that made it, not
+  // where it happened.
+  const hub = HUB.exec(line);
+  const description = hub ? line.slice(hub[0].length) : line;
+  if (!description) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned a scan without wording');
+  const location = hub && /_Received$/i.test(code) ? clean(hub[1], 120) : '';
+  const clock = row.timestamp;
+  const time = typeof clock === 'number' && Number.isSafeInteger(clock) && clock >= 1_000_000_000 && clock < 10_000_000_000
+    ? epochSecondsTime(clock)?.iso : undefined;
+  if (!time) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid scan time');
+  const staged = spxBrStage(code, description);
+  return {
+    time, ...(location ? { location } : {}), description, provider_code: code,
+    ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
+  };
+}
+
+/**
+ * The reply of the tracker's fleet feed for one number, which it reads when the order
+ * lookup does not hold the number. The feed names no missing parcel: an unknown number
+ * fails like any other lookup, so only a reply naming the number asked counts. Shopee's
+ * gateway answers a refused request with an action instead of a reply, and a checksum it
+ * rejects with empty data. The recipient and phone fields are not read.
+ */
+export function parseSpxBrFleet(payload: unknown, raw: string): CarrierResult {
+  const number = normalizeSpxBrNumber(raw);
+  if (!isRecord(payload)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid fleet envelope');
+  if (payload.retcode === undefined && (payload.action_type !== undefined || payload.redirect_to_error_page !== undefined)) {
+    throw new ChallengeError(PROVIDER, "SPX Express Brazil's gateway refused the fleet lookup");
+  }
+  if (typeof payload.retcode !== 'number') throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid fleet envelope');
+  if (payload.retcode === FLEET_NO_HISTORY) throw new NoHistoryError(PROVIDER);
+  if (payload.retcode !== 0) throw new IndeterminateError(PROVIDER, `SPX Express Brazil's fleet feed did not complete the lookup (retcode ${payload.retcode})`);
+  if (!isRecord(payload.data)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned no fleet data');
+  const data = payload.data;
+  if (!Object.keys(data).length) throw new IndeterminateError(PROVIDER, "SPX Express Brazil's fleet feed returned an empty reply");
+  if (typeof data.sls_tracking_number !== 'string') throw new SchemaError(PROVIDER, 'SPX Express Brazil returned a shipment without its number');
+  if (normalizeTrackingNumber(clean(data.sls_tracking_number, 64)) !== number) throw new IndeterminateError(PROVIDER, 'SPX Express Brazil answered for another shipment');
+  const rows = data.tracking_list ?? [];
+  if (!Array.isArray(rows)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned a shipment with invalid scans');
+  if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an oversized history');
+  return summarize(rows.map((row) => {
+    if (!isRecord(row)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid scan');
+    return projectFleetRow(row);
+  }));
 }

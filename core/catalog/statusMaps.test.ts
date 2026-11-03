@@ -1711,6 +1711,9 @@ describe("universal providers' answers", () => {
       ['Awaiting your Vinted parcel', 'registered'], ['Expecting Your Parcel', 'registered'],
       ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'], ['Collection Complete', 'delivered'],
       ['Export Scan', 'in_transit'],
+      // SPX's fleet feed hubs, and BRT's branch arrival on a DPD parcel delivered in Italy, as ParcelsApp relays them.
+      ['Your parcel has been received by pickup hub', 'in_transit'], ['Your parcel has been received by delivery hub', 'in_transit'],
+      ['In filiale', 'in_transit'],
       ['Received in warehouse', 'accepted'], ['Item deposited to local postal operator', 'in_transit'],
       ['Item handed over to subcontractor', 'in_transit'], ['Item announced', 'registered'], ['Item sent', 'in_transit'],
       ['Origin Post is Preparing Shipment', 'registered'], ['Item posted abroad', 'accepted'],

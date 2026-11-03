@@ -361,6 +361,12 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^order registered[.!]?$|^pickup scheduled for \d{1,2}\/\d{1,2}\/\d{2,4}[.!]?$/i.test(value)) return 'registered';
   if (/^pickup completed, no exceptions[.!]?$/i.test(value)) return 'accepted';
   if (/^furniture received by metro-(?:[^-]{1,40}-)?hub[.!]?$/i.test(value)) return 'in_transit';
+  // SPX's fleet feed, as ParcelsApp relays it in English: its first-mile and last-mile hubs taking the
+  // parcel in, as SPX's own maps read FMHub_Received and LMHub_Received.
+  if (/^your parcel has been received by (?:pickup|delivery) hub[.!]?$/i.test(value)) return 'in_transit';
+  // BRT's arrival at the delivering branch ("Arrivata in filiale"), as ParcelsApp relays it for DPD's
+  // parcels delivered in Italy.
+  if (/^in filiale[.!]?$/i.test(value)) return 'in_transit';
   // SF Express's pickup notice, which goes on to name the courier.
   if (/^sf express has received your package\b/i.test(value)) return 'accepted';
   // iMile's scans as aggregators relay them, its 【】 place names cut or dropped.

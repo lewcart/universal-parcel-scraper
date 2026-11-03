@@ -47,6 +47,11 @@ provider. Compact replies are accepted only on the local Chromium path.
 a matching `UNTRACEABLE` is inconclusive. `FOUND`/`NO_INFO` stay intermediate while
 `inProgress` is true, and a completed empty lookup is inconclusive. Replies for other
 numbers or handles cannot end the lookup.
+A number no carrier is named for can keep Postal Ninja searching its couriers past the
+30 s chain budget. A capture whose newest reply for the number still says so with no scan
+shown (`PROCESSING`, or `FOUND` still `inProgress` without an event) is no history yet
+(`NoHistoryError`, reason `still_searching`). Any other capture without full history is a
+capture failure.
 
 ## Protection layers
 

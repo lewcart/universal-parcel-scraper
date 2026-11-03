@@ -417,6 +417,25 @@ describe('Postal Ninja TRAWL capture', () => {
     expect(result.events).toEqual(parsePostalNinjaResponse(found, number).events);
     await expect(setup(captured([entry(compact)])).tracker.fetch(number)).rejects.toMatchObject({kind: 'indeterminate'});
   });
+
+  it('reads a capture that ends while Postal Ninja still searches, with no scan shown, as no history yet', async () => {
+    const searching = {...found, inProgress: true, track: {...found.track, state: 'NO_INFO', events: undefined}};
+    const submitted = entry({status: 'PROCESSING', tc: number, hid: found.hid}, check);
+    for (const entries of [[submitted], [submitted, entry(searching)]]) {
+      await expect(setup(captured(entries)).tracker.fetch(number))
+        .rejects.toMatchObject({name: 'NoHistoryError', kind: 'indeterminate', reason: 'still_searching'});
+    }
+    // A scan shown, a completed reply or another number's search is a capture that failed.
+    const compact = {...found, track: {...found.track, events: undefined, lastEv: found.track.events.at(-1)}};
+    for (const entries of [
+      [submitted, entry({...compact, inProgress: true})],
+      [submitted, entry(compact)],
+      [entry({status: 'PROCESSING', tc: 'OTHER123', hid: 'other'}, check)],
+    ]) {
+      await expect(setup(captured(entries)).tracker.fetch(number))
+        .rejects.toMatchObject({name: 'TrackingCaptureError', reason: 'history_missing'});
+    }
+  });
 });
 
 describe('Postal Ninja widget lookup', () => {

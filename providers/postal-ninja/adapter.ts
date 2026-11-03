@@ -50,6 +50,28 @@ function isMatchingResultPage(page: TrawlScrapeResponse, number: string): boolea
   });
 }
 
+/**
+ * Whether Postal Ninja's newest reply about the number, in arrival order, says it is still
+ * searching its couriers and has shown no scan: the submission's `PROCESSING`, or a `FOUND`
+ * reply still `inProgress` with no event. A number no carrier is named for can take longer
+ * than the lookup's budget, so the capture ends before the results page could load.
+ */
+function stillSearching(page: TrawlScrapeResponse, number: string): boolean {
+  let searching = false;
+  for (const entry of page.capturedResponses) {
+    if ((entry.url !== GET_API && entry.url !== CHECK_API) || entry.status !== 200 || !entry.body) continue;
+    let payload: unknown;
+    try { payload = JSON.parse(entry.body); } catch { continue; }
+    if (!isRecord(payload)) continue;
+    if (payload.status === 'PROCESSING' && payload.tc === number) searching = true;
+    else if (payload.status === 'FOUND' && isRecord(payload.track) && payload.track.tc === number) {
+      const { events, firstEv, lastEv } = payload.track;
+      searching = payload.inProgress === true && firstEv == null && lastEv == null && !(Array.isArray(events) && events.length);
+    }
+  }
+  return searching;
+}
+
 export function parsePostalNinjaResponse(payload: unknown, trackingNumber: string, timezone: string | null = null,
   carrier: string | null = null): CarrierResult {
   const number = numberOf(trackingNumber);
@@ -204,7 +226,10 @@ export class PostalNinjaTracker {
           try { return parsePostalNinjaResponse(payload, number, timezone, carrier); }
           catch (error) { if (error instanceof SchemaError) pending ??= error; else throw error; }
         }
-        throw submissionError ?? pending ?? captureFailure(page, spec);
+        // Postal Ninja still searching, with no scan to show, has no history for the number yet.
+        throw submissionError ?? pending ?? (stillSearching(page, number)
+          ? new NoHistoryError(SOURCE, 'Postal Ninja was still searching for the shipment', { reason: 'still_searching' })
+          : captureFailure(page, spec));
       },
     }, {
       id: 'browser',

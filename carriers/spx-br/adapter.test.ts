@@ -198,8 +198,11 @@ describe('SPX Express Brazil HTTP adapter', () => {
     expect(() => parseSpxBr(fixture('not-found'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     // Several parcels under one number, or a failure of its own, do not say the parcel is missing.
     const several = { ...fixture('not-found'), message: String(fixture('not-found').message).replace('find [0]', 'find [2]') };
-    expect(() => parseSpxBr(several, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(() => parseSpxBr({ retcode: 2001, message: 'param is invalid' }, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseSpxBr(several, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate',
+      message: 'SPX Express Brazil did not complete the lookup (retcode 2 -2023002, in GetLogisticOrderIndexMap, 2 found)' }));
+    // The logs name the refusal by its codes, never by the reply's own words.
+    expect(() => parseSpxBr({ retcode: 2001, message: `param is invalid: ${UNKNOWN}` }, UNKNOWN))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'SPX Express Brazil did not complete the lookup (retcode 2001)' }));
     expect(() => parseSpxBr({ retcode: 0, data: { fulfillment_info: {} } }, UNKNOWN))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
     expect(() => parseSpxBr(changed('delivered', (tracking) => { tracking.records = []; }), DELIVERED))

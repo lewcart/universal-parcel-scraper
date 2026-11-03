@@ -103,6 +103,15 @@ function projectRow(row: Record<string, unknown>): CarrierEvent | null {
   };
 }
 
+/** The refusal's codes, failing step and count, for the logs; none of the reply's own text. */
+function refusal(retcode: number, message: unknown): string {
+  const text = typeof message === 'string' ? message.slice(0, 2000) : '';
+  const inner = /\bretcode:(-?\d{1,12})/.exec(text)?.[1];
+  const step = /\bFuncName\[([A-Za-z]{1,80})\]/.exec(text)?.[1];
+  const found = /\bfind \[(\d{1,6})\]/.exec(text)?.[1];
+  return [`retcode ${retcode}${inner ? ` ${inner}` : ''}`, ...(step ? [`in ${step}`] : []), ...(found ? [`${found} found`] : [])].join(', ');
+}
+
 /**
  * The reply of the tracker's `get_order_info` for one number. A number SPX
  * does not know fails with the order index's count of none, which the page
@@ -114,7 +123,7 @@ export function parseSpxBr(payload: unknown, raw: string): CarrierResult {
   if (!isRecord(payload) || typeof payload.retcode !== 'number') throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid envelope');
   if (payload.retcode !== 0) {
     if (typeof payload.message === 'string' && UNKNOWN.test(payload.message)) throw new NotFoundError(PROVIDER);
-    throw new IndeterminateError(PROVIDER, 'SPX Express Brazil did not complete the lookup');
+    throw new IndeterminateError(PROVIDER, `SPX Express Brazil did not complete the lookup (${refusal(payload.retcode, payload.message)})`);
   }
   if (!isRecord(payload.data)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned no tracking data');
   const tracking = payload.data.sls_tracking_info;

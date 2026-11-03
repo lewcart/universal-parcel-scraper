@@ -15,7 +15,8 @@ numbers carry a PH prefix.
 
 - An unknown number is HTTP 200 with a non-zero `retcode` whose message says the order index
   found none (`find [0]`). The page shows "Sua busca não gerou resultados" for that and for any
-  other failure, so only that message is not found; other failures are inconclusive. A 404 or a
+  other failure, so only that message is not found; other failures are inconclusive, and their
+  error names the refusal's codes, failing step and count, never its text. A 404 or a
   redirect is a moved route, and a web page in place of the JSON is a gateway's check.
 - The tracking object must name the number asked.
 - Recognition makes the same request.

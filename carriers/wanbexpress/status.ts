@@ -1,5 +1,5 @@
 import type { Stage } from '../../core/status/index.js';
-import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import { normalizeStatusWording, SHARED_WORDINGS, type CarrierStatusMap } from '../../core/status/statusMap.js';
 import { imileMappedStage } from '../imile/status.js';
 
 const STAGES: Readonly<Record<string, Stage>> = {
@@ -25,7 +25,8 @@ const UNCODED: ReadonlyMap<string, Stage> = new Map([
  */
 export function wanbStage(code: string | null, wording: string): Stage | null | undefined {
   if (code && Object.hasOwn(STAGES, code)) return STAGES[code];
-  return (code ? undefined : UNCODED.get(normalizeStatusWording(wording))) ?? imileMappedStage('', wording);
+  const normalized = normalizeStatusWording(wording);
+  return (code ? undefined : UNCODED.get(normalized) ?? SHARED_WORDINGS.get(normalized)) ?? imileMappedStage('', wording);
 }
 
 export const statusMap: CarrierStatusMap = {

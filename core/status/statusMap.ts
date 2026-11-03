@@ -42,3 +42,13 @@ export interface CarrierStatusMap {
 export function normalizeStatusWording(description: string): string {
   return description.toLocaleLowerCase('en-US').trim().split(/\s+/).join(' ').slice(0, 500);
 }
+
+/**
+ * Sentences several carriers' trackers relay word for word, by `normalizeStatusWording` wording,
+ * with the stage they have wherever they appear. A carrier's map consults this after its own.
+ */
+export const SHARED_WORDINGS: ReadonlyMap<string, Stage> = new Map([
+  // The sender has not handed the parcel over yet. Dated after a movement, it reads as one
+  // (`readLateRegistrations`).
+  [normalizeStatusWording('Your package is being prepared by the sender and will be handed over to us soon'), 'registered'],
+]);

@@ -27,7 +27,9 @@ The tracking reply must name the requested parcel and identify a parcel-ID match
 and delivery-number matches stay inconclusive. Only the explicit unknown-parcel envelope is
 not-found. Scans carry UTC instants; their display offsets are not applied a second time.
 The last-mile partner's scans, iMile's on a parcel to Germany, come in the partner's sentences
-and mostly without a code: they take the stage iMile's map gives those sentences.
+and mostly without a code: they take the stage iMile's map gives those sentences. A sentence
+other trackers relay word for word, such as a partner's announcement that the sender is still
+preparing the parcel, takes the stage of the shared map (`SHARED_WORDINGS`).
 Once WanbExpress has relabelled the parcel for its courier, the reply's metadata carries the
 courier's number, which the tracker shows as `TrackingNo`, and the shipping service. The
 tracker's last-mile panel names that service's courier from

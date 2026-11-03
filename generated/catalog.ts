@@ -11201,7 +11201,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
   },
   "cargo-trans-logistik": {
     "displayName": "CTL Cargo Trans Logistik",
-    "color": "#3c5879",
+    "color": "#eb5e50",
     "aliases": [
       "Cargo Trans Logistik",
       "Cargo Trans Logistik AG",

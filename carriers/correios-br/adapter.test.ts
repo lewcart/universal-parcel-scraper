@@ -292,10 +292,13 @@ describe('Correios session and transport', () => {
     await expect(interrupted).rejects.toMatchObject({ kind: 'transport' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const p = portal();
+    // Cancel once OCR has started, so a slow machine cannot spend a short budget before the solver runs.
+    const duringOcr = new AbortController();
     const solver = vi.fn(async (_bytes: Uint8Array, signal: AbortSignal): Promise<string> => new Promise((_resolve, reject) => {
       signal.addEventListener('abort', () => reject(signal.reason), { once: true });
+      duringOcr.abort();
     }));
-    const result = new CorreiosTracker({ fetcher: p.fetcher, solveCaptcha: solver }).fetch(NUMBER, { budgetMs: 25 });
+    const result = new CorreiosTracker({ fetcher: p.fetcher, solveCaptcha: solver }).fetch(NUMBER, { signal: duringOcr.signal });
     await expect(result).rejects.toBeInstanceOf(Error);
     expect(solver).toHaveBeenCalledTimes(1);
     expect(p.calls).toHaveLength(2);

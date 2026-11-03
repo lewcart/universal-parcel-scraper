@@ -373,9 +373,13 @@ export function parseGLSSwitzerlandTrackingResponse(
   const status = isReturnParcel(parcel)
     ? 'exception'
     : currentMetadata?.status ?? latestKnownEvent?.status ?? 'unknown';
+  // GLS's progress bar has no step for the hand-over: once GLS has the parcel its heading reads in transit, while the
+  // newest scan, the acceptance, says where the parcel is more precisely. Reading the heading would put the result a
+  // step ahead of every scan.
+  const headingStage = currentMetadata?.stage === 'in_transit' && events[0]?.stage === 'accepted' ? 'accepted' : currentMetadata?.stage;
   const stage = isReturnParcel(parcel)
     ? 'returned'
-    : currentMetadata?.stage ?? latestKnownEvent?.event.stage ?? 'in_transit';
+    : headingStage ?? latestKnownEvent?.event.stage ?? 'in_transit';
   const shop = parcelShop(parcel) ?? parcelShopName(parcel);
   const weight = parcelWeight(parcel);
   const pickup = stage === 'ready_for_pickup' && shop ? { pickup_point: shop } : {};

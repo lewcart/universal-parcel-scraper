@@ -48,7 +48,9 @@ upstream error.
 - Status comes from the progress-bar code, then the newest classified event.
   The displayed text is the newest event's wording, because the heading text
   goes stale (a locker drop reads "Delivered" while the parcel still waits).
-  `DELIVEREDPS` is `ready_for_pickup`. `retourFlag` forces a return.
+  `DELIVEREDPS` is `ready_for_pickup`. `retourFlag` forces a return. The bar has
+  no hand-over step: an `INTRANSIT` heading over a newest scan that is the
+  acceptance keeps `accepted`, so the result is never a step ahead of every scan.
 - Codes beat wording: codes are stable across languages. Rows without a code use
   wording rules ordered negatives first, then `core/status`'s multilingual
   classifier. A row keeps its event number as `provider_code`, not its status

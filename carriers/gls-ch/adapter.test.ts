@@ -225,6 +225,21 @@ describe('GLS Switzerland response normalization', () => {
     expect(result.events?.map((event) => event.stage)).toEqual(history.map(([, stage]) => stage));
   });
 
+  it('keeps the hand-over the newest scan names while the progress bar already reads in transit', () => {
+    const history = [
+      { date: '2026-06-19', time: '19:31:24', evtDscr: 'The parcel was handed over to GLS.' },
+      { date: '2026-06-19', time: '03:55:49', evtDscr: 'The parcel data was entered into the GLS IT system; the parcel was not yet handed over to GLS.' },
+    ];
+    const read = (statusInfo: string, rows = history) => parseGLSSwitzerlandTrackingResponse({
+      tuNo: OFFICIAL_TEST_PARCEL_NUMBER, progressBar: { statusInfo }, history: rows,
+    }, OFFICIAL_TEST_PARCEL_NUMBER);
+    expect(read('INTRANSIT')).toMatchObject({ status: 'in_transit', current_stage: 'accepted', last_status_text: 'The parcel was handed over to GLS.' });
+    // A heading past transit still leads, and so does transit once a scan has moved the parcel on.
+    expect(read('INDELIVERY').current_stage).toBe('out_for_delivery');
+    expect(read('INTRANSIT', [{ date: '2026-06-20', time: '13:14:20', evtDscr: 'The parcel has left the parcel center.' }, ...history]).current_stage)
+      .toBe('in_transit');
+  });
+
   it.each([
     ['The parcel has been released by customs.', 'in_transit'],
     ['The parcel has been handed over to GLS.', 'accepted'],

@@ -394,6 +394,19 @@ describe('Hermes Germany', () => {
     await expect(hermes.recognize!('001234567890128')).resolves.toMatchObject({ known: true });
   });
 
+  it('records each request as a step, a recognition ask among them', async () => {
+    const replies = [new Response(JSON.stringify(delivered())), new Response('', { status: 404 })];
+    const fetcher = vi.fn<typeof fetch>(async () => replies.shift()!);
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    const hermes = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder });
+    expect(hermes.recordsSteps).toBe(true);
+    await expect(hermes.recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    await expect(hermes.track({ number: NUMBER })).rejects.toMatchObject({ kind: 'not_found' });
+    expect(recorder.step.mock.calls.map(([event]) => [event.carrier, event.step, event.outcome]))
+      .toEqual([['hermes-de', 'direct', 'ok'], ['hermes-de', 'direct', 'not_found']]);
+    expect(recorder.lookup).toHaveBeenCalledTimes(2);
+  });
+
   it('answers a number Hermes does not issue without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
     await expect(new HermesGermanyTracker({ fetcher }).fetch('1234')).rejects.toMatchObject({ kind: 'invalid_input' });

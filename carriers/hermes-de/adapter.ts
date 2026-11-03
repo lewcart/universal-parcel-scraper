@@ -1,11 +1,13 @@
 
 import { DateTime } from 'luxon';
-import { lookupBudget, readerLanguage, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { readerLanguage, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { carrierLinkRules, matchesDomain } from '../../core/catalog/linkRules.js';
 import { isValidHermesParcelNumber, normalizeTrackingNumber, parseTrackingInput } from '../../core/detection/index.js';
 import { InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { listsNewestFirst } from '../../core/result/order.js';
+import { runSteps } from '../../core/runner/index.js';
+import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { firstOccurrence } from '../../core/time/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
@@ -28,6 +30,7 @@ export interface HermesGermanyOptions {
   /** Test seam; production uses the global fetch. */
   fetcher?: typeof fetch;
   userAgent?: string;
+  recorder?: StepRecorder;
 }
 
 export { STATUSES } from './status.js';
@@ -264,15 +267,17 @@ export class HermesGermanyTracker {
   readonly timeoutMs: number;
   readonly #fetcher: typeof fetch | undefined;
   readonly #userAgent: string;
+  readonly #recorder: StepRecorder;
 
   constructor(options: number | HermesGermanyOptions = {}) {
-    const { timeoutMs = DEFAULT_TIMEOUT_MS, fetcher, userAgent } = typeof options === 'number'
-      ? { timeoutMs: options, fetcher: undefined, userAgent: undefined }
+    const { timeoutMs = DEFAULT_TIMEOUT_MS, fetcher, userAgent, recorder } = typeof options === 'number'
+      ? { timeoutMs: options, fetcher: undefined, userAgent: undefined, recorder: undefined }
       : options;
     if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) throw new TypeError('Hermes Germany timeout must be positive');
     this.timeoutMs = timeoutMs;
     this.#fetcher = fetcher;
     this.#userAgent = userAgentOf(userAgent);
+    this.#recorder = recorder ?? NOOP_RECORDER;
   }
 
   /**
@@ -281,32 +286,36 @@ export class HermesGermanyTracker {
    */
   async fetch(trackingNumber: string, context: TrackingContext = {}, references = false, language: 'de' | 'en' = 'en'): Promise<CarrierResult> {
     const number = normalizeHermesGermanyNumber(trackingNumber);
-    const budget = lookupBudget(context, this.timeoutMs);
-    const { response, bytes } = await fetchBounded(`${API}${encodeURIComponent(number)}`, {
-      signal: budget.signal,
-      headers: {
-        Accept: 'application/json',
-        'X-Language': language,
-        Referer: 'https://www.myhermes.de/',
-        'User-Agent': this.#userAgent,
-      },
-    }, {
-      provider: PROVIDER,
-      timeoutMs: Math.min(this.timeoutMs, budget.remainingMs()),
-      maxBytes: 750_000,
-      allowHttpError: true,
-      ...(this.#fetcher ? { fetcher: this.#fetcher } : {}),
-    });
-    if (response.status === 404) throw new HermesGermanyTrackingError();
-    if (!response.ok) throw new UpstreamHttpError(PROVIDER, response.status);
-    return parseHermesGermanyResponse(parseJsonBytes(bytes, PROVIDER), number, { references });
+    // Recorded as a step, so that a recognition ask shows in the consumer's lookups as a lookup does.
+    return runSteps({ carrier: 'hermes-de', budgetMs: context.budgetMs ?? this.timeoutMs, signal: context.signal,
+      recorder: this.#recorder }, [{ id: 'direct', run: async ({ signal, remainingMs }) => {
+      const { response, bytes } = await fetchBounded(`${API}${encodeURIComponent(number)}`, {
+        signal,
+        headers: {
+          Accept: 'application/json',
+          'X-Language': language,
+          Referer: 'https://www.myhermes.de/',
+          'User-Agent': this.#userAgent,
+        },
+      }, {
+        provider: PROVIDER,
+        timeoutMs: Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))),
+        maxBytes: 750_000,
+        allowHttpError: true,
+        ...(this.#fetcher ? { fetcher: this.#fetcher } : {}),
+      });
+      if (response.status === 404) throw new HermesGermanyTrackingError();
+      if (!response.ok) throw new UpstreamHttpError(PROVIDER, response.status);
+      return parseHermesGermanyResponse(parseJsonBytes(bytes, PROVIDER), number, { references });
+    } }]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new HermesGermanyTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
+  const tracker = new HermesGermanyTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return {
     id: 'hermes-de',
+    recordsSteps: true,
     steps: ['direct'],
     track: (input, context) => tracker.fetch(input.number, context, true, readerLanguage(input, ['de']) ?? 'en'),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context)),

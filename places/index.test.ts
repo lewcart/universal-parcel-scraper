@@ -641,6 +641,13 @@ describe('placesForEvents', () => {
     expect(locatePlace('VIC')).toMatchObject({ country: 'ES', name: 'Vic' });
     expect(locatePlace('SA', { countries: ['AU', 'SA'] })).toMatchObject({ country: 'SA', precision: 'country' });
     expect(locatePlace('SA', { countries: ['FR'] })?.country).toBe('SA');
+    // A reply that writes a country by its code alone writes its others so: Meest's "NL" beside its "US".
+    const coded = placesForEvents(['US', 'NL'], { carriers: ['meest'] });
+    expect(coded.map((found) => found && [found.country, found.precision])).toEqual([['US', 'country'], ['NL', 'country']]);
+    expect(coded[1]?.region).toBeUndefined();
+    // Alone, the letters stay the province of a country the carrier serves; beside "AU", "SA" stays South Australia.
+    expect(placesForEvents(['NL'], { carriers: ['meest'] })[0]).toMatchObject({ country: 'CA', region: 'NL' });
+    expect(placesForEvents(['AU', 'SA'], { destinationCountry: 'AU' })[1]).toMatchObject({ country: 'AU', region: 'SA' });
   });
 
   it('moves every scan with the same text to a point the carrier gave for one of them', () => {

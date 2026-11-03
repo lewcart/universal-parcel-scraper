@@ -95,7 +95,10 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
 - A state or province written alone by its code ("WA", "VIC, AU", "SA AUSTRALIA") is in the
   first country the parcel is likely in that has it, before the country, town or airport its
   letters also name (Saudi Arabia, Vic in Spain, Tashkent). The place is that country's and `region` holds the
-  code. Letters that are also a country's keep naming it on a parcel through that country.
+  code. Letters that are also a country's keep naming it on a parcel through that country, and
+  where another scan names a country by its code alone: Meest's "NL" beside its "US" is the
+  Netherlands, not Newfoundland. A code alone for the state's own country ("AU" beside "SA")
+  keeps the state.
 - Two letters after the town are a country when a town of that name is there ("MONTE CARLO
   MC"), or when the parcel is. Otherwise they may be a province or an office: "PINEROLO
   (TO)" is in the province of Turin, not Tonga, and Royal Mail's "Norwich MC" is a mail

@@ -1430,7 +1430,19 @@ export function placesForEvents(
   } = {},
 ): (EventPlace | null)[] {
   const base = [...new Set([destinationCountry, ...carrierCountries, ...carriers.flatMap(carrierHomes)].filter((code): code is string => Boolean(code)))];
-  const looked = locations.map((location) => cachedPlace(location, base, carriers));
+  const read = locations.map((location) => cachedPlace(location, base, carriers));
+  // A carrier that writes a scan's place as a country's code alone ("US") writes its others so: Meest's
+  // "NL" is the Netherlands, not Newfoundland in Canada, which it also serves. A code alone for the
+  // state's own country ("AU" beside "SA") keeps the state.
+  const codes = locations.map((location) => /^[A-Z]{2}$/.test(location?.trim() ?? '') ? location!.trim() : null);
+  const countryCoded = read.some((found, index) => codes[index] && found?.place.precision === 'country' && !found.place.region
+    && found.place.country === codes[index]);
+  const coded = (found: Located | null, index: number): Located | null => {
+    const code = codes[index];
+    return countryCoded && code && found?.place.region && found.place.country !== code && !codes.includes(found.place.country)
+      ? countryPlace(gazetteer(), code, true) ?? found : found;
+  };
+  const looked = read.map(coded);
   // A carrier can place some scans of an office and not others: they all share it.
   const pointAt = new Map<string, EventPoint>();
   locations.forEach((location, index) => {
@@ -1531,7 +1543,7 @@ export function placesForEvents(
     const after = nearest(first, index, 1, telling)?.place.country;
     const neighbours = [...new Set([before, after].filter((code): code is string => Boolean(code)))];
     if (!neighbours.length || neighbours.every((code) => base.includes(code))) return ownPlace(location, first[index]!, index);
-    return ownPlace(location, cachedPlace(location, [...neighbours, ...base.filter((code) => !neighbours.includes(code))], carriers)
+    return ownPlace(location, coded(cachedPlace(location, [...neighbours, ...base.filter((code) => !neighbours.includes(code))], carriers), index)
       ?? (telling(first[index]!, index) ? first[index]! : null), index);
   });
   // Of towns a country shares a name between, the one nearer the scans around it: "Kennington"

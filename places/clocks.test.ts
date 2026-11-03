@@ -126,6 +126,20 @@ describe('dateLocalClocks', () => {
     ]);
   });
 
+  it('dates a country written by its code alone on that country\'s clock, beside another so written', () => {
+    // Live shape: Meest serves Canada, and its "NL" was read as Newfoundland, three and a half hours behind the scan.
+    const scans = dateLocalClocks('meest', { status: 'in_transit', events: [
+      { local_time: '2026-11-02T15:27:00', description: 'Pending customs clearance', location: 'NL' },
+      { local_time: '2026-11-02T15:18:00', description: 'Batch of parcels Arrival at transit hub', location: 'NL' },
+      { local_time: '2026-10-30T13:23:25', description: 'Posting / Collection', location: 'US' },
+    ] }).events!.map(dated);
+    expect(scans).toEqual([
+      ['2026-11-02T15:27:00+01:00', 'Europe/Amsterdam', 'place'],
+      ['2026-11-02T15:18:00+01:00', 'Europe/Amsterdam', 'place'],
+      ['2026-10-30T13:23:25-04:00', 'America/New_York', 'place'],
+    ]);
+  });
+
   it('dates a landing with no place after it on the destination’s clock, not the clock of the country the parcel left', () => {
     const scans = (destination_country?: string, events: CarrierEvent[] = []) => dateLocalClocks('yunexpress', { status: 'in_transit', destination_country, events: [
       { local_time: '2026-10-28T16:33:00', description: 'Export customs clearance completed', location: 'Shenzhen' },

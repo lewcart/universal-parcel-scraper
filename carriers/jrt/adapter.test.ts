@@ -42,6 +42,18 @@ describe('JRT tracking adapter', () => {
     expect(String(fetcher.mock.calls[1]![1]!.body)).toBe(`documentCode=${REFERENCE}`);
   });
 
+  it('hands an order its page shows under DHL’s number to DHL, as the interface does', () => {
+    const handed = page('page-registered').replaceAll('JRT0000000000ZZ', 'CJ000000005DE');
+    const result = parseJrtPage(handed, REFERENCE, READ_AT);
+    expect(result).toMatchObject({ delivery_carrier: 'dhl', delivery_tracking_number: 'CJ000000005DE' });
+    expect(result).not.toHaveProperty('canonical_tracking_number');
+    // A number no rule claims for DHL is shown, and handed to no one.
+    const other = parseJrtPage(page('page-registered').replaceAll('JRT0000000000ZZ', '000000000012'), REFERENCE, READ_AT);
+    expect(other).toMatchObject({ delivery_tracking_number: '000000000012' });
+    expect(other).not.toHaveProperty('delivery_carrier');
+    expect(other).not.toHaveProperty('canonical_tracking_number');
+  });
+
   it('reads JRT’s own number on the same page, and an unknown number as not found', async () => {
     expect(parseJrtPage(page('page-registered'), 'JRT0000000000ZZ', READ_AT).canonical_tracking_number).toBeUndefined();
     expect(parseJrtTrack(fixture('no-track'), 'JRT0000000000ZZ', READ_AT)).toBeNull();

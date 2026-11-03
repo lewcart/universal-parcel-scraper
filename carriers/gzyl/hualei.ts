@@ -385,6 +385,16 @@ function trackRow(raw: unknown, provider: string): HualeiRow {
   };
 }
 
+/** The first number whose own high-confidence rule names a carrier the tenant hands to without naming it. */
+function unlabelledPartner(numbers: readonly string[], tenant: HualeiTenant): Facts['partner'] {
+  for (const number of numbers) {
+    const detected = number ? detectCarrierMatch(number) : undefined;
+    const carrier = detected?.confidence === 'high' ? detected.carrier : undefined;
+    if (carrier && tenant.unlabelledPartners?.includes(carrier)) return { carrier, number };
+  }
+  return undefined;
+}
+
 /**
  * The delivery carrier and its number: the channel's transfer number, else the
  * tracking number, which some lines fill with the delivery carrier's. Without
@@ -396,11 +406,8 @@ function partnerOf(record: JsonObject, destination: string, tenant: HualeiTenant
   const { provider } = tenant;
   const label = text(record, 'channel_name', provider, 100);
   if (!label) {
-    for (const number of [identity(text(record, 'business_channeltransfercode', provider, 64)), downstream]) {
-      const detected = number ? detectCarrierMatch(number) : undefined;
-      const carrier = detected?.confidence === 'high' ? detected.carrier : undefined;
-      if (carrier && tenant.unlabelledPartners?.includes(carrier)) return { carrier, number };
-    }
+    const unlabelled = unlabelledPartner([identity(text(record, 'business_channeltransfercode', provider, 64)), downstream], tenant);
+    if (unlabelled) return unlabelled;
     const product = downstream ? text(record, 'productKindName', provider, 100) : '';
     const named = product ? tenant.productPartners?.find(([pattern]) => pattern.test(product))?.[1] : undefined;
     return named && takes(named, downstream, destination) ? { carrier: named, number: downstream } : undefined;
@@ -550,11 +557,15 @@ export function parseHualeiPage(html: string, raw: string, tenant: HualeiTenant,
   const waybill = bound[0]!;
   if (waybill.rows.length > MAX_ROWS) throw new SchemaError(provider, `${provider} returned an invalid history`);
   const tracking = identity(waybill.cells.get('跟踪号码') ?? '');
-  // The numbers such a tenant's page shows are the delivery carrier's, never its own.
-  const downstream = tenant.pageEcho ? identity(waybill.cells.get('渠道转单号') ?? '') || tracking : '';
+  const transfer = identity(waybill.cells.get('渠道转单号') ?? '');
+  // The numbers a page-echo tenant's page shows are the delivery carrier's, never its own; on a
+  // tenant that names its own numbers, as on the interface, so is a tracking number of another shape.
+  const handed = Boolean(tenant.ownNumber && tracking && !tenant.ownNumber.test(tracking));
+  const downstream = tenant.pageEcho ? transfer || tracking : handed ? tracking : '';
+  // The page names no channel or product, so only a partner the tenant hands to unnamed is read.
   return result(waybill.rows, {
-    number, tracking: tenant.pageEcho ? '' : tracking, ...(downstream ? { downstream } : {}),
-    destination: (waybill.cells.get('目的地') ?? '').toUpperCase(),
+    number, tracking: tenant.pageEcho || handed ? '' : tracking, ...(downstream ? { downstream } : {}),
+    destination: (waybill.cells.get('目的地') ?? '').toUpperCase(), partner: unlabelledPartner([transfer, downstream], tenant),
   }, tenant, readAt, true);
 }
 

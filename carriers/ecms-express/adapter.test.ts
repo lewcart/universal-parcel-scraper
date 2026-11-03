@@ -69,6 +69,15 @@ describe('ECMS history', () => {
       events: [{ provider_code: 'EVENT_104', stage: 'registered', stage_source: 'carrier_map' }] });
   });
 
+  it('reads SpeedX\'s relayed last-mile scan as in transit by ECMS\'s map', () => {
+    const data = fixture();
+    const scan = { ...row(), eventCode: 'S07N708', eventDescription: 'Parcel in transit during last mile delivery' };
+    data.orderInfo[0]!.baseInfo = scan;
+    data.orderInfo[0]!.infoList = [scan];
+    expect(parseEcmsExpress(data, NUMBER)).toMatchObject({ current_stage: 'in_transit', current_stage_source: 'carrier_map',
+      events: [{ provider_code: 'S07N708', stage: 'in_transit', stage_source: 'carrier_map' }] });
+  });
+
   it('does not mislabel new wording or invent an unambiguous partner reference', () => {
     const data = fixture();
     data.orderInfo[0]!.baseInfo = { ...row(), eventCode: 'NEW', eventDescription: 'Unmapped milestone' };

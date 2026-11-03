@@ -245,6 +245,10 @@ describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {
     const alone = (location: string) => feed('gofo-express-tracking', 'GOFO Express', [['2026-10-03T16:01:13-07:00', location]]);
     expect([alone('Example Town'), alone('Holland'), alone('Example Town, FL')])
       .toEqual([['2026-10-03T23:01:13.000Z'], ['2026-10-03T23:01:13.000Z'], ['2026-10-03T20:01:13.000Z']]);
+    // Pensacola's station, in Cantonment, and its round keep Central time, not the hub's Eastern before them.
+    expect(feed('gofo-express-tracking', 'GOFO Express', [['2026-11-03T07:51:11-07:00', 'PENSACOLA'],
+      ['2026-11-03T07:41:11-07:00', 'Cantonment'], ['2026-11-02T18:01:24-07:00', 'Orlando']]))
+      .toEqual(['2026-11-03T13:51:11.000Z', '2026-11-03T13:41:11.000Z', '2026-11-02T23:01:24.000Z']);
   });
 
   it('reads PostNL\'s and Amazon UK\'s Z as the clock of the scan\'s country or of the marketplace', () => {

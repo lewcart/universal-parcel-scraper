@@ -1524,3 +1524,10 @@ describe('WooliiPorter', () => {
     }
   });
 });
+
+describe('KEX Express Hong Kong names', () => {
+  it('reads the Kerry Express names with Hong Kong spelled out or as HK', () => {
+    for (const name of ['Kerry Express (Hong Kong)', 'Kerry Express (HK)', 'Kerry Express Hong Kong']) expect(carrierIdFromName(name), name).toBe('kex-express-hk');
+    expect(carrierIdFromName('Kerry Express (Thailand)')).not.toBe('kex-express-hk');
+  });
+});

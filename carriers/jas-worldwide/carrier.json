@@ -1,0 +1,46 @@
+{
+  "id": "jas-worldwide",
+  "displayName": "JAS Worldwide",
+  "aliases": [
+    "JAS Worldwide Logistics",
+    "JAS Forwarding Worldwide",
+    "JAS Forwarding (USA)"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#0085ca"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://myjas.com/public/shipments?shipmentNumber={trackingNumber}",
+    "searchUrl": "https://www.jas.com/",
+    "canaryUrl": "https://myjas.com/public/shipments",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "myjas.com"
+      ],
+      "pathPattern": "^/public/shipments$",
+      "params": [
+        "shipmentNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

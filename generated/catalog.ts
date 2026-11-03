@@ -26419,6 +26419,39 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       }
     ]
   },
+  "jas-worldwide": {
+    "displayName": "JAS Worldwide",
+    "color": "#0085ca",
+    "aliases": [
+      "JAS Worldwide Logistics",
+      "JAS Forwarding Worldwide",
+      "JAS Forwarding (USA)"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://myjas.com/public/shipments",
+    "trackingUrlTemplate": "https://myjas.com/public/shipments?shipmentNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.jas.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "myjas.com"
+        ],
+        "pathPattern": "^/public/shipments$",
+        "params": [
+          "shipmentNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "jaskipin": {
     "displayName": "Jaskipin Express",
     "color": "#0843ad",
@@ -27736,6 +27769,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "aliases": [
       "Kerry Express Hong Kong",
       "Kerry Express (Hong Kong)",
+      "Kerry Express (HK)",
       "KEX Express (Hong Kong)",
       "嘉里快遞"
     ],
@@ -51106,6 +51140,7 @@ export const CARRIER_IDS = [
   "jamef",
   "janco-express",
   "janio",
+  "jas-worldwide",
   "jaskipin",
   "jb-hunt",
   "jcex",
@@ -52447,6 +52482,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jamef": [],
   "janco-express": ["janco-express-1"],
   "janio": ["janio-1"],
+  "jas-worldwide": [],
   "jaskipin": [],
   "jb-hunt": [],
   "jcex": ["jcex-1"],

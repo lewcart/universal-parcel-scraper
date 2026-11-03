@@ -858,3 +858,15 @@ describe('FMD Distribution and EDI Express', () => {
     }
   });
 });
+
+describe('JAS Worldwide', () => {
+  it('reads its names and MyJAS shipment links', () => {
+    for (const name of ['JAS Worldwide', 'JAS Worldwide Logistics', 'JAS Forwarding Worldwide']) expect(carrierIdFromName(name), name).toBe('jas-worldwide');
+    expect(carrierIdFromName('JAS')).not.toBe('jas-worldwide');
+    expect(parseTrackingInput('https://myjas.com/public/shipments?shipmentNumber=ATL1000017'))
+      .toMatchObject({ trackingNumber: 'ATL1000017', carrier: 'jas-worldwide', source: 'link' });
+  });
+  it('offers it for no number shape', () => {
+    for (const number of ['ATL1000017', '1000000017']) expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('jas-worldwide');
+  });
+});

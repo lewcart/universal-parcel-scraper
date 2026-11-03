@@ -2043,6 +2043,7 @@ export const REGISTRY: RegistryDefinition = {
     "janco-express": "universal",
     "janio": "janio",
     "japan-post": "japan-post",
+    "jas-worldwide": "universal",
     "jaskipin": "universal",
     "jb-hunt": "universal",
     "jcex": "jcex",

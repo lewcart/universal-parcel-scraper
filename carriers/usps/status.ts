@@ -39,7 +39,7 @@ const CUSTOMS_TERMS = ['customs', 'clearance'];
 const IN_TRANSIT_TERMS = [
   'in transit', 'on its way', 'in-transit', 'arrived', 'departed', 'departure',
   'arrival', 'processed', 'processing', 'distribution center', 'sorting facility',
-  'en route', 'in route', 'forwarded', 'transferred', 'tendered to',
+  'en route', 'in route', 'forwarded', 'transferred', 'tendered to', 'dispatch',
 ];
 
 /**

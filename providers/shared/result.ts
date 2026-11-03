@@ -413,8 +413,8 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^the shipment was left at a drop-off location[.!]?$/i.test(value)) return 'delivered';
   // A line carrier taking the parcel from the seller's or forwarder's warehouse, as GlobalEco's, ExMate's and Huiyi
   // Logistics' own maps read their "Received by Carrier", and 17TRACK's earlier wording of the airline taking China
-  // Post's dispatch after export clearance, "Carrier received shipment".
-  if (/^received by carrier[.!]?$|^carrier received shipment[.!]?$/i.test(value)) return 'in_transit';
+  // Post's dispatch after export clearance, "Carrier received shipment", also with the country in brackets: "[CN]".
+  if (/^received by carrier(?: \[[a-z]{2}\])?[.!]?$|^carrier received shipment[.!]?$/i.test(value)) return 'in_transit';
   // Landmark Global's hand-over to the destination's postal operator for the last mile, as Landmark's own map reads it.
   if (/^item deposited to local postal operator[.!]?$/i.test(value)) return 'in_transit';
   // Landmark Global's pallet for the crossing, whatever crossing and number it names, as Landmark's own map reads it:
@@ -523,6 +523,9 @@ function providerWordingStage(description: string): Stage | undefined {
   // DHL eCommerce's US label awaiting the parcel, and the parcel handed to the last-mile partner, as its own map reads them.
   if (/^dhl ecommerce currently awaiting shipment\b/i.test(value)) return 'registered';
   if (/^tendered to (?:the )?delivery service provider\b/i.test(value)) return 'in_transit';
+  // ePost Global's pickup from its processing centre and its tender to USPS's international service centre, then
+  // USPS's export dispatch there, as ParcelsApp relays them.
+  if (/^outbound shipment pickup[.!]?$|^tendered to (?:the )?postal service[.!]?$|^international dispatch ready[.!]?$/i.test(value)) return 'in_transit';
   // A bare "parcel handed" is a hand-over to a carrier, which 17TRACK files as a pickup.
   if (/^parcel handed[.!]?$/i.test(value)) return 'accepted';
   // A Chinese post's scans as a forwarder's English copies them, the place in brackets: a processing centre

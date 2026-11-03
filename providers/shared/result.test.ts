@@ -234,8 +234,14 @@ describe('shared provider result', () => {
   });
 
   it("reads 17TRACK's earlier wording of the airline taking China Post's dispatch as transit, as its later one", () => {
-    for (const wording of ['Carrier received shipment', 'Received by carrier']) {
+    for (const wording of ['Carrier received shipment', 'Received by carrier', 'Received by carrier [CN]']) {
       expect(event('2026-01-07T12:45:00+08:00', wording)).toMatchObject({ stage: 'in_transit', stage_source: 'wording:provider' });
+    }
+  });
+
+  it("reads ePost Global's pickup and tender to USPS, and USPS's export dispatch, as ParcelsApp relays them", () => {
+    for (const wording of ['Outbound Shipment Pickup', 'Tendered to Postal Service', 'INTERNATIONAL DISPATCH READY']) {
+      expect(event('2026-01-07T12:45:00-08:00', wording), wording).toMatchObject({ stage: 'in_transit', stage_source: 'wording:provider' });
     }
   });
 

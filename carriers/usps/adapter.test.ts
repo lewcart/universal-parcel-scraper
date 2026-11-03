@@ -80,6 +80,8 @@ describe('USPS status vocabulary', () => {
     expect(uspsStage('Acceptance Pending')).toBe('registered');
     expect(uspsStage('Arrived at USPS Facility')).toBe('in_transit');
     expect(uspsStage('Arrived at USPS Regional Facility')).toBe('in_transit');
+    // The international service center's export dispatch, before the flight abroad.
+    expect(uspsStage('International Dispatch Ready')).toBe('in_transit');
     expect(uspsStatus('Delivered')).toBe('delivered');
     expect(uspsStatus('Out for Delivery')).toBe('out_for_delivery');
     // Unrecognized wording only means "moving" once the shipment has scans.

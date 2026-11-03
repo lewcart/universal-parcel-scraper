@@ -31,6 +31,9 @@ to the destination carrier's scans.
   the generic line's code when it came without one, so it keeps the code's stage.
 - HuaHan's codes are two capitals. A tracking provider relays its scans in HuaHan's words
   under the provider's own codes, so the status map reads those scans by their words.
+- An American partner's scans ("Picked up by Shipping Partner", its facility's arrival and
+  departure) can come before the flight leaves China: written ahead, they read as transit, not
+  as the parcel's acceptance.
 
 ## Numbers
 

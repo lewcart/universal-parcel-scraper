@@ -45,7 +45,20 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['delivery attempted', 'failed_attempt'],
   ['delivery attempted, unfortunately we have not been able to deliver your parcel. pickup parcelshop delivery after first delivery attempt.', 'failed_attempt'],
   ['awaiting pickup, parcel was deposited in pickup parcel station', 'ready_for_pickup'],
+  // HuaHan's transfer warehouse in Chinese, and an American partner's scans it relays, written
+  // ahead while the parcel is still in China: a hand-off to come, not the parcel's acceptance.
+  ['货物离开操作中心', 'in_transit'],
+  ['picked up by shipping partner', 'in_transit'],
+  ['arrived shipping partner facility', 'in_transit'],
 ]);
+// Milestones in Chinese with the English after them, and lines with a day, a flight, a time or a place.
+const PATTERNS: ReadonlyArray<readonly [RegExp, Stage]> = [
+  [/^快件从转运仓发出至机场，出口报关中/, 'customs'],
+  [/^快件抵达机场，预计\d{1,2}号航班飞/, 'in_transit'],
+  [/^航班延误，重新配载至\d{1,2}号航班飞/, 'in_transit'],
+  [/^目的国清关完成/, 'in_transit'],
+  [/^departed shipping partner facility\b/, 'in_transit'],
+];
 
 const GAPS = [{
   wording: 'the parcel was redirected. as soon as it is in the couriers possession, it will be processed as requested.',
@@ -59,7 +72,8 @@ const OWN_CODE = /^[A-Z]{2}$/;
 const CARRIER_SCAN_CODES = new Set(['IA', 'CA']);
 
 function mappedStage(code: string, wording: string): Stage | undefined {
-  return CODES.get(code) ?? (!OWN_CODE.test(code) || CARRIER_SCAN_CODES.has(code) ? WORDINGS.get(wording) : undefined);
+  return CODES.get(code) ?? (!OWN_CODE.test(code) || CARRIER_SCAN_CODES.has(code)
+    ? WORDINGS.get(wording) ?? PATTERNS.find(([pattern]) => pattern.test(wording))?.[1] : undefined);
 }
 
 /** A scan's stage: its code or wording in the map, else the shared rules, else nothing. A recorded gap has none. */

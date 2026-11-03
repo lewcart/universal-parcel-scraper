@@ -10,8 +10,16 @@ const FLIGHT_DAY = /(预计)\d{1,2}-\d{1,2}(飞)$/u;
 // The depot hand-over row starts with a month-day: "10-31 已交仓 留意官网更新".
 const HANDED_OVER_DAY = /^\d{1,2}-\d{1,2}( 已交仓 留意官网更新)$/u;
 
-/** The key a row's `normalizeStatusWording` wording is mapped under: a flight's or a hand-over's day becomes an ellipsis. */
-export const mesoGlobalScanKey = (wording: string): string => wording.replace(FLIGHT_DAY, '$1…$2').replace(HANDED_OVER_DAY, '…$1');
+// DHL's row from the destination country ends with the destination post's tracking link in brackets:
+// "… destination area. (Homepage / online shipment tracking: https://…)".
+const LINK = /\s*\([^()]*https?:\/\/[^()]*\)$/;
+
+/**
+ * The key a row's `normalizeStatusWording` wording is mapped under: a flight's or a hand-over's day becomes an
+ * ellipsis, and a relayed row's tracking link is left out.
+ */
+export const mesoGlobalScanKey = (wording: string): string => wording.replace(FLIGHT_DAY, '$1…$2').replace(HANDED_OVER_DAY, '…$1')
+  .replace(LINK, '');
 
 /**
  * The stage Meso-global's map gives a row, by its whole `normalizeStatusWording`

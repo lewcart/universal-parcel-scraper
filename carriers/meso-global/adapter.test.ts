@@ -90,6 +90,8 @@ describe('Meso-global tracking adapter', () => {
     }
     expect(mesoGlobalEnglish(null, '一程已落地 二程预计10-27飞')).toBe('First flight landed, connecting flight booked');
     expect(statusMap.stage(null, '预计飞机')).toBeUndefined();
+    expect(statusMap.stage(null, normalizeStatusWording('The shipment has arrived in the destination country/destination area. '
+      + '(Homepage / online shipment tracking: https://post.example/tracking?id=EXAMPLE)'))).toBe('in_transit');
     expect(statusMapAnswer({ carrier: 'meso-global', providerCode: null, description: '到达收货点' }))
       .toEqual({ kind: 'mapped', stage: 'accepted' });
     expect(statusMapAnswer({ carrier: 'meso-global', providerCode: null, description: '合成的记录' })).toEqual({ kind: 'unknown' });

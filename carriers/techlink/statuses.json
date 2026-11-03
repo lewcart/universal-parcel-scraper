@@ -13,6 +13,8 @@
     {"code": "InTransit_Other", "wording": "Your shipment has arrived at sorting center", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-02", "note": "The sorting centre in the destination country, after the flight's arrival. The code stands for any in-transit scan without a code of its own, so only this wording is mapped."},
     {"code": "InTransit_Other", "wording": "Your shipment has been processed at sorting center and ready for shipping", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The destination country's sorting centre has sorted the parcel for its next leg."},
     {"code": "InTransit_Other", "wording": "Your shipment has departed from the transit origin", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The parcel left that sorting centre for its next leg."},
+    {"code": "InTransit_Other", "wording": "Your shipment has arrived at the transit destination", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The end of a leg between sorting centres, before the next scan."},
+    {"code": "InTransit_Other", "wording": "Your shipment is in process at sorting center", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "A sorting centre handles the parcel."},
     {"code": "InTransit_Oversea", "wording": "In transit, it is currently in transit to the next facility", "stage": "in_transit", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-30", "note": "A move between facilities in the destination country."}
   ]
 }

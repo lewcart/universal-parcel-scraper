@@ -87,6 +87,24 @@
       "note": "The Greek wording is \"Χρέωση σε κούριερ\", handed to a courier."
     },
     {
+      "code": "C_EA_AS",
+      "wording": "Attempted Delivery - Absent recipient",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "After the courier took the parcel out for delivery."
+    },
+    {
+      "code": "C_EA_KS",
+      "wording": "Attempted Delivery - Delivery Rescheduled",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Recorded at the service point the parcel returned to after a failed attempt, with the delivery put off."
+    },
+    {
       "code": "C_W2",
       "wording": "Shipment Delivered",
       "language": "en",

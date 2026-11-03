@@ -416,6 +416,15 @@ describe('UPS structured response', () => {
     expect(reminded.pickup_point).toBeUndefined();
   });
 
+  it('reads a parcel UPS holds at its facility at the receiver\'s request as waiting for pickup', () => {
+    const held = parseUPSTrackingResponse(withScans([
+      scan('S7', 'The receiver requested this package to be held for pickup at the UPS facility.', '20260813 08:45:00'),
+      scan('DS', 'Processing at UPS Facility', '20260810 07:29:54'),
+    ]), TRACKING_NUMBER, TODAY);
+    expect(held).toMatchObject({ current_stage: 'ready_for_pickup' });
+    expect(held.events?.[0]).toMatchObject({ stage: 'ready_for_pickup', stage_source: 'carrier_map' });
+  });
+
   it('lays out the access point address as UPS gives it, and keeps the name alone without a street or town', () => {
     const point = (location: Record<string, string>) => parseUPSTrackingResponse(withScans(
       [scan('ZP', 'UPS Access Point™ possession ', '20260811 09:22:52')],

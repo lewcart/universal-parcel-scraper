@@ -131,6 +131,9 @@ describe('Geniki Taxydromiki checkpoints', () => {
     expect(statusMap.stage('C_A3', 'χρέωση σε κούριερ')).toBe('out_for_delivery');
     expect(statusMap.stage(null, 'shipment delivered')).toBeUndefined();
     for (const code of ['C_EA_AG', 'C_E1', 'C_L2', 'C_P4', 'C_S1']) expect(statusMap.stage(code, 'any wording')).toBeUndefined();
+    // The error codes that report an attempted delivery.
+    expect(statusMap.stage('C_EA_AS', 'attempted delivery - absent recipient')).toBe('failed_attempt');
+    expect(statusMap.stage('C_EA_KS', 'attempted delivery - delivery rescheduled')).toBe('failed_attempt');
     const statuses = JSON.parse(readFileSync(new URL('./statuses.json', import.meta.url), 'utf8')).entries as { code: string; stage?: string }[];
     for (const entry of statuses) expect(genikiStage(entry.code), entry.code).toBe(entry.stage);
   });

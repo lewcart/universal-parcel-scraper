@@ -26,6 +26,10 @@ const CODES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   ['C_L1', 'in_transit'],
   // Handed to a courier for delivery ("Χρέωση σε κούριερ").
   ['C_A3', 'out_for_delivery'],
+  // Two of the page's error codes say a delivery was attempted: the recipient was
+  // absent, or the delivery was put off to another day.
+  ['C_EA_AS', 'failed_attempt'],
+  ['C_EA_KS', 'failed_attempt'],
   ['C_W2', 'delivered'],
   // The delivery recorded at the service point, with the parcel marked delivered.
   ['C_P1', 'delivered'],
@@ -39,7 +43,7 @@ export function genikiStage(code: string): Stage | undefined {
 
 /**
  * What the map says about one scan. Every scan carries its code, so wording
- * alone gets nothing. The page's error codes (C_EA_*), cancellations (C_E2,
+ * alone gets nothing. The page's other error codes (C_EA_*), cancellations (C_E2,
  * C_L2, C_K9, C_P4, C_S5, C_S8) and the other codes it counts as in progress
  * have no wording any source settles, so they stay unknown, open for review.
  */

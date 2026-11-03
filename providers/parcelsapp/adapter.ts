@@ -1278,6 +1278,35 @@ function chinaPostTwinZones(items: readonly { name: unknown; date: unknown; loca
 }
 
 /**
+ * The zone of YunExpress's copy of its last-mile partner's scan, which its feed relays in its own
+ * words with no place, at the partner's digits to the second. YunExpress's "In Transit" came at
+ * the second of GOFO's "In Transit to Next Facility", Central time digits under ParcelsApp's UTC
+ * label: read as labeled, it came five hours before GOFO's own instant. It takes the zone or
+ * offset of the other networks' dated scans at that second when they share one. A second of
+ * :00 can be a minute-only clock's, so it places nothing.
+ */
+const PARTNER_RELAYS = new Set(['yunexpress']);
+function relayTwinZones(items: readonly { name: unknown; date: unknown; location: string; offset: string | null | undefined }[],
+  zones: readonly { zone: string | null; step: ZoneStep }[]): (string | null)[] {
+  const second = ({ date, offset }: typeof items[number]) => {
+    const wall = offset ? DateTime.fromISO(String(date).trim(), { setZone: true }).toISO({ includeOffset: false }) : mislabeledWallTime(date);
+    return wall && !/:00(?:\.0+)?$/.test(wall) ? wall.slice(0, 19) : '';
+  };
+  const relay = (name: unknown) => PARTNER_RELAYS.has(nameKey(name));
+  const twins = new Map<string, Set<string>>();
+  items.forEach((item, index) => {
+    const key = second(item);
+    const { zone, step } = zones[index]!;
+    const clock = item.offset ? `UTC${item.offset}` : step === 'labeled' ? null : zone;
+    if (key && clock && !relay(item.name)) twins.set(key, (twins.get(key) ?? new Set()).add(clock));
+  });
+  return items.map((item, index) => {
+    const found = relay(item.name) && !item.location && !item.offset && !zones[index]!.zone ? twins.get(second(item)) : undefined;
+    return found?.size === 1 ? [...found][0]! : null;
+  });
+}
+
+/**
  * The clock of a network that nothing places, as its copies show. A line
  * provider outside the catalog can file the same scans as the carrier that
  * relays it, at the same digits, with no place: under ParcelsApp's UTC label
@@ -1629,6 +1658,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     .forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
   chinaPostTwinZones(entries, zones.map(({ zone }) => zone), destination)
     .forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
+  relayTwinZones(entries, zones).forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
   const dayOnly = dayOnlyNetworks(entries);
   const steps = new Set<CarrierEvent>();
   const latest = new LatestScan(SOURCE);

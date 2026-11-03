@@ -535,7 +535,11 @@ step exists for future protocol changes.
   Another shared code ("GA" is Gabon) counts only in a reply that is in North America: one
   scan certainly is, or one names a state or province and none names another country. A
   copy of such a scan from another carrier, at the same minute with the same wording
-  (Cainiao relaying UniUni, YunExpress relaying GOFO), takes the same zone. Other carriers
+  (Cainiao relaying UniUni, YunExpress relaying GOFO), takes the same zone. YunExpress also
+  relays a partner's scan in its own words with no place, at the partner's digits to the
+  second: GOFO's "In Transit to Next Facility" came as its "In Transit", five hours early as
+  labeled. Such a row takes the clock of the other networks' scans at that second when they
+  share one; a second of :00 places nothing, since minute-only clocks share it. Other carriers
   keep their readings: OnTrac's dates are UTC. A scan of these carriers that its location
   places only in the US or Canada
   ("US 12345", "United States") borrows like a wall-clock scan (step 3 above), from a scan

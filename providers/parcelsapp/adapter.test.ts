@@ -1627,6 +1627,38 @@ describe('ParcelsApp result parsing', () => {
     expect(result.undated_event_count).toBeUndefined();
   });
 
+  it('gives YunExpress\'s unplaced copy of a partner scan at the same second that scan\'s clock', () => {
+    // Live shape: YunExpress relays GOFO's scans in its own words with no place, at GOFO's
+    // Central digits; GOFO's own instants are five hours after the label.
+    const scan = (date: string, status: string, carrier: number, location?: string) => ({ date, status, carrier, ...(location ? { location } : {}) });
+    const states = (partner: number, relay: number) => [
+      scan('2026-10-27T04:10:52Z', 'In Transit', relay),
+      scan('2026-10-27T04:10:52Z', 'In Transit to Next Facility', partner),
+      scan('2026-10-24T04:11:36Z', 'In Transit', relay),
+      scan('2026-10-24T04:11:36Z', 'In Transit to Next Facility', partner, 'Austin, TX'),
+      scan('2026-10-23T14:37:00Z', 'In Transit', relay),
+      scan('2026-10-23T14:37:00Z', 'Arrived at GOFO Regional Hub', partner, 'Example City, TX'),
+      scan('2026-10-18T03:47:04Z', 'Shipment is in transit to carrier', relay),
+    ];
+    for (const carriers of [['Yun Express', 'GoFo Express'], ['GoFo Express', 'Yun Express']]) {
+      const [partner, relay] = carriers[0] === 'Yun Express' ? [1, 0] : [0, 1];
+      const result = parseParcelsAppResponse({ carriers, states: states(partner, relay) }, number, identity());
+      expect(result.events?.map((event) => [event.time, event.description]).sort(), carriers.join()).toEqual([
+        ['2026-10-27T09:10:52.000Z', 'In Transit to Next Facility'],
+        ['2026-10-27T09:10:52.000Z', 'In Transit'],
+        ['2026-10-24T09:11:36.000Z', 'In Transit to Next Facility'],
+        ['2026-10-24T09:11:36.000Z', 'In Transit'],
+        ['2026-10-23T19:37:00.000Z', 'Arrived at GOFO Regional Hub'],
+        // A second of :00 can be a minute-only clock's, and a row with no twin keeps its label.
+        ['2026-10-23T14:37:00.000Z', 'In Transit'],
+        ['2026-10-18T03:47:04.000Z', 'Shipment is in transit to carrier'],
+      ].sort());
+    }
+    // Another network's unplaced row keeps its label.
+    expect(parseParcelsAppResponse({ carriers: ['Example Parcel Line', 'GoFo Express'], states: states(1, 0) }, number, identity())
+      .events?.find((event) => event.description === 'In Transit')?.time).not.toBe('2026-10-27T09:10:52.000Z');
+  });
+
   it('takes the offset of a Poland Post scan at a place as its instant, whatever zone routing passes', () => {
     // Poczta Polska's own tracker has the same digits and offset for its sender platform's
     // item data and its office scans, and none for a relay from abroad.

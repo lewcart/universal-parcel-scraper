@@ -327,9 +327,12 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string, read
   const estimate = clean(eta.text(), 500);
   if (/tracking not available/i.test(banner)) return notLocated();
   const current = $('.current-tracking-status-wrapper .current-step').first();
-  const statusArea = clean(current.find('.tb-status-detail').first().text()
-    || current.find('.tb-status').first().text()
-    || $('.current-tracking-status-wrapper').first().text(), 5_000);
+  const detail = clean(current.find('.tb-status-detail').first().text() || current.find('.tb-status').first().text(), 5_000);
+  const wrapper = $('.current-tracking-status-wrapper').first();
+  const statusArea = detail || clean(wrapper.text(), 5_000);
+  // Without the current step's detail, an estimate is read from the wrapper's own words, not its
+  // timeline: a scan's date is no estimate.
+  const estimateArea = detail || clean(wrapper.clone().find('.tb-step').remove().end().text(), 5_000);
   const timeline: CarrierEvent[] = [];
   $('.current-tracking-status-wrapper .tb-step').each((_, row) => {
     const parsed = parseTimelineRow(
@@ -370,7 +373,7 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string, read
     last_update: events[0]?.time || null,
     ...(events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
     expected_delivery: delivered ? null
-      : estimateOf(expectedDelivery(`${statusArea} ${banner}`) ?? bannerEstimate(estimate), roundEstimate(events[0])),
+      : estimateOf(expectedDelivery(`${estimateArea} ${banner}`) ?? bannerEstimate(estimate), roundEstimate(events[0])),
     events,
   };
 }

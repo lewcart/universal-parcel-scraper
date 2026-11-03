@@ -266,6 +266,15 @@ describe('USPS rendered page', () => {
     expect(parseUSPSTrackingHtml(page(), 'CW000000005NL')).toMatchObject({ last_status_text: 'Origin Post is Preparing Shipment', current_stage: 'registered' });
   });
 
+  it('takes no scan’s date for the estimate when the current step has no detail', () => {
+    const page = '<html><head><title>USPS Tracking</title></head><body><div class="track-bar-container">'
+      + '<span id="trackingNum">CW000000005NL</span><div class="latest-update-banner-wrapper"><div class="banner-header">Moving Through Network</div></div>'
+      + '<div class="current-tracking-status-wrapper"><div class="tb-step current-step"><p class="tb-location">NETHERLANDS</p></div>'
+      + '<div class="tb-step"><p class="tb-status-detail">Expected Delivery Date Updated</p><p class="tb-location">NETHERLANDS</p>'
+      + '<p class="tb-date">October 21, 2026, 10:12 am</p></div></div></div></body></html>';
+    expect(parseUSPSTrackingHtml(page, 'CW000000005NL').expected_delivery).toBeNull();
+  });
+
   it('reads a label its mailer wrote on UTC, which its facility’s zone would date after the read', () => {
     const step = (detail: string) => '<div class="tb-step current-step"><p class="tb-status">Label Created</p>'
       + `<p class="tb-status-detail">${detail}</p><p class="tb-location">EXAMPLE CITY, CA 00000</p><p class="tb-date">November 3, 2026, 4:40 am</p></div>`;

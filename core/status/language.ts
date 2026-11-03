@@ -476,6 +476,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // TNT Italy's departure from the origin depot, and the US Postal Service's hand-off to the international
   // gateway after customs.
   if (/^la spedizione (?:e'|e) regolarmente partita$|^tendered to (?:the )?international gateway$/.test(text)) return 'in_transit';
+  // Landmark Global's hub abroad receiving the parcel after it crossed the border, as providers relay it:
+  // an international processing centre is never where a parcel is accepted.
+  if (/^received at (?:the |an )?international processing cent(?:er|re)$/.test(text)) return 'in_transit';
   // InPost UK's scans as Ship24 relays them: the sender's drop-off in a locker or at a store, then a hub's
   // outbound scan.
   if (/^parcel stored by (?:the )?customer$/.test(text)) return 'accepted';

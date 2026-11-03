@@ -40,7 +40,7 @@ import {
 } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { withoutPartnerLink } from './identity.js';
-import { stageForText, statusForStage } from './status.js';
+import { BOOKED_OPTION, stageForText, statusForStage } from './status.js';
 
 const PROVIDER = 'DHL';
 const TIMEZONE = 'Europe/Berlin';
@@ -193,7 +193,7 @@ export function parseDHLTrackingResponse(payload: unknown, trackingNumber: strin
   const deliveryCarrier = carrierIdFromPartnerLinks(rows.map((event) => clean(event.status)), 'dhl');
   const scans = rows.flatMap((event) => {
     const description = withoutPartnerLink(clean(event.status));
-    if (!description) return [];
+    if (!description || BOOKED_OPTION.test(description)) return [];
     return [{ time: date(event.datum), location: clean(event.ort, 160), description, stage: stageForText(description) }];
   });
   if (listsNewestFirst(scans) === false) scans.reverse();

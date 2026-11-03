@@ -108,6 +108,9 @@ how a consumer learns that DHL holds one behind a postcode.
 - A forecast ("will be delivered tomorrow", "wird … zugestellt") keeps the
   progress fallback. Mapping it to `delivered` would announce a delivery that
   hasn't happened; mapping it to `registered` would undo real progress.
+- A receiving option the recipient booked ("Liefertag als Empfangsoption
+  vorgemerkt") is left out: it is a wish, not a movement, as Hermes Germany's
+  booked delivery day is.
 - "Delivery not possible" is a failed attempt: it follows the loading onto the
   delivery vehicle, the parcel then waits at a retail outlet, and the partner
   posts' copies of the scan read it so.

@@ -3,6 +3,7 @@
   "entries": [
     { "wording": "The instruction data for this shipment have been provided by the sender to DHL electronically", "language": "en", "stage": "registered", "confirmedBy": "fixture", "firstSeen": "2026-09-12", "note": "Pre-advice; matched on \"electronically\"." },
     { "wording": "Die Sendung wurde vom Absender elektronisch angekündigt.", "language": "de", "stage": "registered", "confirmedBy": "fixture", "firstSeen": "2026-09-12", "note": "German pre-advice; matched on \"elektronisch\"." },
+    { "wording": "Für diese Sendung wurde ein Liefertag als Empfangsoption vorgemerkt.", "language": "de", "confirmedBy": "live", "firstSeen": "2026-11-03", "note": "The recipient booked a delivery day; deliberately not mapped and left out of the history, like Hermes Germany's booked day, so it is not read as transit." },
     { "wording": "Pick-up has been scheduled for the next working day and the information has been sent to the delivery person", "language": "en", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "A booked collection, before \"Pick-up was successful.\"." },
     { "wording": "Pick-up was successful.", "language": "en", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "" },
     { "wording": "The shipment has been posted by the sender at the retail outlet", "language": "en", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "Deutsche Post's posting at a retail outlet, \"in der Filiale eingeliefert\" in German." },

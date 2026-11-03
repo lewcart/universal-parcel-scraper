@@ -16,6 +16,13 @@ import { trackingLanguageStage, type Stage } from '../../core/status/index.js';
 import { nonterminalEnglishReturn } from '../../core/status/language.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
+/**
+ * The recipient's booked receiving option ("Für diese Sendung wurde ein Liefertag als
+ * Empfangsoption vorgemerkt."): a wish, not a movement. The parser leaves it out, as Hermes
+ * Germany's booked delivery day; read as unmapped wording, it came as transit.
+ */
+export const BOOKED_OPTION = /\bals empfangsoption vorgemerkt\b/i;
+
 export function stageForText(text: string, fallback = 'in_transit'): string {
   const value = text.toLowerCase();
   // A return still to come or under way, such as a parcel left uncollected past its storage period:
@@ -62,4 +69,6 @@ export function statusForStage(stage: string): CarrierStatus {
 export const statusMap: CarrierStatusMap = {
   stage: (_code, wording) => (stageForText(wording, '') || undefined) as Stage | undefined,
   gaps: [],
+  gapNote: (_code, wording) => BOOKED_OPTION.test(wording)
+    ? 'The recipient\'s booked receiving option, left out of the history: a wish, not a movement.' : undefined,
 };

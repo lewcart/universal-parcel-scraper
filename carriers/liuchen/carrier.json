@@ -20,18 +20,42 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "liuchen",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "destination_country",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.liuchenwl.com/index/tracknumber/track?nos={trackingNumber}",
     "searchUrl": "https://www.liuchenwl.com/",
     "canaryUrl": "https://www.liuchenwl.com/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "destination_country"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "destination_country"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "provider_code",
+      "eta",
+      "weight",
+      "delivered_at",
+      "service_name",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

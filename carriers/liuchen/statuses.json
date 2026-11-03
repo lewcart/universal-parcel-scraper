@@ -1,4 +1,61 @@
 {
   "carrier": "liuchen",
-  "entries": []
+  "entries": [
+    {
+      "wording": "Order information received",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The shipment data has arrived; Liuchen does not hold the parcel yet. Relayed by a universal provider."
+    },
+    {
+      "wording": "Arrive at the receiving point",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Received at the receiving point in China. Relayed by a universal provider."
+    },
+    {
+      "wording": "Goods leave the operation center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Relayed by a universal provider."
+    },
+    {
+      "wording": "Arrival at domestic internationality airport",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "At the departure airport in China. Relayed by a universal provider."
+    },
+    {
+      "wording": "Departure from the airport of origin domestic",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The flight has left China. Relayed by a universal provider."
+    },
+    {
+      "wording": "Arrive at the destination international airport",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The first step after the flight. Relayed by a universal provider."
+    },
+    {
+      "wording": "查询不到",
+      "language": "zh",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "unmapped": true,
+      "note": "\"Cannot be found\": the summary status for a number the tracker does not know, with no scans. The adapter reads it as not found."
+    }
+  ]
 }

@@ -29349,7 +29349,8 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "liuchen",
+      "localClocks": true
     },
     "canaryUrl": "https://www.liuchenwl.com/",
     "trackingUrlTemplate": "https://www.liuchenwl.com/index/tracknumber/track?nos={trackingNumber}",

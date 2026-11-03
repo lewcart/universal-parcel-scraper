@@ -394,6 +394,7 @@ import { statusMap as lightningExpress } from '../../carriers/lightning-express/
 import { statusMap as lineClear } from '../../carriers/line-clear/status.js';
 import { statusMap as lingdong } from '../../carriers/lingdong/status.js';
 import { statusMap as linhan } from '../../carriers/linhan/status.js';
+import { statusMap as liuchen } from '../../carriers/liuchen/status.js';
 import { statusMap as lionParcel } from '../../carriers/lion-parcel/status.js';
 import { statusMap as logen } from '../../carriers/logen/status.js';
 import { statusMap as loggi } from '../../carriers/loggi/status.js';
@@ -768,7 +769,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih,
   'landmark-global': landmarkGlobal, 'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'lbc-express': lbcExpress, 'lex-id': lexId, 'lex-my': lexMy, 'leopards-courier': leopardsCourier, liccardi, 'linear-logistics': linearLogistics,
   'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
-  'line-clear': lineClear, lingdong, linhan, 'lion-parcel': lionParcel, logen, loggi, logisimple, logistiq, logoix, 'loomis-express': loomisExpress,
+  'line-clear': lineClear, lingdong, linhan, liuchen, 'lion-parcel': lionParcel, logen, loggi, logisimple, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
   'maersk-ecommerce': maerskEcommerce, 'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, 'maruti-air': marutiAir, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,
   'mds-collivery': mdsCollivery, meest, 'meihoo-pegasus': meihooPegasus, 'meso-global': mesoGlobal, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, mhi, 'micro-express': microExpress,

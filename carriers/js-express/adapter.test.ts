@@ -282,6 +282,15 @@ describe('JS Express tracking adapter', () => {
     expect(jsExpressMappedStage('Alert, Forwarded')).toBeUndefined();
   });
 
+  it("reads USPS's status before its sentence by the status's own entry, and USPS's row between facilities", () => {
+    const arrived = 'On the Way, Arrived at USPS Facility -> Your item arrived at our USPS facility in SAMPLE TOWN DISTRIBUTION CENTER '
+      + 'on January 2, 2030 at 12:05 am. The item is currently in transit to the destination.';
+    expect(jsExpressStage(arrived, 'OIT')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    expect(statusMapAnswer({ carrier: 'js-express', providerCode: 'OIT', description: arrived })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(jsExpressMappedStage('On the Way, Sample Status -> Your item is somewhere')).toBeUndefined();
+    expect(jsExpressStage('In Transit to Next Facility', 'OIT')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+  });
+
   it("reads iMile's scans as its destination courier by iMile's sentences, whichever centres they name", () => {
     for (const [wording, stage] of [
       ['【iMile Sample DC Center】Received.', 'in_transit'],

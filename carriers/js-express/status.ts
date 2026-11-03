@@ -29,9 +29,19 @@ const GAP_WORDINGS = new Set(GAPS.map((gap) => gap.wording));
 // address, as USPS's own map reads its "Forwarded".
 const FORWARDED = /^alert, forwarded -> your item was forwarded to a different address\b/;
 
+// USPS's status followed by its sentence, as JS Express relays it: "On the Way, Arrived at USPS Facility -> Your item
+// arrived at our USPS facility in …". The sentence names the facility, day and time; the status before the arrow takes
+// its own entry.
+const USPS_SENTENCE = /^on the way, (.+?) -> your item\b/;
+const uspsSentenceStage = (normalized: string): Stage | undefined => {
+  const status = USPS_SENTENCE.exec(normalized)?.[1];
+  return status ? WORDINGS.stage(status) : undefined;
+};
+
 // iMile's scans as its destination courier, which open with the centre's name in 【】, take iMile's reading.
 const mappedStage = (normalized: string): Stage | undefined =>
-  WORDINGS.stage(normalized) ?? (FORWARDED.test(normalized) ? 'in_transit' : undefined) ?? chinaPostRelayedStage(normalized)
+  WORDINGS.stage(normalized) ?? (FORWARDED.test(normalized) ? 'in_transit' : undefined) ?? uspsSentenceStage(normalized)
+    ?? chinaPostRelayedStage(normalized)
     ?? imileRelayedStage(normalized);
 
 /** The stage JS Express's map gives a row's wording. */

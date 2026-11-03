@@ -97,6 +97,8 @@ describe('GZYL tracking adapter', () => {
     expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Delivered to the parcel locker' })).toEqual({ kind: 'unknown' });
     // Or its city after the wording, in brackets.
     expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Los Angeles Processing Center has received it [Los Angeles]' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: '广州处理中心已收寄【广州市】' })).toEqual({ kind: 'mapped', stage: 'accepted' });
+    expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: '示例处理中心已收寄【示例市】' })).toEqual({ kind: 'unknown' });
     for (const wording of PLACED_WORDINGS) expect(statuses.entries.map((entry) => entry.wording)).toContain(wording);
   });
 

@@ -11,8 +11,9 @@ const PLACED = PLACED_WORDINGS.map((wording) => `${normalizeStatusWording(wordin
 // A town: a letter, then letters, digits, spaces, dots, apostrophes, hyphens or the question
 // marks GZYL writes for letters it lost, but not a phrase such as "to the neighbour" that goes on the wording.
 export const TOWN = /^(?!(?:to|at|in|on|by|with|from|for)\b)\p{L}[\p{L}\p{N} .'?-]*$/iu;
-// The city some rows name after the wording, in brackets: "[Los Angeles]".
-const PLACE_TAIL = / \[[^\]]+\]$/;
+// The city some rows name after the wording, in brackets: "[Los Angeles]", or in China Post's
+// full-width ones without a space: "【广州市】".
+const PLACE_TAIL = /(?: \[[^\]]+\]|【[^【】]+】)$/u;
 
 /**
  * The stage GZYL's map gives a row, by its `normalizeStatusWording` wording.

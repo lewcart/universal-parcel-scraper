@@ -32,6 +32,12 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['FPX_D_DFD', { status: 'in_transit', stage: 'in_transit' }], // Left the destination's national sorting centre.
   ['FPX_O_RR', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_M_IT', { status: 'in_transit', stage: 'in_transit' }],
+  ['FPX_O_DW', { status: 'in_transit', stage: 'in_transit' }], // Left the origin sorting centre.
+  ['FPX_O_RC', { status: 'in_transit', stage: 'in_transit' }], // At the hub the line haul leaves from.
+  ['FPX_Q_ECC', { status: 'in_transit', stage: 'in_transit' }], // Export clearance complete; the parcel moves on.
+  // The airline refused the parcel because its weight differed from the declared one: it stays at the origin
+  // facility to be measured again, a problem to resolve rather than a step on the way.
+  ['FPX_C_WD', { status: 'exception', stage: 'exception' }],
 ]);
 // A partner's step filed under a code that says otherwise, by code and
 // `normalizeStatusWording` wording: a partner can word a move between its
@@ -46,9 +52,12 @@ const WORDED = new Set(['FPX_O_IR', 'FPX_O_IRI']);
 // the partner it went to: "Order information has been transmitted to DPD."
 // Asendia Hong Kong, which flies parcels for 4PX, relays its label, then the
 // manifest it makes once the parcel has left 4PX's facility. Helthjem's notice that
-// the shop announced the parcel is relayed as "Parcel arrival notified".
+// the shop announced the parcel is relayed as "Parcel arrival notified". A line haul's
+// "Shipment info received" can follow the measuring; the shared result reads that late
+// registration as transit.
 const WORDING: ReadonlyMap<string, Stage> = new Map([['waybill generated', 'registered'], ['order data transmitted', 'registered'],
-  ['label creation', 'registered'], ['manifest created', 'in_transit'], ['parcel arrival notified', 'registered']]);
+  ['label creation', 'registered'], ['manifest created', 'in_transit'], ['parcel arrival notified', 'registered'],
+  ['shipment info received', 'registered']]);
 const LABEL_FOR = /^waybill generated for [a-z0-9]+$|^order information has been transmitted to [a-z][a-z .-]{0,30}$/;
 // Scans a partner relays without a code, by `normalizeStatusWording` wording.
 // A partner's order made before it has the parcel is a label, not a receipt.
@@ -56,6 +65,9 @@ const UNCODED: ReadonlyMap<string, Stage> = new Map([
   ['order creation, order submitted, pending to receive.', 'registered'],
   ['your shipment has departed from the transit origin', 'in_transit'],
   ['your shipment has arrived at the transit destination', 'in_transit'],
+  ['shipment info received', 'registered'],
+  // Export customs taking the parcel, before 4PX's coded release ("Export customs clearance complete").
+  ['export customs clearance started', 'customs'],
 ]);
 
 export interface FourPxStatus extends ClassifiedStatus {

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
+import { readLateRegistrations } from '../../core/result/registration.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, FourPxTracker, parse } from './adapter.js';
 import { statusMap } from './status.js';
@@ -228,6 +229,10 @@ describe('4PX result projection', () => {
     ['FPX_D_AOPC', 'Arrive in transit center', 'in_transit', 'in_transit', 'carrier_map'],
     ['FPX_M_PT', 'Pending transportation', 'in_transit', 'in_transit', 'carrier_map'],
     ['FPX_D_DFD', 'Out from national sorting center', 'in_transit', 'in_transit', 'carrier_map'],
+    ['FPX_O_DW', 'Departed from sorting center', 'in_transit', 'in_transit', 'carrier_map'],
+    ['FPX_O_RC', 'Arrived at departure transport hub', 'in_transit', 'in_transit', 'carrier_map'],
+    ['FPX_Q_ECC', 'Export customs clearance complete', 'in_transit', 'in_transit', 'carrier_map'],
+    ['FPX_C_WD', 'Hand over to airline failed-weight difference is too large', 'exception', 'exception', 'carrier_map'],
     ['FPX_C_SPQS', '4px received shipment.', 'in_transit', 'accepted', 'carrier_map'],
     ['FPX_O_IR', 'Waybill generated', 'pending', 'registered', 'carrier_map'],
     ['FPX_O_IR', 'Waybill generated for EM000000000001CA', 'pending', 'registered', 'carrier_map'],
@@ -279,6 +284,16 @@ describe('4PX result projection', () => {
     }
   });
 
+  it("reads a line haul's info receipt after the measuring as transit", () => {
+    const payload = fixture();
+    const tracks = payload.data[0].tracks;
+    payload.data[0].tracks = [{ ...tracks[0], tkCode: 'FPX_O_IR', tkDesc: 'Shipment info received', tkDateStr: '2026-03-29 09:00:00' }, ...tracks];
+    expect(parse(payload, NUMBER).events?.[0]).toMatchObject({ stage: 'registered', stage_source: 'carrier_map' });
+    const result = readLateRegistrations(normalizeCarrierResult(parse(payload, NUMBER)));
+    expect(result.events?.[0]).toMatchObject({ description: 'Shipment info received', stage: 'in_transit' });
+    expect(result.current_stage).toBe('in_transit');
+  });
+
   it('leaves a relayed step unstaged when its wording says nothing', () => {
     const payload = fixture(); Object.assign(payload.data[0].tracks[0], { tkCode: 'FPX_O_IR', tkDesc: 'Task assigned' });
     const result = parse(payload, NUMBER);
@@ -288,7 +303,7 @@ describe('4PX result projection', () => {
   it('stages the transit scans a partner relays without a code, and only those', () => {
     for (const [tkDesc, expected] of [['Your shipment has arrived at the transit destination', 'in_transit'],
       ['Your shipment has departed from the transit origin', 'in_transit'], ['Order creation, order submitted, pending to receive.', 'registered'],
-      ['Task assigned', undefined]] as const) {
+      ['Export customs clearance started', 'customs'], ['Task assigned', undefined]] as const) {
       const payload = fixture(); Object.assign(payload.data[0].tracks[0], { tkCode: '', tkDesc });
       expect(parse(payload, NUMBER).events?.[0]?.stage, tkDesc).toBe(expected);
     }
@@ -301,6 +316,9 @@ describe('4PX result projection', () => {
     expect(statusMap.stage('FPX_O_IR', 'label creation')).toBe('registered');
     expect(statusMap.stage('FPX_O_IR', 'manifest created')).toBe('in_transit');
     expect(statusMap.stage('FPX_O_IR', 'parcel arrival notified')).toBe('registered');
+    expect(statusMap.stage('FPX_O_IR', 'shipment info received')).toBe('registered');
+    expect(statusMap.stage(null, 'shipment info received')).toBe('registered');
+    expect(statusMap.stage(null, 'export customs clearance started')).toBe('customs');
     expect(statusMap.stage('FPX_NEW', 'manifest created')).toBeUndefined();
   });
 

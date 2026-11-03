@@ -389,6 +389,59 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-22",
       "note": "After import clearance, the day before the last mile's out-for-delivery scan."
+    },
+    {
+      "code": "FPX_O_IR",
+      "wording": "Shipment info received",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "A line haul's pre-advice, placed seconds after the facility measured the parcel; read as transit when it follows a movement."
+    },
+    {
+      "code": "FPX_O_DW",
+      "wording": "Departed from sorting center",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Left the origin sorting centre, before the arrival at the departure hub."
+    },
+    {
+      "code": "FPX_O_RC",
+      "wording": "Arrived at departure transport hub",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The hub the line haul leaves from, just before the hand-over to the service provider."
+    },
+    {
+      "wording": "Export customs clearance started",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Uncoded; a few minutes before the coded release."
+    },
+    {
+      "code": "FPX_Q_ECC",
+      "wording": "Export customs clearance complete",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Export release, before the departure from the origin country."
+    },
+    {
+      "code": "FPX_C_WD",
+      "wording": "Hand over to airline failed-weight difference is too large",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The airline refused the parcel over its weight; the origin facility measured it again the next day."
     }
   ]
 }

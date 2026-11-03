@@ -25,6 +25,9 @@ place's civil one. A `timeZone` of zero marks the relayed partners' scans, Speed
 MICOM's, whose `operatorTime` is the instant: SpeedX's own copies state the same second with
 the place's offset, and read on the place's clock the scan would fall after ECMS recorded it.
 Those scans carry the instant alone. The API's ingestion clock is not a scan timestamp.
+A flight row can give the flight's day alone at midnight sharp, recorded hours later; it keeps
+that day. Most flight rows carry a clock, so the catalog does not mark ECMS as giving day-only
+scans by design.
 
 The US tracking page, `/en-us/tracking.html`, opens a parcel from `?number=`; the other
 locales' pages still read `?orderNumber=`. Links in either form, and the former trackers'

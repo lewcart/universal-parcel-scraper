@@ -38,6 +38,16 @@ describe('ECMS history', () => {
     expect(isPartialAnswer(result)).toBe(false);
   });
 
+  it("keeps the day alone of a flight row at midnight sharp, and a clock a second after it", () => {
+    const data = fixture();
+    data.orderInfo[0]!.infoList[1]!.operatorTime = Date.UTC(2026, 6, 3);
+    const result = parseEcmsExpress(data, NUMBER);
+    expect(result.events![1]).toMatchObject({ local_time: '2026-07-03', provider_code: 'EVENT_314' });
+    expect(result.events![1]).not.toHaveProperty('time');
+    data.orderInfo[0]!.infoList[1]!.operatorTime = Date.UTC(2026, 6, 3, 0, 0, 1);
+    expect(parseEcmsExpress(data, NUMBER).events![1]).toMatchObject({ local_time: '2026-07-03T00:00:01', time: '2026-07-03T00:00:01-08:00' });
+  });
+
   it('binds the whole envelope, summary and every scan before accepting history', () => {
     for (const change of [
       (data: ReturnType<typeof fixture>) => { data.orderNumber[0] += '0'; },

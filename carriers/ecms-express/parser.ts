@@ -59,7 +59,10 @@ function scan(row: unknown, number: string): CarrierEvent {
     : `${local}${offset < 0 ? '-' : '+'}${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
   const location = [...new Set(['cityEnName', 'provinceEnName', 'countryEnName'].map(key => text(row, key, 100)).filter(Boolean))].join(', ');
   const classified = ecmsExpressStage(code, description);
-  return { ...(offset === 0 ? {} : { local_time: local }), ...(time ? { time } : {}), description, provider_code: code,
+  // A flight row can give the flight's day alone, at midnight sharp, recorded hours later: a day, not a clock.
+  const clocked = clock % 86_400_000 === 0 ? { local_time: local.slice(0, 10) }
+    : { ...(offset === 0 ? {} : { local_time: local }), ...(time ? { time } : {}) };
+  return { ...clocked, description, provider_code: code,
     ...(location ? { location } : {}), ...(classified ? { stage: classified.stage, stage_source: classified.source } : {}) };
 }
 

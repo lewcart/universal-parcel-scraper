@@ -213,6 +213,16 @@ describe('shared provider result', () => {
       .toMatchObject({ stage: 'accepted', stage_source: 'wording:provider' });
   });
 
+  it("reads Yanwen's batch hand-over and the destination pickup, and China Post's relayed receipt, hold and security return", () => {
+    for (const wording of ['Batch delivery to carrier', 'Pick up by local carrier at destination port']) {
+      expect(event('2026-01-07T12:45:00+08:00', wording)).toMatchObject({ stage: 'in_transit', stage_source: 'wording:provider' });
+    }
+    for (const [wording, stage] of [['中国邮政已收取邮件', 'accepted'], ['出口海关/留存待验', 'customs'], ['【广州市处理中心】退回', 'exception'],
+      ['【广州市处理中心】退回，备注:安检退回', 'exception'], ['【广州市处理中心】已出口直封', 'in_transit']] as const) {
+      expect(event('2026-01-07T12:45:00+08:00', wording), wording).toMatchObject({ stage, stage_source: 'wording:provider' });
+    }
+  });
+
   it("reads Landmark Global's pallet for any crossing, and a destination carrier's pre-alert, as ParcelsApp relays them", () => {
     for (const wording of ['Grouped when pallet scanned to crossing (SLC INTERPOST #1)', 'Grouped when pallet scanned to crossing (DDU #1234)']) {
       expect(event('2026-01-07T12:45:00-07:00', wording)).toMatchObject({ stage: 'in_transit', stage_source: 'wording:provider' });

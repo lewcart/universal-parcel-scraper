@@ -420,6 +420,18 @@ describe('classifyWording', () => {
     ]) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'customs', source: 'wording:language' });
   });
 
+  it('reads a post\'s movement and acceptance in Ukrainian and Russian', () => {
+    for (const wording of [
+      'Прибуло до Логістичного центру', 'Прибуло до міжнародного терміналу', 'Прибыло в сортировочный центр',
+      'Виїхало з Відділення', 'Виїхало з Логістичного центру', 'Убыло из сортировочного центра',
+      'Оброблено на міжнародному терміналі та прямує до країни призначення', 'Обработано в сортировочном центре',
+    ]) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'in_transit', source: 'wording:language' });
+    for (const wording of ['Прийнято', 'Принято']) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'accepted', source: 'wording:language' });
+    // A branch may hold the parcel for pickup, and customs keeps its own stage.
+    expect(classifyWording('Прибуло до відділення', 'pending').source).toBe('none');
+    expect(classifyWording('Прибыло на таможню', 'pending').stage).toBe('customs');
+  });
+
   it('maps sender drop-off and carrier pickup scans to accepted', () => {
     for (const wording of [
       'Drop-Off', 'Pickup Scan', 'Pick-up scan', 'Shipment pickup', 'Salesperson collects the package.',

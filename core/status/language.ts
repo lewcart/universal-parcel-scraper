@@ -133,8 +133,14 @@ const HANDED_TO_NETWORK = new RegExp(String.raw`${HANDED_TO}(?!${COURIER})(?:the
 const CYRILLIC_START = String.raw`(?<![а-яієґ])`;
 /** Customs in Ukrainian and Bulgarian ("митниця", "митний"), Belarusian ("мытня") and Russian ("таможня", "таможенный"). */
 const CYRILLIC_CUSTOMS = String.raw`${CYRILLIC_START}(?:митн|мытн|тамож)`;
-/** Customs or clearance named in any language. */
+/**
+ * A post's movement in Ukrainian or Russian: arrived at a logistics centre, terminal or hub, left
+ * any facility, or processed at one. Arrival at a branch is left out: there it may await pickup.
+ */
+const CYRILLIC_MOVED = new RegExp(String.raw`^(?:прибул[оаи]?|прибув|прибыл[оаи]?) (?:до|в|у|на) (?:[а-яієґ']+ ){0,2}(?:центр|термінал|терминал|хаб)|^(?:виіхал[оаи]?|виіхав|выехал[оаи]?|убыл[оаи]?) (?:з|із|зі|из|с|со) |^(?:оброблено|обработано|опрацьовано) (?:на|в|у) `);
+/** Shipment data received from the sender, in Russian or Ukrainian: "Данные … получены", "Дані отримано". */
 const CYRILLIC_DATA_RECEIVED = new RegExp(String.raw`${CYRILLIC_START}(?:данные|дані)(?: [а-яієґ']+){0,4}? (?:получены|отримано|отримані)`);
+/** Customs or clearance named in any language. */
 const CUSTOMS = new RegExp(String.raw`customs|clearance|\bclearing agen(?:cy|t)\b|douan|formalites (?:d')?(?:import|export)|zoll|dogan|\b(?:des)?aduan[ae]|alfandeg|\bceln|government agency|autorite gouvernementale|staatliche behorde|autorita governativa|${CYRILLIC_CUSTOMS}`);
 /** The side of customs a scan may name: "import", "export", "import/export". */
 const CUSTOMS_SIDE = String.raw`(?:(?:import|export)(?:\/(?:import|export))? |local |destination |origin )?`;
@@ -595,6 +601,9 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^l'envoi est dans le reseau de livraison local$/.test(text)) return 'in_transit';
   if (/transit|\bline ?haul\b|en route|on (?:its|the) way|\bfacility\b|airport|\bleaving\b|\bdispatched\b|^delay(?:ed)?$|received by (?:the )?(?:local )?(?:delivery|logistics) company|\btransfer to (?:the |a |an )?(?:local |destination )?(?:acting |delivery |logistics |courier )?(?:company|agent|carrier|partner)\b|received by (?:postnl|uniuni)\b|notification.*sent to the recipient|delivery option requested|instruction de livraison recue|cambio (?:delle )?disposizioni di consegna|expedie (?:depuis|du|de)\b|acheminement|unterwegs|\bin viaggio\b|\bw drodze\b|\bonderweg\b|transport|trasport|arriv|depart|processed|processing completed|processing at (?:the )?(?:origin |destination )?branch\b|\breceipt of (?:the )?(?:package|parcel|shipment) at (?:the )?dpd branch\b|sorted|sorting|\btri\b|\btriee?s?\b|traitement|traite|sortier|bearbeitet|bearbeitung|elaborat|elaborazion|smistat|parcel cent(?:er|re)|delivery cent(?:er|re)|centre.*(?:colis|distribution)|paketzentrum|verteilzentrum|centro.*(?:pacchi|distribuzione)|depot|import scan|scan.*import|importscan|scansione.*import|delivery.*delayed|livraison.*(?:retard|report)|zustellung.*verzogert|consegna.*ritard|transferred|transfere|weitergeleitet|inoltrato|left.*(?:point|center)|quitte|verlassen|raggiunto|close bag|fermeture du sac|sack.*geschlossen|chiusura.*sacco|scanned into|scanne dans|eingescannt|scansionat|\b(?:un)?loaded\b|^(?:item|parcel|shipment) distributed$|charg.*vehicule de transport|transportfahrzeug.*geladen|caric.*veicolo.*trasporto/.test(text)) return 'in_transit';
   if (/^enviad[oa]$|\bclasificad[oa]s?\b|\bclasificacion\b|\ben ruta\b|\ben camino\b|\bllegad[oa]s? (?:a|al|en)\b|\bllegada (?:a|al|en|de)\b|\bha llegado\b|\bllego (?:a|al)\b|\bsalida (?:de|del|desde)\b|\b(?:ha )?salido (?:de|del)\b|\bsalio (?:de|del)\b|\ben destino\b|\b(?:agencia|delegacion|plataforma|oficina|franquicia) (?:de )?destino\b|\b(?:unidad|centro|oficina|delegacion|base|agencia|plataforma) de reparto\b|\bcentro (?:de )?(?:clasificacion|distribucion|tratamiento|logistico|operaciones|operativo)\b|\blectura\b|\bleid[oa]s?\b|\brecepcionad[oa]s?\b|\bprocesad[oa]s?\b|\bexpedid[oa]s?\b|\btriagem\b|\btriad[oa]s?\b|\bem tratamento\b|\btratad[oa]s?\b|\bcentro (?:de )?(?:distribuicao|tratamento|triagem|operacional)\b|\bchegad[ao] (?:a|ao|no|na|em)\b|\bchegou (?:a|ao|no|na|em)\b|\bsaida (?:do|da|de|dos|das)\b|\bsaiu (?:do|da|de|dos|das)\b|\bem rota\b|\ba caminho\b|\bencaminhad[oa]s?\b|\b(?:em )?transferencia\b|\btransferid[oa]s?\b|\bprocessad[oa]s?\b|\brecebid[oa] (?:no|na|em) (?:centro|armazem|unidade|plataforma)\b|\brecibid[oa] en (?:el |la |nuestr[oa] )?(?:almacen|centro|delegacion|plataforma|hub|agencia)\b/.test(text)) return 'in_transit';
+  // Accepted by a post, the whole scan, in Ukrainian ("Прийнято") or Russian ("Принято").
+  if (/^(?:приинято|принято)$/.test(text)) return 'accepted';
+  if (CYRILLIC_MOVED.test(text)) return 'in_transit';
   return undefined;
 }
 

@@ -455,6 +455,28 @@ describe('same-instant identity policies', () => {
     ]) expect(policy?.matches?.(incoming, different)).toBe(false);
   });
 
+  it('lets a DHL eCommerce Poland scan reworded at the same instant and place take over its stored row', () => {
+    expect(sameInstantIdentityPolicy('dhl-ecommerce-pl')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('dhl-ecommerce-pl', { supportsScanMatching: true });
+    // Its history keeps facility-local clocks, so a better deduced zone still finds the row too.
+    expect(policy).toMatchObject({
+      sourceCarrierId: 'dhl-ecommerce-pl', storedSources: ['dhl-ecommerce-pl'], requireProviderCode: false, matchEachScan: true, matchWallClock: true,
+    });
+    const stored = { stage: 'accepted', description: 'The shipment has reached DHL terminal in Example Town.', location: 'Example Town', providerCode: '' };
+    const incoming = { ...stored, stage: 'in_transit', description: 'The shipment has reached DHL terminal in Example Town. Planned date of delivery to: 04-11-2026.' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.({ ...incoming, location: ' Example Town ' }, stored)).toBe(true);
+    for (const different of [
+      { ...stored, location: 'Other Town' },
+      { ...stored, location: '' },
+      { ...stored, description: ' ' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+    // A scan with no place is only the same scan in the same words.
+    const unplaced = { ...stored, location: '' };
+    expect(policy?.matches?.({ ...unplaced, description: ' the shipment has reached DHL terminal  in Example Town. ' }, unplaced)).toBe(true);
+    expect(policy?.matches?.({ ...incoming, location: '' }, unplaced)).toBe(false);
+  });
+
   it('lets a DHL Express record take over the row the other feed stored, by wall clock, place and wording', () => {
     expect(sameInstantIdentityPolicy('dhl-express')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('dhl-express', { supportsScanMatching: true });

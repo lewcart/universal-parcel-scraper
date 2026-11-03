@@ -36,6 +36,11 @@ time is an instant; posting dates are calendar days. History rows retain
 facility-local clocks without an invented offset, including international
 scans. Unknown history wording remains unclassified.
 
+DHL rewords a scan in place: a terminal arrival later gains its planned
+delivery day. History scans carry no code, so the identity policy in
+[identity.ts](identity.ts) lets a scan at the same instant and named place take
+over its stored row, when the match is unique both ways.
+
 The DHL-specific helper uses TRAWL's native checkbox and audio solver.
 A carrier-scoped copy retains the upstream algorithm and replaces its raw debug
 output with fixed diagnostic events. Unsupported challenges and failed

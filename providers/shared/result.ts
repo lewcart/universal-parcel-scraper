@@ -409,10 +409,17 @@ function providerWordingStage(description: string): Stage | undefined {
   // Hermes Germany's delivery to the safe place its recipient booked, which the aggregator pairs with its "Delivered".
   if (/^the shipment was left at a drop-off location[.!]?$/i.test(value)) return 'delivered';
   // A line carrier taking the parcel from the seller's or forwarder's warehouse, as GlobalEco's, ExMate's and Huiyi
-  // Logistics' own maps read their "Received by Carrier".
-  if (/^received by carrier[.!]?$/i.test(value)) return 'in_transit';
+  // Logistics' own maps read their "Received by Carrier", and 17TRACK's earlier wording of the airline taking China
+  // Post's dispatch after export clearance, "Carrier received shipment".
+  if (/^received by carrier[.!]?$|^carrier received shipment[.!]?$/i.test(value)) return 'in_transit';
   // Landmark Global's hand-over to the destination's postal operator for the last mile, as Landmark's own map reads it.
   if (/^item deposited to local postal operator[.!]?$/i.test(value)) return 'in_transit';
+  // Landmark Global's pallet for the crossing, whatever crossing and number it names, as Landmark's own map reads it:
+  // "Grouped when pallet scanned to crossing (SLC INTERPOST #1)".
+  if (/^grouped when pallet scanned to crossing \([a-z]{3}(?: interpost)? #\d{1,10}\)$/i.test(value)) return 'in_transit';
+  // A destination carrier's pre-alert, the sender's data it holds before the parcel reaches it, generated and still
+  // without its receipt ("sin recepción"), as ParcelsApp relays it beside the carrier's Spanish notice of the data.
+  if (/^carrier pre-?alert\. (?:generated|sin recepcion)[.!]?$/i.test(value)) return 'registered';
   // Pitney Bowes's Global Shipping Program steps as aggregators relay them, as its own map reads them: the shipper's data,
   // then its hub measuring, labelling and loading the parcel and sending it abroad. Interpost, which carries it on, requests
   // the final-mile label at the hub's processing scan and hands the parcel to the destination's postal company.

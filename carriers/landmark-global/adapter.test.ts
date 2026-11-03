@@ -128,11 +128,13 @@ describe('Landmark Global history', () => {
     expect(parseLandmark($.html(), NUMBER)).toMatchObject({ status: 'out_for_delivery' });
   });
   it('reads the pallet row by its wording whatever pallet it names, and the export from the office of exchange in transit', () => {
-    for (const description of ['Grouped when pallet scanned to crossing (DDU #1234)', 'Grouped when pallet scanned to crossing (DDU #7)', 'Departure from office of exchange']) {
+    for (const description of ['Grouped when pallet scanned to crossing (DDU #1234)', 'Grouped when pallet scanned to crossing (DDU #7)',
+      'Grouped when pallet scanned to crossing (SLC INTERPOST #1)', 'Departure from office of exchange']) {
       expect(landmarkStatus(description), description).toEqual({ status: 'in_transit', stage: 'in_transit' });
       expect(statusMapAnswer({ carrier: 'landmark-global', providerCode: null, description }), description).toEqual({ kind: 'mapped', stage: 'in_transit' });
     }
-    for (const description of ['Grouped when pallet scanned to crossing (DDU #12A)', 'Grouped when pallet scanned to crossing (DDU #)', 'Grouped when pallet scanned to crossing']) {
+    for (const description of ['Grouped when pallet scanned to crossing (DDU #12A)', 'Grouped when pallet scanned to crossing (DDU #)', 'Grouped when pallet scanned to crossing',
+      'Grouped when pallet scanned to crossing (SALT LAKE #1)']) {
       expect(landmarkStatus(description), description).toBeUndefined();
     }
   });

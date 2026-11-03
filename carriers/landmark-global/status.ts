@@ -1,10 +1,11 @@
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
-// The pallet a parcel joins names its number: "Grouped when pallet scanned to crossing (DDU #1234)". The map holds it as "#…".
-const PALLET = 'Grouped when pallet scanned to crossing (DDU #…)';
-const PALLET_NUMBER = /^(grouped when pallet scanned to crossing \(ddu #)\d{1,10}(\))$/i;
-const palletKey = (wording: string): string => wording.replace(PALLET_NUMBER, '$1…$2');
+// The pallet a parcel joins names its crossing and number: "Grouped when pallet scanned to crossing (DDU #1234)",
+// "(SLC INTERPOST #1)". The map holds them as "(… #…)".
+const PALLET = 'Grouped when pallet scanned to crossing (… #…)';
+const PALLET_NUMBER = /^(grouped when pallet scanned to crossing \()[a-z]{3}(?: interpost)?( #)\d{1,10}(\))$/i;
+const palletKey = (wording: string): string => wording.replace(PALLET_NUMBER, '$1…$2…$3');
 
 const WORDINGS = new Map<string, ClassifiedStatus>([
   ['Delivered', { status: 'delivered', stage: 'delivered' }],

@@ -869,6 +869,7 @@ describe('classifyWording', () => {
       ['Order submitted, pending to receive.', 'registered'], ['Order created. Order submitted and pending receipt', 'registered'],
       ['Shipment data uploaded', 'registered'], ['Sender preparing item', 'registered'], ['Forecast has been received', 'registered'],
       ['Sender preparing item. The sender has let us know they have despatched your item', 'registered'],
+      ['Sender preparing parcel. The sender has your parcel and is preparing it for delivery with us.', 'registered'],
       ['Sender has despatched item', 'registered'], ['Sender despatching item', 'registered'],
       ['Shipping info sent to BRT', 'registered'],
       ['Information, We have received your shipment information, we will have your goods soon', 'registered'],

@@ -176,12 +176,12 @@
       "note": "A scan at a carrier's facility, seen after Landmark's processing; read as its other facility scans are."
     },
     {
-      "wording": "Grouped when pallet scanned to crossing (DDU #…)",
+      "wording": "Grouped when pallet scanned to crossing (… #…)",
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-11-02",
-      "note": "At Landmark's hub the parcel joins a pallet for the crossing to the destination country, before customs and the crossing scans. The row names the pallet's number, read as \"…\"."
+      "note": "At Landmark's hub the parcel joins a pallet for the crossing to the destination country, before customs and the crossing scans. The row names the crossing and the pallet's number, read as \"…\": \"(DDU #1234)\", \"(SLC INTERPOST #1)\"."
     },
     {
       "wording": "Departure from office of exchange",

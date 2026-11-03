@@ -213,6 +213,22 @@ describe('shared provider result', () => {
       .toMatchObject({ stage: 'accepted', stage_source: 'wording:provider' });
   });
 
+  it("reads Landmark Global's pallet for any crossing, and a destination carrier's pre-alert, as ParcelsApp relays them", () => {
+    for (const wording of ['Grouped when pallet scanned to crossing (SLC INTERPOST #1)', 'Grouped when pallet scanned to crossing (DDU #1234)']) {
+      expect(event('2026-01-07T12:45:00-07:00', wording)).toMatchObject({ stage: 'in_transit', stage_source: 'wording:provider' });
+    }
+    expect(event('2026-01-07T12:45:00-07:00', 'Grouped when pallet scanned to crossing (SLC INTERPOST #1A)')).toMatchObject({ stage_source: 'none' });
+    for (const wording of ['Carrier Prealert. Generated', 'Carrier Prealert. Sin recepción']) {
+      expect(event('2026-01-07T12:45:00+01:00', wording)).toMatchObject({ stage: 'registered', stage_source: 'wording:provider' });
+    }
+  });
+
+  it("reads 17TRACK's earlier wording of the airline taking China Post's dispatch as transit, as its later one", () => {
+    for (const wording of ['Carrier received shipment', 'Received by carrier']) {
+      expect(event('2026-01-07T12:45:00+08:00', wording)).toMatchObject({ stage: 'in_transit', stage_source: 'wording:provider' });
+    }
+  });
+
   it("reads Interpost's import clearance by its caption, without the status code ParcelsApp heads it with", () => {
     expect(event('2026-01-07T12:45:00+01:00', 'B2C Clearance 4. Customs Import cleared'))
       .toMatchObject({ description: 'Customs Import cleared', stage: 'in_transit' });

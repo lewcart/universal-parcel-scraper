@@ -110,7 +110,10 @@ how a consumer learns that DHL holds one behind a postcode.
   hasn't happened; mapping it to `registered` would undo real progress.
 - A receiving option the recipient booked ("Liefertag als Empfangsoption
   vorgemerkt") is left out: it is a wish, not a movement, as Hermes Germany's
-  booked delivery day is.
+  booked delivery day is. So is a pre-advice ("elektronisch angekündigt") dated
+  after a scan that moved the parcel, and as the summary it gives way to the
+  newest scan: it is a notice, and the stage must not move back. One dated
+  first, or with the first move, stays registered.
 - "Delivery not possible" is a failed attempt: it follows the loading onto the
   delivery vehicle, the parcel then waits at a retail outlet, and the partner
   posts' copies of the scan read it so.

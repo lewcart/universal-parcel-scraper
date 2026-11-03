@@ -40,7 +40,7 @@ import {
 } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { withoutPartnerLink } from './identity.js';
-import { BOOKED_OPTION, stageForText, statusForStage } from './status.js';
+import { BOOKED_OPTION, movedParcel, preAdvice, stageForText, statusForStage } from './status.js';
 
 const PROVIDER = 'DHL';
 const TIMEZONE = 'Europe/Berlin';
@@ -197,14 +197,19 @@ export function parseDHLTrackingResponse(payload: unknown, trackingNumber: strin
     return [{ time: date(event.datum), location: clean(event.ort, 160), description, stage: stageForText(description) }];
   });
   if (listsNewestFirst(scans) === false) scans.reverse();
-  const events: CarrierEvent[] = scans.sort((left, right) => millis(right.time) - millis(left.time)).slice(0, 100)
+  // A pre-advice dated after a scan that moved the parcel is a notice, not movement: it is left
+  // out, so the stage cannot move back. One dated first, or with the first move, stays registered.
+  const firstMove = Math.min(...scans.filter((scan) => scan.time && movedParcel(scan.description)).map((scan) => millis(scan.time)));
+  const events: CarrierEvent[] = scans.filter((scan) => !(scan.time && preAdvice(scan.description) && millis(scan.time) > firstMove))
+    .sort((left, right) => millis(right.time) - millis(left.time)).slice(0, 100)
     .map(({ time, ...event }) => ({ ...event, ...clock(time, event.location) }));
   const summary = withoutPartnerLink(clean(timeline.status));
   if (!events.length && !summary && details.istZugestellt !== true) {
     if (Object.values(missing).some((flag) => flag === true)) return noData();
     throw new SchemaError(PROVIDER, 'DHL returned no usable tracking status');
   }
-  const currentText = summary || events[0]?.description || 'Delivered';
+  // Nor is a pre-advice DHL gives as its summary once a scan moved the parcel: the newest scan is.
+  const currentText = (preAdvice(summary) && Number.isFinite(firstMove) ? '' : summary) || events[0]?.description || 'Delivered';
   const fallback = Number(timeline.fortschritt) <= 1 ? 'registered' : String(events[0]?.stage || 'in_transit');
   const stage = details.istZugestellt === true
     ? details.ruecksendung === true ? 'returned' : 'delivered'

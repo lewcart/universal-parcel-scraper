@@ -23,6 +23,22 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
  */
 export const BOOKED_OPTION = /\bals empfangsoption vorgemerkt\b/i;
 
+/**
+ * DHL's pre-advice: the sender's electronic data ("Die Sendung wurde elektronisch angekündigt.",
+ * "The instruction data … provided … electronically"). Listed after a scan that moved the parcel,
+ * it is a notice, not movement, and the parser leaves it out.
+ */
+export function preAdvice(text: string): boolean {
+  return /\belectronically\b|\belektronisch\b/i.test(text) && stageForText(text, '') === 'registered';
+}
+
+const MOVED = new Set(['accepted', 'in_transit', 'out_for_delivery', 'failed_attempt', 'ready_for_pickup', 'delivered', 'returned']);
+
+/** Whether the wording reads as a step that moved the parcel; unknown wording does not. */
+export function movedParcel(text: string): boolean {
+  return MOVED.has(stageForText(text, ''));
+}
+
 export function stageForText(text: string, fallback = 'in_transit'): string {
   const value = text.toLowerCase();
   // A return still to come or under way, such as a parcel left uncollected past its storage period:

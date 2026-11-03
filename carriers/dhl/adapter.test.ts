@@ -94,6 +94,25 @@ describe('DHL public tracking normalization', () => {
     expect(result.current_stage).toBe('in_transit');
   });
 
+  it('leaves out a pre-advice dated after a scan that moved the parcel, and keeps one dated first', () => {
+    const late = 'Die Sendung wurde elektronisch angekündigt. Sobald die Sendung von uns bearbeitet wurde, erhalten Sie weitere Informationen.';
+    const read = (datum: string, status?: string) => {
+      const payload = shipment(status ? { sendungsverlauf: { ...shipment().sendungen[0]!.sendungsdetails.sendungsverlauf, status } } : {});
+      payload.sendungen[0]!.sendungsdetails.sendungsverlauf.events.push({ datum, status: late });
+      return parseDHLTrackingResponse(payload, NUMBER);
+    };
+    const after = read('2026-08-10T18:45:00+02:00');
+    expect(after.events?.map((event) => event.time)).toEqual(['2026-08-10T18:30:00+02:00', '2026-08-09T20:00:00+02:00']);
+    expect(after.current_stage).toBe('in_transit');
+    // As the summary, it gives way to the newest scan.
+    const summary = read('2026-08-10T18:45:00+02:00', late);
+    expect(summary).toMatchObject({ current_stage: 'in_transit', last_status_text: 'Die Sendung wurde im Briefzentrum bearbeitet.' });
+    // One dated before the first move, or with it, stays registered.
+    for (const datum of ['2026-08-10T18:00:00+02:00', '2026-08-10T18:30:00+02:00']) {
+      expect(read(datum).events?.find((event) => event.description === late)?.stage, datum).toBe('registered');
+    }
+  });
+
   it('keeps the correct event order, stages and dates without private recipient data', () => {
     const result = parseDHLTrackingResponse(shipment(), NUMBER);
     expect(result).toMatchObject({

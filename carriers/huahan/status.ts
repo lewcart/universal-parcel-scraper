@@ -5,7 +5,8 @@ import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status
 // adds the flight and clearance milestones, JY for the hand-off to the
 // destination carrier, and codes for that carrier's out-for-delivery (CB),
 // delivery-point arrival (PB) and delivery (CC) scans. IA covers that carrier's
-// other scans: the map reads the wordings seen, the shared rules the rest.
+// other scans, and CA its depot scans: the map reads the wordings seen, the
+// shared rules the rest.
 const CODES: ReadonlyMap<string, Stage> = new Map([
   ['IR', 'registered'], ['AF', 'accepted'], ['DF', 'in_transit'], ['GG', 'in_transit'], ['BG', 'in_transit'],
   ['QF', 'in_transit'], ['QG', 'customs'], ['LD', 'in_transit'], ['YG', 'in_transit'], ['JY', 'in_transit'],
@@ -37,6 +38,9 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['in transit, shipment remained at sorting hub', 'in_transit'],
   ['in transit, arrived to hu hub', 'in_transit'],
   ['in transit, parcel has entered the linehaul network.', 'in_transit'],
+  ['in transit, picked up | einrollung', 'in_transit'],
+  ['in transit, scanned by dpd at parcel delivery centre.', 'in_transit'],
+  ['in transit, at parcel delivery centre.', 'in_transit'],
   ['the courier will deliver the parcel soon. additional details are available in the sameday app, email or sms.', 'out_for_delivery'],
 ]);
 
@@ -48,9 +52,11 @@ const GAP_WORDINGS = new Set(GAPS.map((gap) => gap.wording));
 
 // HuaHan's own codes are two capitals; a provider relaying its scans puts its own code on them.
 const OWN_CODE = /^[A-Z]{2}$/;
+// HuaHan's codes for the destination carrier's scans that its words stage.
+const CARRIER_SCAN_CODES = new Set(['IA', 'CA']);
 
 function mappedStage(code: string, wording: string): Stage | undefined {
-  return CODES.get(code) ?? (!OWN_CODE.test(code) || code === 'IA' ? WORDINGS.get(wording) : undefined);
+  return CODES.get(code) ?? (!OWN_CODE.test(code) || CARRIER_SCAN_CODES.has(code) ? WORDINGS.get(wording) : undefined);
 }
 
 /** A scan's stage: its code or wording in the map, else the shared rules, else nothing. A recorded gap has none. */

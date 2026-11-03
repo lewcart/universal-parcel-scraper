@@ -3,6 +3,7 @@ import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import type { Stage } from '../../core/status/index.js';
 import { HuahanTracker, solveHuahanQuestion } from './adapter.js';
 import { parseHuahan } from './parser.js';
+import { huahanStage } from './status.js';
 
 const NUMBER = 'HHWAA0000000001YQ';
 const fixture = () => ({ ask: 1, data: [{ Code: NUMBER, Error_code: '0000', Status: 'Delivered',
@@ -226,5 +227,13 @@ describe('HuaHan status map', () => {
     for (const description of ['In Transit, Arrived to HU HUB', 'In Transit, Parcel has entered the Linehaul network.']) {
       expect(statusMapAnswer({ carrier: 'huahan', providerCode: 'IA', description }), description).toEqual({ kind: 'mapped', stage: 'in_transit' });
     }
+    // DPD's depot inbound after the hand-off moves the parcel on; HuaHan accepted it in China.
+    for (const description of ['In Transit, Picked Up | Einrollung', 'In Transit, At parcel delivery centre.']) {
+      expect(statusMapAnswer({ carrier: 'huahan', providerCode: 'IA', description }), description).toEqual({ kind: 'mapped', stage: 'in_transit' });
+      expect(huahanStage('IA', description)).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    }
+    // DPD's depot scans under CA are read by their words, like IA's.
+    expect(statusMapAnswer({ carrier: 'huahan', providerCode: 'CA', description: 'In Transit, Scanned By DPD At parcel delivery centre.' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
   });
 });

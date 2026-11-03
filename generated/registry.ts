@@ -2195,6 +2195,7 @@ export const REGISTRY: RegistryDefinition = {
     "moovin": "universal",
     "morning-global": "morning-global",
     "motorex": "universal",
+    "mountain-movers": "universal",
     "movin": "universal",
     "mrl-global": "mrl-global",
     "mrw": "mrw",

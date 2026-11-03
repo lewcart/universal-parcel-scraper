@@ -1,0 +1,42 @@
+{
+  "id": "mountain-movers",
+  "displayName": "Mountain Movers",
+  "aliases": [
+    "MountainMovers",
+    "Mountain Movers Transportation & Logistics"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#00295b"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://work.mymmtl.com/track/{trackingNumber}",
+    "searchUrl": "https://work.mymmtl.com/track",
+    "canaryUrl": "https://work.mymmtl.com/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "work.mymmtl.com"
+      ],
+      "path": "^/track/([^/?#,;|]+)/?$"
+    }
+  ],
+  "detection": []
+}

@@ -31655,6 +31655,35 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     ],
     "detectionRules": []
   },
+  "mountain-movers": {
+    "displayName": "Mountain Movers",
+    "color": "#00295b",
+    "aliases": [
+      "MountainMovers",
+      "Mountain Movers Transportation & Logistics"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://work.mymmtl.com/track",
+    "trackingUrlTemplate": "https://work.mymmtl.com/track/{trackingNumber}",
+    "trackingSearchUrl": "https://work.mymmtl.com/track",
+    "linkRules": [
+      {
+        "domains": [
+          "work.mymmtl.com"
+        ],
+        "path": "^/track/([^/?#,;|]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "movin": {
     "displayName": "MOVIN",
     "color": "#261817",
@@ -51129,6 +51158,7 @@ export const CARRIER_IDS = [
   "moovin",
   "morning-global",
   "motorex",
+  "mountain-movers",
   "movin",
   "mrl-global",
   "mtscn",
@@ -52466,6 +52496,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "moovin": [],
   "morning-global": ["morning-global-1"],
   "motorex": [],
+  "mountain-movers": [],
   "movin": [],
   "mrl-global": [],
   "mtscn": ["mtscn-1"],

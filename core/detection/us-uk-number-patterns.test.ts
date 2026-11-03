@@ -823,3 +823,18 @@ describe('Matson, Schneider and Alliance Air Freight', () => {
     }
   });
 });
+
+describe('Mountain Movers', () => {
+  it('reads its names and tracking links', () => {
+    for (const name of ['Mountain Movers', 'MountainMovers']) expect(carrierIdFromName(name), name).toBe('mountain-movers');
+    expect(parseTrackingInput('https://work.mymmtl.com/track/1000000017'))
+      .toMatchObject({ trackingNumber: '1000000017', carrier: 'mountain-movers', source: 'link' });
+    expect(parseTrackingInput('https://work.mymmtl.com/track/1000000017,1000000025')?.carrier).not.toBe('mountain-movers');
+  });
+
+  it('offers Mountain Movers for no number shape', () => {
+    for (const number of ['1000000017', '100000017', 'MM1000000017']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('mountain-movers');
+    }
+  });
+});

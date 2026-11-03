@@ -68,6 +68,8 @@ const UNCODED: ReadonlyMap<string, Stage> = new Map([
   ['shipment info received', 'registered'],
   // Export customs taking the parcel, before 4PX's coded release ("Export customs clearance complete").
   ['export customs clearance started', 'customs'],
+  // The hand-over to iMile's regional centre for the last mile, not a delivery to the recipient.
+  ['shipment delivered to imile rdc or lastmile vendor', 'in_transit'],
 ]);
 
 export interface FourPxStatus extends ClassifiedStatus {

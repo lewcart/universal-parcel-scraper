@@ -646,6 +646,8 @@ describe('classifyWording', () => {
       ['Collected by the final mile courier', 'in_transit'],
       // The same handover after clearance, as a universal provider relays it.
       ['Handover To Last Mile', 'in_transit'], ['Received by Last Mile Provider', 'in_transit'],
+      // A hand-over to the last-mile partner's regional centre, as 4PX relays iMile's.
+      ['Shipment delivered to iMile RDC or lastmile vendor', 'in_transit'], ['Delivered to the last-mile vendor', 'in_transit'],
       ['Package picked up', 'accepted'],
       ['Picked up by the carrier', 'accepted'],
       // Colis Privé's English as ParcelsApp relays it: its takeover, its depot with the driver's round to come, and a pickup point.
@@ -886,6 +888,7 @@ describe('classifyWording', () => {
   it('reads relayed pre-advice, receipts, cross-docks and flights the providers pass on', () => {
     for (const [wording, stage] of [
       ['Order submitted, pending to receive.', 'registered'], ['Order created. Order submitted and pending receipt', 'registered'],
+      ['Order Submited.', 'registered'], ['Your order has been submitted', 'registered'],
       ['Shipment data uploaded', 'registered'], ['Sender preparing item', 'registered'], ['Forecast has been received', 'registered'],
       ['Sender preparing item. The sender has let us know they have despatched your item', 'registered'],
       ['Sender preparing parcel. The sender has your parcel and is preparing it for delivery with us.', 'registered'],

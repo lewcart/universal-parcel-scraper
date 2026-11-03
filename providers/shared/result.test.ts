@@ -245,6 +245,10 @@ describe('shared provider result', () => {
     }
   });
 
+  it('reads a relayed "Carrier received the shipment" of no named carrier as registration, and as transit after a movement', () => {
+    expect(event('2026-01-07T12:45:00+08:00', 'Carrier received the shipment')).toMatchObject({ stage: 'registered', stage_source: 'wording:provider' });
+  });
+
   it("reads ePost Global's pickup and tender to USPS, and USPS's export dispatch, as ParcelsApp relays them", () => {
     for (const wording of ['Outbound Shipment Pickup', 'Tendered to Postal Service', 'INTERNATIONAL DISPATCH READY']) {
       expect(event('2026-01-07T12:45:00-08:00', wording), wording).toMatchObject({ stage: 'in_transit', stage_source: 'wording:provider' });

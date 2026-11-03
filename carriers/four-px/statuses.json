@@ -263,6 +263,15 @@
       "firstSeen": "2026-10-08"
     },
     {
+      "code": "FPX_O_IR",
+      "wording": "Order Submited.",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "iMile's order for the parcel, in iMile's spelling, relayed after 4PX measured the parcel: read as transit once a scan has moved it."
+    },
+    {
       "code": "FPX_O_IRI",
       "wording": "Picked up by shipping partner, usps awaiting item",
       "language": "en",
@@ -293,6 +302,14 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-27",
       "note": "Relayed without a code: a partner's order for a parcel it has not received yet."
+    },
+    {
+      "wording": "Shipment delivered to iMile RDC or lastmile vendor",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Relayed without a code: the hand-over to iMile's regional centre for the last mile, not a delivery to the recipient."
     },
     {
       "wording": "Your shipment has departed from the transit origin",

@@ -421,6 +421,10 @@ function providerWordingStage(description: string): Stage | undefined {
   // Logistics' own maps read their "Received by Carrier", and 17TRACK's earlier wording of the airline taking China
   // Post's dispatch after export clearance, "Carrier received shipment", also with the country in brackets: "[CN]".
   if (/^received by carrier(?: \[[a-z]{2}\])?[.!]?$|^carrier received shipment[.!]?$/i.test(value)) return 'in_transit';
+  // "Carrier received the shipment" is TopYou's and Chukou1's first scan in their hands, and a line Shouwu writes two hours
+  // after the order data, before it has the parcel: a relay that names no carrier is read as the registration none of
+  // them is behind, and as transit once a scan has moved the parcel.
+  if (/^carrier received the shipment[.!]?$/i.test(value)) return 'registered';
   // Landmark Global's hand-over to the destination's postal operator for the last mile, as Landmark's own map reads it.
   if (/^item deposited to local postal operator[.!]?$/i.test(value)) return 'in_transit';
   // Landmark Global's pallet for the crossing, whatever crossing and number it names, as Landmark's own map reads it:

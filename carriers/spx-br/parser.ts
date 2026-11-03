@@ -180,6 +180,15 @@ const FLEET_STATUS = /^[A-Za-z0-9_]{1,64}$/;
 const HUB = /^\[((?:FM|LM) ?Hub_[^\]]{1,100}|SoC_[^\]]{1,100})\]\s*/i;
 // The bracketed name the feed's English line puts after a delivery.
 const LAST_NAMED = /\s*\[[^\]]*\]\s*$/;
+// A drop-off point's line opens with the point's name, often its keeper's: "[Nome] Seu pacote foi recebido pelo ponto de coleta".
+const DROP_OFF_NAMED = /^\[[^\]]{1,200}\]\s*/;
+// A line haul's transfer and trip, in English in every language: "[TO…] unloading at [SoC_SP_Exemplo] via Linehaul Trip [LT…]".
+const LINE_HAUL = /^\[[^\]]{1,64}\]\s*(unload(?:ing|ed)) at \[([^\]]{1,100})\]\s*via linehaul trip\s*\[[^\]]{1,64}\]$/i;
+// A line haul leaving for a hub: "Pacote [TO…] está sendo transportado para [SoC_SP_Exemplo]".
+const TRANSFER_ID = /^(pacote) \[[^\]]{1,64}\]\s*/i;
+const NEXT_HUB = /\[((?:FM|LM) ?Hub_[^\]]{1,100}|SoC_[^\]]{1,100})\]$/i;
+// The longest a hub's unloading runs before the hub's own scan takes the parcel in.
+const UNLOADING_MS = 24 * 60 * 60 * 1000;
 
 function projectFleetRow(row: Record<string, unknown>): CarrierEvent {
   if (typeof row.status !== 'string' || !FLEET_STATUS.test(row.status.trim())) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid fleet status');
@@ -191,9 +200,15 @@ function projectFleetRow(row: Record<string, unknown>): CarrierEvent {
   // the hub taking the parcel in. A pickup or a delivery names the hub that made it, not
   // where it happened.
   const hub = HUB.exec(line);
-  const description = hub ? line.slice(hub[0].length) : line;
+  // A line haul's unloading keeps its verb, at the hub it names; the transfer and trip ids
+  // leave, as does the transfer id of a line haul leaving for a hub.
+  const haul = LINE_HAUL.exec(line);
+  const description = haul ? haul[1]!.charAt(0).toUpperCase() + haul[1]!.slice(1).toLowerCase()
+    : hub ? line.slice(hub[0].length)
+      : /^DOP_/i.test(code) ? line.replace(DROP_OFF_NAMED, '')
+        : /_LHTransporting$/i.test(code) ? line.replace(TRANSFER_ID, '$1 ').replace(NEXT_HUB, '$1') : line;
   if (!description) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned a scan without wording');
-  const location = hub && /_Received$/i.test(code) ? clean(hub[1], 120) : '';
+  const location = haul ? clean(haul[2], 120) : hub && /_Received$/i.test(code) ? clean(hub[1], 120) : '';
   const clock = row.timestamp;
   const time = typeof clock === 'number' && Number.isSafeInteger(clock) && clock >= 1_000_000_000 && clock < 10_000_000_000
     ? epochSecondsTime(clock)?.iso : undefined;
@@ -229,8 +244,19 @@ export function parseSpxBrFleet(payload: unknown, raw: string): CarrierResult {
   const rows = data.tracking_list ?? [];
   if (!Array.isArray(rows)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned a shipment with invalid scans');
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an oversized history');
-  return summarize(rows.map((row) => {
+  return summarize(withoutUnloading(rows.map((row) => {
     if (!isRecord(row)) throw new SchemaError(PROVIDER, 'SPX Express Brazil returned an invalid scan');
     return projectFleetRow(row);
-  }));
+  })));
+}
+
+/**
+ * A line haul's unloading at a hub, where the hub's own scan takes the parcel in at or after
+ * it, within a day: that scan stands for the arrival. An unloading the hub has not yet
+ * followed with its scan stays.
+ */
+function withoutUnloading(events: readonly CarrierEvent[]): CarrierEvent[] {
+  return events.filter((event) => !/_LHUnload(?:ing|ed)$/i.test(event.provider_code ?? '') || !event.location
+    || !events.some((taken) => /_Received$/i.test(taken.provider_code ?? '') && taken.location === event.location
+      && Date.parse(taken.time!) >= Date.parse(event.time!) && Date.parse(taken.time!) - Date.parse(event.time!) <= UNLOADING_MS));
 }

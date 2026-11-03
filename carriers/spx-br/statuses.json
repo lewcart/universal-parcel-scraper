@@ -41,6 +41,14 @@
       "note": "Hidden on the public page. A failed pickup leaves the parcel with its seller."
     },
     {
+      "code": "F096",
+      "wording": "[China] Pedido enviado",
+      "language": "pt",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "The seller in China sent the parcel on, after F000 and before Shopee's sorting centre there takes it in (F200)."
+    },
+    {
       "code": "F098",
       "wording": "Pedido postado",
       "language": "pt",
@@ -422,6 +430,22 @@
       "note": "Fleet feed: paired with A000 and F000."
     },
     {
+      "code": "DOP_Received",
+      "wording": "Seu pacote foi recebido pelo ponto de coleta",
+      "language": "pt",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "Fleet feed: posted at a drop-off point, as F098. The line opens with the point's name in brackets, often its keeper's, which is dropped; the scan keeps no place."
+    },
+    {
+      "code": "FMHub_Pickup_Onhold",
+      "wording": "Coleta do pacote em espera. Motivo:[…]",
+      "language": "pt",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "Fleet feed: the pickup at the drop-off point waits, for the reason in brackets; the parcel is still there."
+    },
+    {
       "code": "FMHub_Pickup_Done",
       "wording": "Seu pacote foi coletado",
       "language": "pt",
@@ -443,7 +467,7 @@
       "language": "pt",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "note": "Fleet feed: paired with F450. The transfer order, then the next facility."
+      "note": "Fleet feed: paired with F450. The transfer id leaves the line; the hub it names is where the parcel goes, not its place."
     },
     {
       "code": "SOC_LHUnloading",
@@ -451,7 +475,7 @@
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "note": "Fleet feed: English in every language. No order row stands for it."
+      "note": "Fleet feed: English in every language. Read as \"Unloading\" at the hub it names, without the transfer and trip ids, and left out when the hub's own scan takes the parcel in within a day after it."
     },
     {
       "code": "SOC_LHUnloaded",
@@ -459,7 +483,7 @@
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "note": "Fleet feed: paired with F580. English in every language."
+      "note": "Fleet feed: English in every language. Paired with F580. Read as \"Unloaded\" at the hub it names, without the transfer and trip ids, and left out when the hub's own scan takes the parcel in within a day after it."
     },
     {
       "code": "SOC_Received",
@@ -475,7 +499,7 @@
       "language": "pt",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "note": "Fleet feed: paired with F540."
+      "note": "Fleet feed: paired with F540. The transfer id leaves the line; the hub it names is where the parcel goes, not its place."
     },
     {
       "code": "LMHub_LHUnloading",
@@ -483,7 +507,7 @@
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "note": "Fleet feed: English in every language. No order row stands for it."
+      "note": "Fleet feed: English in every language. Read as \"Unloading\" at the hub it names, without the transfer and trip ids, and left out when the hub's own scan takes the parcel in within a day after it."
     },
     {
       "code": "LMHub_LHUnloaded",
@@ -491,7 +515,7 @@
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live",
-      "note": "Fleet feed: English in every language. No order row stands for it."
+      "note": "Fleet feed: English in every language. Read as \"Unloaded\" at the hub it names, without the transfer and trip ids, and left out when the hub's own scan takes the parcel in within a day after it."
     },
     {
       "code": "LMHub_Received",

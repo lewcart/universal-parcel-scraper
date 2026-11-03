@@ -56,9 +56,13 @@ numbers carry a PH prefix.
 - The reply can list a customs check filed late among later scans; the history is ordered by
   the clocks.
 - A fleet line opens with its hub in brackets. The hub leaves the wording and is the place of
-  the hub taking the parcel in; a pickup or a delivery keeps none. Line-haul transfers are in
-  English in every language and keep their transfer and trip ids. A delivery line drops who took
-  the parcel.
+  the hub taking the parcel in; a pickup or a delivery keeps none. A drop-off point's line opens
+  with the point's name, often its keeper's, which is dropped, and keeps no place. Line-haul
+  lines name internal transfer and trip ids, which are dropped. An unloading, in English in
+  every language, reads "Unloading" or "Unloaded" at the hub it names. When that hub's own scan
+  takes the parcel in within a day after it, the unloading is left out, since that scan stands
+  for the arrival. A line haul leaving names its next hub, which is not its place. A delivery
+  line drops who took the parcel.
 - Tracking codes give the stages, and fleet statuses read like the order codes live parcels
   paired them with. Brazilian customs holding or inspecting a parcel is customs, its refusal to
   import is an exception, and every leg of a return is returned.

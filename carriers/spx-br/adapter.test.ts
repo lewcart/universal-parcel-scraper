@@ -266,24 +266,45 @@ describe('SPX Express Brazil HTTP adapter', () => {
         ['2026-05-19T12:53:20Z', 'Delivered', 'delivered', null, 'Seu pacote foi entregue'],
         ['2026-05-19T08:26:40Z', 'Delivering', 'out_for_delivery', null, 'Seu pacote está sendo entregue pelo entregador'],
         // A hub taking the parcel in is the scan's place; the hub leaves the wording.
+        // A hub's own scan stands for the line haul's unloading there, which leaves.
         ['2026-05-19T03:43:20Z', 'LMHub_Received', 'in_transit', 'LM Hub_RJ_Porto Modelo', 'Seu pacote foi recebido pelo centro de distribuição'],
-        ['2026-05-19T03:35:00Z', 'LMHub_LHUnloaded', 'in_transit', null, '[TO20260518TEST2] unloaded at [LM Hub_RJ_Porto Modelo] via Linehaul Trip [LT0TEST00002B1]'],
-        ['2026-05-19T03:20:00Z', 'LMHub_LHUnloading', 'in_transit', null, '[TO20260518TEST2] unloading at [LM Hub_RJ_Porto Modelo] via Linehaul Trip [LT0TEST00002B1]'],
-        ['2026-05-18T16:46:40Z', 'SOC_LHTransporting', 'in_transit', null, 'Pacote [TO20260518TEST2] está sendo transportado para [LM Hub_RJ_Porto Modelo]'],
+        // A line haul's transfer id leaves; the hub it names is where it goes, not its place.
+        ['2026-05-18T16:46:40Z', 'SOC_LHTransporting', 'in_transit', null, 'Pacote está sendo transportado para LM Hub_RJ_Porto Modelo'],
         ['2026-05-17T16:46:40Z', 'SOC_Received', 'in_transit', 'SoC_SP_Cidade Exemplo', 'Seu pacote foi recebido pelo centro de triagem'],
-        ['2026-05-17T16:46:39Z', 'SOC_LHUnloaded', 'in_transit', null, '[TO20260517TEST1] unloaded at [SoC_SP_Cidade Exemplo] via Linehaul Trip [LT0TEST00001A1]'],
-        ['2026-05-17T16:26:00Z', 'SOC_LHUnloading', 'in_transit', null, '[TO20260517TEST1] unloading at [SoC_SP_Cidade Exemplo] via Linehaul Trip [LT0TEST00001A1]'],
-        ['2026-05-17T14:20:00Z', 'FMHub_LHTransporting', 'in_transit', null, 'Pacote [TO20260517TEST1] está sendo transportado para [SoC_SP_Cidade Exemplo]'],
+        ['2026-05-17T14:20:00Z', 'FMHub_LHTransporting', 'in_transit', null, 'Pacote está sendo transportado para SoC_SP_Cidade Exemplo'],
         ['2026-05-17T00:30:00Z', 'FMHub_Received', 'in_transit', 'FM Hub_SP_Vila Amostra', 'Seu pacote foi recebido pelo hub de coleta'],
         // The hub that made a pickup is not where it happened.
         ['2026-05-16T22:23:20Z', 'FMHub_Pickup_Done', 'accepted', null, 'Seu pacote foi coletado'],
         ['2026-05-16T13:36:40Z', 'Created', 'registered', null, 'O pedido foi criado'],
       ]);
       const text = JSON.stringify(result);
-      for (const value of ['Destinatária Sintética', '******0000', 'SYNTHETIC']) expect(text, value).not.toContain(value);
+      for (const value of ['Destinatária Sintética', '******0000', 'SYNTHETIC', 'TO2026', 'LT0TEST']) expect(text, value).not.toContain(value);
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it('reads a drop-off point without its keeper\'s name, and an unloading its hub has not yet scanned at that hub', () => {
+    const fleet = fixture('fleet-delivered') as unknown as { data: { tracking_list: Record<string, unknown>[] } };
+    fleet.data.tracking_list = [
+      { timestamp: 1_779_000_000, status: 'DOP_Received', message: '[Nome Sintético] Seu pacote foi recebido pelo ponto de coleta' },
+      { timestamp: 1_779_000_100, status: 'FMHub_Pickup_Onhold', message: 'Coleta do pacote em espera. Motivo:[Baú com capacidade atingida]' },
+      { timestamp: 1_779_090_000, status: 'SOC_LHUnloading', message: '[TO20260517TEST1] unloading at [SoC_SP_Cidade Exemplo] via Linehaul Trip [LT0TEST00001A1]' },
+      // Another hub's scan does not stand for it.
+      { timestamp: 1_779_090_100, status: 'LMHub_Received', message: '[LM Hub_RJ_Porto Modelo] Seu pacote foi recebido pelo centro de distribuição' },
+    ];
+    const result = parseSpxBrFleet(fleet, 'BR2600000000045');
+    expect(result.events!.map((event) => [event.provider_code, event.stage, event.location ?? null, event.description])).toEqual([
+      ['LMHub_Received', 'in_transit', 'LM Hub_RJ_Porto Modelo', 'Seu pacote foi recebido pelo centro de distribuição'],
+      ['SOC_LHUnloading', 'in_transit', 'SoC_SP_Cidade Exemplo', 'Unloading'],
+      ['FMHub_Pickup_Onhold', 'accepted', null, 'Coleta do pacote em espera. Motivo:[Baú com capacidade atingida]'],
+      ['DOP_Received', 'accepted', null, 'Seu pacote foi recebido pelo ponto de coleta'],
+    ]);
+    expect(JSON.stringify(result)).not.toContain('Nome Sintético');
+    // A day after the unloading, the hub's scan is another arrival.
+    fleet.data.tracking_list = [fleet.data.tracking_list[2]!,
+      { timestamp: 1_779_090_000 + 86_401, status: 'SOC_Received', message: '[SoC_SP_Cidade Exemplo] Seu pacote foi recebido pelo centro de triagem' }];
+    expect(parseSpxBrFleet(fleet, 'BR2600000000045').events!.map((event) => event.provider_code)).toEqual(['SOC_Received', 'SOC_LHUnloading']);
   });
 
   it('keeps the order lookup’s answer unless the fleet feed holds the parcel or says it has no scans', async () => {

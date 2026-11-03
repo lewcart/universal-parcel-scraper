@@ -12,6 +12,7 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
   ['F000', 'registered'], // The seller is preparing the parcel.
   ['F001', 'registered'], // A pickup at the seller that collected nothing.
   ['F004', 'registered'], // A driver is assigned to the pickup.
+  ['F096', 'accepted'], // "[China] Pedido enviado": the seller in China sent the parcel on to Shopee's sorting centre.
   ['F098', 'accepted'], // Posted by the seller at a drop-off point in Brazil.
   ['F099', 'accepted'], // Collected from a seller abroad.
   ['F100', 'accepted'], // Collected from a seller in Brazil.
@@ -44,6 +45,8 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
  */
 const FLEET: ReadonlyMap<string, Stage> = new Map(([
   ['Created', 'registered'], // A000 and F000.
+  ['DOP_Received', 'accepted'], // Posted at a drop-off point, as F098.
+  ['FMHub_Pickup_Onhold', 'accepted'], // The pickup at the drop-off point waits; the parcel is still there.
   ['FMHub_Pickup_Done', 'accepted'], // F100.
   ['FMHub_Received', 'in_transit'], ['FMHub_LHTransporting', 'in_transit'], // F440 and F450.
   ['SOC_LHUnloading', 'in_transit'], ['SOC_LHUnloaded', 'in_transit'], // F580.

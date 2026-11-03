@@ -10,8 +10,8 @@ const FLIGHT_DAY = /^(货物已交机场,预计)\d{1,2}(号的航班 goods deliv
 // So does the export clearance row, in both halves: "等待27号航班起飞 … on flight of the 27th".
 const CLEARED_FLIGHT_DAY = /^(报关已放行等待)\d{1,2}(号航班起飞 customs released,awaiting departure on flight of the )\d{1,2}(?:st|nd|rd|th)$/;
 
-// The English row of a booked flight names its day.
-const TAKE_OFF_DAY = /^(flight is expected to take off on )[a-z]+ \d{1,2}$/;
+// The English row of a booked flight names its day, sometimes with a question mark for the space ("November?3").
+const TAKE_OFF_DAY = /^(flight is expected to take off on )[a-z]+[ ?]{1,2}\d{1,2}$/;
 
 // The newer English rows name the flight's days as month.day: "expected to depart on 10.27 and land on 10.27".
 const FLIGHT_DATES = /^(the flight is expected to depart on )\d{1,2}\.\d{1,2}( and land on )\d{1,2}\.\d{1,2}$/;

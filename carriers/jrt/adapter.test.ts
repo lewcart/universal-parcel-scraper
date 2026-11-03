@@ -299,6 +299,7 @@ describe('JRT tracking adapter', () => {
     const answer = (description: string) => statusMapAnswer({ carrier: 'jrt', providerCode: null, description });
     expect(answer('货物已交机场,预计18号的航班 Goods delivered to airport, scheduled on flight of the 18th')).toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(answer('Flight is expected to take off on September 11')).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(answer('Flight is expected to take off on November?3')).toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(answer('The flight is expected to depart on 10.27 and land on 10.28')).toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(answer('The flight has departed and is expected to 1.3 land')).toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(answer('报关已放行等待3号航班起飞 Customs released,Awaiting departure on flight of the 3rd')).toEqual({ kind: 'mapped', stage: 'in_transit' });

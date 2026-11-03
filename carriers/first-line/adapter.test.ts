@@ -74,6 +74,15 @@ describe('FIRST LINE HTTP adapter', () => {
     expect(JSON.stringify(result)).not.toMatch(/0000[12]|&nbsp;/);
   });
 
+  it('reads the delivery a relayed round promises on its own day while the parcel is on it', () => {
+    // On the round: the delivery row is not in yet.
+    const onRound = (wording = 'Out for Delivery, Expected Delivery by 9:00pm') => parseFirstLine(text('delivered.txt')
+      .replace(/<li>2026-03-17 15:30:00.*?<\/li>/, '').replace('Out for Delivery, Expected Delivery by 9:00pm', wording), DELIVERED, READ_AT);
+    expect(onRound()).toMatchObject({ current_stage: 'out_for_delivery', expected_delivery: '2026-03-17' });
+    expect(onRound('Out for Delivery, Expected Delivery Between 11:15am and 1:15pm').expected_delivery).toBe('2026-03-17 11:15–13:15');
+    expect(onRound('Out for Delivery').expected_delivery).toBeNull();
+  });
+
   it('reads a parcel at the Shenzhen warehouse after its export declaration as in transit', () => {
     const result = parseFirstLine(text('export.txt'), EXPORT, READ_AT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',

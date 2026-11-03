@@ -57,6 +57,19 @@ describe.each(cases)('GOFO $region identity and history', ({ region, number, par
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|weight|proof|pin|civico|deurnummer|puerta|reference/i);
   });
 
+  it("keeps GOFO's expected delivery date until the parcel is delivered or returned, as a date", () => {
+    const active = fixture(region); item(active).trackEventList.shift(); bind(active);
+    const estimate = (value: unknown) => { item(active).expectedDeliveryTime = value; return parse(active, number).expected_delivery; };
+    expect(estimate('2026-01-06')).toBe('2026-01-06');
+    expect(estimate('2026-01-06 18:00:00')).toBe('2026-01-06');
+    for (const value of [null, '', '06/01/2026', '2026-13-01', 20260106]) expect(estimate(value)).toBeNull();
+    const delivered = fixture(region); item(delivered).expectedDeliveryTime = '2026-01-06';
+    expect(parse(delivered, number).expected_delivery).toBeNull();
+    const returned = fixture(region); returned.data[0].trackEventList[0] = { ...item(returned).trackEventList[0], processCode: '264', mainContent: 'Returned', processContent: 'Returned' };
+    item(returned).expectedDeliveryTime = '2026-01-06'; bind(returned);
+    expect(parse(returned, number)).toMatchObject({ current_stage: 'returned', expected_delivery: null });
+  });
+
   it('accepts only the complete official national families', () => {
     for (const prefix of ['GF', 'CI']) for (const digits of [13, 14]) {
       const candidate = prefix + region.toUpperCase() + '0'.repeat(digits - 1) + '1';

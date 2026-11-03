@@ -128,6 +128,29 @@ describe('Royal Mail structured response', () => {
     expect(result).not.toHaveProperty('delivered_at');
   });
 
+  it('keeps the window of an estimate on its day, and its day otherwise', () => {
+    const estimate = (estimatedDelivery: unknown, statusCategory = 'In transit') => {
+      const { expected_delivery, expected_delivery_from } = parseRoyalMailTrackingResponse({ mailPieces: {
+        mailPieceId: IN_TRANSIT_NUMBER, summary: { statusCategory }, estimatedDelivery,
+      } }, IN_TRANSIT_NUMBER);
+      return { expected_delivery, expected_delivery_from };
+    };
+    expect(estimate({ date: '2026-06-20', startOfEstimatedWindow: '08:00:00+01:00', endOfEstimatedWindow: '11:00:00+01:00' }))
+      .toEqual({ expected_delivery_from: '2026-06-20T08:00:00+01:00', expected_delivery: '2026-06-20T11:00:00+01:00' });
+    expect(estimate({ date: '2026-06-20', startOfEstimatedWindow: '2026-06-20T08:00:00+01:00', endOfEstimatedWindow: '2026-06-20T11:00:00+01:00' }))
+      .toEqual({ expected_delivery_from: '2026-06-20T08:00:00+01:00', expected_delivery: '2026-06-20T11:00:00+01:00' });
+    for (const window of [
+      { startOfEstimatedWindow: '11:00:00+01:00', endOfEstimatedWindow: '08:00:00+01:00' },
+      { startOfEstimatedWindow: '08:00:00', endOfEstimatedWindow: '11:00:00' },
+      { startOfEstimatedWindow: '2026-06-21T08:00:00+01:00', endOfEstimatedWindow: '2026-06-21T11:00:00+01:00' },
+      { endOfEstimatedWindow: '11:00:00+01:00' },
+    ]) expect(estimate({ date: '2026-06-20', ...window })).toEqual({ expected_delivery: '2026-06-20', expected_delivery_from: undefined });
+    expect(estimate({ startOfEstimatedWindow: '08:00:00+01:00', endOfEstimatedWindow: '11:00:00+01:00' }))
+      .toEqual({ expected_delivery: null, expected_delivery_from: undefined });
+    expect(estimate({ date: '2026-06-20', startOfEstimatedWindow: '08:00:00+01:00', endOfEstimatedWindow: '11:00:00+01:00' }, 'Delivered'))
+      .toEqual({ expected_delivery: null, expected_delivery_from: undefined });
+  });
+
   it('keeps the signatory out of the result', () => {
     const serialized = JSON.stringify(parseRoyalMailTrackingResponse(structuredClone(DELIVERED), DELIVERED_NUMBER));
     expect(serialized).not.toContain('PRIVATE RECIPIENT');
@@ -570,6 +593,21 @@ describe('Royal Mail lookup steps', () => {
     expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({
       captureResponses: [royalMailSummaryApiUrl(DELIVERED_NUMBER), royalMailEventsApiUrl(DELIVERED_NUMBER)],
     });
+  });
+
+  it('keeps the summary estimate when the history reply has none', async () => {
+    const fetcher = vi.fn().mockResolvedValue(Response.json({
+      tier: 3, statusCode: 200, html: '<html>tracking app</html>', capturedResponses: [
+        { url: royalMailSummaryApiUrl(IN_TRANSIT_NUMBER), status: 200, headers: {}, body: JSON.stringify({ mailPieces: {
+          mailPieceId: IN_TRANSIT_NUMBER, summary: { statusCategory: 'In transit' }, estimatedDelivery: { date: '2026-03-20' } } }) },
+        { url: royalMailEventsApiUrl(IN_TRANSIT_NUMBER), status: 200, headers: {}, body: JSON.stringify({ mailPieces: {
+          mailPieceId: IN_TRANSIT_NUMBER, estimatedDelivery: { startOfEstimatedWindow: '08:00:00+00:00' },
+          events: [{ eventCode: 'EVNMI', eventName: 'In transit', eventDateTime: '2026-03-15T22:41:00Z' }],
+        } }) },
+      ],
+    }));
+    await expect(new RoyalMailTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher, fullHistory: true }).fetch(IN_TRANSIT_NUMBER))
+      .resolves.toMatchObject({ expected_delivery: '2026-03-20' });
   });
 
   it.each([

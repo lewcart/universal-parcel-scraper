@@ -33,6 +33,7 @@
   "capabilities": [
     "history",
     "location",
+    "eta",
     "provider_code",
     "destination_country",
     "delivery_partner",
@@ -52,7 +53,8 @@
       "destination_country",
       "tracking_alias",
       "delivery_tracking_number",
-      "order_reference"
+      "order_reference",
+      "eta"
     ],
     "scraped": [
       "status",
@@ -61,7 +63,8 @@
       "provider_code",
       "destination_country",
       "delivery_partner",
-      "delivery_tracking_number"
+      "delivery_tracking_number",
+      "eta"
     ],
     "discarded": [
       "progress_rail",
@@ -71,7 +74,6 @@
       "order_reference"
     ],
     "unavailable": [
-      "eta",
       "offset_timestamps",
       "delivered_at",
       "service_name",

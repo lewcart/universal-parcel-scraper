@@ -145,6 +145,24 @@ describe('iMile HTTP adapter', () => {
     expect(JSON.stringify(result)).not.toMatch(/SAMPLELM|delivery_tracking_number|Sample Origin Center"?,"dispatch/);
   });
 
+  it('reads the delivery day iMile books until an attempt, a problem or the end comes after it', () => {
+    // Delivered: the booking stands no more.
+    expect(parseImile(fixture('delivered'), DELIVERED).expected_delivery).toBeNull();
+    const upTo = (content: string, change: (rows: Row[]) => void = () => {}) => parseImile(changed('delivered', (shipment) => {
+      shipment.trackInfos = shipment.trackInfos.slice(shipment.trackInfos.findIndex((row) => String(row.content).startsWith(content)));
+      change(shipment.trackInfos);
+    }), DELIVERED);
+    // Booked after the failed attempt, then out for delivery that day.
+    expect(upTo('Shipment is scheduled')).toMatchObject({ current_stage: 'failed_attempt', expected_delivery: '2026-05-20' });
+    expect(upTo('Our delivery associate is out for delivery.You can contact him by clicking +000 500000000'))
+      .toMatchObject({ current_stage: 'out_for_delivery', expected_delivery: '2026-05-20' });
+    // A booking a failed attempt follows is spent, as is one for a day before the newest scan's.
+    expect(upTo('Shipment is scheduled', (rows) => rows.unshift({ ...rows[2]!, time: '2026-05-20 13:00:00' })).expected_delivery).toBeNull();
+    expect(upTo('Shipment is scheduled', (rows) => { rows[0]!.content = 'Shipment is scheduled to [2026-05-19] .'; }).expected_delivery).toBeNull();
+    // Without a booking there is no day.
+    expect(upTo('Delivery attempt finished').expected_delivery).toBeNull();
+  });
+
   it('keeps the delivery without the driver’s phone, who took it, its proof or the repeated scan', () => {
     const result = parseImile(fixture('delivered'), DELIVERED);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',

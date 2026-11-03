@@ -673,6 +673,26 @@ describe('BRT origin legs', () => {
     expect(withOriginLeg(local, { status: 'in_transit', events: [] })).toBe(local);
   });
 
+  it('keeps the partner\'s delivery estimate until BRT delivers the parcel or scans it on a later day', () => {
+    const estimated = (expected_delivery: string, expected_delivery_from?: string) => ({
+      ...partner(scan('Sample handed over', '2026-01-12T15:50:00Z')), expected_delivery, ...(expected_delivery_from ? { expected_delivery_from } : {}) });
+    const moving = brt([scan('DEPARTED', '2026-01-13T21:00:00+01:00', 'in_transit'), preAdvice('2026-01-12T18:02:00+01:00')]);
+    expect(withOriginLeg(moving, estimated('2026-01-14'))).toMatchObject({ current_stage: 'in_transit', expected_delivery: '2026-01-14' });
+    expect(withOriginLeg(moving, estimated('2026-01-14T13:00:00+01:00', '2026-01-14T09:00:00+01:00')))
+      .toMatchObject({ expected_delivery_from: '2026-01-14T09:00:00+01:00', expected_delivery: '2026-01-14T13:00:00+01:00' });
+    expect(withOriginLeg(moving, estimated('2026-01-13')).expected_delivery).toBe('2026-01-13');
+    // A day BRT's scans have passed, or a parcel BRT delivered or holds for collection, has no estimate.
+    expect(withOriginLeg(moving, estimated('2026-01-12'))).not.toHaveProperty('expected_delivery');
+    for (const stage of ['delivered', 'ready_for_pickup']) {
+      const done = brt([scan('Sample', '2026-01-13T21:00:00+01:00', stage), preAdvice('2026-01-12T18:02:00+01:00')]);
+      expect(withOriginLeg(done, estimated('2026-01-14')), stage).not.toHaveProperty('expected_delivery');
+    }
+    // A partner's answer that stands for BRT's keeps its estimate.
+    const italian = { ...partner({ ...scan('Sample transit', '2026-01-13T15:58:00+01:00'), location: 'Sample Town, IT' }),
+      expected_delivery: '2026-01-15', expected_delivery_from: '2026-01-14' };
+    expect(partnerShipment(italian)).toMatchObject({ expected_delivery_from: '2026-01-14', expected_delivery: '2026-01-15' });
+  });
+
   it('asks the partner named by the oldest depot about the same BRTcode within the lookup budget', async () => {
     const page = (location: string) => edit($ => $('.table_stato_dati tr').last().children('td').eq(2).text(location));
     const dpd = vi.fn<BrtOriginLookup>(async () => partner(scan('Sample handed over', '2026-01-10T08:00:00Z')));

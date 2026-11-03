@@ -43,14 +43,18 @@ Portugal. It runs its own tracker on `tracking.dpd.pt`, apart from the `dpd.com`
   parcel was not due.
 - The comment column mixes the receiver's name, delivery windows, depot numbers, country
   codes, pickup point codes and references. Only the name the pickup point's own scan gives
-  is kept, as the pickup point of a parcel that waits there or was collected there.
+  is kept, as the pickup point of a parcel that waits there or was collected there, and the
+  hour the delivery-day message (706) gives the recipient, as the expected delivery window on
+  that message's day. It holds while only the van's scans and other messages follow it that
+  day; a failed attempt, a return to the depot or a later scan day ends it.
 - The map links give coordinates, which for a delivery or a failed attempt point at the
   recipient's address; they are not kept, and the scans have no place. The proof of delivery
   image is not read.
 
 ## Limitations
 
-- No places, delivery estimate, weight, sender or service.
+- No places, weight, sender or service. The expected delivery day row (714) is left out, and
+  no delivery estimate is given before the delivery-day message.
 - Older parcels drop out of the tracker, which then gives its not-found notice for them.
 
 ## Numbers

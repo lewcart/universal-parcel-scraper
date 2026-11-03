@@ -680,10 +680,28 @@ function apiDeliveryDate(detail: JsonObject, ...types: string[]): string | null 
   return null;
 }
 
+const WINDOW_CLOCK = /^([01]\d|2[0-3])([0-5]\d)(?:[0-5]\d)?$/;
+
+/**
+ * The scheduled day, as a slot `YYYY-MM-DD HH:MM–HH:MM` when the API's `deliveryTime` gives a
+ * window's start and end (`HHMMSS`, the destination's wall clock). End of day, a commit time and
+ * a delivered time are no window, and the day stays a day.
+ */
+function apiEstimate(detail: JsonObject): string | null {
+  const day = apiDeliveryDate(detail, 'RDD', 'SDD');
+  const time = isRecord(detail.deliveryTime) ? detail.deliveryTime : {};
+  if (!day || ['EOD', 'CMT', 'DEL'].includes(cleanScalar(time.type, 8).toUpperCase())) return day;
+  const start = WINDOW_CLOCK.exec(cleanScalar(time.startTime, 8));
+  const end = WINDOW_CLOCK.exec(cleanScalar(time.endTime, 8));
+  const from = start ? `${start[1]}:${start[2]}` : '';
+  const to = end ? `${end[1]}:${end[2]}` : '';
+  return from && to && from < to ? `${day} ${from}–${to}` : day;
+}
+
 /**
  * The official Track API's answer (`GET /api/track/v1/details/{number}`), as
  * the same shipment the page's reply makes: the scans with their activity
- * codes, the status, the scheduled day, the service, the destination country
+ * codes, the status, the scheduled day and its window, the service, the destination country
  * and the USPS number of a parcel handed to the post office. The addresses
  * beyond their country, the recipient, signature, photo, proof of delivery,
  * payments and references are never read, and neither is the access point,
@@ -754,7 +772,7 @@ export function parseUPSApiResponse(payload: unknown, trackingNumber: string): C
     ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),
     last_status_text: statusText,
     last_update: newest?.time ?? null,
-    expected_delivery: delivered ? null : apiDeliveryDate(detail, 'RDD', 'SDD'),
+    expected_delivery: delivered ? null : apiEstimate(detail),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
     ...(/^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}),
     ...(service ? { service_name: service } : {}),

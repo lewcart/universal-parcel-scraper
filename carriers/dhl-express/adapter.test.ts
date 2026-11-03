@@ -504,6 +504,21 @@ describe('DHL public browser API', () => {
         { stage: 'out_for_delivery' }, { stage: 'accepted', time: '2026-10-02T17:18:00-07:00' }] });
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|private|proofOfDelivery|consignee|pieceIds|streetAddress/);
   });
+  it('gives the day of DHL\'s delivery estimate while the shipment is on its way', () => {
+    const estimated = (estimate: unknown, delivered = false) => {
+      const data = unifiedPayload();
+      const shipment = Object.assign(data.shipments[0]!, { estimatedTimeOfDelivery: estimate });
+      if (!delivered) {
+        shipment.events.shift();
+        shipment.status = shipment.events[0]!;
+      }
+      return parseUnified(data, number);
+    };
+    expect(estimated('2026-10-06T23:59:00+02:00')).toMatchObject({ status: 'out_for_delivery', expected_delivery: '2026-10-06' });
+    expect(estimated('2026-10-06').expected_delivery).toBe('2026-10-06');
+    for (const value of [undefined, null, '', 'soon', '2026-02-30', 20261006]) expect(estimated(value).expected_delivery).toBeNull();
+    expect(estimated('2026-10-06', true)).toMatchObject({ status: 'delivered', expected_delivery: null });
+  });
   it('rejects other identities, divisions, duplicate waybills and empty or malformed events', () => {
     expect(() => parseUnified(unifiedPayload(), '1234567880')).toThrow(SchemaError);
     for (const service of ['parcel-de', '']) {

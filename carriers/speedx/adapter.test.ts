@@ -112,6 +112,16 @@ describe('SpeedX tracking page', () => {
     expect(JSON.stringify(bare)).not.toMatch(/PRIVATE|Position/);
   });
 
+  it('reads the view\'s delivery estimate as a day while the parcel is on its way', () => {
+    // The delivery scan goes, leaving the parcel on its round.
+    const estimate = (edd: unknown) => parse(withData((data, events) => { data.edd = edd; events.shift(); })).expected_delivery;
+    expect(estimate('2026-03-21')).toBe('2026-03-21');
+    expect(estimate('$D2026-03-21T00:00:00.000Z')).toBe('2026-03-21');
+    // An instant at another clock would need a zone to give its day; an empty or invalid one is none.
+    for (const none of [null, '$undefined', '', '2026-03-21T06:59:59.000Z', '2026-02-30', 'Mar 21']) expect(estimate(none)).toBeNull();
+    expect(parse(withData((data) => { data.edd = '2026-03-21'; })).expected_delivery).toBeNull();
+  });
+
   it('keeps the UTC instant when the scan\'s zone is missing or unknown, and never reads the local clock', () => {
     const result = parse(withData((_data, events) => {
       Object.assign(events[0]!, { timeZone: 'Example/Nowhere' });

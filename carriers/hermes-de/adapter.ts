@@ -208,7 +208,8 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
   const attributes = isRecord(parcel.parcelAttributes) ? parcel.parcelAttributes : {};
   const atg = isRecord(parcel.atg) ? parcel.atg : {};
   const sender = clean(atg.companyName) || null;
-  const eta = etaDate(parcel.eta ?? parcel.deliveryForecast ?? attributes.deliveredTimestamp);
+  // `parcelAttributes.deliveredTimestamp` records a delivery that happened, never an estimate.
+  const eta = etaDate(parcel.eta ?? parcel.deliveryForecast);
   // The tracking page offers the Hermes Box pickup code while
   // `readyForParcelBoxCollection` is true: the parcel waits in the locker,
   // even when the newest row or the delivered flag reads as a delivery.
@@ -252,7 +253,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
     current_stage: stage,
     last_status_text: latest.event.description,
     last_update: latest.event.time,
-    expected_delivery: delivered ? null : eta,
+    expected_delivery: delivered || stage === 'returned' ? null : eta,
     timezone: 'Europe/Berlin',
     ...(sender ? { sender_name: sender } : {}),
     ...(deliveredAt && status === 'delivered' ? { delivered_at: deliveredAt } : {}),

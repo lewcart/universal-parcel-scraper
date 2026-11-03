@@ -106,6 +106,15 @@ export function parseUnifiedPiece(payload: unknown, raw: string): CarrierResult 
   return { ...unifiedResult(shipment), canonical_tracking_number: shipment.id };
 }
 
+/**
+ * The day of DHL's delivery estimate (`estimatedTimeOfDelivery`), as its own clock writes it.
+ * The date alone is kept, as for DHL eCommerce's reply of the same shape.
+ */
+function estimatedDay(value: unknown): string | null {
+  const match = /^(\d{4}-\d{2}-\d{2})(?:T|$)/.exec(clean(value, 64));
+  return match && DateTime.fromISO(match[1]!).isValid ? match[1]! : null;
+}
+
 function unifiedResult(shipment: Record<string, unknown>): CarrierResult {
   if (!Array.isArray(shipment.events) || shipment.events.length > 1000) throw new SchemaError(PROVIDER, 'DHL returned invalid events');
   if (!shipment.events.length) throw new IndeterminateError(PROVIDER, 'DHL has no shipment activity');
@@ -126,8 +135,9 @@ function unifiedResult(shipment: Record<string, unknown>): CarrierResult {
     : ['exception', 'failed_attempt', 'returned'].includes(current.stage!) ? 'exception'
       : ['pending', 'registered'].includes(current.stage!) ? 'pending' : 'in_transit';
   const destination = isRecord(shipment.destination) && isRecord(shipment.destination.address) ? shipment.destination.address : {};
+  const expected = ['delivered', 'returned'].includes(current.stage!) ? null : estimatedDay(shipment.estimatedTimeOfDelivery);
   return { status, current_stage: current.stage, current_stage_source: current.stage_source,
-    last_status_text: current.description, last_update: current.time ?? null, events,
+    last_status_text: current.description, last_update: current.time ?? null, expected_delivery: expected, events,
     ...(typeof destination.countryCode === 'string' && /^[A-Z]{2}$/.test(destination.countryCode) ? { destination_country: destination.countryCode } : {}) };
 }
 

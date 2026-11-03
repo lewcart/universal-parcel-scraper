@@ -90,11 +90,14 @@ page makes.
   the feeds' and rows' ids are never read.
 - The destination is the reply's `destCountryCode`, where DHLink writes Britain as UK; it is
   read as GB.
+- A relayed USPS round, "Out for Delivery, Expected Delivery by 7:40pm" or "Between" two clocks,
+  gives the expected delivery on its own day while it is the current scan and is read on the
+  destination's clock: the day for "by", as USPS's own estimate is read, and the slot for "Between".
 - The tracking link adds `lang=en`: the page shows Chinese otherwise.
 
 ## Limitations
 
-- No delivery estimate, delivery time, weight, service, sender or recipient.
+- No delivery estimate besides a relayed round's, and no delivery time, weight, service, sender or recipient.
 - A parcel asked by its DHLink number is inconclusive when it has another tracking number.
 - The share links on tr.dhlink.com need DHgate's order id, which the adapter never sends.
 - The progress rail and the origin are not read.

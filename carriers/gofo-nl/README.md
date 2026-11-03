@@ -28,6 +28,8 @@ and GOFO has not received it yet. The client groups failed deliveries with its
 other alerts, and no Dutch failed-delivery wording has been seen, so those
 alerts stay exceptions. The client's return category establishes a return to
 the sender.
+`expected_delivery` is GOFO's `expectedDeliveryTime`, kept as a date until the
+parcel is delivered or returned.
 
 ## Limitations
 

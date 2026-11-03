@@ -30,7 +30,8 @@
     "location",
     "provider_code",
     "delivered_at",
-    "service_name"
+    "service_name",
+    "eta"
   ],
   "portal": {
     "url": "https://www.gofo.com/es/tracking-results/?id={trackingNumber}",
@@ -49,7 +50,8 @@
       "location",
       "provider_code",
       "delivered_at",
-      "service_name"
+      "service_name",
+      "eta"
     ],
     "discarded": [
       "delivery_detail",
@@ -57,7 +59,6 @@
       "personal_references",
       "recipient_verification",
       "unlabelled_weight",
-      "eta",
       "notices"
     ],
     "unavailable": [

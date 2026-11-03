@@ -543,6 +543,11 @@ describe('Poste Italiane response parsing', () => {
       listaMovimenti: [movement('la spedizione è in consegna', 1767484800000)],
     }), TRACKING_NUMBER);
     expect(active.expected_delivery).toBe('2026-01-02');
+    // A delivery or return scan ends it before the envelope's stato does.
+    for (const wording of ['la spedizione è stata consegnata', 'in restituzione al mittente']) {
+      expect(parsePosteItalianeTrackingResponse(parcel({ stato: '4', listaMovimenti: [movement(wording, 1767484800000)] }),
+        TRACKING_NUMBER).expected_delivery).toBeNull();
+    }
   });
 });
 

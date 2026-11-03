@@ -7,6 +7,7 @@ import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { countryCode, explicitOffsetTime } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
+import { GOFO_ENDED_STAGES, gofoDeliveryDate } from '../gofo/parser.js';
 import { gofoFranceStage } from './status.js';
 
 export { regionalGofoRequestNumber, type GofoRegion } from '../../core/detection/gofo.js';
@@ -144,7 +145,8 @@ export function parseRegionalGofo(payload: unknown, rawNumber: string, region: G
   const service = clean(item.serviceName, 80);
   return { status: stage ? languageStageStatus(stage) : 'unknown', ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),
     last_status_text: latest.description, last_update: latest.time ?? null, last_update_local: latest.local_time ?? null,
-    expected_delivery: null, destination_country: region, canonical_tracking_number: waybill,
+    expected_delivery: stage && GOFO_ENDED_STAGES.has(stage) ? null : gofoDeliveryDate(item.expectedDeliveryTime),
+    destination_country: region, canonical_tracking_number: waybill,
     ...(stage === 'delivered' && latest.time ? { delivered_at: latest.time } : {}), ...(service ? { service_name: service } : {}),
     ...(Number(item.trackEventCount) > rows.length || events.length > 100 ? { history_truncated: true } : {}), events: events.slice(0, 100) };
 }

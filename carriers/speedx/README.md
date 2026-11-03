@@ -46,7 +46,8 @@ or a browser.
 ## Limitations
 
 - Expired histories get the same sentence as unknown numbers.
-- The page's delivery estimate was always empty, so it is not read.
+- The view's delivery estimate, `edd`, was empty in every reply seen. A day there, alone or at
+  UTC midnight, is the expected delivery; an instant at another clock is not read.
 - Proof-of-delivery photos sit behind a recipient postcode check and are not fetched.
 
 ## Testing

@@ -458,6 +458,30 @@ function misdatedTakeOff(carrierName: unknown, raw: Record<string, unknown>): bo
     && /^(?:aircraft departure|uplift)$/i.test(text(raw.description));
 }
 
+/** The day an estimate's bound names, as written: 17TRACK can put its own offset on a carrier's clock. */
+const ESTIMATE_DAY = /^(\d{4}-\d{2}-\d{2})(?:[T ]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}(?::?\d{2})?)?)?$/;
+
+function estimateDay(value: unknown): string | null {
+  const day = typeof value === 'string' ? ESTIMATE_DAY.exec(value.trim())?.[1] : undefined;
+  return day && DateTime.fromISO(day).isValid ? day : null;
+}
+
+/**
+ * The carrier's delivery estimate 17TRACK relays, `time_metrics.estimated_delivery_date`
+ * with source `Official`, as days: one, or a range from `from` to `to`. 17TRACK's own
+ * forecast (source `17TRACK`) and an estimate on a delivered or returned parcel are left out.
+ */
+function carrierEstimate(shipment: Record<string, unknown>, stage: string | undefined): Pick<CarrierResult, 'expected_delivery' | 'expected_delivery_from'> {
+  const metrics: Record<string, unknown> = isRecord(shipment.time_metrics) ? shipment.time_metrics : {};
+  const estimate: Record<string, unknown> = isRecord(metrics.estimated_delivery_date) ? metrics.estimated_delivery_date : {};
+  if (typeof estimate.source !== 'string' || estimate.source.trim().toLowerCase() !== 'official'
+    || stage === 'delivered' || stage === 'returned') return {};
+  const to = estimateDay(estimate.to);
+  const from = estimateDay(estimate.from);
+  if (!to || (from && from > to)) return {};
+  return from && from < to ? { expected_delivery: to, expected_delivery_from: from } : { expected_delivery: to };
+}
+
 /** A field 17TRACK's form will not submit empty: its pattern, if any, rejects an empty value. */
 function requiresValue(pattern: unknown): boolean {
   if (typeof pattern !== 'string') return true;
@@ -630,7 +654,8 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
   if (count === 0 && isRecord(shipment.latest_status) && shipment.latest_status.status === 'NotFound') {
     throw new NotFoundError(SOURCE);
   }
-  return { ...result(events, SOURCE), ...(undated ? { undated_event_count: undated } : {}),
+  const answer = result(events, SOURCE);
+  return { ...answer, ...carrierEstimate(shipment, answer.current_stage), ...(undated ? { undated_event_count: undated } : {}),
     ...universalCarrierHints(tracking.providers.map((provider) =>
     isRecord(provider) && isRecord(provider.provider) ? provider.provider.name : undefined), number) };
 }

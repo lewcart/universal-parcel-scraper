@@ -55,6 +55,35 @@ describe('17TRACK result parsing', () => {
       expect(result).toMatchObject({ status: 'exception', current_stage: 'returned', events: [{ stage: 'returned' }] });
     },
   );
+  it("keeps the carrier's delivery estimate 17TRACK relays as days, not its own forecast or one on a delivered parcel", () => {
+    const scan = (sub_status: string, description: string, time_iso: string) => ({ time_iso, description, stage: null, sub_status });
+    const moving = scan('InTransit_Arrival', 'Arrived at facility', '2026-10-20T08:15:00-06:00');
+    const reply = (estimate: unknown, events: unknown[] = [moving]): Payload => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, time_metrics: { days_of_transit: 3, estimated_delivery_date: estimate },
+        tracking: { providers: [{ provider: { key: 100003, name: 'Example Express' }, events }] } } }] });
+    const estimate = (value: unknown) => {
+      const { expected_delivery, expected_delivery_from } = parse17TrackResponse(reply(value), number);
+      return { expected_delivery, expected_delivery_from };
+    };
+    // A range on the carrier's clock keeps its days; one day stays one day, its placeholder time dropped.
+    expect(estimate({ source: 'Official', from: '2026-11-05T08:00:00-06:00', to: '2026-11-07T20:00:00-06:00' }))
+      .toEqual({ expected_delivery: '2026-11-07', expected_delivery_from: '2026-11-05' });
+    expect(estimate({ source: 'Official', from: '2026-11-05T00:00:00-06:00', to: '2026-11-05T00:00:00-06:00' }))
+      .toEqual({ expected_delivery: '2026-11-05', expected_delivery_from: undefined });
+    expect(estimate({ source: 'Official', from: null, to: '2026-11-06' })).toEqual({ expected_delivery: '2026-11-06', expected_delivery_from: undefined });
+    // 17TRACK's own forecast from similar parcels, an unnamed source, a bound alone or an unreadable one is no carrier date.
+    for (const value of [{ source: '17TRACK', from: '2026-11-05T00:00:00-06:00', to: '2026-11-07T00:00:00-06:00' },
+      { source: null, from: '2026-11-05', to: '2026-11-07' }, { source: 'Official', from: '2026-11-05', to: null },
+      { source: 'Official', from: null, to: 'soon' }, { source: 'Official', from: '2026-11-08', to: '2026-11-07' }, null]) {
+      expect(estimate(value)).toEqual({ expected_delivery: null, expected_delivery_from: undefined });
+    }
+    // Once the parcel is delivered or back with its sender, the carrier's estimate no longer holds.
+    const official = { source: 'Official', from: '2026-11-05', to: '2026-11-07' };
+    for (const done of [scan('Delivered_Other', 'Delivered', '2026-10-22T10:00:00-06:00'), scan('Exception_Returned', 'Returned to sender', '2026-10-22T10:00:00-06:00')]) {
+      expect(parse17TrackResponse(reply(official, [done, moving]), number)).toMatchObject({ expected_delivery: null });
+      expect(parse17TrackResponse(reply(official, [done, moving]), number)).not.toHaveProperty('expected_delivery_from');
+    }
+  });
   it('refines Swiss Post vehicle loading without reclassifying other operators or future wording', () => {
     const payload = postalHistory([postalScan('InTransit_Other', 'Loading into delivery vehicle')]);
     const shipment = payload.shipments[0]!.shipment as { tracking: { providers: Array<{ provider: { name: string }; events: unknown[] }> } };

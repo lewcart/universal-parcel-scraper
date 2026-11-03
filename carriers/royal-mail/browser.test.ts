@@ -82,6 +82,18 @@ describe('Royal Mail browser response capture', () => {
       .resolves.toEqual({ mailPieceId: NUMBER, events: [], estimatedDelivery: { date: '2026-01-03' } });
   });
 
+  it('retains the details estimate window and drops an estimate without a day', async () => {
+    const h = harness('events');
+    await expect(h.capture(() => h.respond({ mailPieces: { mailPieceId: NUMBER, events: [], estimatedDelivery: {
+      date: '2026-01-03', startOfEstimatedWindow: '08:00:00+00:00', endOfEstimatedWindow: '11:00:00+00:00', private: 'PRIVATE' } } })))
+      .resolves.toEqual({ mailPieceId: NUMBER, events: [], estimatedDelivery: {
+        date: '2026-01-03', startOfEstimatedWindow: '08:00:00+00:00', endOfEstimatedWindow: '11:00:00+00:00' } });
+    const other = harness('events');
+    await expect(other.capture(() => other.respond({ mailPieces: { mailPieceId: NUMBER, events: [],
+      estimatedDelivery: { startOfEstimatedWindow: '08:00:00+00:00' } } })))
+      .resolves.toEqual({ mailPieceId: NUMBER, events: [] });
+  });
+
   it('retains only the destination country from the details summary', async () => {
     const h = harness('events');
     await expect(h.capture(() => h.respond({ mailPieces: { mailPieceId: NUMBER, events: [], summary: {

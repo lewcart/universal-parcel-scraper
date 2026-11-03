@@ -80,12 +80,14 @@ makes, with the China leg Cainiao's global tracker holds under the same number.
   (Bahrain) are its own. It becomes `destination_country`.
 - The page shows `lmWaybillNo` as the last-mile number of US parcels. The reply names no courier
   for it, so there is no hand-off.
+- The day a booking scan names ("Shipment is scheduled to [day]") is the expected delivery, until
+  a failed attempt, a problem or the end follows it, or a newer scan is on a later day.
 - The page asks `/saastms/mobileWeb/getLatestDeliveryDate` for an estimated delivery date. The
   answers seen were empty, so the adapter does not ask.
 
 ## Limitations
 
-- No estimated delivery, weight or service, and no delivery time as an instant.
+- No estimate before iMile books a delivery day, no weight or service, and no delivery time as an instant.
 - Cainiao has no record of the parcels it did not carry, such as other marketplaces'
   thirteen-digit waybills, and still gets asked. Its departure scan can sit beside iMile's
   take-off scan for the same flight. In a country with several zones, the Cainiao scans in the

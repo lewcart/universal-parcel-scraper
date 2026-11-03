@@ -62,6 +62,9 @@ the intermediate challenge is not a shipment answer. HTTP recognition never
 launches a browser; browser recognition is a separate opt-in phase and retains
 its history.
 
+The tracking API and the global page give DHL's delivery estimate (`estimatedTimeOfDelivery`),
+kept as its day until the shipment is delivered or returned. `direct` reads no estimate.
+
 A piece identifier goes to the tracking API and then the global page, because the
 mobile API tracks waybills. Both resolve the piece to its shipment: the reply must
 list the piece among the shipment's pieces and name an Express waybill, which

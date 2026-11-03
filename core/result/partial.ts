@@ -146,6 +146,11 @@ function withCarrierFacts<T extends CarrierResult>(raw: T, answer: ResolvedResul
     }
     stage = direct.current_stage;
   }
+  // Nor does the provider's own estimate.
+  if (FINAL_STAGES.has(stage ?? '')) {
+    if (merged.expected_delivery != null) merged.expected_delivery = null;
+    delete merged.expected_delivery_from;
+  }
   for (const group of CARRIER_FACTS) {
     if (group[0] === 'expected_delivery' && FINAL_STAGES.has(stage ?? '')) continue;
     if (group[0] === 'pickup_point' && deliveredToDoor({ ...answer, current_stage: stage })) continue;

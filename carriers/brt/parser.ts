@@ -328,6 +328,32 @@ export function readBrt(html: string, raw: string, parcelList?: string): { resul
 
 // The fields of a result's current status.
 const STATUS_FIELDS = ['status', 'current_stage', 'current_stage_source', 'last_status_text', 'last_update', 'last_update_local', 'delivered_at'] as const;
+// The fields of a result's delivery estimate.
+const ESTIMATE_FIELDS = ['expected_delivery', 'expected_delivery_from'] as const;
+
+/** The fields of `answer` that `fields` names and it gives. */
+function picked(answer: CarrierResult, fields: readonly string[]): Partial<CarrierResult> {
+  return Object.fromEntries(fields.flatMap((field) => answer[field] === undefined ? [] : [[field, answer[field]]]));
+}
+
+/** The calendar day a clock or an estimate opens with, or ''. */
+function dayOf(value: unknown): string {
+  return typeof value === 'string' ? /^\d{4}-\d{2}-\d{2}/.exec(value)?.[0] ?? '' : '';
+}
+
+/**
+ * BRT's page gives no delivery estimate. The partner's stands for a shipment BRT has not
+ * delivered, returned or left at a pickup point, until BRT scans the parcel on a later day:
+ * DPD's guest service answers for the whole group and dates the delivery in Italy.
+ */
+function withPartnerEstimate(result: CarrierResult, partner: CarrierResult): CarrierResult {
+  const expected = dayOf(partner.expected_delivery);
+  const newest = result.events?.[0];
+  if (!expected || result.expected_delivery || result.status === 'delivered'
+    || ['delivered', 'returned', 'ready_for_pickup'].includes(String(result.current_stage))
+    || expected < dayOf(newest?.time ?? newest?.local_time)) return result;
+  return { ...result, ...picked(partner, ESTIMATE_FIELDS) };
+}
 
 /**
  * The shipment with the leg its partner carried it on before BRT: the
@@ -336,9 +362,14 @@ const STATUS_FIELDS = ['status', 'current_stage', 'current_stage_source', 'last_
  * to 14 hours ahead of UTC, so a scan before one is dated more than 14 hours
  * before its reading as UTC. These scans and BRT's shipping data follow BRT's other
  * scans, in time order when all are dated. While BRT has only the shipping
- * data, the partner's newer scan gives the current status.
+ * data, the partner's newer scan gives the current status. The partner's
+ * delivery estimate stands while BRT's scans have not overtaken it.
  */
 export function withOriginLeg(result: CarrierResult, partner: CarrierResult): CarrierResult {
+  return withPartnerEstimate(originLeg(result, partner), partner);
+}
+
+function originLeg(result: CarrierResult, partner: CarrierResult): CarrierResult {
   const events = result.events ?? [];
   let handover = events.length - 1;
   while (handover >= 0 && events[handover]!.stage === 'registered') handover -= 1;
@@ -353,7 +384,7 @@ export function withOriginLeg(result: CarrierResult, partner: CarrierResult): Ca
   const merged: CarrierResult = { ...result, events: [...events.slice(0, handover + 1), ...older].slice(0, 100) };
   if (scan || older[0] !== partner.events![0]) return merged;
   for (const field of STATUS_FIELDS) delete merged[field];
-  return { ...merged, ...Object.fromEntries(STATUS_FIELDS.flatMap((field) => partner[field] === undefined ? [] : [[field, partner[field]]])) };
+  return { ...merged, ...picked(partner, STATUS_FIELDS) };
 }
 
 // A place in Italy as the partners write it: Chronopost's "Town - IT (depot 82)", DPD's "Town, IT".
@@ -369,8 +400,7 @@ export function partnerShipment(partner: CarrierResult): CarrierResult | null {
   const events = partner.events ?? [];
   if (!events.length || (partner.destination_country !== 'IT'
     && !events.some((event) => ITALIAN_PLACE.test(event.location ?? '')))) return null;
-  return { ...Object.fromEntries(STATUS_FIELDS.flatMap((field) => partner[field] === undefined ? [] : [[field, partner[field]]])),
-    destination_country: 'IT', events: events.slice(0, 100) };
+  return { ...picked(partner, [...STATUS_FIELDS, ...ESTIMATE_FIELDS]), destination_country: 'IT', events: events.slice(0, 100) };
 }
 
 /**

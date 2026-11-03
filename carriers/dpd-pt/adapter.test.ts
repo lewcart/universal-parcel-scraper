@@ -155,6 +155,25 @@ describe('DPD Portugal tracking adapter', () => {
       .toThrowError(expect.objectContaining({ name: 'NoHistoryError' }));
   });
 
+  it('gives the hour the delivery-day message names as the expected delivery, while that delivery is ahead', () => {
+    const window = ['706', '20-10-2026', '08:55', 'HORÁRIO DE ENTREGA ENVIADA AO DESTINATÁRIO', '10:45 - 11:45'] as const;
+    const van = ['OFD', '20-10-2026', '07:40', 'EM DISTRIBUIÇÃO'] as const;
+    const depot = ['PEC', '19-10-2026', '21:10', 'ENTRADA EM ARMAZÉM'] as const;
+    expect(parseDpdPt(history(window, van, depot), DELIVERED)).toMatchObject({ status: 'out_for_delivery', expected_delivery: '2026-10-20 10:45–11:45' });
+    expect(parseDpdPt(history(['709', '20-10-2026', '10:20', 'MENSAGEM "A PROXIMA ENTREGA" ENVIADA'], window, depot), DELIVERED))
+      .toMatchObject({ current_stage: 'in_transit', expected_delivery: '2026-10-20 10:45–11:45' });
+    for (const ended of [
+      // A failed attempt, a return to the depot, a later day, the delivery itself.
+      history(['506', '20-10-2026', '11:50', 'AUSÊNCIA DO DESTINATÁRIO'], window, van),
+      history(['403', '20-10-2026', '18:00', 'RETORNO ARMAZÉM (PÁRA AEP)'], window, van),
+      history(['OFD', '21-10-2026', '07:40', 'EM DISTRIBUIÇÃO'], window, van),
+      history(['POD', '20-10-2026', '11:30', 'PROVA DE ENTREGA'], window, van),
+      // No hours, or hours that do not make a window.
+      history(['706', '20-10-2026', '08:55', 'HORÁRIO DE ENTREGA ENVIADA AO DESTINATÁRIO'], van),
+      history(['706', '20-10-2026', '08:55', 'HORÁRIO DE ENTREGA ENVIADA AO DESTINATÁRIO', '11:45 - 10:45'], van),
+    ]) expect(parseDpdPt(ended, DELIVERED).expected_delivery).toBeNull();
+  });
+
   it('reads the page’s notice for an unknown number as not found, and an empty table as no history', async () => {
     expect(() => parseDpdPt(page('not-found'), UNKNOWN)).toThrowError(expect.objectContaining({ kind: 'not_found' }));
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(page('not-found')));

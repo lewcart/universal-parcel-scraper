@@ -39,6 +39,7 @@
     "history",
     "provider_code",
     "location",
+    "eta",
     "destination_country"
   ],
   "portal": {
@@ -63,10 +64,10 @@
       "history",
       "provider_code",
       "location",
-      "destination_country"
+      "destination_country",
+      "eta"
     ],
     "discarded": [
-      "eta",
       "delivery_tracking_number",
       "proof_of_delivery",
       "signatory",

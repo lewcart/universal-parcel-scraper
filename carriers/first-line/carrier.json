@@ -35,23 +35,25 @@
   },
   "capabilities": [
     "history",
-    "location"
+    "location",
+    "eta"
   ],
   "portal": {
     "canaryUrl": "https://t.17track.net/",
     "shows": [
       "status",
       "history",
-      "location"
+      "location",
+      "eta"
     ],
     "scraped": [
       "status",
       "history",
-      "location"
+      "location",
+      "eta"
     ],
     "discarded": [],
     "unavailable": [
-      "eta",
       "service_name",
       "destination_country",
       "delivery_partner",

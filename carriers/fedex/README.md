@@ -50,8 +50,10 @@ fallback')`.
 - The API's reply becomes the same shipment as the page's: `latestStatusDetail` `code` and
   `description` for the package, `scanEvents` `eventType`, `eventDescription` and
   `exceptionDescription` for each scan, `ACTUAL_DELIVERY` and `ESTIMATED_DELIVERY` from
-  `dateAndTimes` (else the end of `estimatedDeliveryTimeWindow`), and `holdAtLocation`. Every
-  rule below applies to both. A scan's place is its town and its state or province, else its
+  `dateAndTimes`, and `holdAtLocation`. `estimatedDeliveryTimeWindow` on the estimated day, or
+  without one, becomes `expected_delivery_from` and `expected_delivery` (a slot on the day when
+  its clocks carry no offset); a window with one end gives that end's day. Every rule below
+  applies to both. A scan's place is its town and its state or province, else its
   country, as the page writes it; its street and postcode are never read. A scan dated
   midnight without an offset keeps its day, as the page's pickup does. Its `NOTFOUND` answer
   is final; any other API failure except recipient verification goes on to the browser.

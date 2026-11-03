@@ -4,7 +4,9 @@ import { carrierErrorKind, ChallengeError, IndeterminateError, MaintenanceError,
 import type { CarrierResult } from '../../core/result/index.js';
 import { withLocalBrowser, withRemoteBrowser } from '../../core/transport/localBrowser.js';
 import { isRecord } from '../../core/types.js';
-import { parseRoyalMailTrackingResponse, royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl, royalMailUnconfirmed } from './parser.js';
+import {
+  parseRoyalMailTrackingResponse, royalMailEstimate, royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl, royalMailUnconfirmed,
+} from './parser.js';
 import { royalMailVisionRecovery, type RoyalMailVisionContext } from './vision.js';
 
 const PROVIDER = 'Royal Mail';
@@ -123,8 +125,7 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
       }
       // Drop proof, recipient and credential fields before merging the replies.
       resolve(phase === 'summary' ? { mailPieceId: number, summary: piece.summary, estimatedDelivery: piece.estimatedDelivery }
-        : { mailPieceId: number, events: piece.events, ...royalMailDestination(piece.summary),
-          ...(isRecord(piece.estimatedDelivery) ? { estimatedDelivery: { date: piece.estimatedDelivery.date } } : {}) });
+        : { mailPieceId: number, events: piece.events, ...royalMailDestination(piece.summary), ...royalMailEstimate(piece.estimatedDelivery) });
     })().catch(error => { if (active) reject(carrierErrorKind(error) ? error : new TransportError(PROVIDER)); });
   };
   // A visible CAPTCHA waits for a person, and the page sends no request until it is solved.

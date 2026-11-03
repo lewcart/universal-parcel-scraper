@@ -117,6 +117,17 @@ describe('Hermes Germany', () => {
       .toEqual(['DELIVERY_TOUR_STARTED', 'HANDED_OVER', 'ANNOUNCED']);
   });
 
+  it('gives no estimate from a delivery that happened or once the parcel goes back', () => {
+    const payload = (code: string, extra: Record<string, unknown>) => [{ barcode: NUMBER, ...extra,
+      parcelProgress: [{ parcelStatus: 'SORTED', timestamp: '2026-09-02T09:00:00Z' }, { parcelStatus: code, timestamp: '2026-09-03T09:00:00Z' }] }];
+    const box = { parcelAttributes: { delivered: true, deliveredTimestamp: '2026-09-03T11:00:00+02:00' } };
+    expect(parseHermesGermanyResponse(payload('DELIVERED_PARCELBOX', box), NUMBER))
+      .toMatchObject({ current_stage: 'ready_for_pickup', expected_delivery: null });
+    expect(parseHermesGermanyResponse(payload('RETURN_DELIVERED_TO_SENDER', { ...box, eta: '2026-09-04' }), NUMBER))
+      .toMatchObject({ current_stage: 'returned', expected_delivery: null });
+    expect(parseHermesGermanyResponse(payload('SORTED', { eta: '2026-09-04' }), NUMBER).expected_delivery).toBe('2026-09-04');
+  });
+
   it('keeps scans of one instant in the carrier\'s order', () => {
     const payload = [{ barcode: NUMBER, parcelProgress: [{ parcelStatus: 'SORTED', timestamp: '2026-09-02T09:00:00Z' },
       { parcelStatus: 'HANDED_OVER', timestamp: '2026-09-03T07:00:00Z' }, { parcelStatus: 'DELIVERY_TOUR_STARTED', timestamp: '2026-09-03T07:00:00Z' }] }];

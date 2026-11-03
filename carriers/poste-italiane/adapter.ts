@@ -319,12 +319,14 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
     }
     throw new IndeterminateError('Poste Italiane', 'Poste Italiane returned no shipment activity or native result');
   }
+  // A delivery or return the envelope has not caught up with ends the estimate too.
+  const final = latest.classified!.stage === 'delivered' || latest.classified!.stage === 'returned';
   return {
     status: latest.classified!.status,
     current_stage: latest.classified!.stage,
     last_status_text: latest.event.description,
     last_update: latest.event.time ?? null,
-    expected_delivery: expectedDeliveryDay(payload.dataPrevistaConsegna),
+    expected_delivery: final ? null : expectedDeliveryDay(payload.dataPrevistaConsegna),
     ...facts,
     events,
   };

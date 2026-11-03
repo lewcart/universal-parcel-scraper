@@ -180,6 +180,16 @@ function recordedInBeijing(scan: JsonObject, wall: string): boolean {
   return Number.isFinite(beijing.getTime()) && beijing.toISOString().slice(0, 19).replace('T', ' ') === wall;
 }
 
+// Epoch milliseconds from 2001 to 2286, as an estimate's bounds are written.
+const EPOCH_MS = /^\d{13}$/;
+
+/** The day of one of the estimate's bounds, or null for anything but epoch milliseconds. */
+function etaDay(value: unknown): string | null {
+  const millis = typeof value === 'number' ? value : typeof value === 'string' && EPOCH_MS.test(value.trim()) ? Number(value) : Number.NaN;
+  if (!Number.isSafeInteger(millis) || millis < 1e12 || millis >= 1e13) return null;
+  return new Date(millis).toISOString().slice(0, 10);
+}
+
 /** The module of a `detail.json` payload for the number asked; any other shipment is refused. */
 function trackingModuleOf(value: unknown, trackingNumber: string): JsonObject {
   const payload = record(value);
@@ -271,17 +281,11 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
     if (CAINIAO_NOTICE_ACTIONS.has(cainiaoActionCode(details[index]!.actionCode))) Object.assign(event, { stage: previous, stage_source: 'none' });
     else if (event.stage) previous = event.stage as Stage;
   }
+  // The estimate's bounds, epoch milliseconds as a number or as digits; a window
+  // with one bound is that day.
   const eta = record(trackingModule.globalEtaInfo);
-  const toMillis = (value_: unknown): number | null => (
-    typeof value_ === 'number' && Number.isFinite(value_) ? value_ : null
-  );
-  const deliveryMinTime = toMillis(eta.deliveryMinTime);
-  const deliveryMaxTime = toMillis(eta.deliveryMaxTime);
-  const toDate = (millis: number | null): string | null => (
-    millis == null ? null : new Date(millis).toISOString().slice(0, 10)
-  );
-  const expected = toDate(deliveryMaxTime);
-  const expectedFrom = toDate(deliveryMinTime);
+  const expectedFrom = etaDay(eta.deliveryMinTime);
+  const expected = etaDay(eta.deliveryMaxTime) ?? expectedFrom;
   const handoff = cainiaoHandoffNumber(trackingModule);
   // Cainiao can follow the country with the recipient's town, "France,Town": only the country is read.
   const destination = text(trackingModule.destCountry).split(',')[0]!.trim().slice(0, 80);

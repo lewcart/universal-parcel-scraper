@@ -69,8 +69,9 @@ describe('GOFO US history', () => {
     expect(result.events?.[0]).toMatchObject({ time: result.last_update, description: 'Delivered', location: 'Example City, EX' });
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|weight|processDept|proof/);
     const metadata = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
+    const active = fixture(); item(active).trackEventList.shift(); item(active).estimatedArrivalTime = '2026-01-08'; bind(active);
     const evidence: Record<string, boolean> = { history: !!result.events?.length, location: !!result.events?.some(event => event.location), delivered_at: !!result.delivered_at,
-      service_name: !!result.service_name };
+      service_name: !!result.service_name, eta: !!parseGofo(active, NUMBER).expected_delivery };
     for (const capability of metadata.capabilities) expect(evidence[capability], capability).toBe(true);
   });
 
@@ -199,7 +200,7 @@ describe('GOFO US history', () => {
     }
   });
 
-  it('retains an unresolved newest clock without borrowing an older delivery or using a summary estimate', () => {
+  it('retains an unresolved newest clock without borrowing an older delivery', () => {
     const value = fixture(); item(value).trackEventList[0].processDate = '2026-01-04T12:00:00.000'; item(value).estimatedArrivalTime = '2026-01-08'; bind(value);
     const result = parseGofo(value, NUMBER);
     expect(result).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-01-04T12:00:00', expected_delivery: null });
@@ -207,7 +208,18 @@ describe('GOFO US history', () => {
     item(value).trackEventList[0].processDate = 'Jan 4'; bind(value);
     expect(parseGofo(value, NUMBER).events?.[0]).toMatchObject({ provider_time_text: 'Jan 4' });
     item(value).trackEventList.shift(); bind(value);
-    expect(parseGofo(value, NUMBER)).toMatchObject({ status: 'out_for_delivery', expected_delivery: null });
+    expect(parseGofo(value, NUMBER)).toMatchObject({ status: 'out_for_delivery', expected_delivery: '2026-01-08' });
+  });
+
+  it("keeps GOFO's estimated delivery date until the parcel is delivered, as a date", () => {
+    const active = fixture(); item(active).trackEventList.shift(); bind(active);
+    const estimate = (value: unknown) => { item(active).estimatedArrivalTime = value; return parseGofo(active, NUMBER).expected_delivery; };
+    expect(estimate('2026-01-08')).toBe('2026-01-08');
+    expect(estimate('2026-01-08 23:59:59')).toBe('2026-01-08');
+    expect(estimate('2026-01-08T00:00:00.000-0800')).toBe('2026-01-08');
+    for (const value of [null, undefined, '', 'Jan 8', '2026-02-30', 1767830400000]) expect(estimate(value)).toBeNull();
+    const delivered = fixture(); item(delivered).estimatedArrivalTime = '2026-01-08';
+    expect(parseGofo(delivered, NUMBER)).toMatchObject({ status: 'delivered', expected_delivery: null });
   });
 
   it('maps every code in the status catalogue, including the hub departure and line-haul codes', () => {

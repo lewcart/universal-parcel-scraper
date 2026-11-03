@@ -55,6 +55,11 @@ describe('partial carrier answers', () => {
     expect(fillPartialAnswer('ups', NUMBER, delivered, after)).toMatchObject({ status: 'delivered', current_stage: 'delivered',
       last_status_text: 'Delivered' });
     expect(fillPartialAnswer('ups', NUMBER, delivered, after)).not.toHaveProperty('expected_delivery');
+    // The provider's own estimate does not outlive the delivery either.
+    const estimated = { ...after, expected_delivery: '2026-01-06', expected_delivery_from: '2026-01-05' };
+    const filled = fillPartialAnswer('ups', NUMBER, delivered, estimated);
+    expect(filled).toMatchObject({ current_stage: 'delivered', expected_delivery: null });
+    expect(filled).not.toHaveProperty('expected_delivery_from');
   });
 });
 

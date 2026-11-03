@@ -31,7 +31,8 @@
     "location",
     "provider_code",
     "delivered_at",
-    "service_name"
+    "service_name",
+    "eta"
   ],
   "portal": {
     "url": "https://www.gofo.com/it/tracking-results/?id={trackingNumber}",
@@ -43,7 +44,8 @@
       "history",
       "location",
       "delivered_at",
-      "delivery_photo"
+      "delivery_photo",
+      "eta"
     ],
     "scraped": [
       "status",
@@ -51,7 +53,8 @@
       "location",
       "provider_code",
       "delivered_at",
-      "service_name"
+      "service_name",
+      "eta"
     ],
     "discarded": [
       "delivery_detail",
@@ -59,7 +62,6 @@
       "personal_references",
       "recipient_verification",
       "unlabelled_weight",
-      "eta",
       "notices"
     ],
     "unavailable": [

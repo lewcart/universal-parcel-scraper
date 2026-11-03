@@ -71,6 +71,9 @@ delivers them. Tracked through the lookup its English tracking page makes.
 - Each row carries a code, kept as its `provider_code`. Most rows are `OIT` whatever happened, so a
   code gives a stage only to a wording the map lacks, and only where it settles one alone: the
   order's data, the collection, the round, the pickup point, a failed attempt and the delivery.
+- The waybill's `estimateArriveTime` is the expected delivery, its day alone since a clock after
+  it names no zone. Straightship's round gives its own day in the town's province instead, while
+  the parcel is on it.
 - Partners' records of the parcel's data move nothing and have no stage. Straightship's "Package
   will be delivered before 9:00pm" is its driver's round, out for delivery, as Straightship's own
   map reads it.
@@ -83,7 +86,7 @@ delivers them. Tracked through the lookup its English tracking page makes.
 ## Limitations
 
 - The reply has no summary, weight or service, and does not name the destination courier.
-- The delivery estimate, the delivery photos and the shop's order number are not read.
+- The delivery photos and the shop's order number are not read.
 
 ## Numbers
 

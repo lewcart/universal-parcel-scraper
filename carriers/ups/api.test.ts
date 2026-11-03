@@ -251,6 +251,21 @@ describe('UPS API reply', () => {
     expect(rescheduled.expected_delivery).toBe('2026-08-06');
   });
 
+  it('gives the delivery window on the scheduled day as a slot, and keeps the day otherwise', () => {
+    const estimate = (deliveryTime: Item | undefined, deliveryDate: Item[] = [{ type: 'SDD', date: '20260804' }]) =>
+      parseUPSApiResponse(apiFixture((item) => { item.deliveryDate = deliveryDate; item.deliveryTime = deliveryTime; }), TRACKING_NUMBER).expected_delivery;
+    expect(estimate({ type: 'EDW', startTime: '140000', endTime: '180000' })).toBe('2026-08-04 14:00–18:00');
+    expect(estimate({ type: 'CDW', startTime: '0930', endTime: '1130' },
+      [{ type: 'SDD', date: '20260804' }, { type: 'RDD', date: '20260806' }])).toBe('2026-08-06 09:30–11:30');
+    // End of day and a commit time are no window; neither is one running backwards.
+    expect(estimate({ type: 'EOD', endTime: '235900' })).toBe('2026-08-04');
+    expect(estimate({ type: 'CMT', endTime: '103000' })).toBe('2026-08-04');
+    expect(estimate({ type: 'EDW', startTime: '180000', endTime: '140000' })).toBe('2026-08-04');
+    expect(estimate(undefined)).toBe('2026-08-04');
+    // Without a scheduled day, a window has no day to fall on.
+    expect(estimate({ type: 'EDW', startTime: '140000', endTime: '180000' }, [])).toBeNull();
+  });
+
   it('asks the receiver to pay the duties at the codes that say they are due', () => {
     const held = parseUPSApiResponse(apiFixture((item) => {
       item.activity = [activity('OQ', 'Your package is being held until duties and taxes are paid.'),

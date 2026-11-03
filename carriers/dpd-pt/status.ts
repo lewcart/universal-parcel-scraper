@@ -43,6 +43,8 @@ export const DPD_PT_DELIVERY = 'POD';
 export const DPD_PT_RETURN = '424';
 /** The pickup point's own scan; its comment names the point. */
 export const DPD_PT_POINT_RECEIPT = '002';
+/** The message giving the recipient the delivery's hour on its day; the comment column holds the window. */
+export const DPD_PT_WINDOW = '706';
 /** The expected delivery day, dated when DPD set it rather than with the day: the history leaves it out. */
 export const DPD_PT_FORECAST = '714';
 

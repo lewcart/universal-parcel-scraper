@@ -129,7 +129,36 @@ describe('FedEx official API reply', () => {
       shipment.estimatedDeliveryTimeWindow = { window: { begins: '2026-09-02T09:00:00+02:00', ends: '2026-09-02T13:00:00+02:00' } };
       shipment.scanEvents = [{ date: '2026-09-02T08:01:00+02:00', eventType: 'OD', eventDescription: 'On FedEx vehicle for delivery', scanLocation: { city: 'ZUERICH', countryCode: 'CH' } }];
     }), DELIVERED_NUMBER);
-    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', expected_delivery: '2026-09-02' });
+    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery',
+      expected_delivery_from: '2026-09-02T09:00:00+02:00', expected_delivery: '2026-09-02T13:00:00+02:00' });
+  });
+
+  it('keeps the whole estimated delivery window, on the estimated day or without one', () => {
+    const estimate = (dates: Result[], window: Result | undefined, code = 'IT') => {
+      const result = parseFedExApiResponse(apiFixture((shipment) => {
+        shipment.latestStatusDetail = { code, description: code === 'DL' ? 'Delivered' : 'In transit' };
+        shipment.dateAndTimes = dates;
+        shipment.estimatedDeliveryTimeWindow = window ? { window } : undefined;
+        shipment.scanEvents = [{ date: '2026-09-01T08:01:00+02:00', eventType: code, eventDescription: 'In transit', scanLocation: { city: 'ZUERICH', countryCode: 'CH' } }];
+      }), DELIVERED_NUMBER);
+      return [result.expected_delivery_from ?? null, result.expected_delivery ?? null];
+    };
+    const day = [{ type: 'ESTIMATED_DELIVERY', dateTime: '2026-09-02T00:00:00+02:00' }];
+    // A window on the estimated day says when on it.
+    expect(estimate(day, { begins: '2026-09-02T09:00:00+02:00', ends: '2026-09-02T13:00:00+02:00' }))
+      .toEqual(['2026-09-02T09:00:00+02:00', '2026-09-02T13:00:00+02:00']);
+    // Wall clocks without an offset stay a slot on the day.
+    expect(estimate(day, { begins: '2026-09-02T09:00:00', ends: '2026-09-02T13:00:00' })).toEqual([null, '2026-09-02 09:00–13:00']);
+    // A window off the estimated day leaves the day.
+    expect(estimate(day, { begins: '2026-09-03T09:00:00+02:00', ends: '2026-09-03T13:00:00+02:00' })).toEqual([null, '2026-09-02']);
+    // Days FedEx dates at midnight stay days: a range of them, or one day.
+    expect(estimate([], { begins: '2026-09-02T00:00:00+02:00', ends: '2026-09-04T00:00:00+02:00' })).toEqual(['2026-09-02', '2026-09-04']);
+    expect(estimate([], { begins: '2026-09-04', ends: '2026-09-04' })).toEqual([null, '2026-09-04']);
+    // A window missing its start, or running backwards, gives its end's day.
+    expect(estimate([], { ends: '2026-09-04T13:00:00+02:00' })).toEqual([null, '2026-09-04']);
+    expect(estimate([], { begins: '2026-09-04T13:00:00+02:00', ends: '2026-09-04T09:00:00+02:00' })).toEqual([null, '2026-09-04']);
+    // A delivered parcel has no estimate.
+    expect(estimate(day, { begins: '2026-09-02T09:00:00+02:00', ends: '2026-09-02T13:00:00+02:00' }, 'DL')).toEqual([null, null]);
   });
 
   it('names the hold location while the parcel waits there, and never a residential one', () => {

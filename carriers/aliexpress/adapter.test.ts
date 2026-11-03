@@ -426,6 +426,21 @@ describe('Cainiao projection', () => {
     });
   });
 
+  it('reads the estimate written as digits, and a window with one bound as that day', () => {
+    const estimate = (globalEtaInfo: unknown) => parseCainiaoTrackingResponse({ module: [{
+      mailNo: 'LP00000000000002', globalEtaInfo, latestTrace: { actionCode: 'LH_ARRIVE' }, detailList: [],
+    }] }, 'LP00000000000002');
+    expect(estimate({ deliveryMinTime: '1773100800000', deliveryMaxTime: '1773273600000' }))
+      .toMatchObject({ expected_delivery: '2026-03-12', expected_delivery_from: '2026-03-10' });
+    const single = estimate({ deliveryMinTime: 1773100800000 });
+    expect(single.expected_delivery).toBe('2026-03-10');
+    expect(single).not.toHaveProperty('expected_delivery_from');
+    // Seconds, text or nothing are no estimate.
+    for (const bounds of [{ deliveryMaxTime: 1773273600 }, { deliveryMaxTime: 'Mar 12' }, {}]) {
+      expect(estimate(bounds).expected_delivery).toBeNull();
+    }
+  });
+
   it('never reads a station signature as a delivery', () => {
     const result = parseCainiaoTrackingResponse({
       module: [{

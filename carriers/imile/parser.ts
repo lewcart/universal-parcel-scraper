@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, RateLimitedError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { countryTimeZone, isoTime } from '../../core/time/index.js';
+import { calendarDay, countryTimeZone, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { countryZones } from '../../places/zones.js';
@@ -178,13 +178,35 @@ export function parseImile(payload: unknown, raw: string): CarrierResult {
     const time = isoTime(local_time, zone)?.iso;
     return time ? { time, ...event } : { local_time, ...event };
   }) : newestFirst;
+  const summary = imileSummary(placed);
   return {
-    ...imileSummary(placed),
-    expected_delivery: null,
+    ...summary,
+    expected_delivery: summary.current_stage === 'delivered' || summary.current_stage === 'returned' ? null : scheduledDay(placed),
     ...(country ? { destination_country: country } : {}),
     events: placed.slice(0, MAX_EVENTS),
     ...(newestFirst.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };
+}
+
+// The delivery day iMile books, "Shipment is scheduled to [2026-05-20].", after any centre heading the sentence.
+const SCHEDULED = /^(?:[^:]{1,120}: )?(?:shipment is )?scheduled to \[(\d{4})-(\d{2})-(\d{2})\]/i;
+// Scans after which a booked day no longer stands: an attempt that failed, a problem, the pickup point, the end.
+const SPENT: ReadonlySet<string> = new Set(['failed_attempt', 'exception', 'ready_for_pickup', 'delivered', 'returned']);
+
+/**
+ * The day the newest booking names, while no failed attempt, problem or end has come since and
+ * the day is not before the newest scan's. A history newest first, its clocks the recipient's.
+ */
+function scheduledDay(events: readonly CarrierEvent[]): string | null {
+  const clock = (event: CarrierEvent) => String(event.time ?? event.local_time ?? '').slice(0, 10);
+  for (const event of events) {
+    if (event.stage && SPENT.has(event.stage)) return null;
+    const match = SCHEDULED.exec(event.description ?? '');
+    if (!match) continue;
+    const day = calendarDay(Number(match[1]), Number(match[2]), Number(match[3]));
+    return day && day >= clock(events[0]!) ? day : null;
+  }
+  return null;
 }
 
 /** The status a history newest first gives: its newest staged scan's stage, and its newest scan's wording and clock. */

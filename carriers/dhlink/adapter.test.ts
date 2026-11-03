@@ -163,6 +163,26 @@ describe('DHLink HTTP adapter', () => {
     expect(JSON.stringify(result)).not.toMatch(/9990[12]/);
   });
 
+  it('reads the delivery a relayed round promises while it is the current scan on the destination’s clock', () => {
+    expect(parseDhlink(fixture('usps-relayed'), LINE, LATER).expected_delivery).toBeNull();
+    // On the round: the attempt and the delivery after it are not in yet.
+    const onRound = (change: (rows: Row[]) => void = () => {}) => parseDhlink(changed('usps-relayed', (parcel) => {
+      parcel.state = 2;
+      parcel.trackinfoList.splice(0, 4);
+      change(parcel.trackinfoList);
+    }), LINE, LATER);
+    expect(onRound()).toMatchObject({ current_stage: 'out_for_delivery', expected_delivery: '2026-01-24' });
+    expect(onRound((rows) => rows.slice(0, 2).forEach((row) => {
+      row.info = String(row.info).replace('by 7:40pm', 'Between 11:15am and 1:15pm');
+    })).expected_delivery).toBe('2026-01-24 11:15–13:15');
+    // A round without a promise, or one on a clock that could be Beijing's, gives none.
+    expect(onRound((rows) => rows.slice(0, 2).forEach((row) => {
+      row.info = String(row.info).replace(', Expected Delivery by 7:40pm', '');
+    })).expected_delivery).toBeNull();
+    expect(onRound((rows) => rows.slice(0, 2).forEach((row) => { row.place = '.'; row.info = 'Out for Delivery, Expected Delivery by 7:40pm'; })))
+      .toMatchObject({ current_stage: 'out_for_delivery', expected_delivery: null });
+  });
+
   it('drops contact details, signatures and British or Canadian postcodes from a relayed row', () => {
     const result = parseDhlink(changed('postal-delivered', (parcel) => {
       Object.assign(parcel.trackinfoList[0]!, { info: '【GB】已妥投，签收人：示例', place: 'SAMPLEBURY ZZ9 9ZZ' });

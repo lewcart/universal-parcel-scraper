@@ -32,6 +32,7 @@
   "capabilities": [
     "history",
     "provider_code",
+    "eta_window",
     "pickup_point"
   ],
   "portal": {
@@ -54,12 +55,12 @@
       "status",
       "history",
       "provider_code",
+      "eta_window",
       "pickup_point"
     ],
     "discarded": [
       "progress_rail",
       "coordinates",
-      "eta_window",
       "depot_code",
       "signatory",
       "proof_of_delivery"

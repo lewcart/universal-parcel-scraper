@@ -34,7 +34,7 @@ import { carrierIdFromPartnerLinks } from '../../core/catalog/hints.js';
 import { DELIVERY_POSTCODE, deliveryPostcodeText } from '../../core/catalog/postcode.js';
 import { runSteps, singleFlight, takeTurn } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
-import { countryCode, isoTime } from '../../core/time/index.js';
+import { countryCode, explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import {
   clean as cleanText, fetchBounded, parseJsonBytes, type TrawlClient, UpstreamHttpError, UpstreamNetworkError,
 } from '../../core/transport/index.js';
@@ -79,14 +79,34 @@ export function dhlTrackingUrl(number: string): string {
 }
 
 /**
- * DHL timestamps carry their own offset and its delivery window is a calendar
- * day; both are kept verbatim rather than normalized, so `core/time` is used
- * to validate them in the German zone only.
+ * DHL timestamps carry their own offset, and are kept verbatim rather than
+ * normalized, so `core/time` is used to validate them in the German zone only.
  */
 function date(value: unknown): string {
   const raw = clean(value, 64);
   if (!/^\d{4}-\d{2}-\d{2}(?:T[\d:.+-]+Z?)?$/.test(raw)) return '';
   return isoTime(raw, TIMEZONE) ? raw : '';
+}
+
+/**
+ * DHL's delivery window, `zustellzeitfensterVon` to `zustellzeitfensterBis`, kept as
+ * DHL states it when both ends carry an offset, in order, on one German day.
+ * Otherwise it is the calendar day of either end, or the days from one end to
+ * the other when they fall on two.
+ */
+function deliveryWindow(delivery: Record<string, unknown>): Pick<CarrierResult, 'expected_delivery' | 'expected_delivery_from'> {
+  const from = date(delivery.zustellzeitfensterVon);
+  const to = date(delivery.zustellzeitfensterBis);
+  const start = explicitOffsetTime(from);
+  const end = explicitOffsetTime(to);
+  const day = (timestamp: number) => DateTime.fromMillis(timestamp, { zone: TIMEZONE }).toISODate();
+  if (start && end && start.timestamp < end.timestamp && day(start.timestamp) === day(end.timestamp)) {
+    return { expected_delivery_from: from, expected_delivery: to };
+  }
+  const first = from.slice(0, 10) || to.slice(0, 10);
+  const last = to.slice(0, 10);
+  if (first && last && first < last) return { expected_delivery_from: first, expected_delivery: last };
+  return first ? { expected_delivery: first } : {};
 }
 
 function millis(value: unknown): number {
@@ -215,7 +235,7 @@ export function parseDHLTrackingResponse(payload: unknown, trackingNumber: strin
     ? details.ruecksendung === true ? 'returned' : 'delivered'
     : stageForText(currentText, fallback);
   const delivery = isRecord(details.zustellung) ? details.zustellung : {};
-  const expected = date(delivery.zustellzeitfensterVon) || date(delivery.zustellzeitfensterBis);
+  const window = ['delivered', 'returned'].includes(stage) ? {} : deliveryWindow(delivery);
   const stated = date(timeline.datumAktuellerStatus);
   const newest = events[0];
   // The status DHL dates as its newest scan abroad keeps that scan's wall clock.
@@ -226,7 +246,8 @@ export function parseDHLTrackingResponse(payload: unknown, trackingNumber: strin
     last_status_text: currentText,
     last_update: local ? null : stated || newest?.time || null,
     ...(local ? { last_update_local: local } : {}),
-    expected_delivery: ['delivered', 'returned'].includes(stage) ? null : expected.slice(0, 10) || null,
+    expected_delivery: window.expected_delivery ?? null,
+    ...(window.expected_delivery_from ? { expected_delivery_from: window.expected_delivery_from } : {}),
     timezone: TIMEZONE, events,
     ...(deliveryCarrier ? { delivery_carrier: deliveryCarrier } : {}),
     ...destination(details),

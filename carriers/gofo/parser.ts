@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { explicitOffsetTime } from '../../core/time/index.js';
-import { clean } from '../../core/transport/index.js';
+import { clean } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 import { gofoStatus } from './status.js';
 
@@ -80,6 +80,20 @@ function scanClock(value: unknown, scanZone: unknown, site: GofoSite): Pick<Carr
   const zone = clean(scanZone, 64);
   return { time: (IANAZone.isValidZone(zone) ? instant.setZone(zone) : instant).toISO({ suppressMilliseconds: true })! };
 }
+
+/**
+ * The delivery date GOFO gives with a parcel (`estimatedArrivalTime` on the US
+ * service, `expectedDeliveryTime` on the national ones): the calendar date as
+ * GOFO writes it, alone or before a clock. Anything else gives no date.
+ */
+export function gofoDeliveryDate(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const date = /^(\d{4}-\d{2}-\d{2})(?:$|[T ](?:[01]\d|2[0-3]):[0-5]\d)/.exec(value.trim())?.[1];
+  return date && DateTime.fromISO(date, { zone: 'UTC' }).isValid ? date : null;
+}
+
+/** Stages after which a delivery date no longer stands. */
+export const GOFO_ENDED_STAGES: ReadonlySet<string> = new Set(['delivered', 'returned', 'ready_for_pickup']);
 
 /** Scan wording without a trailing support line; a scan worded only by that line keeps it. */
 function scanText(value: unknown): string {
@@ -159,7 +173,7 @@ export function parseGofo(payload: unknown, rawNumber: string, site: GofoSite = 
   const service = clean(item.serviceName, 80);
   return { status: current?.status ?? 'unknown', ...(current ? { current_stage: current.stage } : {}),
     last_status_text: latest.description, last_update: latest.time ?? null, last_update_local: latest.local_time ?? null,
-    expected_delivery: null,
+    expected_delivery: current && GOFO_ENDED_STAGES.has(current.stage) ? null : gofoDeliveryDate(item.estimatedArrivalTime),
     ...(current?.stage === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),
     ...(item.toCountry === site.toCountry ? { destination_country: site.country } : {}), ...(service ? { service_name: service } : {}),
     events: events.slice(0, 100) };

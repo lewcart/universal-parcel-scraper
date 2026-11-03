@@ -38,7 +38,8 @@ centre taking the parcel in (202) is the acceptance when it is GOFO's first scan
 the same code names later sorting centres, which are in transit. A return to the
 sorting centre after a delivery problem is an exception; the client's return
 category establishes a return to the sender. The service name is retained as
-the carrier supplies it.
+the carrier supplies it. `expected_delivery` is GOFO's `expectedDeliveryTime`,
+kept as a date until the parcel is delivered or returned.
 
 ## Limitations
 
@@ -46,7 +47,7 @@ An empty result, or a parcel listed without scans, is a `NoHistoryError`: GOFO
 answers a label not yet scanned and one it never issued alike, so it stays
 inconclusive rather than not-found. Proof images, recipient verification,
 detailed delivery prose and unrelated references are excluded. Weight has no
-verified unit, and estimates have no verified active-parcel provenance.
+verified unit.
 
 ## Live test
 

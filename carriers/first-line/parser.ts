@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { uspsRoundDelivery } from '../../core/result/round.js';
 import { classifyWording, languageStageStatus, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { firstOccurrence } from '../../core/time/index.js';
@@ -81,6 +82,11 @@ function projectRow(row: string, readAt: number): { key: string; event: CarrierE
   return { key: JSON.stringify([local, location, description]), event };
 }
 
+/** The delivery a relayed USPS round promises on its scan's day. */
+function roundDelivery(event: CarrierEvent): string | null {
+  return typeof event.local_time === 'string' ? uspsRoundDelivery(event.description ?? '', event.local_time.slice(0, 10)) : null;
+}
+
 /** The one shipment block of a reply that is for the number asked. */
 function shipmentFor(html: string, number: string): string {
   const blocks = html.split('<div class="track_list">').slice(1);
@@ -149,7 +155,7 @@ export function parseFirstLine(body: string, raw: string, readAt = Date.now()): 
     last_status_text: newest.description!,
     last_update: newest.time ?? null,
     ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
-    expected_delivery: null,
+    expected_delivery: stage === 'out_for_delivery' ? roundDelivery(current!) : null,
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };

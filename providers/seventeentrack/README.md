@@ -240,6 +240,11 @@ carrier.
   row under, "US+08:00", which names no place under an offset the country never keeps (JCEX's
   rows in China). A US town can also come as "TOWN,ST,US,POSTCODE", kept without the postcode.
   JCEX's "The carrier" names none either.
+- The carrier's delivery estimate, `time_metrics.estimated_delivery_date` with source
+  `Official`, becomes `expected_delivery`, and its `from` `expected_delivery_from` when it
+  names an earlier day. Only the days are kept, since 17TRACK can put its own offset on a
+  carrier's clock. 17TRACK's own forecast (source `17TRACK`) is not kept, nor any estimate
+  once the parcel is delivered or returned.
 - At most 20 carrier legs and 1000 events. Per-event `address` is never read, and of
   `shipping_info` only the recipient's country, for an NZ Post, Poland Post or Swiss Post leg: the
   address can be the recipient's street.

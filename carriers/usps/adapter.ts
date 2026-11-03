@@ -116,13 +116,65 @@ function eventTime(dateText: string, timeText: string, location: string, descrip
   return iso ? { iso, timestamp: at.toMillis() } : null;
 }
 
-/** A delivery estimate reduced to its calendar day, written "March 17, 2025" or "17 March 2025". */
-function expectedDelivery(text: string): string | null {
-  const match = /(?:expected|scheduled|anticipated)\s+delivery.*?(?:([A-Z][a-z]+)\s+(\d{1,2}),?\s+(\d{4})|(\d{1,2})\s+([A-Z][a-z]+)\s+(\d{4}))/is.exec(text);
+const DAY_PATTERN = new RegExp(`${MONTHS}\\s+(\\d{1,2}),?\\s+(\\d{4})|(\\d{1,2})\\s+${MONTHS}\\s+(\\d{4})`, 'i');
+// A delivery window as USPS words it: "Expected Delivery Between 1:15pm and 4:15pm".
+const WINDOW = /\bbetween\s+(\d{1,2}):(\d{2})\s*([ap])\.?m\.?\s+(?:and|to|-|–)\s+(\d{1,2}):(\d{2})\s*([ap])\.?m\.?/i;
+
+/** The first calendar day `text` writes, "March 17, 2025" or "17 March 2025", and where it ends. */
+function calendarDay(text: string): { day: string; end: number } | null {
+  const match = DAY_PATTERN.exec(text);
   if (!match) return null;
   const [month, date, year] = match[1] ? [match[1], match[2], match[3]] : [match[5], match[4], match[6]];
-  const day = DateTime.fromFormat(`${month} ${date} ${year}`, 'MMMM d yyyy', { locale: 'en-US', zone: 'utc' });
-  return day.isValid ? day.toISODate() : null;
+  const day = DateTime.fromFormat(`${month} ${date} ${year}`, 'MMMM d yyyy', { locale: 'en-US', zone: 'utc' }).toISODate();
+  return day ? { day, end: match.index + match[0].length } : null;
+}
+
+/** A 12-hour clock as HH:MM, or null when it is not one. */
+function clock24(hour: string, minute: string, half: string): string | null {
+  const value = Number(hour);
+  if (value < 1 || value > 12 || Number(minute) > 59) return null;
+  return `${String((value % 12) + (half.toLowerCase() === 'p' ? 12 : 0)).padStart(2, '0')}:${minute}`;
+}
+
+/** `day` as a slot when `text` opens with its window ("between 1:15pm and 4:15pm"), else the day alone. */
+function withWindow(day: string, text: string): string {
+  const match = WINDOW.exec(text.slice(0, 80));
+  const from = match ? clock24(match[1]!, match[2]!, match[3]!) : null;
+  const to = match ? clock24(match[4]!, match[5]!, match[6]!) : null;
+  return from && to && from < to ? `${day} ${from}–${to}` : day;
+}
+
+/** A delivery estimate the status text words, as its calendar day, with the window it gives after that day. */
+function expectedDelivery(text: string): string | null {
+  const heading = /(?:expected|scheduled|anticipated)\s+delivery/i.exec(text);
+  const rest = heading ? text.slice(heading.index + heading[0].length) : '';
+  const found = calendarDay(rest);
+  return found ? withWindow(found.day, rest.slice(found.end)) : null;
+}
+
+/** The estimate banner's day, whatever its heading says, with the window it gives after that day. */
+function bannerEstimate(text: string): string | null {
+  const found = calendarDay(text);
+  return found ? withWindow(found.day, text.slice(found.end)) : null;
+}
+
+/**
+ * The delivery the newest scan announces when it sends the parcel out, on that scan's own day:
+ * "Out for Delivery, Expected Delivery Between 1:15pm and 4:15pm" as a slot, "Out for Delivery,
+ * Expected Delivery by 9:00pm" as the day.
+ */
+function roundEstimate(event: CarrierEvent | undefined): string | null {
+  const description = event?.stage === 'out_for_delivery' ? event.description ?? '' : '';
+  const heading = /\bexpected delivery\b/i.exec(description);
+  const wall = typeof event?.time === 'string' ? event.time : typeof event?.local_time === 'string' ? event.local_time : '';
+  const day = /^\d{4}-\d{2}-\d{2}(?=T|$)/.exec(wall)?.[0];
+  return heading && day ? withWindow(day, description.slice(heading.index + heading[0].length)) : null;
+}
+
+/** The banner's or status text's estimate, or the round's when they give none or the same day without a window. */
+function estimateOf(announced: string | null, round: string | null): string | null {
+  if (!round || (announced && announced.slice(0, 10) !== round.slice(0, 10))) return announced;
+  return announced && announced.length > round.length ? announced : round;
 }
 
 function notLocated(): CarrierResult {
@@ -268,8 +320,10 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string, read
     .first().text());
   // The estimate's heading, then its weekday, date, month and year and time in elements
   // of their own: "Expected Delivery by: Wednesday 17 March 2025 by 9:00pm".
+  // Each element's text is kept apart, so "<span>March</span><br>2025" stays two words.
   const eta = $('.expected_delivery').first().clone();
   eta.find('.hint').remove();
+  eta.find('*').each((_, element) => { $(element).before(' ').after(' '); });
   const estimate = clean(eta.text(), 500);
   if (/tracking not available/i.test(banner)) return notLocated();
   const current = $('.current-tracking-status-wrapper .current-step').first();
@@ -315,7 +369,8 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string, read
     last_status_text: delivered ? 'Delivered' : returning && moving === 'delivered' ? 'Returned to the sender' : statusText,
     last_update: events[0]?.time || null,
     ...(events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
-    expected_delivery: delivered ? null : expectedDelivery(`${statusArea} ${banner}`) ?? expectedDelivery(estimate),
+    expected_delivery: delivered ? null
+      : estimateOf(expectedDelivery(`${statusArea} ${banner}`) ?? bannerEstimate(estimate), roundEstimate(events[0])),
     events,
   };
 }

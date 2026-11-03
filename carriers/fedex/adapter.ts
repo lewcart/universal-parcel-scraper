@@ -26,6 +26,7 @@ import {
   explicitOffsetTime,
   firstOccurrence,
   usStateTimeZone,
+  type ParsedTime,
 } from '../../core/time/index.js';
 import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
@@ -218,6 +219,45 @@ function expectedDelivery(value: unknown): string | null {
   return match ? match[1]! : null;
 }
 
+/** A delivery estimate: its day, or the end of a window whose start is `expected_delivery_from`. */
+type Estimate = Pick<CarrierResult, 'expected_delivery' | 'expected_delivery_from'>;
+
+interface WindowEnd {
+  day: string;
+  /** Its wall clock, `HH:MM`; empty for a day FedEx dates at midnight. */
+  clock: string;
+  instant: ParsedTime | null;
+}
+
+function windowEnd(value: unknown): WindowEnd | null {
+  const raw = cleanScalar(value, 64);
+  const match = /^(\d{4})-(\d{2})-(\d{2})(?:T([01]\d|2[0-3]):([0-5]\d)(?::[0-5]\d(?:\.\d+)?)?)?/.exec(raw);
+  const day = match ? calendarDay(Number(match[1]), Number(match[2]), Number(match[3])) : null;
+  if (!match || !day) return null;
+  const clock = match[4] && `${match[4]}:${match[5]}` !== '00:00' ? `${match[4]}:${match[5]}` : '';
+  return { day, clock, instant: clock ? explicitOffsetTime(raw) : null };
+}
+
+/**
+ * A window's two ends: two instants when both carry an offset, a slot on one day when
+ * they carry wall clocks alone, and a range of days when both are days.
+ */
+function windowEstimate(beginsValue: unknown, endsValue: unknown): Estimate | null {
+  const begins = windowEnd(beginsValue);
+  const ends = windowEnd(endsValue);
+  if (!begins || !ends) return null;
+  if (begins.instant && ends.instant) {
+    return begins.instant.timestamp < ends.instant.timestamp
+      ? { expected_delivery_from: begins.instant.iso, expected_delivery: ends.instant.iso } : null;
+  }
+  if (begins.clock && ends.clock) {
+    return begins.day === ends.day && begins.clock < ends.clock
+      ? { expected_delivery: `${begins.day} ${begins.clock}–${ends.clock}` } : null;
+  }
+  if (begins.clock || ends.clock) return null;
+  return begins.day < ends.day ? { expected_delivery_from: begins.day, expected_delivery: ends.day } : null;
+}
+
 /** A delivered-at instant; offset-less or unparsable values are dropped. */
 function deliveredAt(value: unknown): string | null {
   return explicitOffsetTime(value)?.iso ?? null;
@@ -311,7 +351,7 @@ interface FedExShipment {
   statusText: string;
   statusCode: string;
   statusDetails: string;
-  estimate: unknown;
+  estimate: Estimate;
   deliveredAt: unknown;
   /** The hold location, whether or not the parcel waits there yet. */
   holdLocation: string;
@@ -357,7 +397,7 @@ function shipmentResult(shipment: FedExShipment, number: string): CarrierResult 
   const stage = afterCutoff ? 'accepted' : FEDEX_CODE_STAGE[keyStatusCD] ?? wording ?? undefined;
   const status = afterCutoff ? 'in_transit' : fedexStatus(keyStatusCD, `${keyStatus} ${statusDetails}`, trimmed.length > 0);
   const delivered = stage === 'delivered';
-  const estimate = delivered ? null : expectedDelivery(shipment.estimate);
+  const estimate = delivered ? null : shipment.estimate;
   const pickupPoint = stage === 'ready_for_pickup' ? shipment.holdLocation : '';
   const postal = uspsHandoff(shipment.scans, number);
   // A host starts a scan dated by its day alone at midnight on the result's zone, else the catalog's
@@ -372,7 +412,8 @@ function shipmentResult(shipment: FedExShipment, number: string): CarrierResult 
     // A newest scan dated by its day alone has no instant, only that day.
     ...(!newest?.time && typeof newest?.local_time === 'string' ? { last_update_local: newest.local_time } : {}),
     ...(dayZone ? { timezone: dayZone } : {}),
-    expected_delivery: estimate,
+    expected_delivery: estimate?.expected_delivery ?? null,
+    ...(estimate?.expected_delivery_from ? { expected_delivery_from: estimate.expected_delivery_from } : {}),
     ...(delivered && deliveredAt(shipment.deliveredAt)
       ? { delivered_at: deliveredAt(shipment.deliveredAt) } : {}),
     ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
@@ -435,7 +476,7 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
     statusText: keyStatus,
     statusCode: keyStatusCD,
     statusDetails,
-    estimate: shipment.estDeliveryDt,
+    estimate: { expected_delivery: expectedDelivery(shipment.estDeliveryDt) },
     deliveredAt: shipment.actDeliveryDt,
     holdLocation: holdLocation(shipment.halCmpnyName, shipment.halAddress, shipment.halresidential === true),
   }, number);
@@ -449,6 +490,21 @@ function apiDate(result: JsonObject, ...types: string[]): unknown {
     if (found) return found.dateTime;
   }
   return undefined;
+}
+
+/**
+ * The API's estimate: the day of `ESTIMATED_DELIVERY`, which FedEx dates at midnight, and
+ * `estimatedDeliveryTimeWindow` when it falls on that day or FedEx gives no such date.
+ * A window without both ends still gives its end's day.
+ */
+function apiEstimate(result: JsonObject): Estimate {
+  const day = expectedDelivery(apiDate(result, 'ESTIMATED_DELIVERY'));
+  const window = isRecord(result.estimatedDeliveryTimeWindow) && isRecord(result.estimatedDeliveryTimeWindow.window)
+    ? result.estimatedDeliveryTimeWindow.window : {};
+  const range = windowEstimate(window.begins, window.ends);
+  const onDay = (value: string | null | undefined) => !value || value.slice(0, 10) === day;
+  if (range && (!day || (onDay(range.expected_delivery_from) && onDay(range.expected_delivery)))) return range;
+  return { expected_delivery: day ?? expectedDelivery(window.ends) };
 }
 
 /**
@@ -487,8 +543,6 @@ export function parseFedExApiResponse(payload: unknown, trackingNumber: string, 
     ? latest.ancillaryDetails.filter(isRecord).map((detail) => clean(detail.reasonDescription)).filter(Boolean) : [];
   const hold: JsonObject = isRecord(result.holdAtLocation) ? result.holdAtLocation : {};
   const held: JsonObject = isRecord(hold.locationContactAndAddress) ? hold.locationContactAndAddress : {};
-  const estimateWindow = isRecord(result.estimatedDeliveryTimeWindow) && isRecord(result.estimatedDeliveryTimeWindow.window)
-    ? result.estimatedDeliveryTimeWindow.window : {};
   return shipmentResult({
     scans: scans.slice(0, MAX_EVENTS_TO_INSPECT).map((raw) => ({
       description: scanDescription(clean(raw.eventDescription), clean(raw.exceptionDescription)),
@@ -501,7 +555,7 @@ export function parseFedExApiResponse(payload: unknown, trackingNumber: string, 
     statusText,
     statusCode,
     statusDetails: reasons.join(' '),
-    estimate: apiDate(result, 'ESTIMATED_DELIVERY') ?? estimateWindow.ends,
+    estimate: apiEstimate(result),
     deliveredAt: apiDate(result, 'ACTUAL_DELIVERY'),
     holdLocation: holdLocation(isRecord(held.contact) ? held.contact.companyName : undefined, held.address, false),
   }, number);

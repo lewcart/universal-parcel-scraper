@@ -41,7 +41,9 @@ track too. BRT's history of such a parcel starts at their import depot, named
 that BRTcode also asks the partner, with what is left of the budget:
 Chronopost's own tracking service, or DPD's guest service, which answers for
 the whole group with each milestone once, at its newest date and without a
-place. Without its answer BRT's stands; recognition reads BRT alone. DPD's
+place. Without its answer BRT's stands; recognition reads BRT alone. BRT's page
+gives no delivery estimate, so the partner's stands until BRT delivers the parcel,
+holds it for collection or scans it on a later day. DPD's
 map leaves its hand-over, depot intake and transit scans unstaged, because an
 origin depot can follow an import's customs. Before BRT's hand-over they are the
 acceptance and transit, unless DPD staged the parcel past acceptance first. The status map

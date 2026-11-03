@@ -304,6 +304,24 @@ describe('DHL public tracking normalization', () => {
     expect(parseDHLTrackingResponse(shipment({ zustellung: { zustellzeitfensterVon: '2026-02-30' } }), NUMBER).expected_delivery).toBeNull();
   });
 
+  it('keeps both ends of the delivery window', () => {
+    const window = (von: unknown, bis: unknown) => {
+      const result = parseDHLTrackingResponse(shipment({ zustellung: { zustellzeitfensterVon: von, zustellzeitfensterBis: bis } }), NUMBER);
+      return { from: result.expected_delivery_from, to: result.expected_delivery };
+    };
+    expect(window('2026-08-12T10:45:00.000+02:00', '2026-08-12T13:45:00.000+02:00'))
+      .toEqual({ from: '2026-08-12T10:45:00.000+02:00', to: '2026-08-12T13:45:00.000+02:00' });
+    // Days apart, the window is the days; reversed or with one end alone, the day DHL names first.
+    expect(window('2026-08-12T09:00:00+02:00', '2026-08-13T18:00:00+02:00')).toEqual({ from: '2026-08-12', to: '2026-08-13' });
+    expect(window('2026-08-12', '2026-08-13')).toEqual({ from: '2026-08-12', to: '2026-08-13' });
+    expect(window('2026-08-12T13:45:00+02:00', '2026-08-12T10:45:00+02:00')).toEqual({ from: undefined, to: '2026-08-12' });
+    expect(window(undefined, '2026-08-12T13:45:00+02:00')).toEqual({ from: undefined, to: '2026-08-12' });
+    expect(window('2026-08-12T10:45:00', '2026-08-12T13:45:00')).toEqual({ from: undefined, to: '2026-08-12' });
+    expect(parseDHLTrackingResponse(shipment({ istZugestellt: true,
+      zustellung: { zustellzeitfensterVon: '2026-08-12T10:45:00+02:00', zustellzeitfensterBis: '2026-08-12T13:45:00+02:00' } }), NUMBER))
+      .not.toHaveProperty('expected_delivery_from');
+  });
+
   it('does not treat a planned delivery as completed', () => {
     const result = parseDHLTrackingResponse(shipment({
       sendungsverlauf: { status: 'The shipment will be delivered tomorrow', fortschritt: 3, events: [] },

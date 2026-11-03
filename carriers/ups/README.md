@@ -153,6 +153,9 @@ rendered status, after that wait.
   it is due (`plannedScans`).
 - The scheduled delivery date has no year. The adapter picks the year that puts it within
   the last week or in the future.
+- The API's rescheduled day (`RDD`), else its scheduled day (`SDD`), is the estimate. A
+  `deliveryTime` window with a start and an end makes it a slot on that day
+  (`YYYY-MM-DD HH:MM–HH:MM`); end of day (`EOD`) and a commit time (`CMT`) leave the day.
 - The canary URL is a static PDF so the canary itself is not challenged.
 
 ## Mobile API lead
@@ -181,7 +184,7 @@ it can replace browser retrieval. Application configuration and tokens stay outs
 
 ## Limitations
 
-- No delivery window or dimensions. The weight field comes back empty.
+- No dimensions, and a delivery window only from the API. The weight field comes back empty.
 - No sender name: `senderShipperNumber` is the shipper's account number.
 - Without API credentials or a browser service there is no history.
 - The ship-to address beyond its country, the signatory, the proof-of-delivery link and the

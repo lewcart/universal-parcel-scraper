@@ -2,6 +2,7 @@ import { DateTime, FixedOffsetZone } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { uspsRoundDelivery } from '../../core/result/round.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { countryCode, firstOccurrence, isoTime, usStateTimeZone } from '../../core/time/index.js';
 import { cleanScalar } from '../../core/transport/text.js';
@@ -205,6 +206,11 @@ function outranks(left: readonly number[], right: readonly number[]): boolean {
   return index >= 0 && left[index]! > right[index]!;
 }
 
+/** The delivery a relayed USPS round promises on its scan's day. */
+function roundDelivery(event: CarrierEvent): string | null {
+  return typeof event.time === 'string' ? uspsRoundDelivery(event.description ?? '', event.time.slice(0, 10)) : null;
+}
+
 /** The last leg, when its number's whole layout is one the table maps. */
 function lastLeg(entry: Record<string, unknown>): { leg: (typeof DHLINK_LAST_LEGS)[number]; number: string } | null {
   const number = normalizeTrackingNumber(text(entry, 'lastTurnNo', 64));
@@ -278,7 +284,8 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
     && other.scan.event.description === scan.event.description && usClockCopy(scan.stamp, other.time.timestamp))) : [];
   // A place naming only the destination country is the parcel's, not the scan's: a Canada line's
   // airline hand-over in China reads "Canada".
-  const events = dated.filter((entry) => !copies.includes(entry))
+  const kept = dated.filter((entry) => !copies.includes(entry));
+  const events = kept
     .map(({ scan, time }): CarrierEvent => {
       const { location, ...event } = scan.event;
       const placed = location && !(destination && countryCode(location) === destination) ? { location } : {};
@@ -303,13 +310,16 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
     stage = 'delivered';
     source = 'carrier_map';
   }
+  // The round the parcel is on, when it is the current scan and is read on the destination's clock.
+  const round = stage === 'out_for_delivery' && current?.stage === 'out_for_delivery'
+    && ![null, RECORD_ZONE].includes(kept[events.indexOf(current)]!.zone) ? roundDelivery(current) : null;
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: source! } : {}),
     last_status_text: newest.description!,
     last_update: newest.time ?? null,
     ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
-    expected_delivery: null,
+    expected_delivery: round,
     ...(stage === 'delivered' && newest.stage === 'delivered' && newest.time ? { delivered_at: newest.time } : {}),
     ...(last && ![number, tracking, own].includes(last.number) ? { delivery_carrier: last.leg.carrier, delivery_tracking_number: last.number } : {}),
     ...(COUNTRY.test(destination) ? { destination_country: destination } : {}),

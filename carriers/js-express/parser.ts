@@ -5,7 +5,7 @@ import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../../core/detectio
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { canadaProvinceTimeZone, countryCode, firstOccurrence, isoTime } from '../../core/time/index.js';
+import { calendarDay, canadaProvinceTimeZone, countryCode, firstOccurrence, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { hasSeveralClocks, mainZone } from '../../places/zones.js';
@@ -173,13 +173,32 @@ function handoff(waybill: Record<string, unknown>, number: string, country: stri
   return { ...(partner ? { delivery_carrier: partner } : {}), delivery_tracking_number: reference };
 }
 
+// The estimate the page shows, a day with or without a clock after it.
+const ESTIMATE = /^(\d{4})-(\d{2})-(\d{2})(?:[ T]\d{2}:\d{2}(?::\d{2})?)?$/;
+// Straightship's round, "Package will be delivered before 9:00pm": a delivery or an attempt follows the same day.
+const ROUND = /^Package will be delivered before \d{1,2}:\d{2} ?[ap]m$/i;
+
+/** The day of the waybill's `estimateArriveTime`, whose clock, if any, names no zone. */
+function estimateDay(waybill: Record<string, unknown>): string | null {
+  const match = typeof waybill.estimateArriveTime === 'string' ? ESTIMATE.exec(clean(waybill.estimateArriveTime, 32)) : null;
+  return match ? calendarDay(Number(match[1]), Number(match[2]), Number(match[3])) : null;
+}
+
+/** The day of Straightship's round, on the clock of the province its town is in. */
+function roundDay(event: CarrierEvent): string | null {
+  const zone = canadaProvinceTimeZone(PROVINCE.exec(String(event.location ?? ''))?.[1]);
+  if (!zone || typeof event.time !== 'string' || !ROUND.test(event.description ?? '')) return null;
+  const day = DateTime.fromISO(event.time, { setZone: true }).setZone(zone);
+  return day.isValid ? day.toISODate() : null;
+}
+
 /**
  * The reply of the English tracking page's lookup `index.php?c=trace` for one
  * number: `code` 0 and the waybill, with the country it goes to, the
  * destination courier's number once it has one, and the scans newest first by
  * wall clock, each a date, a place, a wording, a code and an offset. An
  * unknown number gets `code` 1 and "未获取到任何数据,请提供有效单号!". The
- * shop's order number, the delivery photos and the estimate are not read.
+ * shop's order number and the delivery photos are not read.
  */
 export function parseJsExpress(payload: unknown, rawNumber: string): CarrierResult {
   const number = normalizeJsExpressNumber(rawNumber);
@@ -248,7 +267,8 @@ export function parseJsExpress(payload: unknown, rawNumber: string): CarrierResu
     last_update: newest.time ?? null,
     ...(newest.time ? {} : { last_update_local: newest.local_time! }),
     ...(stage === 'delivered' && current!.time ? { delivered_at: current!.time } : {}),
-    expected_delivery: null,
+    expected_delivery: stage === 'delivered' || stage === 'returned' ? null
+      : (stage === 'out_for_delivery' ? roundDay(current!) : null) ?? estimateDay(waybill),
     ...(country ? { destination_country: country } : destination ? { destination_country_name: destination } : {}),
     ...handoff(waybill, number, country, scans.map((scan) => scan.description)),
     events: events.slice(0, MAX_EVENTS),

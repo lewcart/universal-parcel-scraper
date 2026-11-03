@@ -118,11 +118,32 @@ function sentence(description: string, location: string): string {
   return ending === 'at' ? `${description} a Royal Mail office` : description.replace(PLACE_FOLLOWS, '');
 }
 
-/** A delivery estimate reduced to its calendar day. */
-function expectedDelivery(value: unknown): string | null {
-  const raw = cleanScalar(value, 64);
-  const day = /^\d{4}-\d{2}-\d{2}/.exec(raw)?.[0];
-  return day && DateTime.fromISO(day).isValid ? day : null;
+// The fields of a delivery estimate: its day, and the window Royal Mail's Tracking API
+// gives as clocks with offsets on that day, such as "08:00:00+01:00".
+const ESTIMATE_FIELDS = ['date', 'startOfEstimatedWindow', 'endOfEstimatedWindow'] as const;
+
+/** A reply's delivery estimate, its fields and nothing else, when it names a day. */
+export function royalMailEstimate(value: unknown): { estimatedDelivery?: Record<string, unknown> } {
+  if (!isRecord(value) || typeof value.date !== 'string' || !value.date.trim()) return {};
+  return { estimatedDelivery: Object.fromEntries(ESTIMATE_FIELDS.flatMap(field => value[field] === undefined ? [] : [[field, value[field]]])) };
+}
+
+/**
+ * A delivery estimate: the window its start and end give on its day, or else
+ * its calendar day.
+ */
+function expectedDelivery(value: unknown): Pick<CarrierResult, 'expected_delivery' | 'expected_delivery_from'> {
+  const day = isRecord(value) ? /^\d{4}-\d{2}-\d{2}/.exec(cleanScalar(value.date, 64))?.[0] : undefined;
+  if (!isRecord(value) || !day || !DateTime.fromISO(day).isValid) return { expected_delivery: null };
+  // A clock with its offset on that day, or a timestamp of that day.
+  const clock = (edge: unknown) => {
+    const text = cleanScalar(edge, 64);
+    return eventTime(/^\d{2}:\d{2}/.test(text) ? `${day}T${text}` : text.startsWith(`${day}T`) ? text : '');
+  };
+  const start = clock(value.startOfEstimatedWindow);
+  const end = clock(value.endOfEstimatedWindow);
+  return start && end && Date.parse(start) < Date.parse(end)
+    ? { expected_delivery_from: start, expected_delivery: end } : { expected_delivery: day };
 }
 
 const hasCode = (errors: readonly unknown[], code: string) => errors.some(error => isRecord(error)
@@ -247,13 +268,14 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
   const delivered = stage === 'delivered';
   const deliveredAt = !delivered ? null : trimmed.find(event => event.stage === 'delivered' && event.time)?.time
     ?? (royalMailEventStage(cleanScalar(summary.lastEventCode, 64)) === 'delivered' ? lastTime : null);
+  const estimate = delivered ? null : expectedDelivery(mailpiece.estimatedDelivery);
   return {
     status: stage ? statusForStage(stage) : 'unknown',
     ...(stage ? { current_stage: stage } : {}),
     last_status_text: delivered ? 'Delivered' : statusText,
     last_update: lastClock ? lastTime : lastTime || trimmed[0]?.time || null,
-    expected_delivery: delivered || !isRecord(mailpiece.estimatedDelivery)
-      ? null : expectedDelivery(mailpiece.estimatedDelivery.date),
+    expected_delivery: estimate?.expected_delivery ?? null,
+    ...(estimate?.expected_delivery_from ? { expected_delivery_from: estimate.expected_delivery_from } : {}),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
     ...(destinationCountry ? { destination_country: destinationCountry } : {}),
     events: trimmed,

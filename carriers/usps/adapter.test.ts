@@ -296,6 +296,34 @@ describe('USPS rendered page', () => {
       .replace(/(<span>\s*)March(\s*<\/span>)/, '$1February$2'), IN_TRANSIT_NUMBER).expected_delivery).toBeNull();
   });
 
+  it('reads a banner written without spaces between its date parts, and its window', () => {
+    const banner = (parts: string) => ESTIMATE_PAGE.replace(/<div class="expected_delivery">[\s\S]*?<\/h2>\s*<\/div>/,
+      `<div class="expected_delivery"><h3>Expected Delivery by</h3><h2><em class="day">Monday</em><strong class="date">17</strong>${parts}</h2></div>`);
+    expect(parseUSPSTrackingHtml(banner('<span class="month_year"><span>March</span><br>2025</span>'), IN_TRANSIT_NUMBER).expected_delivery)
+      .toBe('2025-03-17');
+    expect(parseUSPSTrackingHtml(banner('<span class="month_year"><span>March</span><br>2025</span><span>between<br>10:15am and 2:15pm</span>'),
+      IN_TRANSIT_NUMBER).expected_delivery).toBe('2025-03-17 10:15–14:15');
+  });
+
+  it('reads the delivery window the out-for-delivery scan gives, on that scan\'s day', () => {
+    const out = (detail: string, page = ESTIMATE_PAGE) => page.replace('<p class="tb-status">On the Way</p>', '<p class="tb-status">Out for Delivery</p>')
+      .replace('<p class="tb-status-detail">In Transit, Arriving On Time</p>', `<p class="tb-status-detail">${detail}</p>`)
+      .replace('<p class="tb-location"></p>', '<p class="tb-location">EXAMPLE CITY, CA 00000</p>')
+      .replace('March 15, 2025 4:31 PM', 'March 17, 2025 6:10 AM');
+    const withoutBanner = ESTIMATE_PAGE.replace(/<div class="expected_delivery">[\s\S]*?<\/h2>\s*<\/div>/, '');
+    const window = 'Out for Delivery, Expected Delivery Between 1:15pm and 4:15pm';
+    expect(parseUSPSTrackingHtml(out(window, withoutBanner), IN_TRANSIT_NUMBER))
+      .toMatchObject({ current_stage: 'out_for_delivery', expected_delivery: '2025-03-17 13:15–16:15' });
+    // The banner's day without a window takes the round's window; a banner naming another day stands.
+    expect(parseUSPSTrackingHtml(out(window), IN_TRANSIT_NUMBER).expected_delivery).toBe('2025-03-17 13:15–16:15');
+    expect(parseUSPSTrackingHtml(out(window).replace(/(<strong class="date"><span class="eta_snip">\s*)17/, '$118'), IN_TRANSIT_NUMBER)
+      .expected_delivery).toBe('2025-03-18');
+    expect(parseUSPSTrackingHtml(out('Out for Delivery, Expected Delivery by 9:00pm', withoutBanner), IN_TRANSIT_NUMBER).expected_delivery)
+      .toBe('2025-03-17');
+    // A round that announces nothing gives no estimate.
+    expect(parseUSPSTrackingHtml(out('Out for Delivery', withoutBanner), IN_TRANSIT_NUMBER).expected_delivery).toBeNull();
+  });
+
   it('keeps the signatory out of the result', () => {
     const serialized = JSON.stringify(parseUSPSTrackingHtml(DELIVERED_PAGE, DELIVERED_NUMBER));
     expect(serialized).not.toContain('PRIVATE RECIPIENT');

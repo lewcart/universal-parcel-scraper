@@ -29,7 +29,8 @@
     "history",
     "location",
     "delivered_at",
-    "service_name"
+    "service_name",
+    "eta"
   ],
   "portal": {
     "url": "https://www.gofo.com/ca/track?searchID={trackingNumber}",
@@ -47,15 +48,15 @@
       "history",
       "location",
       "delivered_at",
-      "service_name"
+      "service_name",
+      "eta"
     ],
     "discarded": [
       "delivery_detail",
       "proof_images",
       "coordinates",
       "departments",
-      "unlabelled_weight",
-      "eta"
+      "unlabelled_weight"
     ],
     "unavailable": []
   },

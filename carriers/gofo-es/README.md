@@ -38,8 +38,8 @@ An empty result, or a parcel listed without scans, is a `NoHistoryError`: GOFO
 answers a label not yet scanned and one it never issued alike, so it stays
 inconclusive rather than not-found. Proof images, recipient verification,
 detailed delivery prose, failed-delivery reasons and unrelated references are
-excluded. Weight has no verified unit, and estimates have no verified
-active-parcel provenance.
+excluded. Weight has no verified unit. `expected_delivery` is GOFO's
+`expectedDeliveryTime`, kept as a date until the parcel is delivered or returned.
 
 ## Live test
 

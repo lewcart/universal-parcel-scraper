@@ -4,7 +4,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, S
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { listsNewestFirst } from '../../core/result/order.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
-import { explicitOffsetTime, type ParsedTime } from '../../core/time/index.js';
+import { calendarDay, explicitOffsetTime, type ParsedTime } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { speedxStatus } from './status.js';
@@ -156,6 +156,15 @@ function projectScan(row: unknown): { id: string; scan: Scan } {
   return { id: field(row, 'eventId', 128), scan: { event, timestamp: time.timestamp, ...(status ? { status } : {}) } };
 }
 
+// A day, alone or at UTC midnight, as a date is serialized; Flight writes a Date as "$D" and its ISO form.
+const ESTIMATE = /^(?:\$D)?(\d{4})-(\d{2})-(\d{2})(?:T00:00:00(?:\.000)?Z)?$/;
+
+/** The day of the view's delivery estimate, `edd`; any other form, an instant included, is none. */
+function estimatedDay(value: unknown): string | null {
+  const match = typeof value === 'string' ? ESTIMATE.exec(value.trim()) : null;
+  return match ? calendarDay(Number(match[1]), Number(match[2]), Number(match[3])) : null;
+}
+
 /**
  * The RSC reply of `tracking.speedx.io/{number}`: the shipment view's `data`
  * object, bound to the requested number, or the page's absence sentence
@@ -210,7 +219,7 @@ export function parseSpeedx(body: string, contentType: string | null, raw: strin
     ...(current ? { current_stage: current.stage, current_stage_source: 'carrier_map' } : {}),
     last_status_text: newest.event.description,
     last_update: newest.event.time,
-    expected_delivery: null,
+    expected_delivery: current?.stage === 'delivered' || current?.stage === 'returned' ? null : estimatedDay(data.edd),
     ...(current?.stage === 'delivered' ? { delivered_at: newest.event.time } : {}),
     ...(/^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}),
     events: scans.slice(0, 100).map((scan) => scan.event),

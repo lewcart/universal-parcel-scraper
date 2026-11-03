@@ -33,6 +33,9 @@ The tracker answers plain HTTP only. No account, key, CAPTCHA or browser is need
 - The forwarder's own rows are mapped in [statuses.json](statuses.json); the delivering
   partner's, such as USPS's, go to the shared wording rules. ParcelsApp names the line "1ST"
   and relays its rows, which take the same map.
+- A relayed USPS round, "Out for Delivery, Expected Delivery by 9:00pm" or "Between" two clocks,
+  gives the expected delivery on its wall clock's day while the parcel is on it: the day for
+  "by", as USPS's own estimate is read, and the slot for "Between".
 - The site answers a visitor sending many requests with HTTP 403 and 服务器繁忙 ("server busy"),
   which is read as rate limited.
 

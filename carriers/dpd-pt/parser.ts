@@ -6,7 +6,9 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, 
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { clean } from '../../core/transport/index.js';
-import { DPD_PT_COLLECTION, DPD_PT_DELIVERY, DPD_PT_FORECAST, DPD_PT_POINT_RECEIPT, DPD_PT_RETURN, dpdPtStage, isDpdPtNotice } from './status.js';
+import {
+  DPD_PT_COLLECTION, DPD_PT_DELIVERY, DPD_PT_FORECAST, DPD_PT_POINT_RECEIPT, DPD_PT_RETURN, DPD_PT_WINDOW, dpdPtStage, isDpdPtNotice,
+} from './status.js';
 
 export const PROVIDER = 'DPD Portugal';
 // The page is under 50 kB with a long history.
@@ -19,6 +21,8 @@ const HEADERS = ['Código', 'Data', 'Hora', 'Descrição', 'Comentário', 'Local
 const CODE = /^[A-Z0-9]{1,8}$/;
 const DATE = /^(\d{2})-(\d{2})-(\d{4})$/;
 const CLOCK = /^(\d{2}):(\d{2})$/;
+// The delivery window a message to the recipient gives, as "10:45 - 11:45".
+const WINDOW = /^((?:[01]\d|2[0-3]):[0-5]\d)\s*-\s*((?:[01]\d|2[0-3]):[0-5]\d)$/;
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
 
@@ -69,6 +73,23 @@ function pickupPoint(newestFirst: readonly Scan[]): string | null {
 }
 
 /**
+ * The hour DPD's message gives the recipient on the delivery day (code 706), while that delivery
+ * is still ahead: the message is the day's, and nothing after it but the van's scans and other
+ * messages. A failed attempt, a return to the depot or a later day ends it.
+ */
+function deliveryWindow(newestFirst: readonly Scan[], stage: Stage | undefined): string | null {
+  if (stage !== 'in_transit' && stage !== 'out_for_delivery') return null;
+  const at = newestFirst.findIndex(scan => scan.code === DPD_PT_WINDOW);
+  if (at < 0) return null;
+  const message = newestFirst[at]!;
+  const hours = WINDOW.exec(message.comment);
+  const day = message.event.local_time!.slice(0, 10);
+  if (!hours || hours[2]! <= hours[1]! || newestFirst[0]!.event.local_time!.slice(0, 10) !== day) return null;
+  const ahead = newestFirst.slice(0, at).every(({ event }) => event.stage_source === 'none' || event.stage === 'out_for_delivery');
+  return ahead ? `${day} ${hours[1]}–${hours[2]}` : null;
+}
+
+/**
  * The tracker's page for one reference: a heading naming the reference asked,
  * then either its not-found notice or the scans, newest first, in a table of
  * code, day, time, wording, comment and a map link.
@@ -114,8 +135,9 @@ export function parseDpdPt(html: string, raw: string): CarrierResult {
     // Its day and time are when DPD set the expected day: as a step it would show a day the parcel was not due.
     if (code === DPD_PT_FORECAST) continue;
     // The comment column mixes the receiver's name, delivery windows, depot
-    // and pickup point codes and references; only a pickup point's name is read.
-    const comment = code === DPD_PT_POINT_RECEIPT ? clean(cells.eq(4).text(), 120) : '';
+    // and pickup point codes and references; only a pickup point's name and a
+    // window message's hours are read.
+    const comment = code === DPD_PT_POINT_RECEIPT || code === DPD_PT_WINDOW ? clean(cells.eq(4).text(), 120) : '';
     const key = JSON.stringify([local_time, code, description]);
     // The page lists some scans twice.
     if (seen.has(key)) continue;
@@ -153,7 +175,7 @@ export function parseDpdPt(html: string, raw: string): CarrierResult {
     last_status_text: (decider ?? events[0]!).description!,
     last_update: null,
     last_update_local: events[0]!.local_time,
-    expected_delivery: null,
+    expected_delivery: deliveryWindow(scans, stage),
     ...(point ? { pickup_point: point } : {}),
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),

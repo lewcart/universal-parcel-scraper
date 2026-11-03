@@ -85,6 +85,23 @@ describe('JS Express tracking adapter', () => {
     expect(result.events!.filter(event => event.stage).every(event => event.stage_source === 'carrier_map')).toBe(true);
   });
 
+  it('reads the waybill\'s estimate as a day, and Straightship\'s round as its own day, until the end', () => {
+    const estimate = (estimateArriveTime: unknown) => parseJsExpress(JSON.parse(page('in-transit').replace('"estimateArriveTime": ""',
+      `"estimateArriveTime": ${JSON.stringify(estimateArriveTime)}`)), IN_TRANSIT).expected_delivery;
+    expect(estimate('2026-04-22')).toBe('2026-04-22');
+    // A clock without a zone keeps its day alone.
+    expect(estimate('2026-04-22 23:59:59')).toBe('2026-04-22');
+    for (const none of ['', '0000-00-00', '2026-02-30', 'Apr 22', null]) expect(estimate(none)).toBeNull();
+    // On Straightship's round, the day in the town's province; a delivery leaves none.
+    const onRound = JSON.parse(page('delivered').replace('"estimateArriveTime": ""', '"estimateArriveTime": "2026-03-14"')) as
+      { data: { tracking: unknown[] }[] };
+    expect(parseJsExpress(onRound, DELIVERED).expected_delivery).toBeNull();
+    onRound.data[0]!.tracking.shift();
+    expect(parseJsExpress(onRound, DELIVERED)).toMatchObject({ current_stage: 'out_for_delivery', expected_delivery: '2026-03-12' });
+    onRound.data[0]!.tracking.shift();
+    expect(parseJsExpress(onRound, DELIVERED)).toMatchObject({ current_stage: 'in_transit', expected_delivery: '2026-03-14' });
+  });
+
   it('reads a parcel announced at the destination airport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(page('in-transit')));
     const result = await carrier(fetcher).track({ number: IN_TRANSIT });

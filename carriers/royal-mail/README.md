@@ -58,6 +58,8 @@ answers are not retried. An unavailable browser fails fast.
   turns delivered with is the recipient's collection, and so the delivery.
 - A delivery's scan time becomes `delivered_at`. The details reply's
   destination country becomes `destination_country`.
+- An estimate whose start and end clocks fall on its day becomes that window;
+  otherwise it is the day.
 - Scan places lose the postcode Royal Mail appends to a Post Office branch,
   and a place given only as a postcode is dropped.
 - A scan abroad names its country as, or after, the place. A European partner's

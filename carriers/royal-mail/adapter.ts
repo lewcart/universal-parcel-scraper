@@ -8,7 +8,7 @@ import { isRecord } from '../../core/types.js';
 import { fetchRoyalMailInBrowser, royalMailDestination } from './browser.js';
 import type { RoyalMailCaptchaOptions, RoyalMailVerificationRecord } from './vision.js';
 import { normalizeRoyalMailNumber, parseRoyalMailTrackingHtml, parseRoyalMailTrackingResponse,
-  royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl, royalMailUnconfirmed } from './parser.js';
+  royalMailEstimate, royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl, royalMailUnconfirmed } from './parser.js';
 
 export { normalizeRoyalMailNumber, parseRoyalMailTrackingHtml, parseRoyalMailTrackingResponse,
   royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl } from './parser.js';
@@ -187,7 +187,8 @@ export class RoyalMailTracker {
         const summaryPiece = (summaryPayload as { mailPieces: Record<string, unknown> }).mailPieces;
         return this.#structuredResult(number, { mailPieces: {
           mailPieceId: number, summary: { ...(summaryPiece.summary as Record<string, unknown>), ...royalMailDestination(historyPiece.summary).summary },
-          estimatedDelivery: historyPiece.estimatedDelivery ?? summaryPiece.estimatedDelivery, events: historyPiece.events,
+          estimatedDelivery: royalMailEstimate(historyPiece.estimatedDelivery).estimatedDelivery ?? summaryPiece.estimatedDelivery,
+          events: historyPiece.events,
         } });
       }
     }

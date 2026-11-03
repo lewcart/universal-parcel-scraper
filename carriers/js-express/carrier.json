@@ -31,6 +31,7 @@
   "capabilities": [
     "history",
     "location",
+    "eta",
     "destination_country",
     "delivery_partner",
     "delivery_tracking_number"
@@ -53,10 +54,10 @@
       "history",
       "location",
       "destination_country",
-      "delivery_tracking_number"
+      "delivery_tracking_number",
+      "eta"
     ],
     "discarded": [
-      "eta",
       "provider_code",
       "offset_timestamps",
       "proof_of_delivery"

@@ -216,6 +216,11 @@ step exists for future protocol changes.
   scan whose US reading is the instant of another DHLink scan with the same wording is that
   copy and is dropped. So is a DHLink scan with the wording and digits of the partner's own
   row: the reply can hold SwiftX's copies of its hub scans without DHLink's rows.
+- 4PX's page relays GOFO's US scans in Spanish ("Llegó al centro regional de gofo") at GOFO's
+  digits to the second, with another scan's place or none. A 4PX state at the second of a
+  GOFO state is that copy and is not read as a scan: it came twice, on another clock than
+  GOFO's. It still lends its zone to 4PX's own scans in the reply. A second of :00 can be a
+  minute-only clock's, so it matches nothing.
 - Wall clocks: the dates of USPS, Canada Post, GOFO's US scans, SpeedPAK, EMS, Cainiao,
   EcoScooting, 4PX, MailAmericas and FIRST LINE abroad are each scan's local clock under a label that is
   never its instant (checked 2026-10-10 scan for scan: USPS's page and the "at 8:25 am" in

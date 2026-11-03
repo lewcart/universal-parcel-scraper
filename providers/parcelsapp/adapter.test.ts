@@ -1675,6 +1675,31 @@ describe('ParcelsApp result parsing', () => {
       .events?.find((event) => event.description === 'In Transit')?.time).not.toBe('2026-10-27T09:10:52.000Z');
   });
 
+  it('reads 4PX\'s Spanish copies of GOFO\'s scans at the same second once, as GOFO\'s', () => {
+    // Live shape: 4PX relays each GOFO scan in Spanish at GOFO's digits, with another scan's
+    // place or none, and adds a scan of its own.
+    const states = [
+      { date: '2026-10-27T10:31:45Z', status: 'Delivered, PUDO.', carrier: 0, location: 'Example City, FL' },
+      { date: '2026-10-27T10:31:45Z', status: 'Entregado, pudo.', carrier: 1, location: 'Example City' },
+      { date: '2026-10-21T19:21:18Z', status: 'Arrived at GOFO Regional Hub', carrier: 0, location: 'Example Town, TX' },
+      { date: '2026-10-21T19:21:18Z', status: 'Llegó al centro regional de gofo', carrier: 1, location: 'Example Town' },
+      { date: '2026-10-21T09:22:38Z', status: 'Empacando el punto de operación', carrier: 1, location: 'USXXXA' },
+      { date: '2026-10-21T03:29:19Z', status: 'Shipping Label Created', carrier: 0 },
+      { date: '2026-10-21T03:29:19Z', status: 'Etiqueta de envío creada', carrier: 1 },
+    ];
+    const result = parseParcelsAppResponse({ carriers: ['GoFo Express', '4PX Express'], states }, number, identity());
+    expect(result.events?.map((event) => [event.time, event.description, event.location])).toEqual([
+      ['2026-10-27T14:31:45.000Z', 'Delivered', 'Example City, FL'],
+      ['2026-10-22T00:21:18.000Z', 'Arrived at GOFO Regional Hub', 'Example Town, TX'],
+      // 4PX's own scan keeps the clock its copies give its network.
+      ['2026-10-21T13:22:38.000Z', 'Empacando el punto de operación', 'USXXXA'],
+      ['2026-10-21T10:29:19.000Z', 'Shipping Label Created', undefined],
+    ]);
+    // 4PX's rows at the second of another network's stay.
+    expect(parseParcelsAppResponse({ carriers: ['Example Parcel Line', '4PX Express'], states }, number, identity()).events
+      ?.some((event) => event.description === 'Etiqueta de envío creada')).toBe(true);
+  });
+
   it('takes the offset of a Poland Post scan at a place as its instant, whatever zone routing passes', () => {
     // Poczta Polska's own tracker has the same digits and offset for its sender platform's
     // item data and its office scans, and none for a relay from abroad.

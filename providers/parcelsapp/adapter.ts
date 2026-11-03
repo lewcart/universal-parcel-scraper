@@ -1575,6 +1575,28 @@ function dropDhlinkCopies(entries: { name: unknown; date: unknown; wording: stri
   if (copies.size) entries.splice(0, entries.length, ...entries.filter((entry) => !copies.has(entry)));
 }
 
+/**
+ * 4PX Express's page relays its last-mile partner's scans in Spanish at the partner's digits
+ * to the second: on a parcel to the US, each of GOFO's scans came again under 4PX ("Llegó al
+ * centro regional de gofo"), with another scan's place or none, and read on another clock
+ * than GOFO's own, an hour apart. A relay's state at the second of its partner's state is
+ * that copy and is not read as a scan. It still lends its zone to the relay's own scans, as
+ * the clock of the relay's network. A second of :00 can be a minute-only clock's, so it
+ * matches nothing.
+ */
+const RELAYED_PARTNERS = new Map([['4pxexpress', new Set(['gofoexpress'])]]);
+function relayCopies<T extends { name: unknown; date: unknown }>(entries: readonly T[]): Set<T> {
+  const second = (date: unknown) => {
+    const wall = mislabeledWallTime(date);
+    return wall && !/:00(?:\.0+)?$/.test(wall) ? wall.slice(0, 19) : '';
+  };
+  return new Set(entries.filter((copy) => {
+    const partners = RELAYED_PARTNERS.get(nameKey(copy.name));
+    const key = partners ? second(copy.date) : '';
+    return key && entries.some((own) => partners!.has(nameKey(own.name)) && second(own.date) === key);
+  }));
+}
+
 function parseHistory(payload: unknown, trackingNumber: string, timezone: string | null = null, readAt = Date.now()): CarrierResult {
   if (isRecord(payload) && payload.error === 'RELOAD') throw new ChallengeError(SOURCE);
   if (isRecord(payload) && (payload.error === 'NO_DATA' || payload.error === 'NO_TRACKER')) {
@@ -1668,10 +1690,12 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   chinaPostTwinZones(entries, zones.map(({ zone }) => zone), destination)
     .forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
   relayTwinZones(entries, zones).forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
+  const relayed = relayCopies(entries);
   const dayOnly = dayOnlyNetworks(entries);
   const steps = new Set<CarrierEvent>();
   const latest = new LatestScan(SOURCE);
   for (const [index, entry] of entries.entries()) {
+    if (relayed.has(entry)) continue;
     const { raw, name, scan, date } = entry;
     const { zone } = zones[index]!;
     // A DHL Express scan whose facility the rule cannot place is a wall clock

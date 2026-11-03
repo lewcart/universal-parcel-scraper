@@ -46,9 +46,14 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map(([
   ['Принят на склад до востребования', 'ready_for_pickup'], // At the local carrier's office, to be collected.
 ] as const).map(([wording, stage]) => [normalizeStatusWording(wording), stage]));
 
+// Qwintry's note under `info` that a batch waits while customs agrees to clear some of its goods, with the
+// day it should move on.
+const CUSTOMS_HOLD = /^проводится согласование с таможн/;
+
 /** The stage the map gives a status code, else its wording. */
 export function qwintryMappedStage(code: string | null, wording: string): Stage | undefined {
-  return WORDINGS.get(normalizeStatusWording(wording)) ?? (code ? CODES.get(code.trim().toLowerCase()) : undefined);
+  const key = normalizeStatusWording(wording);
+  return WORDINGS.get(key) ?? (CUSTOMS_HOLD.test(key) ? 'customs' : undefined) ?? (code ? CODES.get(code.trim().toLowerCase()) : undefined);
 }
 
 /** A scan's stage: its wording or code in the map, else the shared wording rules; a message to the recipient has none. */

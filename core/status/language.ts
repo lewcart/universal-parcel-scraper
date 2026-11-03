@@ -129,8 +129,13 @@ const COURIER = String.raw`(?:(?:the|a|an|our|your) )?(?:delivery )?couriers?\b(
 const HANDED_TO_COURIER = new RegExp(`${HANDED_TO}${COURIER}`);
 const HANDED_TO_NETWORK = new RegExp(String.raw`${HANDED_TO}(?!${COURIER})(?:the |a |an |our |your )?(?:[\w-]+ ){0,2}?(?:courier|carrier)s?\b`);
 
+/** A Cyrillic word's start: no Cyrillic letter before it, once marks are stripped ("й" is "и", "ї" is "і"). */
+const CYRILLIC_START = String.raw`(?<![а-яієґ])`;
+/** Customs in Ukrainian and Bulgarian ("митниця", "митний"), Belarusian ("мытня") and Russian ("таможня", "таможенный"). */
+const CYRILLIC_CUSTOMS = String.raw`${CYRILLIC_START}(?:митн|мытн|тамож)`;
 /** Customs or clearance named in any language. */
-const CUSTOMS = /customs|clearance|\bclearing agen(?:cy|t)\b|douan|formalites (?:d')?(?:import|export)|zoll|dogan|\b(?:des)?aduan[ae]|alfandeg|\bceln|government agency|autorite gouvernementale|staatliche behorde|autorita governativa/;
+const CYRILLIC_DATA_RECEIVED = new RegExp(String.raw`${CYRILLIC_START}(?:данные|дані)(?: [а-яієґ']+){0,4}? (?:получены|отримано|отримані)`);
+const CUSTOMS = new RegExp(String.raw`customs|clearance|\bclearing agen(?:cy|t)\b|douan|formalites (?:d')?(?:import|export)|zoll|dogan|\b(?:des)?aduan[ae]|alfandeg|\bceln|government agency|autorite gouvernementale|staatliche behorde|autorita governativa|${CYRILLIC_CUSTOMS}`);
 /** The side of customs a scan may name: "import", "export", "import/export". */
 const CUSTOMS_SIDE = String.raw`(?:(?:import|export)(?:\/(?:import|export))? |local |destination |origin )?`;
 /**
@@ -152,6 +157,8 @@ const CUSTOMS_PENDING = new RegExp([
   String.raw`\b(?:no|sin)\b(?: \w+){0,3}? (?:(?:liberad|despachad)[oa]s?|salido|salio|sale|salir) (?:por|de|en|desde) (?:la )?aduana|\b(?:sera|seran|va a ser|van a ser|debe ser|deben ser|pendiente de|en espera de|a la espera de|esperando)\b(?: \w+){0,2}? (?:(?:liberad|despachad)[oa]s?|liberacion|despacho|salida)\b${SENTENCE}*?\baduan[ae]`,
   String.raw`\bnao\b(?: \w+){0,3}? (?:desalfandegad[oa]s?|desembaracad[oa]s?|(?:liberad[oa]s?|saiu) (?:pela|na|da|de) (?:alfandega|aduana|fiscalizacao))\b|\b(?:aguardando|a aguardar|aguarda|em espera de|pendente de|sera|serao|vai ser|deve ser)\b(?: \w+){0,2}? (?:desalfandeg|(?:liberad|liberacao|desembarac)\w*${SENTENCE}*?\b(?:alfandeg|aduan[ae]|fiscalizacao))`,
   String.raw`\b(?:nie|oczekuje na|czeka na|w trakcie|przed)\b(?: \w+){0,2}? (?:odpraw|zwolnion)\w*${SENTENCE}*?\b(?:celn|urzad)`,
+  // A release negated or awaited in Ukrainian or Russian: "не випущено з митниці", "ожидает выпуска".
+  String.raw`${CYRILLIC_START}(?:не|ще не|еще не)(?: [а-яієґ']+)? (?:випущен|выпущен|пропущен|пройден|завершен|оформлен)|${CYRILLIC_START}(?:очіку\S* |ожида\S* )(?:\S+ )?(?:випуск|выпуск|митн|мытн|тамож)`,
 ].join('|'));
 /** Clearance completed or the parcel released, in each language. */
 const CUSTOMS_RELEASED = new RegExp([
@@ -170,6 +177,8 @@ const CUSTOMS_RELEASED = new RegExp([
   String.raw`\b(?:liberad|despachad)[oa]s? (?:por|de|en|desde) (?:la |las )?aduanas?\b|\b(?:salida|salio|ha salido|sale) (?:de|desde) (?:la )?aduana\b|\b(?:tramites|despacho|gestion(?:es)?|proceso)(?: (?:de|del|en))?(?: (?:la |las |los )?aduanas?| aduaner[oa]s?)+ (?:(?:ha sido|han sido|fue|fueron) )?(?:finalizad|completad|terminad|concluid|realizad)[oa]s?\b`,
   String.raw`\b(?:liberad|desembaracad)[oa]s? (?:pela|na|da) (?:alfandega|aduana|fiscalizacao(?: aduaneira)?|receita federal)\b|\bdesalfandegad[oa]s?\b|\b(?:desalfandegamento|desembaraco(?: aduaneiro)?|fiscalizacao aduaneira|tramites aduaneiros|processo aduaneiro) (?:(?:foi|esta|foram) )?(?:concluid|finalizad|terminad|realizad|efetuad|efectuad)[oa]s?\b|\b(?:saiu|saida) (?:da|de) (?:alfandega|aduana)\b`,
   String.raw`\bodprawa celna (?:\w+ )?(?:zakonczona|zakonczyla sie|ukonczona)\b|\bodprawion[aey] celnie\b|\bzwolnion[aey] (?:przez urzad celny|z urzedu celnego)\b|\bopuscil[aoy]? urzad celny\b`,
+  // Ukrainian and Russian: released from customs, clearance completed, customs passed or left.
+  String.raw`${CYRILLIC_START}(?:випущен|выпущен)[а-яієґ]*(?: [а-яієґ']+){0,3}? ${CYRILLIC_CUSTOMS}|${CYRILLIC_CUSTOMS}[а-яієґ]* (?:оформлення|оформление|контроль|очищення|очистка)(?: [а-яієґ']+)? (?:завершен|пройден|закінчен|успішно завершен|успешно завершен)|${CYRILLIC_START}(?:завершен[оа]?|пройден[оа]?|закінчен[оа]?) ${CYRILLIC_CUSTOMS}|${CYRILLIC_START}(?:прошл[оаи]|проишл[оаи]|покинул[оаи]?|залишил[оаи]?) ${CYRILLIC_CUSTOMS}`,
 ].join('|'));
 /** A parcel customs holds, detains or retains, in each language. */
 const CUSTOMS_HOLD = new RegExp(String.raw`\bcustoms (?:hold|detention)\b|\b(?:held|on hold|detained|retained) (?:by|in|at) (?:the )?${CUSTOMS_SIDE}customs?\b|retenu en douane|vom zoll zuruckgehalten|fermo in dogana|retenido en aduana|retido na alfandega|zatrzyman[ay] przez (?:urzad celny|cel)`);
@@ -328,6 +337,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
 
   // Sender data, not the parcel: "Shipment recorded by sender (data delivered)".
   if (/\b(?:data|information|details) delivered\b|\bdaten (?:ubermittelt|erhalten)|donnees (?:transmises|recues)/.test(text)) return 'registered';
+  // The same in Russian and Ukrainian, ahead of the customs words a shop's declaration data carries.
+  if (CYRILLIC_DATA_RECEIVED.test(text)) return 'registered';
   if (/\b(?:datos|informacion|dados|informacao|informacoes) (?:del envio |do envio |da encomenda )?(?:entregad[oa]s?|entregues?)\b/.test(text)) return 'registered';
   // Left for the carrier to admit, not admitted yet: Correos's "Depositado para
   // admisión", a parcel the sender dropped in a CityPaq locker.

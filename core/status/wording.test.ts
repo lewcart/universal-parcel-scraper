@@ -403,6 +403,7 @@ describe('classifyWording', () => {
       'Liberado por aduana', 'Salida de aduana', 'Trámites de aduana finalizados',
       'Liberado pela alfândega', 'Desalfandegado', 'Fiscalização aduaneira finalizada',
       'Odprawa celna zakończona', 'Przesyłka odprawiona celnie',
+      'Випущено з митного контролю', 'Пройшло митний контроль', 'Выпущено таможней', 'Таможенное оформление завершено', 'Покинуло таможню',
     ]) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'in_transit', source: 'wording:language' });
     // Holds, inspections, submissions and a release still to come stay with customs.
     for (const wording of [
@@ -415,6 +416,7 @@ describe('classifyWording', () => {
       'Non ancora sdoganato', 'In attesa di essere sdoganato', 'Pendiente de liberación por aduana', 'No ha sido liberado por aduana',
       'Envío en aduana', 'Não foi liberado pela alfândega', 'Encaminhado para fiscalização aduaneira',
       'Przesyłka oczekuje na odprawę celną', 'Nie została odprawiona celnie',
+      'Знаходиться в митниці', 'Не випущено з митниці', 'Очікує митного оформлення', 'Прибыло на таможню', 'Ожидает выпуска таможней', 'Мытны кантроль',
     ]) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'customs', source: 'wording:language' });
   });
 

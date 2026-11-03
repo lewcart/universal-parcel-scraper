@@ -188,7 +188,6 @@ describe('shared provider result', () => {
 
   it("reads Russian Post's steps on mail from abroad, as 17TRACK and ParcelsApp relay them", () => {
     const stages: ReadonlyArray<readonly [string, string]> = [
-      ['Таможенное декларирование,Данные от торговой площадки получены', 'registered'],
       ['Prepared for shipping', 'registered'],
       ['Прием', 'accepted'],
       ['Приём', 'accepted'],
@@ -196,16 +195,23 @@ describe('shared provider result', () => {
       ['Обработка,Прибыло в место международного обмена', 'in_transit'],
       ['Покинуло место международного обмена', 'in_transit'],
       ['Shipped from China', 'in_transit'],
-      ['Прием на таможню', 'customs'],
-      ['Таможенное оформление', 'customs'],
     ];
     for (const [wording, stage] of stages) {
       expect(event('2026-01-07T12:45:00+03:00', wording)).toMatchObject({ stage, stage_source: 'wording:provider' });
     }
-    // A clearance with its outcome, and the delivery office, are other steps.
-    for (const wording of ['Таможенное оформление, Выпущено таможней', 'Обработка, Прибыло в место вручения']) {
-      expect(event('2026-01-07T12:45:00+03:00', wording)).toMatchObject({ stage_source: 'none' });
+    // The customs rows, which the shared language rules read: the shop's data, customs taking the parcel in,
+    // clearing it with no outcome yet, and releasing it.
+    const customs: ReadonlyArray<readonly [string, string]> = [
+      ['Таможенное декларирование,Данные от торговой площадки получены', 'registered'],
+      ['Прием на таможню', 'customs'],
+      ['Таможенное оформление', 'customs'],
+      ['Таможенное оформление, Выпущено таможней', 'in_transit'],
+    ];
+    for (const [wording, stage] of customs) {
+      expect(event('2026-01-07T12:45:00+03:00', wording)).toMatchObject({ stage, stage_source: 'wording:language' });
     }
+    // The delivery office is another step.
+    expect(event('2026-01-07T12:45:00+03:00', 'Обработка, Прибыло в место вручения')).toMatchObject({ stage_source: 'none' });
   });
 
   it("reads Yanwen's scan after its pickup, as ParcelsApp relays it", () => {

@@ -17,7 +17,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to Delhivery, which stays one candidate among several."
@@ -41,6 +42,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -193,6 +195,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -287,6 +290,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -347,6 +351,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -439,7 +444,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Delhivery tracking link archived by the Wayback Machine. Delhivery's tracker returns its history."
@@ -463,7 +469,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Delhivery tracking link archived by the Wayback Machine. Delhivery's tracker returns its history."
@@ -488,7 +495,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Delhivery tracking link archived by the Wayback Machine. Delhivery's tracker returns its history."
@@ -514,6 +522,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -608,6 +617,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },

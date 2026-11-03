@@ -168,7 +168,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "An archived lookup on Viettel Post's order page passes it as the order number; the capture was not opened and the page renders in the browser."
@@ -194,7 +195,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "An archived lookup on Viettel Post's order page passes it as the order number; the capture was not opened and the page renders in the browser."
@@ -219,7 +221,8 @@
           "dpd-fr",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "An archived lookup on Viettel Post's order page passes it as the order number; the capture was not opened and the page renders in the browser."
@@ -245,7 +248,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "An archived lookup on Viettel Post's order page passes it as the order number; the capture was not opened and the page renders in the browser."

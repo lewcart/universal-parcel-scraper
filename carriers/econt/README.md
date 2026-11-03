@@ -23,7 +23,8 @@ status and malformed replies keep their own failure kinds. Recognition uses the 
 
 Every shipment number seen on the tracker is thirteen digits, and the trace service reads it as
 an integer, so other inputs are invalid without a request. Thirteen digits are shared by
-several carriers, so no detection rule claims them and preflight does not ask this adapter.
+several carriers, so `econt-1` only suggests Econt, and recognition asks it only for a parcel
+looked up from Bulgaria.
 
 ## Notes
 

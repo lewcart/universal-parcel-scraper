@@ -91,7 +91,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to TNT, which no rule claims."

@@ -21,6 +21,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -48,6 +49,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -74,6 +76,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -99,7 +102,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Nim Express's own tracker at nimexpress.com, as an archived address shows; the capture holds the tracker's script, which requests this bill number from Nim Express's service host, but the history itself is not visible."
@@ -124,6 +128,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -150,7 +155,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Nim Express's own tracker at nimexpress.com, as an archived address shows; the capture was not opened, and the tracker loads history by script, so the history is not visible."
@@ -175,6 +181,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -200,6 +207,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fedex-pl"
         ]
       },

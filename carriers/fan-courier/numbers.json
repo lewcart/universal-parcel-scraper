@@ -20,6 +20,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -44,6 +45,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -67,6 +69,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -91,6 +94,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -118,6 +122,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -144,6 +149,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -169,6 +175,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -194,7 +201,8 @@
           "fan-courier",
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Looked up on FAN Courier's own tracker, as an archived address shows; FAN Courier's tracking returns its history."
@@ -219,7 +227,8 @@
           "fan-courier",
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Looked up on FAN Courier's own tracker, as an archived address shows; FAN Courier's tracking returns its history."

@@ -22,7 +22,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "An archived lookup on Shree Nandan's own tracker shows this document booked at Valsad, sent through the Valsad hub to Vapi and delivered."
@@ -49,6 +50,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -75,7 +77,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Archived as a web-tracking address on the carrier's Connecting Nandan platform and as a lookup on its own tracker the same day; the opened capture is the application shell without the history."
@@ -100,7 +103,8 @@
           "dpd-fr",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "An archived lookup on Shree Nandan's own tracker carries this consignment number; the capture was not opened, so its history was not seen."
@@ -126,6 +130,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -151,7 +156,8 @@
           "dpd-fr",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "An archived lookup on Shree Nandan's own tracker carries this consignment number; the capture was not opened, so its history was not seen."
@@ -177,7 +183,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Voxya complaint against Shree Nandan Courier gives it, in Hindi, as the number of a parcel not delivered for five days."

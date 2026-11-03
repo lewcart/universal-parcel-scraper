@@ -24,7 +24,8 @@
       "refresh"
     ],
     "recognition": {
-      "rank": 290
+      "rank": 290,
+      "servedCountriesOnly": true
     },
     "localClocks": true
   },
@@ -92,5 +93,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "econt-1",
+      "pattern": "^\\d{13}$",
+      "confidence": "low"
+    }
+  ]
 }

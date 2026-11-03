@@ -22,6 +22,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -46,7 +47,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Looked up on Express One's own tracker, as an archived address shows; the capture was not opened."

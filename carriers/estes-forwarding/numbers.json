@@ -65,7 +65,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "An archived lookup on EFW's own tracker address; the capture holds only the script app's shell, so the history was not visible."

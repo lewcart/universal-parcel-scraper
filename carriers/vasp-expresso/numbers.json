@@ -20,7 +20,8 @@
         "candidates": [
           "dpd-fr",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "An archived reply of the tracking API behind Vasp Expresso's Track and Trace page shows this service barcode with its depot events."
@@ -46,7 +47,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Portal da Queixa complaint against Vasp Expresso gives it as the parcel's tracking number and quotes its tracking status."
@@ -71,7 +73,8 @@
           "dpd-fr",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Portal da Queixa complaint against Vasp Expresso gives it as the number to follow a bookshop order and quotes its tracking events."
@@ -98,7 +101,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Portal da Queixa complaint against Vasp Expresso names it as the parcel that was not delivered."
@@ -124,7 +128,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Portal da Queixa complaint against Vasp Expresso names it as the awaited parcel; the complaint was marked resolved by the brand."
@@ -171,7 +176,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A DECO PROteste complaint about a return dropped at a Kios point and carried by Vasp Expresso gives it as the Track and Trace number the customer checked on Vasp's site."
@@ -196,7 +202,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Vasp Expresso's reply to a DECO PROteste complaint calls it the service of a Kios return to Amazon; the same reply says a sibling service code is not for tracking, so whether these return codes track is unsettled."

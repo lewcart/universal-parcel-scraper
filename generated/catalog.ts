@@ -17613,6 +17613,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "mode": "automatic",
       "adapter": "econt",
       "recognitionRank": 290,
+      "recognitionServedCountriesOnly": true,
       "localClocks": true
     },
     "canaryUrl": "https://www.econt.com/services/track-shipment",
@@ -17641,7 +17642,12 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{13}$",
+        "confidence": "low"
+      }
+    ]
   },
   "ecourier": {
     "displayName": "eCourier",
@@ -52239,7 +52245,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "eco-express-ae": [],
   "ecohai": [],
   "ecom-logistics": ["ecom-logistics-1"],
-  "econt": [],
+  "econt": ["econt-1"],
   "ecourier": ["ecourier-1"],
   "ecourier-uk": [],
   "ecparcel": [],

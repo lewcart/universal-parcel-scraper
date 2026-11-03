@@ -20,7 +20,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "Publicly reported domestic parcel. Korea Post's tracker returns its history. Thirteen digits stay a suggestion shared with other carriers."
@@ -91,6 +92,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -117,7 +119,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "A Korea Post domestic tracking link archived by the Wayback Machine. Korea Post's tracker returns its parcel history from label printing to delivery."
@@ -142,7 +145,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Korea Post domestic tracking link archived by the Wayback Machine. The capture is Korea Post's own tracker showing the parcel accepted."
@@ -167,7 +171,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Korea Post domestic tracking link archived by the Wayback Machine. Korea Post's tracker returns its express registered-mail history. Thirteen digits stay a suggestion shared with other carriers."
@@ -192,7 +197,8 @@
           "dpd-fr",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Korea Post domestic tracking link archived by the Wayback Machine. The capture is Korea Post's own tracker showing the express registered item accepted. Thirteen digits stay a suggestion shared with other carriers."
@@ -217,7 +223,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Korea Post domestic tracking link archived by the Wayback Machine. Korea Post's tracker returns its express registered-mail history up to delivery."
@@ -242,7 +249,8 @@
           "dpd-fr",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Korea Post domestic tracking link archived by the Wayback Machine. Korea Post's tracker returns its registered-mail history, held after failed delivery attempts."
@@ -268,7 +276,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A Korea Post domestic tracking link archived by the Wayback Machine. Korea Post's tracker returns its registered-mail history between sorting centres."

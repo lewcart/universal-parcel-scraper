@@ -22,6 +22,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -48,6 +49,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -74,6 +76,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -99,7 +102,8 @@
           "dpd-fr",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Dellin's own tracker, as an archived address shows; the capture was not opened."
@@ -125,7 +129,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Dellin's own tracker, as an archived address shows; the capture was not opened."
@@ -151,7 +156,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Dellin's own tracker, as an archived address shows; the capture was not opened. Typed with the hyphen of the printed waybill."
@@ -177,7 +183,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Dellin's own tracker, as an archived address shows; the capture was not opened. Typed with the hyphen of the printed waybill."
@@ -203,6 +210,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -228,6 +236,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -254,6 +263,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -280,7 +290,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "The forwarding receipt number of a consignment Delovye Linii accepted, quoted in a legal question about cargo it lost."
@@ -303,6 +314,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -327,6 +339,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -351,6 +364,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },

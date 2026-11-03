@@ -19,7 +19,8 @@
         "confidence": "low",
         "candidates": [
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "The EURODIS shipment number of the sample result EURODIS's own results page showed without a search, delivered in Spain with two colli listed; it is the page's example, not a lookup."
@@ -117,7 +118,8 @@
         "confidence": "low",
         "candidates": [
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "The EURODIS shipment number the same archived result page gives that collo's shipment."

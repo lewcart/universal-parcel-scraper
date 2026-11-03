@@ -19,7 +19,8 @@
           "dpd-fr",
           "ukrposhta",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Public report of a domestic parcel attributed to Ukrposhta, whose tracking returns its history. Thirteen digits are shared with other carriers, so Ukrposhta is one suggestion among several."
@@ -74,7 +75,8 @@
           "dpd-fr",
           "ukrposhta",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Domestic parcel a seller names in a public review. Ukrposhta's tracker returns its history; thirteen digits stay one candidate among several."
@@ -99,7 +101,8 @@
           "dpd-fr",
           "ukrposhta",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Domestic parcel named in a public review, which quotes Ukrposhta's reply. Ukrposhta's tracker returns its history; thirteen digits stay one candidate among several."
@@ -123,7 +126,8 @@
         "candidates": [
           "ukrposhta",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Parcel named in a public review. Ukrposhta's tracker still returns its history; thirteen digits stay one candidate among several."
@@ -148,7 +152,8 @@
           "dpd-fr",
           "ukrposhta",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "An Ukrposhta tracking link archived by the Wayback Machine. Ukrposhta's tracker returns its history."
@@ -173,7 +178,8 @@
           "dpd-fr",
           "ukrposhta",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "An Ukrposhta tracking link archived by the Wayback Machine. Ukrposhta's tracker returns its history."
@@ -198,7 +204,8 @@
           "dpd-fr",
           "ukrposhta",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Ukrposhta tracking link archived by the Wayback Machine. Ukrposhta's status API no longer returns it."
@@ -225,6 +232,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -249,7 +257,8 @@
         "candidates": [
           "ukrposhta",
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Ukrposhta tracking link archived by the Wayback Machine. Ukrposhta's status API no longer returns it."
@@ -274,7 +283,8 @@
           "ukrposhta",
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Ukrposhta tracking link archived by the Wayback Machine. Ukrposhta's status API no longer returns it."

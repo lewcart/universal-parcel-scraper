@@ -140,7 +140,8 @@
           "ukrposhta",
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "PEC's API documentation uses it as the example cargo code of a request."

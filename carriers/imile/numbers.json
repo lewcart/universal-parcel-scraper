@@ -20,7 +20,8 @@
         "candidates": [
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows its Australian history from order creation to a failed delivery attempt."
@@ -46,7 +47,8 @@
           "correos-chile",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows its Australian history up to out for delivery."
@@ -73,6 +75,7 @@
           "yunda",
           "korea-post",
           "aras-kargo",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -100,6 +103,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -127,7 +131,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows its Italian history (order created, received at a centre)."
@@ -153,7 +158,8 @@
           "correos-chile",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "Archived lookup on iMile's own tracker; the capture was not opened."
@@ -179,7 +185,8 @@
           "correos-chile",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "Archived lookup on iMile's Saudi tracker page; the capture was not opened."
@@ -204,7 +211,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Archived lookup on iMile's Colombian tracker page; the capture was not opened."
@@ -231,7 +239,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "iMile's reply to a complaint about an Italian delivery names it as the waybill number; iMile's tracker shows its history to the delivery."
@@ -258,7 +267,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "A complaint gives it as the tracking number of a Shein order for Italy; iMile's tracker shows its history to the return."
@@ -284,7 +294,8 @@
           "correos-chile",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "A complaint about a Shein order calls it the order number; iMile's tracker shows its South African history to the delivery."
@@ -312,6 +323,7 @@
           "yunda",
           "korea-post",
           "aras-kargo",
+          "econt",
           "fedex-pl"
         ]
       },
@@ -339,7 +351,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "A complaint about a YesStyle order gives it as the order and tracking number; iMile's tracker shows the order for Brazil and nothing after."

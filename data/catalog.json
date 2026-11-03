@@ -17609,6 +17609,7 @@
       "mode": "automatic",
       "adapter": "econt",
       "recognitionRank": 290,
+      "recognitionServedCountriesOnly": true,
       "localClocks": true
     },
     "canaryUrl": "https://www.econt.com/services/track-shipment",
@@ -17637,7 +17638,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{13}$",
+        "confidence": "low"
+      }
+    ]
   },
   "ecourier": {
     "displayName": "eCourier",

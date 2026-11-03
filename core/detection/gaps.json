@@ -1153,12 +1153,6 @@
     "reason": "OCASA in Argentina prints the same ECO and ten-digit layout, so the shape cannot name Eco Express."
   },
   {
-    "carrier": "econt",
-    "pattern": "^\\d{13}$",
-    "kind": "by_design",
-    "reason": "Thirteen digits are shared by several carriers and nothing in the number points to Econt."
-  },
-  {
     "carrier": "emirates-post",
     "pattern": "^\\d{13}$",
     "kind": "by_design",

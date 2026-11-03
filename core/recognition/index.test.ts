@@ -66,6 +66,21 @@ describe('recognition candidates', () => {
     for (const network of ['gls-at', 'gls-pl']) expect(detectCarrierMatch('123456789012').candidates).not.toContain(network);
   });
 
+  it('asks Econt about 13 digits only for a caller in Bulgaria', () => {
+    // Synthetic: every Econt shipment number is thirteen digits, a run carriers elsewhere print too.
+    const number = '2000000000001';
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(number).candidates).toContain('econt');
+    expect(recognitionAskedCarriers(number, { countryHint: 'BG' })[0]).toBe('econt');
+    for (const country of [undefined, 'RO', 'ES', 'KR', 'CL', 'UA']) {
+      const asked = recognitionCandidates(number, { countryHint: country }).map(({ carrier }) => carrier);
+      expect(asked, country).not.toContain('econt');
+    }
+    for (const nearMiss of ['200000000001', '20000000000012', 'A200000000001']) {
+      expect(detectCarrierMatch(nearMiss).candidates ?? [], nearMiss).not.toContain('econt');
+    }
+  });
+
   it('asks 4PX before Emile about Emile\'s sixteen-digit barcodes and settles on 4PX when both know one', () => {
     // Synthetic: Emile's barcode on a parcel 4PX hands over; 4PX's feed holds the whole journey.
     const number = 'EM9999999999999980CA';

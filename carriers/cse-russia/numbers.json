@@ -151,7 +151,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "The archived reply of CSE's own tracking API at lk.cse.ru shows a thirteen-digit waybill in transit."
@@ -177,7 +178,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "The archived reply of CSE's own tracking API at lk.cse.ru shows a thirteen-digit waybill in transit."
@@ -314,6 +316,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },

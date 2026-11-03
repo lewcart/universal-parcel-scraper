@@ -20,7 +20,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Looked up on Team Global Express's MyTeamGE tracker, as an archived address shows; the page draws the result with script, so the capture was not opened."
@@ -62,7 +63,8 @@
         "confidence": "low",
         "candidates": [
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "Looked up on Team Global Express's delivery page for JB Hi-Fi orders, as an archived address shows; the page draws the result with script, so the capture was not opened."
@@ -88,7 +90,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Team Global Express's delivery page for JB Hi-Fi orders, as an archived address shows; the page draws the result with script, so the capture was not opened."
@@ -260,7 +263,8 @@
         "confidence": "low",
         "candidates": [
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A review of Team Global Express gives it as the parcel's tracking number."
@@ -286,6 +290,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },

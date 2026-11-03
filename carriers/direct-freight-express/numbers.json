@@ -21,7 +21,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A consignment looked up on Direct Freight Express's own tracker; the opened capture shows its depot scans, on-board scan and delivery."
@@ -47,6 +48,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -74,6 +76,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -100,6 +103,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -125,7 +129,8 @@
           "ukrposhta",
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Direct Freight Express's own consignment status page, as an archived address shows; captures from 2022 on show a robot check instead of the result, so this one was not opened."
@@ -151,6 +156,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -176,6 +182,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -201,7 +208,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A ProductReview review of Direct Freight Express gives it as the consignment or tracking number."
@@ -227,6 +235,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -252,7 +261,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A ProductReview review of Direct Freight Express gives it as the consignment or tracking number."
@@ -278,7 +288,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A ProductReview review of Direct Freight Express gives it as the consignment or tracking number."
@@ -304,7 +315,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A ProductReview review of Direct Freight Express gives it as the consignment or tracking number."
@@ -330,6 +342,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -355,7 +368,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "A ProductReview review of Direct Freight Express gives it as the consignment or tracking number."

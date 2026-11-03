@@ -56,7 +56,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "An archived lookup on ACI's e-commerce tracker shows this Korea Post registered number with ACI's pickup in New York, the flight to Incheon and customs clearance in Korea."
@@ -82,7 +83,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -108,7 +110,8 @@
           "delhivery",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -133,7 +136,8 @@
           "correos-chile",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -159,7 +163,8 @@
           "correos-chile",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -184,7 +189,8 @@
           "correos-chile",
           "yunda",
           "korea-post",
-          "aras-kargo"
+          "aras-kargo",
+          "econt"
         ]
       },
       "note": "An archived lookup of a Korea Post registered number on ACI's e-commerce tracker. The capture was not opened."
@@ -211,6 +217,7 @@
           "yunda",
           "korea-post",
           "aras-kargo",
+          "econt",
           "fedex-pl"
         ]
       },

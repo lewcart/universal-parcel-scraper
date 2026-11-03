@@ -20,7 +20,8 @@
         "candidates": [
           "correos-chile",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Kyungdong Express's old tracker; the opened capture names the number, but the history loaded by script and is not in it."
@@ -45,7 +46,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "econt"
         ]
       },
       "note": "Looked up on Kyungdong Express's old tracker address, as an archived address shows; the old address redirected by then and the capture was not opened."
@@ -71,6 +73,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -96,6 +99,7 @@
           "correos-chile",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -122,6 +126,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -148,6 +153,7 @@
           "delhivery",
           "yunda",
           "korea-post",
+          "econt",
           "fan-courier"
         ]
       },
@@ -172,7 +178,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Naver KnowledgeiN question titled about Kyungdong Express gives it; an answer quotes its arrival and dispatch scans."
@@ -195,7 +202,8 @@
         "confidence": "low",
         "candidates": [
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Naver KnowledgeiN question about a Kyungdong Express lookup gives it as the waybill number."
@@ -218,7 +226,8 @@
         "confidence": "low",
         "candidates": [
           "correos-chile",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Naver KnowledgeiN question asks when this Kyungdong Express parcel will arrive. Kyungdong's tracker answers it with its scans."
@@ -243,7 +252,8 @@
           "ukrposhta",
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Naver KnowledgeiN question about a Kyungdong Express lookup gives it. Kyungdong's tracker answers it with its scans."
@@ -267,7 +277,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Naver KnowledgeiN question about a stalled Kyungdong Express parcel gives it as the waybill number. Kyungdong's tracker answers it with its scans."
@@ -291,7 +302,8 @@
         "candidates": [
           "correos-chile",
           "delhivery",
-          "yunda"
+          "yunda",
+          "econt"
         ]
       },
       "note": "A Naver KnowledgeiN question tagged Kyungdong Express gives it as the waybill being tracked. Kyungdong's tracker answers it with its scans."

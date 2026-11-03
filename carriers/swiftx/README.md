@@ -6,15 +6,16 @@ tracking page. Shippers and forwarders hand parcels to SwiftX for the last mile.
 ## How it works
 
 1. `trawl`: the browser service opens `swiftx-express.com/track?trackingNumber={number}`. Cloudflare
-   puts a managed challenge in front of the page and of every `/api/` route, and the tracker asks
+   puts a managed challenge in front of the page and of every `/api/` route, and the tracker can ask
    for the page's own verification before it looks a number up. When Turnstile cannot
    complete, the page offers an image puzzle. The service matches slider cutouts,
    image-joining seams, circular rotations or ordered icons offline and uses the page's
    pointer controls. The page verifies the answer and submits tracking. At most two
    puzzles are attempted, with a refresh through the official control when a puzzle
    cannot be read. Ambiguous puzzles keep provider fallback.
-   After verification, the page can ask for recipient phone digits. The helper chooses its
-   public Skip control for the same number, without supplying a phone or an unlock token.
+   The page can ask for recipient phone digits before any puzzle or after one. The helper chooses
+   its public Skip control for the same number, without supplying a phone or an unlock token, and
+   watches for that prompt in the background so the service's own Cloudflare check is not delayed.
    A BASIC summary without scans remains recipient verification required, so providers
    can supply history; it is not another CAPTCHA failure or a missing parcel. BASIC replies
    with scans stay partial. Unlock credentials in the reply remain inside the browser.

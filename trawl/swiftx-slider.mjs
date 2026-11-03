@@ -148,7 +148,7 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
   const signal = parent ? AbortSignal.any([parent, stopped.signal]) : stopped.signal;
   const digest = createHash('sha256').update(number).digest('hex');
   let current, generation = 0, verified = false, refusal, disposed = false, reads = 0;
-  let deadline = 0, attempted = 0, seen = 0, running, hasRequest = () => false, onRefusal;
+  let deadline = 0, attempted = 0, seen = 0, running, watching, hasRequest = () => false, onRefusal;
   const started = Date.now();
   let sawImage = false, prepared = false, phonePromptSkipped = false, puzzleType = 'none', outcome = 'not_seen', analysisOutcome = 'not_started';
   const remaining = () => Math.max(0, deadline - Date.now());
@@ -218,6 +218,20 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
       running = drive().catch(() => { if (!disposed && !signal.aborted) outcome = 'automation_error'; }).finally(() => { running = undefined; });
     }
   }
+  // The page can ask for the phone digits before any puzzle, once the edge
+  // check passes. Watch in the background so TRAWL's own solver is not
+  // delayed, and leave the prompt to the puzzle drive once a puzzle arrives.
+  function watchPhonePrompt() {
+    if (watching || phonePromptSkipped) return;
+    watching = (async () => {
+      while (!disposed && !signal.aborted && remaining() > 0 && !hasRequest() && !refusal && !phonePromptSkipped && !current) {
+        let skipped = false;
+        try { skipped = await page.evaluate(swiftxSkipPhonePrompt, { number }) === true; } catch { /* The page is navigating. */ }
+        if (skipped && !disposed && !signal.aborted) { phonePromptSkipped = true; break; }
+        await new Promise(resolve => setTimeout(resolve, Math.min(300, remaining())));
+      }
+    })().catch(() => {}).finally(() => { watching = undefined; });
+  }
   async function drive() {
     const pause = () => new Promise(resolve => setTimeout(resolve, Math.min(100, remaining())));
     let phoneDeadline;
@@ -282,6 +296,7 @@ export function attachSwiftxSlider(page, number, { signal: parent, solve = locat
       // solver while capture continues to wait for the tracking request.
       startDrive();
       if (running) await running;
+      else watchPhonePrompt();
       return refusal;
     },
   };

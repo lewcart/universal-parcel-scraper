@@ -110,7 +110,8 @@ response sequence, including refusals after the body extraction budget is spent.
 SwiftX's page clears Cloudflare's managed challenge and offers a slider when Turnstile
 cannot complete. Its scoped helper matches cutouts, image seams, circular rotations and
 ordered icons offline, rejecting ambiguous matches. It uses the page's pointer handlers,
-with at most two puzzles; verification tokens stay in that context.
+with at most two puzzles; verification tokens stay in that context. It skips the optional
+recipient phone prompt, which can come before any puzzle, through the page's Skip control.
 The page then posts one GraphQL query; the helper keeps
 the decoded reply only for the query naming the whole number in the page's address.
 

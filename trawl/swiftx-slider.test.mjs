@@ -53,7 +53,7 @@ test('only skips an empty optional phone prompt for the same whole number', () =
   }
 });
 
-test('uses the optional Skip only after bound verification and never repeats it', async () => {
+test('uses the optional Skip after bound verification and never repeats it', async () => {
   let f, skips = 0;
   f = fixture({ solve: async () => ({ x: 200 }), skipPhone: () => { skips++; return true; },
     up: () => f.respond({ verifyOfficialTrackingSlider: { success: true, sliderToken: 'PRIVATE_TOKEN' } }, verifyQuery()) });
@@ -62,9 +62,45 @@ test('uses the optional Skip only after bound verification and never repeats it'
   await f.controller.prepare(6000);
   f.controller.dispose();
   assert.equal(skips, 1);
-  const refused = fixture({ skipPhone: () => { throw new Error('must not skip without verification'); } });
-  await refused.controller.prepare(0);
-  refused.controller.dispose();
+  const unprepared = fixture({ skipPhone: () => { throw new Error('must not skip before preparation'); } });
+  await unprepared.controller.prepare(0);
+  unprepared.controller.dispose();
+});
+
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+test('skips a phone prompt the page shows before any puzzle, without delaying preparation, once', async () => {
+  let asks = 0, shown;
+  const skipped = new Promise(resolve => { shown = resolve; });
+  const f = fixture({ skipPhone: () => { asks++; if (asks < 3) return false; shown(); return true; } });
+  assert.equal(await f.controller.prepare(6000), undefined);
+  assert.ok(asks <= 1);
+  await skipped;
+  await wait(700);
+  assert.equal(asks, 3);
+  assert.equal(f.stats().moves + f.clicks.length, 0);
+  f.controller.dispose();
+});
+
+test('stops watching for the phone prompt once the page asks for the number or offers a puzzle', async () => {
+  let requested = false, asks = 0;
+  const asked = fixture({ skipPhone: () => { asks++; return false; } });
+  await asked.controller.prepare(6000, () => requested);
+  await wait(400);
+  const before = asks;
+  requested = true;
+  await wait(700);
+  assert.ok(before >= 1 && asks <= before + 1);
+  asked.controller.dispose();
+  let puzzleAsks = 0;
+  const puzzle = fixture({ solve: () => new Promise(() => {}), skipPhone: () => { puzzleAsks++; return false; } });
+  await puzzle.controller.prepare(6000);
+  await puzzle.respond({ getOfficialTrackingSliderCaptcha: challenge() });
+  await wait(400);
+  const atPuzzle = puzzleAsks;
+  await wait(700);
+  assert.equal(puzzleAsks, atPuzzle);
+  puzzle.controller.dispose();
 });
 
 test('maps each icon through the rendered image and refuses incomplete or repeated answers', () => {

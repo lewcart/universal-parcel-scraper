@@ -27,7 +27,7 @@ describe('Citilogistics guest tracking', () => {
     expect(result.events![0]).toMatchObject({ local_time: '2025-07-30T09:32:00', time_zone: 'Canada/Pacific', time_zone_basis: 'carrier' });
     expect(result.events![1]).toMatchObject({ time: '2025-07-24T15:47:00-04:00', time_zone: 'Canada/Eastern', stage: 'in_transit' });
     expect(result.events![2]!.stage).toBeUndefined();
-    expect(JSON.stringify(result)).not.toMatch(/2099|Synthetic recipient|synthetic-capability|private|auth|trackid/);
+    expect(JSON.stringify(result)).not.toMatch(/\b2099\b|Synthetic recipient|synthetic-capability|private|auth|trackid/);
     expect(citiStage('item imported')).toBeNull();
     expect(statusMap.gaps).toHaveLength(1);
     expect(statusMap.stage(null, 'Delivered')).toBe('delivered');
@@ -91,7 +91,8 @@ describe('Citilogistics guest tracking', () => {
     expect(new Headers(init!.headers).get('cookie')).toBe(`PHPSESSID=${COOKIE}`);
     expect(new Headers(init!.headers).get('user-agent')).toBe('SyntheticHost/1.0');
     expect(init!.signal).toBeInstanceOf(AbortSignal);
-    expect(JSON.stringify([result, recorder.step.mock.calls, recorder.lookup.mock.calls])).not.toMatch(new RegExp(`${NONCE}|${COOKIE}|trackid|2099`));
+    // The header's year, whole: a measured duration's digits can contain it.
+    expect(JSON.stringify([result, recorder.step.mock.calls, recorder.lookup.mock.calls])).not.toMatch(new RegExp(`${NONCE}|${COOKIE}|trackid|\\b2099\\b`));
   });
 
   it('restarts the whole guest flow after a network failure without retaining state in telemetry', async () => {

@@ -48658,7 +48658,7 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
   },
   "wooliiporter": {
     "displayName": "WooliiPorter",
-    "color": "#1668e3",
+    "color": "#2c3053",
     "aliases": [
       "Woolii",
       "Woolii Porter"

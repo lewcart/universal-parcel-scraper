@@ -446,6 +446,62 @@
       "note": "JRT's own row on its line into the United States, naming the flight's month and day, read as an ellipsis."
     },
     {
+      "wording": "Parcel Information Received",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-26",
+      "note": "A partner's data row in Shenzhen, at the second of JRT's own data row."
+    },
+    {
+      "wording": "Label Created",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-26",
+      "note": "The partner's label, seconds after its data row, before the parcel moves."
+    },
+    {
+      "wording": "国内清关完成",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-27",
+      "note": "China's export clearance done, before the airport."
+    },
+    {
+      "wording": "Arriving at the airport - arranging flights/到达机场-安排航班中",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-28",
+      "note": "At the airport, waiting for a flight to be booked."
+    },
+    {
+      "wording": "预计…航班/Flight scheduled for …",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-28",
+      "note": "The flight booked, naming its day in both halves (\"预计10.29航班\", \"October 29th\"); the map reads each day as an ellipsis. The flight is still to come."
+    },
+    {
+      "wording": "航班已启运/Package in transit to destination country",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-29",
+      "note": "The flight left."
+    },
+    {
+      "wording": "航班已落地，拆板中/Package arrived at destination country",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-30",
+      "note": "The flight landed and its pallets are being broken down, before customs."
+    },
+    {
       "wording": "航班已飞",
       "language": "zh",
       "english": "Flight has flown",

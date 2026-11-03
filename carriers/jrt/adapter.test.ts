@@ -307,6 +307,9 @@ describe('JRT tracking adapter', () => {
     expect(answer('已交服务商 Delivered to service provider')).toEqual({ kind: 'mapped', stage: 'in_transit' });
     // DHL's row for the parcel on its way to it, as JRT copies it in lower case.
     expect(answer('shipment in transit to dhl')).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    // The bilingual row of a booked flight reads alike whatever its day.
+    expect(answer('预计10.29航班/Flight scheduled for October 29th')).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(answer('预计11.3航班/Flight scheduled for November 3rd')).toEqual({ kind: 'mapped', stage: 'in_transit' });
     // So is the hand-over to FedEx after the clearance, and the warehouse's receipt before it: neither is an acceptance.
     for (const description of ['It has been handed over to the service provider.',
       'The cargo has been picked up and arrived at the warehouse，awaiting outbound shipment', 'Arrived at FedEx hub', 'Departed FedEx hub', 'On the way']) {

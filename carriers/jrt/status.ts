@@ -23,10 +23,14 @@ const BOOKED_FLIGHT = /^\d{1,2}\/\d{1,2}(号航班)$/;
 // The English rows of a booked flight name its departure and arrival days: "Estimated departure is October 23th".
 const ESTIMATED_DAY = /^(estimated (?:departure|arrival date) is )[a-z]+ \d{1,2}(?:st|nd|rd|th)$/;
 
+// The bilingual row of a booked flight names its day in both halves: "预计10.29航班/Flight scheduled for October 29th".
+const SCHEDULED_FLIGHT = /^(预计)\d{1,2}\.\d{1,2}(航班\/flight scheduled for )[a-z]+ \d{1,2}(?:st|nd|rd|th)$/;
+
 /** The key a row's `normalizeStatusWording` wording is mapped under: a booked flight's day becomes an ellipsis. */
 export const jrtScanKey = (wording: string): string => wording.replace(FLIGHT_DAY, '$1…$2…')
   .replace(CLEARED_FLIGHT_DAY, '$1…$2…').replace(TAKE_OFF_DAY, '$1…')
-  .replace(FLIGHT_DATES, '$1…$2…').replace(LANDING_DATE, '$1…$2').replace(BOOKED_FLIGHT, '…$1').replace(ESTIMATED_DAY, '$1…');
+  .replace(FLIGHT_DATES, '$1…$2…').replace(LANDING_DATE, '$1…$2').replace(BOOKED_FLIGHT, '…$1').replace(ESTIMATED_DAY, '$1…')
+  .replace(SCHEDULED_FLIGHT, '$1…$2…');
 
 /**
  * The stage JRT's map gives a row, by its whole `normalizeStatusWording` wording:

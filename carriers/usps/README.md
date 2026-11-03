@@ -50,6 +50,15 @@ that loads ends the run. A lookup whose every read is redirected ends as tempora
 unavailability. An unresolved verification page remains a challenge; a complete matching
 history takes precedence over an earlier outage reply.
 
+USPS turns some server addresses away for hours while others load. With
+`USPS_FALLBACK_PROXY_URL` set to an HTTP(S) proxy, such as a residential connection, reads
+go through it while the service's own reads are paused, starting with the lookup whose
+redirect began the pause. The browser service carries the whole context through the proxy
+and never falls back to its own address. Outside a pause the proxy carries nothing, so its
+traffic stays at the consumer's own refresh rate during a spell. The proxy keeps its own run:
+a redirect through it ends the lookup, and three in a row pause it too. Each read's step
+record names its route, `default` or `residential`, without the proxy's address.
+
 Parsing, in order:
 
 - No `.track-bar-container`: `ChallengeError`. A browser can get HTTP 200 containing only a

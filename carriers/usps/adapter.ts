@@ -6,9 +6,10 @@ import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { uspsPackageIdentifier } from '../../core/detection/usps.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { runSteps } from '../../core/runner/index.js';
-import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
+import { runSteps, type StepContext } from '../../core/runner/index.js';
+import { NOOP_RECORDER, type StepRecord, type StepRecorder } from '../../core/telemetry/index.js';
 import { firstOccurrence } from '../../core/time/index.js';
+import { browserContextProxy } from '../../core/transport/browserRouteTrial.js';
 import { clean, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { STATE_PATTERN, uspsScanZone } from './clock.js';
 import { uspsStage, uspsStatus } from './status.js';
@@ -39,22 +40,29 @@ function outageRedirect(error: unknown): boolean {
 /**
  * Redirects come in runs: after a lookup whose reads were all redirected, the next lookup's
  * first read loads tracking about one time in ten, against more than four after a read that
- * loaded. So once three reads in a row through one browser service land on the outage page,
- * its reads pause for five minutes and lookups end at once, for enabled providers to answer.
- * The next read after the pause pauses them again if it is redirected too; a loaded page
- * ends the run.
+ * loaded. So once three reads in a row through one route land on the outage page, its reads
+ * pause for five minutes. While the browser service's own route is paused, reads go through
+ * the fallback proxy when one is configured; otherwise lookups end at once, for enabled
+ * providers to answer. The next read after the pause pauses them again if it is redirected
+ * too; a loaded page ends the run.
  */
 const OUTAGE_RUN = 3;
 const OUTAGE_PAUSE_MS = 5 * 60_000;
 interface OutageRun { redirects: number; pausedUntil: number }
 const outageRuns = new Map<string, OutageRun>();
 
-function outageRun(trawl: TrawlClient): OutageRun {
-  const key = trawl.endpoint.href;
+/** The route's run of redirects: the browser service's own address, or the proxy it reads through. */
+function outageRun(trawl: TrawlClient, proxy: string | null = null): OutageRun {
+  const key = proxy ? `${trawl.endpoint.href} ${proxy}` : trawl.endpoint.href;
   let run = outageRuns.get(key);
   if (!run) outageRuns.set(key, run = { redirects: 0, pausedUntil: 0 });
   return run;
 }
+
+type Route = NonNullable<StepRecord['networkRoute']>;
+
+/** The route of one lookup's latest read, or null when it made none. */
+interface ReadRoute { route: Route | null }
 
 function pausedMs(run: OutageRun): number {
   return Math.max(0, run.pausedUntil - Date.now());
@@ -287,6 +295,8 @@ export interface USPSTrackerOptions {
   timeoutMs?: number;
   /** The browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
+  /** An HTTP(S) proxy the browser service reads through while USPS sends its own reads to the outage page. */
+  fallbackProxy?: string | null;
   fetcher?: typeof fetch;
   recorder?: StepRecorder;
 }
@@ -294,6 +304,7 @@ export interface USPSTrackerOptions {
 export class USPSTracker {
   readonly timeoutMs: number;
   readonly #trawl: TrawlClient | null;
+  readonly #fallbackProxy: string | null;
   readonly #fetcher: typeof fetch | undefined;
   readonly #recorder: StepRecorder;
 
@@ -303,6 +314,10 @@ export class USPSTracker {
     }
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.#trawl = options.trawl ?? null;
+    const proxy = options.fallbackProxy?.trim() || null;
+    // Checked here, so a mistyped proxy fails at setup with a message that leaves its value out.
+    if (proxy) browserContextProxy(proxy);
+    this.#fallbackProxy = proxy;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
   }
@@ -318,36 +333,59 @@ export class USPSTracker {
         'USPS challenged direct tracking; configure FLARESOLVERR_URL for browser fallback',
       );
     }
+    // Each read's record names the route it took; a lookup paused before reading names none.
+    const read: ReadRoute = { route: null };
+    const recorder: StepRecorder = {
+      step: record => this.#recorder.step(read.route ? { ...record, networkRoute: read.route } : record),
+      lookup: record => this.#recorder.lookup(record),
+    };
+    const run = ({ remainingMs, signal }: StepContext) => this.#trawlResult(trawl, number,
+      Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal, read);
     const result = await runSteps<CarrierResult>({
       // Without a caller's budget the lookup leaves the service its own time and
       // the request the allowance to bring the answer back.
       carrier: 'usps', budgetMs: context.budgetMs ?? this.timeoutMs + TRAWL_TRANSPORT_ALLOWANCE_MS, signal: context.signal,
-      recorder: this.#recorder,
+      recorder,
     }, [
-      { id: 'trawl', run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
+      { id: 'trawl', run },
       // A read after a redirect loads tracking about one time in three; one after two, one in ten.
+      // A redirect that pauses the service's own route is read once more through the fallback
+      // proxy; a redirect through the proxy is not read again.
       { id: 'trawl', recovers: error => (error instanceof ChallengeError && RECOVERABLE_PAGES.has(error.reason ?? ''))
-        || (outageRedirect(error) && pausedMs(outageRun(trawl)) === 0),
-        run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
+        || (outageRedirect(error) && read.route === 'default' && this.#readable(trawl)),
+        run },
       // A second read stays on the interstitial about as often as a first one, so
       // a third read passes as often as the second.
-      { id: 'trawl', recovers: error => error instanceof ChallengeError && error.reason === 'interstitial_page',
-        run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
+      { id: 'trawl', recovers: error => error instanceof ChallengeError && error.reason === 'interstitial_page', run },
     ]);
     // A typed routing barcode opens with the recipient's ZIP code. The package
     // identifier after it is the number USPS tracks, so consumers can keep that.
     return cleanUSPSNumber(trackingNumber) !== number ? { ...result, canonical_tracking_number: number } : result;
   }
 
+  /** The fallback proxy's run while the service's own route is paused, null while it is not. */
+  #fallbackRun(trawl: TrawlClient): OutageRun | null {
+    return this.#fallbackProxy && pausedMs(outageRun(trawl)) > 0 ? outageRun(trawl, this.#fallbackProxy) : null;
+  }
+
+  /** Whether a read can start now through one route or the other. */
+  #readable(trawl: TrawlClient): boolean {
+    const fallback = this.#fallbackRun(trawl);
+    return pausedMs(fallback ?? outageRun(trawl)) === 0;
+  }
+
   /** Read the browser's rendered page without replaying its session. An
    * unresolved challenge remains an error so universal fallback can run. */
-  async #trawlResult(trawl: TrawlClient, number: string, timeoutMs: number, signal: AbortSignal): Promise<CarrierResult> {
-    const run = outageRun(trawl);
-    const waitMs = pausedMs(run);
-    if (waitMs > 0) {
+  async #trawlResult(trawl: TrawlClient, number: string, timeoutMs: number, signal: AbortSignal, read: ReadRoute): Promise<CarrierResult> {
+    read.route = null;
+    const own = outageRun(trawl);
+    const fallback = this.#fallbackRun(trawl);
+    const run = fallback ?? own;
+    if (pausedMs(run) > 0) {
       throw new IndeterminateError('USPS', 'USPS sent the last lookups to its service outage page; no read until the pause ends',
-        { reason: 'maintenance_page', retryAfterMs: waitMs });
+        { reason: 'maintenance_page', retryAfterMs: fallback ? Math.min(pausedMs(own), pausedMs(fallback)) : pausedMs(own) });
     }
+    read.route = fallback ? 'residential' : 'default';
     const page = await trawl.scrape({
       url: uspsTrackingUrl(number),
       skipHttp: true,
@@ -356,6 +394,8 @@ export class USPSTracker {
       // The verification page can become idle before it reloads into tracking.
       contentWaitForSelector: '#trackingNum',
       captureResponses: [uspsTrackingUrl(number)],
+      // The service carries the whole browser context through the proxy, with no direct downgrade.
+      ...(fallback ? { proxy: this.#fallbackProxy! } : {}),
     }, {
       provider: 'TRAWL while fetching USPS',
       timeoutMs,
@@ -391,6 +431,7 @@ export const adapter: AdapterFactory = (environment) => {
   const tracker = new USPSTracker({
     fetcher: environment.fetcher,
     trawl: environment.trawl,
+    fallbackProxy: environment.env.USPS_FALLBACK_PROXY_URL,
     recorder: environment.recorder,
   });
   return {

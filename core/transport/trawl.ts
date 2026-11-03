@@ -26,6 +26,8 @@ export interface TrawlScrapeRequest extends JsonObject {
   settleTimeout?: number;
   /** Wait for a visible result marker before reading a client-rendered page. */
   contentWaitForSelector?: string;
+  /** A proxy URL the service must route this request's browser through, never falling back to its own address. */
+  proxy?: string;
 }
 
 export interface TrawlCapturedResponse {

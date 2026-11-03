@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { StepRecorder } from '../../core/telemetry/index.js';
+import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { parseTrackingInput } from '../../core/detection/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import { dateLocalClocks } from '../../places/index.js';
-import { normalizeUSPSNumber, parseUSPSTrackingHtml, USPSTracker, uspsTrackingUrl } from './adapter.js';
+import { adapter, normalizeUSPSNumber, parseUSPSTrackingHtml, USPSTracker, uspsTrackingUrl } from './adapter.js';
 import { uspsStage, uspsStatus } from './status.js';
 
 // 9400111899223397910421 and 9400111899223397910438 are made-up numbers in
@@ -443,6 +443,99 @@ describe('USPS lookup steps', () => {
     expect(fetcher).toHaveBeenCalledTimes(9);
     await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ retryAfterMs: 5 * 60_000 });
     expect(fetcher).toHaveBeenCalledTimes(9);
+  });
+
+  describe('fallback proxy', () => {
+    const PROXY = 'http://relay.internal:3128';
+    function routeRecorder(): { recorder: StepRecorder; records: string[] } {
+      const records: string[] = [];
+      return {
+        records,
+        recorder: {
+          step: (record) => records.push(`${record.step}:${record.outcome}:${record.networkRoute ?? 'none'}`),
+          lookup: (record) => records.push(`lookup:${record.outcome}`),
+        },
+      };
+    }
+    const proxies = (fetcher: { mock: { calls: unknown[][] } }) => fetcher.mock.calls
+      .map(call => (JSON.parse(String((call[1] as RequestInit).body)) as { proxy?: string }).proxy ?? 'own');
+    const redirected = () => trawlReply(INTERSTITIAL_PAGE, DELIVERED_NUMBER, [outageReply]);
+
+    it('reads through the proxy only while the service\'s own route is paused, and records each read\'s route', async () => {
+      const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => redirected());
+      const { recorder, records } = routeRecorder();
+      const tracker = new USPSTracker({ trawl: ownTrawl(), fallbackProxy: ` ${PROXY} `, recorder });
+      // Two redirects on the service's own route: the proxy is not used yet.
+      await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'maintenance_page' });
+      expect(records).toEqual(['trawl:indeterminate:default', 'trawl:indeterminate:default', 'lookup:indeterminate']);
+      // The third pauses the own route, and the same lookup reads once more through the proxy.
+      records.length = 0;
+      fetcher.mockImplementationOnce(async () => redirected()).mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+      expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+      expect(records).toEqual(['trawl:indeterminate:default', 'trawl:ok:residential', 'lookup:ok']);
+      // While the pause lasts, lookups read through the proxy from the start.
+      records.length = 0;
+      fetcher.mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+      expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+      expect(records).toEqual(['trawl:ok:residential', 'lookup:ok']);
+      expect(proxies(fetcher)).toEqual(['own', 'own', 'own', PROXY, PROXY]);
+      // After the pause the own route is asked first, and a redirect sends the lookup back through the proxy.
+      const now = Date.now();
+      vi.spyOn(Date, 'now').mockReturnValue(now + 5 * 60_000 + 1);
+      fetcher.mockImplementationOnce(async () => redirected()).mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+      expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+      // Once the own route loads a page, the spell is over and the proxy is left alone.
+      vi.spyOn(Date, 'now').mockReturnValue(now + 10 * 60_000 + 2);
+      fetcher.mockResolvedValueOnce(trawlReply(TIMELINE_PAGE)).mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+      expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+      expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+      expect(proxies(fetcher).slice(5)).toEqual(['own', PROXY, 'own', 'own']);
+    });
+
+    it('reads a proxy redirect no further, and pauses the proxy after three in a row', async () => {
+      const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => redirected());
+      const { recorder, records } = routeRecorder();
+      const tracker = new USPSTracker({ trawl: ownTrawl(), fallbackProxy: PROXY, recorder });
+      // Two lookups pause the own route; the second's last read is the proxy's first redirect.
+      await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ reason: 'maintenance_page' });
+      await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ reason: 'maintenance_page' });
+      expect(proxies(fetcher)).toEqual(['own', 'own', 'own', PROXY]);
+      records.length = 0;
+      await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ reason: 'maintenance_page', retryAfterMs: undefined });
+      expect(records).toEqual(['trawl:indeterminate:residential', 'lookup:indeterminate']);
+      await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ reason: 'maintenance_page' });
+      expect(fetcher).toHaveBeenCalledTimes(6);
+      // Both routes are paused: no read, and the wait is the shorter of the two.
+      records.length = 0;
+      await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ reason: 'maintenance_page',
+        retryAfterMs: expect.any(Number) });
+      expect(fetcher).toHaveBeenCalledTimes(6);
+      expect(records).toEqual(['trawl:indeterminate:none', 'lookup:indeterminate']);
+    });
+
+    it('keeps the proxy\'s challenges to the existing retries', async () => {
+      const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => redirected());
+      const tracker = new USPSTracker({ trawl: ownTrawl(), fallbackProxy: PROXY });
+      await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ reason: 'maintenance_page' });
+      fetcher.mockImplementationOnce(async () => redirected())
+        .mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE)).mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE));
+      await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'challenge', reason: 'interstitial_page' });
+      expect(proxies(fetcher)).toEqual(['own', 'own', 'own', PROXY, PROXY]);
+    });
+
+    it('takes the proxy from USPS_FALLBACK_PROXY_URL and refuses one that is not an HTTP(S) origin', async () => {
+      const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => redirected());
+      const trawl = ownTrawl();
+      const usps = adapter({ trawl, recorder: NOOP_RECORDER, browserExecutablePath: null,
+        env: { USPS_FALLBACK_PROXY_URL: PROXY } });
+      for (let lookup = 0; lookup < 2; lookup++) {
+        await expect(usps.track({ number: DELIVERED_NUMBER }, {})).rejects.toMatchObject({ reason: 'maintenance_page' });
+      }
+      expect(proxies(fetcher)).toEqual(['own', 'own', 'own', PROXY]);
+      expect(() => new USPSTracker({ fallbackProxy: 'relay.internal:3128' })).toThrow(TypeError);
+      expect(() => new USPSTracker({ fallbackProxy: `${PROXY}/path` })).toThrow(TypeError);
+      expect(() => new USPSTracker({ fallbackProxy: '  ' })).not.toThrow();
+    });
   });
 
   it.each([

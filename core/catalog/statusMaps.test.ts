@@ -432,6 +432,8 @@ describe('status map answers', () => {
     expect(answer('dhl', null, 'The shipment will be delivered tomorrow')).toEqual(unknown);
     expect(answer('dhl', null, 'Synthetic note')).toEqual(unknown);
     expect(answer('dhl', null, 'Für diese Sendung wurde ein Liefertag als Empfangsoption vorgemerkt.')).toEqual(gap);
+    expect(answer('dhl', null, 'Die Paketumleitung wurde aufgrund Produkt/Service- Kombination nicht erlaubt storniert. Die Sendung wird an die Hausadresse zugestellt.'))
+      .toEqual({ kind: 'intentional_gap', note: expect.stringMatching(/keeps the stage it had/) });
   });
 
   it("answers GLS Germany and Switzerland by their wording, since a row keeps its event number, not its status", () => {

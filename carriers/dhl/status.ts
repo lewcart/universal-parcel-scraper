@@ -24,6 +24,13 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 export const BOOKED_OPTION = /\bals empfangsoption vorgemerkt\b/i;
 
 /**
+ * A redirect DHL refused ("Die Paketumleitung wurde aufgrund Produkt/Service-Kombination nicht
+ * erlaubt storniert. Die Sendung wird an die Hausadresse zugestellt."): a notice, not a delivery
+ * attempt, so the parcel keeps the stage it had.
+ */
+export const REFUSED_REDIRECT = /\bpaketumleitung wurde\b[^.]*\bstorniert\b/i;
+
+/**
  * DHL's pre-advice: the sender's electronic data ("Die Sendung wurde elektronisch angekündigt.",
  * "The instruction data … provided … electronically"). Listed after a scan that moved the parcel,
  * it is a notice, not movement, and the parser leaves it out.
@@ -83,8 +90,9 @@ export function statusForStage(stage: string): CarrierStatus {
  * keeps the progress before it.
  */
 export const statusMap: CarrierStatusMap = {
-  stage: (_code, wording) => (stageForText(wording, '') || undefined) as Stage | undefined,
+  stage: (_code, wording) => REFUSED_REDIRECT.test(wording) ? undefined : (stageForText(wording, '') || undefined) as Stage | undefined,
   gaps: [],
   gapNote: (_code, wording) => BOOKED_OPTION.test(wording)
-    ? 'The recipient\'s booked receiving option, left out of the history: a wish, not a movement.' : undefined,
+    ? 'The recipient\'s booked receiving option, left out of the history: a wish, not a movement.'
+    : REFUSED_REDIRECT.test(wording) ? 'A redirect DHL refused, a notice and not a delivery attempt: the parcel keeps the stage it had.' : undefined,
 };

@@ -113,6 +113,16 @@ describe('DHL public tracking normalization', () => {
     }
   });
 
+  it('reads a redirect DHL refused as a notice that keeps the stage before it, not a delivery attempt', () => {
+    const refused = 'Die Paketumleitung wurde aufgrund Produkt/Service- Kombination nicht erlaubt storniert. Die Sendung wird an die Hausadresse zugestellt.';
+    const timeline = shipment().sendungen[0]!.sendungsdetails.sendungsverlauf;
+    const payload = shipment({ sendungsverlauf: { ...timeline, status: refused } });
+    payload.sendungen[0]!.sendungsdetails.sendungsverlauf.events.push({ datum: '2026-08-10T19:00:00+02:00', status: refused });
+    const result = parseDHLTrackingResponse(payload, NUMBER);
+    expect(result.events?.[0]).toMatchObject({ description: refused, stage: 'in_transit', stage_source: 'none' });
+    expect(result).toMatchObject({ current_stage: 'in_transit', last_status_text: refused });
+  });
+
   it('keeps the correct event order, stages and dates without private recipient data', () => {
     const result = parseDHLTrackingResponse(shipment(), NUMBER);
     expect(result).toMatchObject({

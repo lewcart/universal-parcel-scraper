@@ -95,7 +95,8 @@ export interface HualeiTenant {
 
 /**
  * The zone of the trackers' own clock: it decides when a row written ahead is
- * shown, and every row is read on it, abroad too.
+ * shown, and a tenant's rows are read on it, abroad too, unless the tenant keeps
+ * their wall clocks (`wallClocks`, `clock`).
  */
 export const HUALEI_ZONE = 'Asia/Shanghai';
 export const HUALEI_TRACK_PATH = '/selectTrack.htm';
@@ -106,12 +107,14 @@ const PAGE_MAX_BYTES = 1024 * 1024;
 const MAX_RECORDS = 50;
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
-// The service matches a number or reference exactly as written, dashes included;
-// a comma would ask for several.
+// The service matches a number or reference exactly as written, dashes included, so a caller
+// that strips dashes, as `normalizeTrackingNumber` does, loses a dashed reference. A comma would
+// ask for several.
 const NUMBER = /^(?=.{6,40}$)[A-Z0-9]+(?:-[A-Z0-9]+)*$/;
 const CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
-// A row's clock can be its destination's, up to six hours ahead of Beijing's: one written more
-// than twelve hours before its own clock was written ahead.
+// A tenant that keeps wall clocks can date a row on its destination's clock, up to six hours
+// ahead of Beijing's, the clock rows are written on: a row written more than twelve hours before
+// its own clock was written ahead, on every tenant.
 const WRITTEN_AHEAD_MS = 12 * 3_600_000;
 // The kind of the rows the platform's custom track product (轨迹定制) writes to a script: they
 // can have a parcel abroad before it reaches the airport.

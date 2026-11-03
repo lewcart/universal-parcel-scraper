@@ -30,8 +30,9 @@ lookup its tracking page makes.
 ## Notes
 
 - A scan's description is the label the page heads it with, such as `Order creation`, and its
-  `statusCode` is the provider code. The page reads the code only to pick an icon, so the
-  label stages the scan: through the map in `status.ts`, else the shared wording rules.
+  `statusCode` is the provider code. The page reads the code only to pick an icon, and one code
+  groups several labels, so the label stages the scan: through the map in `statuses.json`, else
+  the shared wording rules.
 - A scan's location is its branch's town and province. The sentence under each label
   (`customerTracking`) is free text with, as in J&T's other trackers, the courier's name and
   phone. It is not read, nor are the fields for the courier, the signer and the branch's

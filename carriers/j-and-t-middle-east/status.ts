@@ -1,15 +1,14 @@
 import { classifyWording, type ClassifiedWording, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+import statuses from './statuses.json' with { type: 'json' };
 
 /**
- * The labels J&T Express Middle East heads its scans with, in English. Only
- * labels seen in replies are mapped; another label falls to the wording rules.
- * A scan's `statusCode` is kept as its provider code but stages nothing: the
- * page reads it only to pick an icon.
+ * The labels J&T Express Middle East heads its scans with, in English, as `statuses.json` records them.
+ * Only labels seen in replies are mapped; another label falls to the wording rules. A scan's
+ * `statusCode` is kept as its provider code but stages nothing: the page reads it only to pick an icon,
+ * and one code groups several labels.
  */
-const LABELS: ReadonlyMap<string, Stage> = new Map([
-  ['order creation', 'registered'], // The sender created the order; J&T has not collected the parcel yet.
-]);
+const LABELS: ReadonlyMap<string, Stage> = new Map(statuses.entries.map((entry) => [normalizeStatusWording(entry.wording), entry.stage as Stage]));
 
 /** The stage J&T Express Middle East's labels give a scan. */
 export function jAndTMiddleEastMappedStage(label: string): Stage | undefined {

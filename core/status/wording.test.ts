@@ -506,6 +506,11 @@ describe('classifyWording', () => {
       ['PENDIENTE DE ENTREGAR A TIPSA', 'registered'],
       ['Pendiente de recepción en CTT Express', 'registered'],
       ['Aguarda entrada nos CTT', 'registered'],
+      // GOFO's scans in Spanish, as ParcelsApp relays them beside the English ones.
+      ['Etiqueta de envío creada', 'registered'],
+      ['Cargado en el vehículo', 'in_transit'],
+      ['En camino para entrega', 'out_for_delivery'],
+      ['Cargado en el vehículo de reparto', 'out_for_delivery'],
       // CTT's pre-advice as ParcelsApp translates it.
       ['Waiting for entry at CTT. The information about the shipment has been received.', 'registered'],
       ['Waiting for entry at CTT', 'registered'],

@@ -1483,3 +1483,21 @@ describe('Topnic', () => {
     expect(detectCarrierMatch('TN0000100017').candidates ?? []).not.toContain('topnic');
   });
 });
+
+describe('WooliiPorter', () => {
+  it('reads its names and tracking links', () => {
+    for (const name of ['WooliiPorter', 'Woolii']) expect(carrierIdFromName(name), name).toBe('wooliiporter');
+    expect(parseTrackingInput('https://woolii.com/track/WP1000000000017'))
+      .toMatchObject({ trackingNumber: 'WP1000000000017', carrier: 'wooliiporter', source: 'link' });
+    expect(parseTrackingInput('https://woolii.com/track/WP1000000000017,WP1000000000025')?.carrier).not.toBe('wooliiporter');
+  });
+
+  it('offers WooliiPorter at low confidence for WP and thirteen digits only', () => {
+    expect(detectCarrierMatch('wp 1000 0000 0001 7')).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['wooliiporter'], preferred: [],
+    });
+    for (const number of ['WP100000000001', 'WP10000000000017', 'WX1000000000017', 'WPTRK1000000000017']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('wooliiporter');
+    }
+  });
+});

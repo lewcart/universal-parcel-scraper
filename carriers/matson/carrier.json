@@ -1,0 +1,36 @@
+{
+  "id": "matson",
+  "displayName": "Matson",
+  "aliases": [
+    "Matson Group",
+    "Matson Navigation",
+    "Matson Logistics"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "GU"
+    ]
+  },
+  "brand": {
+    "color": "#215ea1"
+  },
+  "selectable": true,
+  "timezone": "Pacific/Honolulu",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.matson.com/shipment-tracking.html",
+    "canaryUrl": "https://www.matson.com/shipment-tracking.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

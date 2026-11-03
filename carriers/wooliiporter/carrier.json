@@ -1,0 +1,48 @@
+{
+  "id": "wooliiporter",
+  "displayName": "WooliiPorter",
+  "aliases": [
+    "Woolii",
+    "Woolii Porter"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#1668e3"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://woolii.com/track/{trackingNumber}",
+    "searchUrl": "https://woolii.com/track",
+    "canaryUrl": "https://woolii.com/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "woolii.com"
+      ],
+      "path": "^/track/([^/?#,;|]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "wooliiporter-1",
+      "pattern": "^WP\\d{13}$",
+      "confidence": "low"
+    }
+  ]
+}

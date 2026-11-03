@@ -7392,6 +7392,26 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       }
     ]
   },
+  "alliance-air-freight": {
+    "displayName": "Alliance Air Freight",
+    "color": "#007fdc",
+    "aliases": [
+      "Alliance Air Freight Inc."
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://worldtrak.shipalliance.com/cvportal/shipinquiry/quicktrack.aspx",
+    "trackingSearchUrl": "https://worldtrak.shipalliance.com/cvportal/shipinquiry/quicktrack.aspx",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "alljoy": {
     "displayName": "AllJoy",
     "color": "#004899",
@@ -30743,6 +30763,29 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       }
     ]
   },
+  "matson": {
+    "displayName": "Matson",
+    "color": "#215ea1",
+    "aliases": [
+      "Matson Group",
+      "Matson Navigation",
+      "Matson Logistics"
+    ],
+    "countries": [
+      "US",
+      "GU"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Honolulu",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.matson.com/shipment-tracking.html",
+    "trackingSearchUrl": "https://www.matson.com/shipment-tracking.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "mauritius-post": {
     "displayName": "Mauritius Post",
     "color": "#f5d800",
@@ -39566,6 +39609,26 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
         "checksum": "mod7"
       }
     ]
+  },
+  "schneider": {
+    "displayName": "Schneider",
+    "color": "#f26523",
+    "aliases": [
+      "Schneider National"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://schneider.com/track",
+    "trackingSearchUrl": "https://schneider.com/track",
+    "linkRules": [],
+    "detectionRules": []
   },
   "seabourne-logistics": {
     "displayName": "Seabourne Logistics",
@@ -48593,6 +48656,40 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     "linkRules": [],
     "detectionRules": []
   },
+  "wooliiporter": {
+    "displayName": "WooliiPorter",
+    "color": "#1668e3",
+    "aliases": [
+      "Woolii",
+      "Woolii Porter"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://woolii.com/track",
+    "trackingUrlTemplate": "https://woolii.com/track/{trackingNumber}",
+    "trackingSearchUrl": "https://woolii.com/track",
+    "linkRules": [
+      {
+        "domains": [
+          "woolii.com"
+        ],
+        "path": "^/track/([^/?#,;|]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^WP\\d{13}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "world-package": {
     "displayName": "World Package",
     "color": "#120748",
@@ -50365,6 +50462,7 @@ export const CARRIER_IDS = [
   "algerie-poste",
   "alil-post",
   "allegro-one",
+  "alliance-air-freight",
   "alljoy",
   "am-home-delivery",
   "amalgamated-distribution",
@@ -51002,6 +51100,7 @@ export const CARRIER_IDS = [
   "mark-express",
   "maruti-air",
   "matkahuolto",
+  "matson",
   "mauritius-post",
   "max-pakket",
   "maxzeego",
@@ -51242,6 +51341,7 @@ export const CARRIER_IDS = [
   "savar-express",
   "sbs-sokuhai",
   "scg-express",
+  "schneider",
   "seabourne-logistics",
   "seino",
   "seino-super-express",
@@ -51490,6 +51590,7 @@ export const CARRIER_IDS = [
   "wise-express",
   "wizmo",
   "wld-express",
+  "wooliiporter",
   "world-package",
   "wp-ground",
   "x-express-ba",
@@ -51698,6 +51799,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "algerie-poste": ["algerie-poste-1","algerie-poste-s10","algerie-poste-ey"],
   "alil-post": [],
   "allegro-one": ["allegro-one-1","allegro-one-2"],
+  "alliance-air-freight": [],
   "alljoy": ["alljoy-1","alljoy-2"],
   "am-home-delivery": [],
   "amalgamated-distribution": [],
@@ -52335,6 +52437,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "mark-express": [],
   "maruti-air": [],
   "matkahuolto": ["matkahuolto-1","matkahuolto-2","matkahuolto-3","matkahuolto-4"],
+  "matson": [],
   "mauritius-post": [],
   "max-pakket": [],
   "maxzeego": [],
@@ -52575,6 +52678,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "savar-express": [],
   "sbs-sokuhai": [],
   "scg-express": ["scg-express-1"],
+  "schneider": [],
   "seabourne-logistics": [],
   "seino": [],
   "seino-super-express": [],
@@ -52823,6 +52927,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "wise-express": [],
   "wizmo": ["wizmo-1"],
   "wld-express": [],
+  "wooliiporter": ["wooliiporter-1"],
   "world-package": [],
   "wp-ground": [],
   "x-express-ba": [],

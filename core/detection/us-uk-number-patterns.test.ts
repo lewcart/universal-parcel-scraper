@@ -807,3 +807,19 @@ describe('J.B. Hunt and DHX', () => {
     }
   });
 });
+
+describe('Matson, Schneider and Alliance Air Freight', () => {
+  it('reads their names as 17TRACK and their sites give them', () => {
+    for (const [name, id] of [['Matson', 'matson'], ['Matson Group', 'matson'], ['SCHNEIDER', 'schneider'], ['Schneider National', 'schneider'],
+      ['Alliance Air Freight', 'alliance-air-freight']] as const) {
+      expect(carrierIdFromName(name), name).toBe(id);
+    }
+  });
+
+  it('offers them for no number shape', () => {
+    for (const number of ['MATU0000017', '000100017', '0001000017', '9000000017']) {
+      const candidates = detectCarrierMatch(number).candidates ?? [];
+      for (const id of ['matson', 'schneider', 'alliance-air-freight']) expect(candidates, number).not.toContain(id);
+    }
+  });
+});

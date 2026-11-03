@@ -137,6 +137,14 @@ describe('FAN Courier retrieval', () => {
     expect(fetcher).toHaveBeenCalledOnce();
   });
 
+  it('keeps the status and FAN Courier’s message of a rejected lookup in its diagnostics, without long digit runs', async () => {
+    const lookup = (response: Response) => new FanCourierTracker({ fetcher: vi.fn<typeof fetch>().mockResolvedValue(response) }).fetch(NUMBER);
+    await expect(lookup(Response.json({ message: 'Synthetic refusal for 2999999999990' }, { status: 422 })))
+      .rejects.toMatchObject({ kind: 'indeterminate', message: 'FAN Courier tracking is unavailable (HTTP 422: Synthetic refusal for #)' });
+    await expect(lookup(new Response('<html>Not Found</html>', { status: 404 })))
+      .rejects.toMatchObject({ kind: 'indeterminate', message: 'FAN Courier tracking is unavailable (HTTP 404)' });
+  });
+
   it('tells a challenge page, an empty reply and other HTML apart', async () => {
     for (const [body, kind] of [
       ['<!DOCTYPE html><html><head><title>Just a moment...</title></head></html>', 'challenge'],

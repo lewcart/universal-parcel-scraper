@@ -28,7 +28,8 @@ without a request.
   one, with the requested number in `content` and the tracker's "not found" message, in
   English or Romanian; only that reply is not found. Another message, an AWB without events,
   an empty reply, a rejected request or a missing page is inconclusive, and a Cloudflare page
-  is a challenge.
+  is a challenge. FAN's page shows the message sent with a 404 or 422, so the diagnostics keep
+  the status and that message, without long digit runs.
 - Events are mapped by code in [status.ts](status.ts). The codes and their names come from
   the event list in FAN Courier's API documentation; S56 (handed in at a FANbox or collect
   point) and S65 (held for the next transport abroad) are named only by the tracking page's

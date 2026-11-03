@@ -174,6 +174,9 @@ describe('Techlink status vocabulary', () => {
     expect(statusMapAnswer({ carrier: 'techlink', providerCode: 'InTransit_Oversea', description: 'In transit, it is currently in transit to the next facility' }))
       .toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(techlinkStage('InTransit_Oversea', 'Synthetic move abroad')).toEqual({ stage: 'in_transit', source: 'carrier_map' });
+    // The destination hub's receipt, under a code that names the online data, is a move, not the order's data.
+    expect(statusMapAnswer({ carrier: 'techlink', providerCode: 'InfoReceived_Online', description: 'Shipment Received at Facility' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(techlinkStage('InTransit_Other', 'Delivery attempted, recipient not at home')).not.toMatchObject({ source: 'carrier_map' });
     expect(techlinkStage('Synthetic_Code', 'synthetic wording')).toBeNull();
   });

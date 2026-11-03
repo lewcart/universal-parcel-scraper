@@ -1698,6 +1698,10 @@ describe('ParcelsApp result parsing', () => {
     // 4PX's rows at the second of another network's stay.
     expect(parseParcelsAppResponse({ carriers: ['Example Parcel Line', '4PX Express'], states }, number, identity()).events
       ?.some((event) => event.description === 'Etiqueta de envío creada')).toBe(true);
+    // Its Houston site code is Houston's place and clock.
+    const site = states.map((state) => state.location === 'USXXXA' ? { ...state, location: 'USHOUA' } : state);
+    expect(parseParcelsAppResponse({ carriers: ['GoFo Express', '4PX Express'], states: site }, number, identity()).events
+      ?.find((event) => event.location === 'USHOUA')?.time).toBe('2026-10-21T14:22:38.000Z');
   });
 
   it('takes the offset of a Poland Post scan at a place as its instant, whatever zone routing passes', () => {

@@ -220,7 +220,8 @@ step exists for future protocol changes.
   digits to the second, with another scan's place or none. A 4PX state at the second of a
   GOFO state is that copy and is not read as a scan: it came twice, on another clock than
   GOFO's. It still lends its zone to 4PX's own scans in the reply. A second of :00 can be a
-  minute-only clock's, so it matches nothing.
+  minute-only clock's, so it matches nothing. A 4PX site code the adapter knows, the country
+  and the city's code ("USHOUA", its Houston operation point), places its scan in that town.
 - Wall clocks: the dates of USPS, Canada Post, GOFO's US scans, SpeedPAK, EMS, Cainiao,
   EcoScooting, 4PX, MailAmericas and FIRST LINE abroad are each scan's local clock under a label that is
   never its instant (checked 2026-10-10 scan for scan: USPS's page and the "at 8:25 am" in

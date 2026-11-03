@@ -11,6 +11,12 @@ dependencies. One fresh challenge can recover an unreadable or rejected answer,
 within the caller's budget. Repeated refusal stays a challenge, allowing enabled
 universal providers to handle the miss. No browser, account or saved sign is needed.
 
+ECMS can stop answering for hours, while a lookup normally takes about two seconds.
+On the first try each request gets at most half of the time left, so one that hangs or
+loses its connection leaves time for that fresh challenge. The three requests
+(`challenge`, `check`, `history`) and the picture's reading (`solve`) are recorded as
+steps of their own, so the logs show which one waited.
+
 The response must repeat the complete ECMS identifier in its shipment summary
 and every scan. The parser keeps the full event sequence, status codes, locations
 and a named delivery partner. A partner reference is retained only from that

@@ -160,12 +160,37 @@ describe('ECMS challenge exchange', () => {
       const fetcher = responses(...first, opened('2'), verified('2'), fixture());
       const step = vi.fn(), lookup = vi.fn();
       await expect(new EcmsExpressTracker({ fetcher, solveCaptcha: async () => '7', recorder: { step, lookup } }).fetch(NUMBER)).resolves.toMatchObject({ status: 'delivered' });
-      expect(step.mock.calls[0]![0]).toMatchObject({ step: 'direct', outcome: 'challenge' });
-      expect(step.mock.calls[1]![0]).toMatchObject({ step: 'retry', outcome: 'ok', fallbackFrom: 'direct', fallbackReason: 'challenge' });
+      const tiers = step.mock.calls.map(([record]) => record).filter(({ step }) => step === 'direct' || step === 'retry');
+      expect(tiers[0]).toMatchObject({ step: 'direct', outcome: 'challenge' });
+      expect(tiers[1]).toMatchObject({ step: 'retry', outcome: 'ok', fallbackFrom: 'direct', fallbackReason: 'challenge' });
       expect(lookup).toHaveBeenCalledWith(expect.objectContaining({ outcome: 'ok', attempts: 2 }));
       const requests = fetcher.mock.calls.map(([url]) => new URL(String(url)));
       expect(requests.filter(url => url.pathname.endsWith('/get/base64'))).toHaveLength(2);
       expect(requests.filter(url => url.pathname.endsWith('/check')).at(-1)!.searchParams.get('signKey')).toBe(opened('2').data.signKey);
+    }
+  });
+
+  it('caps each request so one that hangs leaves a fresh challenge time, and records each request', async () => {
+    const hung: typeof fetch = (_url, init) => new Promise((_, reject) => {
+      init!.signal!.addEventListener('abort', () => reject(init!.signal!.reason), { once: true });
+    });
+    const retried = ['2:challenge:ok', '2:solve:ok', '2:check:ok', '2:history:ok', '2:retry:ok'];
+    for (const [answered, first] of [
+      [[], ['1:challenge:transport', '1:direct:transport']],
+      [[opened(), verified()], ['1:challenge:ok', '1:solve:ok', '1:check:ok', '1:history:transport', '1:direct:transport']],
+    ] as const) {
+      const fetcher = vi.fn<typeof fetch>();
+      for (const payload of answered) fetcher.mockResolvedValueOnce(Response.json(payload));
+      fetcher.mockImplementationOnce(hung);
+      for (const payload of [opened('2'), verified('2'), fixture()]) fetcher.mockResolvedValueOnce(Response.json(payload));
+      const step = vi.fn(), lookup = vi.fn();
+      const tracker = new EcmsExpressTracker({ fetcher, solveCaptcha: async () => '7', recorder: { step, lookup } });
+      await expect(tracker.fetch(NUMBER, { budgetMs: 1_000 })).resolves.toMatchObject({ status: 'delivered' });
+      const records = step.mock.calls.map(([record]) => record);
+      expect(records.map(({ step, attempt, outcome }) => `${attempt}:${step}:${outcome}`)).toEqual([...first, ...retried]);
+      expect(records.find(({ outcome }) => outcome === 'transport')).toMatchObject({ errorType: 'UpstreamNetworkError' });
+      expect(records.at(-1)).toMatchObject({ fallbackFrom: 'direct', fallbackReason: 'transport' });
+      expect(lookup).toHaveBeenCalledWith(expect.objectContaining({ outcome: 'ok', attempts: 2 }));
     }
   });
 
@@ -187,10 +212,15 @@ describe('ECMS challenge exchange', () => {
     for (const [body, status, kind] of [['<html>PRIVATE</html>', 200, 'challenge'], ['{"PRIVATE":', 200, 'schema'], ['PRIVATE', 503, 'maintenance']] as const) {
       const fetcher = responses(opened(), verified());
       fetcher.mockResolvedValueOnce(new Response(body, { status }));
-      const error = await new EcmsExpressTracker({ fetcher, solveCaptcha: async () => '7' }).fetch(NUMBER).catch(error => error);
+      const step = vi.fn();
+      const error = await new EcmsExpressTracker({ fetcher, solveCaptcha: async () => '7', recorder: { step, lookup: vi.fn() } }).fetch(NUMBER).catch(error => error);
       expect(error.kind).toBe(kind);
-      expect(error.request_url).toBeUndefined(); expect(error.response_body).toBeUndefined();
-      expect(JSON.stringify(error)).not.toContain('PRIVATE'); expect(JSON.stringify(error)).not.toContain(verified().data);
+      const history = step.mock.calls.map(([record]) => record).find(({ step }) => step === 'history');
+      expect(history).toMatchObject({ outcome: kind });
+      for (const failed of [error, history.error]) {
+        expect(failed.request_url).toBeUndefined(); expect(failed.response_body).toBeUndefined();
+        expect(JSON.stringify(failed)).not.toContain('PRIVATE'); expect(JSON.stringify(failed)).not.toContain(verified().data);
+      }
     }
   });
 

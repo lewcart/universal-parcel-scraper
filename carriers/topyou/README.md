@@ -7,11 +7,13 @@ international lines, whose site is szty56.com.
 
 ## Numbers
 
-Its waybills are TYZR, a letter, ten digits and YQ. Forwarders on the Hualei (华磊) platform end
+Its waybills are TYZR, a letter, ten digits and YQ, and the adapter takes any TYZ waybill of that length. Forwarders on the Hualei (华磊) platform end
 their waybills with YQ and open them with their own code, as [Juxi Express](../juxi-express/README.md)
 does. A sample on ParcelPanel's TopYou page and a parcel a universal provider files under TopYou
 share the layout, TopYou's own tracker answers the sample, and no other carrier's rule takes it, so
-`topyou-1` has high confidence.
+`topyou-1` has high confidence. Track123 files TopYou under the code TYZ, and a universal provider
+filed a parcel of TYZ, two other letters, ten digits and YQ under TopYou, so `topyou-2` suggests
+TopYou for that wider layout at low confidence and recognition asks its tracker.
 
 ## Retrieval
 

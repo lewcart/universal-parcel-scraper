@@ -452,9 +452,19 @@ describe('Chinese fulfilment warehouse numbers', () => {
     for (const number of ['TYZRZ0000000017YQ', 'tyzrz 0000 0000 17 yq']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'topyou', confidence: 'high' });
     }
-    for (const number of ['TYZRZ000000001YQ', 'TYZRZ00000000017YQ', 'TYZR00000000017YQ', 'TYZXZ0000000017YQ', 'TYZRZ0000000017YX']) {
+    for (const number of ['TYZRZ000000001YQ', 'TYZRZ00000000017YQ', 'TYZR00000000017YQ', 'TYZRZ0000000017YX', 'TYXSB0000000017YQ', 'XTYZSB0000000017YQ']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('topyou');
       expect(detectCarrierMatch(number).carrier, number).not.toBe('topyou');
+    }
+  });
+
+  it('suggests TopYou for TYZ with two other letters, ten digits and YQ, and lets recognition ask it', () => {
+    for (const number of ['TYZSB9900000001YQ', 'tyzxz 0000 0000 17 yq']) {
+      expect(detectCarrierMatch(number), number).toEqual({ carrier: 'unknown', confidence: 'low', candidates: ['topyou'], preferred: [] });
+    }
+    expect(recognitionAskedCarriers('TYZSB9900000001YQ')).toEqual(['topyou']);
+    for (const number of ['TYZS99900000001YQ', 'TYZSB990000001YQ', 'TYZSB9900000001YX']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('topyou');
     }
   });
 });

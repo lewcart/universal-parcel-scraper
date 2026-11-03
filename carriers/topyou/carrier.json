@@ -75,6 +75,11 @@
       "id": "topyou-1",
       "pattern": "^TYZR[A-Z]\\d{10}YQ$",
       "confidence": "high"
+    },
+    {
+      "id": "topyou-2",
+      "pattern": "^TYZ(?!R)[A-Z]{2}\\d{10}YQ$",
+      "confidence": "low"
     }
   ]
 }

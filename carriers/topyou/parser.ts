@@ -12,7 +12,7 @@ export const PROVIDER = 'TopYou';
 // A long history is a few kilobytes.
 export const TOPYOU_MAX_BYTES = 256 * 1024;
 // The waybills TopYou issues: TYZR, a letter, ten digits and YQ.
-const NUMBER = /^TYZR[A-Z]\d{10}YQ$/;
+const NUMBER = /^TYZ[A-Z]{2}\d{10}YQ$/;
 const CLOCK = /^(\d{4})\/(\d{2})\/(\d{2}) (\d{2}:\d{2}:\d{2})$/;
 const OFFSET = /^[+-]\d{2}:\d{2}$/;
 const MAX_ROWS = 500;
@@ -21,7 +21,7 @@ const MAX_EVENTS = 100;
 /** A TopYou waybill in upper case, as its tracker matches it; anything else is not one it issues. */
 export function normalizeTopyouNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw).toUpperCase() : '';
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'TopYou waybills are TYZR, a letter, ten digits and YQ');
+  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'TopYou waybills are TYZ, two letters, ten digits and YQ');
   return number;
 }
 

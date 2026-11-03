@@ -228,6 +228,7 @@ describe('TopYou HTTP adapter', () => {
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
     expect(normalizeTopyouNumber('tyzrz 0000-0000-01 yq')).toBe(DELIVERED);
+    expect(normalizeTopyouNumber('tyzsb 0000-0000-01 yq')).toBe('TYZSB0000000001YQ');
   });
 
   it('routes a waybill filed under TopYou, or detected as one, to the adapter, which dates the delivery carrier’s clocks by place', async () => {

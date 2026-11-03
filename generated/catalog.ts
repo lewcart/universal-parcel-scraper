@@ -45305,6 +45305,10 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       {
         "pattern": "^TYZR[A-Z]\\d{10}YQ$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^TYZ(?!R)[A-Z]{2}\\d{10}YQ$",
+        "confidence": "low"
       }
     ]
   },
@@ -52877,7 +52881,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "topex-logistics": [],
   "topnic": [],
   "toptrans": [],
-  "topyou": ["topyou-1"],
+  "topyou": ["topyou-1","topyou-2"],
   "torrestir": ["torrestir-1"],
   "total-express": ["total-express-awb"],
   "toyou": [],

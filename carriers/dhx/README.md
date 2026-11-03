@@ -13,7 +13,10 @@ there is no rule.
 ## Why there is no adapter
 
 None is built yet. Its quick track page reads a freight bill or pickup tracking number through an
-ASP.NET form post, with no page or address per number.
+ASP.NET form post, with no page or address per number. The post sends the page's view state, the
+search type in `QuickSearchDdl` (`TrackingNumber` or `PickupTracking`) and the number in
+`MultiTrackingNumberTxt`. It needs no account or CAPTCHA, and answers an unknown number with
+"Information not found". No public number shows how it answers a shipment.
 
 ## Links
 

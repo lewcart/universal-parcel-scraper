@@ -14,7 +14,9 @@ there is no rule.
 ## Why there is no adapter
 
 None is built. Its home delivery tracker on jbhunt.com checks each search with reCAPTCHA before
-asking its API. Business freight is tracked on a separate page of the site.
+asking its API, `ww5.jbhunt.com/api/finalmile/lookuprequest`, which refuses a search without a
+reCAPTCHA Enterprise token. Business freight is tracked on a separate page of the site, which loads
+reCAPTCHA Enterprise too.
 
 ## Links
 

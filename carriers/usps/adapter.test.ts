@@ -464,7 +464,8 @@ describe('USPS lookup steps', () => {
     it('reads through the proxy only while the service\'s own route is paused, and records each read\'s route', async () => {
       const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => redirected());
       const { recorder, records } = routeRecorder();
-      const tracker = new USPSTracker({ trawl: ownTrawl(), fallbackProxy: ` ${PROXY} `, recorder });
+      const step = vi.fn<StepRecorder['step']>(record => recorder.step(record));
+      const tracker = new USPSTracker({ trawl: ownTrawl(), fallbackProxy: ` ${PROXY} `, recorder: { ...recorder, step } });
       // Two redirects on the service's own route: the proxy is not used yet.
       await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'maintenance_page' });
       expect(records).toEqual(['trawl:indeterminate:default', 'trawl:indeterminate:default', 'lookup:indeterminate']);
@@ -473,6 +474,8 @@ describe('USPS lookup steps', () => {
       fetcher.mockImplementationOnce(async () => redirected()).mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
       expect((await tracker.fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
       expect(records).toEqual(['trawl:indeterminate:default', 'trawl:ok:residential', 'lookup:ok']);
+      expect(step.mock.calls.slice(-2).map(([record]) => [record.networkAttempt, record.historyAvailable]))
+        .toEqual([['initial', false], ['retry', true]]);
       // While the pause lasts, lookups read through the proxy from the start.
       records.length = 0;
       fetcher.mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));

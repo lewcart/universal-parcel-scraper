@@ -61,8 +61,8 @@ function outageRun(trawl: TrawlClient, proxy: string | null = null): OutageRun {
 
 type Route = NonNullable<StepRecord['networkRoute']>;
 
-/** The route of one lookup's latest read, or null when it made none. */
-interface ReadRoute { route: Route | null }
+/** One lookup's reads: the latest one's route, or null when it made none, and whether it returned dated history. */
+interface ReadRoute { route: Route | null; reads: number; history: boolean }
 
 function pausedMs(run: OutageRun): number {
   return Math.max(0, run.pausedUntil - Date.now());
@@ -334,9 +334,10 @@ export class USPSTracker {
       );
     }
     // Each read's record names the route it took; a lookup paused before reading names none.
-    const read: ReadRoute = { route: null };
+    const read: ReadRoute = { route: null, reads: 0, history: false };
     const recorder: StepRecorder = {
-      step: record => this.#recorder.step(read.route ? { ...record, networkRoute: read.route } : record),
+      step: record => this.#recorder.step(read.route ? { ...record, networkRoute: read.route,
+        networkAttempt: read.reads > 1 ? 'retry' : 'initial', historyAvailable: read.history } : record),
       lookup: record => this.#recorder.lookup(record),
     };
     const run = ({ remainingMs, signal }: StepContext) => this.#trawlResult(trawl, number,
@@ -378,6 +379,7 @@ export class USPSTracker {
    * unresolved challenge remains an error so universal fallback can run. */
   async #trawlResult(trawl: TrawlClient, number: string, timeoutMs: number, signal: AbortSignal, read: ReadRoute): Promise<CarrierResult> {
     read.route = null;
+    read.history = false;
     const own = outageRun(trawl);
     const fallback = this.#fallbackRun(trawl);
     const run = fallback ?? own;
@@ -386,6 +388,7 @@ export class USPSTracker {
         { reason: 'maintenance_page', retryAfterMs: fallback ? Math.min(pausedMs(own), pausedMs(fallback)) : pausedMs(own) });
     }
     read.route = fallback ? 'residential' : 'default';
+    read.reads += 1;
     const page = await trawl.scrape({
       url: uspsTrackingUrl(number),
       skipHttp: true,
@@ -421,6 +424,7 @@ export class USPSTracker {
       throw error;
     }
     run.redirects = 0;
+    read.history = Boolean(result.events?.some(event => event.time || event.local_time));
     result.tracking_url = uspsTrackingUrl(number);
     result.tracking_source = 'rendered-page';
     return result;

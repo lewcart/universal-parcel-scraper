@@ -314,14 +314,20 @@ describe('Hermes Germany', () => {
     expect(result.events?.[0]).not.toHaveProperty('stage');
   });
 
-  it('drops a booked ParcelShop like a booked safe place', () => {
-    const payload = [{ barcode: NUMBER, parcelProgress: [
-      { parcelStatus: 'SORTED', timestamp: '2026-09-02T09:00:00Z' },
-      { parcelStatus: 'EDL_BOOKED_PARCELSHOP', timestamp: '2026-09-03T09:00:00Z', historyText: 'Für die Sendung wurde ein WunschPaketShop gebucht.' },
-    ] }];
-    const result = parseHermesGermanyResponse(payload, NUMBER);
-    expect(result.events?.map((event) => event.provider_code)).toEqual(['SORTED']);
-    expect(result.current_stage).toBe('in_transit');
+  it('drops a booked ParcelShop or delivery day like a booked safe place', () => {
+    for (const [parcelStatus, historyText] of [
+      ['EDL_BOOKED_PARCELSHOP', 'Für die Sendung wurde ein WunschPaketShop gebucht.'],
+      // Its wording names the delivery, which the wording fallback would read as out for delivery.
+      ['EDL_BOOKED_DAY', 'Ein WunschTag für die Zustellung wurde gebucht.'],
+    ]) {
+      const payload = [{ barcode: NUMBER, parcelProgress: [
+        { parcelStatus: 'SORTED', timestamp: '2026-09-02T09:00:00Z' },
+        { parcelStatus, timestamp: '2026-09-03T09:00:00Z', historyText },
+      ] }];
+      const result = parseHermesGermanyResponse(payload, NUMBER);
+      expect(result.events?.map((event) => event.provider_code)).toEqual(['SORTED']);
+      expect(result.current_stage).toBe('in_transit');
+    }
   });
 
   it('keeps a parcel in a Hermes Box ready for pickup until the recipient takes it out', () => {

@@ -661,6 +661,7 @@ describe('status map answers', () => {
     expect(answer('hermes-de', 'DELIVERED_NEIGHBOUR', 'Synthetic wording')).toEqual(mapped('delivered'));
     expect(answer('hermes-de', 'DELIVERED_PARCELBOX', 'Synthetic wording')).toEqual(mapped('ready_for_pickup'));
     expect(answer('hermes-de', 'EDL_BOOKED_PARCELSHOP', 'Für die Sendung wurde ein WunschPaketShop gebucht.')).toEqual(gap);
+    expect(answer('hermes-de', 'EDL_BOOKED_DAY', 'Ein WunschTag für die Zustellung wurde gebucht.')).toEqual(gap);
     expect(answer('hermes-de', 'SYNTHETIC_CODE', 'The shipment was delivered.')).toEqual(unknown);
     expect(answer('hermes-de', null, 'The shipment was delivered.')).toEqual(unknown);
   });
@@ -909,6 +910,7 @@ describe('status map answers', () => {
     expect(answer('correios-br', 'BDE/20', 'Carteiro não atendido')).toEqual(mapped('failed_attempt'));
     expect(answer('correios-br', 'FC/16', 'Necessidade de informar CPF/CNPJ do destinatário')).toEqual(mapped('customs'));
     expect(answer('correios-br', 'FC/40', 'Objeto em processo de identificação do código de classificação do produto')).toEqual(mapped('customs'));
+    expect(answer('correios-br', 'PAR/12', 'Informações prestadas pelo cliente em análise')).toEqual(mapped('customs'));
     expect(answer('correios-br', 'PAR/18', 'Objeto recebido na unidade de exportação no país de origem')).toEqual(mapped('in_transit'));
     expect(answer('correios-br', 'XX/99', 'Objeto em trânsito')).toEqual(unknown);
     // A universal provider's copy, without Correios's code, by the wording of a recorded code.

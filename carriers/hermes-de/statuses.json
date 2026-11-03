@@ -406,6 +406,14 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-10",
       "note": "Delivery preference booking, like EDL_BOOKED_DROPOFF; deliberately not mapped and dropped from the history so it cannot move the parcel backwards."
+    },
+    {
+      "code": "EDL_BOOKED_DAY",
+      "wording": "Ein WunschTag für die Zustellung wurde gebucht.",
+      "language": "de",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The recipient booked a delivery day, like EDL_BOOKED_DROPOFF; deliberately not mapped and dropped from the history, so it is not read as out for delivery and cannot move the parcel backwards."
     }
   ]
 }

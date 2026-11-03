@@ -85,9 +85,9 @@ export const STATUSES: Record<string, Milestone> = {
   RETOURE_DELIVERED: milestone('returned', 'exception', 'Returned to sender'),
 };
 
-// Delivery preference bookings (a safe place, a ParcelShop) record the
+// Delivery preference bookings (a safe place, a ParcelShop, a delivery day) record the
 // recipient's wish, not a movement, and must never move the parcel backwards.
-export const IGNORED_BOOKING_STATUS = new Set(['EDL_BOOKED_DROPOFF', 'EDL_BOOKED_PARCELSHOP']);
+export const IGNORED_BOOKING_STATUS = new Set(['EDL_BOOKED_DROPOFF', 'EDL_BOOKED_PARCELSHOP', 'EDL_BOOKED_DAY']);
 
 /**
  * A parcel abroad its recipient did not collect from the parcel shop goes back: a later

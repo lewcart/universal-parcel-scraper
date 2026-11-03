@@ -36,6 +36,8 @@ const codes: Record<string, ClassifiedStatus> = {
   'FC/16': { status: 'in_transit', stage: 'customs' },
   // The import waits for customs to settle the product's classification code.
   'FC/40': { status: 'in_transit', stage: 'customs' },
+  // The recipient answered customs (its tax number), and the answer is under review.
+  'PAR/12': { status: 'in_transit', stage: 'customs' },
   'PAR/24': { status: 'exception', stage: 'returned' },
 };
 

@@ -87,9 +87,10 @@ tracking page shows them in the visitor's zone like Hermes's own.
   of that carrier's own links, they become `delivery_carrier` and
   `delivery_tracking_number`. A number's shape alone names no partner, since
   any host can carry one. The link is never followed.
-- `EDL_BOOKED_DROPOFF` and `EDL_BOOKED_PARCELSHOP` are dropped: they are the
-  recipient's delivery preference (a safe place, a ParcelShop), not a movement,
-  and as the newest row they would move the parcel backwards.
+- `EDL_BOOKED_DROPOFF`, `EDL_BOOKED_PARCELSHOP` and `EDL_BOOKED_DAY` are
+  dropped: they are the recipient's delivery preference (a safe place, a
+  ParcelShop, a delivery day), not a movement, and as the newest row they would
+  move the parcel backwards.
 - A Hermes Box is a pickup locker: the recipient asks the tracking page for a
   pickup code and takes the parcel out within 72 hours, as the
   [Hermes Box terms](https://www.myhermes.de/content/pdf/hermesbox_nutzungsbedingungen.pdf)

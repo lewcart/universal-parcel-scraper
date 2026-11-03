@@ -7,7 +7,7 @@ import { explicitOffsetTime } from '../time/index.js';
 import type { CarrierEvent, CarrierResult } from './index.js';
 
 // A clock a few minutes fast is no plan.
-const CLOCK_SKEW_MS = 5 * 60_000;
+export const CLOCK_SKEW_MS = 5 * 60_000;
 
 /**
  * `answer` without the events `drop` picks, or null when nothing is left of it. When the newest

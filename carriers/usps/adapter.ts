@@ -11,7 +11,7 @@ import { NOOP_RECORDER, type StepRecord, type StepRecorder } from '../../core/te
 import { firstOccurrence } from '../../core/time/index.js';
 import { browserContextProxy } from '../../core/transport/browserRouteTrial.js';
 import { clean, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
-import { STATE_PATTERN, uspsScanZone } from './clock.js';
+import { STATE_PATTERN, uspsRowZone, uspsScanZone } from './clock.js';
 import { uspsStage, uspsStatus } from './status.js';
 
 /**
@@ -97,7 +97,7 @@ const TIME_PATTERN = /\d{1,2}:\d{2}(?::\d{2})?\s*[ap]\.?m\.?/i;
 // the item arrives, so it cannot stand for the item's status while a scan is dated.
 const ORIGIN_POST_NOTICE = /^origin post is preparing shipment\b/i;
 
-function eventTime(dateText: string, timeText: string, location: string): { iso: string; timestamp: number } | null {
+function eventTime(dateText: string, timeText: string, location: string, description: string, readAt: number): { iso: string; timestamp: number } | null {
   const dateMatch = DATE_PATTERN.exec(dateText);
   const timeMatch = TIME_PATTERN.exec(timeText);
   if (!dateMatch || !timeMatch) return null;
@@ -108,7 +108,10 @@ function eventTime(dateText: string, timeText: string, location: string): { iso:
   const clock = timeMatch[0].replace(/\./g, '').toLowerCase();
   const time = firstOccurrence(DateTime.fromFormat(clock, /:\d{2}:\d{2}/.test(clock) ? 'h:mm:ss a' : 'h:mm a', { locale: 'en-US', zone }));
   if (!date.isValid || !time.isValid) return null;
-  const at = date.set({ hour: time.hour, minute: time.minute, second: time.second });
+  const local = date.set({ hour: time.hour, minute: time.minute, second: time.second });
+  // A label its mailer wrote on UTC.
+  const own = uspsRowZone(local.toFormat("yyyy-MM-dd'T'HH:mm:ss"), zone, description, readAt);
+  const at = own === zone ? local : local.setZone(own, { keepLocalTime: true });
   const iso = at.toISO({ suppressMilliseconds: true });
   return iso ? { iso, timestamp: at.toMillis() } : null;
 }
@@ -140,7 +143,7 @@ interface ParsedRow {
 
 /** One history row, read by content pattern: a US date, a clock time, a
  * city/state location, and the longest remaining cell as the description. */
-function parseRow(cells: string[], index: number): ParsedRow | null {
+function parseRow(cells: string[], index: number, readAt: number): ParsedRow | null {
   const texts = cells.map((cell) => clean(cell, 500)).filter(Boolean);
   if (texts.length < 2) return null;
   const dateText = texts.find((text) => DATE_PATTERN.test(text)) ?? '';
@@ -154,7 +157,7 @@ function parseRow(cells: string[], index: number): ParsedRow | null {
     .filter((text) => text !== dateText && text !== timeText && text !== location)
     .sort((left, right) => right.length - left.length)[0] ?? '';
   if (!description) return null;
-  const at = eventTime(dateText, timeText, location);
+  const at = eventTime(dateText, timeText, location, description, readAt);
   const stage = uspsStage(description) ?? undefined;
   const rawTime = clean(dateText === timeText ? dateText : `${dateText} ${timeText}`, 64);
   return {
@@ -172,10 +175,10 @@ function parseRow(cells: string[], index: number): ParsedRow | null {
 
 /** Current USPS markup includes collapsed scans in the DOM, without a table.
  * Undated progress steps and the history-expansion control are not scans. */
-function parseTimelineRow(description: string, dateText: string, location: string): CarrierEvent | null {
+function parseTimelineRow(description: string, dateText: string, location: string, readAt: number): CarrierEvent | null {
   if (!description || !DATE_PATTERN.test(dateText)) return null;
   const stage = uspsStage(description) ?? undefined;
-  const at = eventTime(dateText, dateText, location);
+  const at = eventTime(dateText, dateText, location, description, readAt);
   const date = DATE_PATTERN.exec(dateText)?.[0];
   const time = TIME_PATTERN.exec(dateText)?.[0];
   // UTC is only a parsing frame here. An unresolved location gets an offset-free
@@ -212,8 +215,8 @@ function handoffsInTransit(events: CarrierEvent[]): CarrierEvent[] {
   return result;
 }
 
-/** The server-rendered tracking page. */
-export function parseUSPSTrackingHtml(page: string, trackingNumber: string): CarrierResult {
+/** The server-rendered tracking page, read at `readAt`. */
+export function parseUSPSTrackingHtml(page: string, trackingNumber: string, readAt = Date.now()): CarrierResult {
   const number = normalizeUSPSNumber(trackingNumber);
   const $ = load(page);
   const inlineScript = $('body script:not([src])').length > 0;
@@ -257,6 +260,7 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string): Car
       clean($(row).find('.tb-status-detail').first().text(), 500),
       clean($(row).find('.tb-date').first().text(), 100),
       clean($(row).find('.tb-location').first().text(), 250),
+      readAt,
     );
     if (parsed) timeline.push(parsed);
   });
@@ -264,7 +268,7 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string): Car
   $('.tracking_history_container tr').each((index, row) => {
     const cells = $(row).find('td').map((_, cell) => $(cell).text()).get();
     if (cells.length === 0) return;
-    const parsed = parseRow(cells, index);
+    const parsed = parseRow(cells, index, readAt);
     if (parsed) rows.push(parsed);
   });
   rows.sort((left, right) => right.timestamp - left.timestamp || left.index - right.index);

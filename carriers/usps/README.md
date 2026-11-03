@@ -98,6 +98,9 @@ Parsing, in order:
   pre-shipment info, keeps that day as `local_time`.
 - USPS enters some departures at their scheduled time, before they happen. A scan dated more
   than five minutes after the lookup is held back until it is due (`plannedScans`).
+- A mailer can write its labels on UTC. A label row that the facility's zone dates after the
+  lookup, and UTC does not, is read on UTC. Once both date it in the past, nothing tells them
+  apart and it keeps the facility's zone; its row takes over the stored one by its wall clock.
 - Delivered lines are rewritten to "Delivered" because USPS names the signatory.
 - Incoming international mail shows "Origin Post is Preparing Shipment", undated, from the
   origin post's electronic notice until USPS scans the item, past the origin post's later

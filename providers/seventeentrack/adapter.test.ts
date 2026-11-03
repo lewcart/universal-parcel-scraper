@@ -531,6 +531,23 @@ describe('17TRACK result parsing', () => {
     expect(brt.events?.map((event) => event.time ?? event.local_time)).toEqual(['2026-10-22', '2026-10-21T22:00:00.000Z']);
   });
 
+  it('reads a USPS label its mailer wrote on UTC, which its facility\'s zone would date after the read', () => {
+    vi.useFakeTimers({ toFake: ['Date'], now: new Date('2026-11-03T05:00:00Z') });
+    onTestFinished(() => { vi.useRealTimers(); });
+    // Public shape: the label's wall clock in time_raw with no zone, under the offset 17TRACK guessed from the state.
+    const row = (description: string, sub_status: string) => ({ time_iso: '2026-11-03T04:40:00-08:00', time_utc: '2026-11-03T12:40:00Z',
+      time_raw: { date: '2026-11-03', time: '04:40:00', timezone: null }, description, location: 'EXAMPLE CITY, CA 00000', stage: null, sub_status });
+    const reply = (events: unknown[]): Payload => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InfoReceived' }, tracking: { providers: [{ provider: { key: 21051, name: 'USPS', country: 'US' }, events }] } } }] });
+    const label = row('Shipping Label Created, USPS Awaiting Item', 'InfoReceived');
+    expect(parse17TrackResponse(reply([label]), number).events?.[0]?.time).toBe('2026-11-03T04:40:00.000Z');
+    // Another row stays on its facility's clock, and so does the label once that clock no longer dates it ahead.
+    expect(parse17TrackResponse(reply([row('Arrived at USPS Regional Facility', 'InTransit_Other')]), number).events?.[0]?.time)
+      .toBe('2026-11-03T12:40:00.000Z');
+    vi.setSystemTime(new Date('2026-11-03T13:00:00Z'));
+    expect(parse17TrackResponse(reply([label]), number).events?.[0]?.time).toBe('2026-11-03T12:40:00.000Z');
+  });
+
   it('leaves out the EN ROUTE row DHL eCommerce US stamps with each request', () => {
     const row = (time: string, description: string, location: string | null) => ({ time_iso: `2026-10-29T${time}-04:00`, time_utc: null,
       time_raw: { date: '2026-10-29', time, timezone: '-04:00' }, description, location, stage: null, sub_status: 'InTransit_Other' });

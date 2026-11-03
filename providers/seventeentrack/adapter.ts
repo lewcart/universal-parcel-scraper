@@ -28,7 +28,7 @@ import { daiPostRelayZone } from '../../carriers/dai-post/clock.js';
 import { HYWL_CHINA_ZONE, hywlInChina } from '../../carriers/hywl/clock.js';
 import { placedInIndia } from '../../carriers/shiprocket/clock.js';
 import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
-import { uspsScanZone } from '../../carriers/usps/clock.js';
+import { uspsRowZone, uspsScanZone } from '../../carriers/usps/clock.js';
 import { universalCarrierHints } from '../shared/hints.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
@@ -254,7 +254,8 @@ const QUICK_RABBIT = 101309;
  * On Time", or with the country alone, as 17TRACK labels some, gives no state
  * to guess from: it keeps USPS's wall clock as its local time, as USPS's
  * adapter gives it, so both copies are dated alike. A place that names neither
- * keeps 17TRACK's reading, the last guess.
+ * keeps 17TRACK's reading, the last guess. A label row its facility's zone
+ * dates after the read, and UTC does not, is on UTC, as USPS's adapter reads it.
  * A step USPS dates by its day alone, such as a label printed at a post office,
  * comes at midnight under 17TRACK's offset; it keeps its day, as on USPS's page.
  */
@@ -576,7 +577,9 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       // Any other row 17TRACK labelled with its zone's offset on the day it looks, not on the scan's.
       const season = relayed || hywl || read || poland ? null : seasonZone(raw, labelled, now);
       const wall = relayed || hywl ? rawClock(raw) : read || season ? facilityWall(raw) : null;
-      const zone = !wall ? null : season ?? (hywl ? relayed : relayed ?? facility ?? site ?? own ?? (sent !== undefined ? sent : abroad.has(index) ? abroad.get(index) ?? null
+      // A label its mailer wrote on UTC, as USPS's adapter reads it.
+      const scanned = facility && wall ? uspsRowZone(wall, facility, text(raw.description), now.toMillis()) : facility;
+      const zone = !wall ? null : season ?? (hywl ? relayed : relayed ?? scanned ?? site ?? own ?? (sent !== undefined ? sent : abroad.has(index) ? abroad.get(index) ?? null
         : exchange ? origin : utc ? 'UTC' : polish ? polish : handed ? handed
         : nz ? 'Pacific/Auckland' : quickRabbit ? 'Europe/Madrid' : chile ? facilityZone(text(raw.location)) ?? 'America/Santiago'
         : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null)

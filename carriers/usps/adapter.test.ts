@@ -228,6 +228,21 @@ describe('USPS rendered page', () => {
     expect(parseUSPSTrackingHtml(page(), 'CW000000005NL')).toMatchObject({ last_status_text: 'Origin Post is Preparing Shipment', current_stage: 'registered' });
   });
 
+  it('reads a label its mailer wrote on UTC, which its facility’s zone would date after the read', () => {
+    const step = (detail: string) => '<div class="tb-step current-step"><p class="tb-status">Label Created</p>'
+      + `<p class="tb-status-detail">${detail}</p><p class="tb-location">EXAMPLE CITY, CA 00000</p><p class="tb-date">November 3, 2026, 4:40 am</p></div>`;
+    const page = (detail: string) => '<html><head><title>USPS Tracking</title></head><body><div class="track-bar-container">'
+      + `<span id="trackingNum">${IN_TRANSIT_NUMBER}</span><div class="latest-update-banner-wrapper"><div class="banner-header">Label Created, not yet in system</div></div>`
+      + `<div class="current-tracking-status-wrapper">${step(detail)}</div></div></body></html>`;
+    const read = (detail: string, at: string) => parseUSPSTrackingHtml(page(detail), IN_TRANSIT_NUMBER, Date.parse(at));
+    expect(read('Shipping Label Created, USPS Awaiting Item', '2026-11-03T05:00:00Z'))
+      .toMatchObject({ current_stage: 'registered', last_update: '2026-11-03T04:40:00Z' });
+    // Once the facility's zone no longer dates it ahead, nothing tells the two apart: it keeps that zone.
+    expect(read('Shipping Label Created, USPS Awaiting Item', '2026-11-03T13:00:00Z').last_update).toBe('2026-11-03T04:40:00-08:00');
+    // Another row the facility's zone dates ahead stays on it, a planned scan the due filter holds back.
+    expect(read('Arrived at USPS Regional Facility', '2026-11-03T05:00:00Z').last_update).toBe('2026-11-03T04:40:00-08:00');
+  });
+
   it('reads the estimate banner, whose date parts sit apart, and not its tooltips as the verdict', () => {
     const result = parseUSPSTrackingHtml(ESTIMATE_PAGE, IN_TRANSIT_NUMBER);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'In Transit, Arriving On Time',

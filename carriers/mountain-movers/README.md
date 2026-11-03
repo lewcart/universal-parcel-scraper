@@ -12,11 +12,15 @@ shows one of its numbers, so there is no rule.
 
 ## Why there is no adapter
 
-None is built yet. The tracking page asks `GET https://work.mymmtl.com/api/track/{number}` for
-JSON, with no cookie, token or CAPTCHA, and answers an unknown number with HTTP 404 and a `detail`
-asking to verify the PRO number. A shipment's answer carries its delivery date and may link to the
-carrier that moves it. The site also links an older tracker on its transport management system,
-`mountainmovers.hyperiontms.com/shipmenttracking`.
+The tracking page asks `GET https://work.mymmtl.com/api/track/{number}` for JSON, with no cookie,
+token or CAPTCHA, and answers an unknown number with HTTP 404 and a `detail` asking to verify the
+PRO number. It takes a PRO number, an Amazon tracking number or a PO reference. The page's script
+reads one summary under `data`: a free-text `status` and `statusDescription`, `lastUpdateDate`,
+`estimatedDeliveryDate`, `deliveryDate`, the shipper's and consignee's names and towns,
+`carrierName` and `carrierTrackingURL`, the carrier that moves the load. There are no scans, the
+page reads the dates in the viewer's own zone, and no public number shows how the service writes
+them, so an adapter would have to guess the clocks of the only dates it has. The site also links
+an older tracker on its transport management system, `mountainmovers.hyperiontms.com/shipmenttracking`.
 
 ## Links
 

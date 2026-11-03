@@ -14,7 +14,9 @@ numbers, so there is no rule.
 
 None is built yet. Its quick track page, on a CargoWise shipment portal, posts the number through
 an ASP.NET form with the page's view state, with no page or address per number. It needs no
-account.
+account or CAPTCHA. The form's `ddlTrackBy` names the kind of number: waybill (`HousebillNo`),
+bill-to, shipper or consignee reference, CTR, origin house bill, master air waybill or master
+ocean bill. No public number shows the page it answers with.
 
 ## Links
 

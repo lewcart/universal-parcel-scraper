@@ -12,8 +12,10 @@ numbers, so there is no rule.
 
 ## Why there is no adapter
 
-None is built yet. Its track page reads one tracking ID in a form rendered in the browser, with no
-page or address per number.
+None is planned. Its track page reads one tracking ID in a form rendered in the browser, with no
+page or address per number. Before it asks for the shipment, the page has its server verify a
+reCAPTCHA v3 token, with a v2 checkbox after a low score; an adapter would have to pass or skip
+that check.
 
 ## Links
 

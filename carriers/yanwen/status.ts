@@ -20,6 +20,8 @@ const WORDING = new Map<string, ClassifiedStatus>([
   ['Port of departure - Received by carrier', { status: 'in_transit', stage: 'in_transit' }],
   ['Arrived at domestic terminal station', { status: 'in_transit', stage: 'in_transit' }],
   ['Yanwen facility - Outbound', { status: 'in_transit', stage: 'in_transit' }],
+  // China Post's receipt after Yanwen's outbound scan: Yanwen's hand-over to the post, not the parcel's acceptance.
+  ['中国邮政已收取邮件', { status: 'in_transit', stage: 'in_transit' }],
   ['Yanwen Pickup Scan', { status: 'in_transit', stage: 'accepted' }],
   // Intake lines written in the seconds after the pickup scan, the partner's label
   // among them: the parcel is in Yanwen's hands and has not moved yet.

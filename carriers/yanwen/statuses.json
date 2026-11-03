@@ -565,6 +565,94 @@
       "note": "A partner's scan in Ukraine relayed as its country's code alone. It names no stage."
     },
     {
+      "wording": "中国邮政已收取邮件",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "China Post's receipt after Yanwen's outbound scan: Yanwen's hand-over to the post, not the parcel's acceptance."
+    },
+    {
+      "wording": "邮件已在【…】完成分拣，准备发出",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "China Post's domestic scan, which Yanwen relays in Chinese with the centre in 【】; read as China Post's map reads it."
+    },
+    {
+      "wording": "邮件离开【…】，正在发往【…】",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "China Post's domestic scan, which Yanwen relays in Chinese with the centre in 【】; read as China Post's map reads it."
+    },
+    {
+      "wording": "邮件到达【…】",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "China Post's domestic scan, which Yanwen relays in Chinese with the centre in 【】; read as China Post's map reads it."
+    },
+    {
+      "wording": "邮件离开【…】，正在发往下一站",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "China Post's domestic scan, which Yanwen relays in Chinese with the centre in 【】; read as China Post's map reads it."
+    },
+    {
+      "wording": "送交出口海关",
+      "language": "zh",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Handed to export customs, as China Post's map reads it."
+    },
+    {
+      "wording": "出口海关/留存待验",
+      "language": "zh",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Export customs holding the item for inspection, as China Post's map reads it."
+    },
+    {
+      "wording": "出口海关/放行",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Export customs released the item, as China Post's map reads it."
+    },
+    {
+      "wording": "【…】已出口直封",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The centre sealed the item into an export dispatch, as China Post's map reads it."
+    },
+    {
+      "wording": "【…】退回",
+      "language": "zh",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "The centre sent the item back, as after a failed security check; it deals with it before dispatching it again."
+    },
+    {
+      "wording": "【…】退回，备注:安检退回",
+      "language": "zh",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Sent back at the centre's security check, which it deals with before dispatching the item again; not a return to the sender."
+    },
+    {
       "code": "LM40",
       "stage": "delivered",
       "confirmedBy": "live",

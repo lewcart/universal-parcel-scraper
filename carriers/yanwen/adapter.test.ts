@@ -267,8 +267,8 @@ describe('Yanwen result projection', () => {
     expect(result).toMatchObject({ status: 'exception', current_stage: 'failed_attempt' });
   });
 
-  it("reads China Post's domestic scans as China Post's map does, the security check's return as an exception", () => {
-    for (const [wording, stage] of [['中国邮政已收取邮件', 'accepted'], ['邮件到达【示例市处理中心】', 'in_transit'],
+  it("reads China Post's domestic scans as China Post's map does, its receipt as Yanwen's hand-over and the security check's return as an exception", () => {
+    for (const [wording, stage] of [['中国邮政已收取邮件', 'in_transit'], ['邮件到达【示例市处理中心】', 'in_transit'],
       ['邮件离开【示例市处理中心】，正在发往下一站', 'in_transit'], ['【示例市处理中心】退回，备注:安检退回', 'exception'],
       ['【示例市处理中心】已出口直封', 'in_transit'], ['出口海关/留存待验', 'customs']] as const) {
       expect(yanwenStatus(wording)?.stage, wording).toBe(stage);

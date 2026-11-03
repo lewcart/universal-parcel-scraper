@@ -25,7 +25,8 @@ Information input and a label created in the seconds after Yanwen's pickup scan
 are its intake, so they read as accepted rather than as an announcement.
 China Post's domestic scans, which Yanwen relays in Chinese, read as China
 Post's map reads them; a centre's security-check return is an exception the
-centre deals with before it sends the parcel on.
+centre deals with before it sends the parcel on. China Post's receipt follows
+Yanwen's outbound scan, so it is a hand-over in transit.
 
 Partner scans can start with their country's code, as in "UA.In the New Post
 Office"; the map reads the words after it. A scan of the code alone names no

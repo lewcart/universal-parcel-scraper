@@ -388,6 +388,13 @@ const HOME_CLOCKS: Readonly<Record<string, string>> = {
  */
 const CORREIOS_BRAZIL_CLOCK = 'America/Sao_Paulo';
 /**
+ * Shopee Express Brazil's dates are on Shopee's UTC+8 clock under a UTC label,
+ * wherever in Brazil the scan was: SPX's own tracker dates the same scans, to
+ * the second, eight hours earlier as instants. Brazil's clock would put them
+ * eleven hours late.
+ */
+const SHOPEE_BRAZIL_CLOCK = 'Asia/Singapore';
+/**
  * SunYou's feed dates its destination leg, from the arrival at the
  * destination's airport, on the destination's clock: "+02:00" for a parcel to
  * Spain, where ParcelsApp has the same digits and EcoScooting's own instants
@@ -968,6 +975,7 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   if (carrier && PLACE_CLOCK_LINES.has(carrier)) return placeClockLine(carrier, status, scanLocation(name, state.location));
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   if (carrier === 'correios-br') return CORREIOS_BRAZIL_CLOCK;
+  if (carrier === 'spx-br') return SHOPEE_BRAZIL_CLOCK;
   // A home clock stays a guess that a location abroad rules out, even when
   // the catalog gives the network that zone (GEODIS Poland for "Pekaes").
   const zone = carrier && !Object.hasOwn(HOME_COUNTRIES, key) ? carrierTimezone(carrier) : 'UTC';

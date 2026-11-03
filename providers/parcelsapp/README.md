@@ -383,7 +383,9 @@ step exists for future protocol changes.
   Their European partners' relays are on another clock (below). Correios Brazil's ("Brazil
   Post") have the digits of Correios' own tracker, whose rows name America/Sao_Paulo, in
   Brazil and in the origin country, and 17TRACK's -03:00 copies agree: they are read on
-  Brasília's clock, which the catalog's UTC and Brazil's several zones left out. "South Korea Post"
+  Brasília's clock, which the catalog's UTC and Brazil's several zones left out. "Shopee
+  Express Brazil" has Shopee's UTC+8 digits wherever in Brazil the scan was: SPX's own
+  tracker dates the same scans, to the second, eight hours earlier. "South Korea Post"
   (Korea Post's page) and "Posten Norge - Norway Post" (Bring's offsets, in Denmark too) were
   checked at home only, so their home clock is a step 3 guess that a location in another
   country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local

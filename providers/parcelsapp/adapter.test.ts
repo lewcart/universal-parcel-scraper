@@ -1920,6 +1920,9 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-01-10T18:40:00.000Z', '2025-12-16T22:15:00.000Z']);
     expect(times(['Singapore Post'], [scan('2026-07-07T14:44:00+00:00')])).toEqual(['2026-07-07T06:44:00.000Z']);
     expect(times(['SunYou - Sytrack'], [scan('2021-07-20T11:30:00Z', '1000')])).toEqual(['2021-07-20T03:30:00.000Z']);
+    // Shopee's UTC+8 clock in Brazil: SPX's own tracker has the same scans eight hours earlier.
+    expect(times(['Shopee Express Brazil'], [scan('2026-05-22T22:20:30Z', 'LM Hub_RJ_Example Hub'), scan('2026-05-19T21:47:46Z')]))
+      .toEqual(['2026-05-22T14:20:30.000Z', '2026-05-19T13:47:46.000Z']);
     // Landmark Global's page clock is US Central's, whatever zone the check suggests.
     const landmark = { carriers: ['Landmark Global'], states: [scan('2026-10-14T09:00:00Z', 'Example City, Germany'), scan('2026-01-14T09:00:00Z')] };
     for (const hint of [null, 'Europe/Zurich']) {

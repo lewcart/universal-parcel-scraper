@@ -22,6 +22,7 @@
   },
   "capabilities": [],
   "portal": {
+    "url": "https://www.flightlg.com/myflight-shipment-tracking/?method=tracking&consign_note={trackingNumber}",
     "searchUrl": "https://www.flightlg.com/myflight-shipment-tracking/?method=tracking",
     "canaryUrl": "https://www.flightlg.com/myflight-shipment-tracking/",
     "shows": [],
@@ -29,6 +30,17 @@
     "discarded": [],
     "unavailable": []
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "www.flightlg.com",
+        "flightlg.com"
+      ],
+      "pathPattern": "^/myflight-shipment-tracking/?$",
+      "params": [
+        "consign_note"
+      ]
+    }
+  ],
   "detection": []
 }

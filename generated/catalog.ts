@@ -20730,8 +20730,20 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
       "adapter": "universal"
     },
     "canaryUrl": "https://www.flightlg.com/myflight-shipment-tracking/",
+    "trackingUrlTemplate": "https://www.flightlg.com/myflight-shipment-tracking/?method=tracking&consign_note={trackingNumber}",
     "trackingSearchUrl": "https://www.flightlg.com/myflight-shipment-tracking/?method=tracking",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "www.flightlg.com",
+          "flightlg.com"
+        ],
+        "pathPattern": "^/myflight-shipment-tracking/?$",
+        "params": [
+          "consign_note"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "flippost": {

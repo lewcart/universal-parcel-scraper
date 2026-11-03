@@ -13,12 +13,18 @@ job numbers, so there is no rule.
 
 ## Why there is no adapter
 
-None is built yet. Its tracker is a form on its MyFlight page that posts the airway bill or job
-number, with no page or address per number.
+Its tracker runs on Courier Navigator, as [UBX UK's](../ubx-uk/README.md),
+[World Package's](../world-package/README.md) and Hart2Hart Express's do. The MyFlight page posts
+the airway bill or job number as `consign_note` to
+`flightlg.couriernavigator-secure.com/json/search/trackingdownload`, an open JSONP endpoint without
+a session or CAPTCHA, which answers an unknown number with an empty `jobs` list. The page's script
+reads a found job's events (time stamp, description and status id) and addresses. No public number
+is known to see a found reply.
 
 ## Links
 
-No tracking link is known.
+The MyFlight page opens numbers from its `consign_note` parameter, with `method=tracking`. The
+Courier Navigator host's own tracking page does not read the parameter.
 
 ## Testing
 

@@ -680,6 +680,15 @@ describe('Linear Logistics and DeliverDirect', () => {
   });
 });
 
+describe('Flight Logistics', () => {
+  it('reads its MyFlight page link, not the Courier Navigator host, which does not open it', () => {
+    expect(parseTrackingInput('https://www.flightlg.com/myflight-shipment-tracking/?method=tracking&consign_note=199999980'))
+      .toMatchObject({ trackingNumber: '199999980', carrier: 'flight-logistics', source: 'link' });
+    expect(parseTrackingInput('https://flightlg.couriernavigator-secure.com/tracking?consign_note=199999980').carrier)
+      .not.toBe('flight-logistics');
+  });
+});
+
 describe('SkyBox, Délivro, TForce Integrated Solutions, UBX UK and TTK Europe', () => {
   it('reads their trackers\' links', () => {
     for (const [url, trackingNumber, carrier] of [

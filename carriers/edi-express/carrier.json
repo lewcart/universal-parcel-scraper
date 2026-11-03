@@ -1,0 +1,35 @@
+{
+  "id": "edi-express",
+  "displayName": "EDI Express",
+  "aliases": [
+    "EDI Express Inc",
+    "EDI Express Inc.",
+    "EDI Express, Inc."
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#bf1e2d"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://my.ediexpressinc.com/pro_pu_trace.asp",
+    "canaryUrl": "https://my.ediexpressinc.com/pro_pu_trace.asp",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

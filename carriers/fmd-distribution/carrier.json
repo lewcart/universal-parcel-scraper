@@ -1,0 +1,51 @@
+{
+  "id": "fmd-distribution",
+  "displayName": "FMD Distribution",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#b72027"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.carrierlogistics.com/scripts/fmd.pol/boldetail.htm?wbtn=PRO&wpro1={trackingNumber}",
+    "searchUrl": "https://tracking.carrierlogistics.com/scripts/fmd.pol/facts.htm",
+    "canaryUrl": "https://tracking.carrierlogistics.com/scripts/fmd.pol/facts.htm",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.carrierlogistics.com"
+      ],
+      "pathPattern": "^/scripts/fmd\\.pol/boldetail\\.htm$",
+      "params": [
+        "wpro1"
+      ]
+    },
+    {
+      "domains": [
+        "tracking.carrierlogistics.com"
+      ],
+      "pathPattern": "^/scripts/fmd\\.pol/facts\\.htm$",
+      "params": [
+        "pronum"
+      ]
+    }
+  ],
+  "detection": []
+}

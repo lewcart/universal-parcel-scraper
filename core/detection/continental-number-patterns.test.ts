@@ -1226,3 +1226,15 @@ describe('Röhlig Logistics and 17TRACK names of European carriers', () => {
     for (const number of ['RL000100017', '000100017']) expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('rohlig');
   });
 });
+
+describe('CTL Cargo Trans Logistik', () => {
+  it('reads its company names but not the bare short name', () => {
+    for (const name of ['CTL Cargo Trans Logistik', 'Cargo Trans Logistik AG']) expect(carrierIdFromName(name), name).toBe('cargo-trans-logistik');
+    expect(carrierIdFromName('CTL')).not.toBe('cargo-trans-logistik');
+  });
+  it('offers it for no number shape', () => {
+    for (const number of ['10000017', '1000000017', '10000000000017']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('cargo-trans-logistik');
+    }
+  });
+});

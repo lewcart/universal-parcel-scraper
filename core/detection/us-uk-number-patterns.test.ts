@@ -838,3 +838,23 @@ describe('Mountain Movers', () => {
     }
   });
 });
+
+describe('FMD Distribution and EDI Express', () => {
+  it('reads their names and FMD Distribution tracking links', () => {
+    expect(carrierIdFromName('FMD Distribution')).toBe('fmd-distribution');
+    for (const name of ['EDI Express', 'EDI Express Inc', 'EDI Express, Inc.']) expect(carrierIdFromName(name), name).toBe('edi-express');
+    expect(parseTrackingInput('https://tracking.carrierlogistics.com/scripts/fmd.pol/boldetail.htm?wbtn=PRO&wpro1=10000017'))
+      .toMatchObject({ trackingNumber: '10000017', carrier: 'fmd-distribution', source: 'link' });
+    expect(parseTrackingInput('https://tracking.carrierlogistics.com/scripts/fmd.pol/facts.htm?pronum=10000017'))
+      .toMatchObject({ trackingNumber: '10000017', carrier: 'fmd-distribution', source: 'link' });
+    expect(parseTrackingInput('https://tracking.carrierlogistics.com/scripts/pfeg.pol/boldetail.htm?wbtn=PRO&wpro1=10000017')?.carrier)
+      .not.toBe('fmd-distribution');
+  });
+  it('offers them for no number shape', () => {
+    for (const number of ['10000017', '100000017', '1000000017']) {
+      const candidates = detectCarrierMatch(number).candidates ?? [];
+      expect(candidates, number).not.toContain('fmd-distribution');
+      expect(candidates, number).not.toContain('edi-express');
+    }
+  });
+});

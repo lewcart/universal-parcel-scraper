@@ -11199,6 +11199,28 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     ],
     "detectionRules": []
   },
+  "cargo-trans-logistik": {
+    "displayName": "CTL Cargo Trans Logistik",
+    "color": "#3c5879",
+    "aliases": [
+      "Cargo Trans Logistik",
+      "Cargo Trans Logistik AG",
+      "CTL Cargo Trans Logistik AG"
+    ],
+    "countries": [
+      "DE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://ctl-partner.net/CTL-Onlineplattform/Tracking/Default.aspx",
+    "trackingSearchUrl": "https://ctl-partner.net/CTL-Onlineplattform/Tracking/Default.aspx",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "cargobus": {
     "displayName": "Cargobus",
     "color": "#006ade",
@@ -17723,6 +17745,28 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     ],
     "detectionRules": []
   },
+  "edi-express": {
+    "displayName": "EDI Express",
+    "color": "#bf1e2d",
+    "aliases": [
+      "EDI Express Inc",
+      "EDI Express Inc.",
+      "EDI Express, Inc."
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://my.ediexpressinc.com/pro_pu_trace.asp",
+    "trackingSearchUrl": "https://my.ediexpressinc.com/pro_pu_trace.asp",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ees-logistics": {
     "displayName": "EES Logistics",
     "color": "#b62126",
@@ -20972,6 +21016,43 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
         "confidence": "high"
       }
     ]
+  },
+  "fmd-distribution": {
+    "displayName": "FMD Distribution",
+    "color": "#b72027",
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.carrierlogistics.com/scripts/fmd.pol/facts.htm",
+    "trackingUrlTemplate": "https://tracking.carrierlogistics.com/scripts/fmd.pol/boldetail.htm?wbtn=PRO&wpro1={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.carrierlogistics.com/scripts/fmd.pol/facts.htm",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.carrierlogistics.com"
+        ],
+        "pathPattern": "^/scripts/fmd\\.pol/boldetail\\.htm$",
+        "params": [
+          "wpro1"
+        ]
+      },
+      {
+        "domains": [
+          "tracking.carrierlogistics.com"
+        ],
+        "pathPattern": "^/scripts/fmd\\.pol/facts\\.htm$",
+        "params": [
+          "pronum"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "fmx": {
     "displayName": "FMX",
@@ -50613,6 +50694,7 @@ export const CARRIER_IDS = [
   "campost",
   "canada-air-express",
   "cargo-expreso",
+  "cargo-trans-logistik",
   "cargobus",
   "cargoline",
   "cargus",
@@ -50785,6 +50867,7 @@ export const CARRIER_IDS = [
   "ecourier",
   "ecourier-uk",
   "ecparcel",
+  "edi-express",
   "ees-logistics",
   "efs-asia",
   "egxpress",
@@ -50874,6 +50957,7 @@ export const CARRIER_IDS = [
   "flyking",
   "flyt-express",
   "fm-transportes",
+  "fmd-distribution",
   "fmx",
   "fofr",
   "followmont",
@@ -51951,6 +52035,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "campost": [],
   "canada-air-express": [],
   "cargo-expreso": [],
+  "cargo-trans-logistik": [],
   "cargobus": [],
   "cargoline": [],
   "cargus": ["cargus-1","cargus-2"],
@@ -52123,6 +52208,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ecourier": ["ecourier-1"],
   "ecourier-uk": [],
   "ecparcel": [],
+  "edi-express": [],
   "ees-logistics": [],
   "efs-asia": [],
   "egxpress": ["egxpress-1"],
@@ -52212,6 +52298,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "flyking": [],
   "flyt-express": [],
   "fm-transportes": ["fm-transportes-1"],
+  "fmd-distribution": [],
   "fmx": ["fmx-1"],
   "fofr": [],
   "followmont": [],

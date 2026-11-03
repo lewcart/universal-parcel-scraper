@@ -1,0 +1,35 @@
+{
+  "id": "cargo-trans-logistik",
+  "displayName": "CTL Cargo Trans Logistik",
+  "aliases": [
+    "Cargo Trans Logistik",
+    "Cargo Trans Logistik AG",
+    "CTL Cargo Trans Logistik AG"
+  ],
+  "region": {
+    "countries": [
+      "DE"
+    ]
+  },
+  "brand": {
+    "color": "#3c5879"
+  },
+  "selectable": true,
+  "timezone": "Europe/Berlin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://ctl-partner.net/CTL-Onlineplattform/Tracking/Default.aspx",
+    "canaryUrl": "https://ctl-partner.net/CTL-Onlineplattform/Tracking/Default.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

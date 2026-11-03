@@ -276,6 +276,78 @@
       "language": "en",
       "stage": "in_transit",
       "confirmedBy": "live"
+    },
+    {
+      "code": "10100",
+      "wording": "Прийнято",
+      "language": "uk",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Ukrposhta's Ukrainian wording; universal providers relay it without the code, and the map reads it by wording."
+    },
+    {
+      "code": "20700",
+      "wording": "Прибуло до логістичного центру",
+      "language": "uk",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Ukrposhta's Ukrainian wording; universal providers relay it without the code, and the map reads it by wording."
+    },
+    {
+      "code": "20800",
+      "wording": "Виїхало з логістичного центру",
+      "language": "uk",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Ukrposhta's Ukrainian wording; universal providers relay it without the code, and the map reads it by wording."
+    },
+    {
+      "code": "20800",
+      "wording": "Виїхало з відділення",
+      "language": "uk",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Ukrposhta's Ukrainian wording; universal providers relay it without the code, and the map reads it by wording."
+    },
+    {
+      "code": "21600",
+      "wording": "Прибуло до міжнародного терміналу",
+      "language": "uk",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Ukrposhta's Ukrainian wording; universal providers relay it without the code, and the map reads it by wording."
+    },
+    {
+      "code": "82700",
+      "wording": "Підготовлено для проведення митного контролю",
+      "language": "uk",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Ukrposhta's Ukrainian wording; universal providers relay it without the code, and the map reads it by wording."
+    },
+    {
+      "code": "82800",
+      "wording": "Випущено з митного контролю для подальшої доставки",
+      "language": "uk",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Ukrposhta's Ukrainian wording; universal providers relay it without the code, and the map reads it by wording."
+    },
+    {
+      "code": "70800",
+      "wording": "Оброблено на міжнародному терміналі та прямує до країни призначення",
+      "language": "uk",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "Ukrposhta's Ukrainian wording; universal providers relay it without the code, and the map reads it by wording."
     }
   ]
 }

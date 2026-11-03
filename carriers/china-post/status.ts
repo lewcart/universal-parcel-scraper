@@ -201,7 +201,8 @@ export function chinaPostEnglish(wording: string): string | undefined {
 // office or a departure from one, whether its office is still in the wording or has become the scan's
 // place, a sorting or a dispatch to the delivering office, a flight between two cities, the closing of
 // an export dispatch, its hand-over to the carrier that flies it and the airline's receipt and
-// departure, and export customs' presentation, hold for inspection and release. Also China Post's
+// departure, the carrier's receipt and an arrival as 17TRACK words them, and export customs' presentation,
+// hold for inspection and release. Also China Post's
 // receipt of the mail, and a centre sending the parcel back, as the airport's security check does
 // ("【广州市处理中心】退回，备注:安检退回"): a problem the centre deals with before dispatching it
 // again, not a return to the sender.
@@ -215,6 +216,7 @@ const RELAYED_STAGES: ReadonlyArray<readonly [RegExp, Stage]> = [
   [/^【[^【】]+】已出口直封$/u, 'in_transit'],
   [/^(?:已交承运商运输|揽投配发)$/u, 'in_transit'],
   [/^航空公司(?:接收|启运)$/u, 'in_transit'],
+  [/^(?:承运商接收|抵达)$/u, 'in_transit'],
   [/^送交出口海关$/u, 'customs'],
   [/^出口海关\/放行$/u, 'in_transit'],
 ];

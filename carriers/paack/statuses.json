@@ -464,6 +464,22 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-07",
       "note": "Paack's page label for delivered."
+    },
+    {
+      "wording": "Driver assigned",
+      "language": "en",
+      "stage": "out_for_delivery",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "ParcelsApp's words for Paack's driverAssigned step, listed again for each round; stored as \"Courier assigned\", as the direct lookup reads it."
+    },
+    {
+      "wording": "In progress",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-11-03",
+      "note": "ParcelsApp's words for Paack's inProgress label, after the origin scan and between rounds; stored as \"In transit\"."
     }
   ]
 }

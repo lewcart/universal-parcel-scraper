@@ -202,6 +202,9 @@ describe('Paack status vocabulary', () => {
     expect(paackScan("In Paack's distribution centre")).toEqual(paackScan('In Paack’s distribution centre'));
     expect(paackScan('Out for delivery')).toEqual({ stage: 'out_for_delivery', wording: 'Out for delivery' });
     expect(paackScan('Delivered')).toEqual({ stage: 'delivered', wording: 'Delivered' });
+    // ParcelsApp's words for driverAssigned and inProgress.
+    expect(paackScan('Driver assigned')).toEqual({ stage: 'out_for_delivery', wording: 'Courier assigned' });
+    expect(paackScan('In progress')).toEqual({ stage: 'in_transit', wording: 'In transit' });
     // Exact labels only: free text is left to the shared wording rules.
     expect(paackScan('Order details received by the depot')).toBeUndefined();
     expect(paackScan('Not delivered')).toBeUndefined();

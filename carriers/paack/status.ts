@@ -77,6 +77,9 @@ const RELAYED = new Map<string, ClassifiedPaackStatus>([
   ['inpaacksdistributioncentre', ACCEPTED], // scannedAtOrigin
   ['outfordelivery', OUT_FOR_DELIVERY], // inDelivery
   ['delivered', DELIVERED], // delivered
+  // ParcelsApp's words for two of Paack's steps: driverAssigned, at each round, and inProgress.
+  ['driverassigned', COURIER_ASSIGNED],
+  ['inprogress', IN_TRANSIT],
 ]);
 
 /** The stage and stored wording of a Paack timeline label an aggregator relays. */

@@ -1,0 +1,176 @@
+{
+  "result": {
+    "data": {
+      "tracking": {
+        "id": "00000000000000000000000000000001",
+        "tracking_number": "33ZZQ482917301000931505",
+        "slug": "pdn-api",
+        "title": "33ZZQ482917301000931505",
+        "courier": {
+          "slug": "pdn-api",
+          "name": "PDN",
+          "phone": "",
+          "web_url": "https://pdn.express/",
+          "email": "",
+          "global_branch_phones": null,
+          "carrier_tracking_url_supported_variables": [
+            {
+              "name": "TRACKNO",
+              "variable": "{trackno}"
+            }
+          ],
+          "carrier_redirect_url_supported_variables": [],
+          "destination_country_phone": null,
+          "masking_type": "none"
+        },
+        "status": "InfoReceived",
+        "shipment_delivery_date": null,
+        "latest_estimated_delivery": {
+          "status": "normal",
+          "specific_datetime": null,
+          "min_datetime": "2026-03-09",
+          "max_datetime": "2026-03-13"
+        },
+        "signed_by": null,
+        "has_customer": true,
+        "has_proof_of_delivery": false,
+        "checkpoints": [
+          {
+            "status": "InfoReceived",
+            "sub_status": "InfoReceived_001",
+            "courier": {
+              "slug": "pdn-api",
+              "name": "PDN",
+              "phone": "",
+              "web_url": "https://pdn.express/",
+              "email": "",
+              "global_branch_phones": null,
+              "carrier_tracking_url_supported_variables": [
+                {
+                  "name": "TRACKNO",
+                  "variable": "{trackno}"
+                }
+              ],
+              "carrier_redirect_url_supported_variables": []
+            },
+            "slug": "pdn-api",
+            "message": "Shipping Label Created, Carrier Awaiting Item",
+            "country": null,
+            "state": null,
+            "city": null,
+            "checkpoint_time": "2026-03-02T13:40:51+10:00",
+            "location": ""
+          },
+          {
+            "status": "InfoReceived",
+            "sub_status": "InfoReceived_001",
+            "courier": {
+              "slug": "pdn-api",
+              "name": "PDN",
+              "phone": "",
+              "web_url": "https://pdn.express/",
+              "email": "",
+              "global_branch_phones": null,
+              "carrier_tracking_url_supported_variables": [
+                {
+                  "name": "TRACKNO",
+                  "variable": "{trackno}"
+                }
+              ],
+              "carrier_redirect_url_supported_variables": []
+            },
+            "slug": "pdn-api",
+            "message": "Order Ready, Awaiting Pickup by Our Shipping Partner",
+            "country": null,
+            "state": null,
+            "city": null,
+            "checkpoint_time": "2026-03-03T10:00:00+10:00",
+            "location": ""
+          }
+        ],
+        "origin_address": null,
+        "destination_address": null,
+        "carrier_tracking_link": {
+          "url": "https://pdn.express/en/track/33ZZQ482917301000931505",
+          "need_authentication": false
+        },
+        "carrier_redirect_link": {
+          "url": "https://auspost.com.au/mypost/track/details/33ZZQ482917301000931505",
+          "need_authentication": false
+        },
+        "package_count": null,
+        "fulfilled_at": null,
+        "custom_fields": {},
+        "multiple_fulfilled_carriers": {
+          "current_fulfilled_slug": "pdn-api",
+          "first_mile": {
+            "tracking_number": "33ZZQ482917301000931505",
+            "tracking_segment_id": "00000000000000000000000000000002",
+            "tracking_url": "https://pdn.express/en/track/33ZZQ482917301000931505",
+            "redirect_url": null,
+            "carrier": {
+              "slug": "pdn-api",
+              "name": "PDN",
+              "phone": "",
+              "web_url": "https://pdn.express/",
+              "email": "",
+              "global_branch_phones": null,
+              "carrier_tracking_url_supported_variables": [
+                {
+                  "name": "TRACKNO",
+                  "variable": "{trackno}"
+                }
+              ],
+              "carrier_redirect_url_supported_variables": [],
+              "destination_country_phone": null,
+              "masking_type": "none"
+            }
+          },
+          "last_mile": {
+            "tracking_number": "33ZZQ482917301000931505",
+            "tracking_segment_id": "00000000000000000000000000000003",
+            "tracking_url": "https://auspost.com.au/mypost/track/details/33ZZQ482917301000931505",
+            "redirect_url": "https://auspost.com.au/mypost/track/details/33ZZQ482917301000931505",
+            "carrier": {
+              "slug": "australia-post",
+              "name": "Australia Post",
+              "phone": "+61 3 0000 0000",
+              "web_url": "https://auspost.com.au/",
+              "email": "",
+              "global_branch_phones": null,
+              "carrier_tracking_url_supported_variables": [
+                {
+                  "name": "TRACKNO",
+                  "variable": "{trackno}"
+                }
+              ],
+              "carrier_redirect_url_supported_variables": [
+                {
+                  "name": "TRACKNO",
+                  "variable": "{trackno}"
+                }
+              ],
+              "destination_country_phone": "+61 3 0000 0000",
+              "masking_type": "none"
+            }
+          }
+        },
+        "delivery_location": null,
+        "service_name": "",
+        "failed_delivery_attempts": 0,
+        "dimensions": null,
+        "weight": null,
+        "pickup_location": null,
+        "subscribed_messengers_count": 0,
+        "timezone": {
+          "destination_address_timezone": "Australia/Sydney"
+        },
+        "return_shipment": {},
+        "order_digest": {
+          "has_order": false,
+          "has_items": false
+        }
+      }
+    }
+  }
+}

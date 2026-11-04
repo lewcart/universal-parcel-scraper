@@ -1,0 +1,19 @@
+{
+  "carrier": "portless",
+  "entries": [
+    {
+      "code": "InfoReceived_001",
+      "wording": "Shipping Label Created, Carrier Awaiting Item",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "InfoReceived_001",
+      "wording": "Order Ready, Awaiting Pickup by Our Shipping Partner",
+      "stage": "registered",
+      "language": "en",
+      "confirmedBy": "live"
+    }
+  ]
+}

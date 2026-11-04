@@ -36347,6 +36347,35 @@
     ],
     "detectionRules": []
   },
+  "portless": {
+    "displayName": "Portless",
+    "color": "#1e4fd0",
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "portless"
+    },
+    "canaryUrl": "https://ordertrackingupdate.aftership.com/",
+    "trackingUrlTemplate": "https://ordertrackingupdates.com/track/{trackingNumber}",
+    "trackingSearchUrl": "https://ordertrackingupdate.aftership.com/",
+    "trackingSiteName": "AfterShip",
+    "linkRules": [
+      {
+        "domains": [
+          "ordertrackingupdates.com"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "ordertrackingupdate.aftership.com"
+        ],
+        "path": "^/(?:pdn-api/)?([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "pos-indonesia": {
     "displayName": "Pos Indonesia",
     "color": "#1b2c5a",

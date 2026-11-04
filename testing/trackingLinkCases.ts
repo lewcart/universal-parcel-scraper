@@ -2076,6 +2076,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'go-logistics-au', number: '9999999999',
     route: /^https:\/\/services\.gologistics\.com\.au\/track\/iframe2\.php\?item=9999999999$/,
     marker: /Coupon\/Consignment Tracking/ },
+  // The link redirects to Portless's page on AfterShip, which asks its lookup for the number in its path and says
+  // it cannot find an order the lookup does not hold, without repeating the number.
+  { carrier: 'portless', number: 'ZZQ4829173019',
+    route: /^https:\/\/ordertrackingupdate\.aftership\.com\/ZZQ4829173019$/,
+    marker: /We couldn’t find your order/,
+    forwarding: { notFound: /We couldn’t find your order/ } },
   // The tracker's page repeats the consignment in its con parameter, with one row saying no consignment was found.
   { carrier: 'tnt-au', number: 'TNA000000009',
     route: /^https:\/\/www\.tntexpress\.com\.au\/interaction\/ASPs\/trackref_detail\.asp\?con=TNA000000009$/,

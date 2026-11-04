@@ -485,6 +485,7 @@ import { adapter as pitneyBowes } from '../carriers/pitney-bowes/adapter.js';
 import { adapter as pittOhio } from '../carriers/pitt-ohio/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
 import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
+import { adapter as portless } from '../carriers/portless/adapter.js';
 import { adapter as posIndonesia } from '../carriers/pos-indonesia/adapter.js';
 import { adapter as posMalaysia } from '../carriers/pos-malaysia/adapter.js';
 import { adapter as postHaste } from '../carriers/post-haste/adapter.js';
@@ -1196,6 +1197,7 @@ export const REGISTRY: RegistryDefinition = {
     "pitt-ohio": pittOhio,
     "planzer": planzer,
     "poczta-polska": pocztaPolska,
+    "portless": portless,
     "pos-indonesia": posIndonesia,
     "pos-malaysia": posMalaysia,
     "post-haste": postHaste,
@@ -2334,6 +2336,7 @@ export const REGISTRY: RegistryDefinition = {
     "polonez": "universal",
     "pony-express": "universal",
     "porlor": "universal",
+    "portless": "portless",
     "pos-indonesia": "pos-indonesia",
     "pos-malaysia": "pos-malaysia",
     "post-haste": "post-haste",

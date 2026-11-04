@@ -1,0 +1,81 @@
+{
+  "id": "portless",
+  "displayName": "Portless",
+  "aliases": [],
+  "region": {
+    "countries": []
+  },
+  "brand": {
+    "color": "#1e4fd0"
+  },
+  "selectable": true,
+  "timezone": "UTC",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "portless",
+    "steps": [
+      "direct",
+      "retry"
+    ]
+  },
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "eta",
+    "eta_window",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
+  "portal": {
+    "url": "https://ordertrackingupdates.com/track/{trackingNumber}",
+    "searchUrl": "https://ordertrackingupdate.aftership.com/",
+    "siteName": "AfterShip",
+    "canaryUrl": "https://ordertrackingupdate.aftership.com/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta_window",
+      "delivery_partner",
+      "signatory",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "eta_window",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "signatory",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "service_name"
+    ]
+  },
+  "links": [
+    {
+      "domains": [
+        "ordertrackingupdates.com"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "ordertrackingupdate.aftership.com"
+      ],
+      "path": "^/(?:pdn-api/)?([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

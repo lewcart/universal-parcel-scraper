@@ -36351,6 +36351,35 @@ export const CARRIER_CATALOG: Readonly<Record<CarrierId, CarrierDefinition>> = {
     ],
     "detectionRules": []
   },
+  "portless": {
+    "displayName": "Portless",
+    "color": "#1e4fd0",
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "portless"
+    },
+    "canaryUrl": "https://ordertrackingupdate.aftership.com/",
+    "trackingUrlTemplate": "https://ordertrackingupdates.com/track/{trackingNumber}",
+    "trackingSearchUrl": "https://ordertrackingupdate.aftership.com/",
+    "trackingSiteName": "AfterShip",
+    "linkRules": [
+      {
+        "domains": [
+          "ordertrackingupdates.com"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "ordertrackingupdate.aftership.com"
+        ],
+        "path": "^/(?:pdn-api/)?([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "pos-indonesia": {
     "displayName": "Pos Indonesia",
     "color": "#1b2c5a",
@@ -51426,6 +51455,7 @@ export const CARRIER_IDS = [
   "polonez",
   "pony-express",
   "porlor",
+  "portless",
   "pos-indonesia",
   "post-haste",
   "post-luxembourg",
@@ -52768,6 +52798,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "polonez": ["polonez-1"],
   "pony-express": [],
   "porlor": [],
+  "portless": [],
   "pos-indonesia": ["pos-indonesia-1","pos-indonesia-s10"],
   "post-haste": [],
   "post-luxembourg": ["post-luxembourg-s10"],

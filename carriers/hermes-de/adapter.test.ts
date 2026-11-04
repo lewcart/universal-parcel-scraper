@@ -128,6 +128,23 @@ describe('Hermes Germany', () => {
     expect(parseHermesGermanyResponse(payload('SORTED', { eta: '2026-09-04' }), NUMBER).expected_delivery).toBe('2026-09-04');
   });
 
+  it('reads the forecast as a Berlin day, a slot on Berlin\'s clock or a span of days', () => {
+    const forecast = (from: string, to: string, extra: Record<string, unknown> = {}) => parseHermesGermanyResponse([{
+      barcode: NUMBER, forecast: { deliveryTimeFromUTC: from, deliveryTimeToUTC: to }, ...extra,
+      parcelProgress: [{ parcelStatus: 'SORTED', timestamp: '2026-11-02T09:00:00Z' }] }], NUMBER);
+    const day = forecast('2026-11-04T23:00:00Z', '2026-11-05T22:59:59.999Z');
+    expect(day.expected_delivery).toBe('2026-11-05');
+    expect(day).not.toHaveProperty('expected_delivery_from');
+    expect(forecast('2026-07-08T22:00:00Z', '2026-07-09T21:59:59.999Z').expected_delivery).toBe('2026-07-09');
+    expect(forecast('2026-11-05T09:00:00Z', '2026-11-05T12:59:59.999Z')).toMatchObject({
+      expected_delivery_from: '2026-11-05T10:00:00+01:00', expected_delivery: '2026-11-05T14:00:00+01:00' });
+    expect(forecast('2026-11-04T23:00:00Z', '2026-11-06T22:59:59.999Z')).toMatchObject({
+      expected_delivery_from: '2026-11-05', expected_delivery: '2026-11-06' });
+    // The forecast comes before an older estimate field, and a reversed one gives none.
+    expect(forecast('2026-11-04T23:00:00Z', '2026-11-05T22:59:59.999Z', { eta: '2026-11-09' }).expected_delivery).toBe('2026-11-05');
+    expect(forecast('2026-11-05T12:00:00Z', '2026-11-05T09:00:00Z').expected_delivery).toBeNull();
+  });
+
   it('keeps scans of one instant in the carrier\'s order', () => {
     const payload = [{ barcode: NUMBER, parcelProgress: [{ parcelStatus: 'SORTED', timestamp: '2026-09-02T09:00:00Z' },
       { parcelStatus: 'HANDED_OVER', timestamp: '2026-09-03T07:00:00Z' }, { parcelStatus: 'DELIVERY_TOUR_STARTED', timestamp: '2026-09-03T07:00:00Z' }] }];

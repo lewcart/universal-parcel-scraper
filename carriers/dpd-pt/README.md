@@ -38,9 +38,9 @@ Portugal. It runs its own tracker on `tracking.dpd.pt`, apart from the `dpd.com`
   unless an earlier scan already moved it, as at the pickup point where the sender dropped it.
   Once a return to the sender is ordered, the proof of delivery is the delivery back to the
   sender, so the parcel is returned. Messages to the recipient and requests for a new delivery
-  or address keep the stage of the scan before them. The row giving the expected delivery day
-  is left out: its day and time are when DPD set it, so as a step it would show a day the
-  parcel was not due.
+  or address keep the stage of the scan before them. The expected delivery day row (714) names
+  no day: its date and time are when DPD set one, and its comment holds at most a country code.
+  It is left out, since as a step it would show a day the parcel was not due.
 - The comment column mixes the receiver's name, delivery windows, depot numbers, country
   codes, pickup point codes and references. Only the name the pickup point's own scan gives
   is kept, as the pickup point of a parcel that waits there or was collected there, and the
@@ -53,8 +53,8 @@ Portugal. It runs its own tracker on `tracking.dpd.pt`, apart from the `dpd.com`
 
 ## Limitations
 
-- No places, weight, sender or service. The expected delivery day row (714) is left out, and
-  no delivery estimate is given before the delivery-day message.
+- No places, weight, sender or service, and no delivery estimate before the delivery-day
+  message.
 - Older parcels drop out of the tracker, which then gives its not-found notice for them.
 
 ## Numbers

@@ -45,7 +45,7 @@ export const DPD_PT_RETURN = '424';
 export const DPD_PT_POINT_RECEIPT = '002';
 /** The message giving the recipient the delivery's hour on its day; the comment column holds the window. */
 export const DPD_PT_WINDOW = '706';
-/** The expected delivery day, dated when DPD set it rather than with the day: the history leaves it out. */
+/** The notice that DPD set an expected delivery day, dated then and naming no day: the history leaves it out. */
 export const DPD_PT_FORECAST = '714';
 
 // Messages to the recipient and requests for a new delivery or address: no
@@ -53,7 +53,7 @@ export const DPD_PT_FORECAST = '714';
 const NOTICES: ReadonlyMap<string, string> = new Map([
   ['706', 'A message giving the recipient a delivery window; it moves nothing.'],
   ['709', 'A message telling the recipient of the next delivery; it moves nothing.'],
-  ['714', 'The expected delivery day, which the history leaves out; it moves nothing.'],
+  ['714', 'DPD set an expected delivery day, which the row does not name; the history leaves it out and it moves nothing.'],
   ['741', 'A request for a new delivery; the scans after it show what happened.'],
   ['743', 'A request to change the address; the scans after it show what happened.'],
 ]);

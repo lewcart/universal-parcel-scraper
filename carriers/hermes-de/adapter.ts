@@ -47,6 +47,33 @@ function etaDate(value: unknown): string | null {
   return Number.isFinite(millis) ? new Date(millis).toISOString().slice(0, 10) : null;
 }
 
+type Estimate = Pick<CarrierResult, 'expected_delivery' | 'expected_delivery_from'>;
+
+/**
+ * The delivery Hermes forecasts, between `forecast`'s two UTC instants. Ends that span a whole
+ * Berlin day give the day, a narrower slot within one day its two instants on Berlin's clock,
+ * and ends on two days those days.
+ */
+function forecastEstimate(value: unknown): Estimate | null {
+  if (!isRecord(value)) return null;
+  const at = (raw: unknown) => {
+    const text = clean(raw, 64);
+    const time = text ? DateTime.fromISO(text, { zone: 'utc' }).setZone('Europe/Berlin') : null;
+    return time?.isValid ? time : null;
+  };
+  const from = at(value.deliveryTimeFromUTC);
+  const to = at(value.deliveryTimeToUTC);
+  if (!from || !to) return from || to ? { expected_delivery: (from ?? to)!.toISODate() } : null;
+  if (to < from) return null;
+  // An end a millisecond before a minute, as a day's 23:59:59.999, closes at that minute.
+  const end = to.millisecond === 999 ? to.plus({ milliseconds: 1 }) : to.startOf('second');
+  const start = from.startOf('second');
+  const lastDay = end.minus({ milliseconds: 1 }).toISODate();
+  if (start.toISODate() !== lastDay) return { expected_delivery_from: start.toISODate(), expected_delivery: lastDay };
+  if (start.equals(start.startOf('day')) && end.equals(start.plus({ days: 1 }).startOf('day'))) return { expected_delivery: lastDay };
+  return { expected_delivery_from: start.toISO({ suppressMilliseconds: true }), expected_delivery: end.toISO({ suppressMilliseconds: true }) };
+}
+
 /** Kept as a named class: the grouped live suite asserts this error's name. */
 export class HermesGermanyTrackingError extends NotFoundError {
   constructor() {
@@ -209,7 +236,8 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
   const atg = isRecord(parcel.atg) ? parcel.atg : {};
   const sender = clean(atg.companyName) || null;
   // `parcelAttributes.deliveredTimestamp` records a delivery that happened, never an estimate.
-  const eta = etaDate(parcel.eta ?? parcel.deliveryForecast);
+  const day = etaDate(parcel.eta ?? parcel.deliveryForecast);
+  const eta = forecastEstimate(parcel.forecast) ?? (day ? { expected_delivery: day } : null);
   // The tracking page offers the Hermes Box pickup code while
   // `readyForParcelBoxCollection` is true: the parcel waits in the locker,
   // even when the newest row or the delivered flag reads as a delivery.
@@ -253,7 +281,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
     current_stage: stage,
     last_status_text: latest.event.description,
     last_update: latest.event.time,
-    expected_delivery: delivered || stage === 'returned' ? null : eta,
+    ...(delivered || stage === 'returned' || !eta ? { expected_delivery: null } : eta),
     timezone: 'Europe/Berlin',
     ...(sender ? { sender_name: sender } : {}),
     ...(deliveredAt && status === 'delivered' ? { delivered_at: deliveredAt } : {}),

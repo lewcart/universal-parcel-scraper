@@ -105,6 +105,11 @@ tracking page shows them in the visitor's zone like Hermes's own.
   `address` block, read only when its `addressType` is `PARCELSHOP` and the
   newest row says the parcel waits there or was collected there. A booked shop
   the parcel never reached gives none.
+- The estimate is `forecast`, two UTC instants (`deliveryTimeFromUTC`,
+  `deliveryTimeToUTC`). Ends spanning a whole Berlin day give that day, a
+  narrower slot within one day `expected_delivery_from` and `expected_delivery`
+  on Berlin's clock, and ends on two days those days. A delivered or returned
+  parcel has none.
 - Display text is `historyText`, with the mapped milestone description as
   fallback. The row's `status` field only holds generic buckets
   (`HAPPY`/`FINISHED`).

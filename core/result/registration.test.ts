@@ -59,6 +59,20 @@ describe('late registrations', () => {
     expect(readLateRegistrations(result(events))).toEqual(result(events));
   });
 
+  it('leaves a registration within a minute after the first movement, and reads one later in transit', () => {
+    const events = [scan('2030-01-10T10:01:01Z', 'Shipment information received', 'registered'),
+      scan('2030-01-10T10:01:00Z', 'Shipping label created', 'registered'), scan('2030-01-10T10:00:04Z', 'Order data received', 'registered'),
+      scan('2030-01-10T10:00:00Z', 'Arrived at the sorting centre', 'in_transit'), scan('2030-01-09T10:00:00Z', 'Order created', 'registered')];
+    expect(stages(readLateRegistrations(result(events))).map(([, stage]) => stage))
+      .toEqual(['in_transit', 'registered', 'registered', 'in_transit', 'registered']);
+    // Newest, it stays registered, and the result does not step back.
+    const newest = events.slice(2);
+    const answer = readLateRegistrations(result(newest, { status: 'pending', current_stage: 'registered' }));
+    expect(stages(answer).map(([, stage]) => stage)).toEqual(['registered', 'in_transit', 'registered']);
+    expect(answer).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(readLateRegistrations(answer)).toEqual(answer);
+  });
+
   it('takes no movement from a customs filing, a problem or a scan no rule read', () => {
     const events = [scan('2030-01-11T10:00:00Z', 'Shipping label created', 'registered'),
       scan('2030-01-10T12:00:00Z', 'Electronic customs data sent', 'customs'), scan('2030-01-10T11:00:00Z', 'Label voided', 'exception'),

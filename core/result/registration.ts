@@ -11,6 +11,8 @@ import type { CarrierEvent, CarrierResult } from './index.js';
 const stages = new Set<string>(STAGES);
 /** Stages that show the parcel has moved. A customs filing or a problem can come before it has. */
 const MOVED = new Set<Stage>(['accepted', 'in_transit', 'out_for_delivery', 'failed_attempt', 'ready_for_pickup', 'delivered', 'returned']);
+/** How long after the first movement a registration is still that moment's record. */
+const SAME_MOMENT_MS = 60_000;
 const WALL_CLOCK = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/;
 
 /** The stage a scan is read in, as the consumer reads it: declared, else by its wording. Null when no map or rule read it. */
@@ -41,9 +43,11 @@ export function clocks(events: readonly unknown[]): (number | null)[] {
  * A registration (a label created, data received, a pre-advice) dated after a scan that moved
  * the parcel, such as a partner's label or a line's order row written once the parcel is on its
  * way, is no step back: it is in transit, even after an acceptance, since a label is not one.
- * One dated first, or at the instant of the first movement, stays registered. Its stage then
+ * One dated first, or within a minute after the first movement, stays registered: a copy a
+ * provider dates seconds after the scan it came with is that scan's record. Its stage then
  * comes from this reading of the carrier's sequence, so its source is `carrier_map`. A result
- * whose current stage is registered for its newest scan, read so, takes that scan's stage.
+ * whose current stage is registered for its newest scan, a registration after a movement, is
+ * in transit.
  */
 export function readLateRegistrations(result: CarrierResult): CarrierResult {
   const events: unknown[] = Array.isArray(result.events) ? result.events : [];
@@ -51,20 +55,25 @@ export function readLateRegistrations(result: CarrierResult): CarrierResult {
   const read = events.map(reading);
   const at = clocks(events);
   const order = events.flatMap((_, index) => at[index] === null ? [] : [index]).sort((left, right) => at[left]! - at[right]!);
+  const late = new Set<number>();
   const settled = new Set<number>();
-  let moved = false;
+  let movedAt: number | null = null;
   for (let start = 0; start < order.length;) {
     let end = start;
     while (end < order.length && at[order[end]!] === at[order[start]!]) end++;
     const together = order.slice(start, end);
-    for (const index of together) if (moved && read[index] === 'registered') settled.add(index);
-    if (together.some(index => MOVED.has(read[index] as Stage))) moved = true;
+    for (const index of together) {
+      if (movedAt === null || read[index] !== 'registered') continue;
+      late.add(index);
+      if (at[index]! - movedAt > SAME_MOMENT_MS) settled.add(index);
+    }
+    if (movedAt === null && together.some(index => MOVED.has(read[index] as Stage))) movedAt = at[order[start]!]!;
     start = end;
   }
-  if (!settled.size) return result;
+  if (!late.size) return result;
   const newest = order.filter(index => at[index] === at[order.at(-1)!]);
-  const headline = result.current_stage === 'registered' && newest.some(index => settled.has(index))
-    && newest.every(index => read[index] !== 'registered' || settled.has(index));
+  const headline = result.current_stage === 'registered' && newest.some(index => late.has(index))
+    && newest.every(index => read[index] !== 'registered' || late.has(index));
   return {
     ...result,
     ...(headline ? { current_stage: 'in_transit', current_stage_source: 'carrier_map', ...(result.status === 'pending' ? { status: 'in_transit' } : {}) } : {}),

@@ -819,6 +819,38 @@ describe('BRT through the DPD group while its tracker is down', () => {
     expect(group).not.toHaveBeenCalled();
   });
 
+  it('asks the group once for the estimate of a BRTcode on its way, and adds only that', async () => {
+    // BRT's own shipment, out for delivery on its day 14.01, without the locker's scans.
+    const onTheWay = edit($ => $('.table_stato_dati tr').slice(1, 3).remove());
+    const dated = (expected_delivery: string) => ({ ...answer(milestone('IN_TRANSIT', 'Your parcel is on its way', '2026-01-13T22:56:06+01:00')), expected_delivery });
+    const group = vi.fn<BrtOriginLookup>(async () => dated('2026-01-14'));
+    const tracker = (body: string) => new BrtTracker({ fetcher: vi.fn<typeof fetch>(async () => response(body)), group });
+    const own = parseBrt(onTheWay, NUMBER);
+    expect(own).toMatchObject({ current_stage: 'out_for_delivery' });
+    expect(own).not.toHaveProperty('expected_delivery');
+    expect(await tracker(onTheWay).fetch(NUMBER, { budgetMs: 10_000 })).toEqual({ ...own, expected_delivery: '2026-01-14' });
+    expect(group).toHaveBeenCalledTimes(1);
+    expect(group.mock.calls[0]![0]).toBe(NUMBER);
+    expect(group.mock.calls[0]![1].budgetMs).toBeLessThan(10_000);
+    // A day BRT's scans have passed, or no answer, leaves BRT's.
+    group.mockResolvedValueOnce(dated('2026-01-13'));
+    expect(await tracker(onTheWay).fetch(NUMBER)).toEqual(own);
+    group.mockRejectedValueOnce(new IndeterminateError('BRT', 'DPD returned no Italian country evidence'));
+    expect(await tracker(onTheWay).fetch(NUMBER)).toEqual(own);
+    // A delivered parcel, one waiting at a locker, and one the DPD network delivers abroad ask no one.
+    group.mockClear();
+    const atLocker = edit($ => $('.table_stato_dati tr').slice(1, 2).remove());
+    const abroad = edit($ => {
+      $('.table_dati_spedizione tr').last().remove();
+      $('.table_dati_spedizione').append('<tr><td class="bold">Parcel number dpd</td><td>09980000000001</td></tr>');
+      $('.table_stato_dati tr').slice(1, 3).remove();
+      $('.table_stato_dati tr').eq(1).children('td').eq(2).text('DPD DE SAMPLE (990)');
+    });
+    expect(parseBrt(abroad, NUMBER)).toMatchObject({ current_stage: 'out_for_delivery', delivery_carrier: 'dpd-de' });
+    for (const body of [html, atLocker, abroad]) await tracker(body).fetch(NUMBER);
+    expect(group).not.toHaveBeenCalled();
+  });
+
   it('reads the guest service as BRT\'s unit for a parcel DPD places in Italy, and nowhere else', async () => {
     const routed = (details: () => Response) => vi.fn<typeof fetch>(async (input) => {
       const url = String(input);

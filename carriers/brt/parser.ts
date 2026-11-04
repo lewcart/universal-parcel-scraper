@@ -346,7 +346,7 @@ function dayOf(value: unknown): string {
  * delivered, returned or left at a pickup point, until BRT scans the parcel on a later day:
  * DPD's guest service answers for the whole group and dates the delivery in Italy.
  */
-function withPartnerEstimate(result: CarrierResult, partner: CarrierResult): CarrierResult {
+export function withPartnerEstimate(result: CarrierResult, partner: CarrierResult): CarrierResult {
   const expected = dayOf(partner.expected_delivery);
   const newest = result.events?.[0];
   if (!expected || result.expected_delivery || result.status === 'delivered'

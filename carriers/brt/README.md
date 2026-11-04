@@ -77,6 +77,13 @@ leg, and the hand-over is to BRT. The portal archives a parcel after thirty days
 answer leaves the outage, so enabled providers answer. Shipment numbers and parcel IDs have
 no such route.
 
+BRT's page gives no delivery estimate for its own shipments either. While a BRTcode no
+partner brought is on its way (accepted, in transit, in customs or out for delivery) and no
+DPD network abroad delivers it, tracking also asks the DPD group's guest service, as
+BRT's unit, and adds only its estimate, under the same rules as a partner's. The service
+answers only for a parcel DPD places in Italy. Shipment numbers and parcel IDs have no such
+route, and recognition reads BRT alone.
+
 BRT also sends parcels abroad through the DPD network. For a shipment of one
 parcel that started at one of BRT's depots and names no delivering depot in
 Italy, the detail gives the parcel's DPD number ("Parcel number dpd"). Once the

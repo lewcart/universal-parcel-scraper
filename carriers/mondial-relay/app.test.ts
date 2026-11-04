@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { EventEmitter } from 'node:events';
+import { readFileSync } from 'node:fs';
 import { request } from 'node:https';
 import { describe, expect, it, vi } from 'vitest';
 import { TrawlClient } from '../../core/transport/index.js';
@@ -234,14 +235,38 @@ describe('Mondial Relay app service', () => {
 describe('Mondial Relay app step', () => {
   const trawlServiceUrl = 'http://trawl.internal:8191/scrape';
 
-  it('answers from the app without the browser and links the postcode-free tracking page', async () => {
-    const { calls, client } = service();
-    const fetcher = () => Promise.reject(new Error('no browser'));
-    const result = await new MondialRelayTracker({ app: client, trawl: new TrawlClient(trawlServiceUrl, fetcher), fetcher })
+  it('answers from the app and links the postcode-free tracking page, with no browser for a parcel no longer on its way', async () => {
+    for (const hint of ['Colis disponible au Locker', 'Colis livré au destinataire']) {
+      const { client } = service({ detail: [() => json(detail(UID, hint))] });
+      const browser = vi.fn<typeof fetch>(() => Promise.reject(new Error('no browser')));
+      const result = await new MondialRelayTracker({ app: client, trawl: new TrawlClient(trawlServiceUrl, browser), fetcher: browser })
+        .fetch(SHIPMENT, POSTCODE);
+      expect(result).toMatchObject({ tracking_source: 'mobile-app-response', expected_delivery: null,
+        tracking_url: `https://www.mondialrelay.fr/suivi-de-colis/?numeroExpedition=${SHIPMENT}` });
+      expect(browser).not.toHaveBeenCalled();
+    }
+  });
+
+  it('adds the website’s estimate to the app’s answer for a parcel on its way, which stands without it', async () => {
+    const website = JSON.parse(readFileSync(new URL('./fixtures/available-at-relay.json', import.meta.url), 'utf8')) as { Expedition: Record<string, unknown> };
+    website.Expedition.Numero = SHIPMENT;
+    const replies = [
+      { tier: 3, statusCode: 200, url: 'https://www.mondialrelay.fr/suivi-de-colis/', html: '<div id="tracking" token="SYNTHETIC_PAGE_TOKEN_1234567890"></div>' },
+      { tier: 3, statusCode: 200, url: `https://www.mondialrelay.fr/api/tracking?shipment=${SHIPMENT}&postcode=${POSTCODE}&brand=&codePays=fr`, html: `<pre>${JSON.stringify(website)}</pre>` },
+    ];
+    const browser = vi.fn<typeof fetch>(() => Promise.resolve(json(replies.shift())));
+    const { client } = service();
+    const app = await new MondialRelayTracker({ app: client, trawl: null }).fetch(SHIPMENT, POSTCODE);
+    const result = await new MondialRelayTracker({ app: service().client, trawl: new TrawlClient(trawlServiceUrl, browser), fetcher: browser })
       .fetch(SHIPMENT, POSTCODE);
-    expect(result).toMatchObject({ status: 'out_for_delivery', tracking_source: 'mobile-app-response',
-      tracking_url: `https://www.mondialrelay.fr/suivi-de-colis/?numeroExpedition=${SHIPMENT}` });
-    expect(calls.every(call => !call.url.href.startsWith('http://trawl'))).toBe(true);
+    // The website's two requests, then only its estimate: the app's history, status and source stay.
+    expect(browser).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({ ...app, expected_delivery: '2026-08-31' });
+
+    const failing = vi.fn<typeof fetch>(() => Promise.reject(new Error('browser unavailable')));
+    await expect(new MondialRelayTracker({ app: service().client, trawl: new TrawlClient(trawlServiceUrl, failing), fetcher: failing })
+      .fetch(SHIPMENT, POSTCODE)).resolves.toEqual(app);
+    expect(failing).toHaveBeenCalled();
   });
 
   it('searches the app with a Portuguese postcode as the website takes it, hyphenated', async () => {

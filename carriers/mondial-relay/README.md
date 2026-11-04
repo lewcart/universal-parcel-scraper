@@ -25,6 +25,11 @@ so only the Spanish names resolve here. InPost Spain's own `FV` numbers are read
      dated events of each milestone, then the highest dated milestone.
    - Any failure (refused sign-in, rate limit, unexpected reply) hands the
      lookup to `trawl`.
+   - The app gives no delivery estimate. For a parcel on its way (accepted, in
+     transit, in customs or out for delivery) the website is read too, through
+     `trawl`'s two requests, and only its estimate is added: one browser session
+     per such lookup. Without a browser service, or when the website fails, the
+     app's answer stands without an estimate.
 2. `trawl`: two requests through the browser service, on one
    solved identity.
    - Load `/suivi-de-colis/` and read the `token` attribute of `#tracking` from
@@ -108,7 +113,6 @@ shipment → `SchemaError`.
 - Website timestamps are offset-less Paris wall-clock. A bare calendar day stays
   a day. The estimate is reduced to a day and dropped once delivered or in
   exception. App timestamps are UTC instants, shown on Paris clocks.
-- The app gives no delivery estimate, so app answers have none.
 - Neither source has a place field for a scan. A scan at a logistics site names
   it in its wording ("sur notre site logistique de METZ", "sur le site METZ",
   "depuis le site METZ"), and that name becomes the scan's location, without a

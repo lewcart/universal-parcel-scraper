@@ -6,12 +6,14 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { ChronopostTracker } from '../chronopost/adapter.js';
 import { DPDTracker } from '../dpd/adapter.js';
-import { brtParcelListPath, groupShipment, normalizeBrtNumber, partnerShipment, readBrt, stagedDpdLeg, withOriginLeg, type BrtOriginPartner } from './parser.js';
+import { brtParcelListPath, groupShipment, normalizeBrtNumber, partnerShipment, readBrt, stagedDpdLeg, withOriginLeg, withPartnerEstimate, type BrtOriginPartner } from './parser.js';
 import { brtEnglishLabel } from './status.js';
 
 const BASE = 'https://vas.brt.it/vas/';
 /** The time kept for BRT's own answer when a partner's lookup runs out. */
 const ORIGIN_RESERVE_MS = 500;
+/** The stages of a parcel on its way, whose estimate the DPD group's guest service gives. */
+const ON_THE_WAY = new Set(['accepted', 'in_transit', 'customs', 'out_for_delivery']);
 
 /** A partner's lookup of the number BRT tracks a parcel under. */
 export type BrtOriginLookup = (number: string, context: TrackingContext) => Promise<CarrierResult>;
@@ -87,13 +89,22 @@ export class BrtTracker {
       const { result, partner } = read;
       const lookup = number.length === 14 && partner && this.options.origins?.[partner];
       const budget = Math.floor(deadline - performance.now() - ORIGIN_RESERVE_MS);
-      if (!lookup || budget <= 0) return result;
-      // The partner's leg adds to BRT's answer, which stands without it.
-      const leg = await lookup(number, { signal, budgetMs: budget }).catch(() => {
+      if (budget <= 0) return result;
+      const partnerAnswer = async (ask: BrtOriginLookup) => ask(number, { signal, budgetMs: budget }).catch(() => {
         context.signal?.throwIfAborted();
         return null;
       });
-      return leg ? withOriginLeg(result, leg) : result;
+      if (lookup) {
+        // The partner's leg adds to BRT's answer, which stands without it.
+        const leg = await partnerAnswer(lookup);
+        return leg ? withOriginLeg(result, leg) : result;
+      }
+      // BRT's page gives no delivery estimate. While the parcel is on its way, the DPD group's
+      // guest service, which dates a BRTcode it places in Italy, adds only its estimate.
+      const group = this.options.group;
+      if (number.length !== 14 || !group || result.delivery_carrier || !ON_THE_WAY.has(String(result.current_stage))) return result;
+      const dated = await partnerAnswer(group);
+      return dated ? withPartnerEstimate(result, dated) : result;
     } }, {
       id: 'partner',
       // A BRTcode BRT has not processed names no partner yet. Chronopost or the

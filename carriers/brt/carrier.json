@@ -32,6 +32,7 @@
   "capabilities": [
     "history",
     "location",
+    "eta",
     "weight",
     "delivery_partner",
     "delivery_tracking_number"

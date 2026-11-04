@@ -32,6 +32,10 @@ const MAX_TRAWL_BYTES = 10_000_000;
 const DEFAULT_TIMEOUT_MS = 90_000;
 /** The app answers in about a second; past this the website gets the rest of the budget. */
 const DEFAULT_DIRECT_TIMEOUT_MS = 10_000;
+/** The time kept for the app's answer when the website's estimate runs out. */
+const APP_RESERVE_MS = 500;
+/** The stages of a parcel on its way, whose app answer the website's estimate completes. */
+const ON_THE_WAY = new Set(['accepted', 'in_transit', 'customs', 'out_for_delivery']);
 const ZONE = 'Europe/Paris';
 const CREDENTIAL_MESSAGE = 'Mondial Relay tracking requires a 26-digit label barcode, a 10- or 12-digit shipment '
   + 'number, an 8-digit shipment number with the recipient postcode, or an InPost Spain number (FV and eight digits)';
@@ -464,10 +468,19 @@ export class MondialRelayTracker {
         id: 'app',
         enabled: app !== null,
         run: async ({ remainingMs, signal }) => {
+          const deadline = performance.now() + remainingMs;
           // The app filters on the recipient postcode only; a label barcode is its own proof.
           const query = { shipment: credential.shipment, postcode: credential.barcode ? '' : credential.postcode };
-          const result = await app!.track(query, { signal, timeoutMs: Math.min(remainingMs, this.directTimeoutMs) });
-          return this.#link(result, credential, 'mobile-app-response');
+          const result = this.#link(await app!.track(query, { signal, timeoutMs: Math.min(remainingMs, this.directTimeoutMs) }),
+            credential, 'mobile-app-response');
+          if (!trawl || !ON_THE_WAY.has(String(result.current_stage))) return result;
+          // The app gives no delivery estimate and the website does: for a parcel on its way, its
+          // answer adds the estimate to the app's, which stands without it.
+          const website = await this.#trawlResult(trawl, credential, deadline - APP_RESERVE_MS, signal).catch(() => {
+            context.signal?.throwIfAborted();
+            return null;
+          });
+          return website?.expected_delivery ? { ...result, expected_delivery: website.expected_delivery } : result;
         },
       },
       {

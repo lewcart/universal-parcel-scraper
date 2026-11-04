@@ -2,6 +2,7 @@
 import { DateTime } from 'luxon';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, onTestFinished, vi } from 'vitest';
+import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { carrierErrorKind } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
@@ -196,6 +197,14 @@ describe('17TRACK result parsing', () => {
       { ...postalScan('InTransit_Other', 'Shipment accepted at DHL shipping terminal'), stage: 'InTransit' },
     ]), number);
     expect(result.events?.map((scan) => scan.stage)).toEqual(['in_transit', 'accepted']);
+  });
+
+  it("reads DobroPost's record of a parcel its customer announced as registered, with or without a code", () => {
+    const announced = 'Виртуальная посылка';
+    const result = parse17TrackResponse(postalHistory([postalScan('', announced)]), number);
+    expect(result.events?.[0]).toMatchObject({ stage: 'registered', stage_source: 'wording:provider' });
+    expect(statusMapAnswer({ carrier: 'unknown', providerCode: null, description: announced }))
+      .toEqual({ kind: 'mapped', stage: 'registered' });
   });
 
   it("reads the place China Post's feed gives after a status, and no place for a status alone", () => {

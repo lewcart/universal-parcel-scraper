@@ -253,6 +253,9 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   if (/^the consignment (?:left the logistics hub|is being prepared for delivery)[.!]?$/i.test(description)) return 'in_transit';
   if (/^the consignment was deposited(?: - addressee not at home| to balíkovna)[.!]?$/iu.test(description)) return 'ready_for_pickup';
   if (/^the consignment was sent back(?: to the sender)? - the consignment was not picked up by the addressee\b/i.test(description)) return 'exception';
+  // DobroPost's record of a parcel its customer announced, as 17TRACK relays it without a code: it comes before
+  // DobroPost's warehouse in China assembles the goods ("На комплектации"), so nobody has the parcel yet.
+  if (/^виртуальная посылка[.!]?$/iu.test(description)) return 'registered';
   // Sender pre-advice such as Quickpac's "Shipment recorded by sender (data delivered)".
   if (/being prepared by the sender|recorded by (?:the )?(?:foreign )?sender|\bdata delivered\b|en route to .*awaiting processing/i.test(description)) return 'registered';
   // 17FEIA's customs broker taking the parcel to its warehouse after the flight, as Ship24 relays it with
